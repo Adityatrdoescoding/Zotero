@@ -1,0 +1,734 @@
+A REVIEW OF ROTORCRAFT WAKE MODELING METHODS
+FOR FLIGHT DYNAMICS APPLICATIONS
+W. R. M. Van Hoydonck H. Haverdings M. D. Pavel National Aerospace Laboratory (NLR) Delft University of Technology 1059 CM Amsterdam 2628 TJ Delft Netherlands Netherlands
+Abstract
+In this paper, the results of a brief survey in the field of rotorcraft inflow and wake modeling developments are presented. For many years, inflow models have been augmented with (semi-) empirical and analytical models to remove restrictions present in dynamic inflow models. In the mean time, significant algorithmic advances have been made in the field of Lagrangian free wake methods. This review summarizes the state of the art in rotor wake and inflow modeling for flight dynamics applications, and outlines benefits and limitations of both methods. As a result of this survey, our future research will focus on the development of a simplified free wake model where all vorticity is located on a continuous, truncated cylinder that can deform freely under its own influence.
+Nomenclature
+KR wake distortion parameter due to rate an, bn coefficients in Ramasamy-Leishman swirl velocity model CT thrust coefficient l vortex segment length [M ] apparent mass matrix Nbl number of blades r nondimensional radial distance r distance vector R rotor radius r(ψ, ζ) position of point on vortex filament S wake spacing T rotor thrust [V ] mass flow parameter matrix
+V ̄ mass flow parameter associated with higher harmonic inflow v induced flow vh induced flow at rotor disk in hover vi induced flow at rotor disk Vm mass flow parameter associated with mean inflow vθ vortex core tangential velocity X wake skew [τD] time constant matrix associated with dynamic wake distortion effects αL coefficient in Lamb-Oseen vortex model αs rotor shaft angle of attack
+ ̄λ inflow ratio divided by tip speed μ ̄ advance ratio divided by tip speed χ wake skew angle filament strain Γv vortex segment strength κc, κs longitudinal and lateral wake curvatures
+λ inflow ratio λ0 nondimensional uniform inflow in Pitt-Peters dynamic inflow model λi nondimensional inflow λ1s, λ1c lateral and longitudinal inflow gradients in PittPeters dynamic inflow model μ advance ratio ΩR rotor tip speed Ω rotor angular velocity ψ current blade azimuth angle ρ air density ζ azimuth angle at which filament point was released from blade
+1 Introduction
+The usage of helicopter in a maritime environment increases hazards and pilot workload to levels that are normally not encountered during land-based operations. Ship-helicopter operating limitations (SHOLs) define the limits of the conditions under which it is possible to perform safe take-offs and landings aboard a ship. These limitations are unique for every combination of rotorcraft and vessel that a naval operator wants to utilise. They are defined as Wind-Over-Deck (WOD) envelopes that should be as large as possible to make optimal use of the rotorcraft and ship. During sea trials–where these envelopes are determined–the helicopter and ship are not available for regular duties for several weeks, depending on the number of ship landing spots and the weather conditions encountered. The costs associated with these trials are therefore substantial. In theory, simulation is an attractive alternative, as it
+35th European Rotorcraft Forum 2009 DocumentID: 101221
+©DGLR 2009 1
+
+
+enables the flight test engineer to estimate SHOLs in the laboratory under repeatable conditions which afterwards can be confirmed at sea. Also, initial SHOLs can be determined before the ship is built. However, as highfidelity helicopter simulation under normal conditions is already a difficult undertaking, realisation of sufficiently realistic simulation of rotorcraft at the edges of the flight envelope is particularly demanding. The goal of this review is to summarize the stateof-the-art in rotorcraft simulation and to identify opportunities for future research that may improve real-time flight simulation of rotorcraft in a maritime environment. Although the importance of accurate modelling of the ship airwake [51] and turbulence [53] cannot be underestimated, only the helicopter side of the problem will be discussed here. The paper will start with an overview of momentum theory and inflow models including extensions to model vortex ring state and proper off-axis response prediction. As such, it is a follow-on of a review paper by Chen [34] 20 years ago. With the ever increasing computational power of desktop computers, free wake methods may be used as a replacement of inflow models in flight simulation software, provided that they require less (empirical) tuning. Therefore, in section 3 wake modelling methods will be discussed, ranging from classical prescribed vortex-tube models to time-accurate free vortex wake methods. Ground and interference effects are covered in section 4 after which acceleration methods for Nbody problems (under which free wake methods fall) are discussed in section 5.
+2 Brief Overview of Momentum
+Theory and Inflow Models
+In this section, an short overview is given of dynamic inflow models and various extensions that have been devised to overcome restrictions in the basic models. An extensive review of static inflow models in flight conditions ranging from hover to high-speed forward flight can be found in Chen [34] and a detailed discussion of their dynamic counterparts is given in the review paper of Gaonkar and Peters [54].
+2.1 Basics
+In introductory textbooks about helicopter aerodynamics, Glauert’s momentum theory [55] is used to relate the downwash generated by a rotor to its thrust. As inflow is assumed to be uniform across the rotor disc (which is only reasonably valid in hover and vertical flight), it can only be used for preliminary performance predictions of rotorcraft where detailed knowledge about the inflow distribution is not needed. Since Glauert’s work, multiple models have been devised to remove the restriction of uniform inflow across the rotor disk [45;91].
+More recently, research focus has shifted to include the inertia of the air surrounding the rotor in the inflow model. The first of these dynamic extensions of momentum theory is due to Carpenter and Fridovitch [28], in a study on the thrust response during jump takeoffs in an autogiro. They included an apparent mass term to the thrust equation that models the inertia of the air surrounding the rotor,
+(1) T = 0.637ρ 4
+3 πR3v ̇i + 2πR2ρvi2
+where T is the rotor thrust, ρ the air density, R the rotor radius and vi the induced veloctiy at the rotor disk.
+After introducion of nondimensional quantities (CT =
+T
+ρπR2(ΩR)2 ; λi = vi
+ΩR ) and linearisation around a steady
+state condition (CT = C ̄T + δCT ; λi = λ ̄i + δλi), Eq. 1 can be rewritten into a differential equation that relates the perturbations in inflow to the changes in rotor thrust,
+(2) 0.849
+4Ω ̄λi
+δλ ̇ i + δλi = 1
+4 ̄λi
+δCT
+An extension of the above idea, valid in hover and forward flight using three inflow states, is the dynamic inflow model of Pitt and Peters [104;105]. The uniform inflow λ0 is related to the thrust coefficient CT , the linearly varying lateral and longitudinal (λ1s and λ1c) inflow states are related to the aerodynamic rolling and pitching moments (CL and CM ) generated by the rotor. The addition of first order inflow terms significantly improves trim values of the rotor tilt angles in forward flight [99]. The following set of first-order differential equations written in the wind axis system defines the dynamic behaviour of the inflow variables [158],
+(3) [M ]
+⎧⎨
+⎩
+λλλ ̇ ̇ ̇110sc
+⎫⎬
+⎭ + [V ][L ̃]−1
+⎧⎨
+⎩
+λ0
+λ1s
+λ1c
+⎫⎬
+⎭=
+⎧⎨
+⎩
+CT −CL −CM
+⎫⎬
+⎭
+wa
+Here, the apparent mass matrix [M ] and the mass flow parameter matrix are
+(4) [M ] =
+⎡
+⎣
+128
+75π 0 0
+0 16
+45π 0
+0 0 16
+45π
+⎤
+⎦ and [V ] =
+⎡
+⎣
+Vm 0 0
+0 V ̄ 0
+0 0 V ̄
+⎤
+⎦
+where Vm and V ̄ are the mass flow parameters associated with mean and higher harmonic inflow, respectively. These parameters are defined as
+(5) Vm = √μ2 + λ2
+(6) V ̄ = μ2 + λ(λ + ν)
+Vm
+Finally, the inflow gain matrix is expressed as
+(7) [L ̃] =
+⎡
+⎣
+1
+2 0 − 15π
+64 X
+0 2(1 + X2) 0
+15π
+64 X 0 2(1 − X2)
+⎤
+⎦
+35th European Rotorcraft Forum 2009
+©DGLR 2009 2
+
+
+where X = tan( χ
+2 ).
+A generalisation of the Pitt-Peters inflow model into a finite number of azimuthal and radial states is presented by Peters and He [102;103]. A restriction that both the PittPeters and Peters-He dynamic inflow models share is the inability to model mass source terms in (or near to) the rotor disk. This restriction has been removed with the Peters-Morillo finite-state inflow model [94]. The biggest difference between this model and the previous two incarnations is that the derivation of the first two models starts from the acceleration potential, whereas the latest model starts from the velocity potential. Due to their computationally efficient formulation and the use of full values instead of perturbations, these models have found extensive use in rotorcraft simulation
+codes [4;16;17;63;137].
+2.2 Limitations and Extensions
+The fact that dynamic inflow models have been implemented in multiple simulation codes does not mean that they are as such applicable in all flight conditions that a rotorcraft can encounter, as in the derivation of these models, various assumptions limit their domain of applicability. In this section, the following extensions to inflow models will be discussed:
+• off-axes response prediction;
+• vortex ring state and
+• ground effect influence.
+2.2.1 Off-Axes Response Prediction
+It has been known for approximately 20 years that helicopter flight simulation models that use the Pitt-Peters dynamic inflow model predict off-axis response to cyclic inputs with the wrong sign as can be seen in Figs. 1a and 1b [137]. These figures show the response of a UH60A flight dynamics model to a one inch lateral cyclic input at forward flight speeds of 1 and 100 knots. It is clear that the roll rate response is predicted with reasonable accuracy, while the same cannot be said of the pitch rate response. Simulated responses for the near hover and high speed forward flight conditions both show that the off-axis response on a lateral cyclic input has the wrong sign during the first seconds of the manoeuvre for nearhover (Fig. 1a) and during the whole manoeuvre for the high speed case (Fig. 1b). To overcome this deficiency, extensions have been developed to model wake distortion dynamics, which is thought to be a one of the primary causes of the discrepancy between simulation and flight test results [85]. Other (empirical) corrections to improve the off-axis response prediction in simulation models are a first-order low-pass filtering of the elemental lift and drag coefficients[92], an
+UH-60A model responses with 1-in.-left lateral stick at 1 knot.
+UH-60A model responses with 1-in.-left lateral stick at 100 knots.
+Figure 1: Response prediction in hover (a) and high speed forward flight (b) to a lateral cyclic input for a flight dynamics model using the three-state Pitt-Peters dynamic inflow model, from Takahashi [137]
+aerodynamic phase correction [7] and an aerodynamic lag model [7]. Zhao [158] uses a vortex tube method to determine the influence of distortions in the geometry of the wake at the rotor disk. In the vortex tube method, all vorticity is assumed to lie on a tube of continuous vorticity, which
+35th European Rotorcraft Forum 2009
+©DGLR 2009 3
+
+
+represents the outer surface of the wake. The BiotSavart law is then used to obtain the inflow at the rotor disk. The effects of three disturbances (step changes in wake bending, wake skew and wake spacing) are examined and it is concluded that they all exhibit a first order behaviour with time. The effect of dynamic wake distortions on the inflow across the rotor disk can then be represented by a set of first-order differential equations,
+(8) [τD]
+⎧⎪⎪⎨
+⎪⎪⎩
+X ̇ S ̇ κ ̇c κ ̇s
+⎫⎪⎪⎬
+⎪⎪⎭
++
+⎧⎪⎪⎨
+⎪⎪⎩
+X S κc κs
+⎫⎪⎪⎬
+⎪⎪⎭
+=
+⎧⎪⎪⎨
+⎪⎪⎩
+X S κc κs
+⎫⎪⎪⎬
+⎪⎪⎭
+qs
+where X, S, κc and κs are wake skew, wake spacing, longitudinal and lateral wake curvates, respectively. The subscript qs in Eq. 8 denotes quasi-steady values. Matrix [τD] contains the nondimensional time constants associated with the dynamic wake distortion effects. In general, this matrix is fully populated, which means that wake skew, wake spacing and wake curvatures are fully coupled. The coupling effects are ignored by Zhao which results in a diagonal form for the time constant matrix,
+(9) [τD] =
+⎡
+⎢⎢⎣
+τX 0 0 0 0 τS 0 0 0 0 τR 0 0 0 0 τR
+⎤
+⎥⎥⎦
+The states of this system are coupled with the Pitt-Peters and Peters-He dynamic inflow model through some additional gain matrices. Similar wake distortion dynamics extensions for dynamic inflow models have been proposed earlier [15;79;85]. All these models contain a parameter KR that acts like a gain for the wake distortion dynamics model, for which values range between 0.75 and 3.0 [7]. A disadvantage that they share is the fact that these extensions are not an integral part of the inflow model itself, they are add-ons that try to correct deficiencies in the original model. In addition, the radial component of the inflow (i.e. wake contraction) is not taken into account. An approximate actuator disk model valid in climb and slow descent that includes the wake distortion effects as an integral part of the derivation is presented by Rosen [122;123]. A derivation starting from vortex modelling [122] and one starting from potential theory [123] is given. Simulations show that in the range of frequencies between 1 and 10 rad/s, the results are in good agreement with experimental data.
+2.2.2 Ground Effect Influence
+An extension for the Peters-He model is developed [153] that models the effect of dynamic, partial ground effect as found in rotorcraft shipboard operations. Comparison with experimental data shows that it predicts the same trends in hover. For partial and dynamic ground effect,
+correlation is qualitatively correct and quantitatively reasonable at best. Another dynamic ground effect extension, but in this case based on the Peters-Morillo dynamic inflow model, is presented by Yu and Peters[156]. A more in-depth review of ground effect on the inflow at the rotor will be presented in section 4 where panel methods are discussed.
+2.2.3 Vortex Ring State
+Glauert’s simple momentum equation that predict the inflow through the rotor in vertical flight, contains two branches, one for the normal operating state and the other for windmill brake state (see Fig. 2). The region in between these two branches is a called the vortex ring state (VRS), named after the donut-shaped vortex ring that is visible in Fig. 3. On a helicopter main rotor, it is typically encountered when a fast descent is initiated. It is also possible that the tail rotor may encounter vortex ring state in lateral flight or in hover with strong sidewinds, leading to a reduction or loss of directional control. As the airflow around the rotor is highly turbulent in this condition, experimental data [143] shows large fluctuations in induced velocity values as a function of climb speed (see Fig. 2)1. A consequence of the turbulent state of the wake around the rotor are fluctuations in torque and thrust and increased levels of vibration. The ability to predict vortex ring state boundaries is important as it may lead to (automated) systems for VRS avoidance. Over the years, multiple criteria have been proposed to predict these boundaries, such as thrust fluctuation, torque fluctuation, heave stability and roll stability. VRS boundaries are normally displayed in a graph using normalized (by induced velocity in hover) free stream rotorcraft horizontal and vertical velocities. Fig. 4 [14] shows VRS boundaries from various studies. For flight simulation purposes, it should be possible to change from one branch of momentum theory to the other without experiencing spurious behaviour. Therefore, (dynamic) inflow models have been extended by various researchers with semi-empirical models to account for the vortex ring state. These include simple curve fits for Glauert’s classical induced velocity formula [75;119], a curve fit based on a dissipating vortex tube model [147] (see Fig. 2) and models that modify the mass flow parameter (Eq. 5) of dynamic inflow models [64;101]. This last modification [101] adds two terms to the mass flow parameter,
+(10) Vm =
+√
+λ2 + μ2 + vh2g( ̄λ)f (μ ̄)
+where λ ̄ and μ ̄ are the total flow through the rotor disk divided by tip speed (λ) and the total flow in the plane of
+1An extensive overview of experimental data for both helicopters and tiltrotors is given by Johnson [75]
+35th European Rotorcraft Forum 2009
+©DGLR 2009 4
+
+
+0
+0.5
+1
+1.5
+2
+2.5
+3
+3.5
+-5 -4 -3 -2 -1 0 1 2 3 4
+Vc/vh, climb speed ratio
+vi/vh, induced velocity ratio
+descent climb
+Vc + 2vi = 0
+Vc + vi = 0
+windmill normal working state brake state
+vortex ring state
+turbulent wake state
+momentum theory invalid
+Wang (1990)
+Rand (2006)
+Castles and Gray (1951)
+Figure 2: Rotor induced velocity as a function of climb speed ratio, showing the different branches of the analytical model. The experimental data was extracted from a NACA report by Castles and Gray [143]
+Figure 3: Smoke visualisation of helicopter rotor in vortex ring state [46]
+the disk divided by tip speed (μ), both further nondimensionalised by the induced flow in hover (vh). In Eq. 10,
+g( ̄λ) is a correction function designed to fit experimental vortex-ring data in axial flow and f (μ ̄) is a function that diminishes the effect of the correction function with
+Figure 4: Vortex Ring State boundaries as determined by various studies [14].
+advance ratio, defined as
+(11) g( ̄λ) =
+⎧⎪⎪⎪⎨
+⎪⎪⎪⎩
+1
+(2+ ̄λ)2 − λ ̄2
++(1 + λ ̄)[0.109 +0.217( ̄λ − 0.15)2], −1 ≤  ̄λ ≤ 0.6378
+0, otherwise
+35th European Rotorcraft Forum 2009
+©DGLR 2009 5
+
+
+and
+(12) f (μ ̄) =
+{
+1 − 2μ ̄2, 0 ≤ μ ̄ ≤ 0.707
+0, otherwise
+The above described dynamic inflow modification and the modifications shown in Fig. 2 all lack the ability to model the turbulence that is an integral part of the vortex ring state in real flight.
+By adding a series of discrete vortex rings located in the neighbourhood of the rotor, inflow fluctuations are modeled as the inflow value depends on the actual position of these rings. When this is added to a baseline dynamic inflow model, a better match with experimental data is obtained both in axial flight and in inclined de
+scent [31;32].
+Using a vortex tube model, the time average flow through the rotor is modeled [100] in a similar way as proposed earlier [147]. In axial flight, the truncated tube model reduces to momentum theory and is capable of providing a continuous solution through the vortex ring state.
+3 Overview of Wake Models
+In their most basic form, inflow models discard the influence of wake geometry distortions and surrounding objects on the inflow distribution. The wake distortion dynamics extension mentioned in the previous section relies on a set of empirical parameters for the gains of the different distortions. One shortcoming of this model is that wake contraction is not taken into account as one of the distortion modes. For some problems such as blade load and vibration prediction, inflow models are not sufficient as they cannot provide data on the location and strength of shed and trailed blade vortices. When this data is necessary, one has to resort to models that explicitely take the wake geometry of the rotor into account.
+Various models can be found in the literature, ranging from prescribed wake vortex tube models, to timeaccurate full-span free wake models. These models and their applications will be discussed in the following paragraphs. All of them use the Biot-Savart law [128] to evaluate the induced flow dv at a point P located at a distance r from a vortex segment with strength Γv and length dl,
+(13) dv = Γv
+4π
+dl × r r3
+Methods to accelerate the evaluation of the Biot-Savart law for a large number of vortex segments are discussed in section 5.
+3.1 Rotor Wake Visualisation
+Mathematical advances in the modeling of rotor wake models do not happen without extensive experimental studies. The first in-depth flow visualisation study of the wake of a rotor in forward flight and hover was performed by Gray[57]. From his flow visualisation studies, the vortex model for a single-bladed rotor in hover as shown in Fig. 5 was developed. A recent overview of rotor visualisation techniques is presented by Leishman and Bagai [88]. Some less scientific, but all the more impressive, rotor wake visualisations are shown below. In figure 6, the far-field rotor wake is made visible using
+Figure 5: Geometry of the wake of a single-bladed hovering rotor as determined from flow visualisation studies, from Gray [57].
+the smoke of flares dispersed by a Eurocopter Cougar of the Swiss Armed Forces. From this figure, it is clear that in forward flight, the dominant structure of the far-field wake consists of two counter-rotating vortices that are similar to the tip vortices found in normal aircraft. Close to the rotor, the vortices trailing from the blade tips can be seen. Smoke, dispersed from canisters attached to the fuselage, is trapped by the frontal part of the vortices trailing from the blade tips of a AH-1 Cobra in forward flight in figure 7. The first few revolutions of the wake of a hovering Bell 214B-1 helicopter are made visible by natural condensation of water vapour inside the vortex cores in figure 8.
+3.2 Classical Vortex Models
+One of the first attempts to directly include the effect of the wake of a rotor on the performance is presented by Goldstein [56]. The wake consists of a helical surface for each blade, which all move downward uniformly at
+35th European Rotorcraft Forum 2009
+©DGLR 2009 6
+
+
+Figure 6: Far-field rotor wake made visible with the smoke of flares dispersed by a Eurocopter Cougar of the Swiss Armed Forces on October 10, 2007. Image source http://www.airliners.net, ©c Ron Kellenaers.
+Figure 7: Near-field tip vortex wake made visible with smoke dispersed by a AH-1F Cobra at the Alliance 2007 Airshow in Ft. Worth. Image source http://www.airliners.net, c© Tim Perkins, used with permission.
+the average momentum velocity. The effects of wake contraction, viscosity and non-uniform downwash were not taken into account. An overview of later models that remove restriction of Goldstein’s model is presented where it is also noted that the inclusion of wake contraction significantly improves the accuracy of performance predictions[72]. All these models describe prescribed geometry wake models, where wake geometry parameters are extracted from experimental studies and the wake vorticity is carried downstream by sheets or filaments.
+By using a simplified representation of the wake to calculate the induced velocity at the rotor disk, the restriction of uniform inflow across the rotor disk is removed [39]. The wake consists of an elliptic cylinder which is skewed with respect to the rotor disk at an angle that depends
+Figure 8: Tip vortex made visible through condensation of water vapour inside the vortex core of a Bell 214B-1 helicopter. Image source http://www.airliners.net, c© Bill Campbell, used with permission.
+on the advance and inflow ratios. All shed and trailed vorticity is released by the blade tips in a helical pattern. This pattern is split in circular rings and axial lines of which the latter are discarded. Furthermore, wake contraction and deformation is neglected and an infinite number of blades is assumed. An expression in terms of complete elliptic integrals of the first and third kind is found for the normal component of the inflow at the rotor disk. An approximation using a Taylor series expansion of two terms is found to be sufficiently accurate for most applications.
+A similar approach is used by splitting the rotor wake in a near field and a far field [29]. The effect of the near field, with a contribution of approximately 95%, is calculated numerically, while the effect of the far wake is calculated using an approximate analytical expression. For various advance ratios, the calculated induced flow in the plane of symmetry of the rotor is shown in graphs. As an example, the graph with data for a wake skew angle of 45◦ is shown in Fig. 9.
+In high speed forward flight, the wake in the vicinity of the rotor can be approximated by a flat sheet of vorticity [13;135]. Cycloidal vortex filaments of varous shapes can be replaced by an equivalent system of longitudinal and lateral vortices. As the wake structure is assumed to be rigid, the computational problem is linear. A comparison of calculated downwash velocities in the vicinity of the rotor with experimental measurements have shown to be in good agreement. It is considered valid in forward
+flight for advance ratios μ ≥ 1.62√CT . This model has been used in the past to calculate the main rotor downwash at the tail plane surfaces and tail rotor [137]. A similar approach is used by Ormiston [98]. By decomposing the wake in circular and longitudinal trailing vorticity components, shed vorticity and bound vorticity, a general actuator disc continuous wake theory for predicting the time-average downwash distribution and force and
+35th European Rotorcraft Forum 2009
+©DGLR 2009 7
+
+
+Figure 9: Induced flow near a rotor in forward flight with a wake skew angle of 45◦, from Castles and de Leeuw [29].
+moment response characteristics is formulated.
+During the period 1963 to 1965 a semi-empirical prescribed wake model was developed by Landgrebe at United Technologies Research Center for the prediction of the instantaneous flow field in the vicinity of a hovering helicopter rotor [86]. This has formed the basis for a more comprehensive wake analysis program where the wake geometry is generated internally or prescribed from a separate wake geometry prediction program [48]. As the calculation of the velocity at the end points of a vortex element depends upon the influence of all other elements, an acceleration scheme is devised that reduces the scheme from a quadratic trend to a linear one. For every control point, the wake is divided in a far-field and a near-field region. The influence of the near field region is calculated every time step, whereas the influence of the vortices in the far field are calculated only once.
+In the models described in this section, most researchers use a lifting line approximation to model the bound vorticity of the blades. Lifting line models can be overly sensitive to vortices that pass close to a blade [83]. It was found that better results could be obtained with a lifting surface description of the rotor blades. An advantage of this technique is that it is easier to model advanced blade tip shapes.
+The major drawback of prescribed wake models is that they rely on experimental data to tune the geometry of the wake. Models that do not need experimental data can be used with more confidence in a wider variety of operating conditions. This can be achieved if one removes the restriction of wake prescription and let the wake evolve freely. These models will be discussed in
+the next section.
+3.3 Free Wake Models
+Figure 10: Rotor tip vortex geometry in low speed forward flight at low advance ratio (μ = 0.1) and tip path plane angle of attack α = 11◦. [139]
+To overcome the limitations of prescribed wake models, free wake models allow the wake shed by the rotor blades to deform under its own influence, see Fig. 10. This comes at a price however, as the velocity of a point
+35th European Rotorcraft Forum 2009
+©DGLR 2009 8
+
+
+on a vortex filament is influenced by all other vorticity carrying elements, (via the Biot-Savart law, Eq. 13) resulting in a quadratic increase in computation time with the number of vortex elements2. Before discussing the literature regarding free wake methods, first a classification of free wake models as presented in literature is given based on modeling features3. A first feature one can use to distinguish between various wake models are the parts of the blade that can release vorticity in the wake. The simplest methods assume that only the blade tip (and blade root) releases vorticity in the wake (tip/root vortex wake), whereas more elaborate models allow vorticity to be released from the complete trailing edge of the blade (full-span wake). On the next level, one can discriminate between the basic elements that carry the vorticity in the wake. These are the vortex-lattice/doublet wake elements (Fig. 11c, often used in fixed-wing low-speed aerodynamics[77]), vortex sheets, vortex filaments (Fig. 11b, curved or straight) and point vortex models (Fig. 13). Of these four, the first two are not compatible with the tip vortex wake model. Furthermore, a distinction can be made between different treatments of the near and far wake. For example, the near wake part might be a free wake, whereas for the far wake, a prescribed wake model might be used. In another variation, the near wake consists of a vortex lattice model, while the far wake contains only a tip vortex or a tip and root vortex. A final distinction between different free wake models is based on the particular solution strategy employed. These are the relaxation-based and time-marching solution schemes. Based on these two solution schemes, in the next two sections an overview will be given of the available literature on (rotorcraft) wake modeling.
+3.3.1 Relaxation-based Free Wake Methods
+In relaxation-based free wake methods, it is assumed that the wake has a periodic structure. Filaments released at the same point from subsequent blades will undergo the same deformation with a time offset of 2π
+ΩNbl .
+The position of Lagrangian markers on the filaments are updated by solving the governing equations. To enforce periodicity, the new position of a vortex marker is the weighted average of the previous and the current solution. This scheme is repeated until the position of the markers remains essentially unchanged. Due to the enforcement of periodicity, transients in the wake due to manoeuvres are not possible. As a consequence, relaxation-based free wake models can only be used in steady-state flight simulation. Due to the natural instability of the rotor wake in hover [89], the first successful attempts at simulat
+2Methods to redoce the computational time are discussed in section 5. 3Note that the classification is also valid for prescribed wakes.
+ing rotorcraft wakes were using relaxation-based algorithms [38;131;139] in forward flight. A successful implementation of a relaxation method for performance analysis of hovering rotorcraft is reported [38]. As complete wake contraction happens within two rotor revolutions, the free wake extends for two revolutions, after which the far wake starts. This is modeled using a sufficient amount of vortex rings (30) to minimise the effect of wake truncation on the final results. In a study to model and predict rotor higher harmonic airloads, Scully[131] used a weighted-average scheme to calculate the induced velocity field. The model works for hover and forward flight (μ < 0.3), for the former case, six to twelve turns of the tip vortex are used in the near wake. In forward flight the wake is swept away much more quickly and only two to four turns are used. For the (tip) vortex core, a viscous core growth model is used. The wake elements used are mainly straight-line vortex segments with constant vorticity, but curved elements and vortex sheets are also used. For the far wake in hover, a semi-infinite vortex tube model is used. The prescribed and free wake models developed at UTRC were used as a basis for an enhanced free wake method [47] with the wake modeled using a vortex lattice structure. The model was applied to main and tail rotors operating under BVI conditions. In the range of advance ratios that were studied (0.14 to 0.35), no instabilities were experienced as was the case with an older version of the same code [86]. To study the influence of ground effect on the rotor inflow for VTOL rotorcraft, a relaxation-based free wake model is presented [124]. The resulting wake is used to provide an assessment of blade loading distribution for various hover and low speed flight conditions. The aerodynamic model of the blade uses a lifting line approach and to ensure stable solutions, numerical damping is used. Experimental data for two different rotors is compared with the output of the program. Reasonable accuracy is achieved in the vicinity of the rotor. Using an iterative influence coefficient method in a blade-fixed coordinate system [109;110], the selfpreserving steady solution of the wake below a hovering rotor is found. The program EHPIC was used to predict the performance of rotors in hover and axial flight [49] and uses curved vortex segments [24] released from the whole trailing edge of the blade. An eigenvalue analysis[115] showed the existence of multiple lowfrequency unstable modes as has been observed in experiments [58]. The equation to calculate the time rate of change of position of a vortex marker on a filament can be written
+as [40],
+(14) dr(ψ, ζ)
+dt = Vloc(r(ψ, ζ), t)
+where r(ψ, ζ) is the position of a point on the filament. The current blade azimuth angle is ψ and the filament
+35th European Rotorcraft Forum 2009
+©DGLR 2009 9
+
+
+was released from the blade at azimuth angle ψ − ζ. Taking the derivative of the left-hand size of Eq. 14, one gets
+(15) dr(ψ, ζ)
+dt = ∂r(ψ, ζ)
+∂ψ
+∂ψ
+∂t + ∂r(ψ, ζ)
+∂ζ
+∂ζ ∂t
+which after some simplifications ( ∂ψ
+∂t = ∂ζ
+∂t = Ω) is substituted back into Eq. 14, resulting in
+(16) ∂r(ψ, ζ)
+∂ψ + ∂r(ψ, ζ)
+∂ζ = 1
+Ω Vloc(r(ψ, ζ), t)
+The left-hand side of Eq. 14 is the linear wave (advection) equation. This partial differential equation problem can be treated as an ordinary differential equation problem along the characteristic curves [40]. Using a predictor-corrector algorithm with a central differencing scheme for the space discretisation of the governing equations, it is shown that the method converges in hover and low-speed flight where single-step methods do not. This scheme was further extended into a two-step, pseudoimplicit predictor-corrector relaxation algorithm with five-point central differencing in space [8;9]. It requires approximately twice as much computational effort per iteration compared to single-step explicit schemes, but it is more robust and less susceptable to numerical instabilities. The scheme permits the use of unequal time and space increments (Δζ = Δψ). Later, an adaptive grid sequencing scheme and a velocity field interpolation scheme were developed to reduce the number of induced velocity evaluations required per iteration
+step [10;11].
+3.3.2 Time-Marching Free Wake Methods
+In contrast to relaxation-based free wake methods, timemarching methods can capture transient wake dynamics. This is a prerequisite to simulate rotorcraft manoeuvring flight. Just like with relaxation-based methods, the wake is discretised using Lagrangian markers, and the new position of the markers are found by time-integration of the velocities. No assumptions are made regarding periodicity of the wake structure, it is allowed to deform under its own influence and the influence of external disturbances such as wind gradients, solid boundaries and turbulence. In a series of reports, Salder presented the results of a study in the response and blade loads of multiple rotor configurations in steady [125] and manoeuvring [126;127] flight. The near wake consists of a regular grid of trailed and shed vorticity, while the far wake only retains a single tip vortex. The system is advanced in time using an explicit Euler time-marching scheme. A curved vortex element representation for use in rotorcraft free wake calculations is developed [24]. The Basic Curved Vortex Element (BCVE) is based on an
+approximate Biot-Savart integration for a parabolic arc filament shape. Using the BCVE a multi-filament, full span free wake analysis is developed [23]. The vortex elements are laid along contours of constant vorticity that automatically accounts for shed and trailed vorticity in the wake (Constant Vorticity Contour (CVC) Model), see Fig. 11. Using larger vortex filaments, the BCVE is far more accurate in predicting the resulting flow fields. The far wake model uses information from the last portion of the near wake to prescribe and update its shape.
+The CVC model was subsequently integrated in a comprehensive rotor code (RotorCRAFT) [116]. As it is inefficient to retain the model over the complete length of the semi-infinite wake, successively more simple wake models are used to model older parts of the wake. The computational efficiency of this model has been improved by use of the fast multipole method [36;37]. Recently, a Constant Vorticity Contour model using straight line segments has been combined with an unstructured panel code ADPANEL at AgustaWestland for use in rotorcraft and tiltrotor performance prediction and interactional aerodynamics and noise at a fraction of the cost of full CFD calculations [41;130].
+In recent years, efforts at CDI have been directed at improving the computational efficiency of CHARM [112] by implementing a method called Reduced Order Hierarchical Fast Vortex (ROHFV). It enables the near real-time execution of high-fidelity treatments of rotor/wake and rotor/body interaction on single processor workstations. For the wake, the near-field region is reduced in size as halving the number of particles per box results in a reduction of 20% in CPU time. Far-field region speed optimisations are achieved by precomputing the boxto-box induction effects. The panel representation of the fuselage is further simplified by using a single point source per panel. With the addition of manoeuvring effects (rotating shaft), the field of applicability is no longer restricted to steady hover and forward flight conditions. This model of CHARM is called CHARM/RT.
+An overview of wake calculation methods available in CAMRAD/JA is given by Johnson [73]. A comparison between various lifting-line methods to model the blade aerodynamics is given and results of calculations and correlations are presented. Five years later, a general free wake geometry calculation is presented that removes some of the limitations of the earlier Johnson model [74]. It is implemented in CAMRAD/II and can be used to calculate the influence of multiple wings and rotors with non-identical blades. Distortions are calculated for all wake structures, using one model for influence coefficient and induced velocity calculations. A comparison of features and limitations of the various wake models as implemented in CAMRAD is also given.
+The relaxation-based approach developed earlier at the university of Maryland [8] was extended for time simulations using a second-order, two-step backward, predictor-corrector time-marching algorithm [21]. A
+35th European Rotorcraft Forum 2009
+©DGLR 2009 10
+
+
+Typical load variations on the advancing side in high speed flight
+Contours of constant sheet strength in the wake on the advancing side
+Modeling the trailed and shed vorticity by a lattice of vortex elements
+Modeling the wake structure with curved vortex elements
+Figure 11: Modeling the structure of the wake using lattice and constant vorticity contour elements [107].
+straight-line discretization of the curved tip vortices was shown to be second-order accurate in space if an azimuthal discretisation of 5◦ or smaller is used [21]. This algorithm produces stable results for both hover and forward flight conditions, in and out of ground effect (see Fig. 12). An in-depth review of the algorithms used in the Maryland Free Wake (MFW) can be found in Leishman, Bhagwat and Bagai [89]. Later, the MFW model has been extended to capture the unsteady transient wake aerodynamics under arbitrary manoeuvring flight conditions by taking viscous diffusion and filament straining into account [2]. The MFW was subsequently coupled with a full flight simulation model [120] and also used in a study to predict the performance and airloads on a wind turbine in unyawed and yawed flow conditions[62]. At Pennsylvania State University, the MFW model has been coupled with GenHel and PSU-WOP-WOP in a study to predict and understand rotorcraft noise in manoeuvring flight [33]. Due to the computational time needed by the MFW, the manoeuvres simulated are restricted to less than 15 seconds, as these may take multiple days to complete on a single CPU computer.
+Rotor wake simulations using viscous vortex particle methods (see Fig. 13 for an example) have been in development since the nineties of the previous century in studies related to wind turbines operating in yawed flows[141]. This wake model (GENUVP, General Unsteady Vortex Particle) is later used as a reference to devise a less expensive model that models dynamic inflow and dynamic stall effects in order to estimate the effects of turbulent inflow on wind turbine fatigue loads[142]. More recently, GENUVP has been used in combined aeroelastic and aeroacoustic simulations for rotorcraft [97]. A similar modeling approach has been
+implemented in Flightlab, where a viscous vortex particle method including acceleration methods is used in rotorcraft wake simulations [66;159]. A finite-state induced flow model was subsequently augmented with results from the viscous vortex particle method. The augmented model improved the correlation with experimental data for predicted inflow, rotor flapping dynamics and helicopter response [65]. These particle methods offer increased flexibility over vortex wake models that use line segments to discretise the wake, especially in studies where fluid-structure interaction becomes important. The biggest disadvantage over vortex line models is the amount of particles needed to simulate the vortical flow released from the blades, remedies for this are discussed in section 5.
+3.4 CFD-based Rotorcraft Wake Calculations
+With the increasing availabililty of low-cost high-speed computers, Computational Fluid Dynamics (CFD) codes are being used more and more in the design and analysis of new rotorcraft. However, for routine use in flight dynamics applications, these methods are (still) orders of magnitude too slow. Another disadvantage of most CFD solvers is their excessive numerical dissipation of vorticity. This limits their use as the tip vortices cannot be tracked for more than a couple of rotor revolutions. A possible solution for this problem is the use of hybrid methods (illustrated in Fig. 14) where grid-based Euler or Navier-Stokes methods are only used in the vicinity of the blades (where vorticity is created), extending 3 to 10 chordlengths from the blade in all directions[27]. Further away from the blades, Lagrangian methods are used to
+35th European Rotorcraft Forum 2009
+©DGLR 2009 11
+
+
+Figure 12: Example of predicted wake geometry using method of images to simulate ground effect, four-bladed rotor, CT = 0.008, forward shaft tilt αs = 10 deg. From Leishman, Bhagwat and Bagai [89]
+Figure 13: Rotor vortex particle wake visualisation of a rotor in hover after 8 revolutions using GENUPV [97].
+transport vorticity downstream.
+Figure 14: A finite-difference model embedded in a global hover flow, showing the disparity between a typical blade-oriented grid and the total hovering flow field [27].
+These methods[5;18] are regularly used as pure CFD methods are incapable of transporting vorticity sufficiently far from the rotor without excessive dissipation. Exceptions on this rule are the vorticity transport [26] and vorticity confinement [149] methods. Complete overviews of the state-of-the-art in CFD techniques used in rotorcraft research are available else
+where [27;136].
+3.5 Vortex Core Models
+Knowledge about the velocity profile inside the viscous vortex core released by the blades is important as it determines induced velocity values in close encounters between vortices. According to the Biot-Savart law (Eq. 13), the velocity reduces quadratically as distance from the vortex centerline is increased. As a consequence, at the vortex centerline, the induced velocity would be infinite if a viscous core would not be taken into account. This results in non-physical behaviour in a simulation that should be avoided. Multiple topics should be addressed when modeling viscous vortex cores. These are the initial position of the core when it is just released from the blade, the velocity
+35th European Rotorcraft Forum 2009
+©DGLR 2009 12
+
+
+profile inside the vortex core (swirl velocity profile), the diffusion of the core and the effect of stretching of the core on the swirl velocity and core size.
+3.5.1 (Tip) Vortex Release Point Location
+For rotor blades with a conventional planform (i.e. untapered, straight blades with a moderate twist), the bound circulation distribution drops off quickly at the blade tip, resulting in a concentrated tip vortex that starts right behind the blade. Planforms with more advanced tip shapes (swept, tapered, BERP) exhibit a more gradual drop in bound circulation near the tip, resulting in a vorticity sheet that does not roll up nearly as fast as with conventional tips. The tip vortex may even not be rolled up completely with the first blade encounter. For rotorcraft studies where accurate knowledge of blade loads are necessary to predict vibrations, the physics of the vortex roll-up process is needed. In airplane wake research, the most commonly used technique to calculate wake roll-up is described by Betz[20]. The method is based upon the assumption that global invariants of an unbounded, two-dimensional, incompressible, inviscid fluid motion may be applied locally to obtain an approximate description of the vortex structure [22]. In practice, Betz’ centroid of vorticity method can be used as follows [111]. The circulation distribution along the blade is divided into zones that each correspond to a certain vortex filament4. The change in circulation across each zone is assigned to the vortex filament associated with that zone. The vortex filament must trail from the centroid of the circulation distribution to be physically consistent.
+3.5.2 Swirl Velocity profile
+As already mentioned, vortex core models are used in Lagrangian wake simulations to remove the singularity that follows from using the Biot-Savart law when the point where the induced flow is needed lies on the axis of the vortex. In general, vortex cores have three nonzero velocity components of which only the tangential velocity profile is used. The other two components (axial and radial velocity) are neglected in most mathematical models. Multiple models can be found in literature, the simplest model is the Rankine model, where the swirl velocity inside the core varies linearly with the radius (solid body rotation). Outside the core, the velocity decreases hyperbolically, as in potental flow. An alternative to this model is the Lamb-Oseen vortex model which has a velocity profile that matches better
+4The number of zones and the places where zone boundaries are located is a matter that will not be discussed here.
+0
+0.2
+0.4
+0.6
+0.8
+1
+0123456
+Lamb-Oseen Vatistas, n=1 Vatistas, n=2 Vatistas, n=3 Rankine
+Non-dimensional distance from vortex centre, r/rc
+Swirl velocity, Vθ/(Γ2πrc)
+Figure 15: Non-dimensional swirl velocity profile for various vortex core models
+with experiment,
+(17) vθ(r) = Γv
+2πrcr (1 − e−αLr2 )
+where αL = 1.25643.
+The Vatistas model [140] is a more general parametric model that reduces to various other models,
+(18) Vθ(r) = Γv
+2πrc
+r
+(1 + r2n)1/n
+where n is an integer. For n = 1, Scully’s vortex model [131] is recovered,
+(19) Vθ(r) = Γv
+2πrc
+r
+1 + r2
+and for n = 2 we get
+(20) Vθ(r) = Γv
+2πrc
+r
+√1 + r4
+In case n goes to infinity, the Rankine or solid body rotation model is obtained,
+(21) Vθ(r) =
+{ Γv
+2πrc r 0 ≤ r ≤ 1
+Γv 2πrc
+1
+r r≥1
+In Fig. 15, the above velocity profiles are shown. The Ramasamy-Leishman swirl velocity model is based on an analytical solution derived from the NavierStokes equations for an isolated 2D viscous vortex. In its original form, the model does not give an analytical expression for the swirl velocity, but must be solved iteratively. An explicit approximation as a function of vortex Reynolds number is [117],
+(22) Vθ = Γv
+2πr (1 −
+∑3
+n=1
+ane−bnr2 )
+The coefficients an and bn are curve fits to numerically predicted velocity profiles that depend on the vortex Reynolds number. Values are given in tabular form in Ramasay and Leishman [117].
+35th European Rotorcraft Forum 2009
+©DGLR 2009 13
+
+
+3.5.3 Core Growth
+Due to viscosity, the vortex core grows in time. In literature, different methods are used to cope with this. The simplest method is to ignore core growth altogether. This was done in all early wake models, except for one [139], where it is assumed that initially, the vorticity is contained within an infinitisimally thin vortex tube L with intensity Γ. Under this assumption, the variation of the vorticity vector in space can be described by
+(23) Γ(t) =
+∫
+L
+Γ
+2√νπt3 e−R2/4νtdl
+This however is not a very accurate assumption, as the tip vortex has a finite core radius the moment it is released from the blade. A more popular approach to incorporate viscous diffusion is by using semi-empirical models. For the Lamb-Oseen model, the growth in time of the core size can be found from [128]
+(24) rc(t) = √4αlνt
+The Ramasamy-Leishman model also contains a model core growth model that takes the initial nonzero core size (r0) into account [117],
+(25) rc(t) =
+√
+r02 + 4αL(1 + Reva1)νt
+with a1 = 6.5 · 10−5
+3.6 Core Deformation
+The wake of the main rotor of a rotorcraft hovering in ground effect will expand as it approaches the ground plane. As a result, subsequent markers on a vortex line will move away from each other. According to Helmholtz’s third law [152], the strength of a material vorticity tube is time-invariant provided that the flowfield is incompressible. This can be formulated as follows,
+(26) Γ =
+∫
+S
+ωdS
+So, an increase in length of a vortex filament should be accompanied by a decrease in cross-sectional area of the filament. From a consideration of conservation of mass and incompressible flow one can deduce that the change in viscous core size Δrc is related to the filament strain [2] = Δl/l,
+(27) Δrc = rc
+(
+1− 1
+√1 +
+)
+4 Ground Effect and Interference
+When helicopters operate close to the ground, the magnitude of the inflow through the rotor decreases. As
+Figure 16: Flow near a rotor operating 1 radius above the ground visualised using balsa dust, reproduced from Taylor [138]
+a consequence, the induced power is reduced. Conversely, at a fixed power setting, the main rotor thrust increases and the fuselage download decreases. In forward flight close to solid ground, the effect is not only static. When the pilot increases forward speed starting at hover, a horseshoe-shaped ground vortex is formed in front of the rotor. At sufficiently high speeds, this vortex is suddenly swept back under the helicopter, after which ground effect becomes insignificant. In this chapter, an overview of methods available to model the ground effect on rotors will be given. The following subjects will be covered:
+• analytical/empirical ground effect models;
+• numerical models including:
+– inflow-based ground effect models;
+– panel methods
+A visualisation of a hovering rotor operating near the ground plane is shown in Fig. 16 (reproduced from [138]). The flow is made visible with the use of balsa dust.
+4.1 Analytical/Empirical Ground Effect Models - Method of Images
+To calculate the ground effect of a rotor in forward flight, the rotor is represented with a directional source [30]. An approximate expression is derived for the equivalent thrust change in forward flight with velocity V ,
+(28) TIGE
+TOGE
+=1
+1− 1
+16
+(R
+zg
+)2 / (
+1+ V
+vi
+2)
+where R is the radius of the rotor, and zg its height above the ground. At very low height (zg/R < 0.6) it was found that the power required to maintain level flight increases up to a speed of about 10 knots, after which it decreases again. This confirmed the observation by pilots that ground effect decreases more rapidly than transitional lift develops when initiating forward flight from hover near the ground.
+35th European Rotorcraft Forum 2009
+©DGLR 2009 14
+
+
+This approach (representing the rotor with a directional source) is extremely simple and has raised questions of validity of the results [69]. A more elaborate theoretical analysis is performed using a skewed cylindrical vortex sheet to model the rotor wake [68;69]. Ground effect is modeled by mirroring the vortex sheet with respect to the ground plane. Figure 17 shows the change of induced velocity with forward speed for five dimensionless values of the height above the ground. As noted in the previous paragraph, it confirms the observation in flight that close to the ground, the decrease in interference velocity is more rapid than the decrease in induced velocity which occur with increasing speed.
+0
+0.2
+0.4
+0.6
+0.8
+1
+0 0.5 1 1.5 2 2.5 3 3.5
+z/R inf z/R 2.0 z/R 1.5 z/R 1.0 z/R 0.5
+V/w0,h
+w/w0,h
+Figure 17: Induced velocity at the centre of the rotor in forward flight near the ground, x-axis: rotor forward velocity, y-axis: induced velocity at rotor centre; both nondimensionalised by hover induced velocity OGE [69]
+In a later report [70], the wake is modeled using a superposition of multiple basic elements as depicted in Fig. 18. First, the wake is translated downward along the wake axis and subtracted from the original wake, which results in a finite wake length. The portion running along the ground is created by increasing the wake skew angle to 90◦ and translating it until it coincides with the lower part of the free wake. Ground effect is then created by mirroring the whole of this.
+More recently, the method of images has been used with free-vortex wake models (see also Fig. 12). A second rotor and wake is placed at the mirror location of the primary rotor, creating a mirror plane [89;124]. As an application of this method, it is used in studies related to brownout simulation and prediction [81;144].
+A disadvantage of the method of images is that it is only reasonably applicable to an infinite ground plane. For finite ground planes, where the wake is allowed to leak over or around the edges, methods are necessary that model the actual geometry of the ground plane. These more advanced methods will be discussed in the following sections.
+Figure 18: Superpositions of the wake and its associated flow field used to obtain the wake and flow field in ground effect [70]
+4.2 Inflow-based Ground Effect Models
+As was mentioned earlier (section 2), the finite state inflow model [102] has been extended to take partial, dynamic ground effect into account [153]. This model has been implemented in various helicopter simulation programs [50;71], but due to all restrictions of the finite state inflow model, panel methods are far more flexible and efficient to model solid objects.
+4.3 Panel Methods
+In theory, it is possible to use panel methods to model the effect of arbitrary ground planes and obstacles in the neighbourhood of the rotor. However, close interaction of vortices with obstacles might violate the assumption of inviscid flow [108]. The underlying theory of potential methods will not be explained here, as there are multiple textbooks available that explain the basics [3;77;135]. The theory of potential methods was popularised by Hess and Smith [67]. In its basic form, however, it has some disadvantages. Flat quadrilateral panels cannot cover a three-dimensional body without gaps and using a constant strength potential distributions over the panels induces potential jumps at the edges of the panels, with unrealistic velocity jumps as a consequence. For this reason, panel methods have been developed that utilise higher-order panels and higher-order potential distributions over the panels [52;84;87;106].
+4.3.1 Applications
+This section will not cover all possible areas where panel methods have been used5, but will highlight applications of panel methods in (aero)nautical research.
+5These are mainly ground effect studies and rotor-fuselage interference studies.
+35th European Rotorcraft Forum 2009
+©DGLR 2009 15
+
+
+At Advanced Rotorcraft Technology (ART), the finitestate inflow model has been combined with an enhanced panel method for helicopter-ship dynamic interface simulations[155]. Results show that the combination of a panel method and a finite-state inflow method is computationally efficient. The effect of the ship deck on the rotor aerodynamics is modeled as an interference velocity at the rotor disk. Later, the panel method was modified so that it follows the footprint of the rotor wake and its surrounding area [154]. It is compatible with both inflowtype models and vortex wake models and can model the partial, inclined and dynamic ground effect conditions. Due to increasing rotor disk loadings with new helicopter designs, interactional aerodynamics is becoming more important in rotorcraft design as the energy levels in the wake are a lot higher[133]. Also, compact design requirements lead to closer proximity of components, which increases the chances of adverse interactions. Starting from the 1990s, various
+researchers [19;43;90;93;108;113;114;118;145] have used panel
+methods together with free-wake models to study the influence of the fuselage on the rotor vibration, inflow, performance and trim. With the ever increasing computational power of personal computers, real-time simulation of rotorcraft in all possible flight conditions by use of fast vortex and fast panel methods becomes a possibility [80;144].
+4.3.2 Disadvantages and Remedies
+Application of the panel method for non-lifting thick bodies results in a dense linear system that must be solved for the unknown – in this case – source strengths. Solving a linear system of this form is expensive in terms of required CPU time and the main reason why fast multipole methods are discussed in section 5. Panel methods that implement fast methods as described in that section become far more useful for daily usage in an engineering environment where fast turn-around times are critical [25]. Utilising panel methods to model surface-vortex interactions also poses certain problems. When a vortex approaches a surface panel, it will induce unrealistically large velocities at the panel, especially with vortices that do not have large cores. The following is a short review of remedies for this problem as presented in literature. A method called Analytical Numerical Matching (ANM) is used to model close interaction between solid boundaries and vortices [108;114]. A fat core model is used to smooth the flow field. The composite solution consists of three parts that together form a solution for the whole field,
+composite solution = 3D fat-core solution
++ 2D actual core solution
+− 2D fat core solution
+This resembles the process of constructing a composite solution for a problem with different scales by the method of matched asymptotic expansions. In a study to model the near wake structure of a vertical axis wind turbine using vortex and panel methods, close interaction between vortices and blade panels is handled with a surface interpolation scheme based on a local delauney triangulation [44]. For each vertex that defines the body, outer evaluation points are used to calculate the induced velocity at a distance well outside of the singularities at the panel edges. A separate tessellation is calculated for each surface vertex and its immediate neighbours. During time simulations, it is determined in which tessellation a wake point is located, after which the velocity of the wake point follows from an interpolation. Another solution is to adaptively subdivide panels when a vortex is near the edges of a panel. The subdivision should be continued until the distance from the vortex to the centre of the nearest panel is smaller than a characteristic dimension of the panel (such as the length of a diagonal). This method is used to calculate near field induction integrals of a B-spline based higher-order panel method used in the analysis of steady flow around marine propellers[82]. As the body is represented exactly using B-splines, on-the-fly panel partitioning is accurate, fast and yet very simple.
+5 Fast Methods
+5.1 Introduction
+As already mentioned, the biggest constraint of vortex and panel methods is the quadratic increase in computational time with the number of vortex elements. Every potential- or vorticity-carrying body has an influence on the velocity of every other body, which makes the velocity calculation an N-body problem. I.e., for N bodies, a total of O(N 2) calculations is necessary to find the total velocity at every body. The biggest part of these N 2 calculations involve the computation of the influence of well-separated elements that only add a small portion to the total velocity of an element. It is therefore advantageous to attempt to accelerate these far-field calculations by utilising suitable approximations. The key idea behind treecodes and the fast multipole methodis that the influence of a group of particles on a distant particle can be approximated by a quantity that combines the influence of the complete group of particles. Apart from the computational speedups, computer memory requirements are also drastically reduced as the N 2 values of the interactions need not be stored. Some of the domains where fast algorithms are used to speed up calculations:
+• astrophysics (galaxy formation and evolution) [12]
+35th European Rotorcraft Forum 2009
+©DGLR 2009 16
+
+
+• chemistry and biology (molecular dynamics) [160]
+• fluid mechanics (vortex methods and panel meth
+ods) [25;37;150]
+• plasma physics [1]
+• electrostatic and magnetic interference [134]
+• acoustic scattering [121;132;151]
+• computer graphics [76]
+In the following two sections, some background on the treecodes and the fast multipole method will be given. In the third section, an overview is given of possible speed improvements over direct calculations for the Fast Multipole Method (FMM).
+5.2 Tree Codes
+The first report in literature of a technique to accelerate calculation of far-field influences is by Appel [6]. A divideand-conquer algorithm using a tree structure and multipole approximations to the gravitational acceleration in galaxy simulations is presented that reduces the calculations from O(N 2) to O(N logN ). Estimated speedups for problems with N = 10.000 particles are in the order of four hundred. A similar approach is used by Barnes and Hut [12], which uses a tree-structured hierarchical subdivision of space into cubic cells. Each cell is subdivided in eight children whenever more than one particle is found in it and each cell contains the total mass and position of the center of mass of all particles in the subtree under it (phase one). At every time step, this tree is reconstructed. In the second phase, the tree is traversed from the root to the leaves, calculating per particle the force acting on it. If a cell is well separated from a particle, the center of mass approximation is used to calculate the force acting on it. If not, each cell below it is visited and the same criterion is used to determine the influence on the particle. A cell and a particle are well separated if its size, divided by the distance to the particle (from its center) is smaller than a parameter θ.The time complexity of the resulting algorithm is O(N logN ). A generic parallel implementation of the treecode suitable for both astrophysical and incompressible fluid dynamics problems is reported [129]. Problems for data sets with the number of bodies ranging between 5000 and one million are run on clusters with the number of processors varying between 1 and 512. It is shown that the speedup in execution is practically proportional to the number of processors. The major disadvantages of the original treecode is that it does not contain a well defined worst error bound such as with the FMM. This deficiency has been remedied with the development of a parallel, hashed octree N-body algorithm [148]. The accuracy of the force calculations is analytically bounded and can be user-adjusted
+between a few percent relative error and machine precision. The cells to interact with and to reject as being too inaccurate is decided by a function called the multipole acceptance criterion (MAC). Pointers, which are normally used to represent the tree data structure for sequential implementations, are found to be a suboptimal solution in case of a parallel implementation. Instead, each individual cell in the tree is identified with a unique key, composed of the binary representation of the cell’s coordinate centre. These keys are stored in a hash table, which enables rapid look-up (O(1)) of cells during tree traversal.
+5.3 Fast Multipole Method
+The fast multipole method [59;60] (FMM) has received most attention of all fast algorithms during the last two decades. It reduces the time complexity of potential or gravitational calculations between N particles to O(N logN ) or even O(N ), depending on the details of the algorithm. This method will be discussed in more detail in the following subsections.
+5.3.1 Algorithm Overview
+Initialisation The first step in the FMM is to decompose the computational domain using a hierarchical tree structure of square cells6. A cell is subdivided as long as there are more particles in it than a user-defined threshold. For every cell on every level, its near-field and far-field domains are established, in Fig. 19 this is shown for level 2 and level 3 of the quadtree7. The nearfield or local list contains the cell itself and its immediate neighbours (Figs. 19a and 19d). The far-field of a cell contains all cells that are not in the near-field (Figs. 19b and 19e) and the interaction list of a cell is the set of cells that are children of the neighbours of the cell’s parent that are not in the local list of the cell (Figs. 19c and 19f). For uniformly distributed bodies, every leaf cell at the finest level will contain approximately the same number of bodies. With a distribution that is far from uniform, subdivision should only continues as long as there are more bodies in a cell than a certain treshold. Nonuniform distributions occur a lot in dynamic problems, such as galaxy simulations in astrophysics, where the position of bodies changes in time.
+Upward Pass Starting at the lowest level (smallest cells), p-term multipole expansions (MEs)8 are computed for the particles in the current cell based on their positions and strengths. Multipole expansions in the parent
+6For simplicity, the two-dimensional case is used to illustrate the algorithms used in the fast multipole method. The 2D structure is called a quadtree, in 3D it is an octree. 7Level 0 is the whole domain without subdivisions. 8The number of terms used in the expansion is proportional to the accuracy of the interactions between well-separated pairs of cells. For a given precision , p = log√3(1/ ), [60]
+35th European Rotorcraft Forum 2009
+©DGLR 2009 17
+
+
+a
+Local list (or near-field) of cell a on level 2
+a
+Far field of cell a on level 2
+a
+Interaction list of cell a on level 2
+b
+Local list (or near-field) of cell b on level 3
+b
+Far field of cell b on level 3
+b
+Interaction list of cell b on level 3
+Figure 19: Near field, far field and interaction list for cells on level two and three in a quadtree.
+cells are formed by merging expansions from its four children. These translations are executed until the top level box is reached.
+Downward Pass In the downward sweep the MEs are translated into local expansions (LEs) about the centres of all the boxes in the interaction list of the current box. At the end of this sweep, every box at every level contains a local expansion. Now, beginning at the coarsest level, these local expansions are shifted to the children’s level and added to the children’s local expansions. At the end of this pass, every leaf box contains the local expansion that describes the influence of all particles outside the box’s near neighbours. The total influence at each evaluation point then is the sum of the contributions of the near and far field, the first of which is calculated directly and the last is calculated using the local expansions. The biggest difference between the treecodes and the FMM is in the treatment of far-field interactions. In the treecode, multipole expansions in a cell are used directly to calculate the influence of for all well-separated particles, whereas for the FMM, the multipole expansions are translated and converted into local expansions at the receivers. This difference is illustrated in Fig. 20.
+5.4 Speed Gains of Various Fast Multipole Methods
+5.4.1 FMM Implementations on a Single CPU
+Fig. 21 gives an impression of the possible speedup attainable with various versions [35;42;59;60;96;146;157] of the FMM in comparison with direct summations for an Nbody problem of a certain size. To remove the dependency of the particular hardware (CPU clock speed), all figures are relative with respect to the direct calculation.
+Far-field interaction with the treecode
+Far-field interaction with the fast multipole method
+Figure 20: Differences between the treecode (a) and the fast multipole method (b) in calculating far-field influences.
+Where available, results were taken with similar orders of magnitude for the relative error in the expansions. Note that except for the original [59], all FMM implementations are three dimensional. The data in this graph is for implementations that run on a single processor. In two dimensions, the FMM provides substantial speedups even when the problem size is small and efficient implementations of the FMM in three dimensions are clearly beneficial if the problem size is larger than 20000 elements9. If the maximum size of problems will always be less than 2000 elements, the time spent on the implementation of the FMM does not pay off as the speed improvements are only marginal. All 3D FMM implementations that were published within 10 years after the original 2D FMM implementation are substantially slower10 than the 2D equivalent. Only recently[42;96] have the 3D versions improved their efficiency considerably.
+5.4.2 Fast Methods on the Graphics Processor
+Acceleration of N-body calculations can also be achieved by using dedicated hardware. One example of this is GRAPE, a special-purpose computer for stellar dynamics[78]. More recently, the use of graphics processors (GPU) for general purpose scientific computation has increased steadily[95]. Primarily used in the gaming and graphics industries, these data-parallel processors have a large user base and are therefore a more costeffective and flexible solution for scientific computations than special-purpose hardware such as GRAPE. An implementation of the FMM on the GPU11 is presented
+9Until 10 years after the publication of the FMM in 2D, no 3D versions were available which showed similar speedups with respect to the direct computation [60]. 10The four slowest 3D versions are approximately 25 times as slow as the original 2D version 11The graphics card used is a GeForce 8800 GTX that contains 128 stream processors and a graphics total memory of 768 MB
+35th European Rotorcraft Forum 2009
+©DGLR 2009 18
+
+
+10-1
+100
+101
+102
+103
+104
+101 102 103 104 105 106 107
+G. & R. 2D (1987) Zhao (1987) G. & R. (1996) Cheng, G. & R. (1999) Dehnen (2002) Ong et al (2003) Wang (2004)
+Number of bodies
+Speedup w.r.t. direct calculation
+ffaasstteerr
+slower
+Figure 21: Comparison of speed improvements of various implementations of the Fast Multipole Method compared with the direct calculation. All implementations except for the first are in 3D, they are: [35;42;59;60;96;146;157]
+and its execution speed compared with a baseline implementation on the CPU [61]. For different truncation numbers (p = 4, 8 and 12), Fig. 22 shows the run times as a function of the number of sources for the direct implementation and for the FMM, both for the CPU and the GPU. For large N, the use of the FMM on the GPU is very efficient. For small N, it can be beneficial to use a direct summation on the GPU instead of implementing the FMM on the CPU.
+6 Summary and Conclusions
+A brief survey of dynamic inflow models and free wake methods has been conducted from the perspective of real-time flight simulation in a realistic environment such as helicopter-ship operations. In their basic form, inflow models do not take wake distortion dynamics into account. Most extensions contain a gain that set the strength of the distortion effect, for which different researchers found different values. Therefore, without validation against experimental data, the added value of wake distortion dynamics models is quite low. The effect of ground proximity on the inflow at the rotor disk has been modelled by finite-state models too, but even the most sophisticated model cannot model flow recirculation and ground vortices. It also lacks the
+possibility to model partial ground effect with a finite ground plane with multiple edges. Panel methods are much more flexible in this respect. For the transition between normal working state and windmill brake state, inflow models have been extended so that they do not show spurious behaviour in vortex ring state. The simplest versions however do not model the fluctuations in the inflow due to the turbulent nature of the vortex ring state.
+In summary, dynamic inflow models do have their use in flight simulation models, but without the use of multiple (empirical) extensions, they cannot be employed with much confidence in all possible flight conditions. Time-marching free wake models show more promise here, as they make less assumptions about the wake; it is free to evolve under its own influence. This comes at a price however, as the computational time scales with the square of the number of wake elements. If no measures are taken to improve their efficiency, short manoeuvres that only last 10 second may take multiple days to calculate. The other way around is also true, after applying certain optimizations and simplifications, free wake models can be made to run in real time on ordinary desktop computers. For most purposes, free wake models that only model the tip vortex are sufficient, although there are circumstances where modeling the inboard sheet has been found necessary (such as in
+35th European Rotorcraft Forum 2009
+©DGLR 2009 19
+
+
+Figure 22: FMM wall clock time (in seconds) for serial CPU (one core of 2.67 GHz Intel Core 2 exterem QX is employed) and for GPU (NVIDIA GeForce 8800 GTX) for different truncation numbers p (potential+gradient). Also direct summation timing is displayed for both architectures. No SSE optimizations for the CPU were used [61].
+interference calculations). In the past, vortex tube models have been used quite successfully to calculate the effect of ground proximity on the inflow at the rotor disk. The only disadvantage of these models is that the wake skew angle is prescribed based on kinematical considerations. By removing this constraint, a simplified free wake model is created that is accurate enough for flight simulation purposes. As individual vortices are not modelled, it cannot be used for vibratory loads predictions or blade vortex interaction and general noise calculations.
+References
+[1] J. Ambrosiano, L. Greengard, and V. Rokhlin. The Fast Multipole Method for Gridless Particle Simulations. Computer Physics Communications, 48(1):117–125, January 1988.
+[2] S. Ananthan. Analysis of Rotor Wake Aerodynamics During Maneuvering Flight Using a Free-Vortex Wake Methodology. Ph.D. thesis, University of Maryland, Maryland, MD, 2006.
+[3] J. D. Anderson Jr. Fundamentals of Aerodynamics. McGraw-Hill, Inc., New York, 2nd edition, 1991.
+[4] Anon. FLIGHTLAB Theory Manual (Vol. One). Mountain View, CA, May 2006.
+[5] P. Anusonti-Inthra. Development of Rotorcraft Wake Capturing Methodology Using Fully Coupled CFD and Particle Vortex Transport Method. In Proceedings of the 62nd Annual Forum of the American Helicopter Society, Phoenix, AZ, May 2006.
+[6] A. W. Appel. An Efficient Program for Many-Body Simulations. SIAM Journal on Scientific and Statistical Computing, 6(1):85–103, January 1985.
+[7] U. T. P. Arnold, J. D. Keller, H. C. Curtiss Jr., and G. Reichert. The Effect of Inflow Models on the Predicted Response of Helicopters. Journal of the American Helicopter Society, 43(1):25–36, January 1998.
+[8] A. Bagai and J. G. Leishman. Rotor FreeWake Modeling using a Pseudo-Implicit Technique – Including Comparisons with Experimental Data. Journal of the American Helicopter Society, 40(3):29–41, July 1995.
+[9] A. Bagai and J. G. Leishman. Rotor Free-Wake Modeling Using a Pseudoimplicit Relaxation Algorithm. Journal of Aircraft, 32(6):1276–1285, November – December 1995.
+[10] A. Bagai and J. G. Leishman. Adaptive Grid Sequencing and Interpolation Schemes for Accelerated Rotor Free-Wake Analysis. In Proceedings of the 53rd Annual Forum of the American Helicopter Society, volume 1, pages 315–329, Virginia Beach, VA, April 29 - May 1 1997.
+[11] A. Bagai and J. G. Leishman. Adaptive Grid Sequencing and Interpolation Schemes for Helicopter Rotor Wake Analysis. AIAA Journal, 36(9):1593–1602, September 1998.
+[12] J. Barnes and P. Hut. A Hierarchical O(N log N) Force-Calculation Algorithm. Nature, 324:446449, 4 December 1986.
+[13] V. E. Baskin, L. S. Vil’dgrube, Ye. S. Vozhdayev, and G. I. Maykapar. Theory of the Lifting Airscrew.
+35th European Rotorcraft Forum 2009
+©DGLR 2009 20
+
+
+Number NASA TT F-823. NASA, 1976. English translation of 1973 Russian publication:.
+[14] P.-M. Basset, C. Chen, J. V. R. Prasad, and S. Kolb. Prediction of Vortex Ring State Boundary of a Helicopter in Descending Flight by Simulation. Journal of the American Helicopter Society, 53(2):139–151, April 2008.
+[15] P.-M. Basset and F. Tchen-Fo. Study of the Rotor Wake Distortion Effects on the Helicopter PitchRoll Cross-Coupling. In Proceedings of the 24th European Rotorcraft Forum, Marseilles, France, September 1998.
+[16] O. A. Bauchau. DYMORE USER’S MANUAL. School of Aerospace Engineering, Georgia Institute of Technology, Atlanta, GA, August 2007.
+[17] B. Benoit, A.-M. Dequin, K. Kampa, W. von Grünhagen, P.-M. Basset, and B. Gimonet. HOST, a General Helicopter Simulation Tool for Germany and France. In Proceedings of the 56th Annual Forum of the American Helicopter Society, Virginia Beach, VA, May 2000.
+[18] M. E. Berkman, L. N. Sankar, C. R. Berezin, and M. S. Torok. A Navier-Stokes/Full Potential/Free Wake Method for Advancing Multi-Bladed Rotors. In Proceedings of the 53rd Annual Forum of the American Helicopter Society, Virginia Beach, VA, April-May 1997.
+[19] J. Berry and N. Bettschart. Rotor-Fuselage Interaction: Analysis and Validation with Experiment. In Proceedings of the 53rd Annual Forum of the American Helicopter Society, Virginia Beach, VA, April 29 – May 1 1997.
+[20] A. Betz. Behavior of Vortex Systems. NACA-TM713, NACA, Washington, D.C., June 1933.
+[21] M. J. Bhagwat and J. G. Leishman. Transient Rotor Inflow Using a Time-Accurate Free-Vortex Wake Model. In Proceedings of the 39th AIAA Aerospace Sciences Meeting & Exhibit, number AIAA CP 2001-0993, Reno, NV, January 2001.
+[22] A. J. Bilanin and C. duP. Donaldson. Estimation of Velocities and roll-up in Aircraft Vortex Wakes. Journal of Aircraft, 12(2):578–585, July 1975.
+[23] D. B. Bliss, L. Dadone, and D. A. Wachspress. Rotor Wake Modeling for High Speed Applications. In Proceedings of the 43rd Annual Forum of the American Helicopter Society, pages 17–33, St Louis, MO, 1987.
+[24] D. B. Bliss, M. E. Teske, and T. R. Quackenbush. A New Methodology for Free Wake Analysis Using Curved Vortex Elements. NASA CR-3958, Ames Research Center, 1987.
+[25] A. H. Boschitsch, T. B. Curbishley, T. R. Quackenbush, and M. E. Teske. A Fast Panel Method for Potential Flows About Complex Geometries. In Proceedings of the 34th Aerospace Sciences Meeting and Exhibit, number AIAA 96-0024, Reno, NV, January 1996.
+[26] R. E. Brown. Rotor Wake Modeling for Flight Dynamic Simulation of Helicopters. AIAA Journal, 38(1):57–63, January 2000.
+[27] F. X. Caradonna. The Application of CFD to Rotary Wing Flow Problems. In Aerodynamics of Rotorcraft, LS – 781, AGARD Lecture Series. AGARD, Neuilly sur Seine, 1990.
+[28] P. J. Carpenter and B. Fridovitch. Effect of Rapid Blade-Pitch Increase on the Thrust and Induced Velocity Response of a Full-Scale Helicopter Rotor. NACA TN-3044, NACA, Washington, November 1953.
+[29] W. Castles Jr. and J. H. de Leeuw. The Normal Component of the Induced Velocity in the Vicinity of a Lifting Rotor and Some Examples of its Application. NACA Report 1184, NACA, 1954.
+[30] I. C. Cheeseman and W. E. Bennett. The Effect of the Ground on a Helicopter Rotor in Forward Flight. R. & M. No. 3021, Aeronautical Research Council, London, UK, 1957.
+[31] C. Chen. Development of a Simplified Inflow Model for a Helicopter Rotor in Descent Flight. Ph.D. thesis, Georgia Institute of Technology, Georgia, Atlanta, August 2006.
+[32] C. Chen and J. V. R. Prasad. Simplified Rotor Inflow Model for Descent Flight. Journal of Aircraft, 44(3):936–944, May – June 2007.
+[33] H. Chen. Rotor Noise in Maneuvering Flight. Ph.D. thesis, Pennsylvania State University, Pennsylvania, PA, December 2006.
+[34] R. T. N. Chen. A Survey of Nonuniform Inflow Models for Rotorcraft Flight Dynamics and Control Applications. In Proceedings of the 15th European Rotorcraft Forum, Amsterdam, September 1989.
+[35] H. Cheng, L. Greengard, and V. Rokhlin. A Fast Adaptive Multipole Algorithm in Three Dimensions. Journal of Computational Physics, 155(2):468–498, November 1999.
+[36] K. Chua and T. R. Quackenbush. A Fast ThreeDimensional Vortex Method for Unsteady Wake Calculations. In Proceedings of the 10th AIAA Applied Aerodynamics Conference, number AIAA92-2624-CP, pages 230–238, Palo Alto, CA, June 1992. AIAA.
+35th European Rotorcraft Forum 2009
+©DGLR 2009 21
+
+
+[37] K. Chua and T. R. Quackenbush. Fast ThreeDimensional Vortex Method for Unsteady Wake Calculations. AIAA Journal, 31(10):1957–1958, 1993.
+[38] D. R. Clark and A. C. Leiper. The Free Wake Analysis – A Method for the Prediction of Helicopter Rotor Hovering Performance. Journal of the American Helicopter Society, 15(1):3–11, January 1970.
+[39] R. P. Coleman, A. M. Feingold, and C. W. Stempin. Evaluation of the Induced-Velocity Field of an Idealized Helicopter Rotor. NACA-WR-L-126, NACA, Langley Memorial Aeronautical Laboratory, Langley Field, Virginia, 1945.
+[40] G. L. Crouse Jr. and J. G. Leishman. A New Method for Improved Free-Wake Convergence. In Proceedings of the 31st AIAA Aerospace Sciences Meeting and Exhibit, number AIAA 930872, Reno, NV, January 1993.
+[41] A. D’Andrea. Development of a Multi-Processor Unstructured Panel Code Coupled with a CVC Free Wake Model for Advanced Analyses of Rotorcrafts and Tiltrotors. In Proceedings of the 64th Annual Forum of the American Helicopter Society, Montreal, Canada, April 29 – May 1 2008.
+[42] W. Dehnen. A Hierarchical O(N) Force Calculation Algorithm. Journal of Computational Physics, 179(1):27–42, June 2002.
+[43] A. DeHondt and F. Toulmay. Influence of Fuselage on Rotor Inflow Performance and Trim. Vertica, 14(4):573–585, 1990.
+[44] K. R. Dixon. The Near Wake Structure of a Vertical Axis Wind Turbine. M.Sc. thesis, Delft University of Technology, Delft, April 2008.
+[45] J. Meijer Drees. A Theory of Airflow through Rotors and its Application to some Helicopter Problems. The Journal of The Helicopter Association of Great Britain, 3(2):79–104, July-Aug.-Sep. 1949.
+[46] J. Meijer Drees and W. P. Hendal. The Field of Flow Through a Helicopter Rotor Obtained from Wind Tunnel Smoke Tests. Technical Report A. 1205, Nationaal Luchtvaartlaboratorium, February 1950.
+[47] T. A. Egolf. Helicopter Free Wake Prediction of Complex Wake Structures Under Blade-Vortex Interaction Operating Conditions. In Proceedings of the 47th Annual Forum of the American Helicopter Society, pages 819–832, Washington, DC, June 1988.
+[48] T. A. Egolf and A. J. Landgrebe. A Prescribed Wake Rotor Inflow and Flow Field Prediction Analysis – User’s Manual and Technical Approach. NASA CR-165894, Langley Research Center, Hampton, VA, June 1982.
+[49] F. F. Felker, T. R. Quackenbush, D. B. Bliss, and J. S. Light. Comparisons of Predicted and Measured Rotor Performance in Hover Using a New Free Wake Analysis. Vertica, 14(3):361–383, 1990.
+[50] M. Foeken and M. D. Pavel. Investigation on the Simulation of Helicopter/Ship Operations. In Proceedings of the 33rd European Rotorcraft Forum, Kazan, Russia, September 2007.
+[51] J. S. Forrest, S. J. Hodge, I. Owen, and G. D. Padfield. Towards Fully Simulated Ship-Helicopter Operating Limits: The Importance of Ship Airwake Fidelity. In Proceedings of the 64th Annual Forum of the American Helicopter Society, Montreal, Canada, April 29 – May 1 2008.
+[52] Z.-L. Gao and Z.-J. Zou. A Three-Dimensional Desingularized High Order Panel Method Based on Nurbs. Journal of Hydrodynamics, 20(2):137146, April 2008.
+[53] G. H. Gaonkar. Review of Turbulence Modeling and Related Applications to Some Problems of Helicopter Flight Dynamics. Journal of the American Helicopter Society, 53(1):87–107, January 2008.
+[54] G. H. Gaonkar and D. A. Peters. Review of Dynamic Inflow Modeling for Rotorcraft Flight Dynamics. Vertica, 12(3):213–242, 1988.
+[55] H. Glauert. The Elements of Aerofoil and Airscrew Theory. Cambridge Science Classics. Cambridge University Press, Cambridge, 2nd edition, 1926,1946,1983.
+[56] S. Goldstein. On the Vortex Theory of Screw Propellers. Proceedings of the Royal Society of London, Part A, 123(792):440–465, 1929.
+[57] R. B. Gray. An Aerodynamic Analysis of a SingleBladed Rotor in Hovering and Low Speed Forward Flight as Determined from Smoke Studies of the Vorticity Distribution in the Wake. Report No. 356, Princeton University, Princeton, NJ, September 1956.
+[58] R. B. Gray. Vortex Modeling for Rotor Aerodynamics – The 1991 Alexander A. Nikolsky Lecture. Journal of the American Helicopter Society, 37(1):3–14, January 1992.
+35th European Rotorcraft Forum 2009
+©DGLR 2009 22
+
+
+[59] L. Greengard and V. Rokhlin. A Fast Algorithm for Particle Simulations. Journal of Computational Physics, 73(2):325–348, December 1987.
+[60] L. Greengard and V. Rokhlin. A New Version of the Fast Multipole Method for the Laplace Equation in Three Dimensions. YALEU/DCS/RR-1115, Yale University, New Haven, CT, September 1996.
+[61] N. A. Gumerov and R. Duraiswami. Fast Multipole Methods on Graphics Processors. Journal of Computational Physics, 227(18):8290–8313, September 2008.
+[62] S. Gupta. Development of a Time-Accurate Viscous Lagrangian Vortex Wake Model for Wind Turbine Applications. Ph.D. thesis, University of Maryland, Maryland, MD, 2006.
+[63] M. Hamers and P.-M. Basset. Applications of the Finite State Unsteady Wake Model in Helicopter Flight Dynamic Simulation. In Proceedings of the 26th European Rotorcraft Forum, The Hague, The Netherlands, 26 – 29 September 2000.
+[64] C. He, C. S. Lee, and W. Chen. Finite State Induced Flow Model in Vortex Ring State. Journal of the American Helicopter Society, 45(4):318–320, October 2000.
+[65] C. He and J. Zhao. A Real Time Finite State Induced Flow Model Augmented with High Fidelity Viscous Vortex Particle Simulation. In Proceedings of the 64th Annual Forum of the American Helicopter Society, Montreal, Canada, April 29 May 1 2008.
+[66] C. He and J. Zhao. Modeling Rotor Wake Dynamics with Viscous Vortex Particle Method. In Proceedings of the 46th AIAA Aerospace Sciences Meeting and Exhibit, number AIAA 2008339, Reno, NV, January 2008.
+[67] J. L. Hess and A. M. O. Smith. Progress in Aeronautical Sciences, chapter Calculation of Potential Flow About Arbitrary Bodies. Pergamon Press, 1967.
+[68] H. Heyson. An Evaluation of Linearized Vortex Theory as Applied to Single and Multiple Rotors Hovering In and Out of Ground Effect. NACA TND-43, NACA, Langley Field, VA, September 1959. digital.
+[69] H. H. Heyson. Ground Effect For Lifting Rotors in Forward Flight. NASA TN D-234, NASA, May 1960.
+[70] H. H. Heyson. Theoretical Study of the Effect of Ground Proximity on the Induced Efficiency of Helicopter Rotors. NASA TM X-71951, NASA, May 1977.
+[71] A. Hoencamp. The Finite State Inflow Model in Ground Effect and Fuselage Interference – The Apache Longbow Helicopter Operating Near Ship Decks. M.Sc. thesis, Delft University of Technology, Delft, June 2003.
+[72] D. S. Jenney, J. R. Olson, and A. J. Landgrebe. A Reassessment of Rotor Hovering Performance Prediction Methods. Journal of the American Helicopter Society, 13(2):1–26, April 1968.
+[73] W. Johnson. Airloads and Wake Models for A Comprehensive Helicopter Analysis. Vertica, 14(3):255–300, 1990.
+[74] W. Johnson. A General Free Wake Geometry Calculation For Wings and Rotors. In Proceedings of the 51st Annual Forum of the American Helicopter Society, pages 137–153, Fort Worth, TX, May 1995.
+[75] W. Johnson. Model for Vortex Ring State Influence on Rotorcraft Flight Dynamics. Technical Report NASA TP-2005-213477, NASA, Ames Research Center, Moffett Field, CA, December 2005.
+[76] A. Karapurkur, N. Goel, and S. Chandran. The Fast Multipole Method for Global Illumination. In Proceedings of the Fourth Indian Conference on Computer Vision, Graphics & Image Processing, Kolkata, India, December 16-18 2004.
+[77] J. Katz and A. Plotkin. Low Speed Aerodynamics. Cambridge University Press, Cambridge, UK, 2nd edition, 2001.
+[78] A. Kawai, T. Fukushige, J. Makino, and M. Taiji. GRAPE-5: A Special-Purpose Computer for NBody Simulations. Publications of the Astronomical Society of Japan, 52:659–676, 2000.
+[79] J. D. Keller. An Investigation of Helicopter Dynamic Coupling Using an Analytical Model. In Proceedings of the 21st European Rotorcraft Forum, volume 2, pages VII.14.1 – VII.14.14, St. Petersburg, Russia, August 1995.
+[80] J. D. Keller, R. M. McKillip Jr., D. A. Wachspress, and T. R. Quackenbush. Modular High Fidelity Real Time Rotor Wake Software for Modeling of Shipboard Interactions. In Proceedings of the AIAA Modeling and Simulation Technologies Conference and Exhibit, Hilton Head, SC, August 2007.
+[81] J. D. Keller, G. R. Whitehouse D. A. Wachspress, M. E. Teske, and T. R. Quackenbush. A PhysicsBased Model of Rotorcraft Brownout for Flight Simulation Applications. In Proceedings of the 62nd Annual Forum of the American Helicopter Society, Phoenix, AZ, May 2006.
+35th European Rotorcraft Forum 2009
+©DGLR 2009 23
+
+
+[82] G.-D. Kim, C.-S. Lee, and J. E. Kerwin. A Bspline Based Higher Order Panel Method for Analysis of Steady Flow Around Marine Propellers. Ocean Engineering, 34(14-15):2045–2060, October 2007.
+[83] J. D. Kocurek and J. L Tangler. A Prescribed Wake Lifting Surface Hover Performance Analysis. Journal of the American Helicopter Society, 22(1):2435, January 1977.
+[84] J.-S. Kouh and C.-H. Ho. A High Order Panel Method Based on Source Distribution and Gaussian Quadrature. Ship Technology Research, 43(1):38–47, February 1996.
+[85] K. R. Krothapalli, J. V. R. Prasad, and D. A. Peters. Helicopter Rotor Dynamic Inflow Modeling for Maneuvering Flight. Journal of the American Helicopter Society, 46(2):129–139, April 2001.
+[86] A. J. Landgrebe. An Analytical Method for Predicting Rotor Wake Geometry. Journal of the American Helicopter Society, 14(4):20–32, October 1969.
+[87] C.-S. Lee and J. E. Kerwin. A B-Spline HigherOrder Panel Method Applied to Two-Dimensional Lifting Problem. Journal of Ship Research, 47(4):290–298, December 2003.
+[88] J. G. Leishman and A. Bagai. Challenges in Understanding the Vortex Dynamics of Helicopter Rotor Wakes. AIAA Journal, 36(7):1130–1140, July 1998.
+[89] J. G. Leishman, M. J. Bhagwat, and A. Bagai. Free-Vortex Filament Methods for the Analysis of Helicopter Rotor Wakes. Journal of Aircraft, 39(5):759–775, September – October 2002.
+[90] P. F. Lorber and T. A. Egolf. An Unsteady Helicopter Rotor-Fuselage Aerodynamic Interaction Analysis. Journal of the American Helicopter Society, 35(3):32–42, July 1990.
+[91] K. W. Mangler and H. B. Squire. The Induced Velocity Field of a Rotor. R&M No. 2642, British Aaeronautical Research Council, London, 1953.
+[92] M. H. Mansur and M. B. Tischler. An Empirical Correction for Improving Off-Axes Response in Flight Mechanics Helicopter Models. Journal of the American Helicopter Society, 43(2):94–102, April 1998.
+[93] F.-W. Meyer. The Influence of Iteractional Aerodynamics of Rotor-Fuselage-Interferences on the Fuselage Flow. Vertica, 14(2):201–215, 1990.
+[94] J. A. Morillo and D. A. Peters. Velocity Field Above a Rotor Disk by a New Dynamic Inflow Model. Journal of Aircraft, 39(5):731–738, September October 2002.
+[95] L. Nyland, M. Harris, and J. Prins. GPU Gems 3, chapter Fast N-body Simulation with CUDA, pages 677–695. Addison-Wesley Publishing, 2007.
+[96] E. T. Ong, K. M. Lim, K. H. Lee, and H. P. Lee. A Fast Algorithm for Three-Dimensional Potential Fields Calculation: Fast Fourier Transform on Multipoles. Journal of Computational Physics, 192(1):244–261, 2003.
+[97] D. G. Opoku, D. G. Triantos, F. Nitzsche, and S. G. Voutsinas. Rotorcraft Aerodynamic and Aeroacoustic Modelling using Vortex Particle Methods. In Proceedings of the 23rd International Congress of the Aeronautical Sciences (ICAS 2002). ICAS, 2002.
+[98] R. A. Ormiston. An Actuator Disc Theory for Rotor Wake Induced Velocities. In AGARD Conference Proceedings No. 111 on Aerodynamics of Rotary Wings, Marseilles, France, September 1973.
+[99] G. D. Padfield, A. T. McCallum, H. Haverdings, A.-M. Dequin, D. Haddon, K. Kampa, P.-M. Basset, and W. von Grünhagen. Predicting Rotorcraft Flying Qualities Through Simulation Modelling. A Review of Key Results from Garteur AG06. In Proceedings of the 22nd European Rotorcraft Forum, Brighton, UK, September 1996.
+[100] F. J. Perry, W. Y. F. Chan, I. A. Simons, R. E. Brown, G. A. Ahlin, B. M. Khelifa, and S. J. Newman. Modeling the Mean Flow through a Rotor in Axial Flight Including Vortex Ring Condition. Journal of the American Helicopter Society, 52(3):224238, July 2007.
+[101] D. A. Peters and C. He. Modification of Mass-Flow Parameter to Allow Smooth Transition Between Helicopter and Windmill States. Journal of the American Helicopter Society, 51(3):275–278, July 2006.
+[102] D. A. Peters and C. J. He. Correlation of Measured Induced Velocities with a Finite-State Wake Model. In Proceedings of the 48th Annual Forum of the American Helicopter Society, volume 36, July 1991.
+[103] D. A. Peters and C. J. He. Finite State Induced Flow Models Part II: Three-Dimensional Rotor Disk. Journal of Aircraft, 32(2):323–333, 1995.
+[104] D. M. Pitt and D. A. Peters. Theoretical Prediction of Dynamic – Inflow Derivatives. Vertica, 5:21–34, 1981.
+35th European Rotorcraft Forum 2009
+©DGLR 2009 24
+
+
+[105] D. M. Pitt and D. A. Peters. Rotor Dynamic Inflow Derivatives and Time Constants from Various Inflow Models. In Proceedings of the ninth European Rotorcraft Forum, number 55, Stresa, Italy, September 1983.
+[106] W. Qiu and C. C. Hsiung. A Panel-Free Method For Time-Domain Analysis of The Radiation Problem. Ocean Engineering, 29(12):1555–1567, September 2002.
+[107] T. R. Quackebush, D. B. Bliss, D. A. Wachspress, A. H. Boschitsch, and K. Chua. Computation of Rotor Aerodynamic Loads in Forward Flight Using a Full-Span Free Wake Analysis. NASA CR177611, Ames Research Center, October 1990.
+[108] T. R. Quackenbush and D. B. Bliss. Free Wake Flow Field Calculations for Rotorcraft Interactional Aerodynamics. Vertica, 14(3):313–327, 1990.
+[109] T. R. Quackenbush, D. B. Bliss, and D. A. Wachspress. New Free-Wake Analysis of Rotorcraft Hover Performance Using Influence Coefficients. Journal of Aircraft, 26(12):1090–1097, 1989.
+[110] T. R. Quackenbush, D. B. Bliss, D. A. Wachspress, and C. C. Ong. Free Wake Analysis of Hover Performance Using a New Influence Coefficient Method. NASA CR-4309, Ames Research Center, July 1990.
+[111] T. R. Quackenbush, A. H. Boschitsch, D. A. Wachspress, and K. Chua. Rotor Design Optimization Using a Free Wake Analysis. NASA CR-177612, Ames Research Center, April 1993.
+[112] T. R. Quackenbush, J. D. Keller, D. A. Wachspress, and A. H. Boschitsch. Reduced Order Free Wake Modeling for Near Real Time Simulation of Rotorcraft Flight Mechanics. In Proceedings of the 55th Annual Forum of the American Helicopter Society, Montreal, Canada, May 25 – 27 1999.
+[113] T. R. Quackenbush, C.-M. G. Lam, and D. B. Bliss. Vortex Methods for the Computational Analysis of Rotor/Body Interaction. Journal of the American Helicopter Society, 39(4):14–24, October 1994.
+[114] T. R. Quackenbush, C-M. G. Lam, D. B. Bliss, and A. Katz. New Vortex/Surface Interaction Methods for the Prediction of Wake-Induced Airframe Loads. In Proceedings of the 50th Annual Forum of the American Helicopter Society, pages 10991110, Washington, DC, May 1990.
+[115] T. R. Quackenbush and D. A. Wachspress. Enhancements to a New Free Wake Hover Analysis. NASA CR-177523, Ames Research Center, 1989.
+[116] T. R. Quackenbush, D. A. Wachspress, and A. H. Boschitsch. Computation of Rotor Aerodynamic Loads with a Constant Vorticity Contour Free Wake Model. In Proceedings of the AIAA 9th Applied Aerodynamics Meeting, pages 222–236, Baltimore, MD, September 1991. AIAA.
+[117] M. Ramasamy and J. G. Leishman. A ReynoldsNumber Based Blade Tip Vortex Model. Journal of the American Helicopter Society, 52(3):214223, July 2007.
+[118] O. Rand. Influence of Interactional Aerodynamics on Helicopter Rotor/Fuselage Coupled Response in Hover and Forward Flight. Journal of the American Helicopter Society, 34(4):28–36, October 1989.
+[119] O. Rand. Technical Note: A Phenomenological Modification for Glauert’s Classical Induced Velocity Equation. Journal of the American Helicopter Society, 51(3):279–282, July 2006.
+[120] M. Ribera. Helicopter flight Dynamics Simulation With a Time-Accurate Free-Vortex Wake Model. Ph.D. thesis, University of Maryland, Maryland, MD, April 2007.
+[121] V. Rokhlin. Rapid Solution of Integral Equations of Scattering Theory in Two Dimensions. Journal of Computational Physics, 86(2):414–439, February 1990.
+[122] A. Rosen. Approximate Actuator Disk Model of a Rotor in Hover or Axial Flow Based on Vortex Modeling. Journal of the American Helicopter Society, 49(1):66–79, January 2004.
+[123] A. Rosen. Approximate Actuator Disk Model of a Rotor in Hover or Axial Flow Based on Vortex Modeling. Journal of the American Helicopter Society, 49(1):80–92, January 2004.
+[124] H. A. Saberi and M. D. Maisel. A Free-Wake Rotor Analysis Including Ground Effect. In Proceedings of the 43rd Annual Forum of the American Helicopter Society, pages 879–889, St Louis, MO, 1987.
+[125] S. G. Sadler. Development and Application of a Method for Predicting Rotor Free Wake Positions and Resulting Rotor Blade Air Loads. Volume 1 – Model and Results. NASA CR-1911, Langley Research Center, Langley, VA, December 1971.
+[126] S. G. Sadler. Main Rotor Free Wake Geometry Effects on Blade Air Loads and Response for Helicopters in Steady Maneuvers, Volume I – Model and Results. NASA CR-2111, Langley Research Center, Langley, VA, September 1972.
+35th European Rotorcraft Forum 2009
+©DGLR 2009 25
+
+
+[127] S. G. Sadler. Main Rotor Free Wake Geometry Effects on Blade Air Loads and Response for Helicopters in Steady Maneuvers, Volume I – Theoretical Formulation and Analysis of Results. NASA CR-2110, Langley Research Center, Langley, VA, September 1972.
+[128] P. G. Saffman. Vortex Dynamics. Cambridge University Press, 1992.
+[129] J. K. Salmon, M. S. Warren, and G. S. Winckelmans. Fast Parallel Tree Codes for Gravitational and Fluid Dynamical N-Body Problems. The International Journal of Supercomputer Applications, 8(2):129–142, Summer 1994.
+[130] A. Scandroglio, A. D’Andrea, and S. Melone. Numerical Analysis of Advanced-Innovative Tiltrotor Configurations. In Proceedings of the 34th European Rotorcraft Forum, Liverpool, UK, September 2008.
+[131] M. P. Scully. Computation of Helicopter Rotor Wake Geometry and Its Influence on Rotor Harmonic Airloads. Technical Report ASRL TR 1781, Massachusetts Institute of Technology, Massachusetts, CA, March 1975.
+[132] L. Shen and Y.J. Liu. An adaptive fast multipole boundary element method for three-dimensional acoustic wave problems based on the BurtonMiller formulation. Computational Mechanics, 40(3):461–472, August 2007.
+[133] P. F. Sheridan and R. P. Smith. Interactional Aerodynamics – A New Challenge to Helicopter Technology. Journal of the American Helicopter Society, 25(1):3–21, January 1980.
+[134] J. Song, C.-C. Lu, and W. C. Chew. Multilevel Fast Multipole Algorithm for Electromagnetic Scattering by Large Complex Objects. IEEE Transactions on Antennas and Propagation, 45(10):1488–1493, October 1997.
+[135] W. Z. Stepniewski and C. N. Keys. Rotary-Wing Aerodynamics. Dover Publications, Inc., New York, 1984.
+[136] R. C. Strawn, F. X. Caradonna, and E. P. N. Duque. 30 Years of Rotorcraft Computational Fluid Dynamics Research and Development. Journal of the American Helicopter Society, 51(1):521, January 2006.
+[137] M. D. Takahashi. A Flight-Dynamic Helicopter Mathematical Model with a Single Flap-LagTorsion Main Rotor. NASA TM-102267, NASA, February 1990.
+[138] M. K. Taylor. A Balsa-Dust Technique for Air-Flow Visualization and its Application to Flow Through Model Helicopter Rotors in Static Flight. NACA TN-2220, NACA, Langley Air Force Base, VA, November 1950.
+[139] V. E. Vaskin. Motion of a Three Dimensional Diffusing Vortex Tube in an Incompressible Viscous Fluid. Soviet Physics – Doklady, 10(12):11351137, June 1966. Translated from Doklady Akademii Nauk SSSR, Vol. 165, No. 6, pp. 12611264, December, 1965.
+[140] G. H. Vatistas, V. Kozel, and W. C. Mih. A Simpler Model for Concentrated Vortices. Experiments in Fluids, 11(1), April 1991.
+[141] S. G. Voutsinas, M. A. Belessis, and K. G. Rados. Investigation of the Yawed Operation of Wind Turbines by means of a Vortex Particle Method. In Aerodynamics and Aeroacoustics of Rotorcraft, number 522 in AGARD Conference Proceedings, Neuilly-Sur-Seine, France, August 1995. NATO.
+[142] S. G. Voutsinas, V. A. Riziotis, and P. Chaviaropoulos. Non-linear Aerodynamics and Fatique Loading on Wind Turbines Operating at Extreme Sites. In Proceedings of the 35th AIAA Aerospace Sciences Meeting and Exhibit, number AIAA 97-0935, Reno, NV, January 1997.
+[143] Jr. W. Castles and R. B. Gray. Empirical Relation Between Induced Velocity, Thrust and Rate of Descent of a Helicopter Rotor as Determined by Wind Tunnel Tests on Four Model Rotors. NACATN-2474, NACA, Washinton, October 1951.
+[144] D. A. Wachspress, J. D. Keller, T. R. Quackenbush, G. R. Whitehouse, and K. Yu. High Fidelity Rotor Aerodynamic Module for Real-Time Rotorcraft Flight Simulation. In Proceedings of the 64th Annual Forum of the American Helicopter Society, Montreal, Canada, April 29 – May 1 2008.
+[145] D. A. Wachspress, T. R. Quackenbush, and A. H. Boschitsch. Rotorcraft Interactional Aerodynamics with Fast Vortex/Fast Panel Methods. Journal of the American Helicopter Society, 48(4):223–235, October 2003.
+[146] Q. X. Wang. Variable Order Revised Binary Treecode. Journal of Computational Physics, 200(1):192–210, October 2004.
+[147] S.-C. Wang. Analytical Approach to the Induced Flow of a Helicopter Rotor in Vertical Descent. Journal of the American Helicopter Society, 35(1):92–98, January 1990.
+[148] M. S. Warren and J. K. Salmon. A Parallel Hashed Oct-Tree N-Body Algorithm. In Proceedings of the
+35th European Rotorcraft Forum 2009
+©DGLR 2009 26
+
+
+1993 ACM/IEEE Conference on Supercomputing, pages 12–21, Portland, OR, 1993.
+[149] Y. Wenren, M. Fan, W. Dietz, G. Hu, C. Braun, J. Steinhoff, and B. Grossman. Efficient Eulerian Computation of Realistic Rotorcraft Flows Using Vorticity Confinement. In Proceedings of the 39th AIAA Aerospace Sciences Meeting and Exhibit, number AIAA-2001-0996, Reno, NV, January 2001.
+[150] G. S. Winckelmans, J. K. Salmon, M. S. Warren, A. Leonard, and B. Jodoin. Application of Fast Parallel and Sequential Tree Codes to Computing Three-Dimensional flows with the Vortex Element and Boundary Element Methods. In ESIAM Proceedings, volume 1, pages 225–240, 1996.
+[151] W. R. Wolf and S. K. Lele. Assessment of Fast Multipole Method Formulations for Acoustic Scattering. In 15th AIAA/CAES Aeroacoustics Conference (30th AIAA Aeroacoustics Conference), Miami, FL, May 2009.
+[152] J.-Z. Wu, H.-Y. Ma, and M.-D. Zhou. Vorticity and Vortex Dynamics. Springer, Berlin, 2006.
+[153] H. Xin. Development and Validation of a Generalized Ground Effect Model for Lifting Rotors. Ph.D. thesis, Georgia Institute of Technology, Georgia, Atlanta, July 1999.
+[154] H. Xin and C. He. An Efficient Panel Ground Effect Model for Rotorcraft Simulations. In Proceedings of the 61st Annual Forum of the American Helicopter Society, Grapevine, TX, June 2005.
+[155] H. Xin, C. He, and J. Lee. Combined Finite State Rotor Wake and Panel Ship Deck Models for Simulation of Helicopter Shipboard Operations. In Proceedings of the 57th Annual Forum of the American Helicopter Society, Washington, DC, May 2001.
+[156] K. Yu and D. A. Peters. Nonlinear State-Space Modeling of Dynamic Ground Effect. Journal of the American Helicopter Society, 50(3):259–268, July 2004.
+[157] F. Zhao. An O(N) Algorithm for Three-dimensional N-body Simulations. M.Sc. thesis, Massachusetts Institute of Technology, Massachusetts, MA, October 1987.
+[158] J. Zhao. Dynamic Wake Distortion Model for Helicopter Maneuvring Flight. Ph.D. thesis, School of Aerospace Engineering, Georgia Institute of Technology, Georgia, Atlanta, March 2005.
+[159] J. Zhao and C. He. A Viscous Vortex Particle Model for Rotor Wake and Interference Analysis.
+In Proceedings of the 64th Annual Forum of the American Helicopter Society, Montreal, Canada, April 29 – May 1 2008.
+[160] R. Zhou and B. J. Berne. A new Molecular Dynamics Method Combining the Reference System Propagator Algorithm with a Fast Multipole Method for Simulating Proteins and Other Complex Systems. Journal of Chemical Physics, 103(21):9444–9459, December 1995.
+35th European Rotorcraft Forum 2009
+©DGLR 2009 27

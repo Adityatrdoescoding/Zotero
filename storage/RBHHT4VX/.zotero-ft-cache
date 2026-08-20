@@ -1,0 +1,202 @@
+Rotary Wing Aerodynamics
+(AE 667)
+
+
+Wind Turbine Blades
+
+
+Design Perspective
+–A good Helicopter rotor airfoil ≠ good Wind Turbine rotor airfoil
+–Operates in a very different environment
+• Airborne particles get stuck to the blades causing roughness effects (Difficult to clean blades regularly)
+• Huge structural and aerodynamic loading (in a 1.5 MW turbine, each blade weigh ~ 5 tons)
+
+
+
+
+Design Philosophy and Criteria
+oSpecially-tailored airfoils for wind turbines
+oLarge thickness airfoils at the root. Thickness reduced closer to the tip
+oCriteria
+– Moderate to high thickness ratio t/c
+• Rigid rotor: 16%–26% t/c
+• Flexible rotor: 11%–21% t/c
+• Small wind turbines: 10%-16% t/c
+– High lift-to-drag ratio
+– Minimal roughness sensitivity
+– Weak laminar separation bubbles
+
+
+Airfoils Based on Rotor Sizes
+
+
+Airfoils Based on Rotor Sizes
+
+
+Airfoils Based on Rotor Sizes
+
+
+Airfoils Based on Rotor Sizes
+
+
+Airfoil Selection
+o Appropriate design Reynolds number
+o Airfoil thickness: Centrifugal stiffening and desired blade rigidity
+o Roughness Insensitivity
+
+
+Vertical Axis Wind
+Turbines
+
+
+Vertical Axis Wind Turbines
+(VAWT)
+Castellani, Francesco & Astolfi, Davide & Peppoloni, Mauro & Natili, Francesco & Buttà, Daniele & Hirschl, Alexander. (2019). Experimental Vibration Analysis of a Small Scale Vertical Wind Energy System for Residential Use. Machines. 7. 35. 10.3390/machines7020035.
+
+
+VAWT vs HAWT
+(Efficiency)
+VAWT
+o Blades see extreme AoA.
+Stall and Deep Stall
+o Lower Efficiency
+o Efficiency improves with
+rotor speed
+HAWT
+o Blades designed for optimal
+AoA of airfoils
+o Higher Efficiency
+
+
+VAWT vs HAWT
+(Low Speed Performance)
+VAWT
+o More stall at low speeds
+o Difficulty starting
+o Need external starting mechanisms
+HAWT
+o Rotor blade pitch angle adjusted for low speeds
+o Self starting
+Elkhoury, M., Kiwata, T., & Aoun, E. (2015). Experimental and numerical investigation of a three-dimensional vertical-axis wind turbine with variable-pitch. Journal of wind engineering and Industrial aerodynamics, 139, 111-123.
+
+
+VAWT vs HAWT
+(Wind Direction)
+VAWT
+o Insensitive to wind direction
+o No need of yawing mechanism
+o Can capture energy from gusty wind
+HAWT
+o Highly sensitive to wind direction
+o Yawing mechanism is must
+o Does not respond fast enough to gusts
+
+
+VAWT vs HAWT
+(Manufacture, Assembly, Cost)
+VAWT
+o Untwisted, Rectangular
+blades
+o Gear box and generator on
+ground
+o Cheap to build and maintain
+HAWT
+o Huge, Twisted, Tapered
+blades
+o Gear box and generator on
+tower
+o Expensive to build and
+maintain
+
+
+VAWT vs HAWT
+(Noise & Environmental)
+VAWT
+o Low tip speed (small R)
+o Gear box near ground
+o Low aerodynamic &
+mechanical noise
+o No avian issues
+HAWT
+o High tip speed (large R)
+o Gearbox on a tower
+o High aerodynamic and far
+reaching mechanical noise
+o Bird strike and death
+problem
+
+
+VAWT vs HAWT
+(Installation)
+VAWT
+o Can be installed in open fields as well as on roof tops
+HAWT
+o Open field necessary
+
+
+Ship / Aquatic
+Propellers
+
+
+Aircraft vs Ship Propellers
+
+
+Aircraft vs Ship Propellers
+Governing Factors
+o Fluid properties: Density and viscosity
+o Vehicle Speed
+o Cavitation
+o Weight
+
+
+Ship Propeller Design Aspects
+Propeller Diameter
+o Larger, the better! : Momentum Theory
+o But... Structural & Manufacturing issues
+Emma Maersk: 131 ton weight propeller. Largest in the world (German)
+
+
+Ship Propeller Design Aspects
+Pitch (Fixed vs Variable)
+o Variable: Manoeuvrability, Efficiency at higher complexity, cost
+o Fixed: Reliable, Efficient only at certain speeds
+Fixed Variable
+
+
+Ship Propeller Design Aspects
+Propeller Speed
+o Resonance: Structural fatigue
+o Cavitation: Noise, Blade Erosion
+
+
+Ship Propeller Design Aspects
+Propeller Speed
+o High Speed: Cavitation, Noise
+https://youtu.be/ON_irzFAU9c
+
+
+Ship Propeller Design Aspects
+Solidity
+o Very different from Aircraft Propellers
+o Why?
+o High density of water & Low speed of vehicle
+➔ Thrust possible at induced velocities
+➔ Low RPM requirement
+o Low speed, but high thrust force
+➔ More structural strength needed
+o Also, inertial effects more dominant than viscous effects
+Water Air
+Density 997 1.225 kg/m3 Viscosity 0.0010016 0.0000181 Pa-s ρ/μ 9,95,407.35 67,679.56
+15 times greater Reynolds number for the same dimensions and speed!
+v = −V
+2+ V
+2
+2
++T
+2ρA
+
+
+Ship Propeller Design Aspects
+Shape & Number of Blades
+o Very curved leading edge: Smooth propulsion
+o High number of blades: Reducing unsteady forces, Higher efficiency

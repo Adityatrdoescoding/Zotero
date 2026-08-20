@@ -1,0 +1,142 @@
+State-Space Identification of Unmanned Helicopter Dynamics using Invasive Weed
+Optimization Algorithm on Flight Data
+Navaneethkrishnan B Research Assistant
+Pranjal Biswas Project Intern
+Saumya Kumaar Research Assistant
+Gautham Anand Research Assistant
+S N Omkar
+Chief Research Scientist
+Indian Institute of Science Bengaluru,INDIA
+ABSTRACT
+In order to achieve a good level of autonomy in unmanned helicopters, an accurate replication of vehicle dynamics is required, which is achievable through precise mathematical modeling. This paper aims to identify a parametric state-space system for an unmanned helicopter to a good level of accuracy using Invasive Weed Optimization (IWO) algorithm. The flight data of Align TREX 550 flybarless helicopter is used in the identification process. The rigid-body dynamics of the helicopter is modeled in a state-space form that has 40 parameters, which serve as control variables for the IWO algorithm. The results after 1000 iterations were compared with the traditionally used Prediction Error Minimization (PEM) method and also with Genetic Algorithm (GA), which serve as references. Results show a better level of correlation of the actual and estimated responses of the system identified using IWO to that of PEM and GA.
+NOTATION
+• Ab, Ba : Flapping Angle Coupling Constants • Bd, Ac : Electronic Stabilizer bar-rotor coupling derivatives • Alat , Alon, Blat , Blon : Flapping Angle Control Derivatives • Clon, Dlat : Intercoupling constants of the stabilizer bar • Kr, Kr f b : Tail rotor damping coefficients • Lu, Lv, Lb, Lw : Rolling Moment Derivatives • Mu, Mv, Mw, Ma, Mcol : Pitching Moment Derivatives • Nv, Np, Nw, Nr, Nr f b, Nped, Ncol : Directional Moment Derivatives • Xu, Xa : Lateral Force Derivatives • Yv, Yb, Yped : Longitudinal Force Derivatives • Za, Zb, Zw, Zr, Zcol : Heave Force Derivatives • a, b : Lateral and longitudinal Flapping angle • c, d: Lateral and longitudinal electronic stabilizer bar feedback • itermax, iter : Maximum and current iteration • n: Nonlinear modulation index • p, q, r: Roll, Pitch and Yaw Rate • r f b: Yaw rate feedback • u, v, w: Lateral, longitudinal and vertical translational velocity • φ , θ : Roll and Pitch angles • δlat , δlon, δped, δcol : Lateral, longitudinal, pedal and collective inputs • μA, μB : Mean of sets A and B • σA, σB, σinitial, σ f inal, σiter: Standard deviations of sets A, B, the initial iteration, the final iteration and the current iteration respectively • τ f , τs, : Bare rotor and stabilizer bar time constants
+Presented at the 6th Asian/Australian Rotorcraft Forum / Heli Japan 2017, Kanazawa, Japan, November 7-9, 2017. Copyright ©c 2017 by the American Helicopter Society International, Inc. All rights reserved.
+INTRODUCTION
+The use of unmanned helicopters have been increasing steadily in the past decade not only for military applications but also in civilian applications like crop-dusting, seed-bombing, search and rescue etc. (Ref. 1-4). The popularity stems from the vertical take-off and landing (VTOL) capabilities of helicopters. For a given amount of battery power, helicopters provide longer service range and hence can cover larger area when compared to commonly used quad-copters (Ref. 5) However, autonomous operation is favorable to improve the efficiency of the task or even render it feasible (for example, in a case where the vehicle needs to fly out of communication range of the radio transmitter). Design of controllers to enable autonomy in unmanned helicopters proves to be an arduous task due to the complexity involved in obtaining the mathematical model of the same. This difficulty in modeling arises due to the non-linear dynamics of helicopters and a high degree of inter axis coupling. There have been
+Fig. 1: Align TREX 550L - Helicopter used for data collection
+1
+arXiv:1809.05021v1 [cs.RO] 2 Sep 2018
+
+
+many attempts at modeling both small scaled and its full sized counterpart. One of the most notable pieces of research on this topic was carried out by Mettler et al. (Ref. 6-8). The research uses a frequency domain identification tool called CIFER (Comprehensive Identification from Frequency Responses), which was developed by the U.S Army and NASA, to identify the state-space parameters of a Yamaha R-50 helicopter. However, due to the high price and limited applicability of the CIFER tool, we decided to use an optimization algorithm to estimate the parameters of the state-space model.
+Many studies have been conducted evaluating the effectiveness of optimizing algorithms like Prediction Error Minimization (PEM) (Ref. 9), Subspace Method (Ref. 10) and Recursive Least squares (Ref.11, 12) in identifying dynamic systems. However, these traditionally used algorithms work well only for simple linear dynamic models because of their tendency to get stuck in local optima. An exhaustive study has been conducted on the potency of meta-heuristic algorithms on global optimization problems and has been presented in (Ref. 13). The unassuming nature of the algorithms towards the differentiability of the cost-function and their dynamic nature enable it to jump out of any local minima. The effectiveness of metaheuristic algorithm in identifying the yaw-heave dynamics of a small scaled helicopter has been demonstrated by Tang et. al. (Ref 14).
+Invasive Weed Optimization (IWO) algorithm is a population based random search algorithm which was proposed by Mehrabian et.al. (Ref. 15) inspired by the colonizing behavior of invasive weed in agricultural farmlands. The algorithm is structurally simple, robust and has lesser hyper-parameters as compared to its counterparts. The algorithm has found use in a wide range of application such as Neural Network training (Ref. 16), combustion optimization (Ref. 17), PID controller design (Ref 18), trajectory planning (Ref. 19), auto-disturbance rejection controller tuning (Ref. 20) etc.
+This paper aims to obtain a mathematical model of an unmanned helicopter (Fig 1.) in the state-space form using IWO algorithm and compare its effectiveness against the traditionally used PEM and a commonly used meta-heuristic tool like Genetic Algorithm (GA). The following section describes the physical characteristics and the onboard instrumentation of the helicopter used to collect the flight data which is followed by the methodology used to acquire flight data including the flight test procedure. This is followed by the description of the state-space model used and then succeeded by the system identification methodology using the IWO algorithm. The paper concludes by tabulating the results and a discussion on the same.
+DESCRIPTION OF HELICOPTER UAV
+In order to be able to model a vehicle successfully, we need to record the outputs from the actual vehicle to be modeled. The small-scaled helicopter used for modeling is an Align TREX 550L which is a hobby grade vehicle capable of 3-D flight. Unlike most commercially available hobby helicopters, the TREX 550L does not possess a flybar. A flybar is a mechanical device that, using the principles of Coriolis force, provides a negative feedback to the longitudinal and lateral motions. The negative feedback for the motions in the TREX 550L is provided by a Micro Electro-Mechanical System (MEMS) Gyroscope which serves as a replacement for the mechanical flybar.
+The advantage of using an electronic flybar is that the amplitude of the negative feedback can be tuned to the pilots comfort. It may be tuned to provide high stability or to provide high input sensitivity. Figure 2 describes the physical dimensions of the helicopter.
+Fig. 2: Dimensions of the helicopter used for flight data acquisition
+Helicopter Instrumentation
+The helicopter used is equipped with an array of state-of-the-art sensors and flight control board that record high-quality flight data. The flight control board used is Pixhawk, an ARM based flight controller. This arrangement records the velocities (u, v and w), angular rates (p, q, and r) and blade flapping angles (a and b, that are functions of swash-plate servo arm positions). The data is recorded onto a micro SD card on the Pixhawk at the rate of 100 Hz. The data is filtered for sensor noise using a Butterworth filter at half-power frequency. Figure 3 depicts the instrumentation mounted atop the unmanned helicopter.
+FLIGHT DATA ACQUISITION
+A helicopter has a wide range of dynamic responses inclusive of responses in the nonlinear range. However, missions requiring autonomy rarely call for operations in the nonlinear domain. Hence, we linearize the system and model it in the state-space form. In order to obtain an accurate dynamic model, the maximum dynamic range of the vehicle should be excited while keeping it from entering the nonlinear domain. One of the well-established techniques to perform this excitation is the Frequency Sweep method (Ref. 21). In this
+2
+
+
+Fig. 3: Instrumentation of TREX 550L
+method, the vehicle is given sinusoidal inputs of constant amplitude and increasing frequency in both lateral and longitudinal direction. Frequency Sweep can be executed either using a signal-generator or manually. To maintain the safety aspect of the flight test and considering the expertise of our pilot, we decided to manually perform the frequency sweep using the ’3-2-1-1’ input sequence. In a ’3-2-1-1’ sequence, a positive deflection of the control stick is made for the duration of 3 seconds and then a negative deflection is given for 2 seconds and the stick is deflected in the positive direction again for 1 second and then back to negative for 1 second. This sequence is repeated for both lateral and longitudinal directions. The pedal input was given only for directional corrections. The tests were conducted at constant rpm and hover conditions. In order to keep the external perturbations to the minimum, the flight tests were conducted during the period where ambient wind speed was lesser than 1.029 m/s (2 knots) as high winds can degrade the accuracy of the identified dynamic model.
+STATE SPACE MODEL
+The parametric state-space form of the unmanned helicopter was adopted from Mettler et al. (Ref. 6), which has been derived from first principles. The state space form is defined as shown in Eq.1. Where x (Eq.2) is the state matrix and u (Eq.3) is the input matrix.
+x ̇ = Ax + Bu (1)
+Where,
+x = [u v p q φ θ a b w r r f b c d]T (2)
+u=[
+δlat δlon δped δcol
+]T (3)
+A=
+
+                   
+Xu 0 0 0 0 −g Xa 0 0 0 0 0 0 0 Yv 0 0 g 0 0 Yb 0 0 0 0 0 Lu Lv 0 0 0 0 0 Lb Lw 0 0 0 0 Mu Mv 0 0 0 0 Ma 0 Mw 0 0 0 0 0 0 1 0 00 0 0 0 0 0 0 0 0 0 0 1 00 0 0 0 0 0 0 0 0 0 0 −τ f 0 0 1 Ab 0 0 0 Ac 0 0 0 −τ f 0 0 0 Ba −1 0 0 0 0 Bd 0 0 0 0 0 0 Za Zb Zw Zr 0 0 0 0 Nv Np 0 0 0 0 0 Nw Nr Nr f b 0 0 0 0 0 0 0 0 0 0 0 Kr Kr f b 0 0 0 0 0 −τs 0 0 0 0 0 0 0 −1 0 0 0 −τs 0 0 0 0 0 0 0 0 0 −1
+
+                   
+(4)
+B=
+
+                   
+00 0 0 0 0 Yped 0 00 0 0 0 0 0 Mcol 00 0 0 00 0 0 Alat Alon 0 0
+Blat Blon 0 0 0 0 0 Zcol
+0 0 Nped Ncol 00 0 0 0 Clon 0 0 Dlat 0 0 0
+
+                   
+(5)
+The A and B matrices (Eq.4 and Eq.5) together have 40 parameters which require to be estimated for successful identification of the system dynamics.
+SYSTEM IDENTIFICATION
+The IWO algorithm is used to estimate these 40 parameters such that the model replicates the responses as close to the recorded training data as possible. The algorithm scatters seeds in a 40 dimensional search space and tries to converge at a global optimum. Which essentially means that the algorithm tries to find the best set of values for the state-space matrices. The steps involved in the identification is explained as follows.
+Step 1 - Initialization: A finite number of seeds (solutions) are deposited randomly over a search space.
+Step 2 - Cost Function: Cost/Fitness of each seed is determined by running it through a cost function.The Population Pearson Coefficient is used to define a cost function for this algorithm. The Population Pearson correlation coefficient of two sets of data is a measure of their frequency correlation or rather their shape fitness. Consider data sets A and B have N scalar observations each, then the Pearson correlation coefficient is defined as shown in Eq.6
+ρ(A, B) = 1
+N−1
+N
+n= ∑1
+(
+Al − μa
+σa
+)(
+Bl − μb
+σb
+)
+(6)
+From this we define the cost function as depicted in Eq.7
+C=
+13
+i=∑1
+(1 − ρi)2 (7)
+Step 3 - Reproduction: Every seed grows into a flowering plant which in turn deposits its own seeds. But the number of seeds each
+3
+
+
+flowering plant can deposit linearly varies from the minimum possible seeds to the maximum possible seeds based on its fitness value. In other words, the plant with a higher fitness score can deposit the maximum number of seeds.
+Step 4 - Spatial Dispersal: The spawned seeds are distributed randomly over the search space by normally distributed random number with zero mean and varying variance. The variance varies as shown in Eq.8
+σiter = (itermax − iter)n
+it ermax
+(σinitial − σ f inal ) + σ f inal (8)
+This ensures that the probability of dropping a seed in a distant area decreases nonlinearly with each iteration due to which fitter plants are grouped and the weak ones are eliminated.
+Step 5 - Competitive Exclusion: Initially all the seeds are allowed to grow unchecked till it reaches the population limit. Once the population limit is reached, a function to eliminate plants with poor fitness gets called. This function ranks all the seeds in the population with their parents’ ranks and eliminates weeds with lower fitness and allows newer seeds to fill the population. This way plants with low fitness scores are allowed to survive if their offspring gives a high fitness score.
+The above steps are iterated 1000 times in order to obtain the highest fitness. The maximum iterations are set at 1000 because the cost plateaued out at around 1000 iterations during tuning. 10 trials of these iterations are conducted so that the confidence interval of 95% can be calculated. A 95% confidence interval means that the probability of the exact solution falling within that interval is 0.95 or 95%. The solution with the best fitness or the lowest cost is used to generate the state space model. The validation of this model is done using another dataset from the same helicopter.
+RESULTS
+Of the 13 identified states, we perform time domain verification only on p, q, φ and θ as they are the only states crucial for controller design. The results from the verification are tabulated in Table 1. Further the identified parameters with their 95% confidence interval has been tabulated in Table 2. It can be observed from Table 1 that PEM performs an inferior job of identifying the model as compared to the metaheuristic algorithms. This, as discussed in the introduction of this paper, is due to its inability to handle complex systems like helicopter dynamics due to its tendency to get stuck in a local optima. Among IWO and GA, we notice that IWO performs noticeably better than its counterpart. We can observe that a few values in Table 2 are set 0 by the algorithm. Those parameters come into play on while in forward flight and not during hover. This corroborates the values which was identified using CIFER by Mettler et al. (Ref. 6) for hover condition. Figures 4, 5 and 6 helps in visualizing the time domain verification performed for models identified using PEM, GA and IWO respectively.
+Table 1: Performance Comparison
+States PEM GA IWO p 0.5535 0.8385 0.9575 q 0.5329 0.7691 0.9089 φ 0.4946 0.6765 0.9084 θ 0.0336 0.6576 0.8722
+Table 2: Parameters Identified using IWO
+95% Confidence Interval Parameter Value Upper Limit Lower Limit Xu -0.32066 -0.212 -0.32658 Xa 40.21598 40.43 -5.36256 Yv -0.93658 -0.745 -0.92882 Yb -16.1151 18.05 -28.9708 Lu -0.00121 -0.0024 -0.07221 Lv -0.47665 -0.31 -0.65863 Lb 133.6111 183.6 145.5951 Lw 0 0 0
+Mu 0.1 0.10005 0.099401 Mv -0.09822 -0.021 -0.07774 Ma 104.9063 87.47161 73.76749 Mw 0 0 0
+Tf 0.093851 0.176949 0.09222 Ab -0.19213 -0.12113 -0.43625 Ac 0.061597 0.351488 0.057038 Ba 0.083523 0.125623 -0.0954 Bd 0.984168 0.778003 0.32217 Za 8.166105 8.446461 -4.93675 Zb 1.028478 8.586446 -87.4542 Zw 0.045724 0.038181 0.017925 Zr -1.39101 0.85415 -0.28432 Nv 0.009652 0.008206 0.003685 Np -8.23373 -2.13475 -6.88379 Nw 0 0 0
+Nr -8.69927 0.18654 -4.02513 Nr f b 42.69381 18.9659 -34.6882 Kr 2.350899 2.220768 -0.31141 Kr f b -14.5913 -11.0303 -15.1889 τs 0.134939 0.212613 0.08313 Yped 0 0 0 Mcol 0 0 0
+Alat -0.09993 -0.01799 -0.09167 Alon 0.701979 0.766162 0.083986 Blat -0.07779 0.510326 -0.15717 Blon -0.09942 -0.0212 -0.09096 Zcol -6.05944 40.69521 -18.7476 Nped -27.4672 4.452297 -36.3945 Ncol -3.22316 3.742138 -2.04491 Clon -0.09815 0.495883 -0.09044 Dlat 0.793573 0.671539 0.025611
+4
+
+
+Fig. 4: Time domain verification of validation data using PEM
+Fig. 5: Time domain verification of validation data using GA
+Fig. 6: Time domain verification of validation data using IWO algorithm
+CONCLUSIONS
+A highly accurate state space model of the helicopter dynamics was identified using the IWO algorithm. From this we can conclude that the IWO algorithm is a powerful tool for identifying helicopter dynamics and possibly even other complex systems. This work could be taken further by using the identified model to design controllers to enable helicopter autonomy. Apart from that, there is a big scope in comparing the effectiveness of metaheuristic algorithms on state space and other nonlinear models like Nonlinear Autoregressive with Exogenous inputs (NARX) and Hammerstein-Wiener to have a better understanding of the algorithms.
+Author Contact : Navaneethkrishnan B, navaneeth@aero.iisc.ernet.in Pranjal Biswas, pranjalbiswas27@gmail.com Saumya Kumaar, saumya@aero.iisc.ernet.in Gautham Anand, gauthama.anand@gmail.com S N Omkar, omkar@aero.iisc.ernet.in
+REFERENCES
+1Valavanis, Kimon P., ed. Advances in unmanned aerial vehicles: state of the art and the road to autonomy Vol. 33. Springer Science &Business Media, Berlin, Germany, 2008, Chapter 1.
+2Wong, K.C., ”Survey of Regional Developments: Civil Applications,” UAV Australia Conference, Melbourne, Australia, 8-9 February 2001 pp. 8-9.
+3R. Sugiura, N. Noguchi, and K. Ishii, ”Remote-sensing technology for vegetation monitoring using an unmanned helicopter,” Biosyst. Eng.,vol. 90, no. 4, pp. 369379, Apr. 2005.
+4M. Bernard, K. Kondak, I. Maza, and A. Ollero, ”Autonomous transportation and deployment with aerial robots for search and rescue missions,” Journal of Field Robotics, vol. 28, no. 6, pp. 914-931, 2011.
+5Bart Theys, Which one has the highest range: VTOL, helicopter, multi-rotor (or flying squirrel?), DIY Drones, accessed 25th May 2017,<http://diydrones.com/profiles/blogs/what-has-the-bestrange-vtol-helicopter-multi-rotor-or-flying>
+6Mettler Bernard, Takeo Kanade, and Mark Brian Tischler. System identification modeling of a model-scale helicopter. Carnegie Mellon University, The Robotics Institute, 2000.
+7Mettler Bernard, Identification modeling and characteristics of miniature rotorcraft. Springer Science & Business Media, Berlin, Germany, 2013.
+8Tischler M.B., Remple R.K., ”Aircraft and Rotorcraft System Identification,” Engineering Methods with Flight Test Examples, American Institute of Aeronautics and Astronautics, Virginia, USA, 2006.
+5
+
+
+9Shim, D. Hyunchul, Hyoun Jin Kim, and Shankar Sastry. ”Control system design for rotorcraft-based unmanned aerial vehicles using time-domain system identification.” In Control Applications, 2000. Proceedings of the 2000 IEEE International Conference on, pp. 808-813. IEEE, 2000.
+10Li, Ping, Ian Postlethwaite, and Matthew C. Turner. ”Subspacebased System Identification for Helicopter Dynamic Modelling.” American Helicopter Society 63rd Annual Forum, Virginia Beach, VA, May 1-3, 2007.
+11Raptis, Ioannis A., Kimon P. Valavanis, and Wilfrido A. Moreno, ”System identification and discrete nonlinear control of miniature helicopters using backstepping,” Journal of intelligent & robotic systems, vol. 55, no. 2, pp. 223-243, 2009.
+12Raptis, Ioannis A., Kimon P. Valavanis, and Wilfrido A. Moreno, ”System Identification for a Miniature Helicopter at Hover Using Fuzzy Models, Journal of intelligent & robotic systems, vol. 55, no. 2, pp. 347-360, 2009.
+13Khajehzadeh M, Taha MR, El-Shafie A, Eslami M, ”A survey on metaheuristic global optimization algorithms,” Research Journal of Applied Sciences, Engineering and Technology, vol. 3, no. 6, pp. 569-78, 2011.
+14Tang, Shuai, Xinye Zhao, Li Zhang, and ZhiQiang Zheng. ”System identification of heave-yaw dynamics for small-scale unmanned helicopter using genetic algorithm.” In 32nd Chinese Control Conference (CCC), pp. 1797-1802. IEEE, 2013
+15Mehrabian, A.R. and Lucas, C., 2006. A novel numerical optimization algorithm inspired from weed colonization. Ecological informatics, 1(4), pp.355-366.
+16Giri, Ritwik, Aritra Chowdhury, Arnob Ghosh, Swagatam Das, Ajith Abraham, and Vaclav Snasel. ”A modified invasive weed optimization algorithm for training of feed-forward neural networks.” IEEE International Conference on Systems Man and Cybernetics (SMC), 2010, pp. 3166-3173. IEEE, 2010.
+17Zhao, Huan, Pei-hong Wang, Xianyong Peng, Jin Qian, and Quan Wang. ”Constrained optimization of combustion at a coal-fired utility boiler using hybrid particle swarm optimization with invasive weed.” In Energy and Environment Technology, 2009. ICEET’09. International Conference on, vol. 1, pp. 564-567. IEEE, 2009.
+18Kundu, Debarati, Kaushik Suresh, Sayan Ghosh, and Swagatam Das. ”Designing Fractional-order PI D controller using a modified invasive Weed Optimization algortihm.” In World Congress on Nature & Biologically Inspired Computing, 2009. NaBIC 2009., pp. 1315-1320. IEEE, 2009.
+19Pahlavani, P., Delavar, M.R. and Frank, A.U., 2012. Using a modified invasive weed optimization algorithm for a personalized
+urban multi-criteria path optimization problem. International Journal of Applied Earth Observation and Geoinformation, 18, pp.313-328.
+20Chen, Z., Wang, S., Deng, Z. and Zhang, X., 2011, September. Tuning of auto-disturbance rejection controller based on the invasive weed optimization. Sixth International Conference on Bio-Inspired Computing: Theories and Applications (BIC-TA), 2011 (pp. 314318). IEEE.
+21Tischler Mark B., Jay W. Fletcher, Vernon L. Diekmann, Robert A. Williams, and Randall W. Cason. Demonstration of frequency-sweep testing technique using a Bell 214-ST helicopter. No. NASA-A-87073. National Aeronautics and Space Administration, Moffett Feild CA Ames Research Centre, 1987.
+6

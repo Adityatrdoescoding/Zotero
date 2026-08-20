@@ -1,0 +1,303 @@
+Rotary Wing Aerodynamics
+(AE 667)
+
+
+Problems of Forward Flight
+Mach number effects
+Yawed Flow
+Reverse Flow Dynamic Stall
+Blade Vortex Interaction
+Aeroelastic effects
+ = 0
+ = 270
+ = 180
+
+V
+Vtip = R
+Vtip = R
+Vtip = R − V
+Vti
+R
+Reverse Flow Region
+Retreating Side Advanci
+
+
+Performance Prediction
+
+
+Force Balance on a Helicopter
+Thrust (T)
+Weight (W)
+Drag (D)
+Tip Path Plane
+sin ; cos
+For a steady level flight :
+=
+==
+TPP
+T TPP D T TPP W
+
+
+Thrust (T)
+Weight (W)
+Drag (D)
+c.g
+TPP
+
+
+
+Glauert’s Conceptual model for Inflow
+V
+V+v2
+V+v4
+Momentum Theory for Climbing / Hovering Rotor (V is climb velocity)
+V∞
+(free stream)
+Rotor in Forward Flight
+
+
+Glauert’s Conceptual model for Inflow
+[Tilting the reference frame]
+v
+2v
+v
+V∞cosαTPP
+V∞sinαTPP
+Total Velocity = (V cosTPP )2 + (V sinTPP + v)2
+
+
+Thrust estimate using Glauert’s model
+o In hover by momentum theory,
+Thrust = (mass flow rate)*change in induced velocity = ρA(V+v)(2v)
+o In forward flight,
+T = A (V cosTPP )2 + (V sinTPP + v)2 (2v)
+
+
+Non –Dimensional Forms
+o Advance Ratio:
+o Coefficient of Thrust:
+o For μ > 0.2 and small αTPP, λi << μ
+R
+V
+R
+V TPP
+
+
+
+= =  
+ cos
+Tip Speed
+Edgewise Freestream Component
+( ) ( )2
+2
+2
+CT 2 i tan TPP i
+AR
+T    
+= + +
+
+=
+
+  2
+CT 2 ;
+T ii
+C
+   (Inflow velocity decreases with advance ratio)
+
+
+Power Estimate
+oInduced Power = Thrust*Inflow
+= T(V∞sinαTPP + v)
+= T sinαTPPV∞ + Tv
+= DV∞ + Tv
+oTotal power = Induced power + Blade profile power
+= DV∞ + Tv + Profile Power
+Hover Induced Power
+Vehicle Drag Power
+
+
+Power Estimate w.r.t Speed (Steady Level Flight)
+oTotal power = Induced power + Blade profile power = DV∞ + Tv + Profile Power
+oParasite power (DV∞) = 1⁄2 ρ f V∞3
+( f is equivalent flat plate area)
+oInduced Power (Tv) ∝ 1/μ ∝ V∞-1
+oBlade Profile Power ( )  
+(To be derived later)
+is the average drag coeff.of airfoil
+13
+8
+AR
+0
+22
+0
+3
+d
+d
+C
+V
+C
+
+=  + 
+
+
+
+
+Power Estimate w.r.t Speed (Steady Level Flight)
+V∞
+Power
+Total power
+
+
+Power Estimate in Non-dimensional terms
+() () ()
+()  
+()
+() ( )
+()
+, , ,0
+2
+,0
+3 P
+2
+,0
+3
+2
+P
+3
+2
+0
+3
+3
+3
+33
+13
+28
+1
+C
+13
+28
+1
+R
+v
+C
+13
+8
+AR
+2
+1
+v
+P P i P parasite P
+d Ti
+d
+d
+induced parasite profile
+CC C C
+C
+A
+f
+C
+C
+A
+f
+AR
+T
+AR
+C
+AR
+Vf
+AR
+T
+AR
+P
+PP P P
+=+ +
+=+ + +
+++ +
+
+
+
+=
+
++
++
+
++
+
+=
+
+=++
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Empirical Corrections to CP
+()
+
+2
+0
+3
+P
+2
+,0
+3
+P
+, , ,0
+1 4.6
+28
+1
+C
+After empirical corrections :
+13
+28
+1
+C
+
+
+ 
+
+
+
+=+ + +
+=+ + +
+=+ +
+d Ti
+d
+Ti
+P P i P parasite P
+C
+A
+f
+C
+C
+A
+f
+C
+CC C C
+Prediction through momentum theory does not account for non-uniform inflow, swirl, tip losses. Hence the expression is empirically corrected to match reality
+
+
+Excess Power
+oPower left after what is needed for steady level flight
+oCan be used for climbing and accelerating
+oMax achievable speed from energy perspective is when total power = available power
+oDependency of VMax on
+air density
+V∞
+Power
+Available Engine Power
+Excess
+Power
+VMax

@@ -1,0 +1,268 @@
+Stability Analysis of helicopter dynamics with incomplete information using MPC
+Irina Kudryavtseva1,∗ and Kirill Petrov1,∗∗
+1Moscow Aviation Institute (National Research University), 4, Volokolamskoe shosse, Moscow, 125993, Russia
+Abstract. The paper is devoted to the problem of seeking a helicopter motion control using MPC provided that the state vector is not fully observable. It is supposed that the helicopter motion is described by a dynamic system linearized near regimes with different fixed values of the forward speed. To solve the problem for an arbitrary value of the forward speed the interpolation strategy when the system matrices are decomposed in the basis of the finite functions is used. The proposed technique is applied to analyze dynamic behavior of three models of helicopters: ZD559-Lynx, SA330-Puma, S123-Bo105. The MPC approach permits to gain the stability of helicopters with complete and incomplete information in varying a time interval on which the system is under control and an interval over which a desired output is needed to achieve, initial conditions of a motion and values of the forward speed.
+1 Introduction
+A helicopter as a complex dynamic system requires to find such a control strategy that permits to attain desired trajectories and to make a rapid response to appearing disturbances. The flight control system design faces to a variety of difficulties related to different flight regimes for better performance of tasks, presence of external impacts or appearing effects caused by practical implementation of a helicopter control [1–3]. There are a few flight control design algorithms developed to enhance helicopter dynamics and handling qualities: linear quadratic optimal control (LQR/LQG), H2\H∞ optimal control, backstepping control, gain-scheduling control, adaptive control, model predictive control, observer feedback control, fuzzy control, intelligent control [4, 5]. The MPC approach has a set of benefits such as an intuitive implementation, applicability to both SISO and MIMO systems, taking into account constraints in their “natural form” that make this scheme attractive for practical using [6–8]. In the paper the helicopter motion control problem is proposed to solve using MPC.
+∗e-mail: kudryavtseva.irina.a@gmail.com ∗∗e-mail: kpetroff12@yandex.ru
+© The Authors, published by EDP Sciences. This is an open access article distributed under the terms of the Creative Commons Attribution License 4.0 (http://creativecommons.org/licenses/by/4.0/).
+MATEC Web of Conferences 362, 01012 (2022) https://doi.org/10.1051/matecconf/202236201012 CMMASS 2021
+
+
+2 The problem formulation
+Consider the helicopter flight dynamic model including the force equations and the moment equations in the form [1, 2]:
+u ̇ = −(wq − vr) + X
+M − g sin θ,
+v ̇ = −(ur − wp) + Y
+M + g cos θ sin φ,
+w ̇ = −(vp − uq) + Z
+M + g cos θ cos φ,
+(1)
+Ixx p ̇ = (Iyy − Izz)qr + Izz(r ̇ + pq) + L,
+Iyyq ̇ = (Izz − Ixx)r p + Ixz(r2 − p2) + R,
+Izzr ̇ = (Ixx − Iyy)pq + Ixz(p ̇ − qr) + N,
+(2)
+and also completed with the equations for the Euler angles [1, 2]:
+φ ̇ = p + q sin φ tg θ + r cos φ tg θ,
+θ ̇ = q cos φ − r sin φ,
+ψ ̇ = q sin φ
+cos θ + r cos φ
+cos θ ,
+(3)
+where u, v, w, p, q, r are components of the translational and angular velocities respectively; φ, θ, ψ are the Euler angles defining an orientation of the helicopter with respect to the fixed coordinate system (relative to the earth); X, Y, Z and L, R, N are components of applied external forces and moments respectively; g is the gravitational acceleration; M is mass of the aircraft; Ixx, Iyy, Izz are moments of inertia about x-, y- and z-axes; Ixz is a moment of inertia about the x- and z-axes. The last equation of the presented model can be dropped due to the fact of no contribution in the helicopter dynamics in the considered flight mode. The system (1)–(3) is gone through linearization provided that the helicopter moves under conditions corresponding to sea level with zero sideslip and turn rate at a fixed value of the forward speed from 0 to 140 kts: Vi = (i − 1)∆Vi, ∆Vi = 20 kts, i = 1, . . . , 8
+x ̇ = A(Vi)x + B(Vi)u, i = 1, . . . , 8, (4)
+where x = (u, w, q, θ, v, p, φ, r)T is the system state, u = (θ0, θ1s, θ1c, θ0T )T is the control input, θ0 and θ0T are the main and tail rotor collective pitch angles; θ1s and θ1c are longitudinal and lateral cyclic pitch; i is a number of a flight mode associated with a certain value of the forward speed in the mentioned range: 0 kts, 20 kts, . . . , 140 kts; A(Vi), B(Vi) are known matrices given in [1]. The system state x is assumed to be observable in accordance with the rule:
+y = C(Vi) x, i = 1, . . . , 8, (5)
+where y is the system output, C(Vi) is a known matrix of an appropriate dimension. The rank of the matrix C might be less than dimension of the state vector x that means a deficiency of information about x.
+2
+MATEC Web of Conferences 362, 01012 (2022) https://doi.org/10.1051/matecconf/202236201012 CMMASS 2021
+
+
+The paper aims to find the control input that allows to achieve the trajectory stability of the aircraft in case of incomplete information about the state vector. It is supposed to analyze the aircraft dynamics at an arbitrary forward speed not exceeding 140 kts. For this purpose the interpolation strategy based on the decomposition in finite function is used. To solve the problem the Model Predictive Control approach is utilized.
+3 Solution method
+Running the system (4)–(5) through discretization leads to
+x j+1 = (hAi − E)x j + hBiu j,
+yj = Cixj,
+x j = x(t j), u j = u(t j), t j = jh, j = 0, 1, . . . ; i = 1, . . . , 8,
+(6)
+where h is a time step, j is utilized for moments of time, i specifies a helicopter’s flight mode. For further exposition rewriting system (6) in the difference form will be needed [6]
+∆x j+1 = A ̃i ∆x j + B ̃ i ∆u j, j = 0, 1, . . . ,
+where ∆x j+1 = x j+1 − x j, ∆u j = u j − u j−1, A ̃i = hAi − E, B ̃ i = hBi, i = 1, . . . , 8.
+The difference analogue of the second equation of system (6) has the form [6]:
+y j − y j−1 = Ci ∆x j, j = 0, 1, . . . , i = 1, . . . , 8.
+That implies
+X j+1 = A′
+i X j + B′
+i ∆u j,
+yj = C′
+i X j, (7)
+where X j = (∆x j y j
+)T , A′
+i=
+( A ̃i O CiA ̃i I
+)
+, B′
+i=
+( B ̃ i Ci B ̃ i
+)
+, C′
+i = (O I).
+Choose two time intervals (the prediction horizon Np and the control horizon Nc: Nc ≤ Np) over which system trajectories and control trajectories are predicted. Assume that the system information X j is available with the control ∆u j at t j. Then for moments of time within the time interval of length determined by the prediction horizon Np the predicted vectors X j+1, . . . , X j+Np and the predicted outputs y j+1, . . . , y j+Np can be expressed as
+X j+1 = A′
+i X j + B′
+i∆u j,
+y j+1 = C′
+i A′
+iXj + C′
+i B′
+i∆u j,
+X j+2 = A′2
+i X j + A′
+i B′
+i ∆u j + B′
+i ∆u j+1,
+y j+2 = C′
+i A′2
+i Xj + C′
+i A′
+i B′
+i ∆u j + C′
+i B′
+i ∆u j+1,
+...
+X j+Np = A′Np
+i X j + A′Np−1
+i B′
+i ∆u j + · · · + A′Np−Nc B′
+i ∆u j+Nc−1,
+y j+Np = C′
+i A′Np
+i Xj + C′
+i A′Np−1
+i B′
+i∆u j + · · · + C′
+i A′Np−Nc B′
+i ∆u j+Nc−1.
+Thus, system (7) can be transformed into the system:
+Z = FX j + Φ ∆U, j = 1, . . . , Np,
+3
+MATEC Web of Conferences 362, 01012 (2022) https://doi.org/10.1051/matecconf/202236201012 CMMASS 2021
+
+
+where Z = (y j+1, . . . , y j+Np )T , ∆U = �∆u j, . . . , ∆u j+Nc−1
+�T ,
+F=
+
+
+C′
+i A′
+i C′
+i A′2
+i
+...
+C′
+i A′Np
+i
+
+
+, Φ=
+
+
+C′
+i B′
+i 0 ... 0
+C′
+i A′
+i B′
+i C′
+i B′
+i ... 0
+... ... ... ...
+C′
+i A′Np−1
+i B′
+i C′
+i A′Np−2
+i B′
+i . . . C′
+i A′Np−Nc
+i B′
+i
+
+
+.
+The optimal control ∆U can be found by minimizing the cost function:
+I = (R − Z)T (R − Z) + ∆UT Q∆U → m∆iUn,
+where Rdim(xj)·Np×1 = (r j . . . r j)T defines a final desired position of the system; Q = qE is a positive definite symmetric matrix; E is an identity matrix of an appropriate dimension; q is a parameter that serves to account the control effect. The cost function I takes its minimum value at
+∆U∗ = (ΦT Φ + Q)−1ΦT (R − FX j).
+Inspite of the fact that the control ∆U∗ is being obtained over whole time interval defined by the control horizon Nc only the first entry of the vector ∆U∗ takes part in calculation. Then it should be modified using a new observation. Hence, the predicted state x j+1 can be determined from obtained ∆u∗
+j and the known u j−1 as follows
+x j+1 = A ̃i x j + B ̃ i
+�u j−1 + ∆u∗
+j
+�.
+In the case when the helicopter moves with a constant forward speed of the value from 0 to 140 kts but differing from the claimed earlier eight modes the matrices included in the linearized dynamic model (4)–(5) can be found via the decomposition in a set of finite functions [9, 10]:
+S∗
+p(τ) =
+
+
+
+2p−1(1 + τ)p, τ ∈
+�
+−1, − 1
+2
+�
+,
+1 − 2p−1|τ|p, τ ∈
+�
+−1
+2, 1
+2
+�
+,
+2p−1(1 − τ)p, τ ∈
+�1
+2,1
+�
+,
+0, τ [−1, 1],
+where p = 2, 3, 4 is an interpolation parameter. The decomposition is performed in accordance with the relations:
+A=
+�
+i
+AiS ∗
+p
+�V
+∆V − (i − 1)
+�
+, B=
+�
+i
+BiS ∗
+p
+�V
+∆V − (i − 1)
+�
+,
+C=
+�
+i
+CiS ∗
+p
+�V
+∆V − (i − 1)
+�
+.
+It should be noticed, the finite functions take zero values outside the interval [−1, 1].
+4
+MATEC Web of Conferences 362, 01012 (2022) https://doi.org/10.1051/matecconf/202236201012 CMMASS 2021
+
+
+4 Numerical results
+The presented approach is proposed to apply to investigate dynamical behavior of three models of helicopters: ZD559-Lynx, the twin-engine multi-purpose helicopter for military tasks; SA330-Puma, the twin-engine medium transport/utility helicopter; S123-Bo105, the twinengine multi-purpose helicopter.
+Figure 1. The control and system states trajectories for the ZD559-Lynx: Np = Nc = 8, q = 0.1
+Figure 2. The control and system states trajectories for the SA330-Puma: Np = Nc = 8, q = 0.1
+During numerical experiments effects of the model and method parameters on the motion stability are analyzed in dependence on completeness of system information. In figures 1–3 the evolution of control trajectories and system states trajectories are shown provided that the control and the prediction horizons are equal: Np = Nc = 8. It is also supposed that the system
+5
+MATEC Web of Conferences 362, 01012 (2022) https://doi.org/10.1051/matecconf/202236201012 CMMASS 2021
+
+
+Figure 3. The control and system states trajectories for the S123-Bo105: Np = Nc = 8, q = 0.1
+Figure 4. The control and system states trajectories for the S123-Bo105: Np = Nc = 8, q = 0.1, V = 55 kts
+state is completely observable. The helicopters perform the hover flight. It is clearly seen that the motion of all of the considered helicopters’ models is stabilized within the interval given by the prediction horizon Np. It should be noticed that different kind of transients for the SA330-Puma takes more time in comparison with the other models. It might be linked with poor controllability of the mentioned helicopter.
+Utilizing the decomposition on a basis of the finite functions permits to obtain trajectories for an arbitrary values of the forward speed from 0 to 140 kts. Figure 4 demonstrates trajectories of the S123-Bo105 for the flight mode with V = 55 kts. As in the previous case
+6
+MATEC Web of Conferences 362, 01012 (2022) https://doi.org/10.1051/matecconf/202236201012 CMMASS 2021
+
+
+Figure 5. The control and system states trajectories for the S123-Bo105: Np = Nc = 16, q = 0.1
+Figure 6. The control and system states trajectories for the S123-Bo105: Np = 164, Nc = 8, q = 0.1
+all fluctuations dampen within the prediction horizon. Significant distinctions from the cases observed before are not identified.
+It’s worthwhile to say that increasing the prediction and control horizons forces to decrease the time step of discretization. Figure 5–6 prove a benefit of the MPC strategy. Reducing the control horizon doesn’t much influence achievement of the desired final position.
+However it should be added that increasing the prediction and control horizons should be convoyed with decreasing the time step. Otherwise it may lead to the instability. Figures 7–9 demonstrate evolution of the state vector and the control in time when the state vector is
+7
+MATEC Web of Conferences 362, 01012 (2022) https://doi.org/10.1051/matecconf/202236201012 CMMASS 2021
+
+
+Figure 7. The control and system states trajectories for the S123-Bo105: Np = 8, Nc = 4, q = 0.01, rank Ci = 8, i = 1, . . . , 8
+Figure 8. The control and system states trajectories for the S123-Bo105: Np = 8, Nc = 4, q = 0.01, rank Ci < 8, i = 1, . . . , 8
+completely and partly observable. First it is supposed to select such a relation between the prediction horizon and the control horizon that makes the process stable. Then the effect of loss of information is investigated.
+It’s clearly seen that significant cutting of the output vector implies substantial changes in processes behavior. It can be traced when comparing figure 8 with figure 9. Nevertheless all trajectories approach to occupy a wished position. The suitable choice of the parameters Nc and q permits to gain a wished result when all transition processes fade.
+8
+MATEC Web of Conferences 362, 01012 (2022) https://doi.org/10.1051/matecconf/202236201012 CMMASS 2021
+
+
+Figure 9. The control and system states trajectories for the S123-Bo105: Np = 8, Nc = 4, q = 0.01, rank Ci < 8, i = 1, . . . , 8
+5 Conclusion
+In the article the problem of a helicopter control with use of MPC is considered. The proposed strategy is utilized to find control and state trajectories of three helicopters models: ZD559-Lynx, SA330-Puma and S123-Bo105. It is supposed that the helicopters perform flight on sea level with zero sideslip and turn rate with a fixed value of the forward speed. The described approach permits to damp all transferring processes caused by initial disturbances. The obtained results demonstrate the robustness of the considered method in the case of changing intensity of initial disturbances, the control and prediction horizons, the forward speed of the helicopters and completeness of system state information. The suitable relation between the control and prediction horizons leading to the motion stabilization over a time interval defined by the prediction horizon is determined. It is revealed that to reach a desired trajectory it is needed to reduce the discretization step for the proposed numerical scheme when switching from the given continuous model to the discrete one. Moreover significant changes in control trajectories behavior are observed in the case of substantial cutting of the dimension of the system output.
+References
+[1] G.D. Padfield, Helicopter flight dynamic. The theory and application of flying qualities and simulation modelling (Blackwell Publishing, Oxford, 2007)
+[2] G.D. Padfield, Helicopter flight dynamics: Including a treatment of tiltrotor aircraft (John Wiley & Sons, New York, 2018) [3] T. Oktay, C. Sultan, Aircraft Engineering and Aerospace Technology, 85(1), 32 (2013) [4] J. Hu, H. Gu, International Journal of Aerospace Engineering, 2017 (2017) [5] C.C. Luo, R.F. Liu, C.D. Yang, Y.H. Chang, Aerospace Science and Technology, 7(2), 159 (2003)
+[6] L. Wang, Model predictive control system design and implementation using MATLAB (Springer-Verlag, Melbourne, 2009)
+9
+MATEC Web of Conferences 362, 01012 (2022) https://doi.org/10.1051/matecconf/202236201012 CMMASS 2021
+
+
+[7] J.B. Rawlings, Model predictive control: Theory and design (Nob Hill Publishing, Madison, 2009) [8] I.A. Kudryavtseva, A.V. Panteleev, Smart Innovation, Systems and Technologies, 274, 363 (2022) [9] K.A. Rybakov, Differential Equations and Control Processes, 2, 39 (2016) [10] I. Kudryavtseva, A. Efremov, A. Panteleev, Optimization of helicopter motion control based on the aggregated interpolation model AIP Conf. Proc., 2181, 020008 (2019)
+10
+MATEC Web of Conferences 362, 01012 (2022) https://doi.org/10.1051/matecconf/202236201012 CMMASS 2021

@@ -1,0 +1,508 @@
+State Space Methods for Flight Vehicles
+AE 695
+Shashi Ranjan Kumar
+Associate Professor Intelligent Systems and Control (ISaC) Lab Department of Aerospace Engineering Indian Institute of Technology Bombay Powai, Mumbai- 400076
+https://www.aero.iitb.ac.in/ ̃shashi R srk@aero.iitb.ac.in
+
+
+Distinct Eigenvalues
+Let λi and vi be the eigenvalue and corresponding eigenvector of matrix A. Then, the set {v1, v2, . . . , vn} is linearly independent over C.
+• Proof by contradiction.
+• Suppose set {v1, v2, . . . , vn} is linearly dependent.
+• There exists αi ∀i = 1, 2, . . . , n (not all zero), s.t. ∑n
+i=1 αivi = 0
+• Assuming α1 ̸= 0, else reorder eigenvalues.
+• Since (A − λjI)vi = (λi − λj) vi ∀ i ̸= j and (A − λiI)vi = 0
+(A − λ2I)(A − λ3I) · · · (A − λnI)
+(n ∑
+i=1
+αivi
+)
+=0
+=⇒ α1 (λ1 − λ2) (λ1 − λ3) · · · (λ1 − λn) v1 = 0
+• As λi are distinct, α1 = 0.
+• A contradiction, and hence the set is l.i. and also qualifies for the basis.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 1 / 24
+
+
+Distinct Eigenvalues
+• Let Aˆ be the representation of A w.r.t. the basis {vi}.
+• The ith column of Aˆ: Representation of Avi = λivi w.r.t. {vi}.
+• Representation of A w.r.t. the basis {vi}
+Aˆ =
+
+     
+λ1 0 0 · · · 0 0 λ2 0 · · · 0 0 0 λ3 · · · 0
+... ... ... ... ...
+0 0 0 · · · λn
+
+     
+• Using similarity transformation and Q = [v1 v2 . . . vn
+]
+AQ = A [v1 v2 . . . vn
+] = [λ1v1 λ2v2 . . . λnvn
+] = QAˆ
+Aˆ = Q−1AQ
+• For distinct eigenvalues of linear operator A that maps (Cn, C) to itself, operator has diagonal representation w.r.t. a set of eigenvectors as a basis.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 2 / 24
+
+
+Repeated Eigenvalues
+• Consider the matrix given by
+A=
+
+
+1 0 −1 01 0 00 2
+
+
+• Eigenvalues: 1, 1, 2 • Eigenvectors:
+v1 = [1 0 0]⊤ , v2 = [0 1 0]⊤ , v3 = [−1 0 1]⊤
+• L.i. eigenvectors, so qualify for a basis, and thus diagonalizable • What about the matrix given below?
+A=
+
+
+112 013 002
+
+
+• Eigenvalues: 1, 1, 2 • Eigenvectors:
+v1 = [1 0 0]⊤ , v2 = [5 3 1]⊤
+• Only two l.i. eigenvectors, so they cannot qualify for the basis.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 3 / 24
+
+
+Repeated Eigenvalues
+• Can we diagonalize a matrix having repeated eigenvalues? • Not always in diagonal form, but representation in almost diagonal form
+Jordan canonical form
+A matrix is said to be in Jordan canonical form if its principal diagonal consists of Jordan blocks and the remaining elements are zero.
+
+     
+λ 1 0 ... 0 0 0 λ 1 ... 0 0
+... ... ... ... ... ...
+0 0 0 ... λ 1 0 0 0 ... 0 λ
+
+     
+• Jordan form: Eigenvalues on the diagonal and either 0 or 1 on its super-diagonal. • What would be the different forms of Jordan representation with eigenvalue λ1 with multiplicity 4 and λ2 with multiplicity 1? • Diagonal form is a special case of Jordan form.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 4 / 24
+
+
+Generalized Eigenvectors
+A vector v is said to be generalized eigenvector of grade k of A iff
+(A − λI)k v = 0, (A − λI)k−1 v ̸= 0
+• Chain of generalized eigenvectors {vi}
+vk ≜ v
+vk−1 ≜ (A − λI) v = (A − λI) vk
+vk−2 ≜ (A − λI)2 v = (A − λI) vk−1
+......
+v1 ≜ (A − λI)k−1 v = (A − λI) v2
+• Ni: Null space of (A − λI)i: All vectors x s.t. (A − λI)i x = 0 • Every vector in Ni is in Ni+1, Ni ⊂ Ni+1 • Similarly, vi = (A − λI)k−i v ∈ Ni, but vi ∈/ Ni−1
+(A − λI)i vi = (A − λI)i (A − λI)k−i v = (A − λI)k v = 0
+(A − λI)i−1 vi = (A − λI)i−1 (A − λI)k−i v = (A − λI)k−1 v ̸= 0
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 5 / 24
+
+
+Eigenvalues and Eigenvectors
+• Consider an n × n matrix with eigenvalue λ with multiplicity m.
+• How to generate the generalized eigenvectors?
+• Process of searching a chain of generalized eigenvectors
+• Compute ranks of (A − λI)i (that is, Bi) for all i = 0, 1, 2, . . . until rank is n − m.
+• Let us assume n = 10, m = 8, k = 4
+N0 ⊂ N1 ⊂ N2 ⊂ · · · =⇒ 0 = ν0 ≤ ν1 ≤ ν2 ≤ · · · ≤ νk = m
+u4 = u u3 = Bu
+w1 = Bw v1 = Bv u1 = B3u
+v2 − v1 =3 w2 = w v2 = v u2 = B2u
+v4 − v3 =1
+v1 − v0 =3
+v3 − v2 =1
+ρ (A − λI)0 = 10, v0 = 0 ρ (A − λI) = 7, v1 = 3 ρ (A − λI)2 = 4, v2 = 6 ρ (A − λI)3 = 3, v3 = 7 ρ (A − λI)4 = 2, v4 = 8
+No. of independent vectors in Ni but not in Ni−1 Two chains with length 2 One chain with length 4
+N1
+N2
+N3 N4
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 6 / 24
+
+
+Eigenvalues and Eigenvectors
+Generalized eigenvectors of A associated with the same λ are l.i.
+• To show that: L.i. of u2, v, w =⇒ L.i. of u1, v1, w1 • Suppose u1, v1, w1 are l.d. then ∃ ci ̸= 0 ∀ i = 1, 2, 3 s.t.
+c1u1+c2v1+c3w1 = 0 = c1Bu2+c2Bv+c3Bw = B(c1u2+c2v+c3w) = By
+• By = 0 =⇒ y = 0 as y ∈ N1 • y = 0 =⇒ ci = 0 ∀ i. A contradiction • To show that {ui ∀i = 1, 2, 3, 4, vj, wj ∀ j = 1, 2} are l.i.
+c1u1 + c2u2 + c3u3 + c4u4 + c5v1 + c6v2 + c7w1 + c8w2 = 0
+• Using B3 = (A − λI)3, c4B3u4 = 0. As B3u4 ̸= 0, c4 = 0. • Using B2, we get c3 = 0. With c3 = c4 = 0, using B, we get
+c2u2 + c6v2 + c8w2 = 0 =⇒ c2 = c6 = c8 = 0
+• Using the l.i. of u1, v1, w1, c1 = c5 = c7 = 0.
+Generalized eigenvectors of A associated with different λ are l.i. (HW)
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 7 / 24
+
+
+Jordan Form Representation
+• What would be the representation of A w.r.t. Q?
+Q = {u1, u2, u3, u4, v1, v2, w1, w2, x1, x2}
+• First 4 columns are representation of Aui w.r.t. new basis vectors set.
+(A − λI) u1 = 0 =⇒ Au1 = λu1 = Q [λ 0 0 0 · · · 0]⊤
+Au2 = u1 + λu2 = Q [1 λ 0 0 · · · 0]⊤
+Au3 = u2 + λu3 = Q [0 1 λ 0 · · · 0]⊤
+Au4 = u3 + λu4 = Q [0 0 1 λ · · · 0]⊤
+Aˆ =
+
+      
+λ1000000 0λ100000 00λ10000 000λ0000 0000λ100 00000λ00 000000λ1 0000000λ
+
+      
+• Geometric multiplicity: Dimension of null space of (A − λI) • Algebraic multiplicity: Sum of orders of Jordan blocks associated with λ
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 8 / 24
+
+
+Example
+• Consider a matrix
+A=
+
+
+112 013 002
+
+
+• Eigenvalues: 1, 1, 2 • Eigenvector corresponding to λ3 = 2: [5 3 1]⊤ • ρ(A − λ1I) = 2, only one eigenvector w.r.t. λ1
+B ≜ (A − λ1I) =
+
+
+012 003 001
+
+ ; B2 =
+
+
+005 003 001
+
+
+• As ρ(B2) = 1 = n − m, we stop here. • Look for a v s.t. B2v = 0 but Bv ̸= 0 • v = [0 1 0]⊤, thus Bv = [1 0 0]⊤ • Generalized vector of grade 2
+v2 = v =
+
+
+0 1 0
+
+ , v1 ≜ Bv =
+
+
+1 0 0
+
+
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 9 / 24
+
+
+Example
+• ith column of Aˆ: Representation of Avi w.r.t. basis {v1, v2, v3}:
+Av1 = λ1v1, Av2 = v1 + λ1v2, Av3 = λ3v3
+Aˆ =
+
+
+λ1 1 0 0 λ1 0 0 0 λ3
+
+=
+
+
+110 010 002
+
+
+• Alternate approach:
+Aˆ = Q−1AQ =
+
+
+110 010 002
+
+ ; Q = [v1 v2 v3
+]=
+
+
+105 013 001
+
+
+• How to define the function of a matrix?
+Ak ≜ AA · · · A (k terms), A0 ≜ I
+f (λ) = λ2 + 2λ + 1 =⇒ f (A) = A2 + 2A + I
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 10 / 24
+
+
+Minimal Polynomial of Matrix
+• Every square matrix mapping (Cn, C) to itself has a Jordan form.
+Ak = QAˆkQ−1, f (A) = Qf (Aˆ) Q−1, f (Aˆ) = Q−1f (A) Q
+A=
+[A1 0 0 A2
+]
+, f (A) =
+[f (A1) 0 0 f (A2)
+]
+, Ak =
+[Ak
+10 0 Ak
+2
+]
+The minimal polynomial of a matrix A is the monic polynomial ψ(λ) of least degree such that ψ(A) = 0.
+• f (A) = 0 ⇐⇒ f (Aˆ) = 0.
+• Similar matrices have the same minimal polynomial. • Consider distinct eigenvalues of A, {λi}, with their multiplicities,
+ni ∀1, . . . , m.
+• Characteristic polynomial: ∆(λ) ≜ det (λI − A) = Πm
+i=1 (λ − λi)ni
+Aˆ =
+
+  
+Aˆ1 0 · · · 0 0 Aˆ2 · · · 0
+...
+...
+...
+...
+0 · · · 0 Aˆm
+
+  
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 11 / 24
+
+
+Minimal Polynomial of Matrix
+The largest order of Jordan blocks associated with λi is called the index ( ̄ni) of eigenvalue λi in A.
+The minimal polynomial of A is given by ψ(λ) = Πm
+i=1 (λ − λi) ̄ni
+
+  
+3000 0300 0030 0001
+
+  
+
+  
+3100 0300 0030 0001
+
+  
+
+  
+3100 0310 0030 0001
+
+  
+• Characteristic polynomial: ∆(λ) = (λ − 3)3(λ − 1) • Minimal polynomial
+ψ(λ) = (λ − 3)(λ − 1), (λ − 3)2(λ − 1), (λ − 3)3(λ − 1)
+• Characteristic polynomial is always divisible by the minimal polynomial.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 12 / 24
+
+
+Cayley-Hamilton Theorem
+Let ∆(λ) = det(λI − A) ≜ λn + α1λn−1 + · · · + αn−1λ + αn be the characteristic polynomial of A. Then
+∆(A) = An + α1An−1 + · · · + αn−1A + αnI = 0
+Let λ1, λ2, . . . , λm be the distinct eigenvalues of A with indices n ̄1,  ̄n2, . . . , n ̄m. Let f and g be the two polynomials. Then, the following are equivalent.
+• f (A) = g(A).
+• Either f = h1ψ + g or g = h2ψ + f , with ψ as minimal polynomial of A and h1, h2 are some polynomials.
+• f l(λi) = gl(λi) ∀ l = 0, 1, 2, . . . ,  ̄ni − 1; i = 1, 2, . . . , m
+f l(λi) ≜ dlf (λ)
+dλl
+∣ ∣ ∣
+∣λ=λ1
+, gl(λi) ≜ dlg(λ)
+dλl
+∣ ∣ ∣
+∣λ=λ1
+Minimal polynomial are usually difficult to compute.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 13 / 24
+
+
+Function of Square Matrix
+Let the characteristic polynomial of A be
+∆(λ) ≜ det(λI − A) = Πm
+i=1(λ − λi)ni
+Let f and g be the two arbitrary polynomials. If f l(λi) = gl(λi)∀ l = 0, 1, 2, . . . , ni − 1, i = 1, 2, · · · , m then f (A) = g(A).
+• Set of n numbers f l(λi): Values of f on the spectrum of A
+• Two polynomials that have the same value on the spectrum of A define the same matrix function.
+• Given n numbers, if we can construct a polynomial that gives these numbers on the spectrum of A, the polynomial uniquely defines a matrix-valued function of A.
+• Possibility to construct polynomial of degree n − 1 that gives these numbers at some preassigned λ.
+• For a given n × n matrix, any polynomial f (λ) can be expressed as
+f (A) = g(A) = α0I + α1A + · · · + αn−1An−1
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 14 / 24
+
+
+Function of Square Matrix: Example
+• If A is of order n, the polynomial g(λ) can be any suitably chosen polynomial of degree n − 1, with n independent parameters.
+Compute f (A) with f (λ) = λ100 for
+A=
+[1 2 01
+]
+• Characteristic equation: ∆(λ) = (λ − 1)2
+• Polynomial of degree (n − 1): g(λ) = α0 + α1λ
+• Constraints
+f (1) = g(1), f ′(1) = g′(1)
+α0 + α1 = 1100, α1 = 100, α0 = −99
+A100 = α0I + α1A = −99
+[1 0 01
+]
++ 100
+[1 2 01
+]
+=
+[1 200 01
+]
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 15 / 24
+
+
+Function of Square Matrix
+Let f (λ) be a function (not necessarily a polynomial) that is defined on the spectrum of A. If g(λ) is a polynomial that has the same values as f (λ) on the spectrum of A, then the matrix-valued function f (A) is defined as f (A) ≜ g(A).
+• Any function of n × n matrix A can be expressed as
+f (A) = α0I + α1A + α2A2 + α3A3 + · · · + α1An−1
+• Compute characteristic polynomial
+∆(λ) = Πm
+i=1(λ − λi)ni
+• Assume a polynomial such as
+g(λ) = α0 + α1λ1 + α2λ2 + · · · + αn−1λn−1
+• Use n equations to compute these coefficients, over the spectrum of A.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 16 / 24
+
+
+Function of Square Matrix: Example
+Compute eA1t for
+A1 =
+
+
+0 0 −2 01 0 10 3
+
+
+• Characteristic equation: ∆(λ) = (λ − 1)2(λ − 2) • Polynomial of degree n − 1: g(λ) = α0 + α1λ + α2λ2 • Constraints
+f (1) = g(1), f ′(1) = g′(1), f (2) = g(2)
+α0 + α1 + α2 = et, α1 + 2α2 = tet, α0 + 2α1 + 4α2 = e2t
+α0 = −2tet + e2t, α1 = 2et + 3tet − 2e2t, α2 = e2t − et − tet
+eA1t = (−2tet + e2t) I + (2et + 3tet − 2e2t) A1 + (e2t − et − tet) A2
+1
+eA1t =
+
+
+2et − e2t 0 2et − 2e2t 0 et 0
+−et + e2t 0 2e2t − et
+
+
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 17 / 24
+
+
+Function of Square Matrix: Example
+Compute eA2t for
+A2 =
+
+
+0 0 −2 01 0 1 −1 3
+
+
+• Characteristic equation: ∆(λ) = (λ − 1)2(λ − 2) • Polynomial of degree n − 1: g(λ) = α0 + α1λ + α2λ2
+• Constraints: f (1) = g(1), f ′(1) = g′(1), f (2) = g(2)
+α0 + α1 + α2 = et, α1 + 2α2 = tet, e2t = α0 + 2α1 + 4α2
+α0 = −2tet + e2t, α1 = 2et + 3tet − 2e2t, α2 = e2t − et − tet
+eA2t = (−2tet + e2t) I + (2et + 3tet − 2e2t) A2 + (e2t − et − tet) A2
+2
+eA2t =
+
+
+2et − e2t 2tet 2et − 2e2t 0 et 0
+−et + e2t −tet 2e2t − et
+
+
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 18 / 24
+
+
+Function of Square Matrix: Example
+• How to compute f (Aˆ) for the matrix in Jordan block form below?
+Aˆ =
+
+     
+λ1 1 0 · · · 0 0 λ1 1 · · · 0
+... ... ... ... ...
+0 0 0 ··· 1 0 0 0 · · · λ1
+
+     
+• Characteristic equation: ∆(λ) = (λ − λ1)n • Polynomial of degree n − 1:
+g(λ) = α0 + α1(λ − λ1) + α2(λ − λ1)2 + · · · + αn(λ − λ1)n
+• Constraints: f (1) = g(1), f ′(1) = g′(1), · · ·
+α0 = f (λ1), α1 = f ′(λ1), · · · , αn = f n−1(λ1)
+(n − 1)!
+f (Aˆ) = g(Aˆ) = f (λ1)I + f ′ (λ1)
+1! (Aˆ −λ1I)+· · ·+ f n−1(λ1)
+(n − 1)! (Aˆ −λ1I)n−1
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 19 / 24
+
+
+Function of Square Matrix
+Let the power series representation of a function f be f (λ) = ∑∞
+i=0 αiλi
+with radius of convergence ρ. Then, the function f of a square matrix A is defined as
+f (A) ≜
+∞
+∑
+i=0
+αiAi
+if the absolute value of all the eigenvalues of A are smaller than ρ, or A has property Ak = 0 for some integer k.
+• Definition meaningful if the infinite series converges.
+• If Ak = 0 for some positive k, then f (λ) = ∑k−1
+i=0 αiλi
+eλt = 1 + λt + λ2t2
+2! + · · · + λntn
+n! + · · · =⇒ eAt =
+∞
+∑
+k=0
+Ak tk
+k!
+• Use of infinite series to avoid computation of eigenvalue for using a closed-form matrix expression.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 20 / 24
+
+
+Norms of Vector and Matrix
+Any real-valued function of x ∈ (Cn, C), denoted by ∥x∥ can be defined as a norm if it has properties that for any x ∈ (Cn, C) and α ∈ C
+• ∥x∥ ≥ 0 and ∥x∥ = 0 iff x = 0.
+• ∥αx∥ = |α|∥x∥.
+• ∥x1 + x2∥ ≤ ∥x1∥ + ∥x2∥ (Triangular inequality).
+• Examples: ∥x∥1 ≜ ∑n
+i=1 |xi|, ∥x∥2 ≜
+(∑n
+i=1 |xi|2)1/2 , ∥x∥∞ ≜ maxi |xi| • ∥x∥ is finite iff all the components of x are finite. • Norm of a matrix, induced norm, with x ∈ (Cn, C)
+∥A∥ ≜ sup
+x̸=0
+∥Ax∥
+∥x∥ = sup
+∥x∥=1
+∥Ax∥, ∥Ax∥ ≤ ∥A∥∥x∥
+∥A∥1 = max
+j
+(n ∑
+i=1
+|aij |
+)
+, ∥A∥2 =
+√
+(λmax (A⋆A)), ∥A∥∞ = max
+i
+(n ∑
+j=1
+|aij |
+)
+∥A + B∥ ≤ ∥A∥ + ∥B∥, ∥AB∥ ≤ ∥A∥∥B∥
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 21 / 24
+
+
+Norms of Vector and Matrix
+Inner product of two vectors x, y ∈ (Cn, C) is a complex number, denoted by ⟨x, y⟩, having the properties that for any α1, α2 ∈ C,
+• ⟨x, y⟩ = ⟨y, x⟩
+• ⟨α1x1 + α2x2, y⟩ = α ̄1⟨x1, y⟩ + α ̄2⟨x2, y⟩
+• ⟨x, x⟩ > 0 ∀x ̸= 0
+• In complex vector space (Cn, C), ⟨x, y⟩ = x⋆y = ∑n
+i=1 x ̄iyi
+⟨x, Ay⟩ = x⋆Ay, ⟨A⋆x, y⟩ = (A⋆x)⋆ y = x⋆Ay =⇒ ⟨x, Ay⟩ = ⟨A⋆x, y⟩
+Schwarz Inequality: If we define ∥x∥ = √⟨x, x⟩, |⟨x, y⟩| ≤ ∥x∥∥y∥
+• Inequality true for y = 0. For y ̸= 0
+0 ≤ ⟨x + αy, x + αy⟩ = ⟨x, x⟩ + α ̄⟨y, x⟩ + α⟨x, y⟩ + αα ̄⟨y, y⟩
+• With α = − ⟨y, x⟩
+⟨y, y⟩ , ⟨x, x⟩ ≥ ⟨x, y⟩⟨y, x⟩
+⟨y, y⟩ = |⟨x, x⟩|2
+⟨y, y⟩ .
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 22 / 24
+
+
+Positive Definiteness of Matrix
+An n × n real matrix M is said to be symmetric if its transpose equals itself.
+A symmetric matrix M is said to be positive definite, denoted by M > 0, if x⊤M x > 0 for every nonzero x. It is positive semidefinite, denoted by M ≥ 0, if x⊤M x ≥ 0 for every nonzero x.
+• Every eigenvalue of M is positive (zero or positive).
+• All the leading principal minors of M are positive (all the principal minors of M are zero or positive).
+An m × n matrix H, with m ≥ n, has rank n, if and only if the n × n matrix H⊤H has rank n or det(H⊤H) ̸= 0. An m × n matrix H, with m ≤ n, has rank m, if and only if the m × m matrix HH⊤ has rank m or det(HH⊤) ̸= 0.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 23 / 24
+
+
+Reference
+Reference
+▶ Chen, Chi-Tsong, “Linear System Theory and Design”, CBS College Publishing, 1984.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 4 24 / 24

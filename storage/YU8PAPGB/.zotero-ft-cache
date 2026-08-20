@@ -1,0 +1,651 @@
+École polytechnique de Louvain
+Simulation of a helicopter in Vortex
+Ring State through a coupled
+simulation of multi-body dynamics
+and aerodynamics
+Author: Henry VAN VYVE Supervisors: Philippe CHATELAIN, Grégoire WINCKELMANS Reader: Nicolas DOCQUIER Academic year 2018–2019 Master [120] in Mechanical Engineering
+
+
+
+
+Acknowledgments
+Cet écrit représente l’aboutissement de mes études en science de l’ingénieur à l’Ecole Polytechnique de Louvain-la-Neuve. Je voudrais remercier toutes les personnes ayant contribué à mon apprentissage aussi bien sur le plan académique que personnel, et à la réussite de mes études universitaires. Je tiens à remercier plus particulièrement les personnes qui m’ont permis de mener à bien la réalisation de mon mémoire de fin d’étude.
+Tout d’abord, mes remerciements vont à mes promoteurs, les Professeurs Philippe Chatelain et Grégoire Winckelmans, dont la disponibilité, malgré le grand nombre de mémorants sous leur supervision, ainsi que leur motivation à appréhender le phénomène, ont été une réelle source de motivation.
+Je tiens à adresser un remerciement particulier à Denis-Gabriel Caprace pour sa disponibilité tout au long de l’année et pour ses précieux conseils ainsi que son soutien moral. Son implication dans le projet a été un élément essentiel à la réalisation de ce dernier. Je remercie aussi le Professeur Matthieu Duponcheel pour ses analyses pertinentes lors des tours-de-table ainsi que toute l’équipe d’assistants présente lors de ceux-ci pour leurs remarques constructives.
+Finalement, je voudrais remercier ma famille ainsi que mes amis pour leur intêret porté à mon travail ainsi que leur soutien dans les moments plus difficiles.
+
+
+
+
+Contents
+Introduction 1
+1 Functioning of a helicopter 3 1.1 General description . . . . . . . . . . . . . . . . . . . . . . . . . . . 4 1.2 Rotor description and control . . . . . . . . . . . . . . . . . . . . . 6 1.3 Momentum theory . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+2 Vortex Ring State 12 2.1 Origins and symptoms . . . . . . . . . . . . . . . . . . . . . . . . . 13 2.2 Wake analysis and dynamics of descent . . . . . . . . . . . . . . . . 15 2.3 Experimental works . . . . . . . . . . . . . . . . . . . . . . . . . . . 20 2.3.1 Flight tests . . . . . . . . . . . . . . . . . . . . . . . . . . . 20 2.3.2 Wind tunnel experiments . . . . . . . . . . . . . . . . . . . . 21 2.4 Recovery from the VRS . . . . . . . . . . . . . . . . . . . . . . . . 24 2.4.1 The Vuichard Recovery Technique . . . . . . . . . . . . . . . 24 2.5 Controversies . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 26
+3 Tools used for the simulations 27 3.1 Multi-body solver : Robotran . . . . . . . . . . . . . . . . . . . . . 28 3.1.1 Topology of a MBS . . . . . . . . . . . . . . . . . . . . . . . 28 3.1.2 Model of the rotor in Robotran . . . . . . . . . . . . . . . . 31 3.2 Flow Solver : Vortex-Particle Mesh code . . . . . . . . . . . . . . . 31 3.2.1 Methodology . . . . . . . . . . . . . . . . . . . . . . . . . . 32 3.2.2 Immersed lifting lines . . . . . . . . . . . . . . . . . . . . . . 33
+4 Simulations 35 4.1 Presentation of the simulations . . . . . . . . . . . . . . . . . . . . 36 4.2 Validation case : Hovering flight . . . . . . . . . . . . . . . . . . . . 36 4.3 Vortex Ring State . . . . . . . . . . . . . . . . . . . . . . . . . . . . 38 4.3.1 Methodology . . . . . . . . . . . . . . . . . . . . . . . . . . 39 4.3.2 Free-flight vertical descent simulation . . . . . . . . . . . . . 39
+4
+
+
+4.3.3 Static rotor simulation . . . . . . . . . . . . . . . . . . . . . 45
+Conclusion and outlooks 61
+Bibliography 65
+
+
+Introduction
+Since many years, helicopters play a major role in the aeronautic field in fulfilling a variety of civilian and military applications. The helicopter is essential due to its unique ability to hover and to land and take-off vertically in restricted and difficult areas. These capacities generated a lot of interest for a long time through a huge amount of studies to improve the performances of these machines. However, improvement of helicopters efficiency has always been challenged by the very complex flow produced by the rotor inducing aerodynamics problems, vibrations, noises, etc. This wake is dominated by the influence of the vortex generated at the tip of the blades and the persistence of these ones near the rotor is the primary challenge for rotorcrafts performances enhancement. Among all the possible flight configurations of the helicopter, there is one that is particularly unstable and dangerous : The Vortex Ring State. Figure 1 shows the blade tip vortices as well as the flow near the rotor in Vortex Ring State.
+Figure 1: (left) Blade tip vortices of a helicopter in hover [1] and (right) Vortex State Ring visualisation [2].
+The Vortex Ring State appears for flight maneuvers at high descent rate and low forward speed. Basic features of this configuration is an important thrust loss and an inefficiency of the commands of the rotorcraft. In order to reduce
+1
+
+
+2 CONTENTS
+the noise produced by interactions between vortices and blades during landing, pilots want to approach at descent configurations closer and closer to favourable conditions for Vortex Ring State. Near the ground, the loss of thrust characteristic of this configuration can be fatal and the Vortex Ring State has been recognized responsible of many accidents in the past few years [3]. Since the middle of the 20th century, studies and experimentations have been conducted to characterize the behavior of the helicopter in this configuration. Wind tunnel experiments allowed to identify some parameters influencing the Vortex Ring State and to define flight envelope where it can be encountered ([4],[5]). However, they do not enable to simulate the free-flight behavior of a helicopter and cannot reproduce correctly the phenomena related by pilots. In this sense, recent studies have been pursued in flight tests to collect information about the comportment of the helicopter and of its flow field in Vortex Ring State [6]. Although the phenomenon has already been studied and tested several times and that pilots are briefed on how to manage this complex situation, precise boundary of the flight envelope of the state is not known as well as the effect of parameters of helicopter on this one. Moreover, accurate understanding of the flow in this configuration has not yet been obtained due to its complexity. In the era of the numerical simulation, this useful tool could improve our knowledge of this interesting phenomenon for the improvement of the rotorcraft performance in the domains where they are essential. The present dissertation aims at carrying out a numerical simulation of the rotor of a helicopter in the Vortex Ring State. The main objectives of this Master’s thesis can be resumed as follows :
+• Study the physical phenomena of the flow when entering the configuration as well as in established Vortex Ring State.
+• Obtain clear visualisations of the flow that illustrates the phases of the state.
+This simulation will be performed using a solver coupling the multi-body dynamics of the rotor to the aerodynamics thanks to a vortex-particle mesh code. In a first time, the general functioning of a helicopter as well as its main rotor and control will be described. The famous momentum theory will be introduced to apprehend important concepts for the rest of this writing. Then, the chapter 2 will present the physics of the Vortex Ring State. Origins, symptoms as well as recovery from this one will be detailed. Description of the wake and the dynamics of descent will be presented as well as a review of the actual experimental work on the subject. After that, the chapter 3 will introduce the software and code used for the simulations. Finally, the last chapter will present the results of the simulations, where a hovering flight was first simulated to validate the exactitude of the solver before simulating the Vortex Ring State.
+
+
+Chapter 1
+Functioning of a helicopter
+This first chapter introduces some elementary features of the functioning of a helicopter. Description of the most important parts of the helicopter is given as well as the different configurations of descent flight. Information about the main rotor and the way to control it in flight are also provided. Finally, the chapter exposes the famous momentum theory of Rankine-Froude for helicopters efficiency in axial configuration.
+This chapter is meant to provide required knowledge to the reader to address the next part which covers the complex phenomenon of the Vortex Ring State.
+Contents
+1.1 General description . . . . . . . . . . . . . . . . . . . . . 4
+1.2 Rotor description and control . . . . . . . . . . . . . . . 6
+1.3 Momentum theory . . . . . . . . . . . . . . . . . . . . . . 7
+3
+
+
+4 1.1. GENERAL DESCRIPTION
+1.1 General description
+Helicopter is a rotorcraft which plays a major role in aviation for its unique ability in hovering and vertical descending flight. It is able to provide lift and propulsion through a principal rotor.
+Figure 1.1: Schematic representation of a helicopter.
+The combination of the rotor and the fuselage of the device results in threedimensional and unsteady flows that have an important impact on the flight quality and performance of the helicopter. The rotation of the blades of the rotor induces a wake that is, generally, convected downward and interacts with the fuselage, the other blades and the vortices themselves. These interactions are responsible for vibrations and noise disturbances that can be perceived both inside and outside of the rotorcraft. At the rear of the fuselage (Figure 1.1), there is a secondary rotor, called the tail rotor, that is responsible of the production of a torque in the opposite direction of the one induced by the power developed at the mat of the main rotor, which increases even more the complexity of the flow.
+In this writing, the analysis will be concentrated on the vertical flight envelope of the helicopter. There are four different configurations (Figure 1.2) :
+• Normal working state This state includes climb and hover, the latter being the limit of the state. The velocity throughout the main rotor is always downward and the tip vortices follow smooth helicoidal trajectories. The wake is highly periodic and defined by a smooth slipstream boundary.
+• Vortex Ring State As the rotor begins to descend, the tip vortices are convected closer to the rotor plane than for the normal working state and also outward away from the rotor. As the rate of descent increases, the rotor can encounter a special configuration, called the "Vortex Ring State". This state is characterized by a recirculating flow around the rotor since the wake is not evacuated away from this one anymore. This configuration will be described in depth in chapter 2.
+
+
+CHAPTER 1. FUNCTIONING OF A HELICOPTER 5
+• Turbulent wake state If the descent velocity increases further, the rotor enters in the turbulent wake state associated to a wake above the rotor disk which is more turbulent and aperiodic and can be compared to the turbulent wake of a bluff body. The flow comes back to a smooth flow with a well-defined slipstream boundary but the rotor still experiences roughness due to the turbulence. In this state, there exists a particular equilibrium region called the "autorotation". For this configuration and the one of Vortex Ring State, the momentum theory is invalid.
+• Windmill brake state At even higher rate of descent, when the velocity clearly exceeds the induced velocity of the rotor, the wake expands above the rotor and becomes smooth again with a definite slipstream boundary. The flow going from the bottom to the top, the rotor, instead of producing energy, extracts this one from the air and brake the flow just as a windmill. The wake comes back to a more regular helical structure and the momentum theory becomes acceptable again and provides good rotor performance estimations, just as in the normal working state.
+Figure 1.2: Streamlines of the flow in the four different axial configurations [7].
+
+
+6 1.2. ROTOR DESCRIPTION AND CONTROL
+1.2 Rotor description and control
+The main rotor of a helicopter has the function of producing the aerodynamic lift that will support the weight of the rotorcraft and to provide thrust to permit forward displacement. The rotor is composed of several blades attached to a hub which is mounted on a mast that ensures the transmission of the power coming from the engine to the rotor (left part of Figure 1.3).
+Figure 1.3: (left) R22-Robinson main rotor and (right) three degrees of freedom for control of the helicopter [8].
+The control of the machine is obtained through pilotable degrees of freedom at the level of the main rotor. Hence, there is three hinges at the connection between the hub and the blades that allow each blade to independently flap, lead or lag with respect to the hub planes under aerodynamics constraints (right part of Figure 1.3). These three hinges allow to control the three different angles :
+• The flap angle allows blades movement in a plane that is perpendicular to the rotor one.
+• The lead-lag angle authorizes motions to counter the bending stresses due to change of gyration radius of the blades by cause of flapping.
+• The pitch angle is responsible for the change of the angle of attack of the blade to allow movement of the helicopter in the 3D plane.
+Shift of these angles is obtained through a swashplate located under the rotor (left part of Figure 1.3) that will translate the commands provided by the pilot into motion of the rotor blades. Orientation of the blades can be controlled in two different ways : collectively and cyclically.
+
+
+CHAPTER 1. FUNCTIONING OF A HELICOPTER 7
+• Collective control : The collective allows to control the orientation of all the blades (pitch angle) collectively and regardless of their positions. Collective pitch enables to keep the engine speed constant and to control the lift of the helicopter by changing the pitch angle of all the blades at the same time.
+• Cyclic control : The cyclic control permits to modify the pitch angle of the blades independently based on their radial positions and then to change the phasing of the aerodynamics loads over the rotor disk. By doing that, the rotor can induce movement of the helicopter in the longitudinal and lateral plan.
+Based on these two controls, mathematical expression for the pitch angle can be derived
+θ = θ0 + θ1ccos(ψ) + θ1ssin(ψ) (1.1)
+where θ0, the collective step, modifies the global incidence of all the blades constantly during the rotation and where θ1c and θ1s, the longitudinal and lateral cyclic step respectively, allow a cyclic variation of the pitch angle and then change the orientation of the rotor disk which modifies the direction of the rotor thrust vector.
+As mentioned previously, a helicopter, or a rotorcraft in general, can evolve in many different flight regimes. Among them, there are axial flights like hover, climb or descent and, on the other hand, the forward flight or a combination of these basic flight regimes that can lead to very complex flow structures. However, hover and most of axial flights induce axisymmetric flows and downward or upward flow through the rotor. They are, in principle, the easiest flow regimes to analyze and to predict by the use of a mathematical model. Although, as it is described above, the flow of the air through the rotor in hover will induce complex vortical wake structure, the basic performances of the rotor can be derived by a mathematical approach which is known as the Rankine-Froude momentum theory.
+1.3 Momentum theory
+In this section, which is based on [9], the famous momentum theory will be applied to a very common and useful configuration : the hover. Application of this theory to the hovering case will lead to interesting results that will be helpful to understand the rest of this writing. This configuration is shown on Figure 1.4.
+
+
+8 1.3. MOMENTUM THEORY
+Figure 1.4: Flow model of a rotor in hovering flight assumed for the momentum theory analysis [9].
+In hover, the rotor has no vertical and forward speed and the thrust compensates the weight of the helicopter such that T = W. Figure 1.4 illustrates the slipstream of the flow. It can be noticed that the air, within the slipstream, is accelerated smoothly from the rest through its passage in the rotor disk plane and then, the diameter of the wake is contracted as it moves away from the rotor resulting in an increase of the velocity of the air in the far wake. This behavior of the flow is typical from rotorcraft. Given this configuration of the flow, it is feasible to propose a mathematical solution to this problem. It consists in the application of the three laws of conservation (mass, momentum and energy) to the rotor and its flow field. This approach is called the momentum theory and was first elaborated by Rankine in 1865 for the study of the marine propeller sector. In 1878, W. Froude developed further the theory. One fundamental assumption of this theory is that the rotor is considered as an infinitesimally thin actuator disk experiencing a difference of pressure. Work done on the rotor will increase the kinetic energy of the rotor slipstream, and then, a part of the power given to the rotor will be lost in the fluid, which is what we call the induced power. This leads to an important concept for the rest of this writing, the induced velocity, vi. The induced velocity is the velocity of the flow induced by the rotation of the blades of the rotor. In this theory, flow through the rotor is assumed to be one-dimensional, quasisteady, incrompessible and inviscid. Then, the equations of conservation can be applied on the control volume presented on Figure 1.4. Conservation of the mass results in the derivation of the mass flow rate m ̇ that
+
+
+CHAPTER 1. FUNCTIONING OF A HELICOPTER 9
+remains constant in the wake of the rotor. Hence, we have that
+ ̇m =
+∫∫
+∞
+ρV~ · dS~ =
+∫∫
+2
+ρV~ · dS~ (1.2)
+which leads, for the simplified flow considered, to
+m ̇ = ρA∞w = ρAvi (1.3)
+Application of the conservation of the fluid momentum establishes a relation between the thrust produced by the rotor and the variation of fluid momentum through the control volume. Hence, the rotor thrust is equal in magnitude and opposite in direction to the force exerted on the fluid, which is given by
+−F~ = T =
+∫∫
+∞
+ρ(V~ · dS~)V~ −
+∫∫
+0
+ρ(V~ · dS~)V~ (1.4)
+By the definition of hover, velocity far upstream of the rotor is zero. Then, the second term on the right-hand side of eq 1.4 is equal to zero. Then, the equation can be rewritten as, T =  ̇mw (1.5)
+Finally, principle of conservation of energy leads to the fact that the increase of energy of the fluid per unit of time is equal to the work done on the rotor. Since this one is equal to the power consumed, T vi, the conservation gives
+T vi =
+∫∫
+∞
+1
+2 ρ(V~ · dS~)V~2 −
+∫∫
+0
+1
+2 ρ(V~ · dS~)V~2 (1.6)
+For the same reasons as before, the right-hand side of the equation is equal to zero and the equation becomes,
+T vi = 1
+2 m ̇ w2 (1.7)
+Combination of eq 1.5 and 1.7 gives
+w = 2vi (1.8)
+which links the induced velocity at the rotor level, vi, and the velocity of the flow in the far wake below the rotor, w. Then, it suggests that, since the velocity increases in the far wake, diameter of the slipstream must decrease to respect the continuity, as it is shown on Figure 1.4. One interest of the momentum theory is that it allows to estimate the induced velocity in different flight conditions. For example, in hover, the induced velocity, vh = vi, can easily be found based on the rotor thrust, T = W = mg, with m being
+
+
+10 1.3. MOMENTUM THEORY
+the mass of the helicopter. Using previous equations, the following relation can be derived
+vh ≡ vi =
+√T
+2ρA (1.9)
+where T
+A is called the disk loading. vh represents the induced velocity in hover and is an important value that will be used as a reference in the rest of this writing. This theory can also be applied in analysis of axial climb and descent. By performing the same reasoning as for the hover but for the configurations shown on Figure 1.5, estimations of the induced velocity can be obtained.
+Figure 1.5: Flow model for (left) climb configuration and (right) descent maneuver in the range Vd/vh ≤ −2 [9].
+In climb flight, as shown on left part of Figure 1.5, a climb velocity, Vc, is now added in the conservation laws described previously, which leads to
+vi
+vh
+=−
+( Vc
+2vh
+)
++
+√ √ √ √
+( Vc
+2vh
+)2
++ 1 (1.10)
+where the reference induced velocity in hover has been introduced. In axial descent, the problem is more complex. To be able to apply the theory, flow must either be upward or downward, so that a control volume surrounding the rotor and the wake can be established. Since descent velocity, Vd, is in the opposite direction as the induced velocity due to the rotor rotation, descent velocity in the range −2vh ≤ Vd ≤ 0 will induce velocity in the rotor slipstream that can be either
+
+
+CHAPTER 1. FUNCTIONING OF A HELICOPTER 11
+upward or downward and that could engender turbulent and aperiodic recirculating flow pattern at the rotor. Hence, the momentum theory in these conditions cannot be applied [10]. Right part of Figure 1.5 shows the configuration of windmill brake state. In this special configuration, flow is completely oriented upward over the all slipstream which implies that Vd/vh ≤ −2. Hence, the momentum theory is valid and leads to
+vi
+vh
+=−
+( Vd
+2vh
+)
+−
+√ √ √ √
+( Vd
+2vh
+)2
+− 1 f or Vd/vh ≤ −2 (1.11)
+All these velocities are resumed on Figure 1.6 that shows the variation of the induced velocity as a function of the climb velocity ratio, which is negative for descent flight and positive for climb.
+Figure 1.6: Induced velocity variation as a function of descent and climb rate following the momentum theory [9].
+Hence, the momentum theory is not valid for descent velocities between 0 and −2vh, range where the Vortex Ring State is precisely encountered. The problem is that, currently, no theory has been established to predict the induced velocity in this region. Only some measurements in wind tunnel and flight tests allow to predict the behavior in this range of velocity such as the one provided by Washizu et al. [5] and shown on Figure 1.6.
+
+
+Chapter 2
+Vortex Ring State
+The previous chapter provided a basic knowledge about the helicopter functioning and the way to control it. It has been shown that the blades of the rotor can either be controlled collectively or cyclically and that the helicopter can enter different configurations of axial descent with one being quite interesting : the Vortex Ring State. Finally, chapter 1 emphasized the inefficiency of the momentum theory to predict performances of the helicopter in this state.
+The purpose of the present chapter is to provide an in-depth description of the Vortex Ring State. Motivations for numerical simulation, origins and symptoms of the phenomenon as well as the behavior of the wake in the process to reach this particular state are explained. Review of the actual experimental works with their conclusions and presentation of recovery methods such as the famous "Vuichard Recovery" are also given. The chapter ends by a reminder of the actual limitations of the understanding of the phenomenon and the discrepancies between the researches about this state.
+Contents
+2.1 Origins and symptoms . . . . . . . . . . . . . . . . . . . 13
+2.2 Wake analysis and dynamics of descent . . . . . . . . . 15
+2.3 Experimental works . . . . . . . . . . . . . . . . . . . . . 20
+2.3.1 Flight tests . . . . . . . . . . . . . . . . . . . . . . . . . 20
+2.3.2 Wind tunnel experiments . . . . . . . . . . . . . . . . . 21
+2.4 Recovery from the VRS . . . . . . . . . . . . . . . . . . 24
+2.4.1 The Vuichard Recovery Technique . . . . . . . . . . . . 24
+2.5 Controversies . . . . . . . . . . . . . . . . . . . . . . . . . 26
+12
+
+
+CHAPTER 2. VORTEX RING STATE 13
+For helicopter pilots, high descent rate allows more aggressive maneuvers and to reduce noise disturbances when landing in city area, for example. But this interesting flying characteristic comes at a price, and this one is called : "The Vortex Ring State". George de Bothezat, a Russian American engineer and pioneer of the helicopter, first discovered the Vortex Ring State in 1922 on his own rotorcraft : "The flying octopus" (Figure 2.1)[11]. Nowadays, many research, flight tests, wind tunnel experiments, numerical simulations, etc have been performed about this special configuration but this one remains very complex and not well apprehended.
+Figure 2.1: (left) Georges de Bothezat and (right) The de Bothezat helicopter : the "flying octopus" [11].
+The VRS appears when the rotor descends in its own wake, resulting in a considerable loss of lift that produces a sharp fall. A study carried out by the U.S Navy & Army and other major actors in the domain shows that, between 1982 and 1997, 32 accidents of helicopters were caused by flight into the VRS [12]. Helicopter pilots remember this special day in April 2000 where the VRS caused the crash of a convertible V-22, causing the death of 19 Marines. VRS being even more critic on these convertible rotorcrafts, since one rotor can encounter the state before the other, resulting in a high roll. Thus, there exists a strong interest in knowing more about the origins and the impacts of such a phenomenon, for safety reasons.
+2.1 Origins and symptoms
+Due to the thrust produced by the rotor, a downward flow is induced below this one. If the rotor moves in the same direction as the induced flow, this flow will
+
+
+14 2.1. ORIGINS AND SYMPTOMS
+enter in interaction with the upward flow due to the descent motion. A particular configuration is when the descent rate will approximately be equal to the induced velocity, resulting in the fact that the rotor will not be able to evacuate its wake and create strong blade tip vortices recirculation. Refers to section 2.2 for more details about the wake description in this configuration. VRS may be experienced on both rotors of a helicopter : main and tail rotor. For the main rotor, VRS can be faced in the following conditions :
+• In axial descent with a high rate of descent that is approximately equal to the hover induced velocity.
+• In a downwind descent into a landing area.
+• In flight configuration with a low forward speed and steep descent angle.
+• When flying into the wake of an other rotorcraft.
+Concerning the tail rotor, reasons may be the following :
+• In sideways flight.
+• While hovering in a crosswind.
+VRS is clearly a non-linear problem which is depending on rotor disk loading and blade twist [9]. In this configuration, the flow is very unsteady and leads to the different symptoms for the main rotor :
+• Large rotor thrust fluctuations that lead to low-frequency vertical vibrations.
+• Considerable torque variations.
+• Significant rotor vibrations.
+• Large aperiodic blade flapping that leads to loss of control effectiveness.
+• Changes of collective pitch are ineffective.
+• Due to thrust loss, the descent velocity increases.
+Concerning the tail rotor, VRS causes the yaw control to be significantly affected.
+
+
+CHAPTER 2. VORTEX RING STATE 15
+2.2 Wake analysis and dynamics of descent
+The key to apprehend the VRS is to recognize the dominance of the rotor blade tip vortices. Due to the fast rotation of the blades, high dynamic pressure is found at the tip of the blades inducing a strong concentration of the aerodynamic forces in this location. Due to these forces, strong vortices are formed at the tip. These vortices are mainly responsible for sending the flow downstream away from the rotor disk due to the velocities that they induce. Figure 1 shows the flow produced by a helicopter in hovering flight where the blade tip vortices can be observed due to the natural condensation of water vapor in the air. When a vortex is emitted at the blade tip, this one will influence the rotor depending on its orientation, distributed strength and proximity to the blades. Moreover, when the vortex core dissipates as it moves away from where it was emitted, most of its circulation will remain in the flow and is distributed over a larger and larger region, continuing to affect the flow near the rotor. Unlike to fixed-wing, rotary wing flights have always been concerned by the persistence of tip vortices near the rotor which represents a huge challenge to deal with for blades efficiency. In a general way, wake vorticity never profits the rotor. Figure 2.2 shows the evolution of the wake of a rotor as the rate of vertical descent increases.
+
+
+16 2.2. WAKE ANALYSIS AND DYNAMICS OF DESCENT
+Figure 2.2: Rotor wake developments visualisation using free-vortex theory with respect to an increasing rate of descent [9].
+On Figure 2.2 (a), helical vortex wake of a hover configuration is represented. The circulatory velocity of the vortex core of each emitted tip vortices influences the flow in a way that drops off inversely with respect to the radial distance from the core center. Hence, the velocity of each point of the flow will be the integrated contribution of each wake filament relative to its location, orientation and strength. The tip vortices define a slipstream, and these ones influence the flow inside the wake slipstream downstream of the rotor. There is an increase of speed of the flow downstream of the rotor since the flow is influenced by vortices that are both above and below points of interests in the wake and, finally, the speed becomes twice the one induced at the rotor in the far wake as predicted by the momentum theory.
+
+
+CHAPTER 2. VORTEX RING STATE 17
+Moreover, wake will undergo a contraction that is typical from rotorcraft. This one is caused by the fact that every vortex that will be emitted from the blade tips will see a velocity directed inward from the other filaments below the new one that will cause the entire wake near the rotor to contract. As the filaments move downward, a growing number of new vortices will be above the considered one and will produce a balancing outward radial velocity that will stop the wake contraction and will lead to disturbances in the wake and aperiodic behavior far from the rotor. Actually, after a few revolutions, the vortices begin to interact with each other which will cause merging, disturbances, etc. As the helicopter initiates an approach of descent, the descent velocity will tend to reduce the inflow seen by the rotor (vi + Vz). Moreover, the vertical spacing between the tip vortex filaments that was present in hover will now tend to be compressed which will influence the wake near the rotor but also cause the wake pattern to distort closer to the rotor. For low descent rates (Figure 2.2 (b) and (c)), due to the descent velocity, the wake cannot be convected far downstream below the rotor and the wake filaments begin to bundle together which will have the effect of locally expanding the rotor wake. Since the rate of descent is small, the wake pattern near the rotor remains almost the same as in hover and the bundling appears in the far wake. Thus, performances of the rotor are not very impacted by the change of configuration and the efficiency remains close to the one given by the simple momentum theory. As the rate of descent increases (Figure 2.2 (d)), the vorticity produced at the blade tips begins to accumulate closer to the rotor. Due to the high descent velocity, the tip vortices convect above the rotor plane before going downstream in the wake, leading to interactions between vortices and the blades. Pertubations are more present in the wake and are closer to the rotor, bundling into vortex rings that are not stable. The location of these disturbances closer to the rotor affects the flow field and the rotor airloads. However, the rotor is still able to convect the wake vorticity relatively far from the rotor. The descent rate can be increased a little bit more and leads to an incipient VRS (Figure 2.2 (e)). Here, the vortices move clearly above the rotor and the vorticity and perturbations are accumulated in a region near the rotor and will affect the blade loads. In addition to the accumulation of the vorticity, instabilities organize in vortex rings but these rings are still convected away from the rotor. Finally, increase of the descent rate to a higher level will cause the rotor to enter in the special configuration of "Vortex Ring State". The basic feature of the VRS is that the rotor operates with its own wake as the inflow. The net flow at the rotor disk is small and the vorticity is accumulated very close to the rotor or passes through the rotor plane [9]. Hence, the rotor encounters regions of large amount of accumulated vorticity that, moreover, organizes in vortex rings. This induces
+
+
+18 2.2. WAKE ANALYSIS AND DYNAMICS OF DESCENT
+local unsteadiness of the blade airloads that leads to high rotor thrust fluctuations which is a well-known characteristic of the VRS. An interesting feature of this configuration is that, due to the very small axial velocity at the rotor level, the vorticity is mainly convected radially and no more axially away from the rotor as it was the case for all the other states of the descent maneuver. Eventually, the formed vortex ring around the rotor can break and then, its vorticity is convected away upstream from the rotor. Induced velocity below the rotor as well as descent configuration introduce a special concept known as the downwash penalty. This concept is an important phenomenon that is illustrated on Figure 2.3.
+Figure 2.3: Blade velocity diagram for rotor in (left) hover and (right) low descent rate [13].
+These schemes represent the angle of attack perceived by the rotor blade airfoil in hover (left) and in descent (right). It can be observed that the resultant velocity of a blade element is the vector sum of the rotational speed (Ωr) and the induced velocity (vi). An other important observation is that, even if the rotor is operating in hover, the effective angle of attack is slightly lower than the geometric one due to the impact of the induced velocity. Since the lift produced by the airfoil is proportional to its effective angle of attack, the induced velocity tends to reduce the generated lift. As the lift force exerted on the profile is perpendicular to the velocity vector "as seen by the profile" (normal to the local relative wind), the lift vector is tilted [14]. This backward tilt of the aerodynamic force vector implies the presence of an other force component, the induced drag, which is the drag induced by the shed vortex wake. This drag is the main reason of helicopter’s power requirement in hover and low-speed forward flight. The impact of low descent rate on the effective angle of attack (right part of Figure 2.3) deserves attention. A descent velocity has now been added to the system and, for a fixed collective pitch, tends to reduce the inflow felt by the rotor. Even if, in the low descent rate configuration, the rotor inflow should be higher than in hover
+
+
+CHAPTER 2. VORTEX RING STATE 19
+due to the presence of more organized vortices near the rotor, the opposing descent velocity produces a net favorable reduction of the inflow absorbed by the rotor. This reduced inflow will provoke an increase of the effective angle of attack and the rotor will produce more thrust. Thus, it implies that, if the rotor undergoes a disturbance that induces a descent rate from a hover, the increase of thrust that it will produce will contribute to stop the increment of descent rate without specific action of the pilot. Looking at the induced drag, the descent rate will cause the tilt of the aerodynamic force vector to be reduced and then will decrease the power required to compensate it. Hence, for the same amount of power of the rotor, a low descent rate will allow to produce additional thrust for the same collective pitch than in hover.
+Concerning the Vortex Ring State, Figure 2.4 shows the effect of VRS on the effective angle of attack of rotor blade element, according to [13].
+Figure 2.4: Effective angle of attack of a blade element is reduced when VRS is encountered [13].
+Thrust loss or thrust variations observed during VRS could be due to a reduction of the effective angle of attack. Then, for a fixed collective pitch, development of VRS will reduce the blade effective angle of attack due to an increase of the net inflow of the rotor. Actually, the wake organization during the VRS will increase the inflow through the rotor and will grow the induced velocity. This influence of organized vorticity accumulation will negate the benefit of descent rate and then decrease the effective angle of attack. Hence, the thrust loss in VRS is not due to a stalling of the blade as it might be considered, but due to a reduction of the effective angle of attack as a result of the increase of inflow produced by the VRS [13].
+
+
+20 2.3. EXPERIMENTAL WORKS
+2.3 Experimental works
+2.3.1 Flight tests
+Flight tests were the first resources to study the Vortex Ring State. Pilots that encountered the VRS associate this state with an increase of the vibration level of the rotorcraft and with an instability of the response of the flight commands. In the 2000s, The ONERA performed tests campaigns at the flight test center of Istres in France ([6],[15]). These tests were performed on an instrumented Dauphin 6075 equiped with two perches at two meters behind the rotor to measure the local flow velocity. Part of the tests had the objectives to study flights with high descent rates and low forward speeds. To explore the Vortex Ring State, two strategies were followed :
+• Decrease the collective pitch from a level flight by keeping the forward velocity as constant as possible in order to define the upper limit of the VRS.
+• Deceleration of the rotorcraft from a level flight by trying to keep the descent rate as constant as possible in order to define the lateral limit of the VRS.
+These campaigns confirmed the general ideas mentioned previously about the phenomena felt in VRS (Section 2.1). Pilots qualify this state as a true rodeo exercise. Tests also confirmed the fact that changing the collective pitch produces no effect in this configuration, which is known as power-settling. The study supports the fact that the helicopter leaves this state by an increase of the horizontal velocity. However, the ONERA tests disprove a general idea which stipulates that the increase of the collective pitch would amplify the effect of the VRS and provides that the helicopter in VRS was generally insensitive to collective changes. Figure 2.5 presents the approximate boundary in which a helicopter should not enter to avoid VRS. Hence, it must refrain to fly at low forward speed and high rate of descent. The problem is that this boundary is not theoretically well-known and then the critical rate of descent before entering the VRS is underestimated and the accessible flight envelope is then reduced for security reasons. Currently, the major subject of research is to have a precise prediction of this region for the helicopters depending on their respective parameters. For example, flight tests performed on the Dauphin 6075 allow to put forward the fact that the mass of the helicopter has an effect on the VRS boundary (left part of Figure 2.5). The right part of Figure 2.5 shows different models of the boundary of the VRS based on flight tests, these ones confirming the estimation model of the boundary.
+
+
+CHAPTER 2. VORTEX RING STATE 21
+Figure 2.5: (left) Influence of the helicopter mass on the Dauphin VRS boundary [16] and (right) models of helicopter VRS boundaries [17].
+A complex point is to characterize the moment at which it can be considered that the helicopter enters in VRS, to define an upper limit of the boundary. For example, a first idea was to associate the entry in the state by a certain level of thrust fluctuations. On the other hand, tests conducted by the ONERA on the Dauphin 6075 consider that the helicopter is in VRS when this one undergoes a large thrust loss leading to a rapid increase of the descent velocity. For the lower limit, they consider that the helicopter leaves the state when the descent velocity stabilizes. Then, precise definition of the VRS boundary remains an important field to study and define in the future. It needs to designate a precise criterion of entry and leaving and find a way to detect it clearly in flight tests as well as to characterize the impact of the helicopter parameters on the authorized flight envelope.
+2.3.2 Wind tunnel experiments
+Flight tests permit to apprehend the behavior of the rotorcraft in Vortex Ring State by analyzing the stability, response to commands, vibrations, local velocities, ... However, they are limited for understanding flow patterns and getting measurements in the wake of the helicopter. For these reasons, since 1950’s, a lot of experiments in wind tunnel have been performed. One of the precursors of these works were Meijer Drees & Hendal that, through
+
+
+22 2.3. EXPERIMENTAL WORKS
+their studies, obtained one of the best visualisation of the flow in Vortex Ring State (Figure 2.6), even today.
+Figure 2.6: Flow visualisation at the rotor of a scale helicopter model in the Vortex Ring State for a high descent rate with a low forward speed [18].
+Most of the experimental works about the VRS were pursued in the years just after the 50s. After that, this special state did not really raise searchers interest until the 2000s, where this one was clearly identified as responsible of many helicopter crashes, reviving studies and tests about the VRS. One of the first campaign was the one led by Castles & Gray in 1951 concerning the influence of the chord and the twist of the blade on the phenomenon [4]. The goal was to obtain the induced velocity for the descent rates in the range where the momentum theory does not apply, using these blades with different parameters. Results of this study are resumed on Figure 2.7. Other important studies such as the one carried out by Washizu et al in 1966 [5], that used a rotor mounted on a rail in a hall not to suffer from boundary effects or the flight tests performed by Brotherhood in 1949 [19] and in 1968 [20], are also shown on Figure 2.7 for comparison.
+
+
+CHAPTER 2. VORTEX RING STATE 23
+Figure 2.7: Induced velocity data comparison between the studies of Castles & Gray [4], Washizu et al [5], Brotherhood ([19],[20]) and the momentum theory. Graph from [21].
+These campaigns allow to underline some important features of the VRS :
+• The momentum theory gives a good tendency of the evolution of the induced velocity for descent velocity until Vc/vh ≈ −1.5.
+• Data are noisy in the region where the induced velocity is the higher. Hence where Vc/vh ≈ −1.4, data indicates the presence of very high turbulent flow.
+• Flight tests of Brotherhood show that the induced velocity drops off after Vc/vh ≈ −1.4, indicating that the wake cannot be evacuated from the rotor anymore.
+The problem with wind tunnel experiments is that the imposed flow velocity, which is responsible for descent or climb rate, is constant. In other words, the wind tunnel velocity is not related to the rotor thrust. For a free-flying rotorcraft, if the rotor experiences a thrust loss, this one will fall faster. On the contrary, static rotor with a fixed collective pitch in wind tunnel will undergo large thrust fluctuations as VRS is approached, but the descent rate, fixed by the wind tunnel flow, will remain constant. Fall of the free-flying rotorcraft will modify the wake shed by the rotor by adding a free-stream component. Combination of thrust loss and downward acceleration is how VRS is felt by pilot of rotorcraft and is not well reproduced by typical wind tunnel experiments implementing the VRS.
+
+
+24 2.4. RECOVERY FROM THE VRS
+Hence, it has been presented that most of the experimental works pursued until now were mainly focused on the derivation of empirical models of the induced velocity in descent flight in the region where the momentum theory does not apply and on determining the flight envelope of the VRS.
+2.4 Recovery from the VRS
+First thing to know is that recovery from a VRS will inevitably induce a significant loss of altitude. The goal of a good recovery is thus to limit this loss to prevent accident. The main task is to try to move away from the vortex ring, as this one is not able to travel, and then, find again fresh air to recover some lift. General instructions taught to helicopter pilots when encountering VRS is to reduce power, quickly increase the forward or sidewards displacement through cyclic commands to evacuate the recirculating flow, and then, to apply collective pitch to recover lift and decrease the rate of descent [3]. On an other side, the U.S. Navy NATOPS (Naval Air Training and Operating Procedures Standardization) stipulates to first enter autorotation state in order to break the vortex ring before applying cyclic commands to increase forward speed and leave the bad flow [3]. Then, if the rotor can move away from the vortex ring or accelerate in a direction that the formed vortex ring cannot take, the rotor will tend to go back to a stable configuration. These techniques have the failure to induce an important loss of altitude before the recovery which generally corresponds to a loss of 30 to 60 meters of altitude. Near the ground, this loss could be fatal and has already been. But Claude Vuichard, a Federal Office for Civil Aviation inspector in Switzerland, presented in 2017 a new technique that he has developed and that will change the field of the VRS recovery.
+2.4.1 The Vuichard Recovery Technique
+Claude Vuichard is the president of the VRASF, the Vuichard Recovery Aviation Safety Foundation and is the creator of the Vuichard Recovery Technique for Vortex Ring State escape. He is now a worldwide aviation consultant and flight instructor and records more than 16,000 hours of flight experiences on more than 15 different machines [2]. In 2017, Claude Vuichard presented a video1 implementing his recovery technique. This one is described as follows :
+1https://youtu.be/HjeRSDsy-nE
+
+
+CHAPTER 2. VORTEX RING STATE 25
+• Increase collective to maximum available power.
+• Simultaneously, push on the left pedal to keep heading and apply right cyclic between 10◦ and 20◦ of bank to get a lateral movement.
+• The recovery is completed once the rotor reaches the upwind part of the vortex.
+In that way, the helicopter enters a slip that allow the tail rotor to move the rotorcraft to a cleaner air. Unlike to classical techniques, the climb power has already been established and thus, reduces greatly the loss of altitude. The technique was here described for a rotorcraft with counterclockwise rotation and is schematized on Figure 2.8.
+Figure 2.8: Scheme of the Vuichard Recovery Technique for rotor with counterclockwise rotation [11].
+The recovery for clockwise rotation is simply the opposite. The Vuichard Recovery brings a serious improvement compared to traditional techniques since it allows to perform the recovery with an average loss of altitude between 6 and 15 meters against 30 to 60 meters for classical recovery. In 2018, the VRASF received four reports from pilots that applied the Vuichard Recovery Technique to escape the Vortex Ring State near the ground, claiming that this technique actually saved their lives. Claude Vuichard said about his technique that "This is a big step forward to fulfill my vision "zero Vortex Ring State accidents around the world" and save a huge number of human live" and suggests that all pilots should receive a training for this technique in order for it to become a reflex.
+
+
+26 2.5. CONTROVERSIES
+2.5 Controversies
+A large description of the phenomenon of the Vortex Ring State has been given. However, some fundamental features of this state remain uncertainly described. For example, the flight envelope where the VRS can be experienced is not well defined as well as the effect of helicopter parameters on the intensity of the phenomenon. Moreover, an important subject of discussion in the literature lies on the reason of the large thrust variations induced by the VRS. Some searchers identify the thrust loss to an increase of the induced velocity of the flow due to the accumulated organized vorticity near the rotor resulting in a decrease of the effective angle of attack ([13],[22]). On the other hand, people associate fluctuations to the very unstable side of the VRS and to the destabilisation of the flow leading to flow asymmetry at the rotor disk and unsteady blade airloads. ([3], [8], [9]). Finally, people also stipulate that the sudden change of thrust could come when the vortex ring goes from below to above the rotor ([13],[8]) or that the loss can be caused by blade stall. Nowadays, causes of the impact of the Vortex Ring State on the thrust are not well defined and the simulations performed in section 4 will try to bring some clarifications to that.
+
+
+Chapter 3
+Tools used for the simulations
+The last chapter described the important aspects of the Vortex Ring State. The recognition of its involvement in many helicopter crashes and the lack of precise information about the underlying physics and the boundaries where it can be encountered, raised a certain interest in simulating it.
+This third chapter presents the numerical tools used to simulate the phenomenon through a coupling of a multi-body dynamics solver and an aerodynamics one. A brief description of the main parts of both solvers is given. Information about the coupling strategy used to link the two solvers are not provided in this writing but can be found in [23].
+Contents
+3.1 Multi-body solver : Robotran . . . . . . . . . . . . . . . 28
+3.1.1 Topology of a MBS . . . . . . . . . . . . . . . . . . . . . 28
+3.1.2 Model of the rotor in Robotran . . . . . . . . . . . . . . 31
+3.2 Flow Solver : Vortex-Particle Mesh code . . . . . . . . 31
+3.2.1 Methodology . . . . . . . . . . . . . . . . . . . . . . . . 32
+3.2.2 Immersed lifting lines . . . . . . . . . . . . . . . . . . . 33
+27
+
+
+28 3.1. MULTI-BODY SOLVER : ROBOTRAN
+3.1 Multi-body solver : Robotran
+Robotran is a computer software developed at UCL-MEED that generates the dynamic and kinematic equations of a multibody system (MBS) in a symbolic way. The software is organized around three environments presented on Figure 3.1.
+Figure 3.1: Architecture of the ROBOTRAN program [24].
+The multibody system is first schematized on the MBsysPad graphical editor where the dimensions, degrees of freedom, etc of the MBS are defined. Then, the equations of motions are generated by the symbolic generator in MBsysTran that can export the equations in C, Matlab or Python. Finally, the symbolic equations are interfaced with the simulator (MBsysC). In this section, the general important elements of a multybody system are described and the way to model them in Robotran is presented. The content of this section is inspired by [24] where more detailed descriptions can be found. Additional information about Robotran can also be obtained in [23, 25].
+3.1.1 Topology of a MBS
+A multibody system is a mechanical system consisting of several rigid bodies connected together by joints. Scheme of a MBS is shown on Figure 3.2.
+
+
+CHAPTER 3. TOOLS USED FOR THE SIMULATIONS 29
+Figure 3.2: General representation of a multibody system [24].
+In Robotran, a rigid body is characterized by four different quantities (all quantities are exposed for a body i (i = 1 : n)) :
+• the joint vector, dj = [Xˆ i]tdj which locates the connection points of the joints on the body.
+• the position vector of the center of mass CM i of the body in the body frame , Ii = [Xˆ i]tli.
+• the mass of the body, mi.
+• the inertia tensor of the body with respect to its center of mass in the body frame , Ii = [Xˆ i]tIi[Xˆ i].
+These quantities are shown on Figure 3.3.
+Figure 3.3: Body characterization [24].
+
+
+30 3.1. MULTI-BODY SOLVER : ROBOTRAN
+Joints characterization
+There are two types of mechanical connections that are implemented in Robotran : prismatic and revolution joints (Figure 3.4).
+Figure 3.4: Elementary joints [24].
+These joints have only one degree of freedom and are assumed to be massless. To model more elaborate joints such as spherical, universal or simply joints with multiple degrees of freedom, several one d.o.f joints are assembled in series. For example, to authorize the six degree of freedoms in space of an object with respect to a base, three prismatic and three revolute joints are successively put between the base and the object.
+Forces and Torques
+Forces and torques acting on a body are split in three different categories :
+• The gravitational force is considered separately from the others.
+• The joint forces/torques act on the body via the joints connections of this one to its parent and children body.
+• The external forces/torques are all the other forces that the body can feel in its environment. They are considered as external to the MBS and are resumed in a resultant force vector and torque vector with respect to the center of mass of the body.
+The application point of these external forces and torques is defined by the use of a F-sensor.
+Generalized coordinates
+In Robotran, the behavior of all the joints used in the MBS model are described through generalized coordinates q. At each time step, position q, velocity q ̇ and
+
+
+CHAPTER 3. TOOLS USED FOR THE SIMULATIONS 31
+acceleration q ̈ are computed. These coordinates can as well be free and evolve under the constraints of the environment, blocked and stay in a desired position, or driven and follow an imposed motion.
+3.1.2 Model of the rotor in Robotran
+Figure 3.5 shows the MBsysPad of the modeled rotor in Robotran. Four different revolute joints have been put between the mast and all the blades to model the different hinges present to control the motion of the blades relative to the rotor plane.
+Figure 3.5: Model of the rotor in Robotran.
+3.2 Flow Solver : Vortex-Particle Mesh code
+Flow solver used to simulate the aerodynamic behavior of the rotor of the helicopter is a numerical approach to solve the Navier-Stokes equations that describe the motion of viscous fluid substances. In this sense, a Vortex Particle-Mesh flow solver using immersed lifting lines has
+
+
+32 3.2. FLOW SOLVER : VORTEX-PARTICLE MESH CODE
+been developed at UCL-TFL. Hence, the large scale aerodynamics and the wake of the rotor are simulated using a highly parallel implementation of this VPM code that consists in the Large Eddy Simulation of the Navier-Stokes equations in the vorticity-velocity formulation for incompressible flows. In this section, general methodology of the VPM code will be described and details about the theory of immersed lifting line are given. The interested reader can find more information about the VPM code in [26, 27].
+3.2.1 Methodology
+The vorticity-velocity formulation of the Navier-Stokes equations is given by
+Dω
+Dt = (ω · ∇)u + ν∇2ω (3.1)
+where D
+Dt = ∂
+∂t + u · ∇ represents the Lagrangian derivative and ν, the kinematic viscosity. The Large Eddy Simulation consists in a mathematical model for turbulence that allows to reduce the computational costs of simulations. The idea is to ignore the smallest length scales of the flow and to only simulate the largest length scales. The effect of the smaller scales on the flow field is then modeled and taken into account in the Navier-Stokes equations. Hence, the equation for LES is given
+by
+Dω
+Dt = (ω · ∇)u + ν∇2ω + ∇ · TM (3.2)
+where TM is the Sub-Grid Scale (SGS) model, which is, in our case, a multiscale model acting on the small scales of the LES field [28]. The vortex particle methods consist of introducing particles that carry information about vorticity and tracing their positions to study the evolution of the vorticity field [29]. The particles are characterized by a position xp, a volume Vp and a strength αp = ∫
+Vp ωdx. The particles are convected by the flow field and give information about the vortex diffusion and stretching [30]. The vortex methods are Lagrangian methods and suffer from inaccuracy due to the well-known Lagrangian distortion [23]. The vortex-particle mesh method, the one used in our solver, is a hybrid vortex method that combines Lagrangian and Eulerian methods. Hence, the advection of vorticity of the equation 3.2 is solved with particles and the right-hand side is evaluated efficiently on an underlying mesh. The velocity field is obtained from the vorticity field by using the Poisson equation
+∇2u = −∇ × ω (3.3)
+
+
+CHAPTER 3. TOOLS USED FOR THE SIMULATIONS 33
+This equation is solved by a fast Poisson solver in the Fourier space [31]. The sharing of information between the particles and the mesh nodes is obtained using a high order back-and-forth interpolation between the particles and the grid that preserves the good numerical accuracy and stability of a vortex particle method.
+3.2.2 Immersed lifting lines
+The generation of vorticity along the blades is obtained through an immersed lifting line approach. The lifting-line theory, developed by Prandtl in 1918, defines a mathematical model that permits to estimate the lift distribution of a threedimensional blade based on its geometry. This model shed a vortex-sheet along the whole bladespan from the trailing edge instead of only taking into account the blade tip vortex. The approach relies on the Kutta-Joukowski theorem that relates the lift production to the relative flow Vrel and the distribution of the circulation Γ over the span
+L = ρVrel × Γ (3.4)
+The circulation Γ on a certain section is related to the strength of the blade-attached vortices such that Γ=−
+∫
+S
+ω · ndS (3.5)
+For each blade section, at the end of this one, the vortices are shed downstream and the strength of a shed vortex is defined by the derivative of the local blade circulation distribution dΓ
+dy , influencing the flow on both sides of the local blade section. Hence, change in lift around the spanwise of the blade is modeled by the shedding of a vortex filament behind the blade. Then, all these vortices at the trailing edge of the blade form the so-called vortex sheet that is shed downstream of the flow. The circulation depends on the position around the blade and the time. Then, we have Γ(r, t). In the vortex-particle mesh solver, the particles are used to discretize the attached vortices and the shed vortex as shown on left part of Figure 3.6.
+
+
+34 3.2. FLOW SOLVER : VORTEX-PARTICLE MESH CODE
+Figure 3.6: (left) Discretization of the attached and shed vortices using particles and (right) interpolation of the vortices onto the mesh [30].
+Then, the attached vortices and the shed vortex can be interpolated on the mesh independently (right part of Figure 3.6).
+
+
+Chapter 4
+Simulations
+Chapter 3 presented the important information to know about the vortex-particle mesh code and the model of the rotor in Robotran, to appreciate the functioning of the performed simulations.
+This last chapter resumes the main outcomes of this writing. Through simulations, it will confirm concepts and analysis described in chapter 2 as well as trying to bring answers to some issues that are not currently fully resolved.
+Firstly, validation of the coupled numerical solver will be performed in a hover configuration. Then, simulation of the dynamics of descent up to the entry in Vortex Ring State will be done by considering the fall of the rotor in the domain of calculation. Finally, establishment of the Vortex Ring State will be simulated for the case of a static rotor in a way similar to wind tunnel experiments.
+Contents
+4.1 Presentation of the simulations . . . . . . . . . . . . . . 36
+4.2 Validation case : Hovering flight . . . . . . . . . . . . . 36
+4.3 Vortex Ring State . . . . . . . . . . . . . . . . . . . . . . 38
+4.3.1 Methodology . . . . . . . . . . . . . . . . . . . . . . . . 39
+4.3.2 Free-flight vertical descent simulation . . . . . . . . . . 39
+4.3.3 Static rotor simulation . . . . . . . . . . . . . . . . . . . 45
+35
+
+
+36 4.1. PRESENTATION OF THE SIMULATIONS
+4.1 Presentation of the simulations
+In real flight conditions, cases of Vortex Ring State observed by pilots were reported to be in approach with a small forward velocity and high descent rate. Capture all the features of the VRS in such a configuration is not an easy task using the numerical tools presented in chapter 3. Then, in this writing, only the rotor of the helicopter will be considered and focuses have been put on the vertical aspect of the phenomenon (hence, with no forward velocity), as it is done in wind tunnel experiments. Moreover, the VRS will be apprehended and simulated only for standard helicopter configuration, the other types such as tilt-rotor, side-by-side, tandem, etc will not be covered, although the features of the phenomenon remain approximately the same. Simulations have been performed using a massively parallel implementation of the vortex particle-mesh flow solver, coupled to the multi-body dynamics solver. Both solvers are described in chapter 3. Section 4.3.1 presents the strategies followed to simulate the Vortex Ring State. Two different ones have been pursued. The first, to obtain the dynamics of descent up to the entry in VRS and the second, to capture the features of the development of the VRS. Simulations begin by a hovering flight to shed a wake below the rotor. Details of this simulation are given in the next section.
+4.2 Validation case : Hovering flight
+In order to get a validation of the accuracy of our coupled solver, the simulation of a hovering flight with flapping degree of freedom has been performed. Results have been compared to reference values obtained by NASA in a static thrust analysis of a rotor [32]. Identical rotor as the one used for the experiments has been modeled in the VPM code. Characteristics of the rotor are :
+• Number of blades, Nb = 4.
+• Blade has a NACA0015 symmetrical profile.
+• Radius of the rotor, R = 0,764 [m].
+• Diameter of the hub, Dhub = 0.0762 [m].
+• Chord of the profile, c = 0.0508 [m] from the tip to a radius R = 0.127 [m]. Then, from this point, the chord decreases linearly to c = 0.01906 [m] at R = 0 [m].
+
+
+CHAPTER 4. SIMULATIONS 37
+• Rotation speed of the rotor, ω = 960 [rpm].
+• Solidity of the rotor, σ = Nbc
+πR = 0.0849 [-].
+The modeled rotor is shown on Figure 4.1.
+Figure 4.1: Implemented rotor in the VPM code, corresponding to the one used in [32].
+In the actual version of the VPM code, there is no way to impose an unbounded boundary condition at the top of the box. Therefore, the imposition of an infinite velocity at the boundaries is mandatory. However, Figure 1.4 shows the streamlines of the flow in hover and reveals that imposing a zero velocity high above the rotor, as it should be in hover, will produce inaccurate results since it will not give right inflow streamlines due to the finite dimensions of the calculation box. To counterbalance this problem, a downward velocity (with respect to the direction of the thrust production) has been imposed to the flow to reproduce right shape of the streamlines for a hover. Simulations have been performed for a static rotor with collective pitch going from 1◦ to 12◦, where the thrust coefficient has been computed for each collective after that the simulation converged to the hover thrust. The thrust coefficient, CT , is defined by
+CT = T
+ρ
+2 πR2(ΩR)2 [−]
+A downward velocity, V∞ = 1.5 [m/s], has been set through the calculation box for the previously mentioned reasons. Table 4.1 presents the comparison between the coefficients derived from the simulations and the one obtained experimentally.
+
+
+38 4.3. VORTEX RING STATE
+θ [◦] CT [-] CT,ref [-] 1 -0.000319 0.000287 2 0.000486 0.001042 3 0.00155 0.00214 4 0.00284 0.00328 5 0.00429 0.00473 6 0.00579 0.00645 7 0.00745 0.00792 8 0.00910 0.00981 9 0.01079 0.01182 10 0.01252 0.01382 11 0.01426 0.01596 12 0.01591 0.01745
+Table 4.1: Comparison of static thrust coefficients for different collective pitches between simulations and references values of [32].
+A first observation that can be done is that, for very small angles of attack (here, 1◦), simulation of hover can give negative thrust coefficient. This result is logical since a downward velocity is imposed through the rotor that can impact its performance in some configurations. As the angle of attack increases, results of simulations become satisfying and are in acceptable agreement with experiments for angles of 3◦, 4◦, 5◦, 6◦ and 7◦. After these angles, differences become greater and the simulations begin to, more and more, underestimate the real thrust. These results provide an interesting fact. Imposition of a downward velocity provides streamlines that are only good for a range of collective pitches. In this case, for a velocity V∞ = 1.5[m/s], the results are acceptable for angles between 3◦ and 7◦ and become less accurate afterwards. Then, depending on the angle of attack required to hover for a provided helicopter, appropriate velocity has to be set to provide accurate performances.
+4.3 Vortex Ring State
+This section aims at simulating the Vortex Ring State. To do that, the same rotor as in the validation case is considered with a collective pitch of θ0 = 5◦ and V∞ = 1.5[m/s]. Two different strategies have been followed to capture the important features of the dynamic of descents as well as the establishment of the VRS.
+
+
+CHAPTER 4. SIMULATIONS 39
+4.3.1 Methodology
+A principal feature of the VRS is that the wake shed by the rotor is evacuated at approximately the same speed as the descent velocity. The goal is thus to drop the rotor in its own wake at a descent rate consistent with the apparition of the Vortex Ring State. To achieve that, the following strategy has been followed :
+• First, the rotor is placed in hover at a fixed collective pitch. Weight of the simulated helicopter is then deduced from the thrust produced in this configuration such that T = W.
+• Hover configuration is simulated until characteristics of the hover wake are observed.
+• After that, to simulate free-flight vertical descent, a descent rate is initiated through a reduction of the collective pitch, the thrust produced by the rotor becoming smaller than the hover thrust. Then, any changes of thrust compared to the one in hover will produce a climb or a descent of the rotor.
+• Collective pitch is constantly reduced to increase the descent rate and bring the rotor to the Vortex Ring State.
+Even if this simulation is the right way to simulate the VRS "as it is felt by the pilot", this one requires very large calculation box to allow the physical descent of the rotor during many hours resulting in high computational costs. For the scope of this writing, this kind of simulation has been performed until the entry in the VRS to analyze the dynamics of descent of the rotor. On the other hand, establishement of the VRS has been simulated in a configuration that looks like the one of a wind tunnel experiment. The rotor stays fixed in the domain of calculation and the descent velocity is imposed through a velocity across the box. This velocity is slowly increased to observe the development of the VRS.
+4.3.2 Free-flight vertical descent simulation
+Description of the set-up
+As it is described in chapter 2, trying to reproduce the flight situation experienced by pilots in the Vortex Ring State requires to relate thrust variations to changes of physical descent rate of the rotor. In this sense, a simulation set-up has been built. This one corresponds to a box of calculation with a length in the descent direction of 10 Drot under the initial position of the rotor.
+
+
+40 4.3. VORTEX RING STATE
+The simulation begins by a hover at a collective pitch of θ0 = 5◦ until to reach 1 second of simulation. Then, reduction of the blades angle of attack is initiated through collective command. The geometric angle of attack is decreased of 0.4◦ every 2.5 seconds of simulation. This decrease induces a descent velocity which causes the rotor to fall in the box. The velocity is computed based on the difference of the thrust measured by the VPM code and the thrust evaluated in the hover configuration.
+Results
+Figure 4.2 presents the main results of the free-flight vertical descent simulation. At the top of the Figure, slices of the vorticity field show the wake pattern at the key phases of the descent. Figure 4.2 (a) presents the evolution of the vertical velocity of the rotor, Vz, as the collective pitch is sequentially reduced. After the stabilization of the hover configuration, at t = 1 [s], the collective drops and initiates a small descent rate. The thrust loss resulting from this drop is shown on Figure 4.2 (b) as well as the evolution of the thrust during the simulation. As the low descent rate begins, it can be observed that the thrust loss is progressively and fully recovered as a steady rate of descent develops. Blue curve on Figure 4.2 (a) shows the establishment of the new equilibrium configuration after the collective decrease, as a constant descent velocity is reached. Figure 4.3 shows the three-dimensional vorticity field for the same finite times as the slices presented on Figure 4.2. On these Figures, the wake pattern up to the end of the first collective reduction can be observed on the two first slices. In the hover configuration, at t = 1 [s], the wake contraction as described in section 2.2 is recognized as well as the well-known starting vortex that is convected downward due to the initiation of the rotation of the blades. Figure 4.2 (c) exposes the evolution of the net inflow (combination of the descent velocity, Vz, and the induced velocity, vi) in the rotor reference frame. This velocity is evaluated for each complete rotation of the rotor by integrating the velocities values of the four blades over a complete cycle. Then, it corresponds to
+V= 1
+πR2
+∫R
+0
+∫ 2π
+0
+vzrdrdθ (4.1)
+Figure 4.2 (c) shows that initiate a collective decrease will lead to a reduction of the net flow through the rotor. Then, it confirms that the increase of the rotor inflow due to the accumulated vortices closer to the rotor is balanced by the increment of the descent velocity that opposes the rotor inflow, for low descent rates. Finally, slices and three-dimensional views confirm that the low descent rate maintains the wake pattern of the hover and that the disturbances and bundling
+
+
+CHAPTER 4. SIMULATIONS 41
+happen far from the rotor. A second reduction of the collective will cause the rotor to fall faster in the box. Unfortunately, the simulation duration at this new constant collective pitch is not long enough to observe the complete establishment of a new equilibrium configuration (Vz on Figure 4.2 (a) does not completely reach a constant value before the next pitch decrease). However, recovery of the thrust loss is still of application and the thrust production remains close to the hover one since the effective angle of attack increased due to the reduction of the rotor inflow. Refers to discussion on the downwash penalty in section 2.2 for more information about the effective angle of attack in descent configuration. Visualisations of the flow at t = 5 [s] clearly exhibits the bundling of the vortices in the proximity of the rotor and the progressively breaking of the well defined slipstream. Vortices begin to detach and to pair together closer to the rotor. A final reduction of the blades pitch, at t = 6 [s], will provoke the penetration of the rotor in its own wake. The vortices that were before further down in the wake, lie now very close to the rotor and evidences of rolling-up near this one can be observed on the visualisations at t = 6.4 [s]. Unlike to previous collective drops where a new equilibrium configuration was found and where organized vorticity was convected away, no equilibrium position is reached as we can see that the rotor falls faster and faster in the box on Figure 4.2 (a). Cylindrical aspect of the wake begins to disappear making way for a larger wake diameter near the rotor. More over, observations of evident blade-vortex interactions (visualisations at t = 7.4 and 8.4[s]) are accompanied by apparition of marked thrust fluctuations on Figure 4.2 (b). For these two last time steps, evidences of wake expansion are observed as well as the propensity of the grouped rings just below the rotor to send vortices upward and outward toward the rotor. Some of these vortices, as they move above the rotor, are entrained by the inflow pattern, and then, these vortices are reingested by the blades, leading to an increase of the thrust noises. Due to this vortices reingestion, even if the descent velocity continues to increase and to oppose the inflow of the rotor, the net inflow raises anyway (Figure 4.2 (c)). Finally, observations of some flow structures passing from below to above the rotor in its center can be done on Figure 4.2 and 4.3.
+
+
+42 4.3. VORTEX RING STATE
+Figure 4.2: Results of the free-flight vertical descent of the rotor obtained thanks to successive drops of collective pitch.
+
+
+CHAPTER 4. SIMULATIONS 43
+(a) t = 1 (s) (b) t = 3 (s) (c) t = 5 (s)
+(d) t = 6.4 (s) (e) t = 7.4 (s) (f) t = 8.4 (s)
+Figure 4.3: Volume rendering of the vorticity field around the rotor at key phases of the way to the entry in Vortex Ring State.
+Limitations
+The type of simulation performed in this section is one of the best way to represent the physical phenomena behind the Vortex Ring State in flight condition. However, the set-up used for the simulation suffers from weaknesses and limitations.
+
+
+44 4.3. VORTEX RING STATE
+• As presented in section 4.2, to reproduce the right shape of the streamlines that feed the rotor in hover, a specific V∞ that drives a flow trough the calculation box has to be applied. The problem being that this velocity remains applied even when the rotor begins to descend. Hence, this velocity prevents some free stream phenomena to develop during the descent as it imposes an opposite velocity to the one produced by the descent rate in the neighborhood of the rotor. The actual version of the VPM code (description in section 3.2), does not allow to impose a net zero velocity through the box without disturbing the streamlines of the flow in hover, and then, this velocity is mandatory to obtain a consistent wake due to the hover configuration at the beginning of the simulation.
+• The size of the box is finite in the direction of the rotor fall. The box is unbounded in the x and y direction, allowing to expand the box as some vorticity approaches the physical boundaries of the box in these directions. However, imposing such a condition in the z direction would lead to very long box. Actually, the box will increase in length as long as vorticity is shed and convected. As the rotor falls, it produces vorticity closer and closer to the boundary, forcing this one to move. More over, space between the top boundary and the rotor has to be large enough to permit right inflow in the rotor. Finally, space is needed behind the rotor as this one continues to fall after entering the VRS. Even with unbounded boundary, the box will still be very large. On the other hand, considering a box of finite size would lead to way too large box, to be able to capture all the features relative to the phenomenon.
+• The problem with large box of calculation is that it greatly increases the computational cost, due to the large number of calculation points. In addition to the fact that physically dropping the rotor extends also the calculation time compared to static rotor, simulation in this configuration requires a huge number of computation resources. The VRS is a phenomenon that establishes after several collective drops inducing descent rates higher and higher. Capturing the equilibrium configurations settling down after the drops requires to stay considerable time in the same configuration and to follow the rotor fall. Moreover, catching the different phases of the VRS obligates to stay even more time in the same configuration to observe the establishment of the phenomenon. Getting all of these in a simulation asks very long time of simulation on a massively parallel simulation using a large number of processors. In the scope of this work, such a type of simulation is not feasible. Simulation proposed on Figure 4.2 corresponds to what we can consider by
+
+
+CHAPTER 4. SIMULATIONS 45
+using the available time and accessible resources. To accelerate the process to the VRS, large collective drops are done, which does not really allow to observe equilibrium establishments and VRS phases. Actually, only a very brief passage in the entry of the VRS is obtained before the end of the simulation.
+• A drawback of the imposition of a velocity across the box is that the vorticity at the outlet of the box must go out at this velocity. In the case of the presented simulation, as the rotor gets closer to the bottom boundary, vorticity is accumulated closer and closer to this one. The induced velocity of the rotor being greater than the velocity imposed at the edge, vorticty is slowed down and then tends to accumulate and expand near the frontier. Hence, at the end of the simulation, the flow close to the moment of the entry in VRS is disturbed due to the explained phenomenon inducing a vorticity flow that do not really corresponds to what would happen far from the boundary.
+Taking into account all the features described previously, use this simulation setup with the available resources is not the proper way to explore the establishment of the VRS. In this sense, the next section describes a different and more adequate simulation configuration.
+4.3.3 Static rotor simulation
+In order to reduce the computational cost to allow longer duration of simulation and to overcome the weaknesses of the previous set-up described in section 4.3.2, a different strategy has been followed.
+Description of the set-up
+In this case, the rotor will remain at the same position in the calculation box and will not fall in this one, allowing to consider smaller calculation domain. The box has a dimension of 7 Drot in the z direction, the rotor being located at the center of this one. The descent velocity will be imposed through the velocity V∞ that forces a flow across the box. Actually, the set-up looks like the one used for experiments in wind tunnel but differs a little bit from this one. Simulation begins with a hover configuration that requires a V∞ flowing from the top to the bottom of the box for the correctness of the streamlines. After that the hovering flight inaugurated a wake below the rotor, the goal is here to inverse the direction of the velocity V∞ to simulate descent rate that will increase with respect to time, to obtain a descent configuration. The rotor being static, the imposed velocity will bring the vortices of the wake in the direction of the rotor as
+
+
+46 4.3. VORTEX RING STATE
+the descent velocity increases instead of having the rotor that physically catches up its wake. Changes of the velocity in the box are performed continuously. The passage from the velocity corresponding to hover configuration (positive value of V∞) to negative value will lead to inaccurate results. Actually, the change of velocity will induce incorrect shapes of streamlines before entering in negative values and reversing the velocity direction leading to initiation of descent configuration. Hence, these results correspond to non-physical consequences and have to be ignored. After that, all the shed vortices will begin to go back to the rotor location. As the descent velocity increases, more and more vortices will move above the rotor before the moment where this velocity will reach the range of descent velocities where the Vortex Ring State will be encountered. After the establishment of the state, the descent rate will continue to increase in order to examine the states coming after the VRS in the axial descent configuration : turbulent wake and windmill brake states. The collective pitch of the rotor keeps the same value as the one used to hover, θ0 = 5◦, and then, the descent rate is only obtained through the changes of infinite velocity.
+Infinite velocity evolution
+Figure 4.8 (a) shows the variation of the infinite velocity which is responsible of the descent rate of the rotor with respect to time. At the beginning, the velocity is equal to V∞ = 1.5 [m/s] to permit the development of an accurate wake due to hover. The velocity begins to continuously decrease from t = 2 [s] and, at t = 4 [s], the infinite velocity reaches 0 [m/s]. The passage from V∞ = 1.5 [m/s] to 0 [m/s] representing non-physical results of a hover with changing streamlines. The descent velocity progressively increases at a rate that is gradually reduced with respect to time. At t = 12.5 [s], an other reduction of the changing rate is applied as the simulation enters in the region where the Vortex Ring State will be encountered. In this region, the descent velocity is constantly reduced from 4.5 [m/s] to 6 [m/s] on a period of 20 seconds of simulation. This let the opportunity to capture the development of the characteristics of the different phases of the VRS. After this cycle, the descent rate is largely increased to observe the passage from the VRS to the turbulent wake state. Before presentation of the evolution of the thrust in the Vortex Ring State (Figure 4.8 (b)), descriptions of physical phenomena that take place during the establishment of the state are exposed. In what follows, the evolution of the vortex rings at the different phases of the VRS and the unsteady side of the phenomenon are discussed.
+
+
+CHAPTER 4. SIMULATIONS 47
+Phases of the VRS
+Figure 4.4 and Figure 4.5 present the vortex ring structures at the different phases of the Vortex Ring State. These last showing temporally filtered visualisations of the vorticity field and the velocity field respectively. The size of the box of calculation is not completely represented on the slices where only the interesting part of the domain is shown, the rotor being located at the position 0. The entry in the VRS is characterized by a large thrust change caused by the transition of vorticity accumulation in vortex rings from below to above the rotor. This particular process will be detailed in the next discussion. After the entry, the first phase of the VRS consists of strong vortices accumulation in vortex rings around the rotor plan. This phase is aperiodic and unsteady. Vortex Ring State can settle on each part of the rotor independently or on both sides at the same time for small periods. This powerful accumulation breaks away rapidly and strongly influences the flow above the rotor and its inflow. The detachment of vortex ring structures will be explored in depth in the next part of this writing. This first phase can be observed on slices (a). For visualisation, a temporal filter has been applied on several time steps to observe tendencies of global movement of the flow. The Figures 4.4 and 4.5 (a) consist of a mean of the flow between t = 15.5 [s] and t = 15.7 [s]. This short period cannot be extended due to the unsteady side of the flow in this phase of the VRS. After the region of large thrust surge (refers to Figure 4.8 (b)) and establishment of firsts strong and unsteady vortex rings structures, the state enters a second phase. This one corresponds to larger global movement that organize in vortex rings on both sides of the rotor. The flow is more stable and steady, although some instabilities disturb locally this one. This organization can be observed on slice (b) of the two Figures where the flow has been temporally filtered between t = 18.6 [s] and t = 19.0 [s]. Two larger vortex rings than in the first phase are observed. Due to the diminution of the instability of the vortex rings, the two structures organize in a similar way and the wake above these ones looks more steady and in a define direction. Some vortices can escape from the vortex rings at the meeting region between the two vorticity structures due to interactions between vortices together and with the reverse flow coming from below through the hole at the center of the rotor. On the slice of the velocity field (Figure 4.5 (b)), clear regions of high velocity at the boundaries of the vortex rings can be noticed as well as low velocity regions corresponding to the flow encapsulated in vortex cores. Region of high velocity can also be seen at the meeting place of the two vortex where the flow is accelerated in the rotor direction and both Figures 4.4 and 4.5 allow to examine the interactions between the vortex rings and the reverse flow coming
+
+
+48 4.3. VORTEX RING STATE
+from below the rotor. As the descent rate increases and that the Vortex Ring State establishes, size of the ring structures continues to increase above the rotor (slices (c)). The intensity of the vortex rings decreases compared to previous phases and the vorticity spreads over larger organized regions. However, detachments and ejections of structures are more regular leading to an increase of the size of the wake and the presence of more vortices above the rings. Visualisations of slices (c) are temporally filtered between t = 27.0 [s] and t = 28.0 [s], showing that vortex rings are getting steady over a larger period of time. Slice of velocity (Figure 4.5 (c)) permits to notice the same things as in the previous phases. However, the vortex rings are clearly larger in size but the velocity in the upward parts of the vortex rings is getting a little bit slower confirming the fact that some vortices can detach from the vortex rings and be thrown in the far wake which is then getting bigger. As it can be noticed on the slices (c), the diameter of the ring on the right part is larger than the other one and some vorticity lies below the rotor. This is due to the fact that, between t = 27 [s] and t = 28 [s], a small instability at the center of the rotor disturbed the flow organization and sent some vorticity below the rotor. But the intensity of the instability was not strong enough to break the stable side of the flow and vortices still tend to organize in clear vortex rings structures. By looking on Figure 4.8, it can be observed that the Vortex Ring State is encountered for descent velocity in the approximate range of −1.1 ≥ Vd/vh ≥ −1.6. This range is coherent with the one defined by the inaccuracy of the momentum theory and with the data obtained in wind tunnel and flight experiments described in section 2.3.1. Finally, the last phase of the Vortex Ring State is the transition to the turbulent wake state. As the descent velocity reaches approximately two times the hover one (V∞ ≈ 2vh), structure of the VRS begins to disappear and the flow above the rotor is transformed in a more turbulent wake moving closer to the one of a bluff body. Slices (d) of Figure 4.4 and 4.5 show the loss of the organized rolling movement of the vortices and the presence of a large region of slow and recirculating flow composed of disorganized vortices above the rotor. Visualisations are temporally filtered between t = 36.0 [s] and t = 37.0 [s]. Finally, Figure 4.6 shows the three-dimensional views of the vorticity field at finite times corresponding to the four different phases presented previously. The extension of the diameters of the vortex rings can clearly be observed as well as the non steady global movement of the wake in the first phases of the Vortex Ring State due to detachments of strong vortices.
+
+
+CHAPTER 4. SIMULATIONS 49
+(a) t = 15.5 - 15.7 (s) (b) t = 18.6 - 19.0 (s)
+(c) t = 27.0 - 28.0 (s) (d) t = 36.0 - 37.0 (s)
+Figure 4.4: Evolution of the vorticity field for the different phases of the Vortex Ring State. Visualisations are temporally filtered on several time steps.
+
+
+50 4.3. VORTEX RING STATE
+(a) t = 15.5 - 15.7 (s) (b) t = 18.6 - 19.0 (s)
+(c) t = 27.0 - 28.0 (s) (d) t = 36.0 - 37.0 (s)
+Figure 4.5: Evolution of the velocity field for the different phases of the Vortex Ring State. Visualisations are temporally filtered on several time steps.
+
+
+CHAPTER 4. SIMULATIONS 51
+(a) t = 15.7 (s) (b) t = 18.7 (s)
+(c) t = 27.4 (s) (d) t = 36.5 (s)
+Figure 4.6: Volume rendering of the vorticity field around the rotor at times corresponding to the different phases of the Vortex Ring State. Vorticity of the four pictures is shown for values in the range between 0 and 450.
+Unsteadiness of the VRS
+Figure 4.7 presents the unsteady side of the Vortex Ring State through slices of the vorticity field in the calculation box at finite time steps. Slices (a) to (e) shows the transition, on approximately 1 second of simulation, of a vortex ring that
+
+
+52 4.3. VORTEX RING STATE
+formed below the rotor before moving through it and impacting the above flow. This transition marks the entry in the Vortex Ring State. On the right part of the slice (a), the vortex ring under the rotor is observed. Then, this one is entrained through the rotor plan and begins to curl around the right blade tip (slice (b)). Slices (c) and (d) allow to examine the detachment of this accumulated vorticity from the rotor. Strong vortices lie in the vortex ring around the rotor but, as it can be noticed on slice (c), part of this vorticy begins to detach from the vortex ring structure and is released in the upward wake, impacting this one. Slice (d) shows that the vorticity does not accumulate in vortex ring anymore and that the one that it contained had been thrown in the wake, where the movement in the left direction of the last vortices that lied in the vortex ring can be observed. Finally, the effect of the detachment of the vortex ring from the rotor is to impact the global orientation of the wake due to the strong vorticity that is released in this one. By looking on the orientation of the flow before the establishment of accumulation of vorticity in a vortex ring around the right part of the rotor (slice (a)) and after the rupture of this one (slice (d)), it can be noticed that progressive detachment of the vortex ring results in ejections of vortices in the wake. Due to the direction of rotation of the vortex ring, the expulsion of vortices will induce a movement in the left direction of the global flow above the rotor. At the end, the vorticity of the evacuated vortex ring has completely deviated the global movement of the wake to the left and it can be observed that some of the vorticity present near the rotor tends to form a new vortex ring but, this time, above the rotor and with smaller intensity (slice (e)). After that, a more steady state develops as it can be observed that the Vortex Ring State establishes on both sides of the rotor on slice (f). Due to the establishment of the steady state, the most of the vorticity go back and forth through the rotor and no more vortices leave the rings except in the place where these two are meeting. Hence, the production of new vorticity due to the passage of the old one through the rotor supplies the vortex rings and a gap of vorticity between the old vortices present in the wake and the vortex rings is observed on slice (g). Only few vortices leave the structure at the interaction place between the rings. The exit from the steady state is due to the development of an instability in the flow. Due to the descent velocity, there is a counter flow that goes upward in the hole at the center of the rotor. This reverse flow interacts with both vortex rings as shown on slice (g). This will lead to the destructuring of the stable vortex ring located at the right part of the rotor that will bring the vortex to progressively move downward through the rotor. This entertainment of the vortex causes some vortices to detach from the vortex ring structure and to be thrown in the wake (slice (h)). A larger vortex ring will roll around the rotor with flow structures above and below this one. Due to the interactions, the vortex ring will break and
+
+
+CHAPTER 4. SIMULATIONS 53
+this will cause the breakdown of the stable side of the flow leading to turbulent and disorganized structures above the rotor as presented on slice (i), before to reorganize in Vortex Ring State for an other cycle.
+
+
+54 4.3. VORTEX RING STATE
+(a) t = 14.26 (s) (b) t = 14.56 (s) (c) t = 14.64 (s)
+(d) t = 14.84 (s) (e) t = 15.40 (s) (f) t = 15.82 (s)
+(g) t = 16.20 (s) (h) t = 17.00 (s) (i) t = 17.50 (s)
+Figure 4.7: Evolution of the vorticity field illustrating the entry and the unsteadiness of the Vortex Ring State due to development of instabilities in the flow.
+
+
+CHAPTER 4. SIMULATIONS 55
+Thrust evolution
+Figure 4.8 (b) presents the evolution of the thrust produced by the rotor during the process to the Vortex Ring State as well as during the different phases of this one. First of all, for already mentioned reasons, a little raise of the thrust production is observed during the transition from V∞ = 1.5 [m/s] to 0 [m/s], that has to be ignored due to non-physical causes. The passage of V∞ to negative values initiates the descent configuration. As the descent velocity increases, the thrust coefficient, Ct, begins to suffer from observable fluctuations as the vorticity shed during the hover begins to go back in the rotor direction and interacts with the new vorticity produced by the rotor. Figure 4.9 (a) and (b) show the evolution of the net inflow through the rotor and of the induced velocity, respectively. The induced velocity is exposed from the beginning of the descent configuration due to the non-physical side of previous measurements. As it can be observed, as the descent velocity increases, the induced velocity raises due to the accumulation of vorticity in the proximity of the rotor. For more details about the dynamics of descent, the reader can refer to sections 2.2 and 4.3.2. Even if the induced velocity increases, the evolution of the descent rate in the opposite direction causes the net inflow to raise very slowly and progressively recover the hover inflow. As in section 4.3.2, the induced velocity vi is computed based on the integration of the velocities values over each rotation cycle. The main change of the thrust production appears at the entry of the Vortex Ring State. As practically all the vortices ascend above the rotor, the last part of the vorticity organizes in vortex rings below the rotor as shown on Figure 4.7 (a). The thrust surge happens over the period from t ≈ 13 [s] to t ≈ 16 [s]. The transition of the accumulated vorticity firstly occured on the left part of the rotor and this one moves through the rotor. After that, the establishment of a second vortex ring happens and detaches on the right part as presented on Figure 4.7, between t ≈ 13.5 [s] to t ≈ 15 [s]. Visualisation of the induced velocity (Figure 4.9 (b)) allows to observe that, unlike the fact that the accumulation of vorticity near the rotor tends to raise the induced velocity, the passage of these structures of accumulated vorticity through the rotor decreases the induced velocity. Actually, this adds components of velocity in the same direction as the descent velocity that causes the net inflow to be largely reduced and lead to an increase of the thrust production. Then, when the time reaches t ≈ 15.5 [s], the vorticity that was still present under the rotor has moved trough it and Vortex Ring State begins to establish on both sides of the rotor where two strong vortex rings can be observed above the rotor as presented in the two previous discussions. The establishment of the state and the more steady side of the structures cause the thrust to stop raising and this one
+
+
+56 4.3. VORTEX RING STATE
+Figure 4.8: Evolution of (a) the imposed infinite velocity V∞ and (b) the thrust coefficient Ct in function of the simulation time. Both are dimensionless through hover quantities.
+begins to largely decrease as the vorticity is circulating in organized patterns around the rotor. Actually, the development of stable organized vorticity in vortex rings around the rotor will increase the net inflow through the rotor that will reduce the effective angle of attack of the blades, resulting in a progressive loss of the thrust. This confirms the statements of section 2.2 about the reduction of the effective angle of attack in VRS. Increase of the inflow and reduction of the thrust can be observed on Figures 4.8 and 4.9 and visualisations of the established Vortex Ring State are shown on slices (f) and (g) of Figure 4.7. Development of instabilities tends to break the steady side of the state and stop the decreasing of the thrust, giving way to consequent fluctuations of the thrust as the second phase starts. From t ≈ 17 [s] to t ≈ 30 [s], the circulation of the vorticity in vortex rings
+
+
+CHAPTER 4. SIMULATIONS 57
+Figure 4.9: Evolution of (a) the net inflow through the rotor (Vz + vi) and (b) the induced flow of the rotor vi.
+establishes and the diameter of the rings progressively increases. Instabilities cause vortices to detach from the organized structures that leads to large thrust oscillations. The descent velocity continues to slowly increase but the rise of the induced velocity compensates this increase such that the inflow through the rotor stays approximately constant. Thrust fluctuations of varying intensity can be observed during the period where Vortex Ring State is encountered. Small and brief variations are due to unsteady interactions between vortices and blades. Bigger fluctuations on larger period are caused by changing of configurations. Regions of thrust decrease are due to the reduction of the angle of attack as the vortex rings establish on a steady state. Observations of thrust increase are due to transition of vortices that are moved through the rotor due to interactions with instabilities, and then, this vorticity goes back in the direction of the wake and bring thrust
+
+
+58 4.3. VORTEX RING STATE
+when passing through the rotor, reducing the net inflow due to movement of the vorticity in the opposite direction. This can be observed at t ≈ 17 [s] on slice (h) of Figure 4.7 where large region of vorticity lies below the rotor due to the previous interactions with an instability (slice (g)) and the transition of this vorticity from below to above the rotor will briefly increase the thrust production. Finally, after t ≈ 32[s], the rate of changing of the descent velocity is increased again and the flow transits to the turbulent wake state. The thrust fluctuations begin to be less severe and the global thrust increases. The net inflow through the rotor begins to decrease and the induced velocity tends to remain approximately constant. After the passage through a zero inflow in the rotor, the flow is completely directed upward as no more vorticity is able to move across the rotor. The thrust production returns to a stable state and the rotor has completely left the Vortex Ring State for the turbulent wake state.
+Figure 4.10 shows the distribution of the thrust production over one revolution of a blade of the rotor during the Vortex Ring State. Polars (a) and (b) illustrate the evolution of the thrust distribution between a rotation of the rotor, and an other one, two rotations later. Hence, the first distribution corresponds to the rotation that begins at t = 15.875 [s] and the second one to the distribution at t = 16 [s], the complete rotation of a blade lasting 0.0625 [s]. First thing to notice is that the distributions are largely unsteady over the rotation of the blade. More over, there exists clear differences between the two cycles although these ones only differ by 0.125 [s]. This is an illustration of the unsteadiness of the flow seen by the rotor during the Vortex Ring State.
+(a) n = 254 (b) n = 256
+Figure 4.10: Distribution of thrust production along a blade for one revolution of the rotor in Vortex Ring State for the rotation number (a) n = 254 (t = 15.875 [s]) and (b) n = 256 (t = 16 [s]).
+
+
+CHAPTER 4. SIMULATIONS 59
+Windmill brake state
+The final step of the descent configuration is the windmill brake state. This state has been obtained in a different simulation that the one proposed previously, where higher descent velocity has been explored using the same set-up. As presented in section 1.3, the wake completely expands above the rotor and no more flow is transiting from upward to downward through it. As in the normal state, it develops a more definite slipstream boundary such that the momentum theory becomes acceptable again. At the frontier of the state, the wake begins to return to a more regular helical structure as it can be observed on the two and three-dimensional views of the vorticity field (Figure 4.11 (a) and (b)). Only the tip vortices interact together leading to pairing and evidences of von Karman vortex street can be observed. As the descent rate increases further, space between wake filaments becomes greater and the wake returns to a complete helical shape (Figure 4.11 (c) and (d)). There is no more interaction between the tip vortices near the rotor.
+
+
+60 4.3. VORTEX RING STATE
+(a) (b)
+(c) (d)
+Figure 4.11: Visualisations of the vorticity field of the flow at (a),(b) the frontier of the state and (c),(d) the completely established windmill brake state.
+
+
+Conclusion and outlooks
+The main objectives of this Master’s thesis were (1) the analysis of the physical phenomena behind the different phases of the Vortex Ring State and (2) the illustration of these mechanisms by clear visualisations to support the reasoning.
+The fundamental characteristic of the Vortex Ring State is that the vorticity produced by the rotor in a descent configuration is not evacuated from this one. Moreover, the vortices tend to organize in vortex rings around the rotor plan, causing large thrust fluctuations and vibrations. This critical state is currently a large source of debate and studies around the world, leading to ingenious ways to manage it such as the recent "Vuichard Recovery Technique".
+To achieve the purposes of this work, a physical analysis of the behavior of the simulated flow in this particular state has been performed. The major outcomes of this one are the following :
+• The main event of the Vortex Ring State is the transition of vortex rings from a position below to a position above the rotor which is accompanied by a large thrust surge that characterizes the entry in the state.
+• The establishment of the state is described by more steady vortex structures organizing in larger rings above the rotor. Instabilities that can develop in the flow pattern break the stable structures and vortices are thrown in the wake and through the rotor. Settling of the Vortex Ring State consists of the succession of stable vorticity accumulation and development of instabilities that forces the breakdown of the ring which then moves through the rotor inducing thrust fluctuations.
+• The development of steady vorticity windings around the rotor leads to a reduction of the effective angle of attack that decreases the thrust production.
+• As the rotor is installed in the Vortex Ring State, the way to exit it resides in the initiation of a forward or sidewards displacement or in a largely increase of the descent velocity to go back to a stable configuration.
+61
+
+
+62 4.3. VORTEX RING STATE
+Simulation of the main features of the Vortex Ring State has been performed using two different strategies : Free-flight descent and static rotor configurations. The different phases of the establishment of the state have been obtained with the second set-up that looks like the one used in wind tunnel experiments. However, this configuration does not allow to observe the effects of the free-flight vertical descent of the helicopter on the flow field. Hence, the thrust loss induced by the Vortex Ring State will not affect the descent velocity that will remain constant and no conclusion about the free-flight behavior in this state can be drawn. Moreover, impact of helicopter parameters and effect of collective inputs during the state as well as linking the thrust variations to the imposed descent velocity in the second set-up have not been treated and represent tracks of improvement.
+Nowadays, research about the Vortex Ring State has grown significantly. However, a challenge still remains to improve the wind tunnel configuration to allow tests with a free-stream speed that would respond to thrust losses. Such experimental results would provide more accurate description of the behavior of the rotorcraft as well as the growth and development of the different phases of the Vortex Ring State in free flight for different parameters of the helicopter. A more rigorous understanding of the flow pattern and precise definition of the state boundaries are undoubtedly the major keys to win the battle against the Vortex Ring State. In this sense, flow visualisations are essential resources to explore every sides of the configuration.
+The ultimate solution to reach a zero number of accidents caused by the Vortex Ring State resides in the implementation of an active control on the phenomenon. This one should consist of the delay of the apparition of the state and of the evacuation of this one. The major difficulty lying in the optimisation of all the possible flight configurations, where an active twist of the blades could potentially be the solution.
+Hence, even if the objectives of this writing have been reached, there are still lots of research and experiments to carry out about the Vortex Ring State to completely apprehend the complexity of this one. Perfect knowledge of its characteristics is a crucial parameter to continue to improve the security and the efficiency of the rotorcraft domain, which promises to expand in the years to come.
+
+
+Bibliography
+[1] C. Porter, R. Rennie, and E. Jumper. The aero-optical environment of a helicopter in hover. In 49th AIAA Aerospace Sciences Meeting including the New Horizons Forum and Aerospace Exposition, page 1328, 2011.
+[2] C. Vuichard. Vortex ring state recovery. https://vrasf.org/ vortex-ring-state/, 2018. [Online; accessed 20-May-2019].
+[3] S. Taamallah. A qualitative introduction to the vortex-ring-state, autorotation, and optimal autorotation. 2010.
+[4] W. Castles Jr and R. Gray. Empirical relation between induced velocity, thrust, and rate of descent of a helicopter rotor as determined by wind-tunnel tests on four model rotors. 1951.
+[5] A. Azuma, J. Koo, T. Oka, and K. Washizu. Experiments on a model helicopter rotor operating in the vortex ringstate. Journal of Aircraft, 3(3):225–230, 1966.
+[6] A. Taghizad. Experimental and theoretical investigations to develop a model of rotor aerodynamics adapted to steep descents. In Proc. American Helicopter Society 58th Annual Forum, 2002, 2002.
+[7] G. Padfield. Helicopter flight dynamics. Wiley Online Library, 2008.
+[8] E. Hoinville. Etude du sillage de rotors d’hélicoptère en configuration de Vortex Ring State. PhD thesis, Université d’Orléans, 2007.
+[9] Gordon J Leishman. Principles of helicopter aerodynamics. Cambridge university press, 2006.
+[10] H. Glauert. Airplane propellers. In Aerodynamic theory, pages 169–360. Springer, 1935.
+[11] C. Vuichard. Airmanship bulletin the vuichard recovery. 2018.
+63
+
+
+64 BIBLIOGRAPHY
+[12] D. Varnes, R. Duren, and E. Wood. An onboard warining system to prevent hazardous" vortex ring state" encounters. 2000.
+[13] A. Brand, M. Dreier, R. Kisor, and T. Wood. The nature of vortex ring state. Journal of the American Helicopter Society, 56(2):22001–22001, 2011.
+[14] P. Chatelain and W. Winckelmans. Aerodynamics of external flows. UCL, 2018.
+[15] J. Jimenez, A. Taghizad, and A. Arnaud. Helicopter flight tests in steep descent: Vortex-ring state analysis and induced velocity models improvement. CEAS-TRA2, June, 2002.
+[16] J. Jimenez, A. Desopper, A. Taghizad, and L. Binet. Induced velocity model in steep descent and vortex-ring state prediction. 2001.
+[17] W. Johnson. Model for vortex ring state influence on rotorcraft flight dynamics. 2005.
+[18] Ir J Meijer D. and Ir WP Hendal. Airflow patterns in the neighbourhood of helicopter rotors: a description of some smoke tests carried out in a wind-tunnel at amsterdam. Aircraft Engineering and Aerospace Technology, 23(4):107–111, 1951.
+[19] P. Brotherhood. Flow through a helicopter rotor in vertical descent. HM Stationery Office, 1949.
+[20] P. Brotherhood. Flight measurements of the stability and control of a westland" whirlwind" helicopter in vertical descent’. RAE Technical Report, 68021, 1968.
+[21] J. Jimenez. Etude expérimentale et numérique du comportement d’un hélicoptère en descente à forte pente: modélisation de l’état d’anneaux tourbillonnaires. These, Université de la Méditerranée Aix-Marseille II, 2002.
+[22] W. Liangquan, X. Guohua, and S. Yongjie. High-resolution simulation for rotorcraft aerodynamics in hovering and vertical descending flight using a hybrid method. Chinese Journal of Aeronautics, 31(5):1053–1065, 2018.
+[23] S. Buffin. Simulation of rotorcraft dynamics through the coupling of a multibody solver and a vortex particle-mesh method. Master’s thesis, UCL, 2016.
+[24] P. Fisette and Q. Docquier. Modeling Multibody Systems with ROBOTRAN. UCL, 2018.
+
+
+BIBLIOGRAPHY 65
+[25] N. Docquier, A. Poncelet, and P. Fisette. Robotran: a powerful symbolic gnerator of multibody models. Mechanical Sciences, 4(1):199–219, 2013.
+[26] P. Chatelain, M. Duponcheel, D. Caprace, Y. Marichal, and G. Winckelmans. Vortex particle-mesh simulations of vertical axis wind turbine flows: from the airfoil performance to the very far wake. Wind Energy Science, 2(1):317–328, 2017.
+[27] P. Chatelain, M. Duponcheel, S. Zeoli, S. Buffin, D. Caprace, G. Winckelmans, and L. Bricteux. Investigation of the effect of inflow turbulence on vertical axis wind turbine wakes. In Journal of Physics: Conference Series, volume 854, page 012011. IOP Publishing, 2017.
+[28] R. Cocle, G. Winckelmans, and G. Daeninck. Combining the vortex-in-cell and parallel fast multipole methods for efficient domain decomposition simulations. Journal of Computational Physics, 227(21):9091–9120, 2008.
+[29] H. Kudela and Z. Malecha. Viscous flow modeling using the vortex particles method. Task Quarterly, 13(1):2, 2008.
+[30] P. Chatelain, L. Bricteux, S. Backaert, G. Winckelmans, S. Kern, and P. Koumoutsakos. Vortex particle-mesh methods with immersed lifting lines applied to the large eddy simulation of wind turbine wakes. In Proc. Wake Conf, pages 120–125, 2011.
+[31] P. Chatelain and P. Koumoutsakos. A fourier-based elliptic solver for vortical flows with periodic and unbounded directions. Journal of Computational Physics, 229(7):2425–2431, 2010.
+[32] M. Knight and R. Hefner. Static thrust analysis of the lifting airscrew. 1937.
+
+
+UNIVERSITÉ CATHOLIQUE DE LOUVAIN École polytechnique de Louvain
+Rue Archimède, 1 bte L6.11.01, 1348 Louvain-la-Neuve, Belgique | www.uclouvain.be/epl

@@ -1,0 +1,2038 @@
+Fluid Mechanics, Fourth Edition
+
+
+Founders of Modern Fluid Dynamics
+Ludwig Prandtl G. I. Taylor (1875–1953) (1886–1975)
+(Biographical sketches of Prandtl and Taylor are given in Appendix C.)
+Photograph of Ludwig Prandtl is reprinted with permission from the Annual Review of Fluid Mechanics, Vol. 19, Copyright 1987 by Annual Reviews www.AnnualReviews.org.
+Photograph of Geoffrey Ingram Taylor at age 69 in his laboratory reprinted with permission from the AIP Emilio Segre` Visual Archieves. Copyright, American Institute of Physics, 2000.
+
+
+Fluid Mechanics
+Fourth Edition
+Pijush K. Kundu
+Oceanographic Center Nova Southeastern University Dania, Florida
+Ira M. Cohen
+Department of Mechanical Engineering and Applied Mechanics University of Pennsylvania Philadelphia, Pennsylvania
+with contributions by P. S. Ayyaswamy and H. H. Hu
+AMSTERDAM • BOSTON • HEIDELBERG • LONDON NEW YORK • OXFORD • PARIS • SAN DIEGO
+Academic Press is an imprint of Elsevier
+SAN FRANCISCO •
+• SINGAPORE SYDNEY • TOKYO
+
+
+Academic Press is an imprint of Elsevier 30 Corporate Drive, Suite 400 Burlington, MA 01803, USA
+Elsevier, The Boulevard, Langford Lane Kidlington, Oxford, OX5 1GB, UK
+© 2008 Elsevier Inc. All rights reserved.
+No part of this publication may be reproduced or transmitted in any form or by any means, electronic or mechanical, including photocopying, recording, or any information storage and retrieval system, without permission in writing from the publisher. Details on how to seek permission, further information about the Publisher’s permissions policies and our arrangements with organizations such as the Copyright Clearance Center and the Copyright Licensing Agency, can be found at our website: www.elsevier.com/permissions. This book and the individual contributions contained in it are protected under copyright by the Publisher (other than as may be noted herein).
+Notices
+Knowledge and best practice in this field are constantly changing. As new research and experience broaden our understanding, changes in research methods, professional practices, or medical treatment may become necessary. Practitioners and researchers must always rely on their own experience and knowledge in evaluating and using any information, methods, compounds, or experiments described herein. In using such information or methods they should be mindful of their own safety and the safety of others, including parties for whom they have a professional responsibility. To the fullest extent of the law, neither the Publisher nor the authors, contributors, or editors, assume any liability for any injury and/or damage to persons or property as a matter of products liability, negligence or otherwise, or from any use or operation of any methods, products, instructions, or ideas contained in the material herein.
+Library of Congress Cataloging-in-Publication Data Kundu, Pijush K. Fluid mechanics / Pijush K. Kundu, Ira M. Cohen. – 4th ed. p. cm. Includes bibliographical references and index. ISBN 978-0-12-373735-9 (alk. paper) / 1. Fluid mechanics. I. Cohen, Ira M. II. Title. QA901.K86 2008 620.1’06–dc22 2007042765 Reprinted January 2010 – ISBN: 978-0-12-381399-2
+British Library Cataloguing-in-Publication Data
+A catalogue record for this book is available from the British Library.
+For information on all Academic Press publications visit our Web site at www.elsevierdirect.com
+Printed in the United States 10 11 12 13 14 10 9 8 7 6 5 4 3 2 1
+
+
+The fourth edition is dedicated to the memory of Pijush K. Kundu and also to my wife Linda and daughters Susan and Nancy who have greatly enriched my life.
+“Everything should be made as simple as possible, but not simpler.” —Albert Einstein
+“If nature were not beautiful, it would not be worth studying it. And life would not be worth living.” —Henry Poincare ́
+
+
+In memory of Pijush Kundu
+Pijush Kanti Kundu was born in Calcutta, India, on October 31, 1941. He received a B.S. degree in Mechanical Engineering in 1963 from Shibpur Engineering College of Calcutta University, earned an M.S. degree in Engineering from Roorkee University in 1965, and was a lecturer in Mechanical Engineering at the Indian Institute of Technology in Delhi from 1965 to 1968. Pijush came to the United States in 1968, as a doctoral student at Penn State University. With Dr. John L. Lumley as his advisor, he studied instabilities of viscoelastic fluids, receiving his doctorate in 1972. He began his lifelong interest in oceanography soon after his graduation, working as Research Associate in Oceanography at Oregon State University from 1968 until 1972. After spending a year at the University de Oriente in Venezuela, he joined the faculty of the Oceanographic Center of Nova Southeastern University, where he remained until his death in 1994. During his career, Pijush contributed to a number of sub-disciplines in physical oceanography, most notably in the fields of coastal dynamics, mixed-layer physics, internal waves, and Indian-Ocean dynamics. He was a skilled data analyst, and, in this regard, one of his accomplishments was to introduce the “empirical orthogonal eigenfunction” statistical technique to the oceanographic community. I arrived at Nova Southeastern University shortly after Pijush, and he and I worked closely together thereafter. I was immediately impressed with the clarity of his scientific thinking and his thoroughness. His most impressive and obvious quality, though, was his love of science, which pervaded all his activities. Some time after we met, Pijush opened a drawer in a desk in his home office, showing me drafts of several chapters to a book he had always wanted to write. A decade later, this manuscript became the first edition of “Fluid Mechanics,” the culmination of his lifelong dream; which he dedicated to the memory of his mother, and to his wife Shikha, daughter Tonushree, and son Joydip.
+Julian P. McCreary, Jr., University of Hawaii
+
+
+Contents
+Preface . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . xvii Preface to Third Edition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . xix Preface to Second Edition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . xxi Preface to First Edition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . xxiii Author’s Notes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . xxvii
+Chapter 1
+Introduction
+1. Fluid Mechanics . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 2. Units of Measurement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2 3. Solids, Liquids, and Gases . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3 4. Continuum Hypothesis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4 5. Transport Phenomena . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5 6. Surface Tension . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8 7. Fluid Statics . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9 8. Classical Thermodynamics . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12 9. Perfect Gas . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16 10. Static Equilibrium of a Compressible Medium . . . . . . . . . . . . . . . . . . . . . . 18 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22 Literature Cited . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24 Supplemental Reading . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+Chapter 2
+Cartesian Tensors
+1. Scalars and Vectors . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25 2. Rotation of Axes: Formal Definition of a Vector . . . . . . . . . . . . . . . . . . . . . 26 3. Multiplication of Matrices . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29 4. Second-Order Tensor . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30 5. Contraction and Multiplication . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+vii
+New in This Book xvi
+.........................................
+
+
+viii Contents
+6. Force on a Surface . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33 7. Kronecker Delta and Alternating Tensor . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36 8. Dot Product . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37 9. Cross Product. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 38 10. Operator ∇: Gradient, Divergence, and Curl . . . . . . . . . . . . . . . . . . . . . . . . 38 11. Symmetric and Antisymmetric Tensors . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 40 12. Eigenvalues and Eigenvectors of a Symmetric Tensor . . . . . . . . . . . . . . . . 41 13. Gauss’ Theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 44 14. Stokes’ Theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47 15. Comma Notation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49 16. Boldface vs Indicial Notation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 50 Literature Cited . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 51 Supplemental Reading . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 51
+Chapter 3
+Kinematics
+1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 53 2. Lagrangian and Eulerian Specifications . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 54 3. Eulerian and Lagrangian Descriptions: The Particle Derivative . . . . . . . . 55 4. Streamline, Path Line, and Streak Line . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 57 5. Reference Frame and Streamline Pattern . . . . . . . . . . . . . . . . . . . . . . . . . . . . 59 6. Linear Strain Rate . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 60 7. Shear Strain Rate . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 61 8. Vorticity and Circulation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 62 9. Relative Motion near a Point: Principal Axes . . . . . . . . . . . . . . . . . . . . . . . . 64 10. Kinematic Considerations of Parallel Shear Flows . . . . . . . . . . . . . . . . . . . 67 11. Kinematic Considerations of Vortex Flows . . . . . . . . . . . . . . . . . . . . . . . . . . 68 12. One-, Two-, and Three-Dimensional Flows . . . . . . . . . . . . . . . . . . . . . . . . . 71 13. The Streamfunction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 73 14. Polar Coordinates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 75 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 77 Supplemental Reading . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 79
+Chapter 4
+Conservation Laws
+1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 82 2. Time Derivatives of Volume Integrals . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 82 3. Conservation of Mass . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 84 4. Streamfunctions: Revisited and Generalized . . . . . . . . . . . . . . . . . . . . . . . . 87 5. Origin of Forces in Fluid . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 88 6. Stress at a Point . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 90
+
+
+Contents ix
+7. Conservation of Momentum . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 92 8. Momentum Principle for a Fixed Volume . . . . . . . . . . . . . . . . . . . . . . . . . . . 93 9. Angular Momentum Principle for a Fixed Volume . . . . . . . . . . . . . . . . . . . 98 10. Constitutive Equation for Newtonian Fluid . . . . . . . . . . . . . . . . . . . . . . . . . . 100 11. Navier–Stokes Equation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 104 12. Rotating Frame . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 105 13. Mechanical Energy Equation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 111 14. First Law of Thermodynamics: Thermal Energy Equation . . . . . . . . . . . . 115 15. Second Law of Thermodynamics: Entropy Production . . . . . . . . . . . . . . . 116 16. Bernoulli Equation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 118 17. Applications of Bernoulli’s Equation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 122 18. Boussinesq Approximation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 124 19. Boundary Conditions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 129 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 134 Literature Cited . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 136 Supplemental Reading . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 137
+Chapter 5
+Vorticity Dynamics
+1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 139 2. Vortex Lines and Vortex Tubes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 140 3. Role of Viscosity in Rotational and Irrotational Vortices . . . . . . . . . . . . . . 141 4. Kelvin’s Circulation Theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 144 5. Vorticity Equation in a Nonrotating Frame . . . . . . . . . . . . . . . . . . . . . . . . . . 149 6. Velocity Induced by a Vortex Filament: Law of Biot and Savart . . . . . . . 151 7. Vorticity Equation in a Rotating Frame . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 152 8. Interaction of Vortices . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 157 9. Vortex Sheet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 161 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 161 Literature Cited . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 163 Supplemental Reading . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 163
+Chapter 6
+Irrotational Flow
+1. Relevance of Irrotational Flow Theory. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 165 2. Velocity Potential: Laplace Equation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 167 3. Application of Complex Variables . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 169 4. Flow at a Wall Angle . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 171 5. Sources and Sinks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 173 6. Irrotational Vortex . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 174 7. Doublet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 174 8. Flow past a Half-Body . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 175
+
+
+x Contents
+9. Flow past a Circular Cylinder without Circulation . . . . . . . . . . . . . . . . . . . 178 10. Flow past a Circular Cylinder with Circulation . . . . . . . . . . . . . . . . . . . . . . 180 11. Forces on a Two-Dimensional Body . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 184 12. Source near a Wall: Method of Images . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 189 13. Conformal Mapping . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 190 14. Flow around an Elliptic Cylinder with Circulation . . . . . . . . . . . . . . . . . . . 192 15. Uniqueness of Irrotational Flows . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 194 16. Numerical Solution of Plane Irrotational Flow. . . . . . . . . . . . . . . . . . . . . . . 195 17. Axisymmetric Irrotational Flow . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 201 18. Streamfunction and Velocity Potential for Axisymmetric Flow . . . . . . . . 203 19. Simple Examples of Axisymmetric Flows . . . . . . . . . . . . . . . . . . . . . . . . . . 205 20. Flow around a Streamlined Body of Revolution . . . . . . . . . . . . . . . . . . . . . 206 21. Flow around an Arbitrary Body of Revolution . . . . . . . . . . . . . . . . . . . . . . . 208 22. Concluding Remarks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 209 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 209 Literature Cited . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 212 Supplemental Reading . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 212
+Chapter 7
+Gravity Waves
+1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 214 2. The Wave Equation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 214 3. Wave Parameters . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 216 4. Surface Gravity Waves . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 219 5. Some Features of Surface Gravity Waves . . . . . . . . . . . . . . . . . . . . . . . . . . . 223 6. Approximations for Deep and Shallow Water . . . . . . . . . . . . . . . . . . . . . . . 229 7. Influence of Surface Tension . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 234 8. Standing Waves . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 237 9. Group Velocity and Energy Flux . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 238 10. Group Velocity and Wave Dispersion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 242 11. Nonlinear Steepening in a Nondispersive Medium . . . . . . . . . . . . . . . . . . . 246 12. Hydraulic Jump . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 248 13. Finite Amplitude Waves of Unchanging Form in a
+Dispersive Medium . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 250 14. Stokes’ Drift . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 253 15. Waves at a Density Interface between Infinitely Deep Fluids . . . . . . . . . . 255 16. Waves in a Finite Layer Overlying an Infinitely Deep Fluid . . . . . . . . . . . 259 17. Shallow Layer Overlying an Infinitely Deep Fluid . . . . . . . . . . . . . . . . . . . 262 18. Equations of Motion for a Continuously Stratified Fluid . . . . . . . . . . . . . . 263 19. Internal Waves in a Continuously Stratified Fluid . . . . . . . . . . . . . . . . . . . . 267 20. Dispersion of Internal Waves in a Stratified Fluid . . . . . . . . . . . . . . . . . . . . 270 21. Energy Considerations of Internal Waves in a Stratified Fluid . . . . . . . . . 272 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 276 Literature Cited . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 277
+
+
+Contents xi
+Chapter 8
+Dynamic Similarity
+1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 279 2. Nondimensional Parameters Determined from Differential
+Equations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 280 3. Dimensional Matrix . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 284 4. Buckingham’s Pi Theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 285 5. Nondimensional Parameters and Dynamic Similarity . . . . . . . . . . . . . . . . 287 6. Comments on Model Testing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 290 7. Significance of Common Nondimensional Parameters. . . . . . . . . . . . . . . . 292 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 294 Literature Cited . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 294 Supplemental Reading . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 294
+Chapter 9
+Laminar Flow
+1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 295 2. Analogy between Heat and Vorticity Diffusion . . . . . . . . . . . . . . . . . . . . . . 297 3. Pressure Change Due to Dynamic Effects . . . . . . . . . . . . . . . . . . . . . . . . . . . 297 4. Steady Flow between Parallel Plates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 298 5. Steady Flow in a Pipe . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 302 6. Steady Flow between Concentric Cylinders . . . . . . . . . . . . . . . . . . . . . . . . . 303 7. Impulsively Started Plate: Similarity Solutions . . . . . . . . . . . . . . . . . . . . . . 306 8. Diffusion of a Vortex Sheet. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 313 9. Decay of a Line Vortex . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 315 10. Flow Due to an Oscillating Plate . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 317 11. High and Low Reynolds Number Flows . . . . . . . . . . . . . . . . . . . . . . . . . . . . 320 12. Creeping Flow around a Sphere . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 322 13. Nonuniformity of Stokes’ Solution and Oseen’s Improvement . . . . . . . . 327 14. Hele-Shaw Flow . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 332 15. Final Remarks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 334 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 335 Literature Cited . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 337 Supplemental Reading . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 337
+Chapter 10
+Boundary Layers and Related Topics
+1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 340 2. Boundary Layer Approximation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 340 3. Different Measures of Boundary Layer Thickness . . . . . . . . . . . . . . . . . . . 346 4. Boundary Layer on a Flat Plate with a Sink at the Leading Edge:
+Closed Form Solution . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 348
+
+
+xii Contents
+5. Boundary Layer on a Flat Plate: Blasius Solution . . . . . . . . . . . . . . . . . . . 352 6. von Karman Momentum Integral . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 362 7. Effect of Pressure Gradient . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 364 8. Separation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 366 9. Description of Flow past a Circular Cylinder . . . . . . . . . . . . . . . . . . . . . . . 368 10. Description of Flow past a Sphere . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 375 11. Dynamics of Sports Balls . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 376 12. Two-Dimensional Jets . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 381 13. Secondary Flows . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 388 14. Perturbation Techniques . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 389 15. An Example of a Regular Perturbation Problem . . . . . . . . . . . . . . . . . . . . . 394 16. An Example of a Singular Perturbation Problem . . . . . . . . . . . . . . . . . . . . 396 17. Decay of a Laminar Shear Layer . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 401 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 407 Literature Cited . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 409 Supplemental Reading . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 410
+Chapter 11
+Computational Fluid Dynamics
+1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 411 2. Finite Difference Method . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 413 3. Finite Element Method . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 418 4. Incompressible Viscous Fluid Flow . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 426 5. Three Examples. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 440 6. Concluding Remarks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 461 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 463 Literature Cited . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 464
+Chapter 12
+Instability
+1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 467 2. Method of Normal Modes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 469 3. Thermal Instability: The Be ́nard Problem . . . . . . . . . . . . . . . . . . . . . . . . . . . 470 4. Double-Diffusive Instability . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 482 5. Centrifugal Instability: Taylor Problem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 486 6. Kelvin–Helmholtz Instability . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 493 7. Instability of Continuously Stratified Parallel Flows. . . . . . . . . . . . . . . . . . 500 8. Squire’s Theorem and Orr–Sommerfeld Equation . . . . . . . . . . . . . . . . . . . . 507 9. Inviscid Stability of Parallel Flows . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 510 10. Some Results of Parallel Viscous Flows . . . . . . . . . . . . . . . . . . . . . . . . . . . . 514 11. Experimental Verification of Boundary Layer Instability . . . . . . . . . . . . . 520 12. Comments on Nonlinear Effects . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 522
+
+
+Contents xiii
+13. Transition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 523 14. Deterministic Chaos . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 525 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 533 Literature Cited . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 535
+Chapter 13
+Turbulence
+1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 537 2. Historical Notes. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 539 3. Averages . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 541 4. Correlations and Spectra . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 543 5. Averaged Equations of Motion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 547 6. Kinetic Energy Budget of Mean Flow . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 554 7. Kinetic Energy Budget of Turbulent Flow . . . . . . . . . . . . . . . . . . . . . . . . . . 556 8. Turbulence Production and Cascade . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 559 9. Spectrum of Turbulence in Inertial Subrange . . . . . . . . . . . . . . . . . . . . . . . . 562 10. Wall-Free Shear Flow . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 564 11. Wall-Bounded Shear Flow . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 570 12. Eddy Viscosity and Mixing Length . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 580 13. Coherent Structures in a Wall Layer . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 584 14. Turbulence in a Stratified Medium . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 586 15. Taylor’s Theory of Turbulent Dispersion . . . . . . . . . . . . . . . . . . . . . . . . . . . . 591 16. Concluding Remarks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 598 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 598 Literature Cited . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 600 Supplemental Reading . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 601
+Chapter 14
+Geophysical Fluid Dynamics
+1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 603 2. Vertical Variation of Density in Atmosphere and Ocean . . . . . . . . . . . . . . 605 3. Equations of Motion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 607 4. Approximate Equations for a Thin Layer on a Rotating Sphere . . . . . . . . 610 5. Geostrophic Flow . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 613 6. Ekman Layer at a Free Surface . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 617 7. Ekman Layer on a Rigid Surface . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 622 8. Shallow-Water Equations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 625 9. Normal Modes in a Continuously Stratified Layer . . . . . . . . . . . . . . . . . . . 628 10. High- and Low-Frequency Regimes in Shallow-Water
+Equations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 634 11. Gravity Waves with Rotation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 636 12. Kelvin Wave . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 639
+
+
+xiv Contents
+13. Potential Vorticity Conservation in Shallow-Water
+Theory . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 644 14. Internal Waves . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 647 15. Rossby Wave . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 657 16. Barotropic Instability . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 663 17. Baroclinic Instability . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 665 18. Geostrophic Turbulence . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 673 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 676 Literature Cited . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 677
+Chapter 15
+Aerodynamics
+1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 679 2. The Aircraft and Its Controls . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 680 3. Airfoil Geometry. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 683 4. Forces on an Airfoil . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 684 5. Kutta Condition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 684 6. Generation of Circulation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 687 7. Conformal Transformation for Generating Airfoil Shape . . . . . . . . . . . . . 688 8. Lift of Zhukhovsky Airfoil . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 692 9. Wing of Finite Span . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 695 10. Lifting Line Theory of Prandtl and Lanchester . . . . . . . . . . . . . . . . . . . . . . 697 11. Results for Elliptic Circulation Distribution . . . . . . . . . . . . . . . . . . . . . . . . . 701 12. Lift and Drag Characteristics of Airfoils . . . . . . . . . . . . . . . . . . . . . . . . . . . . 704 13. Propulsive Mechanisms of Fish and Birds . . . . . . . . . . . . . . . . . . . . . . . . . . 706 14. Sailing against the Wind . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 708 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 709 Literature Cited . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 711 Supplemental Reading . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 711
+Chapter 16
+Compressible Flow
+1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 713 2. Speed of Sound . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 717 3. Basic Equations for One-Dimensional Flow . . . . . . . . . . . . . . . . . . . . . . . . . 721 4. Stagnation and Sonic Properties . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 724 5. Area–Velocity Relations in One-Dimensional Isentropic Flow . . . . . . . . 729 6. Normal Shock Wave . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 733 7. Operation of Nozzles at Different Back Pressures . . . . . . . . . . . . . . . . . . . . 741 8. Effects of Friction and Heating in Constant-Area Ducts . . . . . . . . . . . . . . 747 9. Mach Cone . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 750 10. Oblique Shock Wave . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 752 11. Expansion and Compression in Supersonic Flow . . . . . . . . . . . . . . . . . . . . 756
+
+
+Contents xv
+12. Thin Airfoil Theory in Supersonic Flow . . . . . . . . . . . . . . . . . . . . . . . . . . . . 758 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 761 Literature Cited . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 763 Supplemental Reading . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 763
+Chapter 17
+Introduction to Biofluid Mechanics
+1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 765 2. The Circulatory System in the Human Body . . . . . . . . . . . . . . . . . . . . . . . . 766 3. Modelling of Flow in Blood Vessels . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 782 4. Introduction to the Fluid Mechanics of Plants . . . . . . . . . . . . . . . . . . . . . . . 831 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 837 Acknowledgment . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 838 Literature Cited . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 838
+Appendix A
+Some Properties of Common Fluids
+A1. Useful Conversion Factors . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 841 A2. Properties of Pure Water at Atmospheric Pressure . . . . . . . . . . . . . . . . . . . 842 A3. Properties of Dry Air at Atmospheric Pressure . . . . . . . . . . . . . . . . . . . . . . 842 A4. Properties of Standard Atmosphere . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 843
+Appendix B
+Curvilinear Coordinates
+B1. Cylindrical Polar Coordinates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 845 B2. Plane Polar Coordinates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 847 B3. Spherical Polar Coordinates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 847
+Appendix C
+Founders of Modern Fluid Dynamics
+Ludwig Prandtl (1875–1953) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 851 Geoffrey Ingram Taylor (1886–1975) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 852 Supplemental Reading . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 853
+Appendix D
+Visual Resources 855
+Index 857
+
+
+New in This Book
+We are pleased to include a free copy of the DVD Multimedia Fluid Mechanics, 2/e, with this copy of Fluid Mechanics, Fourth Edition.You will find it in a plastic sleeve on the inside back cover of the book. If you are purchasing a used copy, be aware that the DVD might have been removed by a previous owner.
+Additional new features:
+xvi
+Inspired by the reception of the first edition, the objectives in Multimedia Fluid Mechanics, 2/e, remain to exploit the moving image and interactivity of multimedia to improve the teaching and learning of fluid mechanics in all disciplines by illustrating fundamental phenomena and conveying fascinating fluid flows for generations to come. The completely new edition on the DVD includes the following:
+• Twice the coverage with new modules on turbulence, control volumes, interfacial phenomena, and similarity and scaling
+• Four times the number of fluids videos, now more than 800
+• Now more than 20 Virtual labs and simulations
+• Dozens of new interactive demonstrations and animations
+• Improved navigation via side bars that provide rapid overviews of modules and guided browsing
+• Media libraries for each chapter that give a snapshot of videos, each with descriptive labels
+• Ability to create movie playlists, which are invaluable in teaching
+• Higher-resolution graphics, with full or part screen viewing options
+• Operates on either a PC or a Mac OSX
+
+
+Preface
+Fluid mechanics has a vast scope and touches every aspect of our lives. Just look at the contents of the 39 volumes of the Annual Review of Fluid Mechanics (1969–2007) for validation of that statement. We cover only a tiny fraction of that scope in this book. This Fourth Edition continues to evolve due to the kindness of readers and users who write to me suggesting corrections. Specifically, Roger Berlind of Columbia University is responsible for the revisions to the Thermal Wind subsection of Chapter 14. Howard Hu has revised, streamlined, and updated his chapter on Computational Fluid Dynamics, and P. S. Ayyaswamy has contributed a new chapter (17) on Introduction to Biofluid Mechanics. It is an excellently written contribution and unique in that its level is appropriate for this book. It is between the advanced treatises and overly simplified treatments available elsewhere. I have tried to update much of the remaining material, particularly on turbulence, where so many new papers appear each year. Reference to the collection of the National Committee for Fluid Mechanics Films, now available for viewing via the Internet, is made in a new Appendix D. These films may be old but remain an excellent resource for visualization of flows. On a more personal note, the bladder cancer (transitional cell carcinoma) diagnosed in the Fall of 2003, and attacked by a sequence of surgeries and a regimen of chemotherapy, was never completely killed and grew back to visibility in the Fall of 2006. The minimum visible spot on MRI can contain 70,000 TCC. A new and harsher regimen of chemotherapy was prescribed through the Spring of 2007, during the period when the updates were prepared. The irony of the fact that all the chemical poisons infused into my veins are fluids is not lost on me. Because of the fatigue, I accomplished less than I had hoped. Since radiologists cannot distinguish viable living TCC from those that have been killed and remain in place, the only means of discerning living cancer is to image again and see if there is new growth. The image in early June confirmed the message that my body had already sent me: the cancer was growing back and causing pain. Radiation was tried for a while to shrink the painful tumor but that was unsuccessful. In late July a new regimen of chemotherapy began, to last perhaps through the end of the year and beyond. The initial response was positive and, although I have come to realize that my condition is incurable, I was ever hopeful. After three infusions, however, the toxic effects of the chemotherapy were more destructive than the aggressiveness of the cancer. I was left with no lung capacity, no muscle strength, and was very ill and weak when page proofs came back for checking. I remain so at the time of this writing.
+xvii
+
+
+xviii Preface
+I appreciate all the help provided by Ms. Susan Waddington in the preparation of the final stages of this manuscript. I am very grateful to my family, friends, and colleagues for their support throughout this ordeal.
+Ira M. Cohen
+
+
+Preface to Third Edition
+This edition provided me with the opportunity to include (almost) all of the additional material I had intended for the Second Edition but had to sacrifice because of the crush of time. It also provided me with an opportunity to rewrite and improve the presentation of material on jets in Chapter 10. In addition, Professor Howard Hu greatly expanded his CFD chapter. The expansion of the treatment of surface tension is due to the urging of Professor E. F. “Charlie” Hasselbrink of the University of Michigan. I am grateful to Mr. Karthik Mukundakrishnan for computations of boundary layer problems, to Mr. Andrew Perrin for numerous suggestions for improvement and some computations, and to Mr. Din-Chih Hwang for sharing his latest results on the decay of a laminar shear layer. The expertise of Ms. Maryeileen Banford in preparing new figures was invaluable and is especially appreciated. The page proofs of the text were read between my second and third surgeries for stage 3 bladder cancer. The book is scheduled to be released in the middle of my regimen of chemotherapy. My family, especially my wife Linda and two daughters (both of whom are cancer survivors), have been immensely supportive during this very difficult time. I am also very grateful for the comfort provided by my many colleagues and friends.
+Ira M. Cohen
+xix
+
+
+This page intentionally left blank
+
+
+Preface to Second Edition
+My involvement with Pijush Kundu’s Fluid Mechanics first began in April 1991 with a letter from him asking me to consider his book for adoption in the first year graduate course I had been teaching for 25 years. That started a correspondence and, in fact, I did adopt the book for the following academic year. The correspondence related to improving the book by enhancing or clarifying various points. I would not have taken the time to do that if I hadn’t thought this was the best book at the first-year graduate level. By the end of that year we were already discussing a second edition and whether I would have a role in it. By early 1992, however, it was clear that I had a crushing administrative burden at the University of Pennsylvania and could not undertake any time-consuming projects for the next several years. My wife and I met Pijush and Shikha for the first time in December 1992. They were a charming, erudite, sophisticated couple with two brilliant children. We immediately felt a bond of warmth and friendship with them. Shikha was a teacher like my wife so the four of us had a great deal in common. A couple of years later we were shocked to hear that Pijush had died suddenly and unexpectedly. It saddened me greatly because I had been looking forward to working with Pijush on the second edition after my term as department chairman ended in mid-1997. For the next year and a half, however, serious family health problems detoured any plans. Discussions on this edition resumed in July of 1999 and were concluded in the Spring of 2000 when my work really started. This book remains the principal work product of Pijush K. Kundu, especially the lengthy chapters on Gravity Waves, Instability, and Geophysical Fluid Dynamics, his areas of expertise. I have added new material to all of the other chapters, often providing an alternative point of view. Specifically, vector field derivatives have been generalized, as have been streamfunctions. Additional material has been added to the chapters on laminar flows and boundary layers. The treatment of one-dimensional gasdynamics has been extended. More problems have been added to most chapters. Professor Howard H. Hu, a recognized expert in computational fluid dynamics, graciously provided an entirely new chapter, Chapter 11, thereby providing the student with an entree into this exploding new field. Both finite difference and finite element methods are introduced and a detailed worked-out example of each is provided. I have been a student of fluid mechanics since 1954 when I entered college to study aeronautical engineering. I have been teaching fluid mechanics since 1963 when I joined the Brown University faculty, and I have been teaching a course corresponding to this book since moving to the University of Pennsylvania in 1966. I am most grateful to two of my own teachers, Professor Wallace D. Hayes (1918–2001), who expressed fluid mechanics in the clearest way I have ever seen, and Professor Martin D. Kruskal, whose use of mathematics to solve difficult physical problems was developed to a
+xxi
+
+
+xxii Preface to Second Edition
+high art form and reminds me of a Vivaldi trumpet concerto. His codification of rules of applied limit processes into the principles of “Asymptotology” remains with me today as a way to view problems. I am grateful also to countless students who asked questions, forcing me to rethink many points. The editors at Academic Press, Gregory Franklin and Marsha Filion (assistant) have been very supportive of my efforts and have tried to light a fire under me. Since this edition was completed, I found that there is even more new and original material I would like to add. But, alas, that will have to wait for the next edition. The new figures and modifications of old figures were done by Maryeileen Banford with occasional assistance from the school’s software expert, Paul W. Shaffer. I greatly appreciate their job well done.
+Ira M. Cohen
+
+
+Preface to First Edition
+This book is a basic introduction to the subject of fluid mechanics and is intended for undergraduate and beginning graduate students of science and engineering. There is enough material in the book for at least two courses. No previous knowledge of the subject is assumed, and much of the text is suitable in a first course on the subject. On the other hand, a selection of the advanced topics could be used in a second course. I have not tried to indicate which sections should be considered advanced; the choice often depends on the teacher, the university, and the field of study. Particular effort has been made to make the presentation clear and accurate and at the same time easy enough for students. Mathematically rigorous approaches have been avoided in favor of the physically revealing ones. A survey of the available texts revealed the need for a book with a balanced view, dealing with currently relevant topics, and at the same time easy enough for students. The available texts can perhaps be divided into three broad groups. One type, written primarily for applied mathematicians, deals mostly with classical topics such as irrotational and laminar flows, in which analytical solutions are possible. A second group of books emphasizes engineering applications, concentrating on flows in such systems as ducts, open channels, and airfoils. A third type of text is narrowly focused toward applications to large-scale geophysical systems, omitting small-scale processes which are equally applicable to geophysical systems as well as laboratory-scale phenomena. Several of these geophysical fluid dynamics texts are also written primarily for researchers and are therefore rather difficult for students. I have tried to adopt a balanced view and to deal in a simple way with the basic ideas relevant to both engineering and geophysical fluid dynamics. However, I have taken a rather cautious attitude toward mixing engineering and geophysical fluid dynamics, generally separating them in different chapters. Although the basic principles are the same, the large-scale geophysical flows are so dominated by the effects of the Coriolis force that their characteristics can be quite different from those of laboratory-scale flows. It is for this reason that most effects of planetary rotation are discussed in a separate chapter, although the concept of the Coriolis force is introduced earlier in the book. The effects of density stratification, on the other hand, are discussed in several chapters, since they can be important in both geophysical and laboratory-scale flows. The choice of material is always a personal one. In my effort to select topics, however, I have been careful not to be guided strongly by my own research interests. The material selected is what I believe to be of the most interest in a book on general fluid mechanics. It includes topics of special interest to geophysicists (for example, the chapters on Gravity Waves and Geophysical Fluid Dynamics) and to engineers
+xxiii
+
+
+xxiv Preface to First Edition
+(for example, the chapters on Aerodynamics and Compressible Flow). There are also chapters of common interest, such as the first five chapters, and those on Boundary Layers, Instability, and Turbulence. Some of the material is now available only in specialized monographs; such material is presented here in simple form, perhaps sacrificing some formal mathematical rigor. Throughout the book the convenience of tensor algebra has been exploited freely. My experience is that many students feel uncomfortable with tensor notation in the beginning, especially with the permutation symbol εijk. After a while, however, they like it. In any case, following an introductory chapter, the second chapter of the book explains the fundamentals of Cartesian Tensors. The next three chapters deal with standard and introductory material on Kinematics, Conservation Laws, and Vorticity Dynamics. Most of the material here is suitable for presentation to geophysicists as well as engineers. In much of the rest of the book the teacher is expected to select topics that are suitable for his or her particular audience. Chapter 6 discusses Irrotational Flow; this material is rather classical but is still useful for two reasons. First, some of the results are used in later chapters, especially the one on Aerodynamics. Second, most of the ideas are applicable in the study of other potential fields, such as heat conduction and electrostatics. Chapter 7 discusses Gravity Waves in homogeneous and stratified fluids; the emphasis is on linear analysis, although brief discussions of nonlinear effects such as hydraulic jump, Stokes’s drift, and soliton are given. After a discussion of Dynamic Similarity in Chapter 8, the study of viscous flow starts with Chapter 9, which discusses Laminar Flow. The material is standard, but the concept and analysis of similarity solutions are explained in detail. In Chapter 10 on Boundary Layers, the central idea has been introduced intuitively at first. Only after a thorough physical discussion has the boundary layer been explained as a singular perturbation problem. I ask the indulgence of my colleagues for including the peripheral section on the dynamics of sports balls but promise that most students will listen with interest and ask a lot of questions. Instability of flows is discussed at some length in Chapter 12. The emphasis is on linear analysis, but some discussion of “chaos” is given in order to point out how deterministic nonlinear systems can lead to irregular solutions. Fully developed three-dimensional Turbulence is discussed in Chapter 13. In addition to standard engineering topics such as wall-bounded shear flows, the theory of turbulent dispersion of particles is discussed because of its geophysical importance. Some effects of stratification are also discussed here, but the short section discussing the elementary ideas of two-dimensional geostrophic turbulence is deferred to Chapter 14. I believe that much of the material in Chapters 8–13 will be of general interest, but some selection of topics is necessary here for teaching specialized groups of students. The remaining three chapters deal with more specialized applications in geophysics and engineering. Chapter 14 on Geophysical Fluid Dynamics emphasizes the linear analysis of certain geophysically important wave systems. However, elements of barotropic and baroclinic instabilities and geostrophic turbulence are also included. Chapter 15 on Aerodynamics emphasizes the application of potential theory to flow around lift-generating profiles; an elementary discussion of finite-wing theory is also given. The material is standard, and I do not claim much originality or
+
+
+Preface to First Edition xxv
+innovation, although I think the reader may be especially interested in the discussions of propulsive mechanisms of fish, birds, and sailboats and the material on the historic controversy between Prandtl and Lanchester. Chapter 16 on Compressible Flow also contains standard topics, available in most engineering texts. This chapter is included with the belief that all fluid dynamicists should have some familiarity with such topics as shock waves and expansion fans. Besides, very similar phenomena also occur in other nondispersive systems such as gravity waves in shallow water. The appendices contain conversion factors, properties of water and air, equations in curvilinear coordinates, and short bibliographical sketches of Founders of Modern Fluid Dynamics. In selecting the names in the list of founders, my aim was to come up with a very short list of historic figures who made truly fundamental contributions. It became clear that the choice of Prandtl and G. I. Taylor was the only one that would avoid all controversy. Some problems in the basic chapters are worked out in the text, in order to illustrate the application of the basic principles. In a first course, undergraduate engineering students may need more practice and help than offered in the book; in that case the teacher may have to select additional problems from other books. Difficult problems have been deliberately omitted from the end-of-chapter exercises. It is my experience that the more difficult exercises need a lot of clarification and hints (the degree of which depends on the students’ background), and they are therefore better designed by the teacher. In many cases answers or hints are provided for the exercises.
+Acknowledgments
+I would like to record here my gratitude to those who made the writing of this book possible. My teachers Professor Shankar Lal and Professor John Lumley fostered my interest in fluid mechanics and quietly inspired me with their brilliance; Professor Lumley also reviewed Chapter 13. My colleague Julian McCreary provided support, encouragement, and careful comments on Chapters 7, 12, and 14. Richard Thomson’s cheerful voice over the telephone was a constant reassurance that professional science can make some people happy, not simply competitive; I am also grateful to him for reviewing Chapters 4 and 15. Joseph Pedlosky gave very valuable comments on Chapter 14, in addition to warning me against too broad a presentation. John Allen allowed me to use his lecture notes on perturbation techniques. Yasushi Fukamachi, Hyong Lee, and Kevin Kohler commented on several chapters and constantly pointed out things that may not have been clear to the students. Stan Middleman and Elizabeth Mickaily were especially diligent in checking my solutions to the examples and end-of-chapter problems. Terry Thompson constantly got me out of trouble with my personal computer. Kathy Maxson drafted the figures. Chuck Arthur and Bill LaDue, my editors at Academic Press, created a delightful atmosphere during the course of writing and production of the book. Lastly, I am grateful to Amjad Khan, the late Amir Khan, and the late Omkarnath Thakur for their music, which made working after midnight no chore at all. I recommend listening to them if anybody wants to write a book!
+Pijush K. Kundu
+
+
+This page intentionally left blank
+
+
+Author’s Notes
+Both indicial and boldface notations are used to indicate vectors and tensors. The comma notation to represent spatial derivatives (for example, A,i for ∂A/∂xi) is used in only two sections of the book (Sections 5.6 and 13.7), when the algebra became cumbersome otherwise. Equal to by definition is denoted by ≡; for example, the ratio of specific heats is introduced as γ ≡ Cp/Cv. Nearly equal to is written as , proportional to is written as ∝, and of the order is written as ∼. Plane polar coordinates are denoted by (r, θ ), cylindrical polar coordinates are denoted by either (R, φ, x) or (r, θ, x), and spherical polar coordinates are denoted by (r, θ, φ) (see Figure 3.1). The velocity components in the three Cartesian directions (x, y, z) are indicated by (u, v, w). In geophysical situations the z-axis points upward. In some cases equations are referred to by a descriptive name rather than a number (for example, “the x-momentum equation shows that . . . ”). Those equations and/or results deemed especially important have been indicated by a box. A list of literature cited and supplemental reading is provided at the end of most chapters. The list has been deliberately kept short and includes only those sources that serve one of the following three purposes: (1) it is a reference the student is likely to find useful, at a level not too different from that of this book; (2) it is a reference that has influenced the author’s writing or from which a figure is reproduced; and (3) it is an important work done after 1950. In currently active fields, reference has been made to more recent review papers where the student can find additional references to the important work in the field. Fluid mechanics forces us fully to understand the underlying physics. This is because the results we obtain often defy our intuition. The following examples support these contentions:
+1. Infinitesmally small causes can have large effects (d’Alembert’s paradox). 2. Symmetric problems may have nonsymmetric solutions (von Karman vortex street). 3. Friction can make the flow go faster and cool the flow (subsonic adiabatic flow in a constant area duct). 4. Roughening the surface of a body can decrease its drag (transition from laminar to turbulent boundary layer separation). 5. Adding heat to a flow may lower its temperature. Removing heat from a flow may raise its temperature (1-dimensional adiabatic flow in a range of subsonic Mach number). 6. Friction can destabilize a previously stable flow (Orr-Sommerfeld stability analysis for a boundary layer profile without inflection point).
+xxvii
+
+
+xxviii Author’s Notes
+7. Without friction, birds could not fly and fish could not swim (Kutta condition requires viscosity). 8. The best and most accurate visualization of streamlines in an inviscid (infinite Reynolds number) flow is in a Hele-Shaw apparatus for creeping highly viscous flow (near zero Reynolds number).
+Every one of these counterintuitive effects will be treated and discussed in this text. This second edition also contains additional material on streamfunctions, boundary conditions, viscous flows, boundary layers, jets, and compressible flows. Most important, there is an entirely new chapter on computational fluid dynamics that introduces the student to the various techniques for numerically integrating the equations governing fluid motions. Hopefully the introduction is sufficient that the reader can follow up with specialized texts for a more comprehensive understanding. An historical survey of fluid mechanics from the time of Archimedes (ca. 250 B.C.E.) to approximately 1900 is provided in the Eleventh Edition of The Encyclopædia Britannica (1910) in Vol. XIV (under “Hydromechanics,” pp. 115–135). I am grateful to Professor Herman Gluck (Professor of Mathematics at the University of Pennsylvania) for sending me this article. Hydrostatics and classical (constant density) potential flows are reviewed in considerable depth. Great detail is given in the solution of problems that are now considered obscure and arcane with credit to authors long forgotten. The theory of slow viscous motion developed by Stokes and others is not mentioned. The concept of the boundary layer for high-speed motion of a viscous fluid was apparently too recent for its importance to have been realized.
+IMC
+
+
+Chapter 1
+Introduction
+1. Fluid Mechanics . . . . . . . . . . . . . . . . . . . 1 2. Units of Measurement . . . . . . . . . . . . . . 2 3. Solids, Liquids, and Gases . . . . . . . . . 3 4. Continuum Hypothesis . . . . . . . . . . . . . 4 5. Transport Phenomena . . . . . . . . . . . . . 5 6. Surface Tension . . . . . . . . . . . . . . . . . . . . 8 7. Fluid Statics . . . . . . . . . . . . . . . . . . . . . . . 9 Example 1.1. . . . . . . . . . . . . . . . . . . . . . 12 8. Classical Thermodynamics . . . . . . . . 12 First Law of Thermodynamics . . . . 13 Equations of State . . . . . . . . . . . . . . . . 13 Specific Heats . . . . . . . . . . . . . . . . . . . . 14
+Second Law of Thermodynamics . 15 T dS Relations . . . . . . . . . . . . . . . . . . . 15 Speed of Sound. . . . . . . . . . . . . . . . . . 16 Thermal Expansion Coefficient . . 16 9. Perfect Gas . . . . . . . . . . . . . . . . . . . . . . 16 10. Static Equilibrium of a Compressible Medium . . . . . . . . . . 18 Potential Temperature and Density . . . . . . . . . . . . . . . . . . . . . . . 20 Scale Height of the Atmosphere . . 22 Exercises . . . . . . . . . . . . . . . . . . . . . . . . 22 Literature Cited . . . . . . . . . . . . . . . . . 24 Supplemental Reading . . . . . . . . . . . 24
+1. Fluid Mechanics
+Fluid mechanics deals with the flow of fluids. Its study is important to physicists, whose main interest is in understanding phenomena. They may, for example, be interested in learning what causes the various types of wave phenomena in the atmosphere and in the ocean, why a layer of fluid heated from below breaks up into cellular patterns, why a tennis ball hit with “top spin” dips rather sharply, how fish swim, and how birds fly. The study of fluid mechanics is just as important to engineers, whose main interest is in the applications of fluid mechanics to solve industrial problems. Aerospace engineers may be interested in designing airplanes that have low resistance and, at the same time, high “lift” force to support the weight of the plane. Civil engineers may be interested in designing irrigation canals, dams, and water supply systems. Pollution control engineers may be interested in saving our planet from the constant dumping of industrial sewage into the atmosphere and the ocean. Mechanical engineers may be interested in designing turbines, heat exchangers, and fluid couplings. Chemical engineers may be interested in designing efficient devices to mix industrial chemicals. The objectives of physicists and engineers, however, are
+1
+©2010 Elsevier Inc. All rights reserved. DOI: 10.1016/B978-0-12-381399-2.50001-0
+
+
+2 Introduction
+not quite separable because the engineers need to understand and the physicists need to be motivated through applications. Fluid mechanics, like the study of any other branch of science, needs mathematical analyses as well as experimentation. The analytical approaches help in finding the solutions to certain idealized and simplified problems, and in understanding the unity behind apparently dissimilar phenomena. Needless to say, drastic simplifications are frequently necessary because of the complexity of real phenomena. A good understanding of mathematical techniques is definitely helpful here, although it is probably fair to say that some of the greatest theoretical contributions have come from the people who depended rather strongly on their unusual physical intuition, some sort of a “vision” by which they were able to distinguish between what is relevant and what is not. Chess player, Bobby Fischer (appearing on the television program “The Johnny Carson Show,” about 1979), once compared a good chess player and a great one in the following manner: When a good chess player looks at a chess board, he thinks of 20 possible moves; he analyzes all of them and picks the one that he likes. A great chess player, on the other hand, analyzes only two or three possible moves; his unusual intuition (part of which must have grown from experience) allows him immediately to rule out a large number of moves without going through an apparent logical analysis. Ludwig Prandtl, one of the founders of modern fluid mechanics, first conceived the idea of a boundary layer based solely on physical intuition. His knowledge of mathematics was rather limited, as his famous student von Karman (1954, page 50) testifies. Interestingly, the boundary layer technique has now become one of the most powerful methods in applied mathematics! As in other fields, our mathematical ability is too limited to tackle the complex problems of real fluid flows. Whether we are primarily interested either in understanding the physics or in the applications, we must depend heavily on experimental observations to test our analyses and develop insights into the nature of the phenomenon. Fluid dynamicists cannot afford to think like pure mathematicians. The well-known English pure mathematician G. H. Hardy once described applied mathematics as a form of “glorified plumbing” (G. I. Taylor, 1974). It is frightening to imagine what Hardy would have said of experimental sciences! This book is an introduction to fluid mechanics, and is aimed at both physicists and engineers. While the emphasis is on understanding the elementary concepts involved, applications to the various engineering fields have been discussed so as to motivate the reader whose main interest is to solve industrial problems. Needless to say, the reader will not get complete satisfaction even after reading the entire book. It is more likely that he or she will have more questions about the nature of fluid flows than before studying this book. The purpose of the book, however, will be well served if the reader is more curious and interested in fluid flows.
+2. Units of Measurement
+For mechanical systems, the units of all physical variables can be expressed in terms of the units of four basic variables, namely, length, mass, time, and temperature. In this book the international system of units (Syste`me international d’ unite ́s) and commonly referred to as SI units, will be used most of the time. The basic units
+
+
+3. Solids, Liquids, and Gases 3
+TABLE 1.1 SI Units
+Quantity Name of unit Symbol Equivalent
+Length meter m Mass kilogram kg Time second s Temperature kelvin K Frequency hertz Hz s−1 Force newton N kg m s−2 Pressure pascal Pa N m−2 Energy joule J N m Power watt W J s−1
+TABLE 1.2 Common Prefixes
+Prefix Symbol Multiple
+Mega M 106 Kilo k 103 Deci d 10−1 Centi c 10−2 Milli m 10−3 Micro μ 10−6
+of this system are meter for length, kilogram for mass, second for time, and kelvin for temperature. The units for other variables can be derived from these basic units. Some of the common variables used in fluid mechanics, and their SI units, are listed in Table 1.1. Some useful conversion factors between different systems of units are listed in Section A1 in Appendix A. To avoid very large or very small numerical values, prefixes are used to indicate multiples of the units given in Table 1.1. Some of the common prefixes are listed in Table 1.2. Strict adherence to the SI system is sometimes cumbersome and will be abandoned in favor of common usage where it best serves the purpose of simplifying things. For example, temperatures will be frequently quoted in degrees Celsius (◦C), which is related to kelvin (K) by the relation ◦C = K − 273.15. However, the old English system of units (foot, pound, ◦F) will not be used, although engineers in the United States are still using it.
+3. Solids, Liquids, and Gases
+Most substances can be described as existing in two states—solid and fluid. An element of solid has a preferred shape, to which it relaxes when the external forces on it are withdrawn. In contrast, a fluid does not have any preferred shape. Consider a rectangular element of solid ABCD (Figure 1.1a). Under the action of a shear force F the element assumes the shape ABC′D′. If the solid is perfectly elastic, it goes back to its preferred shape ABCD when F is withdrawn. In contrast, a fluid deforms
+
+
+4 Introduction
+Figure 1.1 Deformation of solid and fluid elements: (a) solid; and (b) fluid.
+continuously under the action of a shear force, however small. Thus, the element of the fluid ABCD confined between parallel plates (Figure 1.1b) deforms to shapes such as ABC′D′ and ABC′′D′′ as long as the force F is maintained on the upper plate. Therefore, we say that a fluid flows. The qualification “however small” in the forementioned description of a fluid is significant. This is because most solids also deform continuously if the shear stress exceeds a certain limiting value, corresponding to the “yield point” of the solid. A solid in such a state is known as “plastic.” In fact, the distinction between solids and fluids can be hazy at times. Substances like paints, jelly, pitch, polymer solutions, and biological substances (for example, egg white) simultaneously display the characteristics of both solids and fluids. If we say that an elastic solid has “perfect memory” (because it always relaxes back to its preferred shape) and that an ordinary viscous fluid has zero memory, then substances like egg white can be called viscoelastic because they have “partial memory.” Although solids and fluids behave very differently when subjected to shear stresses, they behave similarly under the action of compressive normal stresses. However, whereas a solid can support both tensile and compressive normal stresses, a fluid usually supports only compression (pressure) stresses. (Some liquids can support a small amount of tensile stress, the amount depending on the degree of molecular cohesion.) Fluids again may be divided into two classes, liquids and gases. A gas always expands and occupies the entire volume of any container. In contrast, the volume of a liquid does not change very much, so that it cannot completely fill a large container; in a gravitational field a free surface forms that separates the liquid from its vapor.
+4. Continuum Hypothesis
+A fluid, or any other substance for that matter, is composed of a large number of molecules in constant motion and undergoing collisions with each other. Matter is therefore discontinuous or discrete at microscopic scales. In principle, it is possible to study the mechanics of a fluid by studying the motion of the molecules themselves, as is done in kinetic theory or statistical mechanics. However, we are generally interested in the gross behavior of the fluid, that is, in the average manifestation of the molecular motion. For example, forces are exerted on the boundaries of a container due to the constant bombardment of the molecules; the statistical average of this force per unit
+
+
+5. Transport Phenomena 5
+area is called pressure, a macroscopic property. So long as we are not interested in the mechanism of the origin of pressure, we can ignore the molecular motion and think of pressure as simply “force per unit area.” It is thus possible to ignore the discrete molecular structure of matter and replace it by a continuous distribution, called a continuum. For the continuum or macroscopic approach to be valid, the size of the flow system (characterized, for example, by the size of the body around which flow is taking place) must be much larger than the mean free path of the molecules. For ordinary cases, however, this is not a great restriction, since the mean free path is usually very small. For example, the mean free path for standard atmospheric air is ≈5 × 10−8 m. In special situations, however, the mean free path of the molecules can be quite large and the continuum approach breaks down. In the upper altitudes of the atmosphere, for example, the mean free path of the molecules may be of the order of a meter, a kinetic theory approach is necessary for studying the dynamics of these rarefied gases.
+5. Transport Phenomena
+Consider a surface area AB within a mixture of two gases, say nitrogen and oxygen (Figure 1.2), and assume that the concentration C of nitrogen (kilograms of nitrogen per cubic meter of mixture) varies across AB. Random migration of molecules across AB in both directions will result in a net flux of nitrogen across AB, from the region of higher C toward the region of lower C. Experiments show that, to a good approximation, the flux of one constituent in a mixture is proportional to its concentration
+Figure 1.2 Mass flux qm due to concentration variation C(y) across AB.
+
+
+6 Introduction
+gradient and it is given by
+qm = −km∇C. (1.1)
+Here the vector qm is the mass flux (kg m−2 s−1) of the constituent, ∇C is the concentration gradient of that constituent, and km is a constant of proportionality that depends on the particular pair of constituents in the mixture and the thermodynamic state. For example, km for diffusion of nitrogen in a mixture with oxygen is different than km for diffusion of nitrogen in a mixture with carbon dioxide. The linear relation (1.1) for mass diffusion is generally known as Fick’s law. Relations like these are based on empirical evidence, and are called phenomenological laws. Statistical mechanics can sometimes be used to derive such laws, but only for simple situations. The analogous relation for heat transport due to temperature gradient is Fourier’s law and it is given by
+q = −k∇T , (1.2)
+where q is the heat flux (J m−2 s−1), ∇T is the temperature gradient, and k is the thermal conductivity of the material. Next, consider the effect of velocity gradient du/dy (Figure 1.3). It is clear that the macroscopic fluid velocity u will tend to become uniform due to the random
+Figure 1.3 Shear stress τ on surface AB. Diffusion tends to decrease velocity gradients, so that the continuous line tends toward the dashed line.
+
+
+5. Transport Phenomena 7
+motion of the molecules, because of intermolecular collisions and the consequent exchange of molecular momentum. Imagine two railroad trains traveling on parallel tracks at different speeds, and workers shoveling coal from one train to the other. On the average, the impact of particles of coal going from the slower to the faster train will tend to slow down the faster train, and similarly the coal going from the faster to the slower train will tend to speed up the latter. The net effect is a tendency to equalize the speeds of the two trains. An analogous process takes place in the fluid flow problem of Figure 1.3. The velocity distribution here tends toward the dashed line, which can be described by saying that the x-momentum (determined by its “concentration” u) is being transferred downward. Such a momentum flux is equivalent to the existence of a shear stress in the fluid, just as the drag experienced by the two trains results from the momentum exchange through the transfer of coal particles. The fluid above AB tends to push the fluid underneath forward, whereas the fluid below AB tends to drag the upper fluid backward. Experiments show that the magnitude of the shear stress τ along a surface such as AB is, to a good approximation, related to the velocity gradient by the linear relation
+τ = μdu
+dy , (1.3)
+which is called Newton’s law of friction. Here the constant of proportionality μ (whose unit is kg m−1 s−1) is known as the dynamic viscosity, which is a strong function of temperature T . For ideal gases the random thermal speed is roughly
+proportional to √T ; the momentum transport, and consequently μ, also vary approx
+imately as √T . For liquids, on the other hand, the shear stress is caused more by the intermolecular cohesive forces than by the thermal motion of the molecules. These cohesive forces, and consequently μ for a liquid, decrease with temperature. Although the shear stress is proportional to μ, we will see in Chapter 4 that the tendency of a fluid to diffuse velocity gradients is determined by the quantity
+ν≡μ
+ρ , (1.4)
+where ρ is the density (kg/m3) of the fluid. The unit of ν is m2/s, which does not involve the unit of mass. Consequently, ν is frequently called the kinematic viscosity. Two points should be noticed in the linear transport laws equations (1.1), (1.2), and (1.3). First, only the first derivative of some generalized “concentration” C appears on the right-hand side. This is because the transport is carried out by molecular processes, in which the length scales (say, the mean free path) are too small to feel the curvature of the C-profile. Second, the nonlinear terms involving higher powers of ∇C do not appear. Although this is only expected for small magnitudes of ∇C, experiments show that such linear relations are very accurate for most practical values of ∇C. It should be noted here that we have written the transport law for momentum far less precisely than the transport laws for mass and heat. This is because we have not developed the language to write this law with precision. The transported quantities in (1.1) and (1.2) are scalars (namely, mass and heat, respectively), and the
+
+
+8 Introduction
+corresponding fluxes are vectors. In contrast, the transported quantity in (1.3) is itself a vector, and the corresponding flux is a “tensor.” The precise form of (1.3) will be presented in Chapter 4, after the concept of tensors is explained in Chapter 2. For now, we have avoided complications by writing the transport law for only one component of momentum, using scalar notation.
+6. Surface Tension
+A density discontinuity exists whenever two immiscible fluids are in contact, for example at the interface between water and air. The interface in this case is found to behave as if it were under tension. Such an interface behaves like a stretched membrane, such as the surface of a balloon or of a soap bubble. This is why drops of liquid in air or gas bubbles in water tend to be spherical in shape. The origin of such tension in an interface is due to the intermolecular attractive forces. Imagine a liquid drop surrounded by a gas. Near the interface, all the liquid molecules are trying to pull the molecules on the interface inward. The net effect of these attractive forces is for the interface to contract. The magnitude of the tensile force per unit length of a line on the interface is called surface tension σ , which has the unit N/m. The value of σ depends on the pair of fluids in contact and the temperature. An important consequence of surface tension is that it gives rise to a pressure jump across the interface whenever it is curved. Consider a spherical interface having a radius of curvature R (Figure 1.4a). If pi and po are the pressures on the two sides of the interface, then a force balance gives
+σ (2π R) = (pi − po)π R2,
+from which the pressure jump is found to be
+pi − po = 2σ
+R , (1.5)
+Figure 1.4 (a) Section of a spherical droplet, showing surface tension forces. (b) An interface with radii of curvatures R1 and R2 along two orthogonal directions.
+
+
+7. Fluid Statics 9
+showing that the pressure on the concave side is higher. The pressure jump, however, is small unless R is quite small. Equation (1.5) holds only if the surface is spherical. The curvature of a general surface can be specified by the radii of curvature along two orthogonal directions, say, R1 and R2 (Figure 1.4b). A similar analysis shows that the pressure jump across the interface is given by
+pi − po = σ
+(1
+R1
++1
+R2
+) ,
+which agrees with equation (1.5) if R1 = R2. It is well known that the free surface of a liquid in a narrow tube rises above the surrounding level due to the influence of surface tension. This is demonstrated in Example 1.1. Narrow tubes are called capillary tubes (from Latin capillus, meaning “hair”). Because of this phenomenon the whole group of phenomena that arise from surface tension effects is called capillarity. A more complete discussion of surface tension is presented at the end of Chapter 4 (Section 19) as part of an expanded section on boundary conditions.
+7. Fluid Statics
+The magnitude of the force per unit area in a static fluid is called the pressure. (More care is needed to define the pressure in a moving medium, and this will be done in Chapter 4.) Sometimes the ordinary pressure is called the absolute pressure, in order to distinguish it from the gauge pressure, which is defined as the absolute pressure minus the atmospheric pressure:
+pgauge = p − patm.
+The value of the atmospheric pressure is
+patm = 101.3 kPa = 1.013 bar,
+where 1 bar = 105 Pa. The atmospheric pressure is therefore approximately 1 bar. In a fluid at rest, the tangential viscous stresses are absent and the only force between adjacent surfaces is normal to the surface. We shall now demonstrate that in such a case the surface force per unit area (“pressure”) is equal in all directions. Consider a small triangular volume of fluid (Figure 1.5) of unit thickness normal to the paper, and let p1, p2, and p3 be the pressures on the three faces. The z-axis is taken vertically upward. The only forces acting on the element are the pressure forces normal to the faces and the weight of the element. Because there is no acceleration of the element in the x direction, a balance of forces in that direction gives
+(p1 ds) sin θ − p3 dz = 0.
+
+
+10 Introduction
+Figure 1.5 Demonstration that p1 = p2 = p3 in a static fluid.
+Because dz = ds sin θ , the foregoing gives p1 = p3. A balance of forces in the vertical direction gives
+−(p1 ds) cos θ + p2 dx − 1
+2 ρg dx dz = 0.
+As ds cos θ = dx, this gives
+p2 − p1 − 1
+2 ρg dz = 0.
+As the triangular element is shrunk to a point, the gravity force term drops out, giving p1 = p2. Thus, at a point in a static fluid, we have
+p1 = p2 = p3, (1.6)
+so that the force per unit area is independent of the angular orientation of the surface. The pressure is therefore a scalar quantity. We now proceed to determine the spatial distribution of pressure in a static fluid. Consider an infinitesimal cube of sides dx, dy, and dz, with the z-axis vertically upward (Figure 1.6). A balance of forces in the x direction shows that the pressures on the two sides perpendicular to the x-axis are equal. A similar result holds in the y direction, so that
+∂p
+∂x = ∂p
+∂y = 0. (1.7)
+This fact is expressed by Pascal’s law, which states that all points in a resting fluid medium (and connected by the same fluid) are at the same pressure if they are at the same depth. For example, the pressure at points F and G in Figure 1.7 are the same. A vertical equilibrium of the element in Figure 1.6 requires that
+p dx dy − (p + dp) dx dy − ρg dx dy dz = 0,
+
+
+7. Fluid Statics 11
+Figure 1.6 Fluid element at rest.
+Figure 1.7 Rise of a liquid in a narrow tube (Example 1.1).
+which simplifies to
+dp
+dz = −ρg. (1.8)
+This shows that the pressure in a static fluid decreases with height. For a fluid of uniform density, equation (1.8) can be integrated to give
+p = p0 − ρgz, (1.9)
+where p0 is the pressure at z = 0. Equation (1.9) is the well-known result of hydrostatics, and shows that the pressure in a liquid decreases linearly with height. It implies that the pressure rise at a depth h below the free surface of a liquid is equal to ρgh, which is the weight of a column of liquid of height h and unit cross section.
+
+
+12 Introduction
+Example 1.1. With reference to Figure 1.7, show that the rise of a liquid in a narrow tube of radius R is given by
+h = 2σ sin α
+ρgR ,
+where σ is the surface tension and α is the “contact” angle.
+Solution. Since the free surface is concave upward and exposed to the atmosphere, the pressure just below the interface at point E is below atmospheric. The pressure then increases linearly along EF. At F the pressure again equals the atmospheric pressure, since F is at the same level as G where the pressure is atmospheric. The pressure forces on faces AB and CD therefore balance each other. Vertical equilibrium of the element ABCD then requires that the weight of the element balances the vertical component of the surface tension force, so that
+σ (2π R) sin α = ρgh(π R2),
+which gives the required result.
+8. Classical Thermodynamics
+Classical thermodynamics is the study of equilibrium states of matter, in which the properties are assumed uniform in space and time. The reader is assumed to be familiar with the basic concepts of this subject. Here we give a review of the main ideas and the most commonly used relations in this book. A thermodynamic system is a quantity of matter separated from the surroundings by a flexible boundary through which the system exchanges heat and work, but no mass. A system in the equilibrium state is free of currents, such as those generated by stirring a fluid or by sudden heating. After a change has taken place, the currents die out and the system returns to equilibrium conditions, when the properties of the system (such as pressure and temperature) can once again be defined. This definition, however, is not possible in fluid flows, and the question arises as to whether the relations derived in classical thermodynamics are applicable to fluids in constant motion. Experiments show that the results of classical thermodynamics do hold in most fluid flows if the changes along the motion are slow compared to a relaxation time. The relaxation time is defined as the time taken by the material to adjust to a new state, and the material undergoes this adjustment through molecular collisions. The relaxation time is very small under ordinary conditions, since only a few molecular collisions are needed for the adjustment. The relations of classical thermodynamics are therefore applicable to most fluid flows. The basic laws of classical thermodynamics are empirical, and cannot be proved. Another way of viewing this is to say that these principles are so basic that they cannot be derived from anything more basic. They essentially establish certain basic definitions, upon which the subject is built. The first law of thermodynamics can be regarded as a principle that defines the internal energy of a system, and the second law can be regarded as the principle that defines the entropy of a system.
+
+
+8. Classical Thermodynamics 13
+First Law of Thermodynamics
+The first law of thermodynamics states that the energy of a system is conserved. It states that
+Q + W = e, (1.10)
+where Q is the heat added to the system, W is the work done on the system, and e is the increase of internal energy of the system. All quantities in equation (1.10) may be regarded as those referring to unit mass of the system. (In thermodynamics texts it is customary to denote quantities per unit mass by lowercase letters, and those for the entire system by uppercase letters. This will not be done here.) The internal energy (also called “thermal energy”) is a manifestation of the random molecular motion of the constituents. In fluid flows, the kinetic energy of the macroscopic motion has to be included in the term e in equation (1.10) in order that the principle of conservation of energy is satisfied. For developing the relations of classical thermodynamics, however, we shall only include the “thermal energy” in the term e. It is important to realize the difference between heat and internal energy. Heat and work are forms of energy in transition, which appear at the boundary of the system and are not contained within the matter. In contrast, the internal energy resides within the matter. If two equilibrium states 1 and 2 of a system are known, then Q and W depend on the process or path followed by the system in going from state 1 to state 2. The change e = e2 − e1, in contrast, does not depend on the path. In short, e is a thermodynamic property and is a function of the thermodynamic state of the system. Thermodynamic properties are called state functions, in contrast to heat and work, which are path functions.
+Frictionless quasi-static processes, carried out at an extremely slow rate so that the system is at all times in equilibrium with the surroundings, are called reversible processes. The most common type of reversible work in fluid flows is by the expansion or contraction of the boundaries of the fluid element. Let v = 1/ρ be the specific volume, that is, the volume per unit mass. Then the work done by the body per unit mass in an infinitesimal reversible process is −pdv, where dv is the increase of v. The first law (equation (1.10)) for a reversible process then becomes
+de = dQ − pdv, (1.11)
+provided that Q is also reversible. Note that irreversible forms of work, such as that done by turning a paddle wheel, are excluded from equation (1.11).
+Equations of State
+In simple systems composed of a single component only, the specification of two independent properties completely determines the state of the system. We can write relations such as
+p = p(v, T ) (thermal equation of state),
+e = e(p, T ) (caloric equation of state).
+(1.12)
+
+
+14 Introduction
+Such relations are called equations of state. For more complicated systems composed of more than one component, the specification of two properties is not enough to completely determine the state. For example, for sea water containing dissolved salt, the density is a function of the three variables, salinity, temperature, and pressure.
+Specific Heats
+Before we define the specific heats of a substance, we define a thermodynamic property called enthalpy as
+h ≡ e + pv. (1.13)
+This property will be quite useful in our study of compressible fluid flows. For single-component systems, the specific heats at constant pressure and constant volume are defined as
+Cp ≡
+( ∂h ∂T
+)
+p
+, (1.14)
+Cv ≡
+( ∂e ∂T
+)
+v
+. (1.15)
+Here, equation (1.14) means that we regard h as a function of p and T , and find the partial derivative of h with respect to T , keeping p constant. Equation (1.15) has an analogous interpretation. It is important to note that the specific heats as defined are thermodynamic properties, because they are defined in terms of other properties of the system. That is, we can determine Cp and Cv when two other properties of the system (say, p and T ) are given. For certain processes common in fluid flows, the heat exchange can be related to the specific heats. Consider a reversible process in which the work done is given by p dv, so that the first law of thermodynamics has the form of equation (1.11). Dividing by the change of temperature, it follows that the heat transferred per unit mass per unit temperature change in a constant volume process is
+(dQ dT
+)
+v
+=
+( ∂e ∂T
+)
+v
+= Cv.
+This shows that Cv dT represents the heat transfer per unit mass in a reversible constant volume process, in which the only type of work done is of the pdv type. It is misleading to define Cv = (dQ/dT )v without any restrictions imposed, as the temperature of a constant-volume system can increase without heat transfer, say, by turning a paddle wheel. In a similar manner, the heat transferred at constant pressure during a reversible process is given by
+(dQ dT
+)
+p
+=
+( ∂h ∂T
+)
+p
+= Cp.
+
+
+8. Classical Thermodynamics 15
+Second Law of Thermodynamics
+The second law of thermodynamics imposes restriction on the direction in which real processes can proceed. Its implications are discussed in Chapter 4. Some consequences of this law are the following:
+(i) There must exist a thermodynamic property S, known as entropy, whose change between states 1 and 2 is given by
+S2 − S1 =
+∫2
+1
+d Qrev
+T , (1.16)
+where the integral is taken along any reversible process between the two states. (ii) For an arbitrary process between 1 and 2, the entropy change is
+S2 − S1
+∫2
+1
+dQ
+T (Clausius-Duhem),
+which states that the entropy of an isolated system (dQ = 0) can only increase. Such increases are caused by frictional and mixing phenomena. (iii) Molecular transport coefficients such as viscosity μ and thermal conductivity k must be positive. Otherwise, spontaneous “unmixing” would occur and lead to a decrease of entropy of an isolated system.
+T dS Relations
+Two common relations are useful in calculating the entropy changes during a process. For a reversible process, the entropy change is given by
+T dS = dQ. (1.17)
+On substituting into (1.11), we obtain
+T dS = de + p dv
+T dS = dh − v dp (Gibbs), (1.18)
+where the second form is obtained by using dh = d(e + pv) = de + p dv + v dp. It is interesting that the “T dS relations” in equations (1.18) are also valid for irreversible (frictional) processes, although the relations (1.11) and (1.17), from which equations (1.18) is derived, are true for reversible processes only. This is because equations (1.18) are relations between thermodynamic state functions alone and are therefore true for any process. The association of T dS with heat and −pdv with work does not hold for irreversible processes. Consider paddle wheel work done at constant volume so that de = T dS is the element of work done.
+
+
+16 Introduction
+Speed of Sound
+In a compressible medium, infinitesimal changes in density or pressure propagate through the medium at a finite speed. In Chapter 16, we shall prove that the square of this speed is given by
+c2 =
+( ∂p ∂ρ
+)
+s
+, (1.19)
+where the subscript “s” signifies that the derivative is taken at constant entropy. As sound is composed of small density perturbations, it also propagates at speed c. For incompressible fluids ρ is independent of p, and therefore c = ∞.
+Thermal Expansion Coefficient
+In a system whose density is a function of temperature, we define the thermal expansion coefficient
+α ≡ −1
+ρ
+( ∂ρ ∂T
+)
+p
+, (1.20)
+where the subscript “p” signifies that the partial derivative is taken at constant pressure. The expansion coefficient will appear frequently in our studies of nonisothermal systems.
+9. Perfect Gas
+A relation defining one state function of a gas in terms of two others is called an equation of state. A perfect gas is defined as one that obeys the thermal equation of state
+p = ρRT , (1.21)
+where p is the pressure, ρ is the density, T is the absolute temperature, and R is the gas constant. The value of the gas constant depends on the molecular mass m of the gas according to
+R = Ru
+m , (1.22)
+where
+Ru = 8314.36 J kmol−1 K−1
+is the universal gas constant. For example, the molecular mass for dry air is m = 28.966 kg/kmol, for which equation (1.22) gives
+R = 287 J kg−1 K−1 for dry air.
+
+
+9. Perfect Gas 17
+Equation (1.21) can be derived from the kinetic theory of gases if the attractive forces between the molecules are negligible. At ordinary temperatures and pressures most gases can be taken as perfect. The gas constant is related to the specific heats of the gas through the relation
+R = Cp − Cv, (1.23)
+where Cp is the specific heat at constant pressure and Cv is the specific heat at constant volume. In general, Cp and Cv of a gas, including those of a perfect gas, increase with temperature. The ratio of specific heats of a gas
+γ ≡ Cp
+Cv
+, (1.24)
+is an important quantity. For air at ordinary temperatures, γ = 1.4 and C p = 1005 J kg−1 K−1. It can be shown that assertion (1.21) is equivalent to
+e = e(T ) h = h(T )
+and conversely, so that the internal energy and enthalpy of a perfect gas can only be functions of temperature alone. See Exercise 7. A process is called adiabatic if it takes place without the addition of heat. A process is called isentropic if it is adiabatic and frictionless, for then the entropy of the fluid does not change. From equation (1.18) it is easy to show that the isentropic flow of a perfect gas with constant specific heats obeys the relation
+p
+ργ = const. (isentropic) (1.25)
+Using the equation of state p = ρRT , it follows that the temperature and density change during an isentropic process from state 1 to state 2 according to
+T1
+T2
+=
+( p1
+p2
+)(γ −1)/γ
+and ρ1
+ρ2
+=
+( p1
+p2
+)1/γ
+(isentropic) (1.26)
+See Exercise 8. For a perfect gas, simple expressions can be found for several useful thermodynamic properties such as the speed of sound and the thermal expansion coefficient. Using the equation of state p = ρRT , the speed of sound (1.19) becomes
+c=
+√
+γ RT , (1.27)
+where equation (1.25) has been used. This shows that the speed of sound increases as the square root of the temperature. Likewise, the use of p = ρRT shows that the
+
+
+18 Introduction
+thermal expansion coefficient (1.20) is
+α= 1
+T , (1.28)
+10. Static Equilibrium of a Compressible Medium
+In an incompressible fluid in which the density is not a function of pressure, there is a simple criterion for determining the stability of the medium in the static state. The criterion is that the medium is stable if the density decreases upward, for then a particle displaced upward would find itself at a level where the density of the surrounding fluid is lower, and so the particle would be forced back toward its original level. In the opposite case in which the density increases upward, a displaced particle would continue to move farther away from its original position, resulting in instability. The medium is in neutral equilibrium if the density is uniform. For a compressible medium the preceding criterion for determining the stability does not hold. We shall now show that in this case it is not the density but the entropy that is constant with height in the neutral state. For simplicity we shall consider the case of an atmosphere that obeys the equation of state for a perfect gas. The pressure decreases with height according to
+dp
+dz = −ρg.
+A particle displaced upward would expand adiabatically because of the decrease of the pressure with height. Its original density ρ0 and original temperature T0 would therefore decrease to ρ and T according to the isentropic relations
+T
+T0
+=
+(p
+p0
+)(γ −1)/γ
+and ρ
+ρ0
+=
+(p
+p0
+)1/γ
+, (1.29)
+where γ = Cp/Cv, and the subscript 0 denotes the original state at some height z0, where p0 > p (Figure 1.8). It is clear that the displaced particle would be forced back toward the original level if the new density is larger than that of the surrounding air at the new level. Now if the properties of the surrounding air also happen to vary with height in such a way that the entropy is uniform with height, then the displaced particle would constantly find itself in a region where the density is the same as that of itself. Therefore, a neutral atmosphere is one in which p, ρ, and T decrease in such a way that the entropy is constant with height. A neutrally stable atmosphere is therefore also called an isentropic or adiabatic atmosphere. It follows that a statically stable atmosphere is one in which the density decreases with height faster than in an adiabatic atmosphere.
+
+
+10. Static Equilibrium of a Compressible Medium 19
+Figure 1.8 Adiabatic expansion of a fluid particle displaced upward in a compressible medium.
+It is easy to determine the rate of decrease of temperature in an adiabatic atmosphere. Taking the logarithm of equation (1.29), we obtain
+ln Ta − ln T0 = γ − 1
+γ [ln pa − ln p0],
+where we are using the subscript “a” to denote an adiabatic atmosphere. A differentiation with respect to z gives
+1
+Ta
+d Ta
+dz = γ − 1
+γ
+1
+pa
+dpa
+dz .
+Using the perfect gas law p = ρRT , Cp − Cv = R, and the hydrostatic rule dp/dz = −ρg, we obtain
+d Ta
+dz ≡ a = − g
+Cp
+(1.30)
+where ≡ dT /dz is the temperature gradient; a = −g/Cp is called the adiabatic temperature gradient and is the largest rate at which the temperature can decrease with height without causing instability. For air at normal temperatures and pressures, the temperature of a neutral atmosphere decreases with height at the rate of g/Cp
+10 ◦C/km. Meteorologists call vertical temperature gradients the “lapse rate,” so that in their terminology the adiabatic lapse rate is 10 ◦C/km. Figure 1.9a shows a typical distribution of temperature in the atmosphere. The lower part has been drawn with a slope nearly equal to the adiabatic temperature gradient because the mixing processes near the ground tend to form a neutral atmosphere, with its entropy “well mixed” (that is, uniform) with height. Observations show that the neutral atmosphere is “capped” by a layer in which the temperature increases with height, signifying a very stable situation. Meteorologists call this an inversion, because the temperature gradient changes sign here. Much of the atmospheric turbulence and mixing processes cannot penetrate this very stable layer. Above this inversion layer the
+
+
+20 Introduction
+Figure 1.9 Vertical variation of the (a) actual and (b) potential temperature in the atmosphere. Thin straight lines represent temperatures for a neutral atmosphere.
+temperature decreases again, but less rapidly than near the ground, which corresponds to stability. It is clear that an isothermal atmosphere (a vertical line in Figure 1.9a) is quite stable.
+Potential Temperature and Density
+The foregoing discussion of static stability of a compressible atmosphere can be expressed in terms of the concept of potential temperature, which is generally denoted by θ . Suppose the pressure and temperature of a fluid particle at a certain height are p and T . Now if we take the particle adiabatically to a standard pressure ps (say, the sea level pressure, nearly equal to 100 kPa), then the temperature θ attained by the particle is called its potential temperature. Using equation (1.26), it follows that the actual temperature T and the potential temperature θ are related by
+T =θ
+(p
+ps
+)(γ −1)/γ
+. (1.31)
+Taking the logarithm and differentiating, we obtain
+1 T
+dT
+dz = 1
+θ
+dθ
+dz + γ − 1
+γ
+1 p
+dp
+dz .
+Substituting dp/dz = −ρg and p = ρRT , we obtain
+T θ
+dθ
+dz = dT
+dz + g
+Cp
+=d
+dz (T − Ta) = − a. (1.32)
+Now if the temperature decreases at a rate = a, then the potential temperature θ (and therefore the entropy) is uniform with height. It follows that the stability of the
+
+
+10. Static Equilibrium of a Compressible Medium 21
+atmosphere is determined according to
+dθ
+dz > 0 (stable),
+dθ
+dz = 0 (neutral), (1.33)
+dθ
+dz < 0 (unstable).
+This is shown in Figure 1.9b. It is the gradient of potential temperature that determines the stability of a column of gas, not the gradient of the actual temperature. However, the difference between the two is negligible for laboratory-scale phenomena. For example, over a height of 10 cm the compressibility effects result in a decrease of temperature in the air by only 10 cm × (10 ◦C/km) = 10−3 ◦C. Instead of using the potential temperature, one can use the concept of potential density ρθ , defined as the density attained by a fluid particle if taken isentropically to a standard pressure ps. Using equation (1.26), the actual and potential densities are related by
+ρ = ρθ
+(p
+ps
+)1/γ
+. (1.34)
+Multiplying equations (1.31) and (1.34), and using p = ρRT , we obtain θρθ = ps/R = const. Taking the logarithm and differentiating, we obtain
+−1
+ρθ
+dρθ
+dz = 1
+θ
+dθ
+dz . (1.35)
+The medium is stable, neutral, or unstable depending upon whether dρθ /dz is negative, zero, or positive, respectively. Compressibility effects are also important in the deep ocean. In the ocean the density depends not only on the temperature and pressure, but also on the salinity, defined as kilograms of salt per kilogram of water. (The salinity of sea water is ≈3%.) Here, one defines the potential density as the density attained if a particle is taken to a reference pressure isentropically and at constant salinity. The potential density thus defined must decrease with height in stable conditions. Oceanographers automatically account for the compressibility of sea water by converting their density measurements at any depth to the sea level pressure, which serves as the reference pressure. From (1.32), the temperature of a dry neutrally stable atmosphere decreases upward at a rate dTa/dz = −g/Cp due to the decrease of pressure with height and the compressibility of the medium. Static stability of the atmosphere is determined by whether the actual temperature gradient dT /dz is slower or faster than dTa/dz. To determine the static stability of the ocean, it is more convenient to formulate the criterion in terms of density. The plan is to compare the density gradient of the actual static state with that of a neutrally stable reference state (denoted here by the subscript “a”).
+
+
+22 Introduction
+The pressure of the reference state decreases vertically as
+dpa
+dz = −ρag. (1.36)
+In the ocean the speed of sound c is defined by c2 = ∂p/∂ρ, where the partial derivative is taken at constant values of entropy and salinity. In the reference state these variables are uniform, so that dpa = c2dρa. Therefore, the density in the neutrally stable state varies due to the compressibility effect at a rate
+dρa
+dz = 1
+c2
+dpa
+dz = 1
+c2 (−ρag) = − ρg
+c2 , (1.37)
+where the subscript “a” on ρ has been dropped because ρa is nearly equal to the actual density ρ. The static stability of the ocean is determined by the sign of the potential density gradient
+dρpot
+dz = dρ
+dz − dρa
+dz = dρ
+dz + ρg
+c2 . (1.38)
+The medium is statically stable if the potential density gradient is negative, and so on. For a perfect gas, it can be shown that equations (1.30) and (1.38) are equivalent.
+Scale Height of the Atmosphere
+Expressions for pressure distribution and “thickness” of the atmosphere can be obtained by assuming that they are isothermal. This is a good assumption in the lower 70 km of the atmosphere, where the absolute temperature remains within 15% of 250 K. The hydrostatic distribution is
+dp
+dz = −ρg = − pg
+RT .
+Integration gives
+p = p0 e−gz/RT ,
+where p0 is the pressure at z = 0. The pressure therefore falls to e−1 of its surface value in a height RT /g. The quantity RT /g, called the scale height, is a good measure of the thickness of the atmosphere. For an average atmospheric temperature of T = 250 K, the scale height is RT /g = 7.3 km.
+Exercises
+1. Estimate the height to which water at 20 ◦C will rise in a capillary glass tube 3 mm in diameter exposed to the atmosphere. For water in contact with glass the wetting angle is nearly 90◦. At 20 ◦C and water-air combination, σ = 0.073 N/m. (Answer: h = 0.99 cm.)
+
+
+Exercises 23
+2. Consider the viscous flow in a channel of width 2b. The channel is aligned in the x direction, and the velocity at a distance y from the centerline is given by the parabolic distribution
+u(y) = U0
+[
+1 − y2
+b2
+] .
+In terms of the viscosity μ, calculate the shear stress at a distance of y = b/2.
+3. Figure 1.10 shows a manometer, which is a U-shaped tube containing mercury of density ρm. Manometers are used as pressure measuring devices. If the fluid in the tank A has a pressure p and density ρ, then show that the gauge pressure in the tank is
+p − patm = ρmgh − ρga.
+Note that the last term on the right-hand side is negligible if ρ ρm. (Hint: Equate the pressures at X and Y .)
+4. A cylinder contains 2 kg of air at 50 ◦C and a pressure of 3 bars. The air is compressed until its pressure rises to 8 bars. What is the initial volume? Find the final volume for both isothermal compression and isentropic compression.
+5. Assume that the temperature of the atmosphere varies with height z as
+T = T0 + Kz.
+Show that the pressure varies with height as
+p = p0
+[ T0
+T0 + Kz
+]g/K R
+,
+where g is gravity and R is the gas constant.
+Figure 1.10 A mercury manometer.
+
+
+24 Introduction
+6. Suppose the atmospheric temperature varies according to
+T = 15 − 0.001z
+where T is in degrees Celsius and height z is in meters. Is this atmosphere stable?
+7. Prove that if e(T , v) = e(T ) only and if h(T , p) = h(T ) only, then the (thermal) equation of state is equation (1.21) or pv = kT .
+8. For a reversible adiabatic process in a perfect gas with constant specific heats, derive equations (1.25) and (1.26) starting from equation (1.18).
+9. Consider a heat insulated enclosure that is separated into two compartments of volumes V1 and V2, containing perfect gases with pressures and temperatures of p1, p2, and T1, T2, respectively. The compartments are separated by an impermeable membrane that conducts heat (but not mass). Calculate the final steady-state temperature assuming each of the gases has constant specific heats.
+10. Consider the initial state of an enclosure with two compartments as described in Exercise 9. At t = 0, the membrane is broken and the gases are mixed. Calculate the final temperature.
+11. A heavy piston of weight W is dropped onto a thermally insulated cylinder of cross-sectional area A containing a perfect gas of constant specific heats, and initially having the external pressure p1, temperature T1, and volume V1. After some oscillations, the piston reaches an equilibrium position L meters below the equilibrium position of a weightless piston. Find L. Is there an entropy increase?
+Literature Cited
+Taylor, G. I. (1974). The interaction between experiment and theory in fluid mechanics. Annual Review of Fluid Mechanics 6: 1–16.
+Von Karman, T. (1954). Aerodynamics, New York: McGraw-Hill.
+Supplemental Reading
+Batchelor, G. K. (1967). “An Introduction to Fluid Dynamics,” London: Cambridge University Press, (A detailed discussion of classical thermodynamics, kinetic theory of gases, surface tension effects, and transport phenomena is given.) Hatsopoulos, G. N. and J. H. Keenan (1981). Principles of General Thermodynamics. Melbourne, FL: Krieger Publishing Co. (This is a good text on thermodynamics.) Prandtl, L. and O. G. Tietjens (1934). Fundamentals of Hydro- and Aeromechanics, New York: Dover Publications. (A clear and simple discussion of potential and adiabatic temperature gradients is given.)
+
+
+Chapter 2
+Cartesian Tensors
+1. Scalars and Vectors . . . . . . . . . . . . . . 25 2. Rotation of Axes: Formal Definition of a Vector . . . . . . . . . . . . . . . . . . . . . . . 26 3. Multiplication of Matrices . . . . . . . . 29 4. Second-Order Tensor . . . . . . . . . . . . 30 5. Contraction and Multiplication . . 32 6. Force on a Surface . . . . . . . . . . . . . . . 33 Example 2.1 . . . . . . . . . . . . . . . . . . . . 35 7. Kronecker Delta and Alternating Tensor. . . . . . . . . . . . . . . . . . . . . . . . . . . 36 8. Dot Product . . . . . . . . . . . . . . . . . . . . . 37 9. Cross Product . . . . . . . . . . . . . . . . . . . 38 10. Operator ∇: Gradient, Divergence, and Curl . . . . . . . . . . . . . . . . . . . . . . . . 38
+11. Symmetric and Antisymmetric Tensors . . . . . . . . . . . . . . . . . . . . . . . . . . 40 12. Eigenvalues and Eigenvectors of a Symmetric Tensor . . . . . . . . . . . . . . . . 41 Example 2.2 . . . . . . . . . . . . . . . . . . . . 42 13. Gauss’ Theorem . . . . . . . . . . . . . . . . . 44 Example 2.3 . . . . . . . . . . . . . . . . . . . . 45 14. Stokes’ Theorem . . . . . . . . . . . . . . . . . 47 Example 2.4 . . . . . . . . . . . . . . . . . . . . 48 15. Comma Notation . . . . . . . . . . . . . . . . 49 16. Boldface vs Indicial Notation. . . . . 49 Exercises . . . . . . . . . . . . . . . . . . . . . . . . 50 Literature Cited . . . . . . . . . . . . . . . . . 51 Supplemental Reading . . . . . . . . . . . 51
+1. Scalars and Vectors
+In fluid mechanics we need to deal with quantities of various complexities. Some of these are defined by only one component and are called scalars, some others are defined by three components and are called vectors, and certain other variables called tensors need as many as nine components for a complete description. We shall assume that the reader is familiar with a certain amount of algebra and calculus of vectors. The concept and manipulation of tensors is the subject of this chapter. A scalar is any quantity that is completely specified by a magnitude only, along with its unit. It is independent of the coordinate system. Examples of scalars are temperature and density of the fluid. A vector is any quantity that has a magnitude and a direction, and can be completely described by its components along three specified coordinate directions. A vector is usually denoted by a boldface symbol, for example, x for position and u for velocity. We can take a Cartesian coordinate system x1, x2, x3, with unit vectors a1, a2, and a3 in the three mutually perpendicular directions (Figure 2.1). (In texts on vector analysis, the unit vectors are usually denoted by i, j, and k. We cannot use this simple notation here because we shall use ij k to
+25
+©2010 Elsevier Inc. All rights reserved. DOI: 10.1016/B978-0-12-381399-2.50002-2
+
+
+26 Cartesian Tensors
+Figure 2.1 Position vector OP and its three Cartesian components (x1, x2, x3). The three unit vectors
+are a1, a2, and a3.
+denote components of a vector.) Then the position vector is written as
+x = a1x1 + a2x2 + a3x3,
+where (x1, x2, x3) are the components of x along the coordinate directions. (The superscripts on the unit vectors a do not denote the components of a vector; the a’s are vectors themselves.) Instead of writing all three components explicitly, we can indicate the three Cartesian components of a vector by an index that takes all possible values of 1, 2, and 3. For example, the components of the position vector can be denoted by xi, where i takes all of its possible values, namely, 1, 2, and 3. To obey the laws of algebra that we shall present, the components of a vector should be written as a column. For example,
+x=
+
+
+x1 x2 x3
+
+.
+In matrix algebra, one defines the transpose as the matrix obtained by interchanging rows and columns. For example, the transpose of a column matrix x is the row matrix
+xT = [x1 x2 x3].
+2. Rotation of Axes: Formal Definition of a Vector
+A vector can be formally defined as any quantity whose components change similarly to the components of a position vector under the rotation of the coordinate system.
+
+
+2. Rotation of Axes: Formal Definition of a Vector 27
+Figure 2.2 Rotation of coordinate system O 1 2 3 to O 1′ 2′ 3′.
+Let x1 x2 x3 be the original axes, and x′
+1 x′
+2 x′
+3 be the rotated system (Figure 2.2). The components of the position vector x in the original and rotated systems are denoted by xi and xi′, respectively. The cosine of the angle between the old i and new j axes
+is represented by Cij . Here, the first index of the C matrix refers to the old axes, and the second index of C refers to the new axes. It is apparent that Cij = Cji. A little geometry shows that the components in the rotated system are related to the components in the original system by
+x′j = x1C1j + x2C2j + x3C3j =
+∑3
+i=1
+xi Cij . (2.1)
+For simplicity, we shall verify the validity of equation (2.1) in two dimensions only. Referring to Figure 2.3, let αij be the angle between old i and new j axes, so that Cij = cos αij . Then
+x′
+1 = OD = OC + AB = x1 cos α11 + x2 sin α11. (2.2)
+As α11 = 90◦ − α21, we have sin α11 = cos α21 = C21. Equation (2.2) then becomes
+x′
+1 = x1C11 + x2C21 =
+2 ∑
+i=1
+xi Ci1. (2.3)
+In a similar manner
+x′
+2 = PD = PB − DB = x2 cos α11 − x1 sin α11.
+
+
+28 Cartesian Tensors
+Figure 2.3 Rotation of a coordinate system in two dimensions.
+As α11 = α22 = α12 − 90◦ (Figure 2.3), this becomes
+x′
+2 = x2 cos α22 + x1 cos α12 =
+2 ∑
+i=1
+xi Ci2. (2.4)
+In two dimensions, equation (2.1) reduces to equation (2.3) for j = 1, and to equation (2.4) for j = 2. This completes our verification of equation (2.1). Note that the index i appears twice in the same term on the right-hand side of equation (2.1), and a summation is carried out over all values of this repeated index. This type of summation over repeated indices appears frequently in tensor notation. A convention is therefore adopted that, whenever an index occurs twice in a term, a summation over the repeated index is implied, although no summation sign is explicitly written. This is frequently called the Einstein summation convention. Equation (2.1) is then simply written as
+x′j = xi Cij , (2.5)
+where a summation over i is understood on the right-hand side. The free index on both sides of equation (2.5) is j , and i is the repeated or dummy index. Obviously any letter (other than j ) can be used as the dummy index without changing the meaning of this equation. For example, equation (2.5) can be written equivalently as
+xi Cij = xkCkj = xmCmj = · · · ,
+because they all mean x′j = C1j x1 + C2j x2 + C3j x3. Likewise, any letter can also be used for the free index, as long as the same free index is used on both sides of the equation. For example, denoting the free index by i and the summed index by k, equation (2.5) can be written as
+xi′ = xkCki . (2.6)
+
+
+3. Multiplication of Matrices 29
+This is because the set of three equations represented by equation (2.5) corresponding to all values of j is the same set of equations represented by equation (2.6) for all values of i. It is easy to show that the components of x in the old coordinate system are related to those in the rotated system by
+xj = Cji xi′. (2.7)
+Note that the indicial positions on the right-hand side of this relation are different from those in equation (2.5), because the first index of C is summed in equation (2.5), whereas the second index of C is summed in equation (2.7). We can now formally define a Cartesian vector as any quantity that transforms like a position vector under the rotation of the coordinate system. Therefore, by analogy with equation (2.5), u is a vector if its components transform as
+u′j = ui Cij . (2.8)
+3. Multiplication of Matrices
+In this chapter we shall generally follow the convention that 3 × 3 matrices are represented by uppercase letters, and column vectors are represented by lowercase letters. (An exception will be the use of lowercase τ for the stress matrix.) Let A and B be two 3 × 3 matrices. The product of A and B is defined as the matrix P whose elements are related to those of A and B by
+Pij =
+∑3
+k=1
+AikBkj ,
+or, using the summation convention
+Pij = AikBkj . (2.9)
+Symbolically, this is written as P = A • B. (2.10)
+A single dot between A and B is included in equation (2.10) to signify that a single index is summed on the right-hand side of equation (2.9). The important thing to note in equation (2.9) is that the elements are summed over the inner or adjacent index k. It is sometimes useful to write equation (2.9) as
+Pij = AikBkj = (A • B)ij ,
+where the last term is to be read as the “ij -element of the product of matrices A and B.”
+
+
+30 Cartesian Tensors
+In explicit form, equation (2.9) is written as
+
+ P11 P12 P13
+P21 P22 P23
+P31 P32 P33
+
+=
+
+
+A11 A12 A13
+A21 A22 A23
+A31 A32 A33
+
+
+
+
+B11 B12 B13
+B21 B22 B23
+B31 B32 B33
+
+ (2.11)
+Note that equation (2.9) signifies that the ij -element of P is determined by multiplying the elements in the i-row of A and the j -column of B, and summing. For example,
+P12 = A11B12 + A12B22 + A13B32.
+This is indicated by the dotted lines in equation (2.11). It is clear that we can define the product A • B only if the number of columns of A equals the number of rows of B. Equation (2.9) can be used to determine the product of a 3 × 3 matrix and a vector, if the vector is written as a column. For example, equation (2.6) can be written as xi′ = CiTkxk, which is now of the form of equation (2.9) because the summed index
+k is adjacent. In matrix form equation (2.6) can therefore be written as
+
+
+x′
+1
+x′
+2
+x′
+3
+
+ =
+
+
+C11 C12 C13
+C21 C22 C23
+C31 C32 C33
+
+
+T
+
+x1
+x2
+x3
+
+ .
+Symbolically, the preceding is
+x′ = CT • x,
+whereas equation (2.7) is
+x = C • x′.
+4. Second-Order Tensor
+We have seen that scalars can be represented by a single number, and a Cartesian vector can be represented by three numbers. There are other quantities, however, that need more than three components for a complete description. For example, the stress (equal to force per unit area) at a point in a material needs nine components for a complete specification because two directions (and, therefore, two free indices) are involved in its description. One direction specifies the orientation of the surface on which the stress is being sought, and the other specifies the direction of the force on that surface. For example, the j -component of the force on a surface whose outward normal points in the i-direction is denoted by τij . (Here, we are departing from the convention followed in the rest of the chapter, namely, that tensors are represented by uppercase letters. It is customary to denote the stress tensor by the lowercase τ .) The first index of τij denotes the direction of the normal, and the second index denotes the direction in which the force is being projected. This is shown in Figure 2.4, which gives the normal and shear stresses on an infinitesimal cube whose surfaces are parallel to the coordinate planes. The stresses
+
+
+4. Second-Order Tensor 31
+Figure 2.4 Stress field at a point. Positive normal and shear stresses are shown. For clarity, the stresses on faces FBCG and CDHG are not labeled.
+are positive if they are directed as in this figure. The sign convention is that, on a surface whose outward normal points in the positive direction of a coordinate axis, the normal and shear stresses are positive if they point in the positive direction of the axes. For example, on the surface ABCD, whose outward normal points in the positive x2 direction, the positive stresses τ21, τ22, and τ23 point toward the x1, x2 and x3 directions, respectively. (Clearly, the normal stresses are positive if they are tensile and negative if they are compressive.) On the opposite face EFGH the stress components have the same value as on ABCD, but their directions are reversed. This is because Figure 2.4 shows the stresses at a point. The cube shown is supposed to be of “zero” size, so that the faces ABCD and EFGH are just opposite faces of a plane perpendicular to the x2-axis. That is why the stresses on the opposite faces are equal and opposite. Recall that a vector u can be completely specified by the three components ui (where i = 1, 2, 3). We say “completely specified” because the components of u in any direction other than the original axes can be found from equation (2.8). Similarly, the state of stress at a point can be completely specified by the nine components τij (where i, j = 1, 2, 3), which can be written as the matrix
+τ=
+
+
+τ11 τ12 τ13
+τ21 τ22 τ23
+τ31 τ32 τ33
+
+.
+The specification of the preceding nine components of the stress on surfaces parallel to the coordinate axes completely determines the state of stress at a point, because
+
+
+32 Cartesian Tensors
+the stresses on any arbitrary plane can then be determined. To find the stresses on any arbitrary surface, we shall consider a rotated coordinate system x′
+1 x′
+2 x′
+3 one of whose axes is perpendicular to the given surface. It can be shown by a force balance on a tetrahedron element (see, e.g., Sommerfeld (1964), page 59) that the components of τ in the rotated coordinate system are
+τ ′mn = CimCjnτij . (2.12)
+Note the similarity between the transformation rule equation (2.8) for a vector, and the rule equation (2.12). In equation (2.8) the first index of C is summed, while its second index is free. The rule equation (2.12) is identical, except that this happens twice. A quantity that obeys the transformation rule equation (2.12) is called a second-order tensor.
+The transformation rule equation (2.12) can be expressed as a matrix product. Rewrite equation (2.12) as
+τ ′mn = CTmi τij Cjn,
+which, with adjacent dummy indices, represents the matrix product
+τ′ = CT • τ • C.
+This says that the tensor τ in the rotated frame is found by multiplying C by τ and then multiplying the product by CT. The concepts of tensor and matrix are not quite the same. A matrix is any arrangement of elements, written as an array. The elements of a matrix represent the components of a tensor only if they obey the transformation rule equation (2.12). Tensors can be of any order. In fact, a scalar can be considered a tensor of zero order, and a vector can be regarded as a tensor of first order. The number of free indices correspond to the order of the tensor. For example, A is a fourth-order tensor if it has four free indices, and the associated 81 components change under the rotation of the coordinate system according to
+A′mnpq = CimCjnCkpClq Aijkl . (2.13)
+Tensors of various orders arise in fluid mechanics. Some of the most frequently used are the stress tensor τij and the velocity gradient tensor ∂ui/∂xj . It can be shown that the nine products uivj formed from the components of the two vectors u and v also transform according to equation (2.12), and therefore form a second-order tensor. In addition, certain “isotropic” tensors are also frequently used; these will be discussed in Section 7.
+5. Contraction and Multiplication
+When the two indices of a tensor are equated, and a summation is performed over this repeated index, the process is called contraction. An example is
+
+
+6. Force on a Surface 33
+Ajj = A11 + A22 + A33,
+which is the sum of the diagonal terms. Clearly, Ajj is a scalar and therefore independent of the coordinate system. In other words, Ajj is an invariant. (There are three independent invariants of a second-order tensor, and Ajj is one of them; see Exercise 5.) Higher-order tensors can be formed by multiplying lower tensors. If u and v are vectors, then the nine components uivj form a second-order tensor. Similarly, if A and B are two second-order tensors, then the 81 numbers defined by Pijkl ≡ Aij Bkl transform according to equation (2.13), and therefore form a fourth-order tensor. Lower-order tensors can be obtained by performing contraction on these multiplied forms. The four contractions of Aij Bkl are
+Aij Bki = Bki Aij = (B • A)kj ,
+Aij Bik = AjTi Bik = (AT • B)jk,
+Aij Bkj = Aij BjTk = (A • BT)ik,
+Aij Bjk = (A • B)ik.
+(2.14)
+All four products in the preceding are second-order tensors. Note in equation (2.14) how the terms have been rearranged until the summed index is adjacent, at which point they can be written as a product of matrices. The contracted product of a second-order tensor A and a vector u is a vector. The two possibilities are
+Aij uj = (A • u)i ,
+Aij ui = AjTi ui = (AT • u)j .
+The doubly contracted product of two second-order tensors A and B is a scalar. The two possibilities are Aij Bji (which can be written as A : B in boldface notation) and
+Aij Bij (which can be written as A : BT).
+6. Force on a Surface
+A surface area has a magnitude and an orientation, and therefore should be treated as a vector. The orientation of the surface is conveniently specified by the direction of a unit vector normal to the surface. If dA is the magnitude of an element of surface and n is the unit vector normal to the surface, then the surface area can be written as the vector
+dA = n dA.
+Suppose the nine components of the stress tensor with respect to a given set of Cartesian coordinates are given, and we want to find the force per unit area on a surface of given orientation n (Figure 2.5). One way of determining this is to take a rotated coordinate system, and use equation (2.12) to find the normal and shear stresses on the given surface. An alternative method is described in what follows.
+
+
+34 Cartesian Tensors
+Figure 2.5 Force f per unit area on a surface element whose outward normal is n.
+Figure 2.6 (a) Stresses on surfaces of a two-dimensional element; (b) balance of forces on element ABC.
+For simplicity, consider a two-dimensional case, for which the known stress components with respect to a coordinate system x1 x2 are shown in Figure 2.6a. We want to find the force on the face AC, whose outward normal n is known (Figure 2.6b). Consider the balance of forces on a triangular element ABC, with sides AB = dx2, BC = dx1, and AC = ds; the thickness of the element in the x3 direction is unity. If F is the force on the face AC, then a balance of forces in the x1 direction gives the component of F in that direction as
+F1 = τ11 dx2 + τ21 dx1.
+
+
+6. Force on a Surface 35
+Dividing by ds, and denoting the force per unit area as f = F/ds, we obtain
+f1 = F1
+ds = τ11
+d x2
+ds + τ21
+d x1
+ds
+= τ11 cos θ1 + τ21 cos θ2 = τ11n1 + τ21n2,
+where n1 = cos θ1 and n2 = cos θ2 because the magnitude of n is unity (Figure 2.6b). Using the summation convention, the foregoing can be written as f1 = τj1nj , where j is summed over 1 and 2. A similar balance of forces in the x2 direction gives f2 = τj2nj . Generalizing to three dimensions, it is clear that
+fi = τji nj .
+Because the stress tensor is symmetric (which will be proved in the next chapter), that is, τij = τji, the foregoing relation can be written in boldface notation as
+f = n • τ. (2.15)
+Therefore, the contracted or “inner” product of the stress tensor τ and the unit outward vector n gives the force per unit area on a surface. Equation (2.15) is analogous to un = u • n, where un is the component of the vector u along unit normal n; however, whereas un is a scalar, f in equation (2.15) is a vector.
+Example 2.1. Consider a two-dimensional parallel flow through a channel. Take x1, x2 as the coordinate system, with x1 parallel to the flow. The viscous stress tensor at a point in the flow has the form
+τ=
+[0 a a0
+] ,
+where the constant a is positive in one half of the channel, and negative in the other half. Find the magnitude and direction of force per unit area on an element whose outward normal points at 30◦ to the direction of flow. Solution by using equation (2.15): Because the magnitude of n is 1 and it points at 30◦ to the x1 axis (Figure 2.7), we have
+n=
+[ √3/2 1/2
+] .
+The force per unit area is therefore
+f =τ•n=
+[0 a a0
+] [ √3/2
+1/2
+] =
+[ a/2
+√3 a/2
+] =
+[ f1 f2
+] .
+The magnitude of f is
+f = (f 2
+1 +f2
+2 )1/2 = |a|.
+
+
+36 Cartesian Tensors
+Figure 2.7 Determination of force on an area element (Example 2.1).
+If θ is the angle of f with the x1 axis, then
+sin θ = f2
+f=
+√3
+2
+a
+|a| and cos θ = f1
+f =1
+2
+a
+|a| .
+Thus θ = 60◦ if a is positive (in which case both sin θ and cos θ are positive), and θ = 240◦ if a is negative (in which case both sin θ and cos θ are negative).
+Solution by using equation (2.12): Take a rotated coordinate system x′
+1, x′
+2,
+with x′
+1 axis coinciding with n (Figure 2.7). Using equation (2.12), the components of the stress tensor in the rotated frame are
+τ′
+11 = C11C21τ12 + C21C11τ21 =
+√3 2
+1
+2a + 1
+2
+√3
+2 a=
+√3
+2 a,
+τ′
+12 = C11C22τ12 + C21C12τ21 =
+√3 2
+√3
+2 a−1
+2
+1
+2a = 1
+2 a.
+The normal stress is therefore √3 a/2, and the shear stress is a/2. This gives a magnitude a and a direction 60◦ or 240◦ depending on the sign of a.
+7. Kronecker Delta and Alternating Tensor
+The Kronecker delta is defined as
+δij =
+{ 1 if i = j
+0 if i = j , (2.16)
+which is written in the matrix form as
+δ=
+
+
+100 010 001
+
+.
+
+
+8. Dot Product 37
+The most common use of the Kronecker delta is in the following operation: If we have a term in which one of the indices of δij is repeated, then it simply replaces the dummy index by the other index of δij . Consider
+δij uj = δi1u1 + δi2u2 + δi3u3.
+The right-hand side is u1 when i = 1, u2 when i = 2, and u3 when i = 3. Therefore
+δij uj = ui . (2.17)
+From its definition it is clear that δij is an isotropic tensor in the sense that its
+components are unchanged by a rotation of the frame of reference, that is, δi′j = δij . Isotropic tensors can be of various orders. There is no isotropic tensor of first order, and δij is the only isotropic tensor of second order. There is also only one isotropic tensor of third order. It is called the alternating tensor or permutation symbol, and is defined as
+εijk =
+
+
+1 if ij k = 123, 231, or 312 (cyclic order),
+0 if any two indices are equal,
+−1 if ij k = 321, 213, or 132 (anticyclic order).
+(2.18)
+From the definition, it is clear that an index on εijk can be moved two places (either to the right or to the left) without changing its value. For example, εijk = εjki where i has been moved two places to the right, and εijk = εkij where k has been moved two places to the left. For a movement of one place, however, the sign is reversed. For example, εijk = −εikj where j has been moved one place to the right. A very frequently used relation is the epsilon delta relation
+εijkεklm = δilδjm − δimδjl. (2.19)
+The reader can verify the validity of this relationship by taking some values for ij lm. Equation (2.19) is easy to remember by noting the following two points: (1) The adjacent index k is summed; and (2) the first two indices on the right-hand side, namely, i and l, are the first index of εijk and the first free index of εklm. The remaining indices on the right-hand side then follow immediately.
+8. Dot Product
+The dot product of two vectors u and v is defined as the scalar
+u • v = v • u = u1v1 + u2v2 + u3v3 = ui vi .
+It is easy to show that u • v = uv cos θ , where u and v are the magnitudes and θ is the angle between the vectors. The dot product is therefore the magnitude of one vector times the component of the other in the direction of the first. Clearly, the dot product u • v is equal to the sum of the diagonal terms of the tensor uivj .
+
+
+38 Cartesian Tensors
+9. Cross Product
+The cross product between two vectors u and v is defined as the vector w whose magnitude is uv sin θ , where θ is the angle between u and v, and whose direction is perpendicular to the plane of u and v such that u, v, and w form a right-handed system. Clearly, u × v = −v × u, and the unit vectors obey the cyclic rule a1 × a2 = a3. It is easy to show that
+u × v = (u2v3 − u3v2)a1 + (u3v1 − u1v3)a2 + (u1v2 − u2v1)a3, (2.20)
+which can be written as the symbolic determinant
+u×v =
+∣∣∣∣∣∣
+a1 a2 a3
+u1 u2 u3 v1 v2 v3
+∣∣∣∣∣∣ .
+In indicial notation, the k-component of u × v can be written as
+(u × v)k = εijkui vj = εkij ui vj . (2.21)
+As a check, for k = 1 the nonzero terms in the double sum in equation (2.21) result from i = 2, j = 3, and from i = 3, j = 2. This follows from the definition equation (2.18) that the permutation symbol is zero if any two indices are equal. Then equation (2.21) gives
+(u × v)1 = εij1ui vj = ε231u2v3 + ε321u3v2 = u2v3 − u3v2,
+which agrees with equation (2.20). Note that the second form of equation (2.21) is obtained from the first by moving the index k two places to the left; see the remark below equation (2.18).
+10. Operator ∇: Gradient, Divergence, and Curl
+The vector operator “del”1 is defined symbolically by
+∇ ≡ a1 ∂
+∂ x1
++ a2 ∂
+∂ x2
++ a3 ∂
+∂ x3
+= ai ∂
+∂ xi
+. (2.22)
+When operating on a scalar function of position φ, it generates the vector
+∇φ = ai ∂φ
+∂ xi
+,
+1The inverted Greek delta is called a “nabla” (ναβλα). The origin of the word is from the Hebrew (pronounced navel), which means lyre, an ancient harp-like stringed instrument. It was on this instrument that the boy, David, entertained King Saul (Samuel II) and it is mentioned repeatedly in Psalms as a musical instrument to use in the praise of God.
+
+
+10. Operator ∇: Gradient, Divergence, and Curl 39
+whose i-component is
+(∇φ)i = ∂φ
+∂ xi
+.
+The vector ∇φ is called the gradient of φ. It is clear that ∇φ is perpendicular to the φ = constant lines and gives the magnitude and direction of the maximum spatial rate of change of φ (Figure 2.8). The rate of change in any other direction n is given by
+∂φ
+∂n = (∇φ) • n.
+The divergence of a vector field u is defined as the scalar
+∇ • u ≡ ∂ui
+∂ xi
+= ∂u1
+∂ x1
++ ∂u2
+∂ x2
++ ∂u3
+∂ x3
+. (2.23)
+So far, we have defined the operations of the gradient of a scalar and the divergence of a vector. We can, however, generalize these operations. For example, we can define the divergence of a second-order tensor τ as the vector whose i-component is
+(∇ • τ)i = ∂τij
+∂ xj
+.
+It is evident that the divergence operation decreases the order of the tensor by one. In contrast, the gradient operation increases the order of a tensor by one, changing
+Figure 2.8 Lines of constant φ and the gradient vector ∇φ.
+
+
+40 Cartesian Tensors
+a zero-order tensor to a first-order tensor, and a first-order tensor to a second-order tensor. The curl of a vector field u is defined as the vector ∇ × u, whose i-component can be written as (using equations (2.21) and (2.22))
+(∇ × u)i = εijk
+∂ uk ∂ xj
+. (2.24)
+The three components of the vector ∇ × u can easily be found from the right-hand side of equation (2.24). For the i = 1 component, the nonzero terms in the double sum in equation (2.24) result from j = 2, k = 3, and from j = 3, k = 2. The three components of ∇ × u are finally found as
+( ∂u3 ∂ x2
+− ∂u2
+∂ x3
+) ,
+( ∂u1 ∂ x3
+− ∂u3
+∂ x1
+)
+, and
+( ∂u2 ∂ x1
+− ∂u1
+∂ x2
+)
+. (2.25)
+A vector field u is called solenoidal if ∇ • u = 0, and irrotational if ∇ × u = 0. The word “solenoidal” refers to the fact that the magnetic induction B always satisfies ∇ • B = 0. This is because of the absence of magnetic monopoles. The reason for the word “irrotational” will be clear in the next chapter.
+11. Symmetric and Antisymmetric Tensors
+A tensor B is called symmetric in the indices i and j if the components do not change when i and j are interchanged, that is, if Bij = Bji. The matrix of a second-order tensor is therefore symmetric about the diagonal and made up of only six distinct components. On the other hand, a tensor is called antisymmetric if Bij = −Bji. An antisymmetric tensor must have zero diagonal terms, and the off-diagonal terms must be mirror images; it is therefore made up of only three distinct components. Any tensor can be represented as the sum of a symmetric part and an antisymmetric part. For if we write
+Bij = 1
+2 (Bij + Bji ) + 1
+2 (Bij − Bji )
+then the operation of interchanging i and j does not change the first term, but changes the sign of the second term. Therefore, (Bij + Bji)/2 is called the symmetric part of Bij , and (Bij − Bji)/2 is called the antisymmetric part of Bij . Every vector can be associated with an antisymmetric tensor, and vice versa. For example, we can associate the vector
+ω=
+
+
+ω1 ω2 ω3
+
+,
+with an antisymmetric tensor defined by
+
+
+12. Eigenvalues and Eigenvectors of a Symmetric Tensor 41
+R≡
+
+
+0 −ω3 ω2 ω3 0 −ω1 −ω2 ω1 0
+
+ , (2.26)
+where the two are related as
+Rij = −εijkωk
+ωk = − 1
+2 εijkRij . (2.27)
+As a check, equation (2.27) gives R11 = 0 and R12 = −ε123ω3 = −ω3, which is in agreement with equation (2.26). (In Chapter 3 we shall call R the “rotation” tensor corresponding to the “vorticity” vector ω.) A very frequently occurring operation is the doubly contracted product of a symmetric tensor τ and any tensor B. The doubly contracted product is defined as
+P ≡ τij Bij = τij (Sij + Aij ),
+where S and A are the symmetric and antisymmetric parts of B, given by
+Sij ≡ 1
+2 (Bij + Bji ) and Aij ≡ 1
+2 (Bij − Bji ).
+Then
+P = τij Sij + τij Aij (2.28)
+= τij Sji − τij Aji because Sij = Sji and Aij = −Aji ,
+= τji Sji − τji Aji because τij = τji ,
+= τij Sij − τij Aij interchanging dummy indices. (2.29)
+Comparing the two forms of equations (2.28) and (2.29), we see that τij Aij = 0, so that
+τij Bij = 1
+2 τij (Bij + Bji ).
+The important rule we have proved is that the doubly contracted product of a symmetric tensor τ with any tensor B equals τ times the symmetric part of B. In the process, we have also shown that the doubly contracted product of a symmetric tensor and an antisymmetric tensor is zero. This is analogous to the result that the definite integral over an even (symmetric) interval of the product of a symmetric and an antisymmetric function is zero.
+12. Eigenvalues and Eigenvectors of a Symmetric Tensor
+The reader is assumed to be familiar with the concepts of eigenvalues and eigenvectors of a matrix, and only a brief review of the main results is given here. Suppose τ is a
+
+
+42 Cartesian Tensors
+symmetric tensor with real elements, for example, the stress tensor. Then the following facts can be proved:
+(1) There are three real eigenvalues λk (k = 1, 2, 3), which may or may not be all distinct. (The superscripted λk does not denote the k-component of a vector.) The eigenvalues satisfy the third-degree equation
+det |τij − λδij | = 0,
+which can be solved for λ1, λ2, and λ3. (2) The three eigenvectors bk corresponding to distinct eigenvalues λk are mutually orthogonal. These are frequently called the principal axes of τ. Each b is found by solving a set of three equations
+(τij − λδij ) bj = 0,
+where the superscript k on λ and b has been omitted. (3) If the coordinate system is rotated so as to coincide with the eigenvectors, then τ has a diagonal form with elements λk. That is,
+τ′ =
+
+
+λ1 0 0 0 λ2 0 0 0 λ3
+
+
+in the coordinate system of the eigenvectors. (4) The elements τij change as the coordinate system is rotated, but they cannot be larger than the largest λ or smaller than the smallest λ. That is, the eigenvalues are the extremum values of τij .
+Example 2.2. The strain rate tensor E is related to the velocity vector u by
+Eij = 1
+2
+( ∂ui ∂ xj
++ ∂uj
+∂ xi
+) .
+For a two-dimensional parallel flow
+u=
+[ u1(x2) 0
+] ,
+show how E is diagonalized in the frame of reference coinciding with the principal axes.
+Solution: For the given velocity profile u1(x2), it is evident that E11 = E22 = 0,
+and E12 = E21 = 1
+2 (du1/dx2) = . The strain rate tensor in the unrotated coordinate system is therefore
+E=
+[0
+0
+] .
+
+
+12. Eigenvalues and Eigenvectors of a Symmetric Tensor 43
+Figure 2.9 Original coordinate system O x1 x2 and rotated coordinate system O x′1 x′2 coinciding with the eigenvectors (Example 2.2).
+The eigenvalues are given by
+det |Eij − λδij | =
+∣∣∣∣ −λ
+−λ
+∣∣∣∣ = 0,
+whose solutions are λ1 = and λ2 = − . The first eigenvector b1 is given by
+[ 0
+0
+] [ b1
+1
+b1
+2
+]
+= λ1
+[ b1
+1
+b1
+2
+]
+,
+whose solution is b1
+1 = b1
+2 = 1/√2, thus normalizing the magnitude to unity. The
+first eigenvector is therefore b1 = [1/√2, 1/√2], writing it in a row. The second
+eigenvector is similarly found as b2 = [−1/√2, 1/√2]. The eigenvectors are shown in Figure 2.9. The direction cosine matrix of the original and the rotated coordinate system is therefore
+C=
+
+
+√12 − √12
+√12
+√12
+
+ ,
+which represents rotation of the coordinate system by 45◦. Using the transformation rule (2.12), the components of E in the rotated system are found as follows:
+E′
+12 = Ci1Cj2Eij = C11C22E12 + C21C12E21
+= √12
+√12 − √12
+√12 = 0
+
+
+44 Cartesian Tensors
+E′
+21 = 0
+E′
+11 = Ci1Cj1Eij = C11C21E12 + C21C11E21 =
+E′
+22 = Ci2Cj2Eij = C12C22E12 + C22C12E21 = −
+(Instead of using equation (2.12), all the components of E in the rotated system can be found by carrying out the matrix product CT • E • C.) The matrix of E in the rotated frame is therefore
+E′ =
+[0
+0−
+] .
+The foregoing matrix contains only diagonal terms. It will be shown in the next chapter that it represents a linear stretching at a rate along one principal axis, and a linear compression at a rate − along the other; there are no shear strains along the principal axes.
+13. Gauss’ Theorem
+This very useful theorem relates a volume integral to a surface integral. Let V be a volume bounded by a closed surface A. Consider an infinitesimal surface element dA, whose outward unit normal is n (Figure 2.10). The vector n dA has a magnitude dA and direction n, and we shall write dA to mean the same thing. Let Q(x) be a scalar, vector, or tensor field of any order. Gauss’ theorem states that
+∫
+V
+∂Q ∂ xi
+dV =
+∫
+A
+dAi Q. (2.30)
+Figure 2.10 Illustration of Gauss’ theorem.
+
+
+13. Gauss’ Theorem 45
+The most common form of Gauss’ theorem is when Q is a vector, in which case the theorem is
+∫
+V
+∂ Qi ∂ xi
+dV =
+∫
+A
+dAi Qi ,
+which is called the divergence theorem. In vector notation, the divergence theorem is
+∫
+V
+∇• QdV =
+∫
+A
+dA • Q.
+Physically, it states that the volume integral of the divergence of Q is equal to the surface integral of the outflux of Q. Alternatively, equation (2.30), when considered in its limiting form for an infintesmal volume, can define a generalized field derivative of Q by the expression
+DQ = Vli→m0
+1 V
+∫
+A
+dAiQ. (2.31)
+This includes the gradient, divergence, and curl of any scalar, vector, or tensor Q. Moreover, by regarding equation (2.31) as a definition, the recipes for the computation of the vector field derivatives may be obtained in any coordinate system. For a tensor Q of any order, equation (2.31) as written defines the gradient. For a tensor of order one (vector) or higher, the divergence is defined by using a dot (scalar) product under the integral
+div Q = Vli→m0
+1 V
+∫
+A
+dA • Q, (2.32)
+and the curl is defined by using a cross (vector) product under the integral
+curl Q = Vli→m0
+1 V
+∫
+A
+dA × Q. (2.33)
+In equations (2.31), (2.32), and (2.33), A is the closed surface bounding the volume V.
+Example 2.3. Obtain the recipe for the divergence of a vector Q(x) in cylindrical polar coordinates from the integral definition equation (2.32). Compare with Appendix B.1.
+Solution: Consider an elemental volume bounded by the surfaces R − R/2, R + R/2, θ − θ/2, θ + θ/2, x − x/2 and x + x/2. The volume enclosed V is R θ R x. We wish to calculate div Q = lim V→0 1
+V
+∫
+A dA • Q at the
+central point R, θ , x by integrating the net outward flux through the bounding surface A of V:
+Q = iRQR(R, θ, x) + iθ Qθ (R, θ, x) + ixQx(R, θ, x).
+
+
+46 Cartesian Tensors
+In evaluating the surface integrals, we can show that in the limit taken, each of the six surface integrals may be approximated by the product of the value at the center of the surface and the surface area. This is shown by Taylor expanding each of the scalar products in the two variables of each surface, carrying out the integrations, and applying the limits. The result is
+div Q = liRm→0
+θx→ →00
+{1
+Rθ Rx
+[
+QR
+(
+R+ R
+2 ,θ,x
+)(
+R+ R
+2
+)
+θx
+− QR
+(
+R− R
+2 ,θ,x
+)(
+R− R
+2
+)
+θx
++ Qx
+(
+R, θ, x + x
+2
+)
+R θ R − Qx
+(
+R, θ, x − x
+2
+)
+Rθ R
++Q
+(
+R, θ + θ
+2 ,x
+)
+•
+(
+iθ − iR
+θ 2
+)
+Rx
++Q
+(
+R, θ − θ
+2 ,x
+)
+•
+(
+− iθ − iR
+θ 2
+)
+Rx
+]} ,
+where an additional complication arises because the normals to the two planes θ ± θ/2 are not antiparallel:
+Q
+(
+R, θ ± θ
+2 ,x
+)
+= QR
+(
+R, θ ± θ
+2 ,x
+)
+iR
+(
+R, θ ± θ
+2 ,x
+)
++ Qθ
+(
+R, θ ± θ
+2 ,x
+)
+iθ
+(
+R, θ ± θ
+2 ,x
+)
++ Qx
+(
+R, θ ± θ
+2 ,x
+) ix.
+Now we can show that
+iR
+(
+θ± θ
+2
+)
+= iR(θ ) ± θ
+2 iθ (θ ), iθ
+(
+θ± θ
+2
+)
+= iθ (θ ) ∓ θ
+2 iR(θ ).
+Evaluating the last pair of surface integrals explicitly,
+div Q = liRm→0
+θx→ →00
+{1
+Rθ Rx
+[
+QR
+(
+R+ R
+2 ,θ,x
+)(
+R+ R
+2
+)
+θx
+− QR
+(
+R− R
+2 ,θ,x
+)(
+R− R
+2
+)
+θx
+
+
+14. Stokes’ Theorem 47
++
+(
+Qx
+(
+R, θ, x + x
+2
+)
+− Qx
+(
+R, θ, x − x
+2
+))
+Rθ R
++
+(
+QR
+(
+R, θ + θ
+2 ,x
+)θ
+2 − QR
+(
+R, θ + θ
+2 ,x
+)θ
+2
+)
+Rx
++
+(
+Qθ
+(
+R, θ + θ
+2 ,x
+)
+− Qθ
+(
+R, θ − θ
+2 ,x
+)
+Rx
+−
+(
+QR
+(
+R, θ − θ
+2 ,x
+)θ
+2 − QR
+(
+R, θ − θ
+2 ,x
+)θ
+2
+)
+Rx
+]} ,
+where terms of second order in the increments have been neglected as they will vanish in the limits. Carrying out the limits, we obtain
+div Q = 1
+R
+∂
+∂R (RQR) + 1
+R
+∂ Qθ
+∂θ + ∂Qx
+∂x .
+Here, the physical interpretation of the divergence as the net outward flux of a vector field per unit volume has been made apparent by its evaluation through the integral definition. This level of detail is required to obtain the gradient correctly in these coordinates.
+14. Stokes’ Theorem
+Stokes’ theorem relates a surface integral over an open surface to a line integral around the boundary curve. Consider an open surface A whose bounding curve is C (Figure 2.11). Choose one side of the surface to be the outside. Let ds be an element of the bounding curve whose magnitude is the length of the element and whose direction is that of the tangent. The positive sense of the tangent is such that, when seen from the “outside” of the surface in the direction of the tangent, the interior is on the left. Then the theorem states that
+∫
+A
+(∇ × u) • dA =
+∫
+C
+u • ds, (2.34)
+which signifies that the surface integral of the curl of a vector field u is equal to the line integral of u along the bounding curve. The line integral of a vector u around a closed curve C (as in Figure 2.11) is called the “circulation of u about C.” This can be used to define the curl of a vector through the limit of the circulation integral bounding an infinitesmal surface as follows:
+n • curl u = Ali→m0
+1
+A
+∫
+C
+u • ds, (2.35)
+
+
+48 Cartesian Tensors
+Figure 2.11 Illustration of Stokes’ theorem.
+where n is a unit vector normal to the local tangent plane of A. The advantage of the integral definitions of the field derivatives is that they may be applied regardless of the coordinate system.
+Example 2.4. Obtain the recipe for the curl of a vector u(x) in Cartesian coordinates from the integral definition given by equation (2.35).
+Solution: This is obtained by considering rectangular contours in three perpendicular planes intersecting at the point (x, y, z). First, consider the elemental rectangle in the x = const. plane. The central point in this plane has coordinates (x, y, z) and the area is y z. It may be shown by careful integration of a Taylor expansion of the integrand that the integral along each line segment may be represented by the product of the integrand at the center of the segment and the length of the segment with attention paid to the direction of integration ds. Thus we obtain
+(curl u)x = liy→ m0
+z→0
+{1
+yz
+[
+uz
+(
+x, y + y
+2 ,z
+)
+− uz
+(
+x, y − y
+2 ,z
+)]
+z
++1
+yz
+[
+uy
+(
+x, y, z − z
+2
+)
+− uy
+(
+x, y, z + z
+2
+)]
+y
+} .
+Taking the limits,
+(curl u)x = ∂uz
+∂y − ∂uy
+∂z .
+
+
+16. Boldface vs Indicial Notation 49
+Similarly, integrating around the elemental rectangles in the other two planes
+(curl u)y = ∂ux
+∂z − ∂uz
+∂x ,
+(curl u)z = ∂uy
+∂x − ∂ux
+∂y .
+15. Comma Notation
+Sometimes it is convenient to introduce the notation
+A,i ≡ ∂A
+∂ xi
+, (2.36)
+where A is a tensor of any order. In this notation, therefore, the comma denotes a spatial derivative. For example, the divergence and curl of a vector u can be written, respectively, as
+∇ • u = ∂ui
+∂ xi
+= ui,i ,
+(∇ × u)i = εijk
+∂ uk ∂ xj
+= εijkuk,j .
+This notation has the advantages of economy and that all subscripts are written on one line. Another advantage is that variables such as ui,j “look like” tensors, which they are, in fact. Its disadvantage is that it takes a while to get used to it, and that the comma has to be written clearly in order to avoid confusion with other indices in a term. The comma notation has been used in the book only in two sections, in instances where otherwise the algebra became cumbersome.
+16. Boldface vs Indicial Notation
+The reader will have noticed that we have been using both boldface and indicial notations. Sometimes the boldface notation is loosely called “vector” or dyadic notation, while the indicial notation is called “tensor” notation. (Although there is no reason why vectors cannot be written in indicial notation!). The advantage of the boldface form is that the physical meaning of the terms is generally clearer, and there are no cumbersome subscripts. Its disadvantages are that algebraic manipulations are difficult, the ordering of terms becomes important because A • B is not the same as B • A, and one has to remember formulas for triple products such as u × (v × w) and u • (v × w). In addition, there are other problems, for example, the order or rank of a tensor is not clear if one simply calls it A, and sometimes confusion may arise in products such as A • B where it is not immediately clear which index is summed. To add to the confusion, the singly contracted product A • B is frequently written as AB in books on matrix algebra, whereas in several other fields AB usually stands for the uncontracted fourth-order tensor with elements Aij Bkl.
+
+
+50 Cartesian Tensors
+The indicial notation avoids all the problems mentioned in the preceding. The algebraic manipulations are especially simple. The ordering of terms is unnecessary because Aij Bkl means the same thing as BklAij . In this notation we deal with components only, which are scalars. Another major advantage is that one does not have to remember formulas except for the product εijkεklm, which is given by equation (2.19). The disadvantage of the indicial notation is that the physical meaning of a term becomes clear only after an examination of the indices. A second disadvantage is that the cross product involves the introduction of the cumbersome εijk. This, however, can frequently be avoided by writing the i-component of the vector product of u and v as (u × v)i using a mixture of boldface and indicial notations. In this book we shall use boldface, indicial and mixed notations in order to take advantage of each. As the reader might have guessed, the algebraic manipulations will be performed mostly in the indicial notation, sometimes using the comma notation.
+Exercises
+1. Using indicial notation, show that
+a × (b × c) = (a • c)b − (a • b)c.
+[Hint: Call d ≡ b × c. Then (a × d)m = εpqmapdq = εpqmapεijq bi cj . Using equation (2.19), show that (a × d)m = (a • c)bm − (a • b)cm.]
+2. Show that the condition for the vectors a, b, and c to be coplanar is
+εijkai bj ck = 0.
+3. Prove the following relationships:
+δij δij = 3
+εpqr εpqr = 6
+εpqi εpqj = 2δij .
+4. Show that
+C • CT = CT • C = δ,
+where C is the direction cosine matrix and δ is the matrix of the Kronecker delta. Any matrix obeying such a relationship is called an orthogonal matrix because it represents transformation of one set of orthogonal axes into another.
+5. Show that for a second-order tensor A, the following three quantities are invariant under the rotation of axes:
+I1 = Aii
+I2 =
+∣∣∣∣ A11 A12
+A21 A22
+∣∣∣∣ +
+∣∣∣∣ A22 A23
+A32 A33
+∣∣∣∣ +
+∣∣∣∣ A11 A13
+A31 A33
+∣∣∣∣
+I3 = det(Aij ).
+
+
+Supplemental Reading 51
+[Hint: Use the result of Exercise 4 and the transformation rule (2.12) to show that I′
+1 = A′ii = Aii = I1. Then show that Aij Aji and Aij AjkAki are also invariants. In
+fact, all contracted scalars of the form Aij Ajk · · · Ami are invariants. Finally, verify that
+I2 = 1
+2 [I 2
+1 − Aij Aji ]
+I3 = Aij AjkAki − I1Aij Aji + I2Aii .
+Because the right-hand sides are invariant, so are I2 and I3.]
+6. If u and v are vectors, show that the products uivj obey the transformation rule (2.12), and therefore represent a second-order tensor.
+7. Show that δij is an isotropic tensor. That is, show that δi′j = δij under rotation of the coordinate system. [Hint: Use the transformation rule (2.12) and the results of Exercise 4.]
+8. Obtain the recipe for the gradient of a scalar function in cylindrical polar coordinates from the integral definition.
+9. Obtain the recipe for the divergence of a vector in spherical polar coordinates from the integral definition.
+10. Prove that div(curl u) = 0 for any vector u regardless of the coordinate system. [Hint: use the vector integral theorems.]
+11. Prove that curl(grad φ) = 0 for any single-valued scalar φ regardless of the coordinate system. [Hint: use Stokes’ theorem.]
+Literature Cited
+Sommerfeld, A. (1964). Mechanics of Deformable Bodies, New York: Academic Press. (Chapter 1 contains brief but useful coverage of Cartesian tensors.)
+Supplemental Reading
+Aris, R. (1962). Vectors, Tensors, and the Basic Equations of Fluid Mechanics, Englewood Cliffs, NJ: Prentice-Hall. (This book gives a clear and easy treatment of tensors in Cartesian and non-Cartesian coordinates, with applications to fluid mechanics.) Prager, W. (1961). Introduction to Mechanics of Continua, New York: Dover Publications. (Chapters 1 and 2 contain brief but useful coverage of Cartesian tensors.)
+
+
+This page intentionally left blank
+
+
+Chapter 3
+Kinematics
+1. Introduction . . . . . . . . . . . . . . . . . . . . . 53 2. Lagrangian and Eulerian Specifications . . . . . . . . . . . . . . . . . . . . 54 3. Eulerian and Lagrangian Descriptions: The Particle Derivative . . . . . . . . . . . 55 4. Streamline, Path Line, and Streak Line . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 57 5. Reference Frame and Streamline Pattern . . . . . . . . . . . . . . . . . . . . . . . . . . 59 6. Linear Strain Rate . . . . . . . . . . . . . . . 60 7. Shear Strain Rate . . . . . . . . . . . . . . . . 61 8. Vorticity and Circulation . . . . . . . . . 62 9. Relative Motion near a Point: Principal Axes . . . . . . . . . . . . . . . . . . . 64
+10. Kinematic Considerations of Parallel Shear Flows . . . . . . . . . . . . 67 11. Kinematic Considerations of Vortex Flows . . . . . . . . . . . . . . . . . . . . . . . . . . 68 Solid-Body Rotation . . . . . . . . . . . . 68 Irrotational Vortex . . . . . . . . . . . . . . 70 Rankine Vortex . . . . . . . . . . . . . . . . . 71 12. One-, Two-, and Three-Dimensional Flows . . . . . . . . . . . . . . . . . . . . . . . . . . 71 13. The Streamfunction . . . . . . . . . . . . . 73 14. Polar Coordinates . . . . . . . . . . . . . . 75 Exercises . . . . . . . . . . . . . . . . . . . . . . . 77 Supplemental Reading . . . . . . . . . . 79
+1. Introduction
+Kinematics is the branch of mechanics that deals with quantities involving space and time only. It treats variables such as displacement, velocity, acceleration, deformation, and rotation of fluid elements without referring to the forces responsible for such a motion. Kinematics therefore essentially describes the “appearance” of a motion. Some important kinematical concepts are described in this chapter. The forces are considered when one deals with the dynamics of the motion, which will be discussed in later chapters. A few remarks should be made about the notation used in this chapter and throughout the rest of the book. The convention followed in Chapter 2, namely, that vectors are denoted by lowercase letters and higher-order tensors are denoted by uppercase letters, is no longer followed. Henceforth, the number of subscripts will specify the order of a tensor. The Cartesian coordinate directions are denoted by (x, y, z), and the corresponding velocity components are denoted by (u, v, w). When using tensor expressions, the Cartesian directions are denoted alternatively
+53
+©2010 Elsevier Inc. All rights reserved. DOI: 10.1016/B978-0-12-381399-2.50003-4
+
+
+54 Kinematics
+z
+Figure 3.1 Plane, cylindrical, and spherical polar coordinates: (a) plane polar; (b) cylindrical polar; (c) spherical polar coordinates.
+by (x1, x2, x3), with the corresponding velocity components (u1, u2, u3). Plane polar coordinates are denoted by (r, θ ), with ur and uθ the corresponding velocity components (Figure 3.1a). Cylindrical polar coordinates are denoted by (R, φ, x), with (uR, uφ, ux) the corresponding velocity components (Figure 3.1b). Spherical polar coordinates are denoted by (r, θ, φ), with (ur , uθ , uφ) the corresponding velocity components (Figure 3.1c). The method of conversion from Cartesian to plane polar coordinates is illustrated in Section 14 of this chapter.
+2. Lagrangian and Eulerian Specifications
+There are two ways of describing a fluid motion. In the Lagrangian description, one essentially follows the history of individual fluid particles (Figure 3.2). Consequently, the two independent variables are taken as time and a label for fluid particles. The label can conveniently be taken as the position vector a of the particle at some reference time t = 0. In this description, any flow variable F is expressed as F (a, t). In particular, the position vector is written as r = r(a, t), which represents the location at t of a particle whose position was a at t = 0. In the Eulerian description, one concentrates on what happens at a spatial point r′, so that the independent variables are taken as r′ and t′. (Here the primes are meant to distinguish Lagrangian dependent variables from Eulerian independent variables.) Flow variables are written, for example, as F (r′, t′).
+
+
+3. Eulerian and Lagrangian Descriptions: The Particle Derivative 55
+x
+y
+z
+r (0) 5 a
+r (t)
+u
+particle path
+Figure 3.2 Particle—Lagrangian description. Independent variables: (a, t); dependent variables: r(a, t), u = (∂r/∂t)a, ρ = ρ(a, t), and so on.
+The velocity and acceleration of a fluid particle in the Lagrangian description are simply the partial time derivatives
+u = ∂r/∂t, acceleration a = ∂u/∂t = ∂2r/∂t2 (3.1)
+as the particle identity is kept constant during the differentiation. In the Eulerian description, however, the partial derivative ∂/∂t′ gives only the local rate of change at a point r′ and is not the total rate of change as seen by the fluid particle. Additional terms are needed to form derivatives following a particle in the Eulerian description, as explained in the next section. The Eulerian specification is used in most problems of fluid flows. The Lagrangian description is used occasionally when we are interested in finding particle paths of fixed identity; examples can be found in Chapters 7 and 13.
+3. Eulerian and Lagrangian Descriptions: The Particle Derivative
+Classical mechanics has two alternative descriptions: the field description (Eulerian) and the particle description (Lagrangian), associated with two of the great European mathematical physicists of the eighteenth century [Leonhard Euler (1707–1783) and Joseph Louis, Comte de Lagrange (1736–1813)]. Most of this book is written in the field description (Figure 3.3) but it is frequently very useful to express a particle derivative in the field description. Thus we wish to compare and relate the two descriptions. Consider any fluid property F (r′, t′) = F (a, t) at the same position and time in the two descriptions. F may be a scalar, vector, or tensor property. We seek to express (∂F /∂t)a, which is the rate of change of F as seen by an observer on the fixed particle labeled by coordinate a = r(0) at t = 0, in field variables. That is,
+
+
+56 Kinematics
+z9
+(x9, y9, z9, t9)
+y9
+x9
+r
+u
+Figure 3.3 Field—Eulerian description. Independent variables: (x′, y′, z′, t′); dependent variables:
+u(r′, t′), ρ(r′, t), and so on.
+we ask what combination of r′, t′ field derivatives corresponds to (∂F /∂t)a ? We do
+our calculation at r′ = r and t′ = t so we are at the same point and time in the two descriptions. Thus
+F (a, t) = F [r(a, t), t] = F (r′, t′). (3.2)
+Differentiating, taking care to differentiate dependent variables with respect to independent variables, and using the chain rule,
+[∂F (a, t)/∂t]a = (∂F /∂t′)r′ (∂t′/∂t) + (∂F /∂r′)t′ • (∂r′/∂r) • (∂r/∂t)a. (3.3)
+Now ∂t′/∂t is simply the ratio of time scales used in the two descriptions. We take this equal to 1 by measuring the time in the same units (say seconds). Here ∂r′/∂r is the transformation matrix between the two coordinate systems. If r′ and r are not rotated or stretched with respect to each other, but with parallel axes and with lengths measured in the same units (say meters), then ∂r′/∂r = I, the unit matrix, with elements δij . Since (∂r/∂t)a = u, we have the result
+(∂F /∂t)a = ∂F /∂t′ + (∇′F ) • u ≡ DF /Dt. (3.4)
+The total rate of change D/Dt is generally called the material derivative (also called the substantial derivative, or particle derivative) to emphasize the fact that the derivative is taken following a fluid element. It is made of two parts: ∂F /∂t is the local rate of change of F at a given point, and is zero for steady flows. The second part ui ∂F /∂xi is called the advective derivative, because it is the change in F as a result of advection of the particle from one location to another where the value of F is different. (In this book, the movement of fluid from place to place is called “advection.”
+
+
+4. Streamline, Path Line, and Streak Line 57
+Figure 3.4 Streamline coordinates (s, n).
+Engineering texts generally call it “convection.” However, we shall reserve the term convection to describe heat transport by fluid movements.) In vector notation, equation (3.4) is written as
+DF
+Dt = ∂F
+∂t + u • ∇F. (3.5)
+The scalar product u • ∇F is the magnitude of u times the component of ∇F in the direction of u. It is customary to denote the magnitude of the velocity vector u by q. Equation (3.5) can then be written in scalar notation as
+DF
+Dt = ∂F
+∂t + q ∂F
+∂s , (3.6)
+where the “streamline coordinate” s points along the local direction of u (Figure 3.4).
+4. Streamline, Path Line, and Streak Line
+At an instant of time, there is at every point a velocity vector with a definite direction. The instantaneous curves that are everywhere tangent to the direction field are called the streamlines of flow. For unsteady flows the streamline pattern changes with time. Let ds = (dx, dy, dz) be an element of arc length along a streamline (Figure 3.5), and let u = (u, v, w) be the local velocity vector. Then by definition
+dx
+u = dy
+v = dz
+w , (3.7)
+along a streamline. If the velocity components are known as a function of time, then equation (3.7) can be integrated to find the equation of the streamline. It is easy to show that equation (3.7) corresponds to u × ds = 0. All streamlines passing through
+
+
+58 Kinematics
+Figure 3.5 Streamline.
+Figure 3.6 Streamtube.
+any closed curve C at some time form a tube, which is called a streamtube (Figure 3.6). No fluid can cross the streamtube because the velocity vector is tangent to this surface. In experimental fluid mechanics, the concept of path line is important. The path line is the trajectory of a fluid particle of fixed identity over a period of time. The path line or particle path is represented as in Section 2 by r = r(a, t) where a is the location of the particle at the reference time, say t = 0. Then u = ∂r/∂t for fixed particle. Assuming a nonzero Jacobian determinant, we may invert to obtain the reference particle location at t = 0, a = a(r, t). Path lines and streamlines are identical in a steady flow, but not in an unsteady flow. Consider the flow around a body moving from right to left in a fluid that is stationary at an infinite distance from the body (Figure 3.7). The flow pattern observed by a stationary observer (that is,
+
+
+5. Reference Frame and Streamline Pattern 59
+Figure 3.7 Several streamlines and a path line due to a moving body.
+an observer stationary with respect to the undisturbed fluid) changes with time, so that to the observer this is an unsteady flow. The streamlines in front of and behind the body are essentially directed forward as the body pushes forward, and those on the two sides are directed laterally. The path line (shown dashed in Figure 3.7) of the particle that is now at point P therefore loops outward and forward again as the body passes by. The streamlines and path lines of Figure 3.7 can be visualized in an experiment by suspending aluminum or other reflecting materials on the fluid surface, illuminated by a source of light. Suppose that the entire fluid is covered with such particles, and a brief time exposure is made. The photograph then shows short dashes, which indicate the instantaneous directions of particle movement. Smooth curves drawn through these dashes constitute the instantaneous streamlines. Now suppose that only a few particles are introduced, and that they are photographed with the shutter open for a long time. Then the photograph shows the paths of a few individual particles, that is, their path lines. A streak line is another concept in flow visualization experiments. It is defined as the current location of all fluid particles that have passed through a fixed spatial point at a succession of previous times. It is determined by injecting dye or smoke at a fixed point for an interval of time. Suppose a particle on a streak line passes the location of dye ξ at a time τ ≤ t. Then the equation of the streak line is x = x[a(ξ , τ ), t]. See Aris (1962), Chapter 4 for more details. In steady flow the streamlines, path lines, and streak lines all coincide.
+5. Reference Frame and Streamline Pattern
+A flow that is steady in one reference frame is not necessarily so in another. Consider the flow past a ship moving at a steady velocity U, with the frame of reference (that is, the observer) attached to the river bank (Figure 3.8a). To this observer the local flow characteristics appear to change with time, and thus appear to be unsteady. If,
+
+
+60 Kinematics
+Figure 3.8 Flow past a ship with respect to two observers: (a) observer on river bank; (b) observer on ship.
+on the other hand, the observer is standing on the ship, the flow pattern is steady (Figure 3.8b). The steady flow pattern can be obtained from the unsteady pattern of Figure 3.8a by superposing on the latter a velocity U to the right. This causes the ship to come to a halt and the river to move with velocity U at infinity. It follows that any velocity vector u in Figure 3.8b is obtained by adding the corresponding velocity vector u′ of Figure 3.8a and the free stream velocity vector U.
+6. Linear Strain Rate
+A study of the dynamics of fluid flows involves determination of the forces on an element, which depend on the amount and nature of its deformation, or strain. The deformation of a fluid is similar to that of a solid, where one defines normal strain as the change in length per unit length of a linear element, and shear strain as change of a 90◦ angle. Analogous quantities are defined in a fluid flow, the basic difference being that one defines strain rates in a fluid because it continues to deform. Consider first the linear or normal strain rate of a fluid element in the x1 direction (Figure 3.9). The rate of change of length per unit length is
+1 δx1
+D
+Dt (δx1) = 1
+dt
+A′B′ − AB AB
+=1
+dt
+1 δx1
+[
+δx1 + ∂u1
+∂ x1
+δx1 dt − δx1
+]
+= ∂u1
+∂ x1
+.
+The material derivative symbol D/Dt has been used because we have implicitly followed a fluid particle. In general, the linear strain rate in the α direction is
+∂ uα ∂ xα
+, (3.8)
+where no summation over the repeated index α is implied. Greek symbols such as α and β are commonly used when the summation convention is violated. The sum of the linear strain rates in the three mutually orthogonal directions gives the rate of change of volume per unit volume, called the volumetric strain rate (also called the bulk strain rate). To see this, consider a fluid element of sides δx1,
+
+
+7. Shear Strain Rate 61
+Figure 3.9 Linear strain rate. Here, A′B′ = AB + BB′ − AA′.
+δx2, and δx3. Defining δ ≡ δx1 δx2 δx3, the volumetric strain rate is
+1 δ
+D
+Dt (δ ) = 1
+δx1 δx2 δx3
+D
+Dt (δx1 δx2 δx3),
+=1
+δx1
+D
+Dt (δx1) + 1
+δx2
+D
+Dt (δx2) + 1
+δx3
+D
+Dt (δx3),
+that is,
+1 δ
+D
+Dt (δ ) = ∂u1
+∂ x1
++ ∂u2
+∂ x2
++ ∂u3
+∂ x3
+= ∂ui
+∂ xi
+. (3.9)
+The quantity ∂ui/∂xi is the sum of the diagonal terms of the velocity gradient tensor ∂ui/∂xj . As a scalar, it is invariant with respect to rotation of coordinates. Equation (3.9) will be used later in deriving the law of conservation of mass.
+7. Shear Strain Rate
+In addition to undergoing normal strain rates, a fluid element may also simply deform in shape. The shear strain rate of an element is defined as the rate of decrease of the angle formed by two mutually perpendicular lines on the element. The shear strain so calculated depends on the orientation of the line pair. Figure 3.10 shows the position of an element with sides parallel to the coordinate axes at time t, and its subsequent position at t + dt. The rate of shear strain is
+dα + dβ
+dt = 1
+dt
+{1
+δx2
+( ∂u1 ∂ x2
+δx2 dt
+)
++1
+δx1
+( ∂u2 ∂ x1
+δx1 dt
+)}
+= ∂u1
+∂ x2
++ ∂u2
+∂ x1
+. (3.10)
+An examination of equations (3.8) and (3.10) shows that we can describe the deformation of a fluid element in terms of the strain rate tensor
+eij ≡ 1
+2
+( ∂ui ∂ xj
++ ∂uj
+∂ xi
+)
+. (3.11)
+
+
+62 Kinematics
+Figure 3.10 Deformation of a fluid element. Here, dα = C A / C B; a similar expression represents dβ.
+The diagonal terms of e are the normal strain rates given in (3.8), and the off-diagonal terms are half the shear strain rates given in (3.10). Obviously the strain rate tensor is symmetric as eij = eji .
+8. Vorticity and Circulation
+Fluid lines oriented along different directions rotate by different amounts. To define the rotation rate unambiguously, two mutually perpendicular lines are taken, and the average rotation rate of the two lines is calculated; it is easy to show that this average is independent of the orientation of the line pair. To avoid the appearance of certain factors of 2 in the final expressions, it is generally customary to deal with twice the angular velocity, which is called the vorticity of the element. Consider the two perpendicular line elements of Figure 3.10. The angular veloc
+ities of line elements about the x3 axis are dβ/dt and −dα/dt, so that the average is
+1
+2 (−dα/dt + dβ/dt). The vorticity of the element about the x3 axis is therefore twice this average, as given by
+ω3 = 1
+dt
+{1
+δx2
+(
+− ∂u1
+∂ x2
+δx2 dt
+)
++1
+δx1
+( ∂u2 ∂ x1
+δx1 dt
+)}
+= ∂u2
+∂ x1
+− ∂u1
+∂ x2
+.
+From the definition of curl of a vector (see equations 2.24 and 2.25), it follows that the vorticity vector of a fluid element is related to the velocity vector by
+ω = ∇ × u or ωi = εijk
+∂ uk ∂ xj
+, (3.12)
+
+
+8. Vorticity and Circulation 63
+whose components are
+ω1 = ∂u3
+∂ x2
+− ∂u2
+∂ x3
+, ω2 = ∂u1
+∂ x3
+− ∂u3
+∂ x1
+, ω3 = ∂u2
+∂ x1
+− ∂u1
+∂ x2
+. (3.13)
+A fluid motion is called irrotational if ω = 0, which would require
+∂ ui ∂ xj
+= ∂uj
+∂ xi
+i = j. (3.14)
+In irrotational flows, the velocity vector can be written as the gradient of a scalar function φ(x, t). This is because the assumption
+ui ≡ ∂φ
+∂ xi
+, (3.15)
+satisfies the condition of irrotationality (3.14). Related to the concept of vorticity is the concept of circulation. The circulation around a closed contour C (Figure 3.11) is defined as the line integral of the tangential component of velocity and is given by
+≡
+∮
+C
+u • ds, (3.16)
+where ds is an element of contour, and the loop through the integral sign signifies that the contour is closed. The loop will be omitted frequently because it is understood that such line integrals are taken along closed contours called circuits. Then Stokes’ theorem (Chapter 2, Section 14) states that ∫
+C
+u • ds =
+∫
+A
+(curl u) • dA (3.17)
+Figure 3.11 Circulation around contour C.
+
+
+64 Kinematics
+which says that the line integral of u around a closed curve C is equal to the “flux” of curl u through an arbitrary surface A bounded by C. (The word “flux” is generally used to mean the integral of a vector field normal to a surface. [See equation (2.32), where the integral written is the net outward flux of the vector field Q.]) Using the definitions of vorticity and circulation, Stokes’ theorem, equation (3.17), can be written as
+=
+∫
+A
+ω • dA. (3.18)
+Thus, the circulation around a closed curve is equal to the surface integral of the vorticity, which we can call the flux of vorticity. Equivalently, the vorticity at a point equals the circulation per unit area. That follows directly from the definition of curl as the limit of the circulation integral. (See equation (2.35) of Chapter 2.)
+9. Relative Motion near a Point: Principal Axes
+The preceding two sections have shown that fluid particles deform and rotate. In this section we shall formally show that the relative motion between two neighboring points can be written as the sum of the motion due to local rotation, plus the motion due to local deformation. Let u(x, t) be the velocity at point O (position vector x), and let u + du be the velocity at the same time at a neighboring point P (position vector x + dx; see Figure 3.12). The relative velocity at time t is given by
+Figure 3.12 Velocity vectors at two neighboring points O and P.
+
+
+9. Relative Motion near a Point: Principal Axes 65
+dui = ∂ui
+∂ xj
+dxj , (3.19)
+which stands for three relations such as
+du1 = ∂u1
+∂ x1
+dx1 + ∂u1
+∂ x2
+dx2 + ∂u1
+∂ x3
+dx3. (3.20)
+The term ∂ui/∂xj in equation (3.19) is the velocity gradient tensor. It can be decomposed into symmetric and antisymmetric parts as follows:
+∂ ui ∂ xj
+=1
+2
+( ∂ui ∂ xj
++ ∂uj
+∂ xi
+)
++1
+2
+( ∂ui ∂ xj
+− ∂uj
+∂ xi
+)
+, (3.21)
+which can be written as
+∂ ui ∂ xj
+= eij + 1
+2 rij , (3.22)
+where eij is the strain rate tensor defined in equation (3.11), and
+rij ≡ ∂ui
+∂ xj
+− ∂uj
+∂ xi
+, (3.23)
+is called the rotation tensor. As rij is antisymmetric, its diagonal terms are zero and the off-diagonal terms are equal and opposite. It therefore has three independent elements, namely, r13, r21, and r32. Comparing equations (3.13) and (3.22), we can see that r21 = ω3, r32 = ω1, and r13 = ω2. Thus the rotation tensor can be written in terms of the components of the vorticity vector as
+r=
+
+
+0 −ω3 ω2 ω3 0 −ω1 −ω2 ω1 0
+
+ . (3.24)
+Each antisymmetric tensor in fact can be associated with a vector as discussed in Chapter 2, Section 11. In the present case, the rotation tensor can be written in terms of the vorticity vector as
+rij = −εijkωk. (3.25)
+This can be verified by taking various components of equation (3.24) and comparing them with equation (3.23). For example, equation (3.24) gives r12 = −ε12kωk = −ε123ω3 = −ω3, which agrees with equation (3.23). Equation (3.24) also appeared as equation (2.27). Substitution of equations (3.21) and (3.24) into equation (3.19) gives
+dui = eij dxj − 1
+2 εijkωk dxj ,
+
+
+66 Kinematics
+which can be written as
+dui = eij dxj + 1
+2 (ω × dx)i. (3.26)
+In the preceding, we have noted that εijkωk dxj is the i-component of the cross product −ω × dx. (See the definition of cross product in equation (2.21).) The meaning of the second term in equation (3.25) is evident. We know that the velocity at a distance x from the axis of rotation of a body rotating rigidly at angular velocity is × x. The second term in equation (3.25) therefore represents the relative velocity at point P due to rotation of the element at angular velocity ω/2. (Recall that the angular velocity is half the vorticity ω.) The first term in equation (3.25) is the relative velocity due only to deformation of the element. The deformation becomes particularly simple in a coordinate system coinciding with the principal axes of the strain rate tensor. The components of e change as the coordinate system is rotated. For a particular orientation of the coordinate system, a symmetric tensor has only diagonal components; these are called the principal axes of the tensor (see Chapter 2, Section 12 and Example 2.2). Denoting the variables in the principal coordinate system by an overbar (Figure 3.13), the first part of equation (3.25) can be written as the matrix product
+Figure 3.13 Deformation of a spherical fluid element into an ellipsoid.
+
+
+10. Kinematic Considerations of Parallel Shear Flows 67
+du ̄ = e ̄ • dx ̄ =
+
+
+e ̄11 0 0 0 e ̄22 0 0 0 e ̄33
+
+
+
+
+d x ̄1 d x ̄2 d x ̄3
+
+ . (3.27)
+Here, e ̄11, e ̄22, and e ̄33 are the diagonal components of e in the principal coordinate system and are called the eigenvalues of e. The three components of equation (3.26) are du ̄1 = e ̄11 dx ̄1 du ̄2 = e ̄22 dx ̄2 du ̄3 = e ̄33 dx ̄3. (3.28)
+Consider the significance of the first of equations (3.27), namely, du ̄1=e ̄11 dx ̄1 (Figure 3.13). If e ̄11 is positive, then this equation shows that point P is moving away from O in the x ̄1 direction at a rate proportional to the distance dx ̄1. Considering all points on the surface of a sphere, the movement of P in the x ̄1 direction is therefore the maximum when P coincides with M (where dx ̄1 is the maximum) and is zero when P coincides with N. (In Figure 3.13 we have illustrated a case where e ̄11>0 and e ̄22<0; the deformation in the x3 direction cannot, of course, be shown in this figure.) In a small interval of time, a spherical fluid element around O therefore becomes an ellipsoid whose axes are the principal axes of the strain tensor e.
+Summary: The relative velocity in the neighborhood of a point can be divided into two parts. One part is due to the angular velocity of the element, and the other part is due to deformation. A spherical element deforms to an ellipsoid whose axes coincide with the principal axes of the local strain rate tensor.
+10. Kinematic Considerations of Parallel Shear Flows
+In this section we shall consider the rotation and deformation of fluid elements in the parallel shear flow u = [u1(x2), 0, 0] shown in Figure 3.14. Let us denote the velocity gradient by γ (x2) ≡ du1/dx2. From equation (3.13), the only nonzero component of vorticity is ω3 = −γ . In Figure 3.13, the angular velocity of line element AB is −γ , and that of BC is zero, giving −γ /2 as the overall angular velocity (half the
+Figure 3.14 Deformation of elements in a parallel shear flow. The element is stretched along the principal axis x ̄1 and compressed along the principal axis x ̄2.
+
+
+68 Kinematics
+vorticity). The average value does not depend on which two mutually perpendicular elements in the x1 x2-plane are chosen to compute it. In contrast, the components of strain rate do depend on the orientation of the element. From equation (3.11), the strain rate tensor of an element such as ABCD, with the sides parallel to the x1 x2-axes, is
+e=
+
+
+01
+2γ 0
+1
+2γ 0 0
+0 00
+
+ ,
+which shows that there are only off-diagonal elements of e. Therefore, the element ABCD undergoes shear, but no normal strain. As discussed in Chapter 2, Section 12 and Example 2.2, a symmetric tensor with zero diagonal elements can be diagonalized by rotating the coordinate system through 45◦. It is shown there that, along these principal axes (denoted by an overbar in Figure 3.14), the strain rate tensor is
+e ̄ =
+
+
+1
+2γ 0 0 0 −1
+2γ 0 0 00
+
+ ,
+so that there is a linear extension rate of e ̄11 = γ /2, a linear compression rate of e ̄22 = −γ /2, and no shear. This can be understood physically by examining the
+deformation of an element PQRS oriented at 45◦, which deforms to P′Q′R′S′. It is clear that the side PS elongates and the side PQ contracts, but the angles between the sides of the element remain 90◦. In a small time interval, a small spherical element in this flow would become an ellipsoid oriented at 45◦ to the x1 x2-coordinate system. Summarizing, the element ABCD in a parallel shear flow undergoes only shear but no normal strain, whereas the element PQRS undergoes only normal but no shear strain. Both of these elements rotate at the same angular velocity.
+11. Kinematic Considerations of Vortex Flows
+Flows in circular paths are called vortex flows, some basic forms of which are described in what follows.
+Solid-Body Rotation
+Consider first the case in which the velocity is proportional to the radius of the streamlines. Such a flow can be generated by steadily rotating a cylindrical tank containing a viscous fluid and waiting until the transients die out. Using polar coordinates (r, θ ), the velocity in such a flow is
+uθ = ω0r ur = 0, (3.29)
+where ω0 is a constant equal to the angular velocity of revolution of each particle about the origin (Figure 3.15). We shall see shortly that ω0 is also equal to the angular
+
+
+11. Kinematic Considerations of Vortex Flows 69
+Figure 3.15 Solid-body rotation. Fluid elements are spinning about their own centers while they revolve around the origin. There is no deformation of the elements.
+speed of rotation of each particle about its own center. The vorticity components of a fluid element in polar coordinates are given in Appendix B. The component about the z-axis is
+ωz = 1
+r
+∂
+∂r (ruθ ) − 1
+r
+∂ ur
+∂θ = 2ω0, (3.30)
+where we have used the velocity distribution equation (3.28). This shows that the angular velocity of each fluid element about its own center is a constant and equal to ω0. This is evident in Figure 3.15, which shows the location of element ABCD at two successive times. It is seen that the two mutually perpendicular fluid lines AD and AB both rotate counterclockwise (about the center of the element) with speed ω0. The time period for one rotation of the particle about its own center equals the time period for one revolution around the origin. It is also clear that the deformation of the fluid elements in this flow is zero, as each fluid particle retains its location relative to other particles. A flow defined by uθ = ω0r is called a solid-body rotation as the fluid elements behave as in a rigid, rotating solid. The circulation around a circuit of radius r in this flow is
+=
+∫
+u • ds =
+∫ 2π
+0
+uθ r dθ = 2π ruθ = 2π r2ω0, (3.31)
+which shows that circulation equals vorticity 2ω0 times area. It is easy to show (Exercise 12) that this is true of any contour in the fluid, regardless of whether or not it contains the center.
+
+
+70 Kinematics
+Irrotational Vortex
+Circular streamlines, however, do not imply that a flow should have vorticity everywhere. Consider the flow around circular paths in which the velocity vector is tangential and is inversely proportional to the radius of the streamline. That is,
+uθ = C
+r ur = 0. (3.32)
+Using equation (3.29), the vorticity at any point in the flow is
+ωz = 0
+r.
+This shows that the vorticity is zero everywhere except at the origin, where it cannot be determined from this expression. However, the vorticity at the origin can be determined by considering the circulation around a circuit enclosing the origin. Around a contour of radius r, the circulation is
+=
+∫ 2π
+0
+uθ r dθ = 2π C.
+This shows that is constant, independent of the radius. (Compare this with the case of solid-body rotation, for which equation (3.30) shows that is proportional to r2.) In fact, the circulation around a circuit of any shape that encloses the origin is 2π C. Now consider the implication of Stokes’ theorem
+=
+∫
+A
+ω • dA, (3.33)
+for a contour enclosing the origin. The left-hand side of equation (3.32) is nonzero, which implies that ω must be nonzero somewhere within the area enclosed by the contour. Because in this flow is independent of r, we can shrink the contour without altering the left-hand side of equation (3.32). In the limit the area approaches zero, so that the vorticity at the origin must be infinite in order that ω • δA may have a finite nonzero limit at the origin. We have therefore demonstrated that the flow represented by uθ = C/r is irrotational everywhere except at the origin, where the vorticity is infinite. Such a flow is called an irrotational or potential vortex.
+Although the circulation around a circuit containing the origin in an irrotational vortex is nonzero, that around a circuit not containing the origin is zero. The circulation around any such contour ABCD (Figure 3.16) is
+ABCD =
+∫
+AB
+u • ds +
+∫
+BC
+u • ds +
+∫
+CD
+u • ds +
+∫
+DA
+u • ds.
+Because the line integrals of u • ds around BC and DA are zero, we obtain
+ABCD = −uθ r θ + (uθ + uθ )(r + r) θ = 0,
+where we have noted that the line integral along AB is negative because u and ds are oppositely directed, and we have used uθ r = const. A zero circulation around ABCD is expected because of Stokes’ theorem, and the fact that vorticity vanishes everywhere within ABCD.
+
+
+12. One-, Two-, and Three-Dimensional Flows 71
+Figure 3.16 Irrotational vortex. Vorticity of a fluid element is infinite at the origin and zero everywhere else.
+Rankine Vortex
+Real vortices, such as a bathtub vortex or an atmospheric cyclone, have a core that rotates nearly like a solid body and an approximately irrotational far field (Figure 3.17a). A rotational core must exist because the tangential velocity in an irrotational vortex has an infinite velocity jump at the origin. An idealization of such a behavior is called the Rankine vortex, in which the vorticity is assumed uniform within a core of radius R and zero outside the core (Figure 3.17b).
+12. One-, Two-, and Three-Dimensional Flows
+A truly one-dimensional flow is one in which all flow characteristics vary in one direction only. Few real flows are strictly one dimensional. Consider the flow in a conduit (Figure 3.18a). The flow characteristics here vary both along the direction of flow and over the cross section. However, for some purposes, the analysis can be simplified by assuming that the flow variables are uniform over the cross section (Figure 3.18b). Such a simplification is called a one-dimensional approximation, and is satisfactory if one is interested in the overall effects at a cross section. A two-dimensional or plane flow is one in which the variation of flow characteristics occurs in two Cartesian directions only. The flow past a cylinder of arbitrary cross section and infinite length is an example of plane flow. (Note that in this context the word “cylinder” is used for describing any body whose shape is invariant along the length of the body. It can have an arbitrary cross section. A cylinder with a circular cross section is a special case. Sometimes, however, the word “cylinder” is used to describe circular cylinders only.) Around bodies of revolution, the flow variables are identical in planes containing the axis of the body. Using cylindrical polar coordinates (R, φ, x), with x along the axis of the body, only two coordinates (R and x) are necessary to describe motion

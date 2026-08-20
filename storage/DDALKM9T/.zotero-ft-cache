@@ -1,0 +1,205 @@
+Rotary Wing Aerodynamics
+(AE 667)
+
+
+Vortex Theory
+
+
+Background
+oBased on Prandtl’s lifting line theory
+oUses:
+o Rotor wake models
+o Kutta–Joukowski theorem
+o Biot-Savart Law
+
+
+Background
+Addresses predictions problems at high thrust conditions (high CT/s)
+o High wake contraction at high thrust condition
+o Upward directed inflow!
+o Affecting tip loading and power consumption
+
+
+Some experimental results
+X/R
+
+
+Kutta-Joukowski Theorem
+Hyperphysics
+dT = ρ(Ωr)Γ
+UT = Ωr
+UP = V+v q
+f
+aeffective = q - f
+dL
+dD
+dFx
+dT
+dFx = ρ(V+v)Γ
+Where Γ is the bound circulation at the airfoil section
+
+
+Biot-Savart Law
+3
+4r
+dl r
+dVinduced
+
+
+ 
+=
+
+
+Vortices in Rotor Wake
+Rotor Fixed Wing
+
+
+Rotor Blade
++ + + ++
+- - - -
+Trailing edge vortex sheet Tip vortex
+
+
+Prescribed Wake Model (Robin Gray)
+
+
+Some Experimental Results
+Ramasamy, M., Johnson, B., & Leishman, J. G. (2008). Understanding the Aerodynamic Efficiency of a Hovering Micro‐Rotor. Journal of the American Helicopter Society, 53(4), 412-428.
+
+
+Some Experimental Results
+
+
+Prescribed Wake Model (Landgrebe’s Curve Fit )
+Filament measured from the blade
+Azimuthal Position of the vortex
+Vortex Age
+0.145 27
+0.78
+(1 )
+R
+R
+Radial position of the tip vortex :
+v
+vortex v
+=
+=
+=+
+=
+=+- 
+
+
+
+T
+C
+A
+A A e RVortex
+R
+Zv
+
+
+Prescribed Wake Model (Landgrebe’s Curve Fit )
+RVortex
+R
+Zv
+• zV
+R = k1ψV 0 ≤ ψV ≤ 2π
+b
+• zV
+R = k1
+2π
+b + k2 ψV − 2π
+b ψV ≥ 2π
+b
+• k1 = −0.25 CT
+σ + 0.001θtwist, degrees
+• k2 = − CT − 0.01 CTθtwist, degrees
+Here, θtwist,degrees: Blade twist = Tip Pitch angle – Root Pitch Angle.
+V
+
+zV
+b
+2
+Descent faster after the next blade passes over the vortex
+
+
+Prescribed Wake Model (Landgrebe’s Curve Fit )
+RVortex
+R
+Zv
+Landgrebe improvised the model later (1977).
+Based the trajectory on peak bound circulation instead of CT/σ.
+
+
+Using vortex models for computing
+oContinuous helical tip vortex structure broken into piecewise straight line segments.
+oTip vortex strength assumed to be about 80% of max bound circulation
+oVortex core of empirically prescribed radius defined for keeping induced velocities finite.
+
+
+Using vortex models for computing
+Segmented Tip Vortex
+Segmented Vortex Sheet
+Control Points where induced flow is computed
+
+
+Using vortex models for computing
+Control Point
+r1 r2
+Vortex Segment
+()
+()( ) ( )
+Here, is the vortex core radius
+2
+() 1
+4
+Using Biot - Savart Law
+12
+2 2
+2 1
+2
+2
+12
+2
+12
+12
+12
+1 21 2
+,
+c
+c
+induced control
+r
+rr r r r r r r r
+rr
+rr
+rrr r
+V  
+
+
+
+-• + +- •
+
+
+
+•
+ +
+
+=
+
+
+Pseudo code
+1. Compute inflow using Biot-Savart law (BEM for the first iteration)
+2. Compute radial lift distribution
+3. Find circulation strengths from lift distribution. 80% of the peak circulation is tip vortex strength
+4. Assume prescribed wake trajectory (Landgrebe’s, or any other)
+Iterate until
+everything converges
+
+
+Free Wake Model
+oNo empirical wake model.
+oVortex segments allowed to get influenced by velocities induced by other segments and move freely in space
+oWake shape (position of vortex segments) updated at each time segment
+Betoney, Patrick et al. “Development of a
+free-vortex wake model in state-space form.” (2009).

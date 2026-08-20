@@ -1,0 +1,391 @@
+NUMERICAL SIMULATION OF ICING ON THE ROTATING BLADE
+Wei Dong
+School of Mechanical Engineering Shanghai Jiao Tong University Shanghai, China
+JianJun Zhu
+School of Mechanical Engineering Shanghai Jiao Tong University Shanghai, China
+Rui Wang
+School of Mechanical Engineering Shanghai Jiao Tong University Shanghai, China
+Yong Chen
+School of Mechanical Engineering Shanghai Jiao Tong University Shanghai, China
+ABSTRACT
+The physical processes involved in ice accretion on the rotating blade are complex. It is important to develop high fidelity numerical method and simulate the icing process on the blade under icing conditions. This paper presents a numerical study on the icing process on the rotating blade. The flow field around the blade is obtained using ANSYS FLUENT. The trajectories of supercooled water droplets and the collection efficiency are calculated by Eulerian approach. Heat and mass balance on the rotating blade surface is taken into account in icing process simulations. The NASA Rotor 67 blade is chosen as the computational model. The collection efficiency on the blade surface is computed and the impingement characteristics are analyzed. The 3D icing accretion on Rotor 67 blade is predicted at design point. The ice shapes of accretion time of 5s, 10s and 15s are simulated and the ice shapes at different span positions of the rotating blade are compared.
+INTRODUCTION
+Ice accretion on the leading edge of the aircraft wing could adversely affect their aerodynamic characteristics and hence the performance. Ice accretion on the inlet of an aero-engine could also affect the characteristics of the inlet flow field and degrade the engine’s performance such as increasing fuel consumption, reducing airflow rate. Ice shed from the spinner or rotor can result in serious mechanical damages. A hot air anti-icing system is usually used to prevent the ice freezing on the surface. Hot air is bled from high pressure compressor which will lead to engine performance penalties. Some rotating parts such as fans of modern commercial aero-engine do not use hot air anti-icing system. Ice can be removed from fan surface by centrifugal and aerodynamic force that is larger than ice adhesive to the surface when the ice accumulates to a certain
+thickness. In order to predict the ice shedding and fan aerodynamic characteristics, it is necessary to investigate the ice shape on fan surface. The type and shape of ice is affected by flight velocity, temperature, environment pressure, icing time and by meteorological parameters of liquid water content (LWC) and droplet diameter. The physical processes of ice accretion are complex and not completely understood. The physical description on icing and anti-icing such as the impingement of supercooled large droplets (SLD), the flow and heat transfer of runback water in glaze or mix icing, and the roughness effect on ice accretion were all developed constantly to improve the icing prediction in recent years1-6. Experimental and computational methods are used for simulating in-flight ice accretion and understanding the physics in icing. Some icing research tunnels are established and operated by NASA7, Boeing8, NRC9, Cox10, CIRA11, etc. Engine icing test cells for observing the ice shapes accreted on engine inlets and measuring the performance of the engine under icing conditions are also used in aero-engine companies. The cost of experimental study on the ice accretion is high due to the special requirement of facility to simulate the icing condition. Hence it is of the importance to develop numerical method and carry out numerical simulations of droplet trajectories, ice accretion and aerodynamic performance with ice on the aircraft surface. Many computational methods of the icing problem are developed to simulate the icing, anti-icing and de-icing process. Computational codes of icing have been developed at NASA (LEWICE12, 13, ANTICE14), ONERA (ONERA3D15), McGill University (FENSAP-ICE16), Boeing17, Ecole Polytechnique de Montreal (CANICE18), DAR19, et al. Though significant efforts have been devoted to the research of icing physics, the computational model of icing accretion still requires to be
+1 Copyright © 2015 by ASME
+Proceedings of ASME Turbo Expo 2015: Turbine Technical Conference and Exposition GT2015 June 15 – 19, 2015, Montréal, Canada
+GT2015-42568
+Downloaded from http://asmedigitalcollection.asme.org/GT/proceedings-pdf/GT2015/56628/V001T01A013/2425728/v001t01a013-gt2015-42568.pdf by Indian Institute of Technology Bombay user on 22 October 2025
+
+
+further developed. In general, the icing simulation consists of four basic steps20: computation of aerodynamic flow; computation of super-cooled water droplet trajectories and local collection efficiency; thermal balance analysis on the component wall; simulation of the ice shape. Flow field around the body can be obtained by solving Euler or Navier-Stokes equations and the convective heat transfer coefficient on the icing surface can be obtained at the same time. The local collection efficiency can be obtained satisfactory results using either Lagrangian or Eulerian approach. Most of the ice accretion codes use the Lagrangian approach to track the supercooled water droplet trajectories and subsequently the local collection efficiency on the surface can be calculated21-24. Compared with Lagrangian approach, Eulerian approach considers droplet phase as a continuous phase and uses the concept of droplet volume fraction to represent the amount of water within a given control volume. The air flow and water droplet equations are solved by using the same grid and numerical techniques in Eulerian approach. Eulerian approach is more convenient to determine the mass of water droplets that impinge on the surface25, 26. Most ice accretion and anti-icing codes compute the surface temperature and predict the ice growth rate using heat and mass balance model given by Messinger27. The heat balance model is important to predict the ice accretion processes. Wright et al.28 investigated the ice growth or geometry modification process and developed a robust scheme for ice growth calculation. Saeed et al.29 coupled a two dimensional CFD code (NSC2KE) and an ice accretion simulation code (CANICE) to analyze the heat transfer and temperature distribution on the surface of a multi-element airfoil with a hot air anti-icing system. Myers30 presented a mathematical model which considered the conduction of ice layer and used this improved model to simulate ice growth rates and freezing fractions. The physics behind icing process is not well understood and the models are improved continuously in order to solve this complex problem more accurately31-34. The computational studies of icing accretion on the stationary surfaces of aircraft have been carried out extensively. Numerical simulation of ice accretion on rotating components of aircraft engines is highly challenging because of the complex 3-D unsteady flow and the effects of rotation on droplet trajectories35. Lee and Loth36 studied the effect of liquid water droplet and ice accretion in 2D cascade and predicted the ice shape on a stage 67A stator blade. Dong et al.37 presented a Eulerian approach to calculate water impingement characteristics and a coupled heat and mass balance method to simulate the ice shape on the rotating cone of an aero-engine. Ice accretion on rotating blade of an aeroengine could adversely affect the fan performance and increase the vibration of the fan. It is necessary to predict the ice shape on the rotating blade ensuring the engine operation safety. The ice shape on the rotating blade is affected by icing time, flight parameters of velocity, pressure, temperature, and cloud parameters of liquid water content and water droplet diameter. This paper presents a numerical study on the icing process on the rotating blade. The flow field around the blade is
+obtained using ANSYS FLUENT. The trajectories of supercooled water droplets and the collection efficiency are calculated by Eulerian approach. The effect of water droplets on the air flow is neglected due to the low liquid water content. Mass and energy balance on the surface of rotating blade is taken into account in icing process simulations. The NASA Rotor 67 blade is chosen as the computational model. The impingement and icing simulations are carried out under icing condition. The 3D icing accretion on Rotor 67 blade is predicted at design point. The ice shapes of accretion time of 5s, 10s and 15s are compared and analyzed. The simulation method can be used to predict the water collection rate, icing process and resulting change of aerodynamic shape for rotating blade. The icing simulation can also be used to understand the flow field behavior with accretion ice and analyze the associated performance penalties.
+NOMENCLATURE A Area [m2] CD Drag coefficient
+D Leading edge diameter [m]
+D
+Drag force [N] I Evaporation latent heat [J/kg] LWC Liquid water content [g/m3] MVD Mean volume diameter [μm] P Pressure [Pa] Pv Saturated vapor pressure [Pa] Q Heat flux [W/m2]
+Re Reynolds number T Temperature [K] t Time [s] cp Specific heat [J/(kg·K)] d Droplet diameter [μm] h Convective heat transfer coefficient [W/(m2·K)]
+h Ice accrete height rate [m/s] m Mass flow rate [kg/s]
+n normal unit vector r Radius [m]
+v Velocity vector [m/s]  Droplet phase volume fraction β Local collection efficiency μ Dynamic viscosity [N·s/m2] ρ Density [kg/m3]
+SUBSCRIPTS a Air conv convection d Water droplet evap Evaporation ht Impingement surface ice Ice
+imp Droplets impingement in Inlet of control volume m Impinging location of droplet
+2 Copyright © 2015 by ASME
+Downloaded from http://asmedigitalcollection.asme.org/GT/proceedings-pdf/GT2015/56628/V001T01A013/2425728/v001t01a013-gt2015-42568.pdf by Indian Institute of Technology Bombay user on 22 October 2025
+
+
+o Original location of droplet out Outlet of control volume rel Relative ∞ Free stream
+MATHEMATICAL MODELS
+Computation of Flow Field around the Blade
+The flow field around the blade is obtained by using ANSYS FLUENT. The density based coupling algorithm is used to generate solutions for the air flow. The second order upwind advection scheme is employed for momentum and energy equations. The RNG k-ε turbulence model which considers swirling effects as well as the non-equilibrium wall functions is used to simulate the air flow turbulence around the blade.
+Calculation of the Local Collection Efficiency
+When the flow field of the air around the blade is calculated, the water impingement characteristics are calculated using Eulerian approach embedded in Ansys Fluent by User Defined Scalar (UDS) interface. Eulerian approach treats the droplets as a continuous phase and uses the concept of droplet volume fraction to represent the amount of water within a given control volume. The momentum and continuity equations for the droplets can be derived and solved in the same manner as the air flow equations. In most cases, the effects of water droplets on the air flow can be neglected due to the low LWC. The motion of water droplets in air flow field subjects to fluid drag, buoyancy and gravity forces acting on the water droplets. For small supercooled water droplets, the effects of buoyancy and gravity forces is small comparing with the aerodynamic forces and can be ignored. The governing equations of the water droplet phase movement are described as follows:
+ 0
+d
+d vd
+t
+ 
+   
+(1)
+
+dd ddd
+v vv D t
+  
+   
+(2)
+in which α means droplet volume fraction at local position,
+which reflects the local liquid water mass. D is the aerodynamic drag force on water droplet phase. To single droplet, the aerodynamic drag force can be calculated as follows,
+Dsingle CD a va vd va vd A
+
+  || 
+2
+= 1  (3)
+where A is frontal area of the droplet and equal to 2
+4
+1
+dd .
+dd is diameter of the droplet. CD is the drag coefficient,
+which can be obtained by38 ,
+0.63 4 1.38
+24 (1 0.197 Re 2.6 10 Re ) Re
+D rel rel rel
+C
+
+    (4)
+and relative Reynolds is defined as
+a
+ad a d rel
+dv v
+
+( )
+Re
+ 
+= (5)
+And droplet numbers in unit control volume can be calculated as
+3
+3
+6
+6
+1d
+wd
+w
+d
+d
+n
+
+
+=    (6)
+Hence, Eqn. (2) can be derived to,
+  
+3
+4
+dd Da ddd a d a d dd
+vC
+vv v v v v
+td
+ 
+ 
+    
+ (7)
+Droplet collection efficiency β can be obtained as,
+,
+d
+d
+vn
+v
+
+  
+
+ (8)
+where / means related droplet volume fraction at local
+position. n is the unit normal vector on the rotating cone surface. Heat transfer between air phase and droplet phase should be considered because air temperature would be changed greatly as it flows through the blade, which would also lead to the change of droplet phase temperature. Governing equation for this phenomenon is as follows,
+   ,
+6/
+dd d d d air droplet a d p water d
+T vT h T T c
+td
+ 
+ 
+    
+
+(9)
+in which heat transfer coefficient of air and droplet phase can
+be calculated as39,
+2(1 0.3Re0.5 Pr0.33)
+rel a a
+hair dropletd d
+Nu    
+
+(10)
+Thermodynamic Model of Ice Accretion
+In most cases, thermal analysis should be done in ice accretion prediction. Several heat flux such as convective heat transfer, sensible heating of the supercooled water impinging on the surface, the kinetic energy of water droplets, the evaporation heat transfer, the latent heat of condensation of water freezing are usually considered in thermal balance analysis. In some case, especially in glaze ice simulation, mass balance of water should also be taken into account because the impinging water would run back the surface due to aerodynamic force. Fig.1 illustrates the mass flow rates and heat flux through a control volume on the blade surface. The heat transfer between air and water droplets should also be taken into account because air temperature would increase as it flow through the passage of fan blades. When blade surface temperature is higher than icing point, no ice would deposit on the blade surface.
+3 Copyright © 2015 by ASME
+Downloaded from http://asmedigitalcollection.asme.org/GT/proceedings-pdf/GT2015/56628/V001T01A013/2425728/v001t01a013-gt2015-42568.pdf by Indian Institute of Technology Bombay user on 22 October 2025
+
+
+The mass balance equation of water film flow is,
+m in  m imp  m out  m evap (11)
+The terms in
+m , imp
+m , out
+m , evap
+m represent the mass
+flow rate of incoming water, water droplets that impinged on surfaces, outflow water and evaporated water respectively. Since local collection efficiency has been obtained, the mass flow rate of water droplet impingement can be easily calculated by,
+mimp vAht LWC
+
+ (12)
+ht
+A is the impingement surface area of the control volume.
+Fig. 1 Control volume on the blade surface
+The mass flow rate of water evaporated on the surface can be calculated as,
+,,
+, ,,
+0.622 ( )
+vw ve
+air evap ht p air e v w e v e
+pp
+h
+m FA c p p p p
+
+  (13)
+where pv,w and pv,e refers to the saturated vapor
+pressure at the surface temperature and the temperature out of boundary layer, respectively. Both of them are functions of
+temperature. pe is the edge pressure of boundary layer. air
+h
+is the convective heat transfer coefficient of air flow on the blade surface. The heat fluxes of the kinetic energy of the impinging droplets, the increase of the water enthalpy and heat loss by evaporation can be computed through,
+2 ,
+2
+d drop in imp
+v
+Q m
+  (14)
+()
+,
+Qhdrop  m impc p water Twall  T (15)
+Qevap  m evapIwater (16)
+in which water
+I is the latent heat of evaporation.
+Under icing conditions, the energy balance equation is as follows,
+2 ,
+,,
+,
+()
+2
+d
+imp p water ice water ice in p water in
+out p water out evap water vapor conv ht
+v
+m c T m I mc T
+mc T m I q A
+
+
+
+ 
+ 
+(17)
+where water ice
+I  is the latent heat of condensation, conv
+q is
+the heat transfer flux due to convection, Tin and out
+T are
+temperature of the water flowing into the control volume from upstream and the water run back to the next control volume, respectively. The rate of Ice accreted height in local control volume can be calculated as,
+ice ht
+ice ice A
+m
+h
+
+  (18)
+The ice density ice
+ of 900 kg/m3 is used in
+computations40. The ice accretion direction is assumed along the normal direction of the surface. The icing fraction f is the mass ratio of freezing ice and impinging water, which value ranges from 0 to 1. If the value of f is lower than 0, it means no ice deposits and the surface temperature is larger than freezing point. If the value of f is larger than 1, it means all the impinging water
+turn to ice and the surface temperature is lower than freezing point. The icing fraction f can be computed as
+imp water ice
+conv ht
+d imp p water ice d
+mI
+qA
+v
+mc T T f
+
+  
+
+
+)
+2
+[( )
+2 , ,
+(19)
+The ice accreted height rate can be calculated as,
+ice ice
+v f LWC
+h
+
+
+ (20)
+The icing code is embedded in Ansys Fluent using User Defined Function (UDF) interface.
+Geometry Update
+In icing simulation, surface geometry need to be update as ice accretes. The dynamic mesh model is used to update the ice shape on the blade surface during icing process. The dynamic mesh model updates node positions of the computational mesh and re-meshes the computational domain automatically. The ice height accreted in unit time can be obtained when local collection efficiency at the positions of boundary nodes is obtained. The collection efficiency on local node can be calculated using area-weighted average method,
+4 Copyright © 2015 by ASME
+Downloaded from http://asmedigitalcollection.asme.org/GT/proceedings-pdf/GT2015/56628/V001T01A013/2425728/v001t01a013-gt2015-42568.pdf by Indian Institute of Technology Bombay user on 22 October 2025
+
+
+
+
+
+
+n
+i
+fi
+fi
+n
+i
+i
+node
+A
+A
+1
+,
+, 1
+
+ (14)
+in which Af is the area of the face which contains current node. Fig.2 illustrates the relationship between the node and its connected faces.
+Fig.2 Relationship between the node and its connected faces
+The unit normal vector of current node is obtained by vector plus operation. To current node, its unit normal vector is calculated as,
+, 1
+, 1
+n
+i i fi i node n
+i i fi i
+An
+n
+An
+
+
+
+
+
+
+
+(15)
+The updated coordinates of current node after iteration for each icing time step can be found as,
+x y z node updated x y z node origional hice nodennode
+
+,
+( , , )  ( , , )  
+(16)
+RESULTS AND DISCUSSION
+Computation Model and Case Setup
+The NASA Rotor 67 blade is chosen as the computational model. It is the first stage rotor of a high-speed low aspect ratio two-stage axial flow fan with a design pressure ratio of 1.63 and a mass flow rate of 33.25 kg/s at inlet total temperature of 288K. The total pressure at the inlet is 1atm, and the blade rotating speed is 16043 RPM41. A pair of periodic boundary is applied to reduce the mesh size and boundary layer meshes are applied. The computational domain and mesh is shown in Fig.3, which has approximate
+220,000 hexahedral elements. A pressure-inlet and a pressureoutlet boundary are specified at the flow inlet and outlet respectively. The moving reference frame is used to simulate the flow field with the blade rotating. The boundaries are specified with the data of design point parameters. The temperature of air flow is 253.15K and the LWC is 0.5g/m3 in icing simulation. The mean volume diameter (MVD) is set to 20 μm.
+Fig.3 The computational mesh
+When flow field around blade is obtained, droplet impingement property can be calculated by Eulerian approach which solves droplet movement governing equations using the same computational mesh as that of air flow computation. The equations of water phase are discrete under absolute frame. The water phase velocity at the flow inlet is set as the same as that of air flow and the volume fraction of water are set to be unit. Boundary conditions downstream the inlet flow are not required to be specified due to no diffusion terms in the water phase governing equations.
+Droplet Impingement Property
+Water droplets trajectories in relative frame of reference are shown in Fig.4. The local droplet collection efficiency distributions on the blade pressure surface and suction surface are shown in Fig.5 and Fig.6. The collection efficiency on the blade pressure surface is greater than that on the blade suction surface. Most of water droplets impinge on the blade pressure surface due to the incidence angle of water droplets at design point.
+A1 (1 )
+A2 (2 )
+A3 (3 ) 4 ( r )
+A
+node ()
+A2 n2
+node
+n
+5 Copyright © 2015 by ASME
+Downloaded from http://asmedigitalcollection.asme.org/GT/proceedings-pdf/GT2015/56628/V001T01A013/2425728/v001t01a013-gt2015-42568.pdf by Indian Institute of Technology Bombay user on 22 October 2025
+
+
+Fig.4 Droplet trajectories in relative frame of reference
+Fig.5 Local collection efficiency on the blade pressure surface
+Fig.6 Local collection efficiency on the blade suction surface
+Fig.7 shows the collection efficiency at the blade leading edge. The computational result of the collection efficiency at different span wise positions is plotted in Fig. 8. The droplet collection efficiency at the leading edge increases along the radial direction. In fact, these phenomena are caused by blade rotating. Water droplet tends to keep its original moving direction along the axis direction due to its inertia. However, the blade rotation makes droplets near the suction side away from the blade surface. This is the reason why local collection efficiency has different distributions on these two sides. To the blade leading edge, droplets tend to impinge on it at the surface normal direction. And as collection efficiency is related to the droplet relative velocity to blade, blade tip has higher speed due to its large rotating radius, which makes the value of the collection efficiency increase along the radial direction at the leading edge. On the other hand, as droplet velocity at the blade tip is far larger than which at the inlet due to the blade rotating, the collection efficiency at the leading edge could be exceed to unit. Another interesting phenomenon is that the collection efficiency at the pressure side decreases along the radial direction from top to bottom and increases along axial direction of flow. This is because of the geometry of blade. The blade cross section near the hub is more bending than that near the tip, and this cause more collection area near the hub. The collection efficiency on the pressure side ranges from 0.4 to 0.7 at 25% span location and from 0.35 to 0.4 at 75% span location.
+6 Copyright © 2015 by ASME
+Downloaded from http://asmedigitalcollection.asme.org/GT/proceedings-pdf/GT2015/56628/V001T01A013/2425728/v001t01a013-gt2015-42568.pdf by Indian Institute of Technology Bombay user on 22 October 2025
+
+
+Fig.7 Local collection efficiency at the leading edge
+0.00 0.02 0.04 0.06 0.08 0.10
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+Pressure surface
+Local collection efficiency
+X coordinate (m)
+Spanwise location from the hub 25% 50% 75%
+Suction surface
+Fig.8 Local collection efficiency at different span wise positions
+Icing Shape on the Blade Surface
+The 3D icing accretion approach is adopted after obtaining the distribution of the local collection efficiency. The ice shape prediction of accretion time of 5s, 10s and 15s is performed for the Rotor 67 blade. Icing mass rate distribution at 0s is illustrated in Fig. 9. It can be seen from these figures that ice accretes mainly near the hub. Simulation results of ice shape on different blade sections are illustrated in Fig.10 and 11, respectively. Ice accumulates quickly at the blade leading edge
+due to high collection efficiency. It also shows in Fig.10 and 11 that the predicted ice shapes are different at different span positions. More ice tends to accumulate on the pressure surface at the blade root due to high collection efficiency shown in Fig.8.
+Fig.9 Icing rate on pressure side
+0 5 10
+-2.5
+0.0
+2.5
+Z coordinate (mm)
+X coordinate (mm)
+0s 5s 10s 15s
+Fig.10 Ice shapes of 25% span from hub for Rotor 67 at different icing accretion time
+7 Copyright © 2015 by ASME
+Downloaded from http://asmedigitalcollection.asme.org/GT/proceedings-pdf/GT2015/56628/V001T01A013/2425728/v001t01a013-gt2015-42568.pdf by Indian Institute of Technology Bombay user on 22 October 2025
+
+
+5 10 15
+-5.0
+-2.5
+0.0
+Z coordinate (mm)
+X coordinate (mm)
+0s 5s 10s 15s
+Fig.10 Ice shapes of 50% span from hub for Rotor 67 at different icing accretion time
+CONCLUSION
+Numerical simulation of ice accretion on rotating components of aircraft engines is still a challenge due to the complex 3-D unsteady flow and the effects of rotation. The ice shapes on the rotating blade are affected by icing time, flight parameters of velocity, pressure, temperature, and cloud parameters of liquid water content and water droplet diameter. This paper presents a numerical study on the icing process on the rotating blade. The flow field around the blade is obtained using ANSYS FLUENT. The trajectories of supercooled water droplets and the collection efficiency are calculated by Eulerian approach. The 3D computation of water droplets impingement and icing accretion on Rotor 67 blade is predicted at design rotating speed. The computation results show that the collection efficiency on the blade pressure surface is greater than that on the blade suction surface. Most of water droplets impinge on the blade pressure surface due to the incidence angle of water droplets at design point. The value of local collection efficiency at the leading edge is highest. The collection efficiency increases along the radial direction at the leading edge due to different rotating radius and the collection efficiency at the leading edge could be exceeding to unit. The collection efficiency at the pressure side decreases along the radial direction from top to bottom and increases along axial flow direction due to the blade geometry. The ice shapes of accretion time of 5s, 10s and 15s are simulated and the ice shapes at different span positions of the rotating blade are compared. Ice accumulates quickly at the blade leading edge due to high collection efficiency. The simulation results also show that the predicted ice shapes are different at different span positions. More ice tends to accumulate on the pressure surface at the blade root.
+The method presented in this paper can be used to predict the water collection rate, icing process and resulting change of aerodynamic shape. The icing simulation results can also be used to analyze the performance penalties of rotor blade due to icing.
+ACKNOWLEDGMENTS
+W. Dong thanks the people who made this research program possible. The authors at Shanghai Jiaotong University were supported by the National Natural Science Foundation of China under Grant No.51076103, No.51376122 and No. 11272212.
+REFERENCES
+[1]Hansman, R. J., Turnock, S. R., 1989, “Investigation of Surface Water Behavior during Glaze Ice Accretion,” Journal of Aircraft, Vol.26, No.2, pp.140-147. [2]Hansman, R. J., Breuer, L. S., Hazan, D., Reehorst, A., Vargas, M., 1993, “Close-up Analysis of Aircraft Ice Accretion,” AIAA paper 93-0029. [3]Miller, D.R., Lynch, C.J., Tate, P.A., 2004, “Overview of High Speed Close-Up Imaging in an Icing Environment,” AIAA paper 2004-407.
+[4]Rothmayer, A.P., Hu, H., 2012, “Solutions for Twodimensional Instabilities of Ice Surfaces Uniformly Wetted by Thin Films,” AIAA Paper 2012-3133.
+[5]Hansman, R.J., Yamaguchi, K., Berkowitz, B., and Potapczuk, M., 1991, "Modeling of Surface Roughness Effects on Glaze Ice Accretion," Journal of Thermophysics and Heat Transfer, Vol. 5, No.2, pp. 54-60. [6]Bond, T. H., Miller, D. R., Potapczuk, M. G., 2003, “Overview of SLD Engineering Tool Development,” AIAA Paper 2003-0386. [7]Ide, R. F., Sheldon, D. W., 2008, “2006 Icing Cloud Calibration of the NASA Glenn Icing Research Tunnel,” NASA/TM —2008215177. [8]Chintamani, S. H., Belter, D. L., 1994, “Design Features and Flow Qualities of the Boeing Research Aerodynamic icing wind tunnel,” AIAA Paper 94-0540.
+[9]Oleskiw, M. M., Hyde, F. H., Penna, P.j., 2001, “In-flight Icing Simulation Capabilities of NRC's Altitude Icing Wind Tunnel,” AIAA paper 2001-0094.
+[10]Al-Khalil, K., Salamon, L., Tenison, G., 1998, “Development of the Cox icing Research Facility,” AIAA paper 98-0097. [11]Vecchione, L., De Matteis, P. P., Leone, G., 2003, “An Overview of the CIRA Icing Wind Tunnel,” AIAA paper 2003-900.
+[12]AI-Khalil, K.M., Miller, D. and Wright, W.B., 1997, “Validation of NASA Thermal Ice Protection Computer Codes. III The validation of ANTICE,” AIAA Paper 97-0051.
+[13]Wright,W.B., 2002, “LEWICE 2.2 Capabilities and Thermal Validation,” AIAA Paper 2002-0383.
+[14]Ghenai,C. and Lin C.X., 2006, “Verification and Validation of NASA LEWICE 2.2 Icing Software Code,” Journal of Aircraft, Vol.43, No.5, pp.1253–1258. [15]Villedieu, Ph., Trontin, P., Guffond, D., Bobo, D., 2012, “SLD Lagrangian modeling and capability assessment in the frame of ONERA 3D icing suite,” AIAA Paper 2012-3132. [16]Nakakita, K., Nadarajah, S., Habashi, W., 2010, “Toward Real-Time Aero-Icing Simulation of Complete Aircraft via FENSAPICE,” Journal of Aircraft, Vol.47, No.1, pp.96–109.
+8 Copyright © 2015 by ASME
+Downloaded from http://asmedigitalcollection.asme.org/GT/proceedings-pdf/GT2015/56628/V001T01A013/2425728/v001t01a013-gt2015-42568.pdf by Indian Institute of Technology Bombay user on 22 October 2025
+
+
+[17]Eberhardt, D.S., Kim, B., Ok, H., Li, W., Taflin, D., Namdar, B., 1992, “BUWICE-An Interactive Icing Program Applied to Engine Inlets”, AIAA Paper No. 92-3197.
+[18]CoisMorency, F., Tezok, F., Paraschivoiu, I., 1999, “AntiIcing System Simulation Using CANICE,” Journal of Aircraft, Vol.36, No.6, pp.999–1006. [19] Wright, W.B., Gent, R.W., Guffond, D., 1997, “DRA/NASA/ONEAR Collaboration on Icing Research, Part IIPrediction of Airfoil Ice Accretion,” NASA CR202349. [20]Kind, R. J., Potapczuk, M. G., Feo, A., Golia, C., Shah, A. D., 1998, “Experimental and Computational Simulation of In-flight Icing Phenomena,” Progress in Aerospace Science, Vol.34, pp. 257-345.
+[21]Norment, H.G., 1980, “Calculation of Water Drop Trajectories To and About Arbitrary Three-Dimensional Bodies in Potential Airflow,” NASA-CR 3291. [22]Potapczuk, M. G., 1999, “A Review of NASA Lewis’ Development Plans for Computational Simulation of Aircraft Icing,” AIAA Paper 99-0243. [23]Dong, W., Zhu, J. J., Chen, Y., Zheng, M., 2014, “Numerical Analysis of Oil Anti-Icing System Performance of Turboshaft Engine Inlet Strut,” GT2014-26564. [24]Hamed, A., Das, K., Basu, D., 2005, “Numerical simulations of ice droplet trajectories and collection efficiency on aero-engine rotating machinery,” AIAA Paper 2005-1248. [25]Bourgault, Y., Boutanios, Z., Habashi, W.G., 2000, “ThreeDimensional Eulerian Approach to Droplet Impingement Simulation Using FENSAP-ICE,Part 1: Model, Algorithm, and Validation,” Journal of Aircraft, Vol.37, No.1, pp.95–103. [26]Bilodeau, D. R., Habashi, W. G., Baruzzi, G., 2013. An Eulerian re-impingement model of splashing and bouncing supercooled large droplets, AIAA Paper 2013-3058 [27]Messinger, B. L., 1953, “Equilibrium Temperature of an Unheated Icing Surface as a Function of Air Speed,” Journal of the Aeronautical Sciences, Vol.20, pp. 29-42. [28]Wright, W. B., Bidwell, C. S., 1995, “Additional Improvements to the NASA Lewis Ice Accretion Code LEWICE”, AIAA Paper 1995-0752.
+[29]Saeed, F., Morency, F., Paraschivoiu, I., 2000, “Numerical Simulation of a Hot-Air Anti-Icing System,” AIAA Paper 2000-630. [30]Myers, T. G., 2001, “Extension to the Messinger Model for Aircraft Icing,” AIAA Journal, Vol. 39, No. 2, pp. 211–218.
+[31]Beaugendre, H., Morency, F., Habashi, W., 2006, “Development of a Second Generation In-Flight Icing Simulation Code,” Journal of Fluid Engineering, Vol. 128, No. 2, pp. 378–387. [32]Wright,W. B., Potapczuk, M. G., Levinson, L. H., 2008, “Comparison of LEWICE and GlennICE in the SLD Regime,” AIAA Paper 2008-439. [33]Hasanzadeh, K., Laurendeau, E., Paraschivoiu, I., 2013, “Quasi-Steady Convergence of Multistep Navier–Stokes Icing Simulations,” Journal of Aircraft, Vol. 50, No. 4, pp. 1261–1274. [34]Potapczuk, M. G., 2013, “Aircraft icing research at NASA Glenn research center,” Journal of Aerospace Engineering, Vol. 26, No. 2, pp. 260–276.
+[35]Das, K., “Numerical Simulations of Icing in Turbomachinery”, 2006, PhD thesis. University of Cincinnati, USA.
+[36]Lee, S., Loth, E., 2008, “Simulation of Icing on a Cascade of Stator Blades”, Journal of Propulsion and Power, Vol.24, No.6, pp. 1309-1316.
+[37]Dong, W., Zhu, J. J., Zheng, M., Wang, R., 2014, “Numerical Study of Ice Accretion on Rotating Aero-engine Cone,” ICAS paper 2014-0035.
+[38] Clift, R., Grace, J., Weber, M., 1978, “Bubbles, Drops and Particles”. [39] Young, R. M., Pfender, E., 1987, “Nusselt Number Correlations for Heat Transfer to Small Spheres in Thermal Plasma Flows,” Plasma Chemistry and Plasma Processing, Vol. 7, No.2, pp.211-229.
+[40] Petrovic, J., 2003, “Mechanical properties of ice and snow,” Journal of Materials Science, Vol.38, pp.1–6. [41]Straziser, A. J., Wood, J. R., Hathaway, M. D., Suder, K. L., 1989, “Laser Anemometer Measurements in a Transonic Axial Flow Fan Rotor,” NASA Technical paper 2879.
+9 Copyright © 2015 by ASME
+Downloaded from http://asmedigitalcollection.asme.org/GT/proceedings-pdf/GT2015/56628/V001T01A013/2425728/v001t01a013-gt2015-42568.pdf by Indian Institute of Technology Bombay user on 22 October 2025

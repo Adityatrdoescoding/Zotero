@@ -1,0 +1,628 @@
+State Space Methods for Flight Vehicles
+AE 695
+Shashi Ranjan Kumar
+Associate Professor Intelligent Systems and Control (ISaC) Lab Department of Aerospace Engineering Indian Institute of Technology Bombay Powai, Mumbai- 400076
+https://www.aero.iitb.ac.in/ ̃shashi R srk@aero.iitb.ac.in
+
+
+Fields
+• Set: A collection of elements or objects
+• Examples: Set of all real or complex numbers
+A field F is a set of elements, referred to as scalars, together with two operations of addition and multiplication for which the following axioms hold:
+Fields
+Fields
+1. ∀ a, b ∈ F, there is always a unique sum a + b ∈ F and a unique product a·b∈F a+b=b+a
+ab = ba
+}
+commutative laws
+2. for any three elements, a, b, c ∈ F
+a + (b + c) = (a + b) + c
+a(bc) = (ab)c
+}
+associative laws
+a(b + c) = ab + ac} distributive law
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 1 / 29
+
+
+Fields
+3. F contains a zero element, 0, and a unity element, 1, such that
+a + 0 = a, 1 · a = a ∀a ∈ F
+4. ∀a ∈ F, ∃ b ∈ F such that a + b = 0 (additive inverse)
+5. ∀a ∈ F \ {0}, ∃ b ∈ F such that a · b = 1 (multiplicative inverse)
+Example (Assuming usual rules of addition and multiplication)
+• The set of all real numbers, R (Yes!)
+• The set of all complex numbers, C (Yes!)
+• The set of all positive real numbers, R+ (No!)
+• The set of all rational functions, R(s) with real coefficients (Yes!)
+• F may consist of either a finite or infinite number of elements.
+• Will the set {0, 1} form a field?
+• No, with the usual definitions of addition and multiplication
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 2 / 29
+
+
+Field: Examples
+• Will the answer differ if the addition and multiplication rules are changed?
+• Addition and multiplication rules
+0 + 0 = 1 + 1 = 0, 1 + 0 = 1, 0 · 1 = 0 · 0 = 0, 1 · 1 = 1
+• A field of binary numbers
+• Set of 2 × 2 matrices of the form
+[x −y yx
+]
+, x, y ∈ R
+• What are the element 0 and 1 for this field?
+0=
+[0 0 00
+]
+, 1=
+[1 0 01
+]
+• Will the set of all 2 × 2 matrices form a field? No
+• What about a set of positive real numbers, integers, and polynomials? No
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 3 / 29
+
+
+Vectors
+A vector x is an ordered set of n−tuples of elements with addition and multiplication by a scalar defined in the usual way.
+Vectors
+Vectors
+• Let x = [x1 x2 · · · xn]⊤ and y = [y1 y2 · · · yn]⊤, then
+x+y=
+
+   
+x1 + y1 x2 + y2
+...
+xn + yn
+
+   
+αx =α
+
+   
+x1
+x2
+...
+xn
+
+   
+=
+
+   
+αx1 αx2
+...
+αxn
+
+   
+, where α ∈ F
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 4 / 29
+
+
+Vector Spaces
+A vector space over a field F is a set V, denoted as V(F). The elements of F are called scalars, whereas the elements of V are called vectors. Together with two operations of vector addition and scalar multiplication, the following axioms hold:
+Vector Spaces
+Vector Spaces
+1. ∀ x, y ∈ V, there is a unique sum x + y ∈ V (closed under addition)
+x + y = y + x} commutative law
+2. ∀ x ∈ V and α ∈ F, there is a unique product αx ∈ V (closed under scalar multiplication)
+3. ∀ x, y, z ∈ V
+(x + y) + z = x + (y + z)} associative law
+4. ∀ x, y ∈ V and α ∈ F,
+α(x + y) = αx + αy} distributive law
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 5 / 29
+
+
+Vector Spaces
+5. ∀ α, β ∈ F and ∀ x ∈ V,
+α(βx) = αβx} associative law
+(α + β)x = αx + βx} distributive law
+6. V contains a null vector 0 such that ∀ x ∈ V, x + 0 = x
+7. ∀ x ∈ V, ∃ − x ∈ V such that x + (−x) = 0
+8. ∀ x ∈ V, 1 · x = x, where 1 ∈ F
+Example
+• Will a field F form vector space over F with addition and multiplication defined on corresponding field?
+• Yes, (R, R), (C, C)
+• What about (C, R), (R, C), (R(s), R(s)), (R(s), R), and (R, R(s))?
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 6 / 29
+
+
+Vector Space: Examples
+• Consider F n : n−tuples of scalars
+xi =
+
+   
+x1i
+x2i
+...
+xni
+
+   
+, xi + xi =
+
+   
+x1i + x1j
+x2i + x2j
+...
+xni + xnj
+
+   
+, αxi =
+
+   
+αx1i
+αx2i
+...
+αxni
+
+   
+• Is (F n, F ) a vector space? Yes
+• (Rn, R), (Cn, C), (Rn(s), R(s)): Real, complex, and rational vector space
+• Set of all polynomials of degree less than n with real coefficients
+Rn[s] =
+n−1
+∑
+i=0
+αisi
+• Vector addition and scalar multiplication
+n−1
+∑
+i=0
+αisi +
+n−1
+∑
+i=0
+βisi =
+n−1
+∑
+i=0
+(αi + βi)si, α
+n−1
+∑
+i=0
+αisi =
+n−1
+∑
+i=0
+(ααi) si
+• Is (Rn[s], R) a vector space? Yes; Is (Rn[s], R(s)) a vector space? No
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 7 / 29
+
+
+Definition of Subspace
+Subspace
+Let (X , F) be a linear space and let Y be a subset of X . Then (Y, F) is said to be a subspace of (X , F) if under the operations of (X , F), Y itself forms a vector space over F.
+• Many properties satisfied owing to the definitions of addition and multiplication over a vector space.
+• Need to check only remaining conditions
+• Closed under addition and scalar multiplication
+α1y1 + α2y2 ∈ Y ∀ α1, α2 ∈ F , y1, y2 ∈ Y
+• What can you say about the line passing through origin in 2D real vector space? Is it a subspace of (R2, R)?
+[ x1 αx1
+]
+, α∈R
+• Is (Rn, R) a subspace of (Cn, R), Yes
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 8 / 29
+
+
+Linear Dependence
+Linear dependence of a set of vectors
+A set of vectors x1, x2 · · · , xn in linear space (X , F ), is said to be linearly dependent iff there exist scalars α1, α2, · · · , αn ∈ F , not all zero, such that
+α1x1 + α2x2 + · · · + αnxn = 0.
+If the only set of αi for which above holds is α1 = 0, α2 = 0, · · · , αn = 0, then the set of vectors x1, x2, · · · , xn is said to be linearly independent.
+• For a dependent set of vectors, infinitely many choices of coefficients.
+• Finding one such choice of coefficients suffices.
+• What can we say about the l.i. of a set of vectors, x1, x2, · · · , xn if x1 = 0?
+• Linearly dependent set of vectors
+• What about linear dependence of a set of vectors, with only one vector x1?
+• Linearly independent iff x1 ̸= 0
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 9 / 29
+
+
+Linear Dependence
+• Define the notation
+α1x1+α2x2+· · ·+αnxn ≜
+[x1 x2 · · · xn
+] α, α = [α1 α2 · · · αn
+]⊤
+Linear dependence of a set of vectors
+A set of vectors x1, x2 · · · , xn in linear space (X , F ), is said to be linearly independent iff the equation
+[x1 x2 · · · xn
+] α = 0 =⇒ α = 0 ∈ F n,
+where every component of α is an element of F.
+• What about the linear dependence of the set of vectors given below?
+x1 ≜
+
+
+1 s +1 1
+s+2
+
+ , x2 ≜
+
+
+s+2
+(s + 1)(s + 3)
+1 s+3
+
+
+• Linearly dependent in (R2(s), R(s)), but independent in (R2(s), R)
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 10 / 29
+
+
+Linear Dependence: Dimension
+• Linear dependence: At least one vector as a linear combination of other vectors.
+• May not be possible to express all vectors in a similar manner.
+Dimension of a vector space
+The maximal number of l.i vectors in a linear space (X , F).
+• What is the dimension of the vector space (R2, R)? 2
+• What would be the dimension of the vector space of all real-valued piece-wise continuous functions over (−∞, ∞)? ∞ How?
+Definition of the basis of vector space
+A set of linearly independent vectors of a linear space (X , F) if every vector in X can be expressed as a unique linear combination of these vectors.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 11 / 29
+
+
+Linear Dependence: Basis
+In an n-dimensional vector space, any set of n linearly independent vectors qualifies as a basis.
+• Assume ei∀ i = 1, 2, . . . , n be n l.i vectors in X .
+• With arbitrary vector x, the set {x, ei ∀ i = 1, 2, . . . , n} are l.d.
+• Thus, ∃ αi ∀ i = 0, 1, · · · , n not all zero s.t.
+α0x +
+∑
+αiei = 0
+• For α0 = 0, due to the linear independence of vectors,
+∑
+αiei = 0 =⇒ αi = 0, Contradictions !!
+• With βi ≜ −αi/α0, we have
+x=
+n
+∑
+i=1
+βiei
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 12 / 29
+
+
+Linear Dependence: Basis
+• We need to show that this linear combination is unique.
+• Assume that we have another linear combination for the same vector
+x=
+n
+∑
+i=1
+β ̃iei =
+n
+∑
+i=1
+βiei =⇒ 0 =
+n
+∑
+i=1
+(βi − β ̃i
+) ei
+• Owing to the linear independent nature of ei, one can write
+βi = β ̃i ∀ i = 1, 2, . . . , n.
+Representation of vector
+In n−dimensional vector space, with basis {ei ∀ i = 1, 2, . . . , n}, any vector x can be uniquely written w.r.t. chosen basis as
+x = [e1 e2 · · · en
+] β, β = [β1 β1 · · · βn
+]⊤
+Representation of vector x in the chosen basis: β.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 13 / 29
+
+
+Linear Dependence: Basis
+• Example: Two-dimensional real vector space
+• Freedom in choosing basis: Direction and magnitude of vectors
+• Different representations for the same vector w.r.t. different bases
+• Consider a vector space (R(s), R).
+• With the basis e1 = s3, e2 = s2, e3 = s, e4 = 1,
+x = 3s3 + 2s2 − 2s + 10 = [e1 e2 e3 e4
+]
+
+  
+3 2 −2 10
+
+  
+• With another basis e ̄1 = s3 − s2, e ̄2 = s2 − s, e ̄3 = s − 1, e ̄4 = 1,
+x = 3s3 + 2s2 − 2s + 10 = [e ̄1 e ̄2 e ̄3 e ̄4
+]
+
+  
+3 5 3 13
+
+  
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 14 / 29
+
+
+Linear Dependence: Basis
+Obtain the representation of vector x = [1 3]⊤ w.r.t. bases q1 = [3 1]⊤ and q2 = [2 2]⊤, and also about q2 and i2 .
+• Draw from x two lines in parallel with q2 and q1, they intersect at −q1 and 2q2.
+• Representation of x w.r.t. q1, q2
+x = −q1 + 2q2
+x = 0.5q2 + 2i2
+• Representations change w.r.t. different basis vectors set.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 15 / 29
+
+
+Linear Dependence: Basis
+• How to interpret an array of n-tuple? ▲ A vector independent of basis ▲ A representation of vector w.r.t. some basis
+• Define the basis vectors as
+n1 =
+
+     
+1 0
+...
+0 0
+
+     
+, n2 =
+
+     
+0 1
+...
+0 0
+
+     
+, · · · , nn−1 =
+
+     
+0 0
+...
+1 0
+
+     
+, nn =
+
+     
+0 0
+...
+0 1
+
+     
+• Interpretation of any vector in this basis
+
+   
+β1
+β2
+...
+βn
+
+   
+=
+[n1 n2 · · · nn
+]
+
+   
+β1
+β2
+...
+βn
+
+   
+• Is there any relation between different representations of the same vector in different bases?
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 16 / 29
+
+
+Linear Dependence: Change of Basis
+• Representation of a vector x in (X , F) in two different bases
+x = [e1 e2 · · · en
+] β = [e ̄1 e ̄2 · · · e ̄n
+] β ̄
+• Need of information on the representation of one basis w.r.t. other basis
+• Assume the representation of ei w.r.t. basis {e ̄i}
+ei = [e ̄1 e ̄2 · · · e ̄n
+]
+} {{ }
+E
+
+  
+p1i
+p2i
+...
+pni
+
+  
+} {{ } pi
+≜ Epi
+• Using matrix notation,
+[e1 e2 . . . en
+] = [Ep1 Ep2 . . . Epn
+] = E [p1 p2 . . . pn
+]
+} {{ }
+P
+[e1 e2 . . . en
+] = [e ̄1 e ̄2 · · · e ̄n
+]P
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 17 / 29
+
+
+Linear Dependence: Change of Basis
+• Vector x can be rewritten as
+x = [e1 e2 · · · en
+] β = [e ̄1 e ̄2 · · · e ̄n
+] P β = [e ̄1 e ̄2 · · · e ̄n
+] β ̄
+• Owing to the uniqueness of representation of x w.r.t. basis {e ̄i}
+β ̄ = P β
+• The ith columns of P : Representation of ei w.r.t. the basis {e ̄i}
+• Similarly, using the representation of e ̄i w.r.t. {ei}
+β = Qβ ̄
+• The ith columns of Q: Representation of e ̄i w.r.t. {ei}
+• Using both relations
+β ̄ = P Qβ ̄ ∀ β ̄ =⇒ P Q = I, P = Q−1
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 18 / 29
+
+
+Linear Dependence: Change of Basis
+• Consider the bases given by
+e1 = s3, e2 = s2, e3 = s, e4 = 1
+e ̄1 = s3 − s2, e ̄2 = s2 − s, e ̄3 = s − 1, e ̄4 = 1
+• Relation between bases
+[e1 e2 e3 e4
+] = [e ̄1 e ̄2 e ̄3 e ̄4
+]
+
+  
+1000 1100 1110 1111
+
+  
+} {{ }
+P
+[e ̄1 e ̄2 e ̄3 e ̄4
+] = [e1 e2 e3 e4
+]
+
+  
+1000 −1 1 0 0 0 −1 1 0 0 0 −1 −1
+
+  
+} {{ }
+Q
+• To verify as homework P Q = I, β ̄ = P β
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 19 / 29
+
+
+Orthonormal Basis
+A vector x is said to be normalized if its length is unity.
+Two vectors x1 and x2 are said to be orthogonal if x⊤
+1 x2 = x⊤
+2 x1 = 0 .
+A set of vectors xi∀ i = 1, 2, . . . , m, is said to be orthonormal if
+x⊤
+i xj =
+{
+0 i ̸= j
+1 i=j
+• For a square matrix A with all orthonormal columns A⊤A = AA⊤ = In
+• For a nonsquare (n × m) matrix A with all orthonormal columns
+A⊤A = Im, AA⊤ ̸= In (In general)
+• How to obtain an orthonormal basis from a given set of linearly independent vectors, {e1, e2, · · · , em}?
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 20 / 29
+
+
+Orthonormal Basis: Schmidt Orthonormalization
+u1 = e1, q1 := u1
+∥u1∥
+u2 = e2 − (q⊤
+1 e2
+) q1, q2 := u2
+∥u2∥
+...
+um = em −
+m−1
+∑
+k=1
+(q⊤
+k em
+) qk, qm := um
+∥um∥
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 21 / 29
+
+
+Linear Operators
+• How to define a function?
+• Defined as a rule of assignment by which we assign each element of X one and only one element in Y for two given sets X , Y.
+• Notation: f : X → Y
+y = f (x)
+• Domain: The set X on which a function is defined.
+• Range: The subset of Y that is assigned to some element of X .
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 22 / 29
+
+
+Linear Operators
+• Linear operator (function, mapping, transformation)
+• Associated set must be a linear space over the same field
+Linear operator
+A function L : (X , F) → (Y, F) is said to be linear operator iff
+L (α1x1 + α2x2) = α1Lx1 + α2Lx2
+for any vectors x1, x2 ∈ X and any scalars α1, α2 ∈ F .
+• What would be the reason for the requirement of the same field for Y?
+• To define α1Lx1, α2Lx2
+• What can you say about the transformation that rotates a point in the geometric plane CCW by 90◦ w.r.t. the origin?
+• Linear operator
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 23 / 29
+
+
+Linear Operators
+• Linear operators can be defined on both finite and infinite-dimensional vector spaces.
+• Linear operator defined on finite-dimensional vector spaces has matrix representations.
+Let (X , F) and (Y, F) be the n and m-dimensional vector spaces, respectively, over same field. Let x1, x2, . . . , xn be the set of l.i. vectors in X . Then, the linear operator L : (X , F) → (Y, F) is uniquely determined by the n pairs of mappings yi = Lxi∀ i = 1, 2, . . . , n.
+Furthermore, with respect to the basis {x1, x2, . . . , xn} of X , and a basis {u1, u2, . . . , um} of Y, L can be represented by an m × n matrix A with the coefficients in F . The ith column of A is the representation of yi w.r.t. the basis {u1, u2, . . . , um}.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 24 / 29
+
+
+Linear Operators
+• For arbitrary vector x ∈ X , one can write
+x = α1x1 + α2x2 + · · · + αnxn
+• Using the linearity of operator L
+Lx = α1Lx1 + α2Lx2 + · · · + αnLxn = α1y1 + α2y2 + · · · + αnyn
+• Vector Lx uniquely determined by yi = Lxi∀ i = 1, 2, . . . , n.
+• Representation of yi w.r.t. basis {u1, u2, . . . , um}
+yi = [u1 u2 · · · um
+]
+
+   
+a1i
+a2i
+...
+ami
+
+   
+∀ i = 1, 2, . . . , n
+L
+[x1 x2 · · · xn
+] = [y1 y2 · · · yn
+]
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 25 / 29
+
+
+Linear Operators
+• We can write
+L
+[x1 x2 · · · xn
+] = [u1 u2 · · · um
+]
+
+   
+a11 a12 · · · a1n
+a21 a22 · · · a2n
+...
+am1 am2 · · · amn
+
+   
+} {{ }
+A
+• The ith column of A: Representation of yi w.r.t. basis of Y
+• Linear operator y = Lx
+[u1 u2 · · · um
+] β = L[x1 x2 · · · xn
+]α
+[u1 u2 · · · um
+] β = [u1 u2 · · · um
+] Aα
+• Owing to the uniqueness of representation: β = Aα
+• For the chosen bases, the linear operator represented as a matrix A.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 26 / 29
+
+
+Linear Operators
+• Matrix A relates α and β, not vectors x and y.
+• Linear Operator: Different matrix representations for different bases
+• What would be the relation if two different bases were used to represent such linear operators?
+• Assume x ∈ X has representations α, α ̄ w.r.t. the bases {ei} and {e ̄i}.
+• Representation of y = Lx in these bases: β and β ̄
+α ̄ = P α, β ̄ = P β
+β ̄ = A ̄α ̄ , β ̄ = P β = P Aα = P AP −1α ̄
+• Owing to the uniqueness of representation w.r.t. specific basis
+A ̄α ̄ = P AP −1α ̄ =⇒ A ̄ = P AP −1 = Q−1AQ
+A = P −1A ̄P = QA ̄Q−1
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 27 / 29
+
+
+Linear Dependence: Linear Operators
+Similarity Transformation
+Two matrices A and A ̄ are said to be similar if there exists a nonsingular transformation matrix P satisfying
+A ̄ = P AP −1 = Q−1AQ, A = P −1A ̄P = QA ̄Q−1, Q = P −1
+• All the matrix representations of the same operator w.r.t. different bases are similar.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 28 / 29
+
+
+Reference
+Reference
+▶ Chen, Chi-Tsong, “Linear System Theory and Design”, Oxford University Press, 3rd Edition, 1999.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 2 29 / 29

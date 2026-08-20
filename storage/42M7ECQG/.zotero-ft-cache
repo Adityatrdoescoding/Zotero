@@ -1,0 +1,325 @@
+1
+Static and Forced Oscillation Wind Tunnel Tests
+of a Tandem Propeller Configuration
+George V. Altamirano,* Justin J. Matt,† Stephen Farrell,‡ and Anthony Palazzo§ NASA Langley Research Center, Hampton, Virginia, 23681
+A series of static and forced oscillation tests were conducted using a tandem propeller configuration in the NASA Langley 12-Foot Low-Speed Tunnel. The primary objectives were to quantify the effect of aerodynamic interactions on propeller thrust and identify conditions where the effect is most significant. A secondary objective was to obtain a preliminary data set from dynamic testing to assess the impact of forced oscillation on thrust performance. This paper presents analysis of the experimental data, which includes propeller performance measurements and qualitative flow visualization. The static results show that the rear propeller in the tandem configuration can experience thrust degradations greater than 30%. The extent of the wake interaction is a function of the hub separation distance and the advance ratio of the front propeller. Forced oscillation results showed that the front propeller exhibited reasonably linear behavior across the conditions tested, whereas the rear propeller exhibited dynamic nonlinearity in the region of significant thrust degradation. These results are intended to support high-fidelity modeling research, particularly for flight dynamics simulation development to aid trajectory prediction, control design, and identification of hazardous conditions for multirotor vehicles.
+Nomenclature A = propeller disk area, ft2 CT = thrust coefficient CTISO = isolated propeller thrust coefficient CTRear ISO = rear propeller thrust coefficient in tandem configuration with front motor turned off CTFront, CTRear = front and rear propeller thrust coefficients in tandem configuration with both motors running d = hub separation distance, ft D = propeller diameter, ft F(s) = filter transfer function f = oscillation frequency, Hz G(s) = motor dynamics plant model h = vertical distance between propeller disk plane and horizontal rail, ft J = propeller advance ratio KP, KI, KF = proportional, integral, and feedforward gains n = motor rotational speed, revolutions/s nref = reference motor rotational speed command, revolutions/s ̅q = freestream dynamic pressure, lbf/ft2 R = propeller radius, ft T = thrust, lbf V = freestream velocity, ft/s vT = total velocity at rotor disk center
+vxh, vyh, vzh = freestream velocity components in hub frame, ft/s α = angle of attack, rad or deg
+* Research Engineer, Flight Dynamics Branch, Member AIAA † Research Engineer, Flight Dynamics Branch, Member AIAA ‡ Research Engineer, Flight Dynamics Branch, Member AIAA § OSTEM Engineer Intern, Flight Dynamics Branch, Student Member AIAA
+Downloaded by "Indian Institute of Technology, Bombay" on August 13, 2025 | http://arc.aiaa.org | DOI: 10.2514/6.2025-0664
+AIAA SCITECH 2025 Forum
+6-10 January 2025, Orlando, FL
+10.2514/6.2025-0664
+This material is declared a work of the U.S. Government and is not subject to copyright protection in the United States.
+AIAA SciTech Forum
+
+
+2
+ρ = air density, slug/ft3 Ω = motor rotational frequency, rad/s χ = wake skew angle, rad or deg λ = inflow ratio μ = rotor advance ratio μx, μy, μz = nondimensional velocity components
+I. Introduction
+A. Background
+In recent years, consumers of small multirotor aircraft have progressed from hobbyists and recreational users to commercial businesses, militaries, and law enforcement agencies. On a larger scale, companies have invested significant resources to develop electric vertical takeoff and landing (eVTOL) rotorcraft for urban air mobility (UAM) and cargo delivery applications. These developments have increased the complexity of proposed operations of UAS and eVTOL systems, which include beyond visual line of site (BVLOS) and low-altitude flight plans over densely populated areas. Demonstration of safe and efficient operations will be critical to realize their full potential and increase public acceptance. In support of advancing flight safety assurance capabilities, the NASA System Wide Safety project is investigating the concept of In-Time Aviation Safety Management Systems (IASMS) [1]. This concept extends traditional SMS to provide more timely and predictive risk assessments and mitigation. To help evaluate how IASMS may be applied to sUAS and UAM domains, a Flight Performance Assessment Service (FPAS) has been developed that can aid pre-flight and in-flight trajectory planning. Primary outputs of FPAS include energy reserve predictions, simulated vehicle trajectories, and identification of hazardous flight conditions for a user-defined flight plan. The utility of FPAS is dependent on the accuracy of multirotor flight dynamics and performance models. Areas of aerodynamic modeling that have been identified as technical gaps in the existing FPAS simulation framework are i) the representation of propeller-propeller aerodynamic interactions and ii) the understanding of the effects of angular rate on dynamic stability. It is especially important to understand how these effects impact trajectory prediction, power consumption modeling, and control system design. Increased knowledge of these subjects is also expected to aid future designs in terms of safety, efficiency, range, and payload capacity.
+B. Relevant Prior Work
+A number of recent studies have used wind tunnel experiments, mid-fidelity flow solvers, and high-fidelity computational fluid dynamics (CFD) to better understand complex interactional aerodynamics. Stokkermans et al. [2] investigated an array of two-propeller systems that are representative of eVTOL designs. One such system consisted of a side-by-side propeller unit that could be tested at different hub separation distances, advance ratios, and propeller angles of attack. Measurements from wind tunnel experiments and comparisons to an extended blade element momentum (BEM) model showed rear propeller thrust and power reductions up to 30% relative to the isolated propeller performance. Wind tunnel results from Zanotti et al. [3] corroborated performance degradations of the rear propeller in a tandem configuration and reported that increasing the vertical hub separation distance alleviates adverse interaction effects in transition phases. Several other works have reported similar findings regarding vertical hub spacing for propellers in proximity [4,5,6]. Side-by-side rotors have also been studied by Shukla and Komerath [7] in hover conditions using particle image velocimetry (PIV) and performance measurements. The time-averaged PIV data indicate that the tip vortices interact between adjacent rotors in close proximity, resulting in a loss of their coherent structure and a deviation in trajectory relative to that of an isolated rotor wake. The effects of inter-rotor wake interactions were more significant at lower Reynolds numbers, which was attributed to weaker vortices in terms of circulation and downwash. A multirotor testbed (MTB) was presented by Russel et al. [8] which has capability to vary hub positions and cant angles of up to six individual rotors. There have been multiple test campaigns to demonstrate the MTB capability including comparisons to simulation tools [9,10]. The experimental results from [2-10] have provided insight to the order of magnitude of interaction effects and laid a foundation for future research in this area. Generally, wind-tunnel studies have primarily involved small scale propellers or rotors, resulting in large Reynolds number differences in comparison to larger eVTOL configurations. This is in part due to practical challenges and significant resources required to test full scale rotors. High-fidelity CFD has served as a useful tool to study interaction effects with similitude parameters representative of larger eVTOL vehicles. Healy et al. studied in-line two-rotor units using a commercial Navier Stokes solver with a detached eddy simulation model [11,12]. The simulation results showed that the front rotor wake induces downwash on the aft rotor, leading to a lift deficit and a significant change in hub pitching moment. Longitudinally canting the rotors outward positions the front of the aft rotor disk farther away from the front rotor wake, alleviating thrust
+Downloaded by "Indian Institute of Technology, Bombay" on August 13, 2025 | http://arc.aiaa.org | DOI: 10.2514/6.2025-0664
+
+
+3
+reduction. NASA researchers have also used high-fidelity CFD to simulate small scale multicopters [13,14] and full scale eVTOL vehicles in hover and transition phases [15,16]. The use of Reynolds-averaged Navier Stokes (RANS) and large-eddy simulations has enabled high-fidelity analysis of these complex flows. However, these simulations are often computationally expensive, which poses challenges regarding their application to conceptual design or rapid stability and control assessments. As an alternative to mesh-based CFD approaches, the viscous vortex particle method (VVPM) has been used within the rotorcraft community to capture important characteristics of the wake structure. For example, Alvarez and Ning [17] demonstrated the application of VVPM to capture multirotor aerodynamic interactions with applications to eVTOL design. The existing literature describing the effects of angular rate on multirotor stability and control characteristics using experimental data is limited. Baris et al. reported static and dynamic wind tunnel results of a small UAS (sUAS) quadcopter [18], including PIV and performance measurements [19, 20]. Static wind tunnel measurements showed nonlinear body-axis pitching moment trends at positive angles of attack (nose up relative to the flow) and were attributed to changes in aft rotor performance. Dynamic testing was completed for a range of oscillation frequencies and body-axis pitching moment hysteresis loops were presented with nonlinear characteristics and advance ratio dependencies [20]. A nonlinear body-axis pitching moment trend was also observed in static wind tunnel testing of an octocopter [21] and several quadcopter configurations [22,23]. This trend warrants further investigation of the individual propulsor performance to understand how interaction effects impact the total vehicle body-axis moments and stability characteristics. While the preceding studies have investigated propulsive aerodynamic interaction effects in experimental and simulated campaigns, there is still a gap in data resolution and a need to expand on conditions previously reported in the literature in terms of advance ratio, relative flow angle, and hub separation distance. In addition, a database of propulsor performance in dynamic conditions would be useful to improve the understanding of multirotor dynamic stability characteristics for control system design and serve as a dataset to advance aerodynamic prediction tools. This research seeks to enhance the database for understanding aerodynamic interactions to improve high-fidelity modeling capabilities.
+C. Objectives and Approach
+This paper presents an aerodynamic interaction study of a tandem propeller configuration using wind tunnel experiments. The primary objectives were to quantify the effect of aerodynamic interactions on propeller thrust and identify conditions where effects are most significant. A secondary objective was to obtain a preliminary dataset from dynamic test conditions to assess the impact of angular rate on thrust performance. Experiments utilizing static and forced oscillation techniques were conducted in the NASA Langley 12-Foot Low-Speed Tunnel. Individual propeller forces, moments, and electric power consumption were measured at different hub separation distances, advance ratios, and relative flow angles. A high resolution of force and moment data was targeted in conditions where the front propeller wake transitions below, into, and above the rear propeller disk to capture nonlinear trends. Flow visualization with smoke and high-speed cameras were used to qualitatively assess the wake skew angle of the front propeller and inflow properties entering the rear propeller disk. Dynamic testing was focused on angle of attack regions with significant aerodynamic interactions and included variations of advance ratio, oscillation frequency, and amplitude. This paper is organized as follows. Section II outlines the experimental setup including a description of the test rig, model installation, instrumentation, and test conditions. Section III presents static and dynamic test results including performance measurements and flow visualization. Section IV summarizes the key findings and outlines areas of future research.
+II. Experimental Setup A. Test Rig Description
+A test rig was designed to mount two propeller assemblies at arbitrary separation distances along a horizontal rail. Figure 1 shows an exploded view of a single propeller assembly. At the base, a rail adapter attaches to a six-inch vertical post to increase the height of the propeller disk plane and minimize interference between the propeller wake and the horizontal rail. A two-inch spacer block was machined to provide additional vertical clearance and connect the vertical post to the non-metric end of a six-axis strain gauge force balance. A fairing was designed to house the balance and fastens with two bolts to the front of the non-metric end. The fairing was 3D-printed using polylactic acid (PLA) material and has an oval cross-section that tapers at both ends. A routing hole was placed on the trailing side to pass motor power cables through and avoid exposure to the freestream air. The fairing was required to prevent abrupt flow separation and vortices that would result from flow passing over the sharp edges of the balance. In addition, it prevents flow from passing over the strain gauges which could cause inaccurate force and moment measurements. The motor and propeller are mounted at the top of the assembly to the metric end of the balance. The
+Downloaded by "Indian Institute of Technology, Bombay" on August 13, 2025 | http://arc.aiaa.org | DOI: 10.2514/6.2025-0664
+
+
+4
+propellers are 12 inches in diameter and have a 5.5-inch pitch. The propellers were manufactured by Advanced Precision Composites (APC) and are the 12x5.5 MR model. Specifications are provided in Table 1 and additional geometry information can be obtained from the manufacturer website**. The propeller assemblies can mount to a horizontal rail at hub separation distances (d) ranging from d = 2.1R to d = 5.8R. The vertical distance between the propeller disk plane and the horizontal rail (h) is h = 3.13R and was constant for all test cases. A rendering of the achievable separation distance is shown in Fig. 2, showing a separation distance of d = 2.1R in Fig. 2(a) and d = 5.8R in Fig. 2(b). The entire test rig mounts to a sting that can rotate to position the horizontal rail at a desired angle of attack (α), which is defined as the angle between the freestream velocity (V) and the propeller disk plane. The horizontal rail is parallel with each propeller disk plane. Figures 3(a), 3(b), and 3(c) show renderings of the test rig at a separation distance of d = 3.1R and at angles of attack of α = −60°, α = 0°, and α = 20°.
+** Information available online at https://www.apcprop.com/product/12x5-5mr/ [retrieved 25 November 2024] The use of trademarks or names of manufacturers in this report is for accurate reporting and does not constitute an official endorsement, either expressed or implied, of such products or manufacturers by the National Aeronautics and Space Administration.
+Fig. 1 Isolated propeller assembly.
+Table 1 Propeller parameters
+Parameter Specification
+Manufacturer APC
+Model 12x5.5 MR
+Number of blades 2
+Diameter 12 in
+Root chord 0.84 in
+Hub diameter 0.65 in
+Pitch 5.5 in
+(a) d = 2.1R (b) d = 5.8R
+Fig. 2 Side view rendering of tandem configuration at different hub separation distances (d) at α = 0°.
+(a) α = −60° (b) α = 0° (c) α = 20°
+Fig. 3 Side view rendering of tandem configuration at d = 3.1R at different angles of attack (α).
+Propeller hub
+Electric motor
+Fairing
+Hub adapter
+Strain gauge
+Motor adapter
+12x55 propeller
+Spacer block
+Vertical post
+Rail adapter
+h
+Rear
+Vd
+Front Rear
+Vd
+Front
+Rear
+Vd
+Front
+α
+V
+Front
+Rear
+α
+V
+Front
+Rear
+Downloaded by "Indian Institute of Technology, Bombay" on August 13, 2025 | http://arc.aiaa.org | DOI: 10.2514/6.2025-0664
+
+
+5
+B. Model Installation and Instrumentation
+The experiments were performed in the NASA Langley 12-Foot Low-Speed Tunnel. The test section is 15 feet in length and 12 feet in height and width with an octagonal cross section. This size is suitable to study many sUAS configurations and subscale eVTOL vehicles. The facility supports free-flight, static, and dynamic test techniques with a maximum operating freestream dynamic pressure (̅q) of approximately ̅q = 7 lbf/ft2. Figure 4 shows front and side views of the test rig mounted to a sting at α = 0° and d = 3.1R. The sting attaches to a forced oscillation system (FOS) and a C-strut. The FOS is driven by an electric motor equipped with encoders for position measurements. The FOS can be used in a static pitch-pause mode or in a dynamic mode with sinusoidal oscillations at a specified frequency and amplitude. In these experiments, the FOS was used to orient the test rig for static and dynamic testing. The front propeller rotates clockwise (CW), and the rear propeller rotates counterclockwise (CCW), as viewed from the top. The rear propeller assembly was also tested in an isolated configuration to better understand the effects of the horizontal rail and front propeller fairing on rear propeller performance. The isolated propeller assembly is shown mounted directly to the sting in Fig. 5 at α = −40° and α = 0°. Each propeller assembly was equipped with a strain gauge force balance for individual performance measurements. The force and moment measurements were sampled at 2500 Hz. The static and dynamic axial load ranges (direction of thrust) of the strain gauge balance are ±50 and ±25 lbf, respectively. The electric motor cables were routed through the fairing, along the sting, and outside of the test section where they connected to two electronic speed controllers (ESC) and a 30 Volt power supply. Each ESC connected to microcontrollers that enabled communication to the data acquisition system.
+(a) Front view at α = 0° and β = 0° (b) Side view at α = 0° and β = 0°
+Fig. 4 Test rig mounted in NASA Langley 12-Foot Low-Speed Tunnel at d = 3.1R. (Photo Credit: Lee Pollard, NASA Langley Research Center)
+(a) Side view of at α = −40° (b) Rear view at α = 0°
+Fig. 5 Isolated counterclockwise propeller in NASA Langley 12-Foot Low-Speed Tunnel. (Photo Credit: Lee Pollard, NASA Langley Research Center)
+FOS
+Sting Rail
+Front propeller Rear propeller
+C-strut
+Rail
+CW CCW V
+Front Rear
+FOS
+Sting Rail
+Front propeller Rear propeller
+C-strut
+Downloaded by "Indian Institute of Technology, Bombay" on August 13, 2025 | http://arc.aiaa.org | DOI: 10.2514/6.2025-0664
+
+
+6
+A requirement for these experiments was to maintain desired motor speeds at arbitrary aerodynamic blade loading conditions. To achieve this, a closed-loop control system was developed to regulate motor speeds using measurement feedback from each ESC. Motor rotational frequency (Ω) was estimated onboard the instrumentation from discrete pulses output from the ESCs during each electrical commutation. To develop a control system, a motor dynamics model G(s) was identified from bench test data. Programmed square-wave frequency sweep inputs were injected into each ESC to drive the motor speed to oscillate around 7500 RPM. A first-order transfer function with time delay was fit to this data to model the motor speed response to pulse width modulation (PWM) inputs, and a control system was designed based on this model. Figure 6 presents a block diagram of the control system structure. The input to the block diagram is a user-specified reference motor speed in revolutions per second (nref). The control system contains both forward path and feedback path elements. On the forward path, a second order low-pass filter F(s) shapes and smooths changes in the reference command between test points to avoid high dynamic loads from vibration. A static cubic function KF(n) computes the predicted steady state PWM required to achieve the reference motor speed. This function was identified from time-averaged steady state measurements of the PWM at various motor speeds, shown in Fig. 7. The forward path elements were tuned manually to smoothly track changes in the reference motor speed. On the feedback path, proportional and integral feedback gains (Kp and KI) regulate the error between the filtered reference motor speed and the measured motor speed (n). The feedback gains were designed to achieve gain and phase margins of 9 dB and 90 deg and to maximize the disturbance rejection bandwidth (DRB), which is defined as the -3 dB crossing frequency of the sensitivity function of the closed-loop system, shown in Fig. 8. The sensitivity function describes the motor speed response to output noise. Table 2 provides the controller gains and transfer functions for the plant model and command filter.
+Table 2 Control system parameters
+Parameter Value Units
+KP 4.2 μs/(rev/s)
+KI 7.2 μs/(rev/s)/s
+F(s) 72
+s2 + 2(7)(1)s + 72 -
+G(s) 12
+0.08s + 1 e−0.07s rev/s/μs
+Fig. 6 Block diagram of motor speed control system.
+Fig. 7 Steady state motor PWM versus n for windoff conditions at 30 Volts.
+Fig. 8 Magnitude plot of sensitivity function and DRB of the closed-loop system.
+nref
+KF
+KP G
+n
+KI/s
+F
+PWM
+FOS
+Sting Rail
+C-strut
+Downloaded by "Indian Institute of Technology, Bombay" on August 13, 2025 | http://arc.aiaa.org | DOI: 10.2514/6.2025-0664
+
+
+7
+C. Wind Tunnel Test Conditions 1. Static Testing
+The static test points were selected based on angle of attack (α), separation distance (d), and propeller advance ratio (J). The propeller advance ratio (J = V/(nD)) is a nondimensional parameter commonly used to characterize propeller aerodynamic performance. Table 3 lists the propeller rotational speed and freestream conditions of the wind tunnel test section for each advance ratio case under standard atmospheric temperature and pressure. It is important to note that conducting the test with multiple rotational speeds to achieve the desired advance ratio settings also causes variations in the propeller blade Reynolds number and tip Mach number. The impact of propeller blade Reynolds number and tip Mach number effects is not examined in this paper and the following analysis assumes the magnitude of aerodynamic interaction effects are primarily due to changes in advance ratio, angle of attack, and separation distance. Angle of attack sweeps were performed at a specified hub separation distance and advance ratio. The test rig was aligned with the freestream velocity (i.e., no lateral offset in hub spacing). The front and rear motors rotated CW and CCW, respectively. Two angle of attack schedules (αsched) were used with each containing 20 steps:
+αsched1 = [-60,-45,-30, -20,-10, 0, 10, 15, 20, 25, 27.5, 30, 32.5 ,35, 37.5, 40, 42.5, 45, 47.5, 50] deg
+αsched2 = [-60,-50,-40, -30,-20, -15,-10, -5, 0, 5, 10, 15, 17.5, 20, 22.5, 25, 27.5, 30, 35, 40 ] deg
+The first angle of attack schedule (αsched1) was used for the lowest advance ratio case of J = 0.23, while the second angle of attack schedule (αsched2) was used for all other advance ratios. The primary difference between the schedules is the region of increased resolution and the maximum angle of attack. The finer-resolution portion of each schedule was designed to center around the point of maximum rear propeller thrust degradation. For each angle of attack, the FOS positioned the test rig at the desired orientation. The test rig settled for three seconds before data was recorded for five seconds. The settling and record time were sufficient to allow the motor speed control system to reach the desired steady state response and avoid significant variations in the moving average of the strain gauge balance signal. The force and moment data was sampled at 2500 Hz, the motor rotational speed was sampled 100 Hz, and the motor current and voltage were sampled at 100 Hz. The selected force and moment sample rate was the highest available rate for the data acquisition system and was selected to allow for power spectral density (PSD) analysis at frequencies greater than the motor rotational speed. The motor speed control system was designed to operate at 100 Hz which determined the sample rate of the power measurements. The hub separation distances that were tested were:
+d=[2.1R, 2.6R, 3.1R, 3.7R, 4.7R, 5.8R]
+Table 3 Freestream and motor operation conditions under standard atmospheric conditions
+2. Dynamic Testing
+Forced oscillation testing was completed to assess the effects of angular rate on the front and rear propeller thrust characteristics. Forced oscillation testing is a wind tunnel test method in which a model is mounted to a dynamic test rig and oscillated about an axis of rotation [24]. This technique has been used to assess dynamic stability of spacecraft [25], transport aircraft [26], unmanned combat aircraft [27], and fighter airplanes [28], among others. All dynamic testing was completed with a separation distance of d = 3.1R. The propeller assemblies were evenly spaced relative to the point of rotation. Wind-off tares of 20-cycles were completed with the motors turned off. The wind-on runs of 30-cycles were completed with the motors running. The number of cycles was initially selected based on previous
+J n (rev/s) q (lbf/ft2)
+0.23 126 1
+0.33 126 2
+0.47 88 2
+0.58 88 3
+0.67 88 4
+0.75 88 5
+Downloaded by "Indian Institute of Technology, Bombay" on August 13, 2025 | http://arc.aiaa.org | DOI: 10.2514/6.2025-0664
+
+
+8
+forced oscillation studies described in [24] and was maintained throughout the test because there was good repeatability across each cycle of oscillation. Table 4 presents a summary of the dynamic test conditions.
+III. Results
+This section presents the thrust coefficient (CT = T/(ρn2D4)) measurements for the isolated propeller and tandem propeller configurations. The power consumption measurements and force and moment data from the other axes are not presented in this paper. Three phases of static testing were completed using a component build-up methodology. In phase one, the isolated propeller thrust coefficient (CTISO) was measured to provide a baseline dataset without the presence of the horizontal rail and a fairing located upstream (see Fig. 5). In phase two, the thrust coefficient of the rear propeller in the tandem configuration was measured with the front motor turned off. This term is referred to as CTRear ISO and contains interference effects from the front fairing and horizontal rail. In phase three, the front and rear motors operated at constant, equal rotational speeds. The measured coefficients from this phase are referred to as CTFront and CTRear. The following sub-sections present results and discussion from each phase of testing.
+A. Isolated Propeller
+Figure 9 shows the isolated propeller thrust coefficient (CTISO) versus angle of attack for J ε [0.23, 0.67]. The isolated propeller configuration was not tested at J = 0.75. The sensitivity of the thrust coefficient to angle of attack increases with advance ratio. For many multirotor vehicles, lower advance ratios correspond to hover and low-speed conditions, while higher advance ratios may correspond to forward flight or transition regions. The large variation in thrust coefficient in this data highlights the importance of modeling incidence angle and advance ratio effects in propulsion models used in multirotor flight dynamics simulations. These vehicles may encounter omnidirectional relative flow angles spanning hover, transition, forward flight, vertical climbs, and descents. For example, free-flight measurements of a quadcopter showed that the vehicle will trim with negative angles of attack in forward flight [29]. The vehicle may abruptly transition to a positive angle of attack during maneuvering, or trim at a positive angle of attack in a vertical descent during forward flight [30].
+Fig. 9 CTISO versus α for J ε [0.23, 0.67].
+J n (rev/s) f (Hz) Amplitude (deg) d
+0.47 88 0.6 20 3.1R
+0.47 88 0.8, 1.2 10 3.1R
+0.58 88 0.8, 1.2 10 3.1R
+0.75 88 0.8 10 3.1R
+Table 4 Forced oscillation test matrix
+Downloaded by "Indian Institute of Technology, Bombay" on August 13, 2025 | http://arc.aiaa.org | DOI: 10.2514/6.2025-0664
+
+
+9
+It is also useful to analyze the thrust coefficient in terms of the edgewise and axial flow components relative to the hub coordinate system, which is depicted in Fig. 10 with the axes xh, yh, and zh (superscript h denotes hub coordinate frame). The edgewise flow component is the magnitude of velocity entering the hub frame x-direction (vxh) and y
+direction (vyh) and is used to compute the rotor advance ratio (μ) as shown in Eqs. (1)-(3) [31]. The isolated and tandem configurations were positioned such that that vyh = 0 for all phases of testing. The normalized velocity in the zh direction (μz) is defined in Eq. (4) and represents the axial flow component entering the propeller disk plane.
+μx = vxh/(ΩR) (1)
+μy = vyh/(ΩR) (2)
+μ = √μx2 + μy2 (3)
+μz = vzh/(ΩR) (4)
+(a) Side view (b) Top view
+Fig. 10 Hub coordinate system.
+Figure 11 presents a surface plot of the isolated propeller thrust coefficient as a function of the nondimensional velocity components μx and μz. The thrust coefficient varies significantly with μz due to changes in magnitude and direction of axial flow entering the propeller disk. Axial flow directly impacts the local flow angle on the blades and the lift produced. The edgewise flow component also causes a change in the local blade angle of attack and an asymmetric nonuniform induced velocity distribution across the propeller disk [31]. The velocity components impact the characteristics of the wake, which consists of sheets of vorticity that roll up into tip vortices and are carried rearward by the freestream flow [32]. Increases in edgewise flow may cause an increase skew of the wake relative to the disk plane. The wake skew angle (χ = tan−1(μ/λ)), is depicted in Fig. 12 as the angle between the negative zh direction and the direction of the total velocity component at the disk center (vT) [33]. The inflow ratio (λ) is a function of the wake-induced velocity at the rotor disk center and may be approximated using Glauert’s momentum theory with an iterative approach, such as Newton-Raphson [34, 35].
+Fig. 11 CTISO versus μx and μz. Fig. 12 Definition of wake skew angle.
+xh
+α
+V
+zh
+V xh
+yh
+χ
+μ
+λ vT
+xh
+V
+zh
+Downloaded by "Indian Institute of Technology, Bombay" on August 13, 2025 | http://arc.aiaa.org | DOI: 10.2514/6.2025-0664
+
+
+10
+B. Test Rig Interference
+This section presents comparison of thrust measurements between the first and second phases of testing to assess the test rig interference effects on rear propeller performance. Figure 13 shows a comparison of CTISO and CTRear ISO for J = 0.47, J = 0.58, and J = 0.67. The bars for CTISO represent the maximum and minimum values between three repeat runs. The bars for CTRear ISO represent the maximum and minimum measurements for four runs in which the rear propeller assembly was placed at different locations along the horizontal rail at separation distances ranging from d = 2.1R to d = 4.7R relative to the front propeller assembly. There is good agreement between CTISO and CTRear ISO for αε[-60°,-10°]. This suggests that there are negligible test rig interference effects on the rear propeller performance in this angle of attack range, likely because the rear propeller disk is positioned well above the front fairing wake. Interference effects appear to be present in the angle of attack range of αε[-10°,40°], indicated by the decrease in CTRear ISO relative to CTISO. The thrust coefficients converge for the advance ratio cases of J = 0.58 and J = 0.67 at approximately α = 35°. The percent difference between CTISO and CTRear ISO is shown in Fig. 13(d) and is below 6.5% for all conditions presented. A comparison at J = 0.33 is not presented because the combination of rotor speed and freestream velocity were different between the isolated and tandem configuration datasets.
+(a) J = 0.47 (b) J = 0.58
+(c) J = 0.67 (d) Percent difference of CTISO and CTRear ISO
+Fig. 13 Comparison of rear propeller thrust coefficients between phase one and two of testing.
+Sting Rail
+Front propeller Rear propeller
+FOS
+Rail
+Front propeller Rear propeller
+FOS
+Sting
+FOS
+Sting
+Downloaded by "Indian Institute of Technology, Bombay" on August 13, 2025 | http://arc.aiaa.org | DOI: 10.2514/6.2025-0664
+
+
+11
+C. Tandem Configuration
+Comparisons of rear propeller thrust measurements between the second and third phases of testing (i.e., CTRear ISO and CTRear) were made to assess the influence of propeller-propeller aerodynamic interactions. The impact of angle of attack, advance ratio, and hub separation distance on rear propeller thrust variations are discussed in the following sub-sections.
+1. Angle of attack effects
+The extent of propeller-propeller aerodynamic interactions varies significantly with angle of attack. Figure 14(a) shows the thrust coefficient of the rear propeller assembly in the tandem and isolated configuration at an advance ratio of J = 0.47 and a hub separation distance of d = 3.1R. The relative thrust degradation at each condition is depicted in Fig. 14(b). An underlying assumption in this analysis is that propeller-propeller interactions are the primary cause of differences between CTRear and CTRear ISO. In practice, the velocity field produced by the front propeller may impact the test rig interference effect. As such, CTISO is also presented in Fig. 14. The comparison between CTRear and CTISO provides an estimated bound on the interference effects if the test rig interference were negligible due to the effect of the front propeller. The thrust coefficients CTRear and CTRear ISO match within 5% for angles of attack αε[-60°,-15°], suggesting minimal propeller-propeller aerodynamic interaction effects in this range. Thrust degradations of the rear propeller in the tandem configuration becomes significant as the angle of attack increases above α = -15°, producing approximately 30% less thrust relative to the isolated configurations. As α increases from 15 deg to 40 deg, CTRear gets progressively closer to CTRear ISO. The trend of CTRear/ CTRear ISO versus angle of attack is likely due to the relative vertical spacing between the front and rear propeller disk planes as the test rig changes angle of attack. At negative angles of attack (nose down relative to the flow), the rear propeller is above the front propeller, and avoids the majority of the front propeller wake. Whereas at positive angles of attack, the rear propeller is oriented beneath the front propeller and experiences altered inflow properties propagated from the front propeller wake.
+(a) CT vs α (b) Rear propeller thrust degradation
+Fig. 14 Rear propeller thrust coefficient for J = 0.47 at d = 3.1R.
+In addition to vertical spacing, the front propeller wake skew angle significantly influences the extent of interaction between the front propeller wake and rear propeller disk plane. Flow visualization experiments were conducted for the conditions presented in Fig. 14 to qualitatively assess the front propeller wake and its relation to the rear propeller disk plane. A smoke wand was positioned upstream of the test rig and projected smoke into the front propeller hub. A Phantom V1610 high-speed camera was used to record images at 1000 Hz for one-second at each angle of attack. Figure 15 presents images of the flow visualization for angles of attack in which the front propeller wake was observed to pass beneath, into, and above the rear propeller disk plane. In Fig. 15(a), the smoke depicts a portion of the front propeller wake and is shown to pass beneath the rear propeller disk plane. As the test rig increases in angle of attack, the rear propeller begins to enter the front propeller wake where it may experience adverse variations to its inflow properties. At α = 15° shown in Fig. 15(d), CTRear/ CTRear ISO = 0.74, indicating a 26% thrust degradation. At this
+FOS
+Sting
+Front propeller Rear propeller
+Rail
+Front propeller Rear propeller
+Downloaded by "Indian Institute of Technology, Bombay" on August 13, 2025 | http://arc.aiaa.org | DOI: 10.2514/6.2025-0664
+
+
+12
+condition, the rear propeller is positioned in the center of the smoke propagated from the front propeller. At α = 25°, the front propeller wake appears to begin to pass above the rear propeller disk plane, alleviating the adverse interaction effects. It is important to note that the smoke does not represent the entire flow field, and portions of the front propeller wake and flow around the test rig are not fully represented in these examples. These images, however, are useful to conceptualize aerodynamic interactions and gain physical understanding to the cause of rear propeller thrust variations. In addition, the flow visualization correlates well with the trend of the rear propeller thrust reductions, suggesting that the smoke is adequately representing the qualitative characteristics of the front propeller wake. Force and moment data was recorded in separate runs from the flow visualization experiments.
+(a) α = 0°, CTRear / CTRear ISO = 0.90 (b) α = 5°, CTRear/ CTRear ISO = 0.87
+(c) α = 10°, CTRear / CTRear ISO= 0.83 (d) α = 15°, CTRear / CTRear ISO = 0.74
+(e) α = 25°, CTRear / CTRear ISO= 0.80 (f) α = 35°, CTRear/ CTRear ISO = 0.91
+Fig. 15 Flow visualization for J = 0.47 and d = 3.1R.
+2. Advance ratio effects
+The propeller advance ratio directly impacts the wake skew angle and the onset of aerodynamic interactions between the front propeller wake and rear propeller disk plane. To demonstrate the effect of advance ratio on rear
+Downloaded by "Indian Institute of Technology, Bombay" on August 13, 2025 | http://arc.aiaa.org | DOI: 10.2514/6.2025-0664
+
+
+13
+propeller thrust degradations, a comparison of CTRear and CTRear ISO for three advance ratio cases at constant separation distance is shown in Fig. 16. The deviation between the thrust coefficients begins at approximately α = -15° for J = 0.75, whereas notable deviations do not occur until α = 30° for J = 0.23. The relative thrust degradations for all advance ratio cases at two separation distances are presented in Fig. 17, which shows that the minimum CTRear/CTRear ISO shifts to lower angles of attack as advance ratio increases. Figure 17 also shows that the magnitude of maximum degradation changes with advance ratio. In Fig. 17(a), the worst-case degradation is least significant at the lowest advance ratio case of J = 0.23, with 87% of isolated thrust performance, and is most significant at the middle advance ratio cases, J = 0.47 and J = 0.58, resulting in about 71% of isolated thrust performance.
+Fig. 16 CTRear ISO and CTRear versus α for different advance ratios at d = 3.1R.
+(a) d = 3.1R (b) d = 4.7R Fig. 17 CTRear/CTRear ISO versus α for different advance ratios.
+3. Hub separation effects
+Figure 18 presents the ratio of CTRear and CTRear ISO versus α at different hub separation distances. Each subplot corresponds to a specific advance ratio. Not all combinations of separation distance and advance ratio were completed, which is why certain cases are omitted from Fig. 18. The data in Fig. 18 shows that adverse interaction effects are generally alleviated as the hub separation distance increases, as both the magnitude of the thrust degradation and width of the angle of attack region with large thrust degradations decreases with separation distance. However, there are still significant rear propeller thrust degradations at the larger separation distances.
+FOS
+Sting Rail
+Front propeller Rear propeller
+Rail
+Front propeller Rear propeller
+Downloaded by "Indian Institute of Technology, Bombay" on August 13, 2025 | http://arc.aiaa.org | DOI: 10.2514/6.2025-0664
+
+
+14
+(a) J = 0.23 (b) J = 0.33
+(c) J = 0.47 (d) J = 0.58
+(e) J = 0.67 (f) J = 0.75
+Fig. 18 Effect of hub separation distance on rear propeller thrust degradation for each advance ratio.
+Downloaded by "Indian Institute of Technology, Bombay" on August 13, 2025 | http://arc.aiaa.org | DOI: 10.2514/6.2025-0664
+
+
+15
+Figures 18(c)-(e), show an approximately 20% decrease in rear propeller thrust performance relative to the isolated configuration at d = 5.8R. This is because the wake angle of the front propeller is steep enough to induce downwash on the rear propeller. The effects of advance ratio are also observed in Fig. 18. For example, the J = 0.23 case shown in Fig. 18(a) shows that CTRear/CTRear ISO > 0.95 until α = 30°, apart from the d = 2.1R configuration. At this advance ratio, the wake skew angle is likely not as high; therefore the front propeller wake does not enter the rear propeller disk plane until a much higher angle of attack. For the J = 0.33 case in Fig. 18(b), the minimum CTRear/CTRear ISO shifts to lower angles of attack as separation distance increases. This trend is not seen in the higher advance ratio cases.
+D. Forced Oscillation
+This section presents several examples of data from the forced oscillation testing. The tare with the motors turned off was subtracted from the corresponding wind-on dataset with the same oscillation frequency (f) and amplitude. The FOS position and thrust measurements were filtered using a 6th order lowpass Butterworth filter with a cutoff frequency equal to six times the oscillation frequency. The thrust measurements were grouped into bins for each cycle and nondimensionalized to compute CT with the mean motor speed measurements. Figure 19 presents examples of the dynamic data for oscillation frequencies of f = 0.8 Hz and f = 1.2 Hz at an advance ratio of J = 0.47. The front and rear thrust coefficients are plotted for each cycle of oscillation alongside the static measurements for the same freestream conditions. The thickness of the hysteresis loop indicates the magnitude of the damping effects, and the shape designates either linear or nonlinear characteristics [24]. For example, elliptical shaped loops designate linear behavior. The sign of the dynamic derivative is determined by assessing the direction of the hysteresis loop. The dynamic derivative is positive if the hysteresis loop follows a clockwise direction and is negative if it follows a counterclockwise direction [24]. The maximum and minimum angles of attack during the oscillation are the points with the highest angular acceleration, which can cause the ends of the hysteresis loops to deviate from the static data. A comparison of Fig. 19(a) and Fig. 19(b) shows the thickness of the hysteresis loops slightly increase with oscillation frequency at constant advance ratio. However, the dynamic data matches relatively closely with the static data in both cases, suggesting that the dynamic motion did not significantly vary the thrust performance for these conditions. The front propeller thrust coefficient primarily shows linear behavior across the entire angle of attack range, while the rear thrust coefficient contains nonlinear characteristics in the regions of thrust degradation. For example the shape of the front and rear thrust coefficient hysteresis loops vary significantly at α = 10°.
+(a) f = 0. 8 Hz (b) f = 1. 2 Hz
+Fig. 19 Hysteresis loops of thrust coefficient at an oscillation amplitude of 10 degrees, J = 0.47, d = 3.1R.
+Downloaded by "Indian Institute of Technology, Bombay" on August 13, 2025 | http://arc.aiaa.org | DOI: 10.2514/6.2025-0664
+
+
+16
+Figure 20 contains data for an oscillation frequency of f = 1.2 Hz at J = 0.58 and shows an oscillation loop of increased thickness at α = 30° for the front propeller. In addition, the hysteresis loop appears to change direction which indicates a change in sign of the dynamic derivative associated with that region, which is indicated by a crossing of the hysteresis loop. Computational data at this condition would be useful to improve the understanding of the abrupt change in damping effect, in particular an assessment of the local blade section velocities to determine if a portion of the propeller disk is experiencing stall. Figure 21 shows the largest oscillation amplitude case of 20 degrees at a frequency of f = 0.6 Hz. Forced oscillation at an amplitude of 20 degrees was not feasible at higher frequencies due to dynamic balance limits.
+Fig. 20 Dynamic data for f = 1. 2 Hz, J = 0.58, amplitude of 10 degrees, and d = 3.1R.
+Fig. 21 Dynamic data for f = 0.6 Hz, J = 0.47, amplitude of 20 degrees, and d = 3.1R.
+IV. Summary and Future Work
+Results from static and dynamic wind tunnel tests of a tandem propeller configuration were presented. The effects of angle of attack, advance ratio, and hub separation distance were investigated. Preliminary dynamic results were presented using a forced oscillation technique showing variations of the hysteresis loops for the front and rear thrust coefficients at different amplitudes, frequencies, advance ratios, and angle of attack. The results showed that the most significant rear propeller thrust degradations occurred at positive angles of attack near α = 15° (nose up relative to the flow) and advance ratios of J = 0.47 and J = 0.58. The advance ratio impacts the angle of attack region of interaction effects, and qualitative flow visualization results suggest it is correlated with the wake skew angle of the front propeller in relation to the rear propeller disk plane. As the advance ratio increases, the onset of the adverse interaction effects occurs at a lower angle of attack. Increasing the hub separation distance alleviates some of the adverse effects; however, significant performance degradations can still occur. Forced oscillation results showed that the front propeller exhibited reasonably linear behavior across the conditions tested, whereas the rear propeller exhibited dynamic nonlinearity in the region of significant thrust degradation. The static aerodynamic interaction effects are currently being incorporated into a lookup table to assess their impact on trim predictions using the quadcopter simulation from Ref. [22] for forward flight conditions. The assumption in this implementation is that the interaction effects only occur between the pair of front and rear propellers. Any interaction effects between adjacent propellers would be ignored, limiting this approach to forward flight with no crosswinds. In addition, comparisons of the static and dynamic data to existing aerodynamic prediction tools using the viscous vortex particle method are in progress. Other data reduction activities include assessment of the frequency content of the rear propeller thrust coefficient in regions of aerodynamic interaction, analysis of the offaxis hub moments and power consumption data, and parameter estimation of dynamic aerodynamic coefficients using
+Downloaded by "Indian Institute of Technology, Bombay" on August 13, 2025 | http://arc.aiaa.org | DOI: 10.2514/6.2025-0664
+
+
+17
+the forced oscillation dataset to assess dynamic stability characteristics. In addition, conditions were tested with variable lateral offset between front and rear propellers and data analysis is in progress.
+Acknowledgements
+This research was funded by the NASA System Wide Safety Project. The subproject leads involved with this research are Steve Young and Evan Dill. Tunnel operations support was provided by Earl Harris, Rick Thorpe, Steve Riddick, and Clinton Duncan. The primary test rig components were designed and fabricated by Ronald Busan. Media support was provided by Lee Pollard, Harlen Capen, and Ryan Hill. Sue Grafton coordinated fabrication of strain gauge balance cables. Data acquisition support was provided by Wes O’Neal. The motor cable and ESC connections were soldered by Mario Smith.
+References
+[1] Moore, A., Young, S., Altamirano, G., Ancel, E., Darafsheh, K., Dill, E., Foster, J., Quach, C., Mackenzie, A., Matt, J., Nguyen, T., Revolinsky, P., Smalling, K., Vasquez, S., Martin, L., Feldman, J., Gujral, V., Spirkovska, L., Hooey, B., Bradner K., Iverson, D., Wolfe, S., Oza, N., Condotta, R., Morris, C., Glover, J., Rymer, N., Turner, A., Walter, C., Portia, B., Corbetta, M., Kulkarni, C., Huang, J., Jones, J., Bonin, T., “Testing of Advanced Capabilities to Enable In-time Safety Management and Assurance for Future Flight Operations,” NASA TM-2023-0018665, April 2024.
+[2] Stokkermans, T., Usai, D., Sinnige, T., Veldhuis, L., “Aerodynamic Interaction Effects Between Propellers in Typical eVTOL Configurations,” Journal of Aircraft, Vol. 58, No. 4, 2021, pp. 815-833. https://doi.org/10.2514/1.C035814.
+[3] Zanotti, A., Velo A., Pepe, C., Savino, A., Grassi, D., Riccobene, L., “Aerodynamic Interaction Between Tandem Propellers in eVTOL Transition Flight Configurations,” Aerospace Science and Technology, Vol. 147, 2024. https://doi.org/10.1016/j.ast.2024.109017.
+[4] Cai, J., Gunasekaran, S., and Ol, M. V., "Vertically Offset Overlapping Propellers in Tandem Configuration," AIAA SciTech 2023 Forum, AIAA Paper 2023-2464, Jan. 2023. https://doi.org/10.2514/6.2023-2464.
+[5] Cai, J., Gunasekaran, S., and Ol, M. V., "Investigation of Positively Staggered Vertically Offset Propellers in Tandem,". AIAA SciTech 2024 Forum. AIAA Paper 2024-1510, Jan. 2024. https://doi.org/10.2514/6.2024-1510.
+[6] Atte, A. and Rauleder, J., “Investigation of Rotor Vertical Offset Effects on Quadrotor Performance,” Vertical Flight Society’s 80th Annual Forum & Technology Display, May 2024. https://doi.org/10.4050/F-0080-2024-1388.
+[7] Shukla, D., Komerath, N., “Multirotor Drone Aerodynamic Interaction Investigation,” Drones, Vol. 2, (4), 2018. https://doi.org/10.3390/drones2040043.
+[8] Russel, C., Conley, S., “The Multirotor Test Bed – A New NASA Test Capability for Advanced VTOL Rotorcraft Configurations,” Vertical Flight Society’s 76th Annual Forum & Technology Display, Oct. 2020. https://doi.org/10.4050/F0076-2020-16370.
+[9] Conley, S., Russel, C., Kallstrom, K., Koning, W., Romander, E., “Comparing RotCFD Predictions of the Multirotor Test Bed with Experimental Results,” Vertical Flight Society’s 76th Annual Forum & Technology Display, Oct. 2020. https://doi.org/10.4050/F-0076-2020-16485.
+[10] Shirazi, D., “Comparison of the CHARM Predictions of the Multirotor Test Bed with Wind Tunnel Experimental Results,” Vertical Flight Society Aeromechanics Advanced Vertical Flight Technical Meeting, Jan. 2022.
+[11] Healy, R., Misiorowski, M., and Gandhi, F., “A Systematic CFD-Based Examination of Rotor-Rotor Separation Effects on Interactional Aerodynamics for Large eVTOL Aircraft,” Vertical Flight Society’s 75th Annual Forum & Technology Display, May 2019. https://doi.org/10.4050/F-0075-2019-14498.
+[12] Healy, R., Gandhi, F., Mistry, M., “Computational Investigation of Multirotor Interactional Aerodynamics with Hub Lateral and Longitudinal Canting,” Journal of Aircraft, Vol. 60, No. 2, 2022, pp. 872-882. https://doi.org/10.2514/1.J060530.
+[13] Yoon, S., Diaz, P. V., Boyd, D. D. Jr, Chan, W. M., and Theodore, C. R., “Computational Aerodynamic Modeling of Small Quadcopter Vehicles,” 73rd Annual Forum of the American Helicopter Society, AHS Paper 73-2017-0015, 2017. https://doi.org/10.4050/F-0073-2017-11993.
+Downloaded by "Indian Institute of Technology, Bombay" on August 13, 2025 | http://arc.aiaa.org | DOI: 10.2514/6.2025-0664
+
+
+18
+[14] Ventura Diaz, P., and Yoon, S., “High-Fidelity Computational Aerodynamics of Multi-Rotor Unmanned Aerial Vehicles,” AIAA SciTech 2022 Forum. AIAA Paper 2018-1266, Jan. 2018. https://doi.org/10.2514/6.2018-1266.
+[15] Ventura Diaz, P., and Yoon, S., “High-Fidelity Simulations of a Quadrotor Vehicle for Urban Air Mobility,” AIAA SciTech 2022 Forum, AIAA Paper 2022-0152, Jan. 2022. https://doi.org/10.2514/6.2022-0152.
+[16] Perez, D., Ventura Diaz, P., and Yoon, S., “High-Fidelity Simulations of a Tiltwing Vehicle for Urban Air Mobility,” AIAA SciTech 2023 Forum, AIAA Paper 2023-2282, Jan. 2023. https://doi.org/10.2514/6.2023-2282.
+[17] Alvarez, E., Ning, A., “High-Fidelity Modeling of Multirotor Aerodynamic Interactions for Aircraft Design,” Journal of Aircraft, Vol. 58, No. 10, 2020, pp. 4385-4400. https://doi.org/10.2514/1.J059178.
+[18] Baris, E., Britcher, C., P., Altamirano, G., “Wind Tunnel Testing of Static and Dynamic Aerodynamic Characteristics of a Quadcopter,” AIAA AVIATION 2019 Forum, AIAA Paper 2019-2973, Jun. 2019. https://doi.org/10.2514/6.2019-2973.
+[19] Baris, E., Britcher, C., P., “Rotor Aerodynamic Interaction Effects on a Quadrotor,” AIAA AVIATION 2021 Forum (Virtual), AIAA Paper 2021-2576, Jun. 2021. https://doi.org/10.2514/6.2021-2576.
+[20] Baris, E., Britcher, C., P., “Flowfield Analysis of a Quadrotor in Forward and Maneuvering Flight Modes,” AIAA SciTech 2023 Forum, AIAA Paper 2023-2285, Jan. 2023. https://doi.org/10.2514/6.2023-2285.
+[21] Altamirano, G., Matt, J., Busan, R., Foster, J., “Wind Tunnel Testing of Static Aerodynamic and Power Consumption Characteristics of an Octocopter”, AIAA AVIATION 2023 Forum, AIAA Paper 2023-3967, Jun. 2023. https://doi.org/10.2514/6.2023-3967.
+[22] Foster, J., and Hartman, H., “High-Fidelity Multirotor Unmanned Aircraft System Simulation Development for Trajectory Prediction Under Off-Nominal Flight Dynamics,” AIAA AVIATION 2017 Forum, AIAA Paper 2017-3271, Jun. 2017. https://doi.org/10.2514/6.2017-3271.
+[23] Russel, C., Jung, J., Willink, G., Glasner, B., “Wind Tunnel Hover Performance Test Results for Multicopter UAS Vehicles,” American Helicopter Society’s 72nd Annual Forum, May 2016. https://doi.org/10.4050/F-0072-2016-11580.
+[24] Vicroy, D. D., “A Guide to Forced Oscillation Data Processing and Analysis” NASA TP-2021-0023569, Jun. 2023.
+[25] Owens, D. Bruce, and Vanessa Aubuchon. "Overview of Orion crew module and launch abort vehicle dynamic stability," 29th AIAA Applied Aerodynamics Conference, AIAA Paper 2011-3504, Jun. 2011. https://doi.org/10.2514/6.2011-3504.
+[26] Foster, John, Kevin Cunningham, Charles Fremaux, Gautam Shah, Eric Stewart, Robert Rivers, James Wilborn, and William Gato. "Dynamics modeling and simulation of large transport airplanes in upset conditions," AIAA Guidance, Navigation, and Control Conference and Exhibit, AIAA Paper 2005-5933, Aug. 2005. https://doi.org/10.2514/6.2005-5933.
+[27] Vicroy, Dan D., Thomas D. Loeser, and Andreas Schütte. 2012. "Static and Forced-Oscillation Tests of a Generic Unmanned Combat Air Vehicle." Journal of Aircraft, Vol. 49, No. 6, 2012, pp. 1558-1583. https://doi.org/10.2514/1.C031501.
+[28] Brandon, Jay, and John Foster. "Recent dynamic measurements and considerations for aerodynamic modeling of fighter airplane configurations." 23rd Atmospheric Flight Mechanics Conference, AIAA Paper 98-4447, Aug. 2012. https://doi.org/10.2514/6.1998-4447.
+[29] Foster, J., Miller, L., Busan, R., Langston, S., Hartman, D., “Recent NASA Wind Tunnel Free-Flight Testing of a Multirotor Unmanned Aircraft System,” AIAA SciTech 2020 Forum, AIAA Paper 2020-1504, Jan. 2020. https://doi.org/10.2514/6.20201504.
+[30] Hartman, D., “Identification of Hazardous Flight Conditions to Establish a Safe Flight Envelope for Autonomous Multirotor Aircraft,” AIAA SciTech 2019 Forum, AIAA Paper 2019-1292, Jan. 2019. doi: 10.2514/6.2019-1292.
+[31] Johnson, W., “Rotorcraft Aeromechanics,” Cambridge University Press, New York, 2013. https://doi.org/10.1017/CBO978 1139235655.
+[32] Ghee, T., Berry, J., Zori, L., Elliott, J., “Wake Geometry Measurements and Analytical Calculations on a Small-Scale Rotor Model,” NASA TP-3584, Aug. 1996.
+Downloaded by "Indian Institute of Technology, Bombay" on August 13, 2025 | http://arc.aiaa.org | DOI: 10.2514/6.2025-0664
+
+
+19
+[33] Chen, R., “A Survey of Nonuniform Inflow Models for Rotorcraft Flight Dynamics and Control Applications,” NASA TM102219, Nov. 1989.
+[34] Glauert, H., “A General Theory of the Autogryo,” R&M, No. 1111, British A.R.C., 1926.
+[35] Johnson, W., “NASA Design and Analysis of Rotorcraft,” NASA TP-2022-0000355, Jan. 2022.
+Downloaded by "Indian Institute of Technology, Bombay" on August 13, 2025 | http://arc.aiaa.org | DOI: 10.2514/6.2025-0664

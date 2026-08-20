@@ -1,0 +1,45 @@
+Rotary Wing Aerodynamics
+(AE 667)
+
+
+Types of Rotor
+Simulation Tools
+2
+
+
+Finite Volume Method type
+oMesh based Navier Stokes CFD.
+oRotating and Static fluid domains
+https://www.researchgate.net/publication/331851708_Comparison_of_Actuator_Line_Method_and_Full_Rotor_Geometry_Simulations_of_the_Wake_Field_of_a_Tidal_Stream_Turbine
+
+
+Vortex Method Type
+oLifting Line/Surface with Free Wake Method
+
+
+Vortex Method In-house Code Development (Sharookh)
+V= 0 m/s
+V= 20 m/s
+
+
+Vortex Method In-house Code Development (Sharookh)
+
+
+Viscous Vortex Particle Method
+
+
+Hybrid Type - 1
+oN-S Zone
+oPotential Zone
+oLagrangian Wake
+N-S zone
+FPE zone Lagrangean Wake
+
+
+Hybrid Type - 2
+oRotor blades modeled as momentum sources
+oN-S in wake
+
+
+Reflections...
+https://forms.gle/7Fi8rZYJprUxHeVc6

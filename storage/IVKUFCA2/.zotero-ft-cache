@@ -1,0 +1,1669 @@
+'-~
+_FOUNDATIONS
+OF AERODYNAMICS
+Bases of Aerodynamic Design
+FIFTH EDITION
+
+
+FOUNDATIONS OF AERODYNAMICS
+Bases of Aerodynamic Design
+FIFTH EDITION
+Arnold M. Kuethe Department of Aerospace Engineering University of Michigan
+Chuen-Yen Chow Department of Aerospace Engineering Sciences University of Colorado at Boulder
+John Wiley & Sons, Inc. New York • Chichester • Weinheim • Brisbane· Singapore· Toronto
+
+
+ACQUISITIONS EDITOR Regina Brooks MARKETING MANAGER Karen Allman PRODUCTION EDITOR Ken Santor ILLUSTRATION Gene Aiello
+This book was set in Times Roman by GGS Information Services.
+Recoginizing the importance of preserving what has been written, it is a policy of John Wiley & Sons, Inc. to have books of enduring value published in the United States printed on acid-free paper, and we exert our best efforts to that end.
+The paper on this book was manufactured by a mill whose forest management programs include sustained yield harvesting of its timberlands. Sustained yield harvesting principles ensure that the number of trees cut each year does not exceed the amount of new growth.
+Copyright © 1998, by John Wiley & Sons, Inc.
+All rights reserved. Published simultaneously in Canada.
+No part of this publication may be reproduced, stored in a retrieval system or transmitted in any form or by any means, electronic. mechanical, photocopying. recording, scanning or otherwise. except as permitted under Sections 107 or 108 of the 1976 United States Copyright Act. without either the prior written permission of the Publisher. or authorization through payment of the appropriate per-copy fee to the Copyright Clearance Center, 222 Rosewood Drive. Danvers. MA 01923. (508) 750-8400, fax (508) 750-4470. Requests to the Publisher for permission should be addressed to the Permissions Department. John Wiley & Sons, Inc., 60S Third Avenue. New York, NY IOIS8-0012, (212) 850-6011, fax (212) 850-6008. E-Mail: PERMREQ@WILEY.COM.
+Library of Congress CaIIIloging in Publication Dam: Kuethe, Arnold M. (Arnold Martin), 1905 Foundations of aerodynamics : bases of aerodynamic design I Arnold M. Kuethe. Chuen-Yen Chow. - 5th ed. p. cm. Includes bibliographical references and index. ISBN 0-471-12919-4 (cloth: alk, paper) I. Aerodynamics. 1. Chow, Chuen-Yen. 1932 II. Title. TLS70.K76 1998 629.132'3-dc21 98-15257 CIP
+10 9 8 7 6 5 4 3 2 I
+
+
+Preface
+Our objective in the preparation of this fifth edition of Foundations of Aerodynamics is the same as that for the first four editions: that is, to provide the material for an under standing of the concepts and a working knowledge of their applications consistent with the physics and mathematics background of junior/senior level engineering students. Courses in advanced calculus, mechanics, thermodynamics and computational methods should be co-requisites. A course in elementary fluid mechanics with laboratory experi ments would be very helpful. To help the student understand and visualize the physical concepts, An Album of Fluid Motion by Van Dyke [Parabolic Press, Stanford, CA, 1982] and Illustrated Experiments in Fluid Mechanics [MIT Press, Cambridge, MA, 1972] are highly recommended. The latter comprises descriptions and explanatory material on ex periments in many half-hour films (available from Encyclopedia Britannica Educational Corp.,425 N. Michigan Avenue, Chicago, IL 60611). In the fifth edition, vector manipulations are used more often than in previous editions. For easier access to the related formulas, a section on vector notation and vector algebra is added in Chapter 2. Added also in that chapter are the Eulerian and Lagrangian de scriptions of flow fields. The early part of Chapter 3 is reorganized by introducing first a general formulation for the acceleration vector of a fluid particle before the equation of motion is derived. Applications of Bernoulli's equation are delayed until various forms of Bernoulli's equation have been obtained. More illustrative examples and problems of practical interest are added in the present edition, with the inclusion of a new section on supersonic wind tunnels in Chapter 9. On the other hand, to keep the total pages about the same as before, the previous hydrosta tic analyses in Chapter I, the method of characteristics in Chapter 10, and Appendix C on prototypes in nature, have been eliminated. Simplified derivations and improvements appear throughout the text, with the addition of more recent references and the updated FORTRAN listings in the computer programs shown in Chapters 5 and 6. Navier-Stokes equations in cylindrical coordinates, which are needed in several problems, are added in Appendix B. The problems that were previously grouped near the end of the book are now placed at the end of their respective chapters for the convenience of the student. The authors gratefully acknowledge the advice and assistance of colleagues and others on the sources and interpretation of data and analyses. We especially would like to thank Professor Bram van Leer of the University of Michigan for supplying new problems in Chapters 4 and 6, Professor Allen Plotkin of San Diego State University for helpful dis cussions on the effect of the ground on airfoil lift, and Dr. Xiao-Yen Wang of the Uni
+v
+
+
+vi Preface
+versity of Colorado for valuable assistance in preparation of the manuscript. We are grate ful to the reviewers of the present edition who offered many useful comments and con structive suggestions. We express our special thanks to Patti Gassaway for her skillful editing and typing of the manuscript.
+Arnold M. Kuethe
+Chuen·Yen Chow
+
+
+Contents
+1
+Chapter 1 • The Fluid Medium
+1.1 Introduction I 1.2 Unit I 1.3 Properties of Gases at Rest 2 1.4 Fluid Statics: The Standard Atmosphere 4 1.5 Fluids in Motion 6 1.6 Analogy between Viscosity and Other Transport Properties 10 1.7 Force on a Body Moving through a Fluid 11 1.8 The Approximate Formulation of Flow Problems 13 1.9 Outline of Chapters That Follow 14
+Chapter 2 • Kinematics of a Flow Field 16
+2.1 Introduction: Fields 16 2.2 Vector Notation and Vector Algebra 17 2.3 Scalar Field, Directional Derivative, Gradient 22 2.4 Vector Field: Method of Description 27 2.5 Eulerian and Lagrangian Descriptions, Control Volume 30 2.6 Divergence of a Vector, Theorem of Gauss 32 2.7 Conservation of Mass and the Equation of Continuity 34 2.8 Stream Function in Two-Dimensional Incompressible Flow 37 2.9 The Shear Derivatives: Rotation and Strain 43 2.10 Circulation, Curl of a Vector 48 2.11 Irrotational Flow 50 2.12 Theorem of Stokes 51 2.13 Velocity Potential 53 2.14 Point Vortex, Vortex Filament, Law of Biot and Savart 57 2.15 Helmholtz's Vortex Theorems 59 2.16 Vortices in Viscous Fluids 61
+Chapter 3 • Dynamics of Flow Fields 68
+3.1 Introduction 68 3.2 Acceleration of a Fluid Particle 68 3.3 Euler's Equation 72
+vii
+
+
+viii Contents
+3.4 Bernoulli's Equation for Irrotational Flow 75 3.5 Bernoulli's Equation for Rotational Flow 77 3.6 Applications of Bernoulli's Equation in Incompressible Flows 79 3.7 The Momentum Theorem of Fluid Mechanics 81
+Chapter 4 • Irrotational Incompressible Flow About 1Wo-Dimensional Bodies 93
+4.1 Introduction 93 4.2 Governing Equations and Boundary Conditions 94 4.3 Superposition of Flows 96 4.4 Source in a Uniform Flow 96 4.5 Flow Pattern of a Source-Sink Pair: Doublet 99 4.6 Flow about a Circular Cylinder in a Uniform Stream 101 4.7 Circulatory Flow about a Cylinder in a Uniform Stream 102 4.8 Force on a Cylinder with Circulation in a Uniform Steady Flow: The Kutta-Joukowski Theorem 104 4.9 Bound Vortex 108 4.10 Kutta Condition 108 4.11 Numerical Solution of Flow Past Two-Dimensional Symmetric Bodies III 4.12 Aerodynamic Interference: Method of Images 115 4.13 The Method of Source Panels I 19
+Chapter 5 . Aerodynamic Characteristics of Airfoils 132
+5.1 Introduction 132 5.2 The Vortex Sheet 134 5.3 The Vortex Sheet in Thin-Airfoil Theory 136 5.4 Planar Wing 138 5.5 Properties of the Symmetrical Airfoil 138 5.6 Vorticity Distribution for the Cambered Airfoil 142 5.7 Properties of the Cambered Airfoil 144 5.8 The Flapped Airfoil 150 5.9 Numerical Solution of the Thin-Airfoil Problem 154 5.10 The Airfoil of Arbitrary Thickness and Camber 156 5.11 Summary 164
+Chapter 6 • The Finite Wing 169
+6.1 Introduction 169 6.2 Flow Fields around Finite Wings 169 6.3 Downwash and Induced Drag 172
+
+
+Contents ix
+6.4 The Fundamental Equations of Finite-Wing Theory 174 6.5 The Elliptical Lift Distribution 176 6.6 Comparison with Experiment 182 6.7 The Arbitrary Circulation Distribution 184 6.8 The Twisted Wing: Basic and Additional Lift 188 6.9 Approximate Calculations of Additional Lift 199 6.10 Winglets 200 6.11 Other Characteristics of a Finite Wing 202 6.12 Stability and Trim of Wings 203 6.13 Higher Approximations 206 6.14 The Complete Airplane 207 6.15 Interference Effects 207 6.16 Concluding Remarks 210
+Chapter 7 • Introduction to Compressible Fluids 220
+7.1 Scope 220 7.2 Equation of Continuity: Stream Function 221 7.3 Irrotationality: Velocity Potential 222 7.4 Equation of Equilibrium: Bernoulli's Equation 222 7.5 Criterion for Superposition of Compressible Flows 223
+Chapter 8 • Energy Relations 225
+8.1 Introduction 225 8.2 Characteristics of an Ideal Gas: Equation of State 226 8.3 First Law of Thermodynamics 229 8.4 Steady Flow Energy Equation 232 8.5 Reversibility 237 8.6 Second Law of Thermodynamics 239 8.7 Bernoulli's Equation for Isentropic Compressible Flow 241 8.8 Static and Stagnation Values 242
+Chapter 9 • Some Applications of One-Dimensional
+Compressible Flow 246
+9.1 Introduction 246 9.2 Speed of Sound 246 9.3 Flow Relations in Terms of Mach Number 250 9.4 Measurement of Flight Speed (Subsonic) 252 9.5 Isentropic One-Dimensional Flow 252 9.6 The Laval Nozzle 255
+
+
+X Contents
+9.7 Supersonic Wind Tunnels 259 9.8 One-Dimensional Flow with Friction and Heat Addition 261 9.9 Heat Addition to a Constant-Area Duct 263
+Chapter 10 • Waves 270
+10.1 Establishment of a Flow Field 270 10.2 Mach Waves 271 10.3 Large Amplitude Waves 274 10.4 Prandtl-Meyer Flow 275 10.5 Finite Compression Waves 278 10.6 The Characteristic Ratios as Functions of Mach Number 283 10.7 Normal Shock Wave 286 10.8 Plane Oblique Shock Waves 287 10.9 Conical Oblique Shock Waves 289 10.10 Shocks in Channels 291 10.11 Reflection of Waves 294 10.12 Flow Boundary Interference in Transonic and Supersonic Wind Tunnels 297
+Chapter 11 • Linearized Compressible Flow 304
+11.1 Introduction 304 11.2 The Row Equation 305 11.3 Row Equation for Small Perturbations 306 11.4 Steady Supersonic Flows 308 11.5 Pressure Coefficient for Small Perturbations 310 11.6 Summary 311
+Chapter 12 • Airfoils in Compressible Flows 313
+12.1 Introduction 313 12.2 Boundary Conditions 313 12.3 Airfoils in Subsonic Flow: Prandtl-Glauert Transformation 315 12.4 Critical Mach Number 318 12.5 Airfoils in Transonic Flow 321 12.6 Airfoils in Supersonic Flow 324
+Chapter 13 . Wings and Wing-Body Combinations
+in Compressible Flow 332
+13.1 Introduction 332 13.2 Wings and Bodies in Compressible Flows: The Prandtl-GlauertGoethert Transformation 332
+
+
+Contents xi
+13.3 Influence of Sweepback 337 13.4 Design Rules for Wing-Fuselage Combinations 339 13.5 Concluding Remarks 354
+Chapter 14 · The Dynamics of Viscous Fluids 357
+14.1 Introduction 3S7 14.2 The No-Slip Condition 3S8 14.3 The Viscous Boundary Layer 3S8 14.4 Viscous Stresses 360 14.5 Boundary Layer Equation of Motion 361 14.6 Similarity in Incompressible Flows 362 14.7 Physical Interpretation of Reynolds Number 364
+Chapter 15 · Incompressible Laminar Flow in Tubes and Boundary Layers 367
+IS.1 Introduction 367 IS.2 Laminar Flow in a Tube 367 IS.3 Laminar Boundary Layer along a Flat Plate 369 IS.4 Effect of Pressure Gradient: Flow Separation 375 IS.S Similarity in Boundary Layer Flows 377 IS.6 The Karnuin Integral Relation 378 IS.7 Laminar Flow Separation 382
+Chapter 16 . Laminar Boundary Layer in Compressible Flow 390
+16.1 Introduction 390 16.2 Conservation of Energy in the Boundary Layer 391 16.3 Rotation and Entropy Gradient in the Boundary Layer 393 16.4 Similarity Considerations for Compressible Boundary Layers 394 16.5 Solutions of the Energy Equation for Prandtl Number Unity 39S 16.6 Temperature Recovery Factor 399 16.7 Heat Transfer versus Skin Friction 402 16.8 Velocity and Temperature Profiles and Skin Friction 40S 16.9 Effects of Pressure Gradient 407
+Chapter 17 . Flow Instabilities and Transition from
+Laminar to Turbulent Flow 413
+17.1 Introduction 413 17.2 Gross Effects 414
+
+
+xii Contents
+17.3 Reynolds Experiment 415 17.4 Tollmien-Schlichting Instability and Transition 416 17.5 Factors Affecting Instability and Transition 421 17.6 Natural Laminar Flow and Laminar Flow Control 432 17.7 Stratified Flows 433 17.8 Stability of Vortex Sheets 435 17.9 The Transition Phenomenon 435 17.10 Methods for Experimentally Detecting Transition 436 17.11 Flow around Spheres and Circular Cylinders 437 17.12 Concluding Remarks 441
+Chapter 18 • Turbulent Flows 443
+18.1 Introduction 443 18.2 Description of the Turbulent Field 443 18.3 Statistical Properties 446 18.4 The Conservation Equations 453 18.5 Laminar Sublayer 455 18.6 Fully Developed Flows in Tubes and Channels 457 18.7 Constant-Pressure Turbulent Boundary Layer 461 18.8 Turbulent Drag Reduction 468 18.9 Effects of Pressure Gradient 469 18.10 The Stratford Criterion for Turbulent Separation 472 19.11 Effects of Compressibility on Skin Friction 478 18.12 Reynolds Analogy: Heat Transfer and Temperature Recovery Factor 479 18.13 Free Turbulent Shear Flows 480
+Chapter 19 . Airfoil Design, Multiple Surfaces, Vortex Lift,
+Secondary Flows, Viscous Effects 486
+19.1 Introduction 486 19.2 Airfoil Design for High c'",,, 486 19.3 Multiple Lifting Surfaces 490 19.4 Circulation Control 493 19.5 Streamwise Vorticity 493 19.6 Secondary Flows 495 19.7 Vortex Lift: Strakes 498 19.8 Flow about Three-Dimensional Bodies 501 19.9 Unsteady Lift 504
+Appendix A • Dimensional Analysis 508
+
+
+Contents xiii
+Appendix B • Derivation of Navier-Stokes and the Energy and Vorticity Equations 513
+Tables 531
+I. Conversion Factors between SI and British Units 531 2. Properties of Air and Water 532 3. Properties of the Standard Atmosphere 533 4. Flow Parameters versus M for Subsonic Flow and y = 1.4 534
+5. Flow Parameters versus M for Supersonic Flow and y = 1.4 537
+6. Parameters for Shock Flow (y = 1.4) 546 7. Thermal Properties of Air 553
+Oblique Shock Chart 554
+References 555
+Index 563
+
+
+Chapter 1
+The Fluid Medium
+1.1 INTRODUCTION
+The objective of this book is to present the fluid flow concepts leading to the design of flow surfaces and passages with the goal of achieving optimum performance over the widest feasible range of the significant parameters in their respective fields of applica tion. A clear understanding of the fundamental concepts is necessary since. owing to math ematical complexities and often hypothetical physical premises, we are constantly deal ing with approximations to the actual problems we are attempting to solve. Therefore, many of the more difficult problems involve in their solution an intuitive approach that is facilitated by full comprehension of those concepts shown by experiment to be valid. This chapter deals with the properties of the fluid medium, which we define as a ma terial that is at relative rest only when all forces acting on it are in equilibrium. Although the concepts treated are of primary interest in aerospace engineering, applications in other fields are also mentioned. These applications are generally described through analogies and illustrative examples. The fluid properties we discuss here are the pressure, temperature, density, elasticity, and transport properties, especially viscosity-all related to the molecular structure of the fluid. Numerical data are given for both air and water. The chapter closes with brief de scriptions of some aspects of dimensional analysis and a discussion of the subdivisions of aerodynamics according to altitude and speed of flight.
+1.2 UNITS
+The SI (Systeme Internationale) system of units is used throughout this book. In this sys tem, the unit of force, the newton, is defined by the equation
+I newton (N) = I kilogram (kg) X I mls2
+The British system, in FPS units, is based on the definition of I pound as the unit of force given by
+I pound (Ib) = 1 slug X I ft/S2
+If the first equation above is multiplied by the acceleration of gravity, g ( = 9.807 m/s2), we see that a mass of I kg weighs 9.807 newtons in the "gravitational" MKS system. The
+1
+
+
+2 Chapter t The Fluid Medium
+gravitational system is commonly used in nontechnical fields. Similarly, in the British system (g = 32.174 ft/s2), we see that a mass of I slug weighs 32.174 lb. The only other fundamental unit we need is that of absolute temperature T, expressed in "degrees Rankine" in the British system, or in "degrees Kelvin" in the SI system. In terms of the Fahrenheit and "Celsius" (degrees Centigrade) scales, these units are defined by
+T (OR) = of + 460
+T (K) = °C + 273
+°C = (OF - 32)/1.8
+Conversion factors relating the British and SI factors are given in Table 1 at the end of the book and inside the front cover.
+1.3 PROPERTIES OF GASES AT REST
+A gas consists of a large number of molecules moving in a random fashion relati ve to one another. The "number density" of molecules is determined by Avogadro's law, which states that a gas contains 6.025 X 1026 molecules/kg-mole* (8.79 X 1027/slug-mole). For air under standard conditions (see Section 1.4), the number density is 2.7 X 1019 mole cules/cc (4.4 X 102°/in3). The ideal gas is one in which intermolecular forces are negli gible. Its bulk properties, which closely approximate those of real gases (except at very low and very high temperatures and densities), can be expressed in terms of its molecu lar properties: the mass m of the molecule, the average random speed c of the molecule, and the mean distance the molecule travels between collisions with other molecules, namely, the mean free path A.
+1. Density The density of matter is defined as the mass per unit volume-thus, the total mass of the molecules per unit volume. The dimensions of density are, then, force X (time)2/(lengtht; it is designated by p and has dimensions of kilograms per cubic meter (kg/m3) in SI units and slugs per cubic foot (slugs/ft3) in FPS units. Table 2 gives its vari ation with temperature for air at sea level pressure and for water; in Table 3, values of the density in SI units are given for the "standard atmosphere." 2. Pressure When molecules strike a surface they rebound and by Newton's second law, a force is exerted on the surface equal to the time rate of change of momentum of the rebounding molecules. That is, the force is equal to the sum of the changes in mo mentum experienced by all the molecules striking and rebounding from the surface per second. Pressure is defined as the force per unit area exerted on a surface immersed in the fluid and at rest relative to the fluid. It is expressed in newtons per square meter [N/m2 (pascals)] or pounds per square foot (lb/ft2). Experiment indicates that the collisions among molecules and with surfaces are elastic so that the mean change in momentum is a vec tor normal to the surface, regardless of the angle of incidence of the collision. Therefore, we conclude that fluid pressure acts normal to a surface.
+*One kg-mole is the number of kilograms of gas numerically equal to the atomic weight. Thus, I kg-mole of air has a mass of 28.97 kg. Avogadro's number has the same value for all gases.
+
+
+1-
+1.3 Properties of Gases at Rest 3
+In order to show that the fluid pressure is proportional to the kinetic energy of mole cules of the gas, we do the following. We compute the force exerted on the walls of a unit cube of gas (Fig. 1.1), and, since we wish to identify only the combination of gas properties that determine the pressure, we adopt the following simplified model of the molecular motion: All of the N (N is the number density) molecules in the unit cube are assumed to have identical masses m and identical speeds c. They are assumed to travel parallel to the coordinate axes, N/3 parallel to, and NI6 in the positive direction of, each axis. The (N/6)tu molecules in the thin layer shown in Fig. 1.1 will strike the right x face in time M = tJ.xlc. The collisions are assumed to be elastic so that the momentum of each molecule is changed by 2mc. Newton's second law then predicts that a force equal to the product of 2mc and the number of molecules striking the surface per second will be ex
+erted on the right face. The number striking per second will be (N/6)c and since Nm = p, the fluid density, the force acting on the right face (in fact, on each face) is given by the formula
+Nc pe2
+P = -·2mc = - (1.1)
+63
+The pressure p has the dimensions of force/area. Physically, Eq. (1.1) states that the pressure is proportional to the kinetic energy of the molecular motion. Since the pressure is equal on all faces, the cube is at rest relative to the surrounding fluid. That is, either the flow speed is zero or the cube is moving at the flow speed. Also, since the speed of the molecules varies, the pressure is actually proportional to the mean of the square of the speed rather than to the square of the mean speed (see Problem I, Section 1.3). This approximation, however, affects only the magnitude of the proportionality in Eq. (1.1). 3. Temperature According to the kinetic theory of gases, the absolute temperature is proportional to the mean translational kinetic energy of the molecules. It can be inter preted in terms of the equation of state for an ideal gas
+P =pRT (1.2)
+where T is the absolute temperature and R, the gas constant, has a specific value depending only on the composition of a gas. For air, R = 287 m2/s2 K. For systems in which the mass per unit volume remains constant, any process (e.g., the addition of heat) that in creases the kinetic energy of the random motion will increase the temperature and pres sure by proportional amounts.
+1-1-1
+--lAx-I-- Fig. 1.1. Model for interpretation of pressure.
+
+
+4 Chapter I The Fluid Medium
+4. Elasticity When a pressure is applied to a gas, its volume per unit mass changes. Elasticity is defined as the change in pressure per unit change in specific volume v.
+E = _-.!!L = p dp (1.3)
+dv/v dp
+in which tI = lip. It will be shown later that dp/dp is the square of the speed of sound through the medium. Therefore, the density and speed of sound define the elasticity.
+1.4 FLUID STATICS: THE STANDARD ATMOSPHERE
+In order to establish uniformity in the presentation of data, standard atmospheric condi tions have been adopted and are in general use. Commonly referred to as sea-level con ditions, these are
+p = 1.013 X 105 N/m2 or pascals (21 J6 Ib/ft2)
+P = 1.23 kg/mJ (0.002378 sJugs/ftJ)
+T = 273 + 1SOC = 288 K (5200 R)
+Under these standard conditions, the speed of sound a is 340 mls. The temperature, pressure, and density in the atmosphere vary with altitude; their mag nitudes up to 20 km above sea level are plotted in Fig. 1.2, and the properties extended to a much higher level are tabulated in Table 3 at the end of the book. The mean free path of the air molecules is also plotted in Fig. 1.2, up to an altitude of 250 km. We will now show that the variations of pressure and density shown in Fig. 1.2 are consistent with the measured temperature distribution under the hypothesis that no net
+20 250 II
+200
+15
+V-Eq. (1.6) lL
+150
+I
+I/
+\ 1\ 100
+50 /
+5 1\ ~
+~
+o0
+-60 -40 -20 0 200 5 10 0 0.5 l.0 l.5 10-8 10-4 10° 104 T (oG) p x 10-4 (N/m2) p (kg/m 3) A (m)
+Fig. 1.2. Variations of temperature, pressure, density, and mean free path with height in the stan dard atmosphere. The approximate relations (Eqs. 1.6, 1.7. and 1.8) are plotted as dashed lines.
+
+
+1.4 Fluid Statics: The Standard Atmosphere 5
+[p(z) + CZ AzlAxAy
+Ax
+Ay: / pgAxAyAz
+i r.....
+Az
+,f----- -/
+// . /
+I
+p(z)AxAy
+z
+~
+Fig. 1.3. Force balance on fluid element.
+force acts on any element of the fluid; the atmosphere is then in static equilibrium. Fig ure 1.3 shows a cube of fluid of volume axAyAz oriented with its base axAy at a height z above an arbitrary datum-for example, sea level. The pressures are equal on all verti
+cal faces of the cube, so the pressure P varies only with z. Under the assumed equilibrium
+conditions, the weight of the element pgaxAyAz, where p is the average density of the cube, is balanced by the difference between the pressure forces on the lower and upper faces.
+As the volume of the cube approaches zero, p~ p, the density at z, we obtain the equa tion of aerostatics
+dp = _ pg (1.4) dz
+We may take g as constant, but both p and p vary with z, as shown in Fig. 1.2. Then the pressure variation as expressed by the integral of Eq. 0.4) is
+p = Po - S; pg dz (1.5)
+where Po is the pressure at Z = o.
+If we use Eq. (1.2) and express p = p/RT, Eq. 0.4) becomes
+
+
+6 Chapter I The Fluid Medium
+dz
+-g RT
+We can derive an analytic expression for the pressure in the lower 10 km of the atmos phere by observing (Fig. 1.2) that over this interval the temperature decreases approxi mately linearly with height. Thus, we write
+(1.6)
+where To is the temperature at z = 0 (sea level) and 0' is the "temperature lapse rate"; its value is 6.50°Clkm in this region. Substitution into the above equation yields the differ ential equation
+dp p
+which integrates to
+g RO
+O'z J/
+p(z) = Po ( 1-]; 0.7)
+()
+and, for the density,
+-I+g/Ra
+p(z) = Po ( 1- ~z ) (1.8)
+in which Po and Po are the pressure and density, respectively, at z = O. Equations (1.7) and (1.8) are plotted in Fig. 1.2; we see that the calculated and measured values agree very well even up to the 20-km level.
+1.S FLUIDS IN MOTION
+Pressure
+When a fluid is in motion, the surface on which pressure is exerted is assumed to move with the fluid; to be definite when there is a chance for misinterpretation, the pressure given by Eq. (1.1) is termed the static pressure. In Chapter 3, we designate ~pV2, where V is the fluid speed, as the dynamic pressure; and the sum of the static and dynamic pres sures at a point, p+~pV2, as the stagnation pressure for incompressible flow. For exam ple, if a symmetrical body is held stationary with its axis along the direction of flow, the pressure exerted at the nose is the stagnation pressure.
+Viscosity
+The instantaneous velocity of a molecule in a fluid in motion is the vector sum V + c, where V is the fluid velocity and c is the instantaneous velocity of the molecule, mea
+
+
+1.5 Fluids in Motion 7
+Fig. 1.4. Flow in an annulus.
+sured by an instrument that moves with the fluid. Since the molecular velocity in the fluid at rest is random in magnitude and direction, its mean value is zero, so that the fluid ve locity at a given point is the mean vector sum of the velocities of the molecules passing that point. If the flow velocities are different on two layers aligned with the flow, the exchange of molecules between them tends to equalize their velocities; that is, the random molec ular motion effects a transfer of downstream momentum between them. The process of momentum transfer by the molecular motions is termed viscosity. The viscous force per unit area, termed the shearing stress. is defined as the rate at which the molecules ac complish the cross-stream transfer of downstream momentum per unit area. The stress is thus a force per unit area and is characterized by an equal and opposite reaction, in that positive momentum is transferred from the higher to the lower speed layer. and vice versa. A consequence of the existence of fluid viscosity is the "no-slip condition" at the solid surface, as illustrated in Fig. 1.4 for the flow between coaxial cylinders. one of which is rotating with angular velocity (d. The velocity distribution, designated schematically by the vectors, is established as a result of the random motions of the molecules with the no slip condition as a constraint at each surface; that is, the monomolecular layer adjacent to a surface has zero velocity relative to it. Molecules rebounding from the outer (station ary) surface will have zero averaged ordered velocity, whereas those rebounding from the inner (moving) surface will have an average ordered tangential velocity of magnitude wR. The mean free path between collisions, as shown in Fig. 1.2 for air, will, under the great majority of practical conditions, be much smaller than the gap dR, so that the molecules will, on average, carry their ordered velocities only a very short distance before they col lide with molecules of slightly different ordered velocities. The large number of collisions constitutes an effective mixing process, resulting in the continuous velocity distribution shown in Fig. 1.4. If the gap dR ~ R, a small segment of the flow will approximate flow between parallel planes in relative motion, as shown in Fig. 1.5. The lower plane will have a speed V = wR, and the transfer of momentum across the intervening space will tend to drag the upper plane to the right. For dR ~ R, experiment shows that the stress,
+Fig. 1.5. Shearing stress in a fluid.
+
+
+8 Chapter 1 The Fluid Medium
+T, exerted on the upper plane, varies directly as the relative speed Vand inversely as the distance between the planes. Thus,
+V
+T = pl,lR
+where IL is the coefficient of viscosity of the fluid. Returning momentarily to the coaxial
+flow of Fig. 1.4, we see that the torque on the outer cylinder will be 2rr(R + llR)2T per unit length. The above formula may be generalized by considering the shearing stress ex erted between the two adjacent layers of fluid, say, the layers immediately above and im mediately below the section AA in Fig. 1.5. In this example, the relative speed of the lay ers is an infinitesimal dV, and the distance between layers is also an infinitesimal ds. Then we may write
+dV
+T = p, (1.9)
+ds
+It is understood that the derivative in Eq. (1.9) is always in a direction perpendicular to the plane on which the shearing stress is being computed. When air is flowing with a ve locity u over a solid surface, the mixing by the random molecular motion results in the formation of a thin boundary layer, as identified by Ludwig Prandtl (1875-1953) and shown schematically in Fig. 1.6. Each infinitesimal section of the boundary layer can be visualized as two planes in relative motion, and so the shearing stress at any point is given by Eq. 0.9). At the surface, the shearing stress is given by
+T ... = p,(~u) (1.10)
+y y=o
+The velocity gradient du/dy is large at the surface and becomes substantially zero at y = 0, where 0 is defined as the thickness of the boundary layer. The coefficient of viscosity may be interpreted in terms of the molecular properties of a fluid by evaluating the shearing stress associated with it. The shearing stress exerted by the fluid below AA in Fig. 1.6 on that above AA is a retarding effect; it is equal to the rate of loss of momentum of the fluid above AA resulting from the exchange of molecules across unit area of the plane AA.
+u
+Fig. 1.6. Boundary layer.
+
+
+1.5 Fluids in Motion 9
+To calculate the shearing stress, we evaluate the rate of transport of ordered momen tum through unit area of AA by the random motion of the molecules. If our frame of ref erence moves with the fluid velocity at AA and we restrict our consideration to the im mediate vicinity of AA, we may postulate the linear velocity distribution shown in the blowup in Fig. 1.7. Thus, the velocities above AA are positive, and those below are neg ative. A molecule originating at Yt and moving downward through AA will carry with it a positive momentum m(duldy) YI- Similarly. a molecule moving upward through AA and originating at Y2 will carry with it a negative momentum m(duldy) Yz. Both these excur sions represent a transfer of ordered momentum across AA, and it is the sum of such losses that occur in unit time through unit area of AA that equals the shear stress T. As in the pressure calculation of Section 1.3, the random molecular motion is assumed to be split equally among the three coordinate directions. Then, if there are N molecules per unit volume, if their average speed is c, and if one-third of them have a motion per pendicular to AA, then Nc/3 molecules will pass through AA per unit time. Each of these molecules will carry with it a momentum corresponding to the position y at which it orig inates. The sum of these momenta is the shear stress. There is an effective height at which all the molecules could originate with the same resulting shear stress. If we call this height L, the shear stress becomes
+The product Nm is the density p; therefore,
+1 du
+T=-pcL- (1.11)
+3 dy
+A comparison of Eqs. (1.9) and (1.11) indicates that
+1
+IL = - peL
+3
+The effective height L is related to the mean free path A, and more accurate calculations show that
+Fig. 1.7. Kinetic interpretation of coefficient of viscosity.
+
+
+10 Chapter I The Fluid Medium
+JL = 0.49 peA (1.12)
+As the density of a gas decreases, the mean free path increases such that the product pA remains nearly constant. Then JL is proportional to c, which in turn is proportional to the square root of the absolute temperature. Thus, the coefficient of viscosity depends only on the temperature and is independent of the pressure. This deduction is a good first ap proximation for gases; deviations from experiment are discussed in Chapter 16.
+1.6 ANALOGY BETWEEN VISCOSITY AND OTHER TRANSPORT PROPERTIES
+The random molecular motion may transport properties of the gas other than the ordered momentum. For example, if a temperature gradient exists in a region, the random motion of the molecules will conduct heat in the direction of the gradient. In general, let Q be a property of the gas. Then, by an argument similar to that leading to Eq. (1.11), we can write
+d(QIA) = ~pcL d(QIM) dt 3 ds
+where d(QIA)/dt is the property transported through unit area each second, and QIM is the property per unit mass. From the above formula, it is clear that all properties of the fluid that are subject to transport by the random molecular motion have a time rate of transport that is related to the viscosity by the equation
+d(QIA) d(QIM)
+= JL (1.13)
+dt ds
+For the case of heat conduction, let QIM be the heat content of the gas per unit mass, which may be written in terms of the specific heat cp and temperature as'
+(1.14)
+From Fourier's law of heat conduction through a continuum, we have
+d(QIA) k dT (1.15)
+dt ds
+where dTlds is the temperature gradient and k is the thermal conductivity. k is the pro portionality constant that relates heat transfer to temperature gradient in the same manner that JL relates shearing stress to velocity gradient. Equation (1.15) is comparable to Eq.
+*The specific heats of a gas are defined in Chapter 8.
+
+
+1.7 Force on a Body Moving Through a Fluid 11
+(1.9), and Figs. 1.6 and 1.7 illustrate Fourier's law if the velocity distributions are con sidered to be temperature distributions instead. A comparison of Eqs. (1.13) and (1.15) leads to the result
+d(QIM) k dT Jl ds ds
+After using the value for QIM from Eq. (1.14) and considering cp to be constant, we ob tain the following relation:
+(1.16)
+The measured value of the viscosity coefficient of air at standard temperature 05°C) is 1.78 X 10-5 kg/(m s). Another parameter of importance in determining the flow characteristics is the kine
+matic viscosity JI = ,.up. Because the viscous forces are proportional to IL and the inertia forces are proportional to p, the kinematic viscosity may be interpreted as a measure of the relative importance of viscous and inertia forces. That is, for two flows in which the velocity patterns are identical, the viscosity plays a relatively greater role in the fluid that has the greater kinematic viscosity. Under standard conditions, the kinematic viscosity of
+air has a value of 1.44 x 10-5 m2/s. The variations of density, coefficient of viscosity, and kinematic viscosity with temperature for air and water are shown in Table 2.
+1.7 FORCE ON A BODY MOVING THROUGH A FLUID
+The force on a body arising from the motion of the body through a fluid depends on the properties of the body, the properties of the fluid, and the relative velocity between body and fluid. The size, shape, and orientation of the body are of consequence in determining the force arising from the relative motion. The fluid properties of importance are the den sity, viscosity, and elasticity-the last being determined by the density p and speed of sound a. For bodies of given shape, we may describe the size by specifying a characteristic di mension I. Then, for a body of given shape and orientation moving through a flow with speed V, the force experienced may be written in the functional form
+F = !(p, V, I, IL, a)
+or alternatively,
+g(F, p, V, I, IL, a) = 0 (1.17)
+Equation (1.17) states a relation among physical quantities, and therefore its form is partially dictated by the dimensions of the parameters involved. The method of dimen sional analysis' shows that Eq. (1.17) can always be written in the equivalent form
+*The method of dimensional analysis and its application to the present problem may be found in Appendix A.
+
+
+12 Chapter I The Fluid Medium
+F pVl V)
+1; ( pV2/ 2 '-;-'-; = 0
+where each of the three combinations of parameters is a dimensionless quantity. The above equation may be solved for the first dimensionless combination, and then we have the fundamental relation
+(1.18)
+To interpret Eq. (1.18), consider a body of a given shape and orientation in motion in a fluid such that the quantities F/(pV2/2), pVII/J-, and Via have certain definite values. Then, if a geometrically similar body with the same orientation is moved through the same or another fluid such that pVII/J-, and Via have the same values as for the first body, then F/(pV2[2) will also have the same value. Assume for the moment that /J- and a in Eq. (1.17) have no influence on the force F. Then an application of dimensional analysis will lead to the result
+1;(~J = 0
+pV /
+the solution of which is
+(1.19)
+where CF is a dimensionless constant. Equation (1.19) states that, for a body of given ori entation and shape in motion through a fluid, the force experienced is proportional to the kinetic energy of the relative motion per unit volume of the fluid pV2/2 and to a charac teristic area /2. For example. if the force on an airplane of given shape. orientation, and size is known at a given flight speed and altitude. the force on another airplane of a geo metrically similar shape at the same orientation and flying at a different speed and alti tude can be predicted from Eq. (1.19). This result was given by Isaac Newton (1642-1727). and the dimensionless constant CF is sometimes referred to as the Newtonian coefficient. CF is a dimensionless quantity that characterizes the force, and in the following chapters will be called the force coefficient. The force coefficient is of great importance in exper imental aerodynamics, for it makes possible the prediction of forces on full-scale airplanes at various altitudes and flight speeds from data obtained on models tested in wind tun nels. Newton's result (Eq. 1.19) is an approximation that is accurate only under specialized conditions to be described later. The viscosity and elasticity of the fluid are important in general, and Eq. 0.18) shows that the force coefficient is not a constant for a body of given shape and orientation. It is a function of the combinations pVII/J- and Via, which bear the names Reynolds number and Mach number. respectively, after Osborne Reynolds (1842-1912) and Ernst Mach (1838-1916), who investigated the effects of these para meters in flow problems.
+
+
+1.8 The Approximate Formulation of Flow Problems 13
+Dimensional analysis has shown that the force coefficient for a body of a given orien tation and shape is a function of the Reynolds number and the Mach number. The accu racy of this result depends entirely on the accuracy of the initially chosen parameters gov erning the force. If important properties of the flow are omitted from the initial choice of parameters, the method of dimensional analysis will not expose this fact. Possible ne glected properties that influence the force on the body could include surface roughness, turbulence of the stream, the presence of other bodies in the vicinity, heat transfer through the body surface, and so forth. In applying data from model tests to the full-scale airplane, these facts must be considered. Finally, if the geometries of the two flows are similar (geometric similarity), and if the Mach numbers are equal and the Reynolds numbers are equal, the flows are said to be dynamically similar. Dynamically similar flows have equal force coefficients. The Mach and Reynolds numbers are called similarity parameters.
+1.8 THE APPROXIMATE FORMULATION OF FLOW PROBLEMS
+Strictly speaking, a gas is a compressible, viscous, inhomogeneous substance, and the physical principles underlying its behavior are expressed in the form of nonlinear partial differential equations. Solutions of those equations are obtainable nowadays on high speed computers by means of numerical techniques, whose validities are to be checked by com parison with experiment. On the other hand, analytical methods are still applicable to many flow problems if various approximations are made to those equations. In order to render the problems of aerodynamics tackled in this book tractable, we con sider three different fluid flows, each of which provides a good approximation for airflow problems of particular types.
+1. Perfect fluid flow The fluid of this flow is homogeneous (not composed of dis crete particles), incompressible, and inviscid, corresponding to that of a flow at zero Mach number and infinite Reynolds number. The assumption of a perfect fluid gives good agree ment for flow experiments that are outside the boundary layer and wake of well-stream lined bodies moving with velocities of less than -400 kmlhr (Ill mls), at altitudes under -30 km. The scale effect is neglected for problems treated by perfect-fluid theory, and the force coefficient given by Eq. (1.19) is constant. 2. Compressible, inviscid fluid flow This flow differs from the perfect fluid flow in that the compressibility, characterized by the finite speed of sound, is taken into account (nonzero Mach number, infinite Reynolds number). It provides a good approximation for problems involving the flow outside the boundary layer and wake of bodies at high Reynolds numbers at altitude below -30 km. 3. Compressible, viscous fluid flow This flow differs from that described under (2) in that the viscosity is taken into account (nonzero Mach number, finite Reynolds num ber). Although it is not feasible to treat the entire flow around a body, that part of the flow within the boundary layer and wake is amenable to accurate analysis, provided the flow is laminar; turbulent flow has so far yielded only to semiempirical analyses. The agreement of the analyses with experiment is good for all speeds at altitudes below -30 km. At altitudes above -60 km, the mean free path of the molecules will generally not be small compared with a significant dimension of the body. Therefore, as the altitude in
+
+
+14 Chapter 1 The Fluid Medium
+creases further, the characterization of air as a fluid becomes more and more approximate. Finally. at altitudes above approximately 150 km. the flow (if it can even be termed a flow) consists simply of the collision of the body with those molecules directly in its path.
+1.9 OUTLINE OF CHAPTERS THAT FOLLOW
+The objective as stated in Section 1.1 may, in view of the intervening discussion. be rephrased as follows: To provide a background of concepts of use in finding approximate solutions to problems involving the flow of a compressible. viscous. inhomogeneous gas. The approximations that may be made depend on the particular aspect of the flow being investigated. For instance, it has been abundantly demonstrated experimentally that the lift and moment acting on aircraft at flight speeds under -400 kmlhr (250 mph) are very slightly affected by compressibility and viscosity. Therefore. the first six chapters of this book are devoted to a study of the flow of a perfect fluid and to the application of per fect-fluid theory to the prediction of the lifting characteristics of wings. Chapters 7 to 13 will deal with the compressible inviscid fluid and its application to the flow through channels and about wings. Both subsonic and supersonic flow problems are formulated, and the basic differences between the two regimes are discussed in phys ical terms. In some cases, exact solutions of the equations are given; in others. useful ap proximations that neglect the nonlinear terms are introduced. The effects of viscosity on the flow of incompressible and compressible fluids are ad dressed in Chapters 14 through 19. Here we are concerned with the flow in boundary lay ers and in tubes. The main objectives are to understand the approximations that have been made, and to analyze the problems of viscous drag and flow separation. Two appendices, tables. and a bibliography appear at the end of the book. In Appen dix A. a brief treatment of dimensional analysis is given. The equations of motion and energy for a viscous, compressible fluid are given in Appendix B, and the reduction to the boundary layer equations is illustrated there.
+PROBLEMS
+Section 1.3
+1. Assume that of the NI6 molecules moving toward. and normal to, a surface, n/6 mol
+ecules have the speed C I , ni6 have the speed C2, and so on, where nl + n2 + ... = N. Show that the pressure exerted on the surface is
+1"2
+p = -pv
+3
+where
+is called the mean square molecular speed.
+
+
+Problems 15
+Section 1.4
+1. Show that for an isothermal atmosphere, the pressure distribution is described by
+P = Po exp( - gvRT)
+2. In an isentropic atmosphere, the relationship between pressure and density is governed
+by
+where 'Y is the ratio of the specific heat of air at constant pressure to that of air at con stant volume. Show that the pressure distribution in such an atmosphere is described by
+OY/(OY-I)
+( 'Y-IPo
+P = Po 1----gzJ
+'Y Po
+Section 1.7
+1. For F = 500 lb, V = 100 mph, and 1= 3 ft, show that the Reynolds number and force coefficient (Eqs. 1.18 and 1.19) have the same values in FPS and SI units. Calculate for both air and water under standard conditions. Tables 1 and 2 give conversion fac tors and numerical values.
+
+
+Chapter 2
+Kinematics of
+a Flow Field
+2.1 INTRODUCTION: FIELDS
+In this and the following chapter, we develop equations that describe the properties of in compressible, inviscid flows in regard to (l) field properties, that is, the velocity, pres sure, temperature, and the like at any point in space; and (2) particle properties, that is, the variations of those properties experienced by a fluid element as it moves along its path in the flow. In Chapter 2, we restrict ourselves to the kinematic properties, those that fol low from the indestructibility of matter. The dynamic properties, those that follow from the application of Newton's laws to the individual (tagged) fluid elements, are discussed in Chapter 3. The dynamics and thermodynamic properties of compressible viscous and inviscid flows are reserved for later chapters. The term field denotes a region throughout which a given quantity is a function both of time and of the coordinates within the region. Examples are pressure, density, and tem perature fields, within which these properties can be represented as functions of Carte sian coordinates x, y, z, and time t. These are scalar fields, in that the magnitude of the quantity at any point at a given instant of time is represented completely by a single num ber. Vector fields (such as velocity, momentum, or force fields), on the other hand, each require, at every point, three numbers for their complete description; that is, the vector field results from the superposition of three scalar fields. The empirical laws on which fluid dynamics are based are applicable to fluid elements of fixed identity-that is, to small regions that still comprise an inordinately large num ber of tagged molecules. As any given element moves through a flow field along a path determined by the force field, the principle of conservation of mass states that its mass remains constant. This indestructibility of matter is thus a particle property. Other con servation laws, such as momentum and energy (taken up later), also apply to particle prop erties. Then, the application of these conservation laws to the particle properties defines a flow field in which each fluid element moves in conformity with these laws. In most problems, rather than solve for the particle properties, it is more convenient to derive the field properties, that is, the flow properties as functions of the spatial coordi nates at any given instant. When the conservation laws are applied, we show that the par ticle properties so derived determine the field properties.
+16
+
+
+X
+2.2 Vector Notation and Vector Algebra 17
+Flows are classified according to their dependence on time and spatial coordinates. If the properties of a flow vary with spatial coordinates but not with time, the flow is steady or stationary; if not, the flow is unsteady. On the other hand, if the properties vary in all three directions in space, the flow is called a three-dimensional flow. An example of steady, three-dimensional flow is the flow about a wing of finite span to be studied in Chapter 6. When a wing of identical cross sections is placed across a wind tunnel with the wing tips flush with the tunnel side walls, the flow around the wing does not vary along the span and thus becomes a two-dimensional flow field, which is the subject mat ter thoroughly analyzed in Chapter 5. The plane sound wave described in Section 9.2 is an example of one-dimensional flow fields, in which the fluid properties vary only in the direction of wave propagation.
+2.2 VECTOR NOTATION AND VECTOR ALGEBRA
+The analyses shown in this book are often expressed more conveniently in vector form. Vectors in a three-dimensional space are constructed using three mutually perpendicular unit vectors. In Canesian coordinates, the unit vectors are i, j, and k, having unit length along the positive x, y, and z axes, respectively. In terms of these unit vectors, the posi tion vector R of point P shown in Fig. 2.1 is
+R=xi+yj+zk (2.1)
+Here, vectors are drawn as arrows and printed in boldface type. Similarly, if the fluid par ticle at point P has a velocity V, it is expressed in vector notation as
+V=ui+vj+wk (2.2)
+wk z
+k
+~~------~----~----~y
+"I
+"" zk l /
+"" I /
+• " I/
+Xl " I /
+-----------~y/j
+Fig. 2.1. Vectors in Cartesian coordinates.
+
+
+18 Chapter 2 Kinemal.ics of a Flow Field
+where u, v, and ware the velocity components in the x, y, and z directions, respectively: they are each scalar functions of x, y, Z and t, in general. The magnitude of the velocity vector V, being a scalar quantity called the speed V, is computed as the length of the vector:
+(2.3)
+Alternatively, the location of point P may be represented by r, 0, z in cyclindrical co ordinates. with its radial and angular coordinates rand (} measured in the xy plane as shown in Fig. 2.2. With the z coordinate remaining the same in both coordinate systems, the transformations between cylindrical and Cartesian coordinates deduced directly from Fig. 2.2 are
+r = ~x 2 + .v2 ., () (2.4)
+and
+x = r cos (); y = r sin () (2.5)
+Three unit vectors are defined at point P, of which e, is in the outward radial direction; ell is in the direction of increasing () and is thus tangent to the circle of radius r with its center on the z axis: and ez is in the direction of increasing z. As the angular position of P changes, the orientations of er and ell will both vary accordingly, whereas that of ez will not be affected. Based on these unit vectors, the velocity V at point P is constructed:
+z
+---- V
+Fig. 2.2. Vectors in cylindrical coordinates.
+x
+
+
+2.2 Vector Notation and Vector Algebra 19
+whose magnitude is, similar to that shown in Eq. (2.3),
+(2.7)
+where Un UII' and Uz are, respectively, the radial, circumferential, and axial velocity com ponents. For problems in which flow properties do not vary with z, the cylindrical coordinate system is simplified to a two-dimensional system consisting of polar coordinates rand () only. Between two vectors A and B expressed in any coordinate system, there are two prod uct manipulations besides addition and subtraction. One of them is called the dot. or scalar. product. which is defined as a scalar given by
+A • B = [AI !B[cos cf> (2.8)
+where cf> is the angle between the two vectors. To be interpreted geometrically through Fig. 2.3, A • B is equal to either the projection of A onto B multiplied by the length of B; or the projection of B onto A multiplied by the length of A. The value of the dot prod uct of A and B remains unchanged if the order of A and B is reversed; that is, A . B = B • A. For 90° < cf> < 270°, the dot product becomes negative, indicating that the pro jection of one vector is in the direction opposite to that of the other vector. Furthermore, the relation A • B = 0 is required for the perpendicular of two nonvanishing vectors A and B. Letting A and B in Eq. (2.8) be one of the three unit vectors in Cartesian coodinates, we obtain
+i·i=j·j=k·k=l (2.9)
+and
+i·j=i·k=j·k=O (2.10)
+Fig. 2.3. Dot product of A and B.
+
+
+20 Chapter 2 Kinematics of a Flow Field
+By the use of Eqs. (2.9) and (2.10), the dot product of A = A,i + AJ + A:k and B = B)
++ BJ + B:k is
+A . B = A,B, + A,B, + Afl: (2.11)
+Similarly. the magnitude of vector A is obtained by replacing B with A in Eq. (2.8) to give
+(2.12)
+whose equivalents are shown in Eqs. (2.3) and (2.7). Expressions analogous to Eqs. (2.9) through (2.12) can be derived for other coordinate systems. The second product manipulation. called the cross, or vector: product, is defined as a vector C given by
+C = A x B = jAi :B: sin cf> e-L (2.13)
+where e.L is the unit vector nonnal to the plane containing both A and B. whose direction is detennined by the motion of a right-hand screw when A is rotated toward B through an angle cf> (see Fig. 2.4). The magnitude of C represents the area S of a parallelogram
+with sides Aand B. whose value is equal to the product of base length IAI and height
+IB[ sin cf> as shown in Fig. 2.4. Based on the definition of Eq. (2.13). the cross product of A and B changes sign if their
+order is reversed. that is, B x A = - A X B. For parallel vectors A and B. A X B = 0
+and, in particular, A X A = O. The following relationships are deduced from Eq. (2.13) in Cartesian coordinates:
+ixi=jXj=kXk=O (2.14)
+and
+C=AxB
+B
+A
+Fig. 2.4. Cross product of A and B.
+
+
+2.2 Vector Notation and Vector Algebra 21
+i X j = k = -j X i
+j X k = i = -k X j (2.15)
+k X i = j = -i X k
+For any two vectors A and B in Cartesian coordinates, the cross product can be expressed in the form of a determinant and its expression is obtained by an appropriate expansion:
+j k (Ay Bz - AzBy) i
+AxB = Ax Ay Az = +{Az Bx -AxBJj (2.16) B
+t By Bz +(Ax By - AyBx}k
+In cylindrical coordinates, Eqs. (2.14) and (2.15) are still valid ifi,j. and k are replaced with and en e9• and ez' respectively, so that the cross product has the form
+er e8 ez (~Bz-AzB8)er
+AxB = Ar ~ Az = +{Az Br -ArBz)e8 (2.17)
+Br B8 B, +(ArB8-~Br)ez
+At this point, it is appropriate to introduce the vector differential operator del, denoted by V, which is defined in Cartesian coordinates as
+d. d.
+V dk
+== - I + - J + (2.18)
+dx dy dz
+When V operates on a scalar field Q(x, y, z), the resultant vector expression is called the gradient of Q and is sometimes written as grad Q:
+grad Q = VQ = dQ i + dQ j + dQ k (2.19)
+dx dy dz
+V may operate on a vector field, say, the velocity vector V(x, y, z), in two different ways. The result of a dot product is a scalar quantity called the divergence of V:
+. du dv dw
+dlV V = V' V = - + - + - (2.20)
+dx dy dz
+whereas that of a cross product is a vector called the curl of V:
+curl V = VxV
+=(ow _ ov) i + (OU _ dW) j + (dV _ dU) k (2.21)
+dy dz dz dx dx dy
+
+
+22 Chapter 2 Kinematics of a Flow Field
+which is obtained following the expansion procedure described in Eq. (2.16), with the el ements in the second row of the determinant replaced by the three components of the op erator V. Note that unlike the dot product of two vectors shown in Eq. (2.11), the order of the operator V and the operant V in the dot product shown in Eq. (2.20) cannot be reversed, since
+dd d
+V·V u-+v-+w- (2.22)
+dx dy dz
+represents a scalar differential operator whose meaning is completely different from that of V . V. Expressions for gradient, divergence, and curl in cylindrical coordinates are quite dif ferent from those in Cartesian coordinates; they are shown or derived in later sections of this chapter.
+2.3 SCALAR FIELD, DIRECTIONAL DERIVATIVE, GRADIENT
+In the previous section, a scalar field was defined as one in which a property, such as temperature, pressure, and the like, at a given point in space at a given instant is repre sented completely by a single number. We will abbreviate the analyses by postulating that the field is steady. Then the property Q is defined in Cartesian coordinates by
+Q = Q(x, y, z)
+We thus describe scalars as single-valued functions of position. They and their deriva tives are also generally continuous so that a Taylor expansion can be used to relate mag nitude QB at a neighboring point B in terms of QA' the value at a given point A. Thus,
+Let B _ A. Then (QB - QA) - dQ, (xB - xA) - dx, and so on, and in the limit the terms multiplying the higher derivatives vanish and the equation becomes
+dQ dQ dQ
+dQ = -dx+-dy+-dz
+dx dy dz (2.23)
+The equation may be expressed alternatively in vector notation as
+dQ = VQ' ds (2.24)
+in which VQ is the gradient vector already defined in Eq. (2.19), and
+
+
+2.3 Scalar Field, Directional Derivative, Gradient 23
+•
+Q(x, y, z)
+Q(x + dx, y + dy, Z + dz)
+=Q(x, y, z) + dQ
+VQ
+Fig. 2.5. Change of Q due to displacement.
+ds=dxi+dyj+dzk (2.25)
+is the displacement vector shown in Fig. 2.5. The physical meaning of Eq. (2.23) can be interpreted as follows: (JQlox, oQloy, and oQloz are the partial derivatives evaluated at a given point (x, y, z), which represent in creases of Q per unit distance in the x, y, and z directions, respectively. When moving away from the point (x, y, z) with infinitesimal displacements (dx, dy, dz), the increment in Q due to the change of position in the x direction is (oQI(Jx) dx and, similarly, those in
+the y and z directions are (iJQI(Jy) dy and (iJQliJz) dz, respectively. Thus, the total incre ment dQ at the new position is the sum of the three individual contributions, which is fur ther expressed in a more compact form of Eq. (2.24) in vector notation. Equation (2.23) can now be extended to define the directional derivative, that is, the rate of change of Q with respect to the distance in a specified direction. For geometrical simplicity, the problem is reduced to two dimensions, as illustrated in Fig. 2.6. Let ds be
+y
+~------------------------_x Fig. 2.6. Directional derivative; isolines and gradient lines.
+
+
+24 Chapter 2 Kinematics of a Flow Field
+the magnitude of ds, then
+dQ ()Q dx ()Q dv
+-=--+--'-
+ds ax ds ay ds
+in which the geometrical derivatives are, with a being the angle between ds and the x
+axis,
+dx dv .
+- == cosa; -'--- = SIO a
+ds ds
+so that
+dQ dQ dQ .
+- cosO' + - sma (2.26)
+ds ax ay
+This relationship can also be derived by dividing Eq. (2.24) by ds:
+-dQ = VQ·e (2.27)
+ds ..
+where e.. = ds/ds = cos a i + sin a j is the unit vector in the direction of ds. dQ/ds is de fined as the directional derivative of Q in the direction of e,.
+To demonstrate the use of the preceding analysis, we consider a two-dimensional field
+and compute its directional derivative at the point (I, I) in the direction of the straight line y - x = O. The slope of the straight line is dy/dx = 1 = tan a, so that a = 45° and the unit vector in that direction is
+At (l, 1), VQ = 2xi + 3yj = 2i + 3j. Substitution of these two vectors into Eq. (2.27) yields
+dQ 2 3 5
+---+-
+ds - -/2 -fi - -fi
+
+
+2.3 Scalar Field, Diredional Derivative, Gradient 2S
+For a two-dimensional scalar field Q, VQ at a given point (x. y) is a vector pointing in a known direction as shown in Fig. 2.6. The directional derivative of Q at that point in the direction of ds that makes an angle e/> with VQ is
+dQ = IVQI cose/> (2.28)
+ds
+which is obtained by expressing the right-hand side of Eq. (2.27) according to the defin ition of dot product shown in Eq. (2.8). Equation (2.28) indicates that the directional de rivative varies with the direction of ds relative to the direction of VQ. In particular, when e/> = 90°, ds 1. VQ and dQ = 0; in other words, the value of Q will remain unchanged in this particular direction. The curves on which Q assumes different constant values are called isolines. The slope of the isoline passing through (x. y) is thus determined from Eq. (2.26) by setting the left-hand side to zero:
+( dY ) _ iJQ/iJx (2.29)
+dx j iJQ/iJy
+in which the subscript i is used to denote isoline. In arriving at this form, we have real ized that the slope is equal to tan aj, where a j is the angle between the tangent ds; to the isoline and the x axis. The solid curves sketched in Fig. 2.6 are used to represent isolines.
+On the other hand, the value of dQ/ds is shown to become a maximum when e/> = 0 in Eq. (2.28). A physical interpretation of the gradient of Q is thus found as follows: VQ at a given point gives both the direction and magnitude of the maximum spatial rate of in
+crease of Q. which is a vector perpendicular to the isoline passing through that point.
+Curves that are everywhere in the direction of the greatest rate of change of Q are called gradient lines. Some gradient lines are shown in Fig. 2.6 as dashed curves. Orthogonal ity of the gradient line and isoline at (x. y) requires that their slopes are negative recip rocals, from which we obtain the slope of the gradient line by use of Eq. (2.29):
+( dY ) = iJQ/iJy (2.30)
+dx II iJQ/iJx
+With the right-hand side expressed as a known function of x and y, an integral of Eq. (2.30) will yield the general equation of gradient lines containing an arbitrary constant. We can see from Fig. 2.6 that the distribution of a scalar throughout a two-dimensional region is defined by a family of isolines or by an orthogonal family of gradient lines.
+The equations of the two orthogonal families of lines are related by Eqs. (2.29) and (2.30). For instance, assume that the scalar is distributed according to the equation
+Q=xy (A)
+
+
+26 Chapter 2 Kinematics of a Flow Field
+That is, the isolines are members of a family of rectangular hyperbolas asymptotic to the x and y axes, each one corresponding to a different value of Q. Then dQ/dx = y and dQ/dy = x so that, by Eq. (2.30), the slope of the gradient line is given by
+= dy = x
+dx y
+and the equation of the gradient line is the solution of the differential equation
+ydy-xdx=O
+which integrates to
+l - r == constant (8)
+This equation also represents a family of rectangular hyperbolas, orthogonal to those of Eq. (A), and asymptotic to axes at 45° to the x and y axes. If we were given instead the equation for the gradient lines, Eq. (B), we would differ entiate and take the negative reciprocal to find the differential equation
+x dy + y dx == 0
+for the isolines. The integral is Eq. (A). We show later that the hyperbolas of Eq. (A) trace the approximate paths of fluid elements in the immediate neighborhood of a "stag nation point," that is, for instance, the point on an airfoil where the incident flow divides (see Fig. 2.26).
+Consider a long heated wire along the z axis in a stagnant fluid and neglect gravity forces. Then convection currents would be absent and the temperature T would be constant on circular cylindrical surfaces. Conservation of energy requires that
+T = C = -r==C==
+r ~X2 + l
+where C == constant.
+Then aT/dX == - Cx/(r + l)3/2 and aTldy == - Cy/(x2 + l)312 and, by Eq. (2.30), the differential equation for the gradient lines is dy/y == dx/x, the solution of which is y == kx where k is a constant. The gradient lines are therefore radial lines through the origin, or thogonal to the circular isolines.
+It follows from Eqs. (2.29) and (2.30), and is evident in the two examples, that since the two families are orthogonal, their designations as isolines or gradient lines are inter
+
+
+2.4 Vector Field: Method of Description 27
+changeable. Thus, in Example 2.2, if Eq. (B) describes the isolines, Eq. (A) describes the
+gradient lines; in Example 2.3, if the lines y = kx are specified as isotherms, the gradient lines are concentric circles.
+2.4 VECTOR FIELD: METHOD OF DESCRIPTION
+There are several vector fields that appear frequently in the analysis of fluid flows, such as the fluid velocity and pressure gradient. The latter, being a vector designated as grad
+p or Vp, is obtained by replacing Q with the pressure pin Eq. (2.19):
+gradp = * i+ * j+ * k
+ax ()y ik
+The vector has the magnitude
+Its direction is determined in the same way shown in Fig. 2.1 from the projections of Vp on the three coordinate axes. In cylindrical coordinates, we may write
+in which the second term on the right side represents the increase of p per unit arc length on the circle shown in Fig. 2.2. The magnitude of this vector is
+Similarly, as already shown in Eq. (2.2), a velocity field having components u, v, and w is represented in vector notation by
+V=ui+vj+wk
+where u, v, and ware each scalar functions of x, y, z and time t. They are field proper ties; that is, they represent the velocity components of the field element passing through a given point (x. y. z) at a given instant of time. At a later instant, the element will have moved to a new position and its velocity will correspond to the field position it occupies at the later instant. The magnitude of the velocity vector is computed in the manner de scribed in Eq. (2.3). Rather than specifying the components as functions of spatial coordinates, a steady ve locity field is sometimes described by specifying its magnitude and direction as functions
+
+
+28 Chapter 2 Kinematks of a Flow Field
+Streamline y =y(x)
+Fig. 2.7. Tangent of velocity to streamline.
+of position with the introduction of streamlines. A streamline is defined as a path whose tangent at any point is aligned with the velocity vector at that point. A velocity field may then be described alternatively in terms of equations of the streamlines and the absolute value of the velocity. Frequently, something will be known about the streamlines and the magnitude of the velocity. For mathematical operations, however, the velocity components are needed as functions of spatial coordinates, and a conversion from the second method of representa tion to the first is necessary. In treating the two-dimensional case described in Fig. 2.7, the conversion is readily performed by remembering that vlu is the slope dy/dx of a stream
+line and the magnitude of the velocity vector is ""u" + If. These values provide two equa tions in two unknowns:
+dy v
+= IVI
+dx II
+from which u, v can be computed if dy/dx and V are given, and vice versa. These two methods of representing a velocity field are demonstrated in the following two examples.
+For a two-dimensional velocity field given by
+u = y, v =x
+the slope of the streamline passing through the point (x, y) is
+dy v x
+dx II y
+It can be written as
+xdx-ydy=O
+
+
+2.4 Vector Field: Method of Description 29
+whose integral yields the equation of streamlines:
+(A)
+It represents a family of hyperbolas by varying the value of the integration constant C and has the same form as that of the gradient lines described in Example 2.2. To find the equation of a particular steamline passing through the point (2. I), we first compute the value of C at that point, which is 3 from Eq. (A). Thus, the equation of that
+streamline is r - y2 = 3.
+Alternatively, assume it is known that the streamlines are circular and the magnitude of the velocity is constant on a given streamline. Then the equation of the streamline is
+x'- + I = constant
+and the magnitude of the velocity is
+From the first equation above,
+dv x v
+-- =--=
+dx y u
+and from the second,
+Substituting - x/y for vlu and solving for u, we obtain
+where x2 + I = r. Similarly,
+v = _ xt{x2 +l) = _ xf{r)
+~X2 +l r
+The signs on U and v must be opposite in order to satisfy the condition vlu = -x/yo The sense of V, that is, the sign of f(r), determines the flow direction, as shown in Fig. 2.8
+for a positive f. The direction of the velocity vector is reversed if f is negative.
+
+
+30 Chapter 2 Kinematics of a Flow I'ield
+IU
+IIIII
+----~V
+Fig. 2.S. Velocity on a circular streamline for
+f> O.
+This solution becomes particularly concise in polar coordinates, where the velocity com ponents are, respectively, the radial and circumferential components u,. and Uti. Since the streamlines are circles, their equation is r = constant and therefore the radial velocity com ponent vanishes; it follows that the flow is defined completely by u,. = 0, UIJ = - fer). The Cartesian components given above are simply the components of UIJ in the x and y direc tions, as shown in Fig. 2.8.
+Each component of the velocity is a continuous single-valued function of the spatial coordinates. As in Eq. (2.23), the values of the components at any point can be expressed in terms of their values at a neighboring point and nine first-order derivatives. The properties of the flow field are thus determined by the values of nine derivatives throughout the field. These are
+ou/ox aU/a." au/o:
+OvIox av/ay ov/az.
+ow/ax aw/oy aw/az.
+It will be shown in the following sections that the nine derivatives are not generally in dependent; that is, the physics of the problems requires definite relations among some of the derivatives.
+2.5 EULERIAN AND LAGRANGIAN DESCRIPTIONS, CONTROL VOLUME
+As mentioned in Section 2.1, there are two different approaches commonly adopted for analyzing the dynamics of a fluid flow. The field description shown in Sections 2.3 and 2.4, in which fluid properties are described as functions of spatial coordinates and time, is the basis of the Eulerian approach for flow analysis. On the other hand, the Lagrangian approach is the alternative by which the analysis is made for a tagged fluid particle that is moving through the flow region. Thus for a given flow, the velocity field V(x, y, z, t)
+
+
+2.5 Eulerian and Lagrangian Descriptions, Control Volume 31
+in the Eulerian description becomes V(t) in the Lagrangian description; the latter repre sents the velocity of a selected fluid particle moving along its own particular path. on which the coordinates x, y, and z of the particle are given functions of time. Basic laws of fluid dynamics can be derived based on either the Eulerian or Lagrangian method of description. When the Eulerian approach is followed to derive the laws of conservation of mass, momentum, and energy, the analyses are performed by considering a group of fluid ma terial that is confined instantaneously within a region called the control volume. It is an imaginary volume of a properly selected shape, which is ordinarily fixed in space but may deform as required in some problems. The control volume is bounded by a control sur face, through which the fluid can move freely without friction or any other restrictions.
+In the flow region shown in Fig. 2.9, let Rbe a control volume fixed in space and Sbe its bounding control surface. Consider an infinitesimal surface area dS, at which the unit vector D normal to the surface and pointing away from the volume is known for a given
+shape of k If the local fluid velocity V makes an angle <p with D, it can be decomposed
+into a component V cos <p normal to the surface and a component V sin <p tangent to it. Since the volume of fluid flowing per unit time from the control volume, or the volume efflux dq, through dS is not affected by the tangential velocity component, it is computed
+as the product of the normal velocity component v" and the area, that is, V cos <p dS, which, after we invoke Eq. (2.8), is written as
+dq = V • D dS = Vn dS (2.31)
+At a surface point where V points away from the control volume, such as the point shown in Fig. 2.9, the sign of dq is positive, indicating that fluid is leaving the control volume through that surface element. On the contrary, a negative dq signifies that fluid is enter ing the control volume locally.
+Fig. 2.9. Control volume and control surface.
+
+
+32 Chapter 2 Kinematics of a Flow Field
+2.6 DIVERGENCE OF A VECTOR, THEOREM OF GAUSS
+The three derivatives on the diagonal extending from the upper left-hand corner to the lower right-hand corner of the matrix shown at the end of Section 2.4 have a property in common. Each represents the rate of change of a component of the velocity in the direc tion of that component. As defined in Eq. (2.20), the sum of these extension derivatives is called the divergence of the velocity and is written
+d· V du dv dw
+IV = - + - + - (2.32)
+dx dy dZ
+The divergence of the velocity vector can be interpreted physically as the efflux per unit volume from a point. To see this, consider the velocity vector V, which is a field
+property, let ai? be the small control volume shown in Fig. 2. 10, and let as be the con
+trol surface enclosing ak At any instant of time, a fluid particle in the control volume has the field velocity at the point it occupies at that instant. In Fig. 2.10, the control vol
+ume an. has been oriented for convenience with its edges parallel to the x, y, Z axes; the velocity components at its center are indicated by u, v, and w. To find the volume of fluid
+flowing per second. or the volume flux, through the control surface enclosing ak con tributions of the velocity components normal to each of the six faces of the control sur face have been indicated on the figure according to Eq. (2.31). For a negative dq, an in ward pointing arrow is drawn to denote an inflow. The magnitudes of the normal components have been derived from their values at the center of the control volume by the argument of Section 2.3. For example, the value of the x component of the velocity on an x face of the cube (i.e., on one of the faces normal to the x axis) differs from that at the center of the control volume by an increment (aulax)(axI2); it will be remembered from the discussion in Section 2.3 that this is an ex act statement when ax is vanishingly small. Consequently, for a control volume of infin itesimal proportions, the average value of the velocity component on the right-hand x face
+is u + (aulax)(axl2). Since the area of an x face is ayaz, the rate of volume flow out of
+iJu .lv
+(v + - ~)~xAz
+(1y 2
+au .l.x (Ju .:lx
+(u _.;:." ""2-- )Ay~z (u+ - ·-}.lyAz
+(IX (]X 2
+(v·" ~!: ~)'M_dz
+(lY 2
+Fig. 2.10. Volume effluxes through faces of a cubical control vol ume.
+
+
+2.6 Divergence of a Vector, Theorem of Gauss 33
+the right-hand x face is [It + (au/ax) llx/2] AyAz; that into the left-hand face is [u - (au/ax) llx/2] AyAz. Thus, the net outflow from the x faces is (au/ax) A.xAyAz per unit time. The efflux of fluid volume per unit control volume enclosing a point is, by definition,
+I. volume outflow/s - volume inflow/s
+1m A
+~k-+o AR
+With the aid of Fig. 2.10, the above expression becomes au/ax + dv/ay + aw/az for the net outflow per second from the three pairs of faces of the cube; this is precisely the de finition of div V given in Eq. (2.32). It is a scalar and its magnitude is the rate at which fluid volume is leaving a point per unit control volume. In a similar manner, the expression for divergence of a vector can be derived in other orthogonal coordinate systems. Figure 2.11 shows a control volume in cylindrical coor
+dinates, r, e, z. It can be shown (Problem 2.6.1) that
+d· V (Ju,. 1 ( (JU8 ) (Ju.
+IV = - + - u + - + - ' (2.33)
+(Jr r r (Je (Jz
+We return to the consideration of flow through a finite control volume for the purpose of deriving an important integral relation and thus gaining further insight into the mean
+z
+{u .. ~ Az}r.lOdr
+l iiz 2
+Fig. 2.11. Volume effluxes through faces of a polar control volume.
+
+
+34 Chapter 2 Kinematics of a Flow Field
+Fig. 2.12. Control volumes.
+ing of divergence. We consider a finite control volume R as shown in Fig. 2.12. The re
+gion Ris divided into elementary cubes and div V is found for each cube. The flux through common faces of adjacent cubes cancel because the inflow through one face is equal to the outflow through the other. Now. if we sum the fluxes for all cubes, only the flow rate through the faces of the surface enclosing the entire region will contribute to the sum mation. In the limit, therefore, as the cubes approach infinitesimal volume. the integral of
+div V over R is equal to the net flux through S, the surface enclosing R, that is,
+(2.34)
+This equation is a specialized form of an integral theorem applying to vector fields in general. It is useful in many fields of technology and is referred to as the divergellce the orem; it is generally attributed to Carl Friedrich Gauss (1777-1855). In the next section, we treat the conservation of matter applied to fluid flows. AlI the analyses by which we identified div V in the present section as the flux of volume at a point carry over to the flux of mass by substituting pV for V in Eq. (2.34).
+2.7 CONSERVATION OF MASS AND THE EQUATION OF CONTINUITY
+One of the empirical laws that forms the basis of "Newtonian mechanics" states that mass can neither be created nor destroyed. This conservation principle applies to fluid elements of fixed identity and, in order to express the principle in terms of field properties of a flow, we apply a physical reasoning foIlowing the Eulerian approach.
+Consider a control volume Rfixed in the field, as shown in Fig. 2.12. The total mass
+within Ris
+where p dR is the infinitesimal contribution of the mass at a given point to the total within
+the region k Through any incremental area dS of the control surface, the mass flow per
+unit time is pV . n dS, which is obtained by multiplying the volume efflux shown in Eq.
+
+
+2.7 Conservation of Mass and the Equation of Continuity 35
+(2.31) by the density. If more mass flows out of than into Rper unit time, the mass within
+R must be decreasing. Specifically, the net efflux of mass through Sis equal to the time
+rate ofdecrease within k The conservation of mass principle stated in terms of field prop erties is then
+(2.35)
+As a simple application of the above principle, consider the steady flow of a fluid through the shaded stream-tube shown in Fig. 2.12. The control volume is contained within the two neighboring streamlines and the dotted lines. There is no flux through the stream lines because they are everywhere tangent to the local fluid velocities, and it is assumed that PI and VI are average values across the area AI' and P2 and V2 are average values across A2• Because the flow is steady, the right-hand side of Eq. (2.35) is zero and the conservation of mass principle becomes
+The surface integral in Eq. (2.35) may be transformed into a volume integral by appli cation of the divergence theorem, Eq. (2.34):
+JJs pV·n dS = JJJi/ div pV dR
+Thus, Eq. (2.35) is written in the form
+(2.36)
+Equation (2.36) must hold for all control volumes regardless of size, and therefore the integrand must be identically zero. Then the equation of continuity, which is a statement of the conservation of mass principle in terms of field properties at a point, is obtained in the form of a partial differential equation
+ap +divpV = 0 (2.37)
+at
+This equation is satisfied in a physically possible flow, that is, a flow in which mass is conserved. When the flow is steady, the field properties are not functions of time, and continuity reduces to
+div pV = 0 (2.38)
+If the fluid is incompressible, p is a constant and continuity becomes, regardless of whether the flow is steady or unsteady,
+div V = 0 (2.39)
+
+
+36 Chapter 2 Kinematics of a Flow Field
+A given velocity field is physical/y possible only if continuity (as defined by the partic ular one of these equations appropriate to the tlow being considered) is satisfied. The most elementary example of a physically possible flow is one in which the fluid velocity is constant everywhere. There, regardless of the orientation of the x, y. Z axes, the separate terms in div V vanish identically, and the continuity is satisfied for uniform incompressible flow. Another example occurs in the incompressible flow in which the streamlines radiate from the origin; for simplicity, we assume that the radial velocity tI,. depends only on the distance r from the origin, and we determine its variation such that continuity is satisfied. For the two-dimensional problem, the formula for div V is given in Eq. (2.33), and
+since Uo = 0 everywhere, the condition for continuity, Eq. (2.39), becomes
+du,. + u,. = 0 (2.4.0)
+dr r
+and the solution is ru,. = k, that is,
+k
+u,. = r
+The constant k is evaluated by writing A = 27TrU,. = 27Tk for the rate of volume flow through the circle of radius r. Then k = Al27T and the two-dimensional flow radiating uni formly in all directions from the origin and satisfying continuity is described by
+A
+u = --' II = 0 (2.41)
+,. 27Tr' f/
+These equations describe a source flow of strength A. A > 0 for flow outward, and A <
+ofor flow inward; the latter is called a sink flow. A has dimensions of length2/time.
+The same result will be obtained by the use of Eq. (2.35) for a steady flow if we choose
+Ras the annular region shown in Fig. 2.13, bounded by circular cylinders of radii r. and
+"'ig. 2.13. Control surface for volume flux from a n source.
+
+
+2.8 Stream Function in Two·Dimensionallncomprl'ssible Flow 37
+r2, with r2 > rl' For flow outward, fluid volume enters unit length of cylinder rl at the
+rate 21TrIUr, and leaves unit length of cylinder r2 at the rate 21Tr2U,.,. The surface Sen
+closing Rcomprises the surfaces of the two cylinders and a connecting "corridor" of in finitesimal width, as indicated in Fig. 2.13. We arbitrarily choose the positive direction
+of integration so that the region R is always on the left. Then, since the outward drawn
+normal is positive, and V . n = -uri and +ur" respectively, on the inner and outer sur faces and V . n vanishes on the boundaries of the corridor. Then Eq. (2.35) becomes
+Since rl and r2 are arbitrary, we may let r2 approach rl' Then r2 = rl + tlr and ur, = uri
++ tlur , and the equation becomes
+As tlr and tlur both approach infinitesimal, we obtain Eq. (2.40), which integrates to Eqs. (2.41 ).
+We note that in the preceding analyses the region Rexcluded the origin. Now we take
+the region Ras including the origin and proceed to evaluate div V at r = 0, where Eqs. (2.41) indicate that Ur becomes infinite. To this end: Since div V vanishes everywhere ex cept at r = 0, the volume integral on the left-hand side of Eq. (2.34) becomes in the limit
+the product of div V and a volume tJ.R, which approaches zero as r ~ 0; therefore. since both integrals in the equation must be equal to the constant efflux represented by the right hand side of Eq. (2.34),
+A source flow is thus physically possible everywhere except at the center where div V is unbounded. We discuss separately these elementary flows, such as uniform flow, sources, sinks, and vortices (see Section 2.11), as a prelude to demonstrating that they are "building blocks" for more complicated flows. Later we show the methods by which the details of the flow around, and the fluid pressures acting on, a body of a given shape that is in mo tion through a fluid can be determined by adding the contributions from these building blocks, whose respective strengths are actually determined from the body shape. In the following sections, quantitative methods are developed for describing these flows to facilitate their application to practical problems.
+2.8 STREAM FUNCTION IN TWO-DIMENSIONAL INCOMPRESSIBLE FLOW
+As a consequence of the conservation of mass, it is possible to define uniquely a func tion of the field coordinates from which the velocity in both magnitude and direction is derivable for two-dimensional incompressible flow. In Fig. 2.14, let ab and cd represent
+
+
+38 Chapter 2 Kinematics of a Flow Field
+cd
+b
+Fig. 2.14. Streamlines and velocity in a stream tube.
+streamlines in a two-dimensional incompressible flow. * As defined in Section 2.4, a streamline is a curve whose tangent at every point coincides with the direction of the lo cal velocity vector. Therefore, no fluid can cross cd or abo Incompressible flow has been assumed, the density of the fluid within the boundary efgh does not vary with time. and, therefore. the same mass of fluid must cross ef per unit time as crosses hg, or any other path connecting the streamlines. If the streamline ab is arbitrarily chosen as a base. every
+other streamline in the field can be identified by assigning to it a number t/I. called the stream function; its magnitude is the volume of fluid passing per unit time between an arbitrary base streamline and the one passing through the given point. per unit distance
+normal to the plane of the motion. Isolines of t/I are the streamlines with the isoline t/I =
+ochosen as the base streamline. The fluid velocity can be derived from a stream function with the following consider ations. Let ds in Fig. 2.14 be the infinitesimal displacement vector going from the stream
+line t/I to a neighboring streamline t/I + dt/l, and V be the average velocity in the stream tube bounded by the two streamlines. According to the definition of stream function, the
+rate of volume flow through the tube is dt/l, which is computed as the product of lvi, and
+the area Idsi sin f/J of the tube normal to lvi, where f/J is the angle between V and ds as in dicated in Fig. 2.14:
+dt/l = ivllds] sin f/J = v X dSI
+The second equality is a result of Eq. (2.\3), the definition of the cross product.
+*Such a function can also be found in three dimensions for flows with axial symmetry. for example. the flow about a body of revolution (see Karamcheti. 1966). For a two-dimensional compressible flow. the stream func tion is derived in Section 7.2.
+
+
+2.8 Stream Function in Two-Dimensional Incompressible Flow 39
+Carrying out the product of V = ui + vj and ds = dxi + dyj in the manner described in Eq. (2.16), we have V x ds = k(u dy - v dx). Thus,
+dt/! = u dy - v dx
+Mathematically, we may also write, according to Eq. (2.23),
+Since these two equations are identical everywhere in the flow field, the coefficients of dx and dy must, respectively, be identical in the two equations. It therefore follows that
+at/!
+u = at/!; v = - - (2.42)
+ay ax
+From Eqs. (2.42), a general rule can be drawn: The velocity component V in any di rection is found by differentiating the stream function in the direction of n, which is a displacement vector at right angles to the left of that velocity component; that is,
+V = at/!
+an
+It follows from the above equation that the dimensions of t/! are length2/time. In polar coordinates, in which the counterclockwise direction is positive for 0, the ap plication of the above general rule gives
+I at/!
+U = - - ' (2.43)
+, r ao '
+The use of the stream function in describing a two-dimensional incompressible fluid flow becomes clear if we substitute Eqs. (2.42) or (2.43) for the terms in Eq. (2.32) or (2.33) for div V, to obtain
+divV = au + av = au, +'!'(u + auB ) = 0
+a x ay ar r ' ao
+We find that the continuity equation (2.39) is satisfied identically and therefore that con tinuity is identically satisfied by the "existence" of a stream function, that is, by the ex istence of an analytic expression t/! from which the velocity components can be found by partial differentiation according to the above rule. Introduction of the stream function simplifies the mathematical description of a two dimensional flow because the two velocity components can thereby be expressed in terms of the single variable t/!.
+
+
+40 Chapter 2 Kinematics of a Flow J'ield
+For a uniform flow, Eqs. (2.42) give
+u = = A; v = = B
+dy dx
+where A and B are given constants. Since the derivatives are partials with respect to y and x, respectively, we find two expressions for I/J by integrating the first equation, keeping x constant, and the second keeping y constant. Thus, with C1 and C2 being the integration constants,
+I/J = -Bx + g(v) + C2
+where j(x) is a function only of x and g(y) only of y; they are evaluated from the condi tion that the two equations must give identical expressions for I/J. This identity condition requires that j(x) = -Bx and g(y) = Ay. Thus, the stream function
+I/J = AY - Bx + C (A)
+describes a uniform flow with speed lv, = ..JA2 + B2, inclined at an angle tan-'(BIA) to the x axis. Although the integration constant C does not have any influence on the velocity field, its numerical value determines the constant I/J values on the individual streamlines in the flow. The value of C is usually determined from the requirement that the base streamline passes through a conveniently selected point. For example, if we require that the base streamline I/J = 0 goes through the origin where x = 0 and y = 0, then the value of C is
+zero as computed from Eq. (A). Thus for this particular case of C = O. the stream func tion is I/J = Ay - Bx, the equation of the base streamline is Ay - Bx = 0, the equation of the streamline on which I/J = I is Ay - Bx = I. etc.
+In the same way, by the integration of Eq. (2.43) for the source flow of Section 2.7 [ur == AJ27Tr, Uti == 0], we find
+I/J = 2~7Te
+for the stream function, in which the constant of integration has been set to zero so that
+the base streamline coincides with the straight line e = O. Differentiation according to Eqs. (2.43) yields the velocity components of Eq. (2.41):
+A
+U,. - - ufJ = 0
+27Tr'
+
+
+2.8 Stream Function in Two-Dimensional Incompressible Flow 41
+It follows that the existence of a stream function is a necessary condition for a physically possible two-dimensional incompressible flow, that is, one that satisfies mass conserva tion. Or, in other words, and as illustrated in the following example, a stream function cannot be found for any flow that does not satisfy the mass conservation principle.
+An assumed incompressible flow that does not satisfy continuity is described by the com ponents u = A, v = By, where A and B are constants. In accordance with Eqs. (2.42),
+a.p/ay = A and a.p/ax = -By. Thus, with integration constants ignored, we obtain
+.p = Ay + f(x) and .p = -Bxy + g(y)
+Since no choice of f(x) will reconcile these two expressions, we must conclude that the assumed flow cannot be described by a stream function as defined in Eqs. (2.42). In other words, a stream function does not exist for the assumed flow. Furthermore, it follows from
+. au av
+dlvV = -+- = B
+ax ay
+that the assumed flow would require the creation, at the rate of B cubic meters of fluid per cubic meter of the control volume at every point of the field. Thus, the assumed flow field is not physically possible and, as was shown above, it cannot be described by a stream function.
+Two different methods have been introduced for finding the equation of streamlines. The first method is the one described in Section 2.4 based on the tangency of fluid ve locity on the streamline, from which the slope of the streamline is obtained as a function of velocity components. The second method shown in the present section is based on the conservation of fluid mass between two streamlines through which fluid cannot cross. Since the volume flow rate .p of an incompressible fluid between a given streamline and the base streamline is required to be a constant, say, C, the equation of this streamline is
+obtained by looking for the curve on which .p = C. To demonstrate that the results from these two methods are equivalent, the problem that has been solved in Example 2.4 us ing the first method is reconsidered in the following example.
+With u = y and v = x, Eqs. (2.42) become
+a.p = y; -x
+ay ax
+
+
+42 Chapter 2 Kinematics of a Flow Field
+If we keep in mind that these are partial differential equations, their integrated forms are
+'" = ~ / + f (x) + k I and '" = - ~ x2 + g (y) + k 2' Reconciliation of the two expres
+sions gives
+in which the constant of integration disappears if the base streamline'" = 0 is required to pass through the origin. Since'" = 3/2 at the point (2, I), the equation of the streamline
+passing through that point is y2 - x2 = 3, which is in agreement with the result of Ex ample 2.4.
+A physical interpretation of the individual terms in the continuity equation for an in compressible flow can be made by considering a small two-dimensional fluid element ~dy at time t, as shown at the left of Fig. 2.15. If the vertical surface on the right side of the element moves with a horizontal velocity that is faster than that on the left side by
+an amount (au/ax) ~, at time t + dt the horizontal dimension of the element becomes
+~ + (au/ax) ~dt, as described at the right of Fig. 2.15. Thus, the time rate of elonga tion per unit length of the element in the x direction is au/ax. Similarly, if the surface on the top of the element moves with a vertical velocity faster than that on the bottom by
+(dufoy) dy, the vertical dimension of the element at t + At becomes ~y + (av/oy) ~y~t,
+so that du/a)' represents the time rate of elongation per unit length of the element in the y direction. Furthermore, for an incompressible fluid the area of the element on the xy plane must remain unchanged; that is,
+1----uAx ----+
+ax
+Fig. 2.15. Elongation and contraction of a fluid element.
+
+
+2.9 The Shear Derivatives: Rotation and Strain 43
+( ~x+-~xM
+au )( ~y+-~yM ) =
+av ~x~y
+ax ay
+By letting ~t ~ 0 with (~t)2 diminishing much faster, we obtain
+au +av =0 ax ay
+which is the same continuity equation, Eq. (2.39), that was derived by applying the prin ciple of conservation of mass of fluid through a fixed control volume. Note that for a pos itive dU/dx that causes an elongation of the fluid element in the x direction, the preceding equation shows that dV/dy is negative, corresponding to a contraction in the y direction as illustrated in Fig. 2.15.
+2.9 THE SHEAR DERIVATIVES: ROTATION AND STRAIN
+We have so far identified the sum of the derivatives along the diagonal of the matrix in Section 2.5 as the divergence of the vector V and, physically, as the flux of fluid volume from a point. The six remaining derivatives, those off the diagonal, are distinguished by the fact that they represent rates of change of the velocity components in directions nor mal. respectively, to these components. These are called the cross or shear derivatives; this section describes the roles they play in identifying further physical properties of flows. The derivative du/dy, for instance, measures the rate at which the x component of the velocity changes with position normal to the xz plane. Consider the distortion of an ele ment as a function of time as it transverses a flow in which u is the total velocity and du/dy is the only nonzero shear derivative. Figure 2.16 shows schematically the changes in the shape of the element with time. These changes can be described in terms of (I) the rate of deformation or strain defined in terms of the rate of change of the included an gles, and (2) the angular velocity or rate of rotation of the diagonal.
+y
+L -____________________________________ x
+Fig. 2.16. Fluid element in a shear flow.
+
+
+44 Chapter 2 Kinematics of a Flow Field
+In a general three-dimensional flow, the coplallar pairs of shear derivatives in each of the three orthogonal planes determine three components of the rate of strain and of the angular velocity of an element. These coplanar sets are au/ay and av/ax for the xy plane, dU/dZ and dW/dX for the xz plane, and dv/dz and dW/dy for the yz plane. The rate of strain and angular velocity are thus identifed as vectors; the three components are designated respectively by subscripts indicating the axes normal to the planes on which they act. For purposes of illustration, we choose the xy plane and thus derive expressions for the z components of the rate of strain and angular velocity, respectively Y: and f:; the corre
+sponding vectors are designated 'Y a.nd E. In the simplified case of the shear flow described in Fig. 2.16, consider a small fluid element .ixLly whose vertical and horizontal sides are orthogonal at a given instant t. The horizontal velocities at the two ends of the vertical wall on the left of the element are U
+and U + (dU/dy) Lly, respectively. After a short time period Llr, the velocity difference causes a horizontal displacement (dU/dy) LlyLlt of the upper end relative to the lower end, as shown on the distorted fluid element in Fig. 2.16, resulting in an angular displacement Ll{3 = (duldY) Llt of the vertical side. In arriving at the last expression, we have replaced the arctangent of a function by its small argument. The corresponding angular velocity is obtained by taking the limit:
+d{3 = lim A.{3 = au
+dt AI->O A.t ay
+We have thus shown that a positive duldy represents a clockwise angular velocity of the vertical side of a fluid element about the z axis. In a similar manner it can be shown, for a general flow, that a positive dv/dx represents a counterclockwise angular velocity daldt of the horizontal side of a fluid element about the z axis (obtained from LlalLlt by letting !it ~ 0), where !ia is the angular displacement in the interval !it as shown in Fig. 2.17. Referring to the comer of a fluid element sketched in Fig. 2.l7, we see that the com ponent Y: of the rate of strain vector 'Y is defined as the rate at which the included angle is decreasing; that is,
+da d{3 av au
+y. = - + - = - + - (2.44)
+, dt dt dx dy
+On the other hand, the component E: of the angular velocity E of the fluid element is de
+Fig. 2.17. Strain and rotation of a fluid element.
+
+
+2.9 The Shear Derivatives: Rotation and Strain 45
+fined as the average of the angular velocities of the two bounding sides, which is con sidered positive for a counterclockwise rotation:
+(2.45)
+where Wz is defined as the component of the vorticity normal to the xy plane. The mag nitude of the vorticity vector, Cd, is twice that of the angular velocity of the fluid element, and it is directed along its axis of rotation. A general mathematical expression for the vor ticity is defined later in Section 2.10.
+These two flow properties can be illustrated in terms of the "plane Couette flow" u = Ky.
+v = 0, which is a special case of the flow, shown in Fig. 2.16 with a linear velocity pro
+file. Here, dvldX = 0, so that 'Yz = duldy = K and W z = -duldy = - K.
+We consider next the rate of strain and angular velocity of a fluid element in polar co ordinates, but only for those flows whose streamlines are concentric circles. Shown in Fig. 2.18 is a small fluid element that, at time instant t, is bound by two radial lines and two neighboring streamlines separated by a distance I:1r. In the intervall:1t, the upper cir cumferential side rotates by the amount 1:10, that is, by U8 I:1tlr. The amount the left radial side rotates depends on the difference in velocity between its upper and lower ends, that
+Fig. 2.18. Rate of strain and angular velocity in polar coordinates.
+
+
+46 Chapter 2 Kinematics of a Flow Field
+is, (aUt/dr) 6.r, The difference in the displacement of these two ends is then ((jujdr) 6.r6.1 that, after being divided by 6.r, gives the angular displacement b.c/> == (duo/dr) b.t. The
+mean angular displacement b.E; of the fluid element in the interval 6.t is (b.8 + b.c/>)/2 so that the vorticity of the element is given by
+(2.46)
+Recalling that a positive rate of strain is defined as the rate of decrease of the included angle, we obtain
+I, b.c/>- M duo Uo
+1m --'--- = - - - (2.47)
+t.HO ill dr r
+Note that in a general flow Ur does not vanish; its influences would appear in Eqs, (2.46) and (2.47) in such a case. One example is given by Eq. (2.55).
+Figure 2.19 shows a flow in which the two intersecting edges of an element rotate at the same rate but in opposite directions. Thus, the diagonal of the element has vanishing an gular velocity, but is subjected to a pure strain. This flow is called a two-dimensional vortex, whose velocity field U/I is derived in Section 2.11 as klr, where k is a constant.
+.......
+Fig. 2.19. Fluid element in a vortex flow.
+
+
+2.9 The Shear Derivatives: Rotation and Strain 47
+After substituting in Eqs. (2.46) and (2.47) and using the method of Section 2.8 to find the stream function 1/1, we note that the flow field of a two-dimensional vortex has the fol lowing properties (see Eqs. 2.43)
+k
+Ur = 0; Uo = -; :. 1/1 = - k In r
+r (2.48)
+2k
+W z = 0 (at r:;t 0); 'Yz = - -2 (at r:;t 0)
+r
+Figure 2.20 shows a flow in solid-body rotation about a point O. The two intersecting edges rotate at the same angular velocity, causing a pure rotation of the element without any deformation. In this case, UIJ is given by Or, where 0 is the constant angular speed of the flow. If we use Eqs. (2.46) and (2.47), and the method of Section 2.8 to find the stream function 1/1, the flow field of a fluid in a solid-body rotation has the following prop erties:
+Or2
+Ur = 0; UIJ = Or; :.1/1 = - 2 (2.49)
+W z = 20; 'Y. = 0
+o
+
+--""'
+Fig. 2.20. Fluid element in a flow in solid-body rotation.
+
+
+48 Chapter 2 Kinematics of a Flow Field
+2.10 CIRCULATION, CURL OF A VECTOR
+We have in the last section defined the field properties, rate of strain, and vorticity. The
+circulation r, a property related to the net vorticity over a region of the flow, is defined by
+(2.50)
+where V . ds, the dot product of the velocity vector and the vector element of length along the path of integration C, is, as indicated in Fig. 2.21, the scalar of magnitude iVI cos (}
+idsi == V, ds; the circle through the integral sign indicates that the circulation is defined as the line integral around a closed path of the product of V" the velocity component par allel to the path, and ds. The integral is carried out in the counterclockwise sense; the clockwise direction of integration for circulation, indicated by the minus sign in Eq. (2.50), is chosen in aerodynamics for convenience in the analyses of airfoil and wing theory. The integrand of Eq. (2.50) may be expressed in two-dimensional Cartesian notation
+(see Fig. 2.21) as V • ds = V cos (} ds = u dx + v dy and, in three dimensions,
+(2.51)
+Line integrals such as that defining the circulation have various physical interpretations in the different fields of technology; in fluid mechanics, we show later that the circula tion around a contour in a flow enclosing a body such as an airfoil is proportional to the lift developed by the body. At this point, we show the relation between the concepts of circulation and vorticity by means of the vector designated curl V, defined in Eq. (2.21) by
+(aw av). (au aw). (av au)
+curlV == - - - 1+ - - - J + - - - . k
+ay aZ. az ax ax ay
+Fig. 2.21. V' ds = V,ds.
+
+
+2.10 Circulation, Curl of a Vector 49
+The respective components are seen to be exactly the components of the vorticity, that is.
+aw av
+curl, V - - - = Wx
+ay dz
+du aw
+curI, V = - - - = Wy (2.52)
+dz dx
+av du
+curL V = - 
+ax dy
+In vector notation
+w = curl V (2.53)
+The vector is directed along the axis of rotation of the fluid element. The components of w at a given point are identified with the limit of the circulation around a contour enclosing the point. For example, by carrying out the line integral of Eq. (2.5\) around the element of Fig. 2.22. one can verify that
+(2.54)
+where ~S is the area enclosed by the path about which the line integral is taken. The di rections of wx, wY' and W z are determined according to the "right-hand rule." In cylindrical polar coordinates (r, 0, z) (Problem 2.10.\), the vorticity component in the z direction is found to be
+(2.55)
+u+ ~.&
+iiy 2>
+d~______~____, c
+u, v av dx
+v- itv v+
+ax ~21 dy r ilx 2
+a '------:==::::>;:-----' b
+u- il~y ~2
+Fig. 2.22. V, on the sides of an element.
+
+
+50 Chapter 2 Kinematics of a Flow Field
+2.11 IRROTATIONAL FLOW
+In 1904, Ludwig Prandti hypothesized that the flow of gases and "watery liquids" around streamlined bodies can be assumed to have zero vorticity, that is, to be irrotational. ex cept in a thin boundary layer and a narrow wake behind the body. In other words, at the Reynolds numbers of flight for aircraft or for the motion of many devices and animals through fluids. a good approximation to the flow field, outside of the immediate neigh borhood of the body, can be found by assuming irrotationality. In terms of Eqs. (2.52), an irrotational flow is characterized by
+that is,
+av au aw au aw
+= - = - (2.56)
+ax = oy; oy az ax
+In cylindrical polar coordinates, a two-dimensional irrotational flow (Eq. 2.55) is expressed by
+(2.57)
+The simplest and most obvious irrotational flow is, of course, a uniform flow. In Section
+2.8, we identified the flow'" = Ay - Bx as a uniform flow inclined at the angle tan -I(B/A)
+to the x axis. By Eqs. (2.42). u = A, v = B, and by Eqs. (2.52), w = w,k = 0, so the flow is irrotational.
+Consider the flow described by the stream function
+'" = Axy
+This example was used to identify iso- and gradient lines in Section 2.3. where it was pointed out that the rectangular hyperbolas described by '" = constant represent the ap proximate paths of fluid elements, that is, the streamlines. in the neighborhood of a "stag
+nation point." By Eqs. (2.42). u = Ax and v = -Ay. Both ()vldx and duldy vanish, so that, by Eqs. (2.52), the flow is irrotational.
+In general, the vorticity has a definite magnitude and direction, expressed by Eq. (2.53), at each point in the flow field. We see from Eqs. (2.52) that any component of the vor
+
+
+2.12 Theorem of Stokes 51
+ticity vanishes if the shear derivatives in the normal plane vanish (as in the illustrative examples above) or if coplanar pairs are equal to each other. This latter condition, which seems highly restrictive, is actually fulfilled by a large class of flow fields of importance in fluid mechanics. Of special importance is the two-dimensional irrotational flow in which the streamlines are concentric circles and the speed is constant on each streamline. We will solve for the velocity distribution as a function of the radius. Since Ur = 0 and uti is a function only of r, the condition for irrotationality, Eq. (2.57), may be written as an ordinary differential equation:
+d(rue} o
+dr
+and the integral is
+k (2.58)
+r
+where k is a constant. This result was referred to in Section 2.9, Eqs. (2.48), where it was shown that the stream function for this flow is t/I = - k In r and that the vorticity vanishes but the strain does not. As was mentioned, this flow is termed a "vortex flow," and we have shown above that
+the flow is irrotational everywhere except at r = 0, where the derivative au/ar becomes infinite and Eq. (2.55) indicates that the vorticity at that point must be evaluated by other means; this is carried out in the next section by the application of Stokes' theorem.
+2.12 THEOREM OF STOKES
+A theorem connecting the integral over a surface with the line integral around it is indi cated by the definition of vorticity given in Eq. (2.54). In terms of the vorticity component normal to an arbitrarily oriented surface, the definition may be expressed as
+l
+fv .dS }
+Wn = curlnV = lim --A
+t.S~O AS
+where the subscript n designates the component of w normal to as.
+In a given flow, a continuous surface of arbitrary shape and orientation, shown schemat ically in Fig. 2.23, is chosen and subdivided into k segments. If the flow is known, the component of the vorticity normal to each segment can be determined by resolution of the components defined by Eqs. (2.52). The above relation, applied to segment 1 of Fig. 2.23, reads
+
+
+52 Chapter 2 Kinematics of a Flow Field
+v
+Fig. 2.23. Stokes' theorem.
+and, if we sum over the k segments.
+kk
+I(wl/L\s); == I(fV. dS) (2.59)
+;=1 ;=1 '
+In summing the line integrals on the right-hand side of the equation, it will be observed that the integrals over paths common to any two segments can make no contribution to
+the summation. Therefore, the sum of the line integrals about the segments as; is just
+equal to the line integral along the closed curve C around the entire surface S. Equation
+(2.59) becomes a better and better approximation as each as; approaches zero, and it is exact in the limit. Under these conditions, the summation becomes a surface integral and Eq. (2.59) may be written
+(2.60)
+The relation between the double integral and line integral in Eq. (2.60) bears the name of
+Sir George Stokes (1819-1903). The negative sign on r arises because circulation is counted positive clockwise, but the positive sense for curl is counterclockwise. It is evident from Eq. (2.60) that the circulation around any contour is zero if the now is irrotational within the contour of integration. However, for a vortex flow described by Uo = klr, Eq. (2.58), the flow was shown to be irrotational everywhere except at r = 0,
+so that Eq. (2.60) will not vanish unless the origin r = 0 is outside of the contour of in
+tegration. If the origin is within the contour, however, the value of - r will be the limit
+ing value of wI/as as as approaches zero, and hence w" ----> CYJ as r ----> O. Thus, the vortex
+flow Uo = klr is irrotational everywhere except at the origin where the vorticity is infi nite. We evaluate k in terms of the circulation by integrating Eq. (2.60) along a streamline, that is, along a circle r = constant. The product V . ds is simply (klr)r de and the circu lation becomes
+r = -fV'ds = - r1T (k/r)rde = -27Tk
+If k is replaced with its equivalent - r127T, the equation that describes the vortex flow becomes
+
+
+2.13 Velocity Potential 53
+-r
+Uo = - 
+27T'r (2.61)
+r
+'" = -lnr
+27T'
+Thus, the intensity or strength of a vortex is measured by the circulation around it; the
+sense of the velocity is clockwise when r is a positive number. In summary, vortex flow is irrotational everywhere except at the center of the vortex itself, where the vorticity is infinite; it satisfies the equation of continuity everywhere and therefore represents a physically possible flow. This important flow is discussed at greater length in Section 2.14.
+2.13 VELOCITY POTENTIAL
+From Stokes' theorem, it is apparent that the line integral of V • ds around a closed path in an irrotational flow is zero. Then, if A and B of Fig. 2.24 represent two points on a closed path in an irrotational field, the line integral from A to B along either branch must be the same. Since an infinite number of closed paths may be drawn through A and B, around each one of which the line integral is zero, it necessarily follows that the line in tegral along any path connecting A and B is independent of the path; its value is there
+fore a function only of its integration limits, that is,
+f
+V· ds = f(udx + vdy + wdz) = f(A, B) (2.62)
+However, a line integral can be independent of the path of integration only if the inte grand is an exact differential. Therefore, Eq. (2.62) requires that V • ds be an exact dif ferential of some function of the field coordinates. This function is given the symbol 4>(x. y. z) and called the velocity potential.
+Fig. 2.24. Integration paths between points in a flow.
+
+
+54 Chapter 2 Kinematics or a Flow Field
+We accordingly expand the total differential deb and set it equal to the integrand V . ds in Eq. (2.62):
+udx+vdy+wd; = dd> _ ad> dx + ad> dv + ad> d; (2.63)
+ax av' az
+Since these expressions must be identical. the coefficients of dx, dy, and dz must respec tively be equal, that is,
+v = ad>. w = (2.64)
+ay'
+In cylindrical polar coordinates (r, e, z),
+= ad>. u~ = (2.65)
+u,. ar' az
+and, in vector notation,
+V = grad d> == Vd> (2.66)
+We note that, unlike the stream function, the velocity potential is defined in three di mensions; its dimensions are length2/time. Thus in a flow that is irrotational everywhere (containing neither isolated vortices nor regions of distributed vorticity), since the circulation around any contour vanishes, the in
+tegrand of Eq. (2.62) must be everywhere a perfect differential, which we call dd>. Then,
+for this flow, a velocity potential d>(x. y, z) = f dd> "exists," and d> has the property that its partial derivative in any direction is the velocity component in that direction. It fol
+lows that the existence of d> is the sale criterion for irrotationality, since when we sub stitute the expressions for u, v, IV in Eqs. (2.64) into Eqs. (2.52), we find that each com ponent of the vorticity, w.., w." w;, vanishes identically. Thus, an irrotational flow is termed a potential flow. The usefulness of the velocity potential in flows of practical significance derives from the circumstances that, for a body in relative motion in an originally irrota tional flow, the circulation vanishes around any contour that does not include the body or does not intersect the boundary layer or the wake; therefore, a velocity potential can be found to describe the flow everywhere outside of the boundary layer and the wake. The stream function and the velocity potential have some analogous features: The ex istence of the velocity potential implies irrotatiollality, and in a three-dimensional flow
+the three velocity components can be derived from a single variable, d>(x, y, z). The ex istence of the stream function, on the other hand, implies continuity in a two-dimensional now, and the two velocity components can be derived from a single variable, ljJ(x, y).
+Both d> and IjJ have the dimensions length2/time. In Section 2.9, it was shown that the components of the velocity determine the stream functions for uniform flow, sources, and sinks. We can use the same method to find the velocity potential. For instance, by the use of Eqs. (2.65), Eqs. (2.61) give, for the po tential vortex,
+
+
+2.13 Velocity Potential 55
+dc/J lap -r
+UI' 0; =
+dr rdO 21Tr
+The first equation states that c/J is a function only of e, so that the partial differentiation
+in the second equation can be replaced as an ordinary differentiation. If we set the inte gration constant equal to zero, the resulting equation integrates to
+2--1rTe
+The "equipotentials" are thus straight lines radiating from the origin. If the same method is applied to a rotational flow. such as the plane Couette flow of Fig. 2.16 in which u =
+Ay. v = 0 (t/I = M/), we can easily prove the nonexistence of a velocity potential. We do this by first assuming that a function c/J(x, y) exists, such that
+d4>
+u = Ay; v =
+dx
+We then integrate the first equation keeping y constant, the second keeping x constant, and let the integration constants vanish. The two solutions are
+c/J = Ax)' + f(y); c/J = g(x)
+The function g(x) is an arbitrary function of x only, so the term Ax)" in the first expres sion cannot possibly occur in the second. The two expressions for c/J are therefore irrec oncilable. Thus, we conclude that, contrary to the original assumption, a velocity poten tial does not exist for the flow.
+The velocity potential of an irrotational flow can be found alternatively by the method of line integration. As an illustrative example, consider the flow u = y and v =x. which rep resents an irrotational flow of an incompressible fluid. Let us integrate Eq. (2.63) from the origin (0, 0) to an arbitary point (x. y), with the assumption that 4>(0, 0) = 0:
+i("") i("")
+c/J(x,y) = '(udx+vdy)= '(ydx+xdy)
+(0,0) (0,0)
+We may integrate first along a horizontal path on the x axis from (0, 0) to (x, 0), on which y = 0 and dy = 0 so that the integral vanishes, and then along a vertical path from (x. 0) to (x, y), on which x remains constant and dx = O. Thus,
+4> (x. y) = x r'dy = xy
+. Jo .
+It can be shown that the same result is obtained no matter what path is chosen for inte
+
+
+S6 Chapter 2 Kinematics of a Flow Field
+gration. Similarly, the stream function of a two-dimensional flow defined in Section 2.8 may be computed by line integration.
+Application of the above methods to the other irrotational flows treated earlier yields the velocity potential functions given along with the stream functions in the first four en tries in Eqs. (2.67). For the rotational flows, the method shows, as indicated in the last two entries, that velocity potential does not exist.
+Flow ~
+'"
+Vortex (fl27T) In r (- fl27T) () Source (N27T) () (N27T) In r Uniform flow 90° comer flow Solid body rotation
+Ay - Bx
+Axy
+!Qr
+Ax +By
+M(r-i)
+Does not exist
+(2.67)
+Plane Couette flow Ml Does not exist
+The first two entries in Eqs. (2.67) indicate that the circles in Fig. 2.25 represent stream lines of a vortex or equipotentials of a source, whereas the radial lines represent equipo tentials of a vortex or streamlines of a source. Uniform flow is represented by a network of orthogonal straight lines. The streamlines and equipotentials of the flow in 90° comers are shown in Fig. 2.26; they are orthogonal families of hyperbolas and are the isolines and gradient lines of Example 2.2. Section 2.3. The curves in each quadrant describe the flow in a comer and those in adjacent quadrants describe the flow against a plane surface or in the immediate neighborhood of a stagnation point. Since the two families are or thogonal, except at the stagnation point, their designations are interchangeable; that is, the streamlines for the flow in one quadrant are the equipotentials for the flow in the quad rant at 45°. We show that this orthogonality condition is general for irrotational flows by reference
+Fig. 2.25. Flow net for source or vortex.
+
+
+2.14 Point Vortex, Vortex Filament, Law of Biot and Savart 57
+• / <p =const
+Fig. 2.26. Flow net for 90° comer flow. Dashed curves are equipotentials.
+to the formulas we have derived for the velocity components. In Cartesian and polar co ordinates, these are
+()cP ()t/I ()cP I ()t/I
+u = - =-' u = - =
+()x ()y' r ()r r ()(J (2.68)
+()cP ()t/I I ()cP ()t/I
+v = - =--'
+()y ()x' u(J = r ()(J = ()r
+Note that the slope of a streamline is given by
+v ()cP/()y ()t/I/() x
+- = - - - = ---- (2.69)
+u ()cP j()x ()t/I/() y
+Since the ratios of the partial differentiations are negative reciprocals of each other, it fol
+lows from Eq. (2.69) that the streamlines, t/I = constant, and the equipotentials, cP = con stant, are orthogonal except at stagnation points, that is, where the velocity components vanish simultaneously.
+2.14 POINT VORTEX, VORTEX FILAMENT, LAW OF BlOT AND SAVART
+The vortex flow described by Eqs. (2.61) is of great importance in aerodynamics. The equations describe a flow pattern in a nonviscous, incompressible fluid, and therefore it cannot be expected that a pure example of this pattern is to be found in nature. However, examples of actual vortices described in the next section show that, although the action of viscosity diffuses the peak of infinite vorticity and velocity at the center, outside of a central core the flow field conforms closely with that of Eqs. (2.61).
+
+
+-
+58 Chapter 2 Kinematics of a Flow field
+We therefore treat the properties and motion of a theoretical vortex as an irrotational flow with infinite vorticity at the center. The center point is referred to as a point vortex whose strength is defined as the circulation about that point. It is customary to speak of the point vortex as inducing a flow in the surrounding region. However, it should be re membered that the point vortex and the flow in the surrounding region simply coexist. One is not actually the cause of the other. The two-dimensional velocity field described by Eqs. (2.6\) is a vortex flow in the xy plane with the point vortex at the origin of the coordinates. Two-dimensional flow means the pattern is identical in all planes parallel to the xy plane. This point vortex, then. must be duplicated in every parallel plane that has the configuration of a straight line perpen dicular to the xy plane and extending from -oc to +x. In three dimensions. such a line is called a vortex filament and may be defined as a line coinciding with the axis of rotation of successive fluid elements. It is convenient to speak of the velocity induced in the region surrounding a vortex fil ament by an element ds of the filament as shown in Fig. 2.27. The increment of velocity induced at P by element ds of the filament is given by the Biot-Savart Law:
+_ r cosf3ds
+d UH (2.70)
+- -41T r,
+where r is the strength of the vortex filament, r is the distance between the filamenl and
++1
+r
+....- 
+,/
+(I /
+\ " .p.....
+---
+h_
+-
+r
+Fig. 2.27. Velocity increment duo induced by -00 vortex element ds.
+
+
+2.15 Helmholtz's Vortex Theorems 59
+the point P, and f3 is the angle between the length, and the normal to the filament. The direction of the velocity increment induced by ds is perpendicular to a plane containing
+the length ds and the point P. [In electromagnetism, with r the direct current and Ufl the magnetic field, Eq. (2.70) expresses the proportionality between the strength of a mag netic field induced in a region surrounding a wire that is carrying a current, and the cur rent.] The velocity at P induced by the entire filament is obtained by integration:
+Un -- r- i"" cosf3ds (2.71)
+47T ~ ,2
+, = hsecf3; s = htanf3 (2.72)
+The h in Eqs. (2.72) is the perpendicular distance between the filament and the point P. If Eqs. (2.72) are substituted in Eq. (2.71) and the integration with respect to f3 be tween the limits ±7T12 is performed,
+(2.73)
+This is precisely the velocity induced at P, arising from a point vortex at the origin in a two-dimensional flow. The concept of the vortex filament is extended by lifting the restriction that it must be a straight line perpendicular to the plane of the two-dimensional point vortex. The pic ture now is one of a line curving arbitrarily in space in such a manner that it coincides with the axis of rotation of successive fluid particles. The Law of Biot and Savart as given by Eq. (2.70) is applicable to the curved filament.
+2.1S HELMHOLTZ'S VORTEX THEOREMS
+It is readily shown by the following method that the strength of a vortex filament is con stant along its length. Enclose a segment of the vortex filament with a sheath from which a slit has been removed, as pictured in Fig. 2.28. Since the vorticity at every point on the
+ab
+dc
+Fig. 2.28. Split sheath control surface around vortex filament.
+
+
+60 Chapter 2 Kinematics of a How Field
+curved surface enclosed by the perimeter of the split sheath is zero, it follows, from Stokes' theorem, that the line integral of the velocity along the perimeter is also zero. In travers ing the perimeter, the contributions to the total circulation of the line integrals from b to c and d to a will be of equal magnitude and opposite sign, providing the slit is very nar row. In order for the total circulation to be zero, therefore, the line integral around the sheath from a to b and that from c to d must be of equal magnitude and an opposite sign. This means that the vorticity enclosed by the top and bottom perimeters of the cylinder must be identical, which demonstrates the truth of Helmholtz's first theorem:
+The strength of a vortex filament is constant along its length.
+Carrying the demonstration a step further, presume the split sheath so placed that the filament ends midway between the top and bottom edges. The line integrals around the sheath from a to band c to d can no longer be of equal magnitude, and the condition that the circulation around the perimeter be zero is therefore violated. Hence, the vortex fila ment cannot end in space; this conclusion is embodied in Helmholtz's second theorem:
+A vortex filament cannot end in a fluid; it must extend to the boundaries of the fluid or form a closed path.
+A third Helmholtz theorem follows by the use of the fact that in an inviscid, incompressible flow, only pressure forces are exerted on a fluid element; since pressure forces act nor mal to all surfaces of the element, it can be shown that their resultant passes through the centroid of the element and therefore can cause no rotation, that is, no vorticity. In math ematical terms, the curl of the force vanishes and the law is stated as follows:
+In the absence ofrotational external forces, a fluid that is initially irrotational remains irrotational.
+From the theorem of Stokes, a corollary may be written immediately:
+In the absence of rotational external forces, if the circulation around a path enclosing a definite group offluid particles is initially zero, it will remain zero.
+A further corollary may be written:
+In the absence of rotational external forces, the circulation around a path that encloses a tagged group of fluid elements is invariant.
+It follows from these laws that an element is set in rotation only by a contiguous ro tating element; in other words, whereas pressure changes propagate throughout the flow field with the speed of sound, vorticity propagates only through contiguous fluid elements. It should be noted that the vortex theorems are proved for inviscid fluid flows; they are therefore valid to a good approximation in viscous-fluid flows in regions where the vis cosity may be neglected.
+
+
+2.16 Vortices in Viscous Fluids 61
+2.16 VORTICES IN VISCOUS FLUIDS
+We have shown that the potential vortex u/i == - f/27Tr (Eqs. 2.61) is a physically possi ble flow field of an inviscid, incompressible fluid with a point of infinite vorticity at r = O. In a real fluid, however, viscosity causes diffusion of the vorticity to form instead a core within which the vorticity is approximately constant; in Section 2.9, Eqs. (2.49), we showed that if the vorticity is constant, the fluid is in solid body rotation with U/i = Qr. As time goes on, this core spreads; that is, the vortex decays from within. The process is illustrated in Fig. 2.29, where theoretical velocity distributions are shown for three val ues of the parameter VI, along with those for solid body rotation with the same total cir culation. The calculated curves are all asymptotic to that for t = 0; they indicate further that the vortex may be represented approximately by a core of solid body rotation joined to the theoretical distribution for a vortex with circulation given by - f = 7Tr7wl' where r l and WI are, respectively, the radius of and the vorticity everywhere in the core. The atmosphere is a field of flow in which vortices over a wide range of sizes and strengths are generated by fluid- and thermodynamics processes, and the Earth's rotation. The configurations of the high- and low-pressure isobars on a weather chart are associ ated with large-scale vortices. Moving down the scale, hurricanes with vortex flow fields
+IIIt = 0
+\ \
+, f/21lT
+II},\ \
+I\
+0.5 .\
+\ ~~
+L - - - - - - -________________________~r
+Fig. 2.29. Decay of a vortex filament in a viscous
+fluid. At the initial instant t = 0, "/I = - rl21Tr. Prandtl (1943) showed that the important nondi mensional parameter is ,;!./vt. where v is the kine matic viscosity (dimensions 12/t). Velocity distribu tions for three values of vt are shown, along with linear distribution of UH corresponding roughly to cores of solid body rotation (dashed lines) with radii proportional to {Vi.
+
+
+62 Chapter 2 Kinematics of a Flow Field
+covering areas of hundreds of square kilometers, tornadoes covering less than I km2, thun derstorms, on down to the gusts caused by surface variations of temperature, moisture, and topography, consist mainly of vortices that determine the large- and small-scale rainfall and temperature fields over the globe. Discrete vortices and vorticity fields are the most significant features of flow around aircraft. Figures 4.11 and 4.12 illustrate the traces of vortices in the flow behind a wing as its motion starts and stops, and Figs. 6.4, 6.5, and 6.6 show the vortex field and trail ing tip vortices behind an airplane. In Chapters 17 through 19, the roles of vortices in spe cific flows are described.
+PROBLEMS
+Section 2.3
+1. A two-dimensional pressure field is defined by the expression
+p = x2y + l
+Find the derivative of p in the direction of a line that makes an angle of 45° with the positive x axis. What is the value of this derivative at the point (3, 2)? 2. For the pressure field described in Problem 2.3.1, what is the derivative at the point (3, 2) in the direction of the curve
+3/- 4x = 0
+At the same point, what is the derivative in the direction for which the derivative of p is the maximum? What is the direction of this derivative? 3. A temperature field is described by the equation
+T=x\
+At the point (I, 2), what are the magnitude and direction of grad T? Write the equa tions of the gradient line and isotherm passing through the point (I, 2).
+Section 2.4
+1. A two-dimensional velocity field is described in terms of its Cartesian components:
+Write the equation of the streamline passing through the point (I, 2). 2. In a flow field, the absolute value of the velocity is constant along circles that are con centric about the origin. The streamlines are straight lines passing through the origin. In functional form, write the Cartesian components of the velocity u and v and write the polar components u, and U/I' 3. The absolute value of the velocity and the equation of the streamlines in a velocity field are given, respectively, by
+
+
+Problems 63
+l + 2xy = constant
+Find expressions for u and v. 4. In the flow field of Problem 2.4.3, in what direction is the rate of change of u the max imum? Does it make sense to speak of the gradient of u? If so, what is its value?
+Section 2.5
+1. The velocity components of a flow are given by
+U = -x; v=y
+Compute the volume of fluid flowing per unit time per unit area through a small sur face at (I, 2) whose normal makes an angle of 60° with the positive x axis.
+Section 2.6
+1. In cylindrical polar coordinates (r, 0, z) shown in Fig. 2.11, show that the divergence of the velocity vector V is
+d· V dUr I ( dUll) du.
+IV = - + - U + - +---"
+dr r r dO dz
+2. The streamlines of a two-dimensional velocity field are straight lines through the ori gin described by the equation
+y=mx
+The absolute value of the velocity varies according to the law
+IVI2=7T~r
+Using both Cartesian and polar coordinates, find the value of div V at all points in the field except at the origin. What can be said about div V at the point (0, O)? 3. In the three-dimensional flow from a point source, the streamlines radiate in all di rections from a point. If we designate the strength of the source by A', show that
+Note the dimensions of A' compared with A (for a line source).
+Section 2.7
+1. Which of the following flows satisfy conservation of mass for the flow of an incom pressible fluid? (a) U = -~ siny (b) u = ~ sin y v = 3.r cos y v = 3.r cosy
+
+
+64 Chapter 2 Kinematics of a "'low Field
+(c) U,- = 2r sin e cos e (d) Y = k/r~
+UIJ = -2r sin2e x2 + / = c (streamlines) 2. The x and y components of the velocity field of a three-dimensional incompressible flow are given by
+U = xv; V = -y-1
+Find the expression for the z component of the velocity that vanishes at the origin. 3. For a certain flow field, the absolute value of the velocity and the equation of the streamlines are given, respectively, by
+iV' = f(r); y = mx
+Show that f(r) must have the form for source flow (and no other) if the pattern is to satisfy conservation of mass for the flow of an incompressible fluid.
+Hint: Apply the condition div V = 0 and solve the resulting differential equation for f(r).
+4. A flow field is described by
+iV! = f(r); x~ + / = c (streamlines)
+What form must f(r) have if conti1luity is to be satisfied? Explain your results. 5. A flow field is described by
+,VI = f(r, e); x 2 + )'2 = c (streamlines)
+Is there any function f(r, 8) for which this field satisfies continuity? Explain your answer.
+Section 2.8
+1. Solve Problem 2.4.1 by using the stream function that vanishes at the origin. 2. The stream function of a two-dimensional incompressible flow is given by the equa tion
+(a) What are the magnitude and direction of the velocity at the point (2, 3)? (b) At the point (2, 3), what is the velocity component in the direction that makes an angle of 30° with the positive x axis? 3. The existence of a stream function depends on the flow satisfying continuity. There fore, any velocity field derived from a stream function automatically satisfies conti nuity. Prove the latter statement. 4. An incompressible two-dimensional flow is described by the stream function
+Write the equation of the streamline that passes through the point (2, I). Show that at any point the magnitude of V is equal to the absolute value of grad 1/1. Show that the direction of the velocity is perpendicular to the direction of grad 1/1.
+
+
+Problems 65
+5. A two-dimensional incompressible flow is described by the velocity components
+u = 2x; v == -6x - 2y
+Does the flow satisfy continuity? If so, find the stream function. 6. The r component of the velocity of a two-dimensional incompressible flow is given
+by "r = r sin O.
+(a) Find the expression for the () component of the velocity that vanishes at r == O. Dis card the part of the solution that represents a revolving flow. (b) Find the stream function that vanishes at r == O. (c) Find the equation of the streamline passing through the point (I, 7T).
+Section 2.9
+1. The streamlines of a certain flow are concentric circles about the origin, and the ab solute value of the velocity varies according to the law
+Ivi == kr'
+Show that the angular speed of any fluid element in the flow is described by
+and that the corresponding rate of strain of the element is Y: == -2klr if E: = O. 2. Consider a "boundary layer" of thickness 0 at a distance x(> > 0) from the leading edge of a flat plate. Assume the velocity components are
+v=0
+Find E: and Y: for 0 < Y < O.
+Section 2.10
+1. In two-dimensional polar coordinates, show that the curl of the velocity vector V is
+I V dUe I ( du,. J
+cur _ = - + - u 
+- dr r /I de
+Hint: Apply Eq. (2.54) to a region formed by two circular arcs and two radius vec tors.
+2. When n = I for the flow of Problem 2.9.1, find the circulation along a circular path of radius r with its center at the origin. 3. The stream function of a two-dimensional incompressible flow is given by
+r
+t/I = -lnr
+27T
+
+
+66 Chapter 2 Kinematics of a Flow Field
+Show that the circulation about a closed path enclosing the origin is r and is inde pendent of r.
+Section 2.11
+1. Does the irrotational velocity field of a two-dimensional vortex flow satisfy continuity?
+Section 2.12
+1. The components of V are given by the expressions
+v = -2xy
+Find the integral along the path s between the points (0, 0) and (I, 2) of V . ds for the following three cases: (a) s is a straight line. (b) s is a parabola with its vertex at the origin and opening to the right. (c) s is a portion of the x axis and a straight line perpendicular to it. 2. The absolute value of the velocity and the equation of the streamlines in a two dimensional velocity field are given by the expressions
+y-, + xy = c
+By two different methods, find the value of the integral of curl, V over the surface shown.
+y
+1 - - - - - - - , (2,1)
+--~------~--~----x
+3. The velocity components of a flow are given by
+Ur = ,.2 cos (J; U H = -3r sin (J
+Compute the total vorticity contained in the shaded area by the method of line integration.
+y
+x
+Section 2.13
+1. A velocity field is described by the following components:
+
+
+Problems 67
+u = 2xy;
+Beginning with these expressions, find the velocity potential. 2. Does a potential exist for the field described by
+u = -3xy;
+Show that every field derived from a potential is necessarily irrotational. 3. A two-dimensional velocity field is described in the following manner:
+u = x2 - / + x; v = -(2xy + y)
+Show that this field satisfies continuity and is also irrotational. Find the velocity potential. Find the line integral of V . ds along a straight line connecting (0, 0) and (2, 3). Check this answer by computing the value of the line integral directly from the potential. 4. A two-dimensional potential field is described in the following manner:
+x3 2 2 2
+</> = 3-X -xy +y
+Find the velocity component in the direction of the path ry = -4 at the point
+(2, -I).
+5. If a velocity field has a potential, are we guaranteed that the conservation of mass prin ciple is satisfied? 6. Show that the two fields described below are identical:
+IjI = 2xy + y;
+7. By examining the dot product of grad IjI and grad </>, show that streamlines and equipo tentials are orthogonal except at stagnation points.
+Section 2.14
+1. Find the velocity induced at the center of a circular vortex filament of strength rand radius R. 2. A rectangular vortex filament of strength 4'IT X 104 m2/s is shown in the figure below. Find the magnitude of the velocity at point A induced by 0.01 m of filament at point B. What is the direction of that induced velocity? What is the velocity induced at point A by 0.01 m of filament at C?
+B c1
+(rtf 13m
+~_J
+1--1 m__IA
+
+
+Chapter 3
+Dynamics of Flow Fields
+3.1 INTRODUCTION
+In the last chapter, methods for describing simple flow fields were developed without re gard to the forces generating them. The basic flow fields treated were those of uniform flow, sources, and vortices. We found, in general, that the continuity and irrotationality conditions uniquely determine a velocity field by identifying a network of orthogonal fam ilies of curves, representing, respectively, the streamlines and equipotentials of the flow. This description is, however, incomplete in that the pressure field required to calculate the fluid dynamic force on a body in relative motion in the fluid is still not known. The dynamics of the flow field determines this pressure distribution, for which the gov erning equations are dictated by Newton's law expressing conservation of momentum. This chapter is devoted to deriving the equations expressing momentum conservation that, together with mass conservation (continuity), determines all the details of an incom pressible inviscid flow field. The analysis will be carried out first for a moving fluid par ticle following the Lagrangian description and then for a control volume fixed in space following the Eulerian description. Both approaches are described in Section 2.5. It will be shown that the results obtained from these two different methods are equivalent by taking a proper limiting process.
+3.2 ACCELERATION OF A FLUID PARTICLE
+Before deriving the general equations of fluid dynamics, we need to examine the accel eration of a "tagged" elementary mass, termed a fluid particle or element. The element is defined such that its dimensions are small compared with a characteristic dimension of the flow, but large enough to contain an inordinately large number of molecules. At any time, a fluid particle moves with the local flow velocity at that instant, so its position varies continuously with time even if the flow is steady. Let us first consider a steady velocity field Vex, y, z), whose components (u, v, w) are also functions only of spatial coordinates and are independent of time. At time t, we tag the fluid particle located at (x, y, z) as shown in the two-dimensional version of Fig. 3.1, whose instantaneou!. velocity is V. The particle will move along the local streamline in a
+short period 1:11 to a new position (x + 1:1x, y + l:1y, z + I:1z), where its velocity becomes
+V + 1:1V. Since the incremental velocity 1:1V is caused by the change of particle position, each of its three components can be computed using Eq. (2.23). For example, the x com ponent of the incremental velocity is computed as
+68
+
+
+3.2 Acceleration of a Fluid Particle 69
+V+!J.V
+v +!J.v
+_ _~T--"---+'
+Ii !J.y = v!J.t
+'./F--:-:--+' ~ - - - - - - JIIII_1
+t----!J.x = u!J.t ~ I
+Fig. 3.1. Motion of a tagged particle on a streamline.
+au au au
+L1u = -L1x+-L1y+-L1z
+ax ay az
+in which the three displacements are the distances traveled during at by the particle with
+its own velocity in the three coordinate directions; that is, ax = uat, ay = vat, and
+az = wat. Taking the limit of au/at as at~ 0, we obtain an expression for 0., the x component of the particle acceleration a:
+. L1u dU dU dU
+1
+a = lm- = u-+v-+w- (3.1)
+.t ~HO M dX dY dZ
+The equation can be written in a simpler form by introducing an operator to represent that defined in Eq. (2.22):
+d ddd
+- == V·V = u-+v-+w (3.2)
+dt dX dY dZ
+The other two components of the acceleration vector are derived in a similar manner. Thus, when expressed in terms of the operator shown in Eq. (3.2), the x, y, and z com ponents of a are, respectively,
+du dv dw
+a = Q v = - , az = - (3.3)
+x dr' . dt dt
+A vector sum of the three components gives
+dV
+a = (3.4)
+dt
+which describes a procedure for computing the acceleration of a tagged fluid particle in a steady flow. The operator dldt computes the time rate of change of a particle property that is caused by the position change of a moving particle; for this reason, dldt is called the convective derivative. When operating on the velocity, the resultant acceleration shown
+
+
+70 Chapter 3 Dynamics of Flow Fields
+in Eq. (3.4) is called the cOllvective acceleration of a fluid particle. dldt may operate on any other field variables. For example, dpldt represents the pressure change per unit time that is experienced by a fluid particle in a steadily moving flow. Note that even in a steady flow in which all field properties are stationary with respect to time, the flow properties as seen by a moving fluid particle will generally vary in time since its location changes from one time instant to another. We consider next a general unsteady velocity field Vex, y, z, t). A lluid particle in such a flow will experience, in addition to the acceleration caused by change in position, an other acceleration attributed to the unsteady behavior of the flow even if the location of the particle remains fixed in space. As sketched in Fig. 3.2. at time t the instantaneous streamline passing through the point (x, y, z) is represented by a solid curve, and the ve locity of a fluid particle at that point is Vex, y, z, 1). After a time increment Ilt, the local streamline may change to look like the one represented by the dashed curve, and, even without considering its displacement, the fluid particle will have a different velocity V(x,
+y, z, t + Ilt). The so-called local acceleration is computed as
+. V(x. y. Z. t+~t)-V(x. y. z. t) av
+1Im--~~------~--~~--~ (3.5)
+M--->O ~t at
+Thus in an unsteady flow, the total acceleration of a fluid particle. designated by 9JV/9Jt, is the sum of the local acceleration (Eq. 3.5) and convective acceleration (Eq. 3.4); that is,
+CjJ;V av dV
+-+
+9Jt at dt
+(3.6)
+= (:t +V· V)V
+The operator as defined for an unsteady flow by
+//// /7
+Fig. 3.2. Change of velocity at a fixed point in an unsteady flow.
+
+
+3.2 Acceleration of a Fluid Particle 71
+rzJJ a
+- = -+v·v
+rzJJt at (3.7)
+aa a a
+= -+u-+v-+w
+at ax ay az
+is termed th~ particle or substantial derivative; it computes the time rate of change of a flow property following a tagged fluid particle by summing the contributions from the lo
+cal derivative alat and the convective derivative V . V.
+Consider an unsteady two-dimensional stagnation-point flow with velocity components
+u = xt and v = -yt, whose representative flow pattern at any instant is displayed in Fig. 2.26. For a fluid particle located at (x, y) at time t, the local acceleration is
+av .au .av . .
+- = l-+J- = lX-JY
+at at at
+which happens to be time-independent for this particular flow. The convective accelera tion is
+(V·V)V = (U~+V~)(iU+jV) = ixt2+jyt2
+ax ay
+Thus, the total acceleration of the fluid particle is
+When the substantial derivative operates on a scalar field such as the temperature T, the result rzJJTfZlJt is a scalar representing the time rate of change of T as seen by a particle
+moving with velocity V. Let T = xl + l be the temperature distribution and V = i + j2 be the constant velocity of a thermometer. The time rate of change of the temperature reading on the thermometer is computed as
+rzJJT = (~+U~+V~)T
+rzJJt at ax ay
+( a a a )(? 2)
+= -+-+2- x- +y
+at ax ay
+= 2x+4y
+which varies with the position of the thermometer.
+
+
+72 Chapter 3 Dynamics of Flow Fields
+3.3 EULER'S EQUATION
+Knowing the correct formulation for the acceleration of a fluid particle, we now proceed to derive the equation of motion by applying Newton's law to a small fluid element fol lowing the Lagrangian method of description. Newton's law of motion, in general terms, is: The rate of change of momentum of a tagged element in a flow is equal in both mag nitude and direction to the resultant force acting on the element. Applied to an element of mass pAxllyllz, it gives
+where F is the resultant of the forces per unit volume acting on the element; they arise through viscous stresses, pressure gradients, gravity forces, and, for an electrically con ducting fluid, electromagnetic stresses. The left-hand side is the substantial rate of change of momentum of the element. Since the mass of the element p6.xayaz is fixed, the vec tor equation reduces to
+S!llV
+p - = F (3.8)
+qnt
+which is then valid for compressible or incompressible flow. The force on an element arising from pressure gradients in the flow is obtained from a consideration of Fig. 3.3. It is to be noted that the element shown is in motion along a streamline of the flow, and the pressures designated are static pressures; that is, they are the barometric pressures indicated by an instrument moving with the flow. The pressure at the center of the element is p. and the pressures acting on the six faces of the cube are designated in the figure. The resultant force in the positive direction of x. y, and z axes are, respectively, -(aplax)6.x . ayaz, -(aplay)ay . axaz, and -(aplaz)az . 6.xay, where
+y p-~~
+ilz 2
++~~
+P ,)z 2
+~----------------~------x
+z
+Fig. 3.3. Variation of pressure on a fluid element.
+
+
+3.3 Euler's Equation 73
+LlyLlz and so forth are the areas of the appropriate faces of the cube. In vector notation, the pressure force may be written
+and, thus, - Vp is, in magnitude and direction, the pressure force per unit volume acting on a fluid element. Let g represent the acceleration due to gravity. The weight of the fluid element is (pLlxLlyLlz) g. Then the total external force on the element is
+and Eq. (3.8) becomes
+~V
+p - = pg-Vp (3.9)
+~t
+This equation, known as Euler's equation of motion, is named after Leonhard Euler (1707-1783), who was responsible for its formulation. It is applicable to compressible or incompressible flows. In Cartesian form, in which the substantial derivative is expanded to show the local and convective accelerations (see Eqs. 3.7), the three component equa tions are
+au au au au I ap
+-+u-+u-+w- = g -
+at ax ay az x p ax
+au au av au I a p
+-+u-+u-+w- = g - - - (3.10)
+at ax ay az Y p ay
+aw aw aw aw I ap
+-+u-+v-+w- = g.-
+at ax ay az - p az
+where g., gr' and gz are the three components of the gravitational acceleration. The de velopment of Euler's equation has assumed the fluid to be nonviscous. For cases in which viscous shearing stresses cannot be neglected, further terms must be added to the force F of Eq. (3.8). This subject is treated in Chapter 14 and Appendix B. Euler's equation may appear in many different forms. For example, upon substitution from Eq. (3.6), Eq. (3.9) becomes
+(3.11)
+The term (V . V) V is a "pseudo-vector" expression, of which a direct expansion holds only in Cartesian coordinates. Sometimes, it is preferable to express this term in true vec· tor form so that it becomes valid in any coordinate system. By the use of a vector iden
+
+
+74 Chapter 3 Dynamics of How Fields
+tity that can be found in a typical vector analysis book, Eq. (3.11) is rewritten in more general form:
+(3.12)
+It can be verified that the three components of Eq. (3.12) in Cartesian coordinates are those shown in Eqs. (3.10). Of particular interest is the polar form of this equation (with the gravitational force term omitted), whose rand 0 components are, respectively,
+dU, dU, ull dU, u; _! dp
++ u - + -- -- =
+dt ' dr r dO r p dr (3.13)
+dUIJ duo Uo duo U,Uo _!.!.dp
++ u- +-- + =
+dt ' dr r dO r p r dO
+Note that these equations cannot be obtained by a direct expansion of Eq. (3.11) in polar coordinates. There are two nonderivative terms on the left sides of Eqs. (3.13), of which -ul/r is the centripetal acceleration in the radial direction and u,uJr is the Coriolis ac celeration in the circumferential direction.
+If the velocity field of a flow is given, its pressure field can be detennined by the use of Euler's equation. Consider the flow in solid body rotation with constant angular velocity
+n (see Section 2.9), in which u, = 0 and Ull = Qr. For an axisymmetric flow such as this, the second equation in Eqs. (3.13) vanishes and the first becomes
+It indicates that a radial pressure gradient will be established in the flow to balance the centrifugal force per unit volume. An integral of the differential equation yields
+The pressure in this flow increases quadratically with radial distance from the center of rotation. The integration constant represents the pressure at the center.
+In spite of its seeming complexity, Euler's equation can be integrated; the resulting scalar equation is called Bernoulli's equation. named after Daniel Bernoulli (1700-1782). Various forms of Bernoulli's equation are derived in the following for incompressible flu ids.
+
+
+3.4 Bernoulli's Equation for Irrotational Flow 75
+3.4 BERNOULLI'S EQUATION FOR IRROTATIONAL FLOW
+For an irrotational flow, V X V = 0 and, as described in Section 2.13, a velocity poten
+tial eb exists such that V = Veb. Similarly, since V x g = 0 we can define a gravitational potential U so that
+g=VU (3.14)
+Under the assumption of constant density and after dVfdt is replaced with V(debfdt), every nonvanishing term in Eq. (3.12) is now in the form of a gradient of a certain scalar func tion. Performing the dot product of the resultant vector equation with ds, which is an in cremental displacement from a given point with arbitrary direction, we obtain a scalar equation
+( aeb ' V2 P )
+V -+-+--U 'ds = 0
+at 2 p
+which, according to Eq. (2.24), is reduced to
+d(aeb + V2 +!!..-u) = 0
+at 2 p
+It states that the sum of all scalar terms contained in the parentheses remains a constant along ds. In other words, since ds is an arbitrary displacement vector, the sum is invari ant in spatial coordinates but may vary with time. Thus,
+aeb V2 P
+-+-+--U = f{t) (3.1S)
+at 2 p
+which is the form of Bernoulli's equation for unsteady, incompressible, and irrotational flow. Considered in the remainder of this section are steady flows, for which the unsteady term on the left side of Eq. (3.15) vanishes and the integration constant on the right side is a pure constant instead of a function of time. The role played by gravity in Bernoulli's equation is now examined. In Cartesian co ordinates, if z is the conventional upward vertical coordinate whose direction is opposite to that of gravitational acceleration g, then, according to Eq. (3.14), the corresponding gravitational potential is U = - gz. For a steady flow at height z that is decelerated to
+V = 0 at a so-called stagnation point at height Zo where the pressure is po. with the right side evaluated at the stagnation point, Eq. (3.15) has the form
+(3.16)
+The terms in Eq. (3.16) have the dimensions of pressure. Each is associated with a par ticular aspect of the flow as follows: p, the static pressure, is the pressure measured by an infinitesimal barometer attached to a given fluid element in the flow; !pV2, called the
+
+
+76 Chapter 3 Dynamics of Flow Fields
+dynamic pressure, is the pressure identified with the fluid motion; pg(z - zo) is the change in hydrostatic pressure between two points at different heights in a fluid of density p; then Po, the total pressure or the sum of the three pressures, is a constant at every point in the flow field. In gas flows in which the variation in height of a streamline is not large, the magni tude of the term pg(z - '<:0) will be negligibly small compared with that of the static pres
+sure. For instance, for air under standard sea level conditions, p = \0 I ,320 N/ml, while
+pg(z - 20) = 1.23 x 9.81 = 12.07 N/m2 per meter change in height. which is only 0.0 I % of the static pressure. With the hydrostatic pressure term omitted for aerodynamic analy ses, Bernoulli's equation as expressed by Eq. (3.16) is simplified to
+P+"2I PV 2 = Po (3.17)
+It signifies that, in a steady, incompressible, and irrotational flow of a gaseous fluid, the sum of the static and dynamic pressures (or the total pressure Po) remains a constant. Since Po is the static pressure at a stagnation point, it is also called the stagnation pressure of the flow. On the other hand, for flows of high-density fluids, such as the hydraulic flows, Eq. (3.16) is the appropriate form of Bernoulli's equation. In practical measurements on flow around bodies, data are generally presented in terms of the pressure coefficient, Cpo To define C1" we assume irrotational flow so that Po is constant everywhere and we identify px and V" as values far from the body; then Eq. (3.17) yields
+(3.18)
+Using what has become a standard abbreviation, q = ~pV2. we define the pressure coef ficient for incompressible flows:
+(3.19)
+where qx = ipV~. Then, in an incompressible flow, Cr. = I at a stagnation point where V = 0, and Cp = 0 far from the body where V = Vcr..
+It is to be noted that for flight through the atmosphere, p" is the barometric pressure at a given altitude and remains constant during flight at the same level, whereas the stagna tion pressure Po measured in the aircraft increases with flight speed. On the other hand, when we are considering an inviscid incompressible flow in a tube of varying cross sec tion, the stagnation pressure Po is constant at every station in the tube, while the static pressure varies with the speed as indicated by Eq. (3.17).
+Equation (3.17) describes a physical principle that the static pressure increases at a point where the local flow speed is decreased, and vice versa. Based on this principle, forces in the desired direction can be generated on bodies of a properly designed configuration.
+
+
+3.5 Bernoulli's Equation for Rotational Flow 77
+Airfoils, whose detailed description is given in Chapter 5, are practical examples of such bodies. To generate lift, an airfoil is set to make such an angle with the air stream that the flow is accelerated on the upper surface but is decelerated on the lower surface. Sup pose the oncoming air speed is V"" the average flow speeds on the upper and lower sur faces of the airfoil are 1.5V"" and 0.8V"" respectively, and the steady flow is incompress ible and irrotational. Applying Eq. (3.18) to both upper and lower flows with the same constant on the right side, we obtain
+which gives the difference between the average pressure PL on the lower surface and the average pressure Pu on the upper:
+PL - Pu = 0.805pV2
+For V", = 50 mls at sea level where p = 1.23 kg/m3, the average lift per unit area of the wing is 2475 N/m2• The value increases four times if the flight speed is doubled.
+3.5 BERNOULLI'S EQUATION FOR ROTATIONAL FLOW
+For a rotational flow, the vorticity w = V x V is no longer zero, but Euler's equation can still be integrated under various conditions. Assuming steady inviscid incompressible flow with gravity effects ignored, and by taking the dot product of the resulting Eq. (3.12) and ds, where ds is a differential length along a streamline (see Fig. 3.4), we have
+ds(p+~pV2) = pV x w'ds (3.19)
+where ds denotes differentiation along a streamline and w is a vector perpendicular to V. Since ds is parallel to V and the vector V X w is perpendicular to V, their dot product shown on the right side of Eq. (3.19) vanishes. It follows that the stagnation pressure
+Po = P + ,pV2 remains constant along a streamline. However, if ds in Eq. (3.19) is re
+(V x (4) II dn
+~
+Streamlines
+Fig. 3.4. Streamlines in a rotational flow.
+
+
+78 Chapter 3 Dynamics of Flow Fields
+placed by a differential length dn in a direction normal to both the streamline and vor ticity, as shown in Fig. 3.4, the result becomes
+(3.20)
+in which dn denotes differentiation in the direction of the normal vector dn. Note that the increment of dn leads to a displacement from one streamline to a neighboring streamline. Figure 3.4 shows that V X 00, just like dn, is perpendicular both to V and 00 and thus is a vector of magnitude Vw parallel to dn. In this case, the right side of Eq. (3.20) is ex pressed by pVw dn, which is a nonvanishing scalar for rotational flow. The equation is then written in terms of the stagnation pressure as
+apo = pVw (3.21)
+an
+Care must be taken when evaluating the expression on the right; its sign is to be deter mined according to the vectorial manipulations described in both Eg. (3.20) and Fig. 3.4. The conclusion we draw from the analyses shown in the present and preceding sections is: In steady, inviscid flow. the stagnation pressure p(~ defined in Eq. (3. J 7), is constant throughout an irrotational flow; in a rotational flow. Po is constant along any streamline but changes from streamline to streamline.
+The flow in solid body rotation that was described in Section 2.9 is a rotational flow char
+acterized by U r = 0, U/l = Qr, and we = 2Q (Eqs. 2.49). The stagnation pressure that re mains invariant on a circular streamline of radius r is
+(A)
+To see how the stagnation pressure varies among streamlines, we replace dn with er dr in Eg. (3.20) to get
+dpo = p(eeQr)x (e:2Q)' (er dl')
+= p(e,.2Q2 r).(er dr) = 2pQ2 r dr
+in which the cross product in cylindrical coordinates is carried out according to Eq. (2.17). The integrated form is
+o 22
+po{r) = Po +pO r (B)
+where the constant of integration, pg, represents the stagnation pressure at the center of
+rotation, at which r = 0 and the flow speed is zero. Thus in this particular flow, the stag nation pressure is constant on a streamline but increases quadratically with the radius of the streamline.
+
+
+3.6 Applications of Bernoulli's Equation in Incompressible Flows 79
+Equating the right-hand sides of Eqs. (A) and (B) yields the static pressure distribution
+that is equivalent to the expression obtained in Example 3.3 from the integration of Euler's equation.
+If the horizontal velocity in the shear flow depicted in Fig. 2.16 is a linear function of height, the flow is termed "plane Couette flow." With u = Cy and v = 0, the vorticity is, by Eq. (2.53),
+(av au]
+w = k ax - ay = -kC
+The streamlines are straight lines parallel to the x axis. Invariant along the streamline at height y, the stagnation pressure is
+(A)
+When going from this streamline to another at distance dy above, the change in stagna tion pressure is, by Eq. (3.20),
+dpo = p(iCy)X(-kC)·(jdy) = pC2y dy
+which integrates to
+o I C2 2 (B)
+Po = Po +2 P Y
+where pg is the value of Po at y = O. A comparison between Eqs. (A) and (B) concludes
+that the static pressure p = pg is constant traversing the Couette flow. This result is pre dicted by the conditions of the problem, since the streamlines are rectilinear; for if p were to vary with y, dpldY would not vanish and the resulting force on the fluid elements would cause the streamlines to curve in order to generate a balancing centrifugal force.
+3.6 APPLICATIONS OF BERNOULLI'S EQUATION IN INCOMPRESSIBLE FLOWS
+Numerous applications of Bernoulli's equation are found in engineering practice. As il lustrative examples, two instruments that are designed based on Bernoulli's principle for the measurement of flow speed are described in this section. The Pitot-static tube shown schematically in Fig. 3.5 is a device that depends on Bernoulli's equation for its usefulness. The tube is of cylindrical cross section, and the U
+
+
+80 Chapter 3 Dynamics of Flow Fields
+V~Po
+p,p
+Pl
+Fig. 3.5. Pitot-static tube.
+tube manometer attached to it measures the difference between the stagnation pressure Po at the point where the streamline intersects the body and the static pressure p at the station behind the nose where the pressure is equal to that in undisturbed flow. In order to avoid errors resulting from small misalignment, static pressure orifices are distributed around the circumference. For the tube shown, known as the "Prandtl tube," the nose is hemispherical in form and the static pressure orifices are three diameters behind the nose; calibration shows that at or behind this station, the pressure at the tube surface is very nearly equal to the static pressure far from the body; in other words, the flow interference due to the nose extends about three diameters along the body. The U tube manometer indicates a difference in level 6.h and thus the pressure differ ence, which is equal to the weight of the column of the manometer liquid of unit cross section and height 6.h, gives
+Po - P = Plg6.h (3.22)
+where PI is the mass density of the manometer liquid. Then, after we substitute Po - P = pV2/2 from Eq. (3.17) and solve for V, Eq. (3.22) becomes
+V = ~2P/~Llh (3.23)
+The venturi tube is another device for measuring the flow speed; it is shown schemat ically in Fig. 3.6. We assume that the area change is gradual enough so the speeds are constant across the cross sections at stations 1 and 2, and their magnitudes are VI and V2• We assume also that PI = P2 = p. The flow is assumed irrotational, so that by Eq. (3.17),
+Since mass is conserved and the density is constant,
+
+
+3.7 The Momemtum Theorem of Fluid Mechanics 81
+P2 1 .. 1
+A)
+I ________.A~2----_7,~------------
+1 V) V2
+I
+p)11 ~ - 
+Ah
+PI
+Fig. 3.6. Venturi tube.
+we can solve, for instance, for V2:
+2PIg l1h I (3.24)
+P 1-(A2/Ad2
+The accuracy of Eqs. (3.23) and (3.24) depends on the assumption that the compress ibility of the fluid can be neglected, that is, on the relation
+Po-P = I
+I V2
+IP
+In Chapter 9, we find that the accuracy of this relation depends on the Mach number of the flow. For instance, at a Mach number of 0.4, that is, a flow velocity of 136 mis, un der standard conditions the ratio is about 1.04; it follows that the velocity calculated by Eq. (3.23) (if we assume constant density) would be about 2% high. On aircraft or in modem laboratories, pressure difference is measured more conve niently by an instrument called the pressure transducer instead of the liquid manometer shown in Figs. 3.5 and 3.6. A simple pressure transducer is an open-ended cylindrical tube containing an elastic diaphragm at the middle. Deformation of the diaphragm in re sponse to the difference of pressures at the two ends is converted into an electrical sig nal by means of strain gages bonded to the diaphragm, which is then displayed properly on a meter.
+3.7 THE MOMENTUM THEOREM OF FLUID MECHANICS
+Euler's equation, developed in Section 3.3 according to the Lagrangian description of fluid motion, is a statement of the conditions that must be fulfilled at each point in the field if the fluid is to be in dynamic equilibrium. Frequently in aerodynamics. the details of a flow field are too complicated to deal with and a gross relation involving a group of field points is desired. The momentum theorem of fluid mechanics provides this relation. It is
+
+
+82 Chapter 3 Dynamics of Flow Fields
+formulated following the Eulerian method of description by applying Newton's law of motion to the fluid contained instantaneously in a control volume R, which is fixed in
+space and enclosed by surface S(see Fig. 3.7). Newton's law in this case may be stated
+as follows: The time rate of change of momentulIl of the fluid within R, plus the rate at
+which momentum is carried out of Rthrough S, is equal in both magnitude and direction to the total force acting on the fluid.
+Each part of the statement will be transformed into a mathematical expression. The mo
+mentum of a fluid element of volume dR having density p and velocity V is pV dR., from
+which the time rate of change of momentum of all fluid contained with Ris obtained:
+(3.25)
+in which dldt is an ordinary differentiation. By Eq. (2.31), the volume efflux of fluid
+through an elementary surface dS (where the outward drawn unit normal vector is 0) is
+V . n dS, which carries with it a momentum of amount pV(V . 0) dS out of the control volume per unit time. Summing the contributions from all parts of the bounding surface
+gives the rate at which net momentum is carried out of Rthrough S, expressed in the form of a surface integral as
+JfsPV(V.o)dS (3.26)
+Let F be the total force acting on the fluid in R, Since most of the practical applications of the momentum theorem involve finding the force F. exerted by the tluid on a body within a control volume, it is convenient to break this force F into three parts: a force
+- F. exerted by the body on the fluid, a pressure force - f h po dS exerted on the control
+Fig. 3.7. Control volume for momentum theorem.
+
+
+3.7 The Momemtum Theorem of Fluid Mechanics 83
+surface by the fluid outside the surface, and a body force (gravity or electromagnetic) act
+ing on the fluid within R. If the body force is gravitational, its expression is JJfR pg dR. Then
+(3.27)
+and, for the mathematical formulation of the momentum theorem, we combine the terms (3.25) and (3.26) with Eq. (3.27) to get
+(3.28)
+The two terms on the left measure the momentum gained per unit time by the fluid stream ing through the region; the three terms on the right measure the force that was exerted to cause that increase in momentum. There are two contributions to the momentum increase.
+The first term is the rate of increase of momentum of the fluid within Rat a given instant and will vanish in a steady flow (it would be nonzero, for instance, for the flow near an accelerating or maneuvering aircraft). The second term is the steady flow contribution and
+measures the flux of momentum through S, that is, the amount by which the momentum
+leaving Sper unit time is greater than that entering. The first term on the right, - Fe' is
+the force that is needed to hold a body within Sagainst a force +Fe exerted by the fluid on the body, as would be the case, for instance, if the body experienced a drag 0; then the force on the fluid would be upstream and the first term on the right would be -D. The second term on the right is the resultant contribution of pressure on the control sur face to the force on the fluid; the sign is negative because the unit normal vector is pos
+itive outward (as shown in Fig. 3.7); this term vanishes if the pressure is constant on S.
+The third term on the right represents a net body force on the fluid within R. An important aspect of the momentum theorem, and one that makes it so extremely useful in engineering computations, is that one needs to know only the flow properties at the control surface boundary and the magnitude and direction of any external and body forces acting across the boundary. In the applications treated here, we neglect gravity forces. Then the three Cartesian components of Eq. (3.28) are
+:1 JJJk pu dR+JJs pu(V· n) dS ;:: - ~ - JJs p(n· i) dS
+(3.29)
+:)JJk pv dR+JJs pv(V· n) dS ;:: - t:v - JJs p(n· j) dS
+:)JfkPWdR+JJspw(V'n)dS ;:: -F;- JJsp(n'k)dS
+where Fx, Fy, and Fz are, respectively, the magnitudes of the components of Fe in the di rection of the x, y, and z axes. It can be shown (Problem 3.7.1) that the momentum equa tions (3.29) derived from the Eulerian description of fluid motion are equivalent to the Euler's equations (3.10) derived from the Lagrangian description.
+
+
+84 Chapter 3 Dynamics of How Fields
+-pn:{j
+________ cf> n ~pn'i qS
+• • "" d>. = -p dSx
+dSx =dS coscl> I • I
+_________ 14~_
+Fig. 3.8. Pressure forces on a small surface area.
+Evaluation of the pressure integrals on the right sides of Eqs. (3.29) can be simplified by considering the physical meaning of the integrands. We take the pressure integral in the first equation as an example and use it to compute the x component of the pressure
+force exerted on the surface 0 dS as shown in Fig. 3.8. Since 0 • i = cos tP where tP is the
+angle in between as defined in Eq. (2.8) and Fig. 2.3, the pressure force -po dS has an
+x component -po' idS, which can be written as - P dS" where dS, = dS cos tP is the
+projection of the area dS in the direction of x. The procedure just described is now generalized for an arbitrary surface configuration as follows. On a surface dS with outward unit normal vector 0 and exposed to pressure
+p, the magnitude of the pressure force in the +x direction is P dS.•, where dSx is the pro
+jection of the area dS in the direction of x; its sign is in concurrence with the sign of -0 • i. Thus, if the pressures on the right and left bounding surfaces of the strip shown in Fig. 3.8 are PI and P2' respectively, the net pressure force exerted on the strip in the
++x direction is (P2 - PI) dt. The same general rule applies in determining the y or z com
+ponent of the pressure force if i is replaced by j or k and dSr is replaced by dS,. or dSc'
+the projection of dS in the y or z direction. It follows that, in the absence of gra~ity, the resultant pressure force is zero on a closed body surrounded by a constant surface pres sure. Because of the importance of the momentum theorem, three examples of applications of Eq. (3.28) for steady flows are given below. Other examples are given in later chapters.
+A practical means of determining the drag of a body from velocity measurements in its wake is used as the first illustration of the momentum theorem. Although the method in volves a number of approximations, good results can be obtained. Because of its viscosity effects, a wake of retarded flow exists behind the cylinder of Fig. 3.9. In the wake region, the velocity is less than the upstream value, as illustrated by the profile at the right. The control volume is bounded by the streamlines far from the body and the lines no[ mal to the streamlines labeled station I and station 2, respectively, far upstream and far
+
+
+3.7 The Momemtum Theorem of I-Iuid Mechanics 85
+downstream of the body. Then the pressure on the control surface is constant and the pres sure integral in Eq. (3.28) vanishes. We assume steady incompressible flow and negligi ble gravity forces. Then the force exerted by the fluid on the body follows from Eq. (3.28):
+To evaluate the surface integral we choose, as shown in Fig. 3.9, a cross-hatched stream tube bounded by two neighboring streamlines that are separated by differential distances dYI and dY2 at stations I and 2. respectively. In view of the fact that V . n = 0 along a streamline. integration is needed only at stations I and 2. Thus, for n l = -i and n2 = i,
+Fe = - fp(i"r)[(i"r).(-i)]dYI- fp(il-j)[(iV2 )·(i)]dY2
+= if"r (P"r dYI) - if l-j(pl-j dY2)
+Fe is the drag of the cylinder per unit length. iD'. pV1 dYI is the rate at which fluid en ters the control volume through dYI' and pV2 dY2 is the rate at which fluid leaves dY2' The practical use of the equation is facilitated by combining the two integrals into one to be evaluated at station 2 in the wake. Conservation of mass for flow through the stream tube requires that
+and when this relation is introduced. the above vector equation may be written as
+The physical meaning of this equation becomes clear when we note that pV2 dY2 is the mass of fluid leaving dY2 per unit time. and during its flow around the body. its velocity is decreased from VI to V2• The integrand is therefore the momentum lost by the fluid leaving the control volume through dY2 per unit time. In the absence of pressure forces on the control surface. the integral is the loss of momentum suffered by the fluid passing
+Fig. 3.9. Drag of a body from wake measurements.
+
+
+--
+86 Chapter 3 Dynamics of Flow Fields
+through the downstream plane per unit time. which. by the momentum theorem. is ex actly equal to the drag per unit length of the cylinder. The equation is used practically, for instance. to determine the contribution of a par ticular spanwise station to the total drag of a wing; then VI is the flight speed and V2 is the measured velocity as a function of position along a line normal to the trailing edge. The location of the measurement plane behind the trailing edge, at which the contribu tion of the pressure integral in Eq. (3.28) can be neglected, must be determined by ex periment. Measurements behind airfoils at low angles of attack (see Goldstein, 1938, p. 262) show that if the measurement plane location is 0.12 chord behind the trailing edge, pressure variation is small enough so that the above integral gives the drag to within a few percent of its correct value.
+We calculate the force required to cause a change in flow direction by applying the mo mentum theorem to the flow in a pipe bend as shown in Fig. 3.10. Fluid enters the pipe bend with pressure PI' density PI' and velocity VI parallel to the x axis, and leaves with pressure P2' density P2' and velocity V2 parallel to the y axis. The bend is connected with the rest of the piping through perfectly flexible bellows so that
+the external force Fe is exerted only at the support B. A control surface S is drawn as shown, coincident with the outer surface of the pipe and normal to the flow at stations I and 2. The pressure acting on the pipe surface is the constant external pressure p". With 01 = -i and 02 = - j, the pressure integral and momentum integral in Eq. (3.28) are evaluated, respectively, as
+YLB'"""
+x
+Fig. 3.10. Flow through a pipe bend.
+
+
+3.7 The Momemtum Theorem of J<'luid Mechanics 87
+and
+Hs pV(V· n) dS = - P2jV2[(-jV2)· (-j)]A 2 + Pln;[(i\~).(-i)]A I
+112A • v,2 A •
+= - P2 v2 2J - PI I II
+Finally, if we postulate steady flow, neglect gravity forces, and use the above relations in Eq. (3.28), the force on the support is expressed in the fonn
+Mass conservation provides an additional relation between the properties at stations I and 2; that is,
+Then the equation for the external force may be written as
+The two-dimensional cascade of identical vanes shown in Fig. 3.11 deflects the flow through an angle and changes the pressure from PI to P2' F, and F,. are the force compo nents acting on a single vane normal to and parallel to the plane of the cascade.
+CD
+, -t
+~
+Fig. 3.11. Flow through cascade of vanes.

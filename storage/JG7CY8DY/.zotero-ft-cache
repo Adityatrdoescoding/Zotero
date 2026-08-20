@@ -1,0 +1,2652 @@
+Helicopter
+Dynamics
+FUNDAMENTALS OF
+
+
+This page intentionally left blank
+
+
+C. V E N K A T E S A N
+Helicopter
+Dynamics
+FUNDAMENTALS OF
+
+
+CRC Press Taylor & Francis Group 6000 Broken Sound Parkway NW, Suite 300 Boca Raton, FL 33487-2742
+© 2015 by Taylor & Francis Group, LLC CRC Press is an imprint of Taylor & Francis Group, an Informa business
+No claim to original U.S. Government works Version Date: 20140711
+International Standard Book Number-13: 978-1-4665-6635-4 (eBook - PDF)
+This book contains information obtained from authentic and highly regarded sources. Reasonable efforts have been made to publish reliable data and information, but the author and publisher cannot assume responsibility for the validity of all materials or the consequences of their use. The authors and publishers have attempted to trace the copyright holders of all material reproduced in this publication and apologize to copyright holders if permission to publish in this form has not been obtained. If any copyright material has not been acknowledged please write and let us know so we may rectify in any future reprint.
+Except as permitted under U.S. Copyright Law, no part of this book may be reprinted, reproduced, transmitted, or utilized in any form by any electronic, mechanical, or other means, now known or hereafter invented, including photocopying, microfilming, and recording, or in any information storage or retrieval system, without written permission from the publishers.
+For permission to photocopy or use material electronically from this work, please access www.copyright.com (http://www.copyright.com/) or contact the Copyright Clearance Center, Inc. (CCC), 222 Rosewood Drive, Danvers, MA 01923, 978-750-8400. CCC is a not-for-profit organization that provides licenses and registration for a variety of users. For organizations that have been granted a photocopy license by the CCC, a separate system of payment has been arranged.
+Trademark Notice: Product or corporate names may be trademarks or registered trademarks, and are used only for identification and explanation without intent to infringe.
+Visit the Taylor & Francis Web site at http://www.taylorandfrancis.com
+and the CRC Press Web site at http://www.crcpress.com
+
+
+Dedicated to THAT which is the source of everything
+
+
+This page intentionally left blank
+
+
+vii
+Contents
+Preface......................................................................................................................xi Author................................................................................................................... xiii List of Symbols ......................................................................................................xv
+1. Historical Development of Helicopters and Overview ..........................1 Historical Development ..................................................................................1 Chronological Development of Helicopters ................................................4 Helicopter Configurations ............................................................................ 14 Control Requirements ................................................................................... 17 Rotor Systems ................................................................................................. 19 Performance: Power Requirement ..............................................................22
+2. Introduction to Hovering and Vertical Flight Theory .......................... 25 Momentum Theory........................................................................................ 25 Assumptions of Momentum Theory........................................................... 25 Blade Element Theory ................................................................................... 29 History of the Development of BET .................................................30 BET for Vertical Flight ........................................................................ 31 Thrust Coefficient ..........................................................................................34 Torque/Power Coefficient ............................................................................ 36 Combined Differential Blade Element and Momentum Theory: Nonuniform Inflow Calculation ....................................................... 40 Tip Loss Factor ...............................................................................................42 Blade Root Cutout..........................................................................................43 Mean Lift Coefficient .....................................................................................43 Ideal Rotor versus Optimum Rotor............................................................. 45 Momentum Theory for Vertical Flight........................................................ 45 Normal Working State........................................................................ 48 Vortex Ring State ................................................................................. 49 Turbulent Wake State.......................................................................... 49 Windmill Brake State .......................................................................... 50 Autorotation in Vertical Descent ................................................................. 52 Forces on a Blade Element during Autorotation ............................ 53 Efficient Angle of Attack for Autorotation ...................................... 56 Ground Effect ................................................................................................. 57
+3. Introduction to Forward Flight Theory ................................................... 61 Momentum Theory in Forward Flight ....................................................... 61 Blade Element Theory in Forward Flight................................................... 68
+
+
+viii Contents
+Reference Planes............................................................................................. 73 Tip-Path Plane...................................................................................... 74 No-Feathering Plane........................................................................... 74 Control Plane ....................................................................................... 74 Hub Plane............................................................................................. 74 Rotor Hub Forces ................................................................................ 82 Nondimensional Thrust................................................................................83 In-Plane Drag Force Coefficient (Longitudinal) ........................................84 In-Plane Force Coefficient (Lateral).............................................................85 Moment Coefficient (CMx and CMy) .............................................................. 86 Torque Coefficient (CQ).................................................................................. 87 Power in Forward Flight...............................................................................90
+4. Rotor Blade Flapping Motion: Simple Model......................................... 99 Flap Motion with a Centrally Placed Root Spring .................................. 108
+5. Helicopter Trim (or Equilibrium) Analysis .......................................... 117 Sample Trim Problem.................................................................................. 121 Procedures..................................................................................................... 122 Results ........................................................................................................... 126 Reverse Flow ................................................................................................ 129
+6. Isolated Rotor Blade Dynamics ............................................................... 131 Isolated Blade Flap Dynamics in Uncoupled Mode ............................... 131 Pitch–Flap (δ3) Coupling ............................................................................. 144 Pitch–Lag (δ1) Coupling .............................................................................. 146 Structural Flap–Lag Coupling.................................................................... 146 Isolated Blade Lag Dynamics in Uncoupled Mode ................................ 150 Isolated Blade Torsional Dynamics in Uncoupled Mode....................... 153
+7. Rotor Blade Aeroelastic Stability: Coupled Mode Dynamics ........... 159 Coupled Flap–Lag Dynamics..................................................................... 159 Ordering Scheme ......................................................................................... 161 Coordinate Transformations ...................................................................... 161 Summary of Coordinate Systems for Flap–Lag Motion......................... 162 Acceleration of a Point “P” on the kth Blade ........................................... 165 Distributed Inertia Force .................................................................. 167 Root Inertia Moment......................................................................... 167 Aerodynamic Loads .................................................................................... 168 Relative Air Velocity Components at a Typical Cross Section of the kth Blade..................................................................... 170 Aerodynamic Loads and Moments at the Blade Root............................ 171 Aerodynamic Loads ............................................................ 173 Root Spring Moment ........................................................... 175
+
+
+Contents ix
+Equilibrium Equations ................................................................................ 177 Linearized Stability Equations (Perturbation Equations) ........... 179 Perturbational Stability Equations ............................................................ 181 Coupled Flap–Torsion Dynamics in Hover ............................................. 184 Relative Air Velocity Components at a Typical Cross Section............... 193 Aerodynamic Flap Moment............................................................. 195 Aerodynamic Torsional Moment.................................................... 195
+8. Rotor Modes: Multi-Blade Coordinate Transformation ..................... 203 Multiblade Coordinate Transformation.................................................... 204 Transformation to Multiblade Coordinates ............................................. 206
+9. Flap Dynamics under General Motion of the Hub ............................. 215 Coordinate Systems and Representation of Various Quantities ........... 215 Kinematics..................................................................................................... 221 Nondimensional Form ..................................................................... 221 Inertia Moment in Flap ............................................................................... 226 Aerodynamic Moment in Flap................................................................... 227 Perturbation Flap Equations in the Multiblade Coordinate System .... 238 Cyclic Flap Motion....................................................................................... 243
+10. Helicopter Stability and Control ............................................................. 249 Stability.......................................................................................................... 249 Control........................................................................................................... 250 Flight Dynamic Equations for a General Maneuver: Trim (Equilibrium) and Perturbation Analysis ...................................... 251 Linearized Perturbation Equations ........................................................... 265 Stability Characteristics............................................................................... 266 Simplified Treatment of Helicopter Dynamics in Hover ....................... 267 Longitudinal Dynamics in Hover.............................................................. 269 General Notes ............................................................................................... 278 Vertical Dynamics (Heave Dynamics) ...................................................... 279 Lateral–Directional Dynamics.................................................................... 282 Control Characteristics/Control Response .............................................. 291 Pitch, Roll, and Yaw Response to Control Inputs.................................... 292 Gust Response .............................................................................................. 294
+11. Ground Resonance–Aeromechanical Instability: A Simple Model..... 297
+Bibliography........................................................................................................ 305
+Index ..................................................................................................................... 311
+
+
+This page intentionally left blank
+
+
+xi
+Preface
+Due to their unique ability to hover and their ability to land and take off from any terrain, including rooftops, helicopters have established themselves as unique flying vehicles. Their utility has been growing steadily in both civil and military applications. In India, the requirements of high altitude operation and access to remote areas of the country necessitate the use of helicopters as a means of transportation. Helicopters are complex dynamic systems whose design and development require a high level of expertise and technology. Until the early 1990s, in India, very little academic and research activity was focused on helicopter studies. To create trained manpower in the field of helicopter design and development, a short course was organized by the Department of Aerospace Engineering, Indian Institute of Technology (IIT) Kanpur, in 1997 to highlight several important aspects of helicopter technology. The feedback from the participants indicated that the course provided a good insight on helicopter theory. We were very glad to note that this course has created an awareness and interest in helicopters among various organizations. In addition, this course has led to the formation of a strong bond between the academic institution (IIT Kanpur) and the industry (Hindustan Aeronautics Limited [HAL], Bangalore). This book is a culmination of the efforts put in to the preparation of lecture notes for a regular graduate-level introductory course as well as for a series of lectures given to designers, engineers, operators, users, and researchers on the fundamentals of helicopter dynamics and aerodynamics. The book is written at a basic level to provide a fundamental understanding and an overview of helicopter dynamics and aerodynamics. All the equations are derived from the first principle, and the approximations are clearly explained. The book is divided into 11 chapters, presented in a systematic manner, starting with historical development, hovering and vertical flight, simplified rotor blade model in the flap mode, and forward flight. Two chapters are devoted to the aeroelastic response and stability analysis of an isolated rotor blade in uncoupled and coupled modes. Chapters 8 to 10 address the modeling of coupled rotor–fuselage dynamics and the associated flight dynamic stability. Chapter 11 is devoted to a simplified analysis of the ground resonance aeromechanical stability of a helicopter. Any student with a good knowledge and background in dynamics, vibration, aerodynamics, and undergraduate-level mathematics should be able to follow the contents of the book. The illustrations given in the introduction chapter are sketches drawn using pictures available in the open literature and various sources from websites to avoid copyright infringment and to comply with Intellectual Property
+
+
+xii Preface
+Rights (IPR) regulations. If any reader is interested in the actual figures, he/she may refer to the literature or use website search options. Writing this book has been an enlightening and a trying experience for me. Without the support of the following people, it would not have been possible for me to complete this book. My sincere thanks are due to my students Gagandeep Singh, Vadivazhagan, K.R. Prashanth, Puneet Singh, V. Laxman, Rohin Kumar, Sriram Palika, and to project staff Nikita Srivastava and Smita Mishra. I would like to place on record my sincere thanks to my peers V.T. Nagaraj, P.P. Friedmann, I. Chopra, D. Hodges, D. Peters, G.H. Gaonkar, A.R. Manjunath, and R. Ormiston. As a researcher in the field of helicopter dynamics and aerodynamics, I have immensely benefitted from reading the excellent books written by W. Johnson, G. Padfield, A.R.S. Bramwell, W.Z. Stepniewski, G. Leishman, R.W. Prouty, A. Gessow, and G.C. Myers. Finally I am indebted to my family and friends for their generosity in their support. The material presented in this book has been developed by the author and any resemblance to the material available in the open literature is not intentional; however, if anyone finds any similarity, it is requested that it may be brought to my attention so that suitable corrective action may be taken.
+C. Venkatesan
+
+
+xiii
+Author
+C. Venkatesan holds a master’s degree in physics from the Indian Institute of Technology Madras and a PhD in engineering from the Indian Institute of Science Bangalore. After gaining experience in both industry and academic research, he joined the Department of Aerospace Engineering, Indian Institute of Technology Kanpur as a faculty member. He has initiated strong academic and research activity at IIT Kanpur in the field of helicopter aeroelasticity. With funding from the Department of Science and Technology, Venkatesan established an autonomous helicopter laboratory at IIT Kanpur. He has more than 100 research publications both in journals and conferences. He has received awards from the Aeronautical Society of India. He is a fellow of the Indian National Academy of Engineering and an associate fellow of the American Institute of Aeronautics and Astronautics. Presently he holds the position of HAL Chair Professor at IIT-Kanpur.
+
+
+This page intentionally left blank
+
+
+xv
+List of Symbols
+a: Lift curve slope aP: Absolute acceleration of any point P on the reference axis
+of the rotor blade aH: Absolute acceleration at the hub center due to fuselage
+motion A: Rotor disk area [A]: System matrix b: Blade semi-chord B: Tip loss factor C: Blade chord Cd, Cd0: Sectional drag coefficient CH: Longitudinal in-plane force coefficient at the hub Cl: Mean lift coefficient of the rotor system
+C(k): Theodorsen lift deficiency function Cl: Sectional lift coefficient CMx,CMxH: Roll moment coefficient at the hub CMy,CMyH: Pitch moment coefficient at the hub CP: Power coefficient CPpd: Profile drag power coefficient CQ: Torque coefficient (or yaw moment) at the hub CT: Thrust coefficient acting at the hub CY: Lateral in-plane force coefficient at the hub Cx, Cy: Damping at the base platform in x, y directions Cζ: Damping at blade root in lead–lag motion [C]: Damping matrix D: Sectional aerodynamic drag (or fuselage drag force) dP: Differential power dQ: Differential torque dr: Differential radial length dT: Differential thrust e: Blade root hinge offset
+
+eee
+x1 y1 z1
+, , : Unit vectors along the x1–y1–z1 directions
+
+eee
+xH yH zH
+, , : Unit vectors along the xH–yH–zH directions
+
+eη,eξ: Cross-sectional coordinate system of the blade
+f: Equivalent flat plate area of the fuselage Fx, Fy, Fz: Sectional forces along the x–y–z directions
+
+
+xvi List of Symbols
+Fx1, Fy1, Fz1: Sectional forces along the x1–y1–z1 directions Fx2, Fy2, Fz2: Sectional forces along x2–y2–z2 directions H: Longitudinal in-plane force at the rotor hub H: Angular momentum
+hx, hy, hz: Position vector components of the hub center from the c.g. of the fuselage hxT, hyT, hzT: Position vector components of the tail rotor hub center from the c.g. of the fuselage Ib: Mass moment of inertia (second moment of mass) of the blade about the root hinge Iij: Components of inertia tensor (i, j, = x, y, z) Imηη, Imηξ, Imξξ: Cross-sectional inertia quantities Iηη, Iηξ, Iξξ: Cross-sectional inertia quantities
+II
+ηη, ξξ: Non-dimensional cross-sectional inertia quantities
+k: Reduced frequency [K]: Stiffness matrix Kc: Control system spring constant in pitch motion Kpβ: Pitch–flap coupling parameter Kpζ: Pitch–lag coupling parameter Kx, Ky: Coefficients for non-uniform inflow variation over the rotor disk Kβ: Root spring constant in flap motion Kζ: Root spring constant in lag motion Kφ, Kθ: Root spring constant in torsion motion l: Length of the blade (l = R − e) L: Sectional lift L, M, N: Components of the moment acting at the fuselage M: Figure of merit (or mass of the blade) [M]: Mass matrix in stability analysis m: Mass per unit length of the blade m : Mass flow rate
+
+MA: Blade root moment due to the aerodynamic loads acting on
+the rotor blade Mb: Mass of the blade MEA: Aerodynamic moment about the elastic axis
+
+Mext: Blade root moment due to the external aerodynamic loads
+acting on the rotor blade MF: Mass of the helicopter
+
+MI: Blade root moment due to the inertia loads acting on the
+rotor blade
+
+
+List of Symbols xvii
+MXc.g.: First moment of mass of the blade about the root hinge MxH, MyH, MzH: Roll, pitch, and yaw moments at the hub center MβA: Aerodynamic flap moment about the root hinge Mβ, Mζ: Flap and lag moments at the blade root due to root springs N: Number of blades in the rotor system P: Rotor power p0: Atmospheric pressure p1: Pressure just above the rotor disk p2: Pressure just below the rotor disk pI: Distributed inertia force acting on the blade
+PHx, PHy: Hub forces along the x and y directions Ppd: Profile drag power of rotor blades p, q, r: Roll–pitch–yaw angular velocity of the helicopter about the body-fixed coordinate system at the c.g. {q}: State vector qI: Distributed inertia moment acting on the blade
+QA: Aerodynamic moment about the root hinge in lag motion QI: Inertia moment about the root hinge in lag motion R: Rotor radius (or structural flap–lag coupling factor) r: Radial location of a typical cross-section of the rotor blade rP: Position vector of any arbitrary point on the rotor blade
+Rx, Ry: Longitudinal and lateral perturbation motions of the base platform SC: Coupling parameter T: Rotor thrust Tt, TT: Tail rotor thrust [Tij]: Transformation matrix between the jth and the ith coordinate systems T∞: Rotor thrust in out of ground u, v, w: Translational velocity components of the helicopter c.g. along the body-fixed system U: Resultant relative air velocity at any blade cross-section UP: Flow velocity normal to the rotor disk or at the airfoil cross-section UR: Radial flow velocity along the span of the blade UT: Tangential velocity at the airfoil cross-section vP: Absolute velocity of any point P on the reference axis of the rotor blade V, VC: Climb velocity of the helicopter
+
+
+xviii List of Symbols
+
+Vc.g.: Velocity at the c.g. of the helicopter
+
+Vh: Relative air velocity at the blade cross-section due to heli
+copter motion
+
+VV
+rel net
+, : Net-relative air velocity at the blade cross-section due to helicopter and blade motions w: Induced velocity at far-field downstream wg: Vertical gust velocity XA: Distance between the elastic axis and the aerodynamic center of the blade cross-section Xb, Yb, Zb: Body-fixed fuselage coordinate system with origin at the c.g. of the helicopter Xea, Yea, Zea: Earth-fixed inertial coordinate system XH, YH, ZH: Hub-fixed non-rotating coordinate system with origin at the hub center X, Y, Z: Resultant force components acting at the helicopter fuselage X1, Y1, Z1: Hub-fixed rotating coordinate system X2, Y2, Z2: Blade-fixed rotating coordinate system Y: Lateral in-plane force at the rotor hub Z: Height of the rotor above the ground α, αe: Effective angle of attack at any typical cross-section of the blade (or angle between the hub plane and the forward velocity direction) βk: Flap deflection of kth blade β0: Mean value of flap deflection β: Time-dependent perturbation motion in the flap
+βideal: Ideal pre-cone angle βnc, βns: nth harmonic cosine and sine components of flap deflection βp: Pre-cone angle β1c, β1s: First harmonic cosine and sine components of flap deflection γ: Lock number δ1: Lag–pitch (or pitch–lag) coupling δ3: Flap–pitch (or pitch–flap) coupling ε: Non-dimensional parameter defined for the ordering scheme ζ: Lead–lag deformation of the blade θ: Time-dependent perturbation motion in lead–lag ζk: Lead–lag deformation of the kth blade ζ0: Mean value of lead–lag deflection
+
+
+List of Symbols xix
+ζnc, ζns: nth harmonic cosine and sine components of lead–lag deflection η, ξ: Cross-sectional coordinate of any arbitrary point of the blade section ηm, ξm: Cross-sectional coordinate of the mass center θ: Pitch angle at any cross-section of the blade λ: Time-dependent perturbation in pitch input θcon: Control pitch input given at the blade root θI: Pitch input given at the blade root θFP: Flight path angle (angle between the horizon and the velocity direction of the helicopter) θtip: Pitch angle at the tip θtw: Blade pre-twist θ0: Blade root pitch angle (or collective pitch input) θ1c, θ1s: First harmonic cosine and sine components of the blade pitch input (cyclic pitch input) θ0.75: Sectional pitch angle at a radial station 0.75R Θ: Pitch attitude of the helicopter κ: Empirical correction factor for induced power λ: Non-dimensional total inflow (or inflow ratio) λ0: Mean value of inflow λ: Time-dependent perturbation in inflow
+λc: Non-dimensional inflow due to the climb speed of the helicopter λh: Non-dimensional inflow during hover λi: Non-dimensional induced flow λNFP: Non-dimensional induced flow defined in a no-feathering plane μ: Advance ratio (non-dimensional forward speed) ν: Induced flow or inflow velocity at the rotor disk ν0: Mean inflow in forward flight νh: Induced flow during hover ρ: Density of air (or mass per unit length of the blade) ρb: Mass per unit volume of the blade σ: Solidity ratio σj: Real part of the eigenvalue representing damping φ: Induced angle of attack (or blade elastic torsion deformation) φk: Torsional deformation of the kth blade φ0: Mean value of torsional deformation φ: Time-dependent perturbation of torsional motion
+
+
+xx List of Symbols
+φnc, φns: nth harmonic cosine and sine components of torsional deformation Φ: Roll angle of the helicopter χ: Wake skew angle ψ: Azimuth location of the rotor blade or non-dimensional time ψk: Azimuth location of the kth blade ω : Angular velocity vector of the rotor blade ωj: Imaginary part of the eigenvalue representing frequency ωNRF: Non-dimensional non-rotating natural frequency in flap
+motion ωNRL: Non-dimensional non-rotating natural frequency in lead
+lag motion ωNRT: Non-dimensional non-rotating natural frequency in the
+torsion mode ωRF: Non-dimensional rotating natural frequency in flap
+motion ωRL: Non-dimensional rotating natural frequency in lead–lag
+motion ωRT: Non-dimensional rotating natural frequency in the torsion
+mode ωT: Non-dimensional non-rotating natural frequency in the
+torsion mode Ω: Main rotor angular velocity ( )e: Equilibrium quantities ( )T: Quantities related to the tail rotor (): Perturbation quantities
+
+
+1
+1
+Historical Development of Helicopters and Overview
+Nature has played a significant role in creating a desire in human beings to develop flying machines. It is well known that bird (of course with flapping wings) flying had a strong influence in the development of gliders and aircraft. Even in plants, the concept of flying over reasonably long distance to spread the seeds exists. For the sake of illustrating the beauty of nature, a few examples of flying fixed wing (Figure 1.1) and rotating wing (Figures 1.2–1.5) seeds are shown. The rotating wing seeds can be further divided into single or multiple wing seeds. The fixed wing seed (Figure 1.1), known as Alsomitra macrocarpa, has a wing span of about 13 cm. It can glide through air in wide circles in the rain forest and can travel a substantial distance. There are several types of rotating winged seeds. Some of them have only one wing attached to a seed at the root (Figures 1.2 and 1.3). The wing is a membrane with a slight twist. It spins as it falls, and it is similar to the autorotation of a helicopter when it descends after a power loss. Depending on height and wind speed above the ground, these seeds can be swept far away from the parent tree. Some of the seeds have two, three, or more wings (Figures 1.4 and 1.5). Unlike a fixed wing aircraft, helicopters use rotating wings to provide lift, propulsion, and control. In addition, helicopters are capable of hovering, landing, and takeoff from any terrain. Efficient accomplishment of vertical flight (with minimum power) is the fundamental characteristic of the helicopter. In the following section, a brief history of the development of helicopter is provided.
+Historical Development
+During the initial development of helicopters, three fundamental problems had to be overcome by the designers.
+
+
+2 Fundamentals of Helicopter Dynamics
+FIGURE 1.1
+Fixed wing seed (Alsomitra macrocarpa).
+FIGURE 1.2
+One-seeded fruit with one wing (South American Tipuana tipu tree).
+1 cm
+FIGURE 1.3
+Pine tree winged seed from woody cone rather than from flowers.
+
+
+Historical Development of Helicopters and Overview 3
+• Keeping the structural weight and the engine weight at a minimum so that the engine develops enough power to lift itself and some useful load
+• Developing a light, strong structure for rotor hub and blades
+• Understanding and developing schemes for controlling the helicopter, including the torque balance
+These problems were essentially similar to those faced by the developers of the airplane, which were solved by the Wright brothers. The development of the helicopter took a longer duration possibly due to the difficulty in vertical flight, which required a further development in aeronautical technology.
+FIGURE 1.4
+One-seeded two-winged fruit (Gyrocarpus, Hawaiian Islands).
+(a) (b)
+FIGURE 1.5
+Multiwinged spinning fruit/seed (Thailand). (a) Diptocarpus obtusifolios. (b) Gluta Melanorrhoea usitata.
+
+
+4 Fundamentals of Helicopter Dynamics
+Chronological Development of Helicopters
+The material presented in the following is based on the information available in Bramwell (1976); Johnson (1980); Stepniewski (1984); Prouty (1990); Padfield (1996); Leishman (2000); Seddon (1990); Bielawa (1992) and the articles appeared in Vertiflite, a publication of AHS International, The Vertical Flight Technical Society.
+• B.C.: The Chinese flying top (400 B.C.), shown in Figure 1.6, is a stick with a propeller on top, which was spun by the hands and released.
+• 15th century: Leonardo da Vinci sketched a machine for vertical flight utilizing a screw-type propeller (Figure 1.7).
+• 18th century: Sir George Cayley constructed models (Figure 1.8) powered by elastic elements and made some sketches. Mikhail V. Lomonosov of Russia demonstrated a spring-powered model to the Russian Academy of Sciences. Similarly, Launoy and Bienvenu of France demonstrated a model having turkey feathers (Figure 1.9) for rotors to the French Academy of Sciences. This model climbed a
+FIGURE 1.6
+Chinese top, B.C.
+FIGURE 1.7
+Sketch of Leonardo da Vinci’s “Helicopter,” 15th century.
+
+
+Historical Development of Helicopters and Overview 5
+height of 20 m, creating an enormous interest in flying. These models had little impact on full-scale helicopter development.
+• 19th century: The last half of the 19th century saw some progress, but there was no successful vehicle. The problem was due to the lack of a cheap, reliable, and light engine. Attempts were made to use steam engine, and W. H. Phillips (England, 1842) constructed a 10-kg steampowered model. Similarly, Ponton d’Amecourt (France, 1862) built a 4-kg steam-powered model (Figure 1.10) having coaxial contra-rotating rotors. At full power, this model reportedly tried to bob lightly on its
+FIGURE 1.8
+Sir George Cayley’s helicopter, 1796.
+FIGURE 1.9
+Launoy and Bienvenu: turkey-feather rotors, 18th century.
+
+
+6 Fundamentals of Helicopter Dynamics
+base. Ponton d’Amecourt was responsible for inventing the word helicopter derived from coining the two words helix (which means “screw” or “spiral”) and petron (which means “wing”). Enrico Forlanini (Italy, 1878) built a 3.5-kg flying steam-driven model (Figure 1.11). This model climbed a height of about 12 m and stayed aloft for about 20 min.
+Thomas Edison’s experiments with models led to the important conclusion that no helicopter would fly until engines with a weight-to-power ratio
+FIGURE 1.10
+Gustave Ponton d’Amecourt’s steam-powered helicopter, 1865.
+FIGURE 1.11
+Forlanini’s steam model helicopter, 1877.
+
+
+Historical Development of Helicopters and Overview 7
+below 1 or 2 kg/hp were available. (It may be noted that present-day turbo shaft engines have a weight-to-power ratio of the order of 0.5–0.15 kg/hp or, in other words, 2–5 hp/kg.) Around 1900, internal combustion reciprocating engines became available, which made airplane and helicopter flight possible.
+• 20th century
+• Renard (France, 1904) built a helicopter with two side-by-side rotors using a two-cylinder engine. He introduced the flapping hinge.
+• Paul Cornu (France, 1907) constructed the first man-carrying helicopter with two contra-rotating rotors of 6-m diameter, in tandem configuration (Figure 1.12). The total weight of the vehicle was 260 kg and was powered by a 24-hp engine. This helicopter achieved an altitude of 0.3 m for about 20 s. It had problems with stability. However, Cornu became the first person to succeed in actual helicopter flight.
+• Louis Charles Brequet (France, 1907) built a machine that he called “helicoplane” (Figure 1.13). It had four rotors (8-m diameter rotors), with a gross weight of 580 kg, and an engine with 45 hp. This vehicle made a tethered flight at an altitude of 1 m for about 1 min. The vehicle had no control mechanism. Breguet was one of the foremost pioneers to lift a full-scale helicopter with a pilot.
+• Henry Berliner (U.S.A., 1920–1922), son of Emile Berliner, an inventor, built a two-engine co-axial vehicle (Figure 1.14), which lifted a pilot. He also built a side-by-side rotor helicopter (Figure 1.15), in which forward flight control was achieved by titling the rotor shaft. These vehicles were highly unstable.
+FIGURE 1.12
+Paul Cornu’s first man-carrying helicopter, 1907.
+
+
+8 Fundamentals of Helicopter Dynamics
+FIGURE 1.13
+Louis Breguet’s large four-rotor helicopter, 1907.
+FIGURE 1.14
+Berliner coaxial vehicle, 1920–1922.
+FIGURE 1.15
+Berliner helicopter with side-by-side rotors, 1924.
+
+
+Historical Development of Helicopters and Overview 9
+• Sikorsky (Russia, 1910) built a vehicle with coaxial rotors (Figure 1.16) having a rotor diameter of 5.8 m and a 25-hp engine. This vehicle could lift its own weight of 180 kg, but not with a pilot.
+• B. N. Yuriev (Russia, 1912) built a two-bladed main rotor and a small anti-torque tail rotor (main rotor: 8-m diameter, 200-kg weight, 25-hp engine). This helicopter did not make any successful flight.
+• Lts. Petroczy and von Karman (Austria, 1916) constructed a tethered contra-rotating, coaxial helicopter with three engines of 40 hp each (Figure 1.17). The rotor diameter was 6 m. This vehicle was designed as an observation platform. Although it made several flights, it had control problems.
+FIGURE 1.16
+Sikorsky’s coaxial rotor vehicle, 1910.
+FIGURE 1.17
+Lts. Petroezy and von Karman’s tethered contra-rotating coaxial helicopter, 1916.
+
+
+10 Fundamentals of Helicopter Dynamics
+• George de Bothezat (U.S.A., 1922) built a large helicopter (Figure 1.18) with four six-bladed rotors at the ends of intersecting beams having a weight of 1600 kg and a 180-hp engine. Good control behavior was obtained by utilizing differential collective. This vehicle made many flights with passengers at an altitude of 4 to 6 m. This was the first rotorcraft ordered by the U.S. Army. Later, it was abandoned due to the mechanical complexity of the vehicle.
+• Etienne Oehmichen (France, 1924) built a machine (Figure 1.19) with four two-bladed rotors (7.6- and 6.4-m diameter) to provide
+FIGURE 1.19
+Etienne Oehmichen’s four two-bladed rotor vehicle, 1924.
+FIGURE 1.18
+George de Bothezat’s large 6-bladed rotor helicopter, 1922.
+
+
+Historical Development of Helicopters and Overview 11
+lift and five horizontal propellers for attitude control, two propellers for propulsion, and one propeller for yaw control, all powered by a 120-hp engine. It had 13 separate transmission systems. This vehicle made several flights and set a distance record of 360 m.
+• M. Raoul P. Pescara (Spain, 1920–1926) built a helicopter (Figure 1.20) with two coaxial rotors of four blades each having a diameter of 6 m. This was powered by a 120-hp engine. For forward flight control, he warped the biplane blades to change their pitch angle over one cycle. Pescara was the first to demonstrate cyclic pitch control for helicopters. This vehicle set a record distance of 736 m but had stability problems.
+• von Baumhaver (Holland, 1924–1929) developed a single main rotor and a tail rotor vehicle. This had a two-bladed main rotor of 15-m diameter, a total weight of 1300 kg, and a 200-hp engine. A separate engine of 80 hp was used for the tail rotor. Blade control was achieved by cyclic pitch using a swash plate, similar to modern helicopters. Several flights were made around 1-m altitude. There were difficulties in control because of separate engines for the main and tail rotors. The project was abandoned after a bad crash in 1929.
+• Corradino d’Ascanio (Italy, 1930) built a helicopter with two coaxial rotors having a diameter of 13 m and powered by a 95-hp engine. The blades had flap hinges and free feathering (pitching of blades) hinges. Collective (constant pitch angle over the
+FIGURE 1.20
+Pescara coaxial helicopter, 1925.
+
+
+12 Fundamentals of Helicopter Dynamics
+azimuth) and cyclic (variation of pitch angle once in a revolution) pitch changes were achieved by controlling the servo tabs on the blade. For many years, this vehicle held records for altitude (18 m), endurance (8 min, 45 s), and distance (1078 m).
+• Although the development of helicopter was fairly well advanced, it had severe stability and control problems. It was in the 1920s to the 1930s that autogyro was developed. An autogyro is essentially an airplane with wings replaced by rotors. A propeller is used for propulsive forces. It was developed by Juan de la Cierva (Spain, 1920–1930). In this vehicle, the rotor acts as a windmill and generates the lift. The initial design even used the conventional airplane-type control surfaces with no power to the rotor (Figure 1.21). In autogyro, hover and vertical flight are not possible, but a very slow forward flight can be possible. The reason for this development was that Cierva’s airplane crashed due to stall in 1919. He then became interested in designing an aircraft with a low takeoff and landing speed. In 1922, Cierva built the C-3 autogyro with a five-bladed rigid rotor, and the vehicle had a tendency to fall over sideways. Cierva incorporated flapping hinges in his design, which eliminated the rolling moment on the aircraft in forward flight. He was the first to use the flap hinges successfully in a rotary wing vehicle. In 1925, Cierva founded the Cierva Autogyro Company in England. In the next decade, about 500 autogyros were produced. In 1927, a crash led to the understanding of high inplane loads due to flapping (Coriolis effect), which led to the incorporation of lag hinges. In 1932, Cierva added rotor control to replace the airplane control surfaces. Lacking true vertical flight capability, the autogyro was never able to compete effectively with rotary wing aircraft. However, autogyro development had an influence on helicopter development.
+FIGURE 1.21
+Cierva autogyro, 1920–1930.
+
+
+Historical Development of Helicopters and Overview 13
+• Louis Charles Brequet (France, 1935) built a coaxial rotor helicopter having an 18-m diameter rotor powered by a 350-hp engine. This vehicle (Figure 1.22) exhibited promising control and stability characteristics. Even though it was damaged before the completion of the test, it is thought to be the first successful helicopter ever built.
+• E. H. Henrich Focke (Germany, 1936) constructed a helicopter with two three-bladed rotors mounted on side-by-side configuration (7-m diameter, 950-kg weight, 160-hp engine). The rotors were contra-rotating, and the small propeller in the nose was used to cool the engine. The rotors had an articulated hub. Directional and longitudinal control was achieved by cyclic pitch and roll by differential collective. Vertical and horizontal tail surfaces were used for stability and trim in forward flight. The vehicle set records for speed (122.5 kmph), altitude (2440 m), endurance (1 h, 21 min), and distance (224 km).
+• Igor Sikorsky (U.S.A., 1930–1941) pursued helicopter development in America, after leaving Russia. He built the VS-300 in 1941, which had a single three-bladed main rotor having a 9-m diameter and a tail rotor with an all-up weight of 520 kg, and a 100-hp engine. Lateral and longitudinal control was by the main rotor cyclic, and directional control, by the tail rotor. The tail rotor was driven by a shaft from the main rotor. Initially, this vehicle had three tail rotors (one vertical, two horizontal). Later, it was reduced to two and, finally, to one vertical tail rotor. In 1942, the R-4, a derivative of VS-300 (Figure 1.23), was constructed. This helicopter had a single main rotor and one tail rotor (main rotor: diameter, 11.6 m; weight, 1100 kg; 185-hp engine). This model went into production, and several hundreds were built during World War II. Sikorsky’s vehicle is considered to be the first practical, truly operational, and mechanically simple and controllable vehicle.
+FIGURE 1.22
+Louis Charles Brequet’s coaxial rotor helicopter, 1935.
+
+
+14 Fundamentals of Helicopter Dynamics
+The success of Sikorsky’s vehicle led to the development of other successful helicopters in America. Lawrence Bell (two-bladed main rotor helicopters), Frank N. Piasecki (tandem rotor helicopters), Stanley Hiller, Charles Kaman, and McDonnell built different types of helicopters. These names later became helicopter manufacturing companies in America. Piasecki’s company became the Boeing–Vertol company. In Russia, Mikhail Mil (Mil helicopters), Nikolai Kamov (coaxial rotor helicopters), and Alexander Yakolev (Yak-24 helicopter) built helicopters in 1949 to 1955. The invention of helicopters can be considered to be completed by 1950s. However, new developments are still being pursued, which are possible due to the overall technological development in several associated fields. Modern developments include
+(a) Notar (No-Tail Rotor) McDonnell–Douglas
+(b) Tilt rotor (V-22 Osprey) Bell–Boeing
+(c) ABC (Advancing Blade Concept, Sikorsky) (Coaxial, Contra-Rotating Rotors)
+(d) X-Wing (NASA) (Circulation Control Rotors)
+(e) Tilt Wing
+(f) Compound helicopter
+Helicopter Configurations
+Helicopter configurations may be broadly classified into five types. However, with newly emerging configurations such as NOTAR, X-Wing, and compound helicopter, additional classifications may come into the picture.
+FIGURE 1.23
+Igor Sikorsky’s helicopter, 1941.
+
+
+Historical Development of Helicopters and Overview 15
+However, the basic principle of helicopter flight may not differ in these configurations. In the following, a brief description of the conventional classifications is provided.
+1. Single main rotor: This configuration has a single main rotor and one tail rotor for torque control (Figure 1.24). It has the advantage of being simple. The disadvantage is the danger of the vertical tail rotor to ground personnel. One French design (AS 365 N2 Dauphin 2) has a fan-tail configuration. This is known as the Fenestron or the Fan-inFin type.
+2. Jet rotor: This configuration provides the simplest solution to the torque balance. Fuselage directional control is achieved by rudder or vane, which uses the rotor downwash in hover (Figure 1.25). In this configuration, the presence of a jet engine at the tip of the blade leads to complex blade dynamics.
+3. Coaxial rotor: In this configuration, the fuselage torque is balanced by two main rotors rotating in opposite directions. This design has the advantage of having its overall dimension defined by the main rotor diameter and also saving the power required for the tail rotor. However, the rotor hub and controls design is more complex (Figure 1.26). Kamov Ka-32A and Ka-226 are examples of coaxial contra-rotating rotor configuration.
+4. Side-by-side rotors: The basic advantage of side-by-side rotor configuration is that it requires less power to produce lift in forward flight, which is similar to a large aspect ratio airplane wing (Figure 1.27). The disadvantages are increased parasite drag and high structural weight. In addition, compared to single rotor configuration, side-byside configuration has complex gearing and transmission systems (e.g., Bell–Boeing V-22 Osprey).
+FIGURE 1.24
+Conventional single main rotor and one tail rotor helicopter configuration.
+
+
+16 Fundamentals of Helicopter Dynamics
+5. Tandem rotors: The main advantage of the tandem configuration lies in its clean fuselage, together with a large available centre of gravity range (Figure 1.28). Total load may be distributed between the two rotors. Disadvantages are due to complexities in transmission and gear systems, which are similar to side-by-side configuration. Another disadvantage is the loss in efficiency of the rear rotor since it operates in the wake of the front rotor. The loss in efficiency may be minimized by placing the rear rotor above the front rotor (e.g., Boeing CH-47 series).
+FIGURE 1.26
+Coaxial contra-rotating rotor helicopter configuration.
+FIGURE 1.25
+Tip jet rotor configuration.
+
+
+Historical Development of Helicopters and Overview 17
+Control Requirements
+The position and attitude of a rigid body (or vehicle) in space can be controlled by forces and moments applied along the respective direction. For a six-degrees-of-freedom control, one requires six control inputs. In general, it would be difficult for a human being to control a machine having six independent controls. However, it is possible to reduce the number of controls by
+FIGURE 1.27
+Side-by-side rotor configuration.
+FIGURE 1.28
+Tandem rotor configuration.
+
+
+18 Fundamentals of Helicopter Dynamics
+coupling together a few independent controls. But, such couplings involve some sacrifice on complete freedom of control both in the position and the attitude of the vehicle simultaneously in space. For example, the pilot requires an ability to produce moments about all the three orthogonal axes to correct the vehicle in a maneuver or when the vehicle is disturbed in a gust. If the pilot can produce a moment that is accompanied by force, he sacrifices the ability to maintain force equilibrium. Therefore, by coupling pitching moment with longitudinal force and rolling moment with side (lateral) force, the necessity of two of the six independent controls can be eliminated. Thus, in helicopters, there are four independent controls that are found to be sufficient for flying.
+1. Vertical (or height or altitude) control: This control is required to change the altitude of the helicopter. It is achieved by increasing or decreasing the pitch angle of the rotor blades to increase or reduce the thrust, respectively. (Note that, in helicopter terminology, “thrust” implies the total lift force generated by all the rotor blades in the rotor system.)
+2. Directional control: Directional control denotes the control of the heading of the helicopter by rotating about a vertical axis. In single main rotor helicopter, this is achieved by producing a moment about a vertical axis through the c.g. of the helicopter by modifying the thrust of the tail rotor.
+3. Lateral control: Lateral control involves the application of both force and moment. When the pilot applies lateral control, a rolling moment is produced about the c.g. of the helicopter due to a tilt of the main rotor thrust vector (Figure 1.29). As a consequence of the tilt, a component of the rotor thrust acts in the direction of the tilt. Hence, an application of lateral control results in a rotation in roll and in a sideward motion of the helicopter.
+4. Longitudinal control: Longitudinal control is identical to lateral control. Pitching moment is coupled with longitudinal force when the pilot applies longitudinal control.
+Longitudinal control
+T
+T
+Centre of gravity
+Lateral control
+FIGURE 1.29
+Helicopter control by tilt of the rotor thrust for longitudinal and lateral controls.
+
+
+Historical Development of Helicopters and Overview 19
+In general, cross coupling between various degrees of freedom of the helicopter is undesirable. For example, in a single main rotor machine, an increase in vertical force results in an increase in rotor torque (due to drag force acting on the blade), so a correction is required in the directional control to maintain the fuselage heading. Therefore, any control application to produce a required moment or force needs some compensating control inputs on other axes as well. Moreover, without an automatic stability augmentation system, the helicopter is not stable, particularly in hover. Consequently, the pilot is required to provide the feedback control to stabilize the vehicle continuously; therefore, flying a helicopter demands constant attention. The use of an automatic control system to augment the stability and control characteristics is desirable, but such systems increase the cost and complexity of the helicopter. Table 1.1 provides a comparison of the control inputs required for various types of helicopter configurations. Except for the conventional single main rotor and one-tail rotor configuration, all other configurations use differential collective or cyclic inputs, that is, when the input to one rotor increases, the input to the other rotor decreases by the same amount.
+Rotor Systems
+The classification of rotor systems is essentially based on the type of the mechanical arrangement of the rotor hub and the blade attachment to
+TablE 1.1
+Rotor Control Input for Various Helicopter Configurations
+Helicopter Configuration
+Height Longitudinal Lateral Directional
+Torque Balance
+Vertical Force
+Pitch Moment
+Roll Moment
+Yaw Moment
+Single main rotor Main rotor Main rotor Main rotor Tail rotor Tail rotor and tail rotor Collective Cyclic Cyclic Collective Thrust Coaxiala Main rotor Main rotor Main rotor Main rotor Main rotor Collective Cyclic Cyclic Differential Differential Collective Torque Tandema Main rotor Main rotor Main rotor Main rotor Main rotor Collective Differential Cyclic Differential Differential Collective Cyclic Torque Side by sidea Main rotor Main rotor Main rotor Main rotor Main rotor Collective Cyclic Differential Differential Differential Collective Cyclic Torque
+a Combined pitch differential control.
+
+
+20 Fundamentals of Helicopter Dynamics
+accommodate the flap, lag motion, and the ability to change the pitch angle of the blade.
+1. Articulated rotor: A schematic of the articulated rotor is shown in Figure 1.30. The rotor blades are attached to the rotor hub with flap (out-of-plane motion) and lag (in-plane deformation) hinges. A pitch bearing is employed to provide changes in the pitch angle of the rotor blade. The location of the hinges (offset distances) from the center of the hub plays a significant role in the performance, stability, control, and ground resonance characteristics of the vehicle. The advantage of an articulated rotor system is that the blade root bending moment is zero. The disadvantage is that there are many moving parts due to the hinges, which require frequent maintenance.
+2. Teetering rotor: Two blades forming a continuous structure are attached to the rotor shaft with a single flap hinge in a teetering or seesaw arrangement, as shown in Figure 1.31. There is no lag hinge, but a pitch bearing is provided to change the pitch angle of the blade. These rotor systems are simple but can be used for small helicopters. As the weight of the helicopter becomes large, more blades may be required for the distribution of loads. Since there are only two blades, these rotor systems provide high vibratory loads.
+3. Hingeless rotor (or rigid rotor): In hingeless rotor systems, the rotor blades are attached to the hub without flap and lag hinges, but it has a feathering (pitch) bearing. The blades are attached to the hub with cantilever root restraint (Figure 1.32) so that blade flap and lag motions occur through elastic bending near the root. The flexible section of the blade near its root acts like virtual hinges in the flap and the lag. This rotor system is also called “rigid rotor.” However, the limit of a fully rigid blade is applicable only to propellers. The
+Lag hinge
+Flap hinge
+Pitch bearing
+Torsion
+Flap
+Lag
+FIGURE 1.30
+Schematic of articulated rotor hub/blade configuration.
+
+
+Historical Development of Helicopters and Overview 21
+advantage of a hingeless rotor system is that it has fewer moving parts. The disadvantage is that these rotor systems will give rise to high vibratory loads at the hub.
+4. Bearingless rotor: In this rotor system, not only are the flap and lag hinges eliminated, but also the pitch bearing. The rotor blades are attached to the rotor hub through a composite beam (Figure 1.33) called the “flex beam.” This composite beam is not only designed to provide the required stiffness in the flap and lag deformations of the blade, but also acts as a pitch change mechanism. The pitch change in the blade is achieved by twisting a composite beam, thereby
+Flap hinge Pitch bearing
+Flap
+Lag
+Torsion
+FIGURE 1.31
+Schematic of a teetering (or seesaw)-type rotor configuration.
+Pitch bearing
+Flap
+Torsion Lag
+FIGURE 1.32
+Schematic of a hingeless rotor configuration.
+
+
+22 Fundamentals of Helicopter Dynamics
+eliminating the pitch bearing. The main advantage of this rotor system is that it has fewer moving parts, but the simplicity in configuration hides the complexity in the design aspects.
+Performance: Power Requirement
+To fly any vehicle, power is required. In the case of helicopters, engine power must be supplied to the rotor for the following three main reasons:
+• Power is required to produce lift, which is generated by pushing the air down. The power required for generating lift is referred to as “induced power.” In hover, this power is about 60%.
+• Power is required to drag the blades through air. This is known as “profile drag power,” and in hover, it is about 30%.
+• During forward flight, power must be supplied to drag the fuselage through the air in addition to the induced and profile drag losses. This power is known as “parasite drag power.”
+The variation of power loss with forward speed is shown in Figure 1.34. The performance capabilities of the helicopter are determined by the power available to power required curves. From Figure 1.34, it is clear that, while parasite power increases rapidly with airspeed, the power required for producing lift, that is, the induced power, decreases with increasing speed. As the rotor moves forward, the rotor encounters a large mass of air per second. Therefore, to produce the same thrust, the rotor needs to impact less velocity to the mass of air, and
+Flex beam
+Flap
+Lag
+Torsion
+Torque tube
+FIGURE 1.33
+Schematic of a bearingless rotor configuration.
+
+
+Historical Development of Helicopters and Overview 23
+hence, the energy imparted to air is reduced. Profile drag power increases slightly initially and increases at a higher rate at high speeds. The sum of these power losses is also plotted in the figure. It is clear that, if power available is just equal to the power required to hover, the performance of the machine is marginal. The vehicle can barely hover and will be unable to climb. It may be noted that, near the ground, a helicopter will be able to hover even when it has insufficient power to hover away from the ground. This is due to a phenomenon known as “ground effect.” The ground stops the rotor downwash (or induced velocity), thus decreasing the induced power required to hover. It is also noted that the reduction in power required with forward speed enables an overloaded helicopter to take off in wind or to make a ground run to attain a small forward speed. Apart from these three power losses, there are additional losses due to nonuniform flow, swirl in the wake, tip losses, loss in transmission systems, rotor-fuselage aerodynamic interference, tail rotor, etc.
+• Nonuniform inflow: 5–7%
+• Swirl loss: 1%
+• Tip loss: 2–4%
+• Engine transmission: 4–5% (turbine)
+• Tail rotor: 7–9%
+• Rotor-fuselage aerodynamic interference: ~2%
+2200
+2000
+1800
+1600
+1400
+1200
+1000
+800
+600
+400
+200
+00 20 40 60 80 100 Forward speed, knots
+Total power
+Parasite power
+Profile power
+Induced power
+Horse power
+120 140 160 180
+FIGURE 1.34
+Power variation with forward speed.
+
+
+This page intentionally left blank
+
+
+25
+2
+Introduction to Hovering and Vertical Flight Theory
+The lifting rotor is assumed to be in hovering condition when both the rotor and the air outside the slip stream are stationary, that is, there is no relative velocity between the rotor and the air outside the slip stream. The airflow developed due to the rotor is confined inside a well-defined imaginary slip stream, as shown in Figure 2.1. There is an axial symmetry in the airflow inside the slip stream. The hovering theory (or momentum theory) was formulated for marine propellers by W. J. Rankine in 1865 and was later developed by R. E. Froude in 1885. Subsequently, Betz (1920) extended the theory to include rotational effect.
+Momentum Theory
+Momentum theory is based on the basic conservation laws of fluid mechanics (i.e., conservation of mass, momentum, and energy). The rotor is continuously pushing the air down. As a result, the air in the rotor wake (inside the slip stream) acquires a velocity increment or a momentum change. Hence, as per Newton’s third law, an equal and opposite reaction force, denoted as rotor thrust, is acting on the rotor due to air. It may be noted that the velocity increment of the air is directed opposite to the thrust direction.
+Assumptions of Momentum Theory
+The rotor is assumed to consist of an infinite number of blades and may therefore be considered as an “actuator disk.” The actuator disk is infinitely thin so that there is no discontinuity in the velocity of air as it flows through the disk. The rotor is uniformly accelerating the air through the disk with no loss at the tips. The axial kinetic energy imparted to the air in the slip stream is equal to the power required to produce the thrust. In addition, air
+
+
+26 Fundamentals of Helicopter Dynamics
+is assumed to be incompressible and frictionless. There is no profile drag loss in the rotor disk, and the rotational energy (swirling motion of air) imparted to the fluid is ignored.
+NoT e: The actuator disk model is only an approximation to the actual rotor. The momentum theory is not concerned with the details of the rotor blades or the flow, and hence, this theory by itself is not sufficient for designing the rotor system. However, it provides an estimate of the induced power requirements of the rotor and also of the ideal performance limit. The slip stream of the actuator disk in hovering condition is shown in Figure 2.2.
+The rotor disk is represented by a thin disk of area A (= πr2); the far field upstream is denoted as station 1, and the far field downstream is denoted as station 4. The pressure of air at stations 1 and 4 is atmospheric pressure P0.
+Axis of symmetry
+Thrust
+Downstream
+ν
+Rotor disk
+Upstream
+Slip stream
+Figure 2.1
+Rotor disk and slip stream.
+Station 1: far-field upstream
+Station 4: far-field downstream
+P0 ν = 0
+Thrust
+ν
+w
+Station 2
+Station 3
+Rotor disk area = πr2
+Figure 2.2
+Flow condition in the slip stream.
+
+
+Introduction to Hovering and Vertical Flight Theory 27
+Stations 2 and 3 represent the locations just above and below the rotor disk, respectively. It is assumed that the loading is uniformly distributed over the disk area. The induced velocity or inflow velocity is ν at the rotor disk, and w is the far field wake–induced velocity. The fluid is assumed to be incompressible, having a density ρ. The conservation laws are as follows: Mass flow rate is given as
+m = ρAν (2.1)
+Momentum conservation is obtained by relating the force to the rate of momentum change, which is given as
+T=m w− = A w
+ ( 0) ρ ν (2.2)
+Energy conservation relates the rate of work done on the air to its change in kinetic energy per second, which is given as
+Tν = m w − = mw
+1
+2 01
+2
+22
+
+( ) (2.3)
+Substituting for m from Equation 2.1 and using Equation 2.2, Equation 2.3 can be written as
+ρAνwν = ρAν ⋅ w
+1 2
+2
+Cancelling the terms results in
+ν= ⇒ = ν
+1
+2 w w 2 (2.4)
+This shows that the far field–induced velocity is twice the induced velocity at the rotor disk. Substituting for w in Equation 2.2, the expression for rotor thrust in terms of induced velocity at the rotor disk is given by Rotor thrust:
+T = ρAν2ν (2.5)
+or the induced velocity is given as
+νρ
+=T
+2 A (2.6)
+
+
+28 Fundamentals of Helicopter Dynamics
+The induced power loss or the power required to develop the rotor thrust T is given as
+PT T T
+A
+= ν = 2ρ (2.7)
+The induced power per unit thrust for a hovering rotor can be written as
+P T
+T A
+= ν = 2ρ (2.8)
+The above expression indicates that, for a low inflow velocity, the efficiency is higher. This is possible if the rotor has a low disk loading (T/A). In general, the disk loading of helicopters is of the order of 100–500 N/m2, which is the lowest disk loading for any vertical take-off and landing (VTOL) vehicle. Therefore, the helicopters have the best hover performance. Note that the parameter determining the induced power is essentially T/(ρA). Therefore, the effective disk loading increases with an increase in altitude and temperature. The pressure variation along the slip stream can be determined from the steady-state Bernoulli equation. The pressure between stations 1 and 2 and between stations 3 and 4 are related, respectively, as
+pp
+01
+2
+1 2
+= + ρν between stations 1 and 2 (2.9)
+and
+p pw
+2
+2 0
+2
+1 2
+1 2
++ ρν = + ρ between stations 3 and 4 (2.10)
+The pressure variation along the slip stream is shown in Figure 2.3. There is a pressure jump across the rotor disk even though the velocity is continuous.
+Pressure of slip stream
+Atmospheric pressure
+P0 P0
+P1
+P2
+Figure 2.3
+Pressure variation along the slip stream.
+
+
+Introduction to Hovering and Vertical Flight Theory 29
+The jump in pressure is caused by the power given to the rotor to push the air downstream. From Equations 2.9 and 2.10, the rotor thrust can be evaluated.
+T = (p − p ) A = w A = ( ) A = A
+21
+2 22
+1 2
+1
+ρ 2 ρ 2ν 2ρ ν (2.11)
+The various quantities can be written in nondimensional form. Using the tip speed ΩR of the rotor blade as reference, the rotor inflow is represented in nondimensional form as
+Inflow ratio: λ ν
+==
+ΩR
+CT
+2 (2.12)
+Thrust coefficient CT and power coefficient CP are defined, respectively, as
+Thrust coefficient: C T
+AR
+T = ρ (Ω )2 (2.13)
+Power coefficient: C P
+AR
+T
+AR R
+C
+P
+T
+== =
+ρρ
+ν (Ω ) (Ω ) Ω
+32
+32
+2 (2.14)
+The hovering efficiency of the rotor is defined as
+M = minimum power required to hover ideal power
+Actual
+() power required to hover actual
+=T
+P
+ν (2.15)
+M is called the figure of merit (FM). The ideal value of M is equal to 1. However, for practical rotors, the value will be less than 1. For good rotors, M is in the range of 0.75 to 0.8. For inefficient rotors, FM will have a value around 0.5. FM can be used for comparing the efficiency of different rotor systems. It should be noted that FM is defined only for the hovering condition of the rotor.
+Blade element Theory
+Blade element theory (BET) is the foundation for all analyses of helicopter dynamics and aerodynamics because it deals with the details of the rotor
+
+
+30 Fundamentals of Helicopter Dynamics
+system. This theory relates the rotor performance and the dynamic and aeroelastic characteristics of the rotor blade to the detailed design parameters. In contrast, although momentum theory is useful to predict the rotor-induced velocity for a given rotor thrust, it cannot be used to design the rotor system and the rotor blades. The basic assumption of BET is that the cross section of each rotor blade acts as a two-dimensional airfoil to produce aerodynamic loads, that is, sectional lift, drag, and pitching moment. The effect of the rotor wake is entirely represented by an induced angle of attack at each cross section of the rotor blade. Therefore, this theory requires an estimate of the wake-induced velocity at the rotor disc. This quantity can be obtained either from the simple momentum theory (as given in the previous section) or from more complex theories, such as the prescribed wake or the free wake vortex theories, or nonuniform inflow calculations using acceleration potential.
+History of the Development of BeT
+The origin of BET can be attributed to the work of Willium Froude (1878). However, the first major treatment was by Stefan Drzewiecki, during 1892 to 1920. Drzewiecki considered different blade sections to act independently but was not certain about the aerodynamic characteristics to be used for the airfoils. The two velocity components considered in the theory are (1) tangential velocity Ωr due to rotation and (2) axial velocity V of the propeller. Note that the inflow component at the rotor disk was not included. In Drzewiecki’s calculations, the estimated performance exhibited a significant error, which was attributed to the airfoil characteristics. Since the aspect ratio affects the aerodynamic characteristics (in fixed wings), Drzewiecki proposed that the three-dimensional wing characteristics (with appropriate aspect ratio) be used in the BET. The results of this theory had the correct general behavior but were found to be quantitatively inaccurate. Several attempts (Betz [1915] and Bothezat [1918]) were made to include the increased axial velocity from the momentum theory into the BET. However, Prandtl’s finite wing theory provided a proper framework for the correct treatment and inclusion of the influence of the propeller wake on the aerodynamic environment at the blade section. In fixed wing, the lifting line theory is used for the calculation of induced velocity from the properties of the vortex wake. Thus, following the same approach, the vortex wake was used to define the induced velocities at each cross section of the rotor blade. This theory is called the “vortex theory.” It was through this approach rather than through the momentum theory that induced velocity was finally incorporated correctly in the BET. Therefore, during the initial stages of development, the vortex theory dominated the momentum theory in evaluating the inflow at the rotor disk. The vortex theory is also regarded as a reliable approach in both fixed and rotary wing analyses.
+
+
+Introduction to Hovering and Vertical Flight Theory 31
+BeT for Vertical Flight
+In this section, as a general case, BET is applied to a rotor that has a vertical velocity. If the vertical velocity term is set equal to zero, it represents the hovering condition of the rotor. While developing the BET, several assumptions are made. The important assumptions are as follows:
+1. In the preliminary highly simplified case, the rotor blade is assumed to be a rigid beam with no deformation. The blade can have a pretwist. (The effects of blade deformation will be considered in later chapters.)
+2. The rotor system is rotating with a constant angular velocity Ω.
+3. The plane of rotation of the rotor blades is perpendicular to the shaft.
+4. The rotor is operating at low disk loading, i.e., a small value of inflow velocity.
+5. Compressibility and stall effects are neglected.
+Figure 2.4 shows a rotor system along with the nonrotating hub fixed axes system (XH–YH–ZH) and the rotating blade fixed axes system (X1–Y1–Z1). Figure 2.5 shows a typical cross section of the rotor blade at a radial distance r from the center of rotation (or the hub center), various velocity components, and the resultant forces acting on the airfoil section. The blade is set at a pitch angle θ measured from the plane of rotation. UT and UP are, respectively, the tangential and the perpendicular relative air velocity components, as viewed by an observer on the blade section. In vertical flight condition, UP consists of the climb velocity VC of the helicopter (or rotor) and the induced velocity ν. Note that VC = 0 for hovering condition. The tangential component of velocity UT is due to rotor rotation.
+Z1, ZH Y1
+X1
+XH
+YH
+r
+o
+ψ
+A
+A
+Ω
+Figure 2.4
+Nonrotating hub fixed and rotating blade fixed coordinate systems.
+
+
+32 Fundamentals of Helicopter Dynamics
+The relative air velocity components UT and UP for vertical flight can be written as
+UT = Ωr and UP = VC + ν (2.16)
+The resultant air velocity U and the inflow angle are given by
+U UU
+U U
+=+
+=
+TP
+P
+T
+22
+tan φ
+(2.17)
+It can be seen that the vertical component of velocity UP modifies the angle of attack. Thus, the effective angle of attack at the blade section is given as
+α = θ − φ (2.18)
+The sectional lift and drag forces can be written as
+L U CC
+D U CC
+=
+=
+1 2
+1 2
+2
+2
+ρ
+ρ
+l
+d
+(2.19)
+where C is the blade chord, and Cl and Cd are, respectively, the lift and drag aerodynamic coefficients, which are functions of the angle of attack and the Mach number. Resolving these two sectional forces along parallel and perpendicular directions to the rotor disk, the vertical and horizontal (or inplane) force components can be obtained as
+FL D
+FL D
+Z
+Y
+=−
+−= +
+cos sin
+sin cos
+φφ
+φφ
+1
+(2.20)
+θα
+φU
+UP
+UT Y1
+Z1
+L
+D
+FZ1
+–FY1
+Figure 2.5
+Typical cross section of a rotor blade at radial location r and the velocity components.
+
+
+Introduction to Hovering and Vertical Flight Theory 33
+Combining the forces due to all the blades in the rotor system, the elemental thrust, torque, and power due to all the blades in the rotor system can be obtained. The following expressions are obtained by noting that the sectional forces acting on the blade cross section at a radial distance r are the same on all the blades.
+dT NF dr
+dQ NF rdr
+dP dQ N F rdr
+=
+=−
+==
+Z
+Y
+Y
+1
+1
+ΩΩ
+(2.21)
+where N is the total number of blades in the rotor system. The negative sign in the torque expression indicates that aerodynamic drag force on the blade provides a clockwise torque when the rotor is rotating in a counterclockwise direction, as shown in Figure 2.1. The positive quantity of the torque essentially represents the torque applied to the rotor by the engine to keep the rotor rotating at the prescribed angular velocity. Assuming that UP << UT, one can make a small angle assumption for the inflow angle. Note that this assumption is not valid near the blade root. However, since the dynamic pressure near the root is very small, the aerodynamic loads are also of small magnitude. Hence, the error due to the small angle assumption can be considered to be negligible. In addition, due to root cutout, the cross sections near the root (~20% of the rotor radius) do not produce any significant aerodynamic lift. Making a small angle assumption, one can write
+cos
+sin
+()
+φ
+φφ
+α θφ
+≈
+≈≈
+≈
+== −
+1
+U U
+UU
+Ca a
+P
+T
+T
+l
+and
+(2.22)
+where a is the lift curve slope. Substituting the above approximations, the expressions for lift and drag per unit length, from Equation 2.19, can be written as
+L U Ca U
+U Ca U U U
+DU
+≅−
+ 
+
+ = −
+()
+≈
+1 2
+1 2
+1 2
+22
+2
+ρ θ ρθ
+ρ
+T
+P
+T
+T PT
+TCCd
+(2.23)
+
+
+34 Fundamentals of Helicopter Dynamics
+Also, the force components can be approximated as
+FL
+F LD
+Z
+Y
+≈
+− ≈+
+1φ
+(2.24)
+Using this approximation, the elemental thrust, torque (applied torque), and power (Equation 2.21), can be expressed as
+dT NLdr
+dQ N L D rdr
+dP N L D rdr
+≈
+≈+
+≈+
+()
+()
+φ
+φΩ
+(2.25)
+The elemental thrust, torque, and power quantities can be nondimensionalized by using appropriate reference quantities, as
+dC dT
+AR
+dC d
+A RR
+dC d
+AR
+T
+Q
+P
+Q
+P
+=
+=
+=
+ρ
+ρ
+ρ
+()
+()
+()
+Ω
+Ω
+Ω
+2
+2
+3
+(2.26)
+Thrust Coefficient
+Using Equations 2.16, and 2.23 to 2.26, the elemental thrust coefficient can be written as
+dC
+N r Ca r V dr
+RR
+dC NC
+R
+T
+C
+T
+=
+−+
+=
+1 2
+1 2
+22
+ρ θν
+ρπ
+π
+( ) [ ( )]
+()
+ΩΩ
+Ω
+a r r dr
+dC a r r dr
+[]
+[]
+θλ
+σθ λ
+2
+2
+2
+−
+=−
+T
+(2.27)
+
+
+Introduction to Hovering and Vertical Flight Theory 35
+Solidity ratio is defined as σ = blade area/rotor disk area, where σ π
+= NCR
+R2
+is the solidity ratio for the constant chord blade.
+λν
+=V +
+R
+C
+Ω is the total inflow ratio
+rr
+= R (2.28)
+The differential expressions can be integrated over the length of the blade by assuming a constant chord, and a uniform inflow. The thrust coefficient is obtained as
+C a r r dr
+T= −
+∫σ θ λ
+2
+2
+0
+1
+[ ] (2.29)
+Assuming a linear twist variation for the blade pitch angle along the span of the blade as
+θ=θ + θ θ=θ + − θ
+0 r 0 75 r 0 75
+tw tw
+(or ( . ) )
+. (2.30)
+where θtw, θ0, and θ0.75 are the blade twist rate due to the pretwist of the blade, the pitch angles at the blade root, and at a radius 0.75 R, respectively. Substituting Equation 2.30 in Equation 2.29 and integrating over the length of the blade, the thrust coefficient becomes
+Ca
+T= −
+
+ 
+
+σθ λ 23 2
+0.75 (2.31)
+On the other hand, a twist distribution of θ = θtip
+r (known as the “ideal
+twist distribution”) results in a thrust coefficient expression given as
+Ca
+T tip
+=−
+σθ λ
+4 [ ] (2.32)
+This ideal twist distribution, while physically not possible to achieve, is of interest because it gives a uniform inflow over the rotor disk for constant chord blades. This twist distribution is denoted as ideal twist distribution
+
+
+36 Fundamentals of Helicopter Dynamics
+because the momentum theory shows that uniform inflow provides a minimum induced power loss. Now, it is shown that BET provides a relationship between rotor thrust coefficient, pitch angle, and inflow ratio. On the other hand, momentum theory gives a relationship between thrust coefficient and inflow ratio. For hovering condition, in the case of constant chord and a linearly twisted blade, thrust coefficient is written as (note: VC = 0)
+Ca
+T= −
+
+ 
+
+σθ λ 23 2
+0.75 (2.33)
+From the momentum theory, the inflow ratio in hover is given as (Equation 2.12)
+λ = CT
+2
+Combining the above two expressions, the relationship between θ0.75 and CT can be written as
+θσ
+0 75
+63 22
+.= +
+C a
+C
+T T (2.34)
+The first term corresponds to the mean angle of attack of the rotor blade, while the second term is the additional pitch angle required due to the induced inflow. The above three relationships can be used to obtain an estimate of the thrust coefficient, the pitch angle at 0.75 R, and the inflow ratio under hovering condition. Using Equations 2.12 and 2.33, a relationship between the inflow ratio and the blade pitch angle θ0.75 can be obtained as
+λσ
+= + σθ −
+
+
+a
+16 1 64a
+31
+0.75 (2.35)
+Torque/Power Coefficient
+The elemental torque and power coefficients can be obtained from Equations 2.16, 2.23, 2.25, and 2.26. They are shown to be equal, and it is given as
+
+
+Introduction to Hovering and Vertical Flight Theory 37
+dC dC a U U U C U rdr
+dC dC
+P Q PT P
+d T
+PQ
+== −
+( )+
+
+ 
+
+==
+σθ σ
+22
+22
+σa θr λ λ σC r rdr
+22
+22
+( − )+
+
+ 
+
+d
+(2.36)
+The velocity quantities with overbar represent nondimensional quantities obtained by dividing with reference velocity ΩR, which is the tip speed of the rotor blade. The elemental power coefficient can be written as
+dC a r r C r dr
+p
+d
+=−
+[ ]+
+
+ 
+
+λσ θ λ σ
+22
+2 3 (2.37)
+Noting from Equation 2.27 that the first term contains an elemental thrust coefficient, Equation 2.37 can be written as
+dC dC C r dr
+pT
+d
+=λ +σ
+2
+3 (2.38)
+Integrating both sides over the rotor system, the power coefficient can be obtained as
+C dC C r dr
+CC C
+PT
+d
+p pi Ppd
+=+
+=+
+∫∫
+λσ
+2
+3
+(2.39)
+The power coefficient Cpi represents the power loss due to total induced flow, and CPpd is the power loss due to profile drag. For uniform inflow, the power due to total induced flow is Cpi = λCT.
+Since total inflow λ ν
+=V +
+R
+C
+Ω , during climb, Cpi includes the power required
+for climbing as well as the induced power loss. Therefore, one can write the induced power in terms of two quantities, namely climb power and induced power, that is,
+Cpi = Cpc + Cpiv
+In other words, this power term can be expressed as
+Pi = Pc + Piv = VCT + νT = (VC + ν)T (2.40)
+
+
+38 Fundamentals of Helicopter Dynamics
+During hover λ = CT
+2 , therefore, the induced power loss becomes
+CC C
+PP
+i iv
+= =T
+32
+2 (2.41)
+This is the induced power loss in hover under ideal condition. However, for a real rotor with a practical twist, a planform, and a finite number of
+blades, the induced power loss will be higher than the ideal value CT
+32
+2.
+One way to compute the induced power loss is to integrate λ dCT
+∫
+under
+real conditions, taking into account the nonuniform inflow over the rotor disk. On the other hand, one can use the same expression as the momentum theory expression for power loss but with an empirical factor κ to account for the additional losses due to the real situation, that is,
+CC
+pi
+T
+=κ 32
+2 (2.42)
+The factor κ accounts for nonideal conditions, and its value is usually taken as 1.15, which implies an additional power of about 15% more than the ideal power. Next, consider the profile power term from Equation 2.39, which is given as
+C C r dr
+Ppd
+d
+=∫σ
+2
+3 (2.43)
+Assuming the constant chord for the blade with the drag coefficient Cd = Cdo (a constant), the profile power loss can be obtained by integrating over the rotor radius. It is given as
+CC
+Ppd
+do
+=σ
+8 (2.44)
+Combining Equations 2.42 and 2.44, the total power loss in hover can be expressed as
+CC C
+p
+T do
+=κ +σ
+32
+28
+
+
+Introduction to Hovering and Vertical Flight Theory 39
+The efficiency of the rotor is expressed as the ratio of the ideal power over the actual power. This ratio is denoted as figure of merit, which is given by
+MC
+CC
+C
+CC
+=+ =
++
+p
+pi Ppd
+T
+T do
+ideal
+32
+32
+2
+28
+κ σ (2.45)
+A plot of figure of merit M as a function of thrust CT (for a set of given values of (σ, Cdo, κ)) is shown in Figure 2.6. It can be noted from the figure that, for low values of thrust coefficient, due to a comparatively high value of profile drag, the figure of merit is low. Thus, the rotor is not operating efficiently. As CT increases, the figure of merit increases. For high values of CT (≈0.006–0.01), figure of merit does not show a large variation. This functional form indicates that figure of merit asymptotically approaches unity as the CT is increased. In practical situations, for a large value of CT, the angle of attack has to be large, which can lead to blade stall and an associated increase in drag. Hence, there will be a reduction in figure of merit. Figure of merit is a useful parameter for comparing the efficiency of different rotors having the same disk loading. For a given value of CT, figure of merit M will have a high value for a low value of solidity ratio σ and drag coefficient Cd0. If the rotor solidity is too low, a high value of angle of attack will be required to achieve the given thrust (Equation 2.34). Therefore, the rotor should have as low a value of solidity as possible with an adequate stall margin for the airfoil. Blade twist and variable chord also influence the induced and profile power losses. A study of these effects requires a more detailed analysis, which can be taken as an exercise.
+1.2
+1.0
+0.8
+0.6
+0.4
+0.2
+0 0.002 0.004 0.006 Coefficient of thrust, CT
+Ideal figure of merit
+Figure of merit, M
+0.008
+Cdo = 0.01 σ = 0.06
+0.010
+Figure 2.6
+Variation of figure of merit with thrust coefficient.
+
+
+40 Fundamentals of Helicopter Dynamics
+Combined Differential Blade element and Momentum Theory: Nonuniform Inflow Calculation
+The nonuniform inflow distribution as a function of radial distance from the center of the rotor disk can be obtained by comparing the differential thrust expressions obtained from both the momentum theory and the BET. Consider a circular strip of differential area dA = 2πrdr at a radial distance r from the center of the rotor disk, as shown in Figure 2.7. From BET (Equation 2.27), the differential thrust expression over this differential area is given as
+dC a r r dr
+T= −
+σθ λ
+2
+2
+( ) (2.46)
+The differential thrust expression from the momentum theory can be written as
+dT = ρ(V + ν)2ν(2πrdr) (2.47)
+In nondimensional form, Equation 2.47 can be written as
+dC rdr
+T = 4λλi (2.48)
+where total inflow λ ν
+=V+
+ΩR and induced inflow λ ν
+i = ΩR and λc = V
+ΩR .
+Hence, λi = λ − λc. Equating the two differential thrust expressions given in Equations 2.46 to 2.48, an equation for λi can be formed:
+R
+r
+Δr
+Figure 2.7
+Annular area for nonuniform inflow calculation.
+
+
+Introduction to Hovering and Vertical Flight Theory 41
+42
+4 42
+2
+(λ λ )λ σ (θ λ λ )
+λλλσ σ
+cc
+c
++ = −−
+++
+
+ 
+ −
+ii i
+ii
+ar
+aa
+2 (θr − λc) = 0
+(2.49)
+Solving for λi and taking the positive root,
+λ
+λ σ λ σ σθ λ
+i
+a a ar
+=
+−+
+
+ 
+ + +
+
+ 
+4 2 4 2  + 8 −
+8
+2
+cc c
+()
+or
+λ λ σ λ σ σθ λ
+i
+=− + a a a r
+
+ 
+ + +
+
+ 
+ + −
+cc
+c
+2 16 2 16 8
+2
+( ) (2.50)
+For the hovering condition, λc = 0, and the inflow ratio becomes
+λλ σ
+= = +σ θ −
+
+ 
+
+i
+a
+ar
+16 1 32 1 (2.51)
+Equation 2.51 provides an expression for the nonuniform inflow distribution in hover. It can be seen that the inflow ratio is a function of radial distance. (Compare this expression with the uniform inflow expression derived earlier and given in Equation 2.35.) Using the above equation, for given values of pitch, twist, and chord, the inflow λi can be calculated as a function of radius. It can be observed from Equation 2.51 that a uniform inflow distribution requires that θr = a constant. In other words, the ideal twist distribution is given by the expression
+θ = θtip
+r (2.52)
+It can be shown that uniform inflow results in uniform disk loading (i.e.,
+equal areas of rotor disk support equal thrust, that is, dT
+dA = a constant) and
+also provides minimum induced power loss. (The proof can be taken as an exercise.) Although the rotor performance evaluated using nonuniform inflow may be more accurate than that evaluated using uniform inflow, the differential
+
+
+42 Fundamentals of Helicopter Dynamics
+momentum theory is still only an approximate theory. A more refined inflow distribution can be obtained using the vortex theory or from computational fluid dynamics (CFD) calculations.
+Tip Loss Factor
+When the chord at the blade tip is finite, BET gives a nonzero lift. However, the lift drops to zero at the tip due to three dimensional flows. Since the dynamic pressure is proportional to r2, the blade loading is concentrated near the tip and drops steeply to zero at the tip, as shown in Figure 2.8. The loss of lift at the tip is very important in calculating rotor performance. A rigorous treatment of tip loading requires a lifting surface analysis. An approximate method to account for tip losses is to assume that the blade element outboard of the radial station r = BR(B < 1.0) has only profile drag but produces no lift. The parameter B is called “tip loss factor.” A number of methods are available for evaluating B. Prandtl gave an expression for tip loss factor in terms of thrust coefficient and number of blades, which can be approximately given as (Bramwell, 1976):
+BC
+N
+=1− T
+Generally, tip loss factor is taken as B = 0.97, and it provides a good correlation with the experimental results.
+350
+300
+250
+200
+150
+100
+50
+0 0 0.1 0.2 0.3 0.4 0.5 Radius station, r/R
+Blade loading, N/m
+0.6 0.7 0.8 0.9 1.0
+Realistic
+Theoretical
+Figure 2.8
+Spanwise lift distribution on the blade, showing the tip and the root offset effects.
+
+
+Introduction to Hovering and Vertical Flight Theory 43
+Blade Root Cutout
+Performance losses can also occur due to root cutout (Figure 2.9). The lifting portion of the blade generally starts at a radial station of about 10% to 30% of the rotor radius. The root cutout portion is required for installing flap-lag hinges, pitch bearings, blade root attachment to the hub, etc. Considering both root cutout and tip losses, in BET, the integration for thrust is performed from r = rroot to r = B, that is,
+C dC
+R
+B
+TT
+root
+= ∫ (2.53)
+Since the dynamic pressure at the root is very low, the correction to the thrust calculation is also very small. Therefore, in the following, these effects have been neglected. However, in design calculations, one must take into account these effects.
+Mean Lift Coefficient
+The operating condition of the rotor can be represented by defining the mean aerodynamic lift coefficient Cl, which is obtained as follows. From Equation 2.46, one can write the thrust expression in terms of the lift coefficient Cl.
+dC a r r dr C r dr
+Tl
+= −=
+σθ λ σ
+22
+22
+( ) (2.54)
+Root section
+Figure 2.9
+Rotor blade root section/root cutout.
+
+
+44 Fundamentals of Helicopter Dynamics
+where the lift coefficient is given as C a r
+l= −
+
+ 
+
+θλ
+C dC C r dr C r dr C
+TT l l l
+== = =
+∫∫ ∫
+0
+1 2
+0
+1 2
+0
+1
+2 26
+σ σ σ (2.55)
+From Equation 2.55, the mean lift coefficient can be expressed as
+CC
+l
+T
+=6
+σ (2.56)
+CT
+σ is the ratio of the thrust coefficient to the solidity ratio. This quantity is a
+measure of the mean lift coefficient of a blade. Correspondingly, 6C
+a
+T
+σ may be
+interpreted as the mean angle of attack of the blade. It can be shown that CT
+σ
+represents dimensionless blade loading, whereas T
+πR2 is the disk loading.
+C T RR
+R
+T
+T/ Total blade area/ Total b
+σ
+ρπ πρ
+==
+( ( )) ( )(
+22
+2
+Ω
+lade area)(ΩR)2 (2.57)
+CT
+σ plays an important role in rotor aerodynamics since many characteristics
+of the rotor and the helicopter depend on the mean lift coefficient of the blade. The rotor figure of merit in hover, from Equation 2.45, can be expressed as
+MC
+CC
+= +
+λ
+κλ σ
+hT
+hT
+d0
+8
+where λh
+T
+=C
+2 is the inflow ratio during hover. This expression can also
+be written as
+MC
+C
+= +
+1
+8
+κσ
+λ
+d0
+hT
+Substituting for CT in terms of Cl from Equation 2.56, as C C
+T
+l
+=σ
+6,
+MC
+C
+= +
+1 3 4
+1
+κλ
+do
+lh
+(2.58)
+This expression indicates that, for a high value of figure of merit, the blade must have an airfoil that has a high value of lift-to-drag ratio.
+
+
+Introduction to Hovering and Vertical Flight Theory 45
+Ideal Rotor versus optimum Rotor
+Ideal rotor is one where the induced power loss is a minimum. Hence, it requires a uniform inflow, with the rotor blade having an ideal twist distribution. Optimum rotor is one which is optimized to have both induced and profile power losses at a minimum. Minimum induced power requires uniform inflow. Minimum profile power requires that each blade section
+operates at its optimum condition with a maximum value of C
+C
+l
+d
+. These two
+criteria determine the twist and taper for the optimum rotor, which has the best hover performance. Due to manufacturing considerations, almost all rotor blades have a constant chord over a major portion of the rotor blade.
+Momentum Theory for Vertical Flight
+Vertical flight of the helicopter at a speed V includes climb (V > 0), hover (V = 0), descent (V < 0), and also the special case of autorotation (i.e., poweroff descent). Between hover and autorotation descend speed, the helicopter is descending at a reduced power. At autorotation descend speed, the helicopter rotor does not require any power to keep the rotor rotating. Beyond autorotation descend speed, the rotor is actually generating power. An interpretation of induced power losses requires a discussion of the flow states of the rotor in axial flight. Consider two cases of the actuator disk theory, namely vertical climb and vertical descent. Assume that the flow is uniform in the slip stream. Figure 2.10 shows the velocity profile in both cases. The arrows represent the positive direction of flow velocity in the slip stream. It may be noted that, for climb, velocity V is positive, and for descent, it is
+Rotor disk area A = πR2
+Rotor disk area A = πR2
+Thrust Thrust
+Wake slip stream
+(a) (b)
+Wake slip stream
+V
+V+ν V+ν
+V
+V+w
+V+W
+Figure 2.10
+Flow velocities in climb and descent. (a) Climb (V > 0). (b) Descent (V < 0).
+
+
+46 Fundamentals of Helicopter Dynamics
+negative. In the following, the derivation of the induced velocity expression for both climb and descent is provided side by side.
+Climb (V > 0) Descent (V < 0) Mass flow through the rotor disk
+m = ρA(V + ν) m = ρA(V + ν)
+Momentum conservation
+T = m V + w − mV = mw
+ 
+( ) T = mV − m V + w = −mw
+ 
+()
+Energy conservation
+P = m V + w − mV
+1 2
+1 2
+22
+
+( ) P = mV − m V + w
+1 2
+1 2
+22
+ ( )
+Simplifying,
+P = m Vw + w
+1
+22 2
+ ( ) P = − m Vw + w
+1
+22 2
+( )
+Since P = T(V + ν), we have
+
+mw(V + ν) = 1 m( Vw + w )
+2 2 2 − + =− +
+
+mw(V ν) 1 m( Vw w )
+22 2
+w = 2ν w = 2ν Hence, thrust
+T = ρA(V + ν)2ν T = −ρA(V + ν)2ν
+Since the induced velocity in hover is given as ν ρ
+h
+2
+= 2T
+A, and assuming
+that the actuator disk in steady vertical flight is supporting the same weight as in hover (i.e., T T A
+hh
+= = ρ 2ν2 ). Equating the thrust expressions in hover and vertical flight, the equation for the induced flow ν can be obtained for both climb and descent as Climb (V > 0)
+ν
+νν
+ν ν
+hh h
+V+
+ 
+
+ = 1
+Descent (V < 0)
+ν
+νν
+ν ν
+hh h
+V+
+ 
+
+ = −1
+Solving these equations, the induced velocity ν
+νh
+as a function of V can be
+obtained for climb and descent flight conditions.
+
+
+Introduction to Hovering and Vertical Flight Theory 47
+Note that induced velocity ν
+νh
+is always positive. Hence, it may be noted
+that the negative root of the radical is not valid for climb, but for descent, both the positive and negative roots of the radical will provide a positive induced velocity. It will be shown later that the positive root of the radical is not a valid root due to the physical condition of the flow. Climb (V > 0)
+ν
+νν ν
+hh h
+=− + 
+
+
+ +
+VV
+2 21
+2
+(2.59a)
+Descent (V < 0)
+ν
+νν ν
+hh h
+=− ± 
+
+
+ −
+VV
+2 21
+2
+(2.59b)
+The net flow velocity at the rotor disk is Climb (V > 0)
+V+ = V +  V
+
+
+ +
+ν
+ννν
+hhh
+21
+2
+(2.60a)
+Descent (V < 0)
+V+ = V ±  V
+
+
+ −
+ν
+νν ν
+hh h
+2 21
+2
+(2.60b)
+The net velocity at the far wake is Climb (V > 0)
+V+ =+  V
+
+
+ +
+24
+2
+ν
+νν
+hh
+Descent (V < 0)
+V+ =±  V
+
+
+ −
+24
+2
+ν
+νν
+hh
+Using Equations 2.59a and 2.59b, the variation of induced velocity ν
+νh
+ver
+sus climb (or descent) velocity V
+νh
+is plotted, and it is shown in Figure 2.11.
+The dashed portions of the curve are branches of the solution, which are extrapolated beyond the assumed conditions. These dashed lines do not
+
+
+48 Fundamentals of Helicopter Dynamics
+correspond to the assumed flow state. The line V + ν = 0 is where the direction of flow through the rotor disk and the total induced power P = T(V + ν) change sign. At the line, V + 2ν = 0, the flow in the far wake changes sign. The three lines V = 0, V + ν = 0, and V + 2ν = 0 divide the graph into four regions. These regions are denoted as the normal working state (hover and climb), the vortex ring state, the turbulent wake state, and the windmill brake state. The flow characteristics in each of the states are described below.
+Normal Working State
+The normal working state includes climb and hover. During climb, the velocity in the slip stream throughout the flow field is downward, with both V and ν positive. For mass conservation, the wake contracts downstream of the rotor. The momentum theory gives a good estimate of the performance. Hover (V = 0) is the limit of the normal working state. Even in hover, the momentum theory gives a good estimate of the performance. The flow pattern in the normal working state is shown in Figure 2.12.
+4
+3
+–5 –4 –3 –2 –1 0 1 2 3
+2
+1
+Descent Climb
+Hover
+Momentum theory solution
+Normal working state
+Vortex ring state
+Windmill brake state
+Turbulent wake state
+Momentum theory solution
+V + 2ν = 0
+V+ν=0
+V, V + ν and V + 2ν are positive
+V/νh
+ν/νh
+V Negative (V + ν) negative (V + 2ν) positive
+V Negative (V + ν) negative (V + 2ν) negative
+V Negative (V + ν) positive (V + 2ν) positive
+Figure 2.11
+Variation of induced flow as a function of climb and descent speed.
+Rotor disk area A = πR2
+Thrust T
+Thrust T
+(a) (b)
+V
+V
+V+ν
+V + 2ν 2ν
+ν
+Figure 2.12
+Flow pattern in the normal working state. (a) Climb (V > 0). (b) Hover (V = 0).
+
+
+Introduction to Hovering and Vertical Flight Theory 49
+Vortex ring State
+When the rotor starts to descend, definite slip stream ceases to exit because the flow inside the slip stream changes its direction as we move from far upstream to far wake downstream. Therefore, there will be a large recirculation and turbulence. In the vortex ring state, the induced power (P = T(V + ν) > 0) is positive in the sense that the engine has to supply power to the rotor to keep it rotating. The flow pattern and the directions of the flow are shown in Figure 2.13. The flow pattern in the vortex ring state is like that of a vortex ring in the plane of the rotor disk. The upward velocity in the free stream keeps the tip vortices piled up as a ring. As the strength builds up, it breaks away from the disk plane, leading to a sudden breakdown of the flow. The flow is highly unsteady and produces a highly disturbing low-frequency vibration. The momentum theory is not valid since the flows inside the slip stream are in opposite directions. The limiting case of the vortex ring state is when the flow through the disk is zero, that is, V + ν = 0. It may be noted that, during descent, V < 0 and induced velocity ν > 0. Hence, the power required for the induced flow ν is exactly equal to the gain in power due to descent. This state corresponds to ideal autorotation (in the absence of profile power loss).
+Turbulent Wake State
+The turbulent wake state corresponds to the region in Figure 2.11, where V + ν = 0 to V + 2ν = 0. Under the condition V + ν = 0, there is no flow though the rotor disk. In reality, there is a considerable recirculation and turbulence. The flow pattern in the turbulent wake state is shown in Figure 2.14. The flow state is somewhat similar to the flow past a circular plate of the same area of the rotor disk, with no flow through the disk and a turbulent wake behind it.
+Rotor disk
+(a) (b)
+V
+Figure 2.13
+Flow pattern and velocities in the vortex ring state. (a) Low descent rates. (b) High descent rates.
+
+
+50 Fundamentals of Helicopter Dynamics
+When the descent speed increases, V + ν < 0, that is, the flow at the rotor disk is upward with less recirculation through the rotor. The flow above the rotor is highly turbulent. The rotor in this state experiences some roughness due to turbulence, but not like the high vibration in the vortex ring state.
+Windmill Brake State
+At the high rate of descent (V < −2ν), the flow once again becomes smooth, with a definite slip stream. The flow is upward throughout the slip stream, and the momentum theory is valid in this condition. In this state, the power P = T(V + ν) is less than 0, implying that the rotor is producing power (or power is extracted from the flow). The flow pattern in the windmill brake state is shown in Figure 2.15. It is important to note that induced velocity is almost impossible to measure in flight. Therefore, the induced velocity curve is drawn by calculating
+(a) (b)
+Figure 2.14
+Flow pattern in the turbulent wake state. (a) Ideal autorotation (V + ν = 0). (b) Tubulent wake state.
+Thrust
+Rotor disk area A = πR2
+Rotor disk area A = πR2
+Thrust
+V+w
+V
+V
+V
+V
+V+ν
+V+ν
+(a) (b)
+Figure 2.15
+Flow pattern in the windmill brake state. (a) Boundary (V + 2V = 0). (b) Windmill brake state.
+
+
+Introduction to Hovering and Vertical Flight Theory 51
+the induced velocity from the power measurements. The power supplied to the rotor can be expressed as a sum of three components, given as
+Shaft power = climb power + induced power + profile power
+P = TV + Tν + σC ρπR R
+d0
+8
+23
+(Ω ) (2.61)
+For given values of shaft power, gross weight (T = W), rotor angular velocity, rate of descent, and blade drag coefficient, the mean effective induced velocity can be determined from the above equation. Another way of presenting the induced velocity variation was developed by Lock (1947). In this representation (Figure 2.16), the variation of total
+induced velocity V +
+ 
+
+ν 
+νh
+is plotted as a function of V
+νh
+. This curve is also
+known as the “universal inflow curve.” In the vortex ring and the turbulent wake regions, the inflow curve is represented by a band, corresponding to practical situations. The universal inflow
+curve crosses the ideal autorotation line at about V
+νh
+ 
+
+ = −1.71 (i.e., in the
+range of −1.6 to −1.8). In practical situations, because of fuselage drag effects, autorotation occurs at a higher rate of descent, which is in the turbulent wake state. In the turbulent wake region, the inflow curve can be approximated by
+V+ν
+V+ν=0 P
+νh#
+3Normal working state
+Vortex ring state
+Momentum theory
+Hover
+Turbulent wake state
+Windmill brake state
+2
+1
+1
+–1
+2 V/νh#
+–4 –3 –2 –1
+Q
+Figure 2.16
+Total inflow as a function of climb and descent speed.
+
+
+52 Fundamentals of Helicopter Dynamics
+a straight line PQ. The coordinates of P and Q are, respectively, ( X, 0 ) and Q is (−2,−1). The equation of line PQ can be written as
+VX XX
++ =− V
++ ++
+ν
+νν
+hh
+2
+1
+2 (2.62)
+where X is the intercept at the V
+νh
+axis.
+When X = −1.71 , the inflow equation in the turbulent wake state becomes
+V+ = + V
+ν
+νν
+hh
+5.9 3.4 (2.63)
+Autorotation in Vertical Descent
+Autorotation is the state of rotor operation where there is no net power requirement from the power plant. The source of power is due to the decrease in gravitational potential energy. The descent velocity supplies the power to the rotor, and the helicopter is capable of power-off autorotation in vertical flight. It may be noted that the lowest descent rate is achieved in forward flight, which will become obvious when we deal with forward flight power requirements in the following chapter. The net power to the rotor during autorotation is zero. Hence, from Equation 2.61,
+P = T(V + ν) + Ppd = 0 (2.64)
+In Equation 2.64, the first term represents the power required to generate the thrust to support the weight of the helicopter through total inflow at the rotor disk, and the second term represents the profile power required to drag the rotor blades through air. Using nondimensional parameters, Equation 2.64 can be written as
+CRRV C RR
+T h
+h Ppd
+ρπ ν
+ν ν ρπ
+2 (Ω )2 2 (Ω )3 0
++
+ 
+
+ + = (2.65)
+or
+CRRV CRR
+R CR
+T h
+T
+Ppd
+ρπ ν
+ν
+ρπ
+ρπ ρπ
+22
+22
+2
+2
+2
+() ()
+Ω+ Ω
+ 
+
+ + (ΩR)3 = 0 (2.66)
+
+
+Introduction to Hovering and Vertical Flight Theory 53
+Using Equations 2.56 and 2.61, Equation 2.66 can be simplified as
+VC
+C
+C C
++ =− ∝
+ν
+νσ
+h
+Ppd
+T
+d
+l
+32
+0 32 32
+2
+(2.67)
+This expression indicates that a low value of C
+C
+d
+l
+0
+3 2 provides a low descent
+velocity in autorotation in vertical descent. Knowing the thrust and profile drag coefficients, the descent rate can be obtained from the universal inflow
+curve (Figure 2.16). The value of V + ν
+νh
+is typically about −0.3, which is in
+the turbulent wake state. Since the slope of the curve (the slope is 3.5 from Equation 2.63) is very large in this region, the increase in the descent rate required to overcome profile drag is very small. Tail rotor and other aerodynamic interference losses must also be included in evaluating the autorotation descent rate. Such losses are usually about 15% to 20% of the profile power. The limits of the descent rate in vertical autorotation are essentially the limits
+of the turbulent wake state (i.e., V
+νh
+in the range of −1.71 to −2). For practical
+purposes, one can assume that autorotation occurs for V
+νh
+= −1.81. For typical
+values of inflow νh, the autorotation descent velocity is in the range V = 15 to 25 m/s. (For the values of helicopter disk loading T/A = 100–500 N/m2, νh is in the range of 6.4–14 m/s, with density ρ = 1.225 kg/m3.) The autorotation performance may also be evaluated in terms of rotor drag coefficient. During steady autorotation descent, the drag coefficient of the rotor can be defined as
+CT
+VA
+TA VV
+D h
+/
+/
+//
+= = =
+
+ 
+12
+2 4
+2
+22
+2
+ρ
+ρ ν
+( ) (2.68)
+For typical values of V
+νh
+= −1.71 to − 1.81, the drag coefficient has a value in
+the range of 1.22 to 1.38. For real helicopters, CD is in the range of 1.1 to 1.3. For comparison, a circular plate of area A has a drag coefficient of about CD = 1.28 and a parachute of frontal area A has CD = 1.40. This shows that a helicopter rotor in power-off descent is quite efficient in producing the thrust to support the helicopter. The rotor is almost as good as a parachute of the same diameter.
+Forces on a Blade element during Autorotation
+The physics of autorotation can be best understood by studying the forces acting on the typical cross section of the rotor blade during descent. The velocity at the blade element is made up of rotational speed UT = Ωr and normal velocity
+
+
+54 Fundamentals of Helicopter Dynamics
+UP = V + ν (note that V is negative and ν is positive, but UP is negative; hence, it is shown with an upward arrow) to the rotor plane, as shown in Figure 2.17. The inflow angle
+tan φ = = =
+U r
+D L
+C C
+P d0
+l
+Ω (2.69)
+where Cd0 and Cl are sectional drag and lift coefficients, respectively. In autorotative equilibrium, there is no net force component in the plane of rotation. The resultant force is acting only along the rotor axis. Hence, from Figure 2.17, we have
+Dcos φ − Lsin φ = 0 (2.70)
+when Dcos φ − Lsin φ > 0 or tanφ < D
+L , there is a net decelerating force acting
+on the airfoil in the plane of rotation. Similarly, when Dcos φ − Lsin φ < 0 or
+tanφ > D
+L , there is a net accelerating force acting on the airfoil in the plane of
+rotation. An interesting and useful diagram for studying the autorotation characteristics of a particular airfoil is shown in Figure 2.18. The figure consists of
+the airfoil section characteristics tan−1 0
+C C
+d
+l
+plotted against the section angle
+of attack α. Note that both X and Y scales are the same. Let us assume that the diagram is applied to a particular cross section of the rotor blade by first marking off the pitch angle (θ) of the section from the origin along the α axis (i.e., X-axis) and then constructing a 45° line from the pitch angle, as shown in Figure 2.18. A perpendicular from any point on the line to the horizontal axis will define the inflow angle φ. Point A corresponds
+UP
+Ωr
+θ
+φ
+φ
+D
+L
+Figure 2.17
+Components of relative airflow and aerodynamic forces acting on a blade section during descent.
+
+
+Introduction to Hovering and Vertical Flight Theory 55
+to the case, when tan φ > C
+C
+d
+l
+0 . This implies that there is a resultant acceler
+ating force acting on the blade element, in the direction of rotation. As Ωr increases, the inflow angle φ will decrease (Equation 2.69). The element continues to accelerate until its rotational speed has increased to such a value that the autorotative equilibrium condition is established, as indicated by
+point B. In this condition, tan φ = C
+C
+d
+l
+0.
+There are several important facts that can be drawn from this curve. For a given pitch angle θ, and the 45° line (looking at both Figures 2.17 and 2.18),
+1. Any point above the curve (point A) represents an accelerating condition, where the resultant aerodynamic force vector falls ahead of the rotor axis;
+2. Any point on the curve (point B) represents autorotative equilibrium, where the resultant force vector is along the rotor axis; and
+3. Any point below the curve (point C) represents a decelerating condition, where the resultant aerodynamic vector falls behind the rotor axis.
+The highest possible value of pitch (θm) at which autorotation is possible corresponds to the value of θ for which the 45° line is tangent to the curve (i.e., point D). It is important to note that autorotation is a stable phenomenon, so long as the pitch angle is less than the maximum θm. Therefore, one can conclude that any disturbance slowing down the rotor will increase the angle φ and will accelerate the rotor to an autorotative equilibrium. Similarly, any disturbance that speeds up the rotor decreases φ and decelerates the rotor.
+Decelerating conditions
+Accelerating condition
+Autorotative equilibrium
+(C)
+θφ
+α
+45°
+(B)
+(A) tan–1 Cd0
+Cl
+(D)
+α (radians)
+Figure 2.18
+Effect of operating pitch angle at autorotation condition.
+
+
+56 Fundamentals of Helicopter Dynamics
+The autorotation diagram also demonstrates some important concepts concerning the relationship between rotational speed and blade pitch angle. If changes in inflow velocity due to θ are neglected, then inflow angle φ
+varies inversely with Ω Ω
+rU
+r
+tan φ =
+
+ 
+P  . Therefore, the highest value of rota
+tion speed corresponds to the lowest value of φ. The pitch angle (θ) for maximum rotor speed is the pitch defined by the intersection of the 45° line
+through the minimum value of the C
+C
+d
+l
+0 curve and the X-axis. Operating
+at a higher pitch angle implies lower rotational speed. Point D, therefore, corresponds to the lowest rotational speed for autorotation. This point is a discontinuity—any slight increase in pitch angle would make the blade decelerate, and the resulting stopping and rotation in the opposite direction would be catastrophic. As the pitch angle is decreased from the maxi
+mum value θm, the rotational speed increases until the minimum value of
+C C
+d
+l
+0 is reached. Then, a further reduction in pitch angle will decrease the
+rotational speed.
+efficient Angle of Attack for Autorotation
+The aim in the design of an autorotating rotor is to obtain a minimum rate of descent for a given helicopter weight and horizontal speed. The optimum angle of attack corresponds to angle α, which provides the low
+est value of C
+C
+d
+l
+0
+32.
+Figure 2.19 shows the region of the optimal operating angle attack (i.e., in the range of the angle of attack, which is 10–14°) for a typical airfoil. So long as the optimum part of the curve is flat, the operating angle could be anywhere in a reasonably high range of angles but below the stalling angle. It must be remembered, however, that the foregoing description pertains to a
+0.12
+0.08
+0.04
+0 4 8 12 α, °
+Cd0 C3/2
+16 20 24
+1
+Figure 2.19
+Variation of C
+C
+d
+l
+0
+3 2 with an angle of attack for a typical airfoil.
+
+
+Introduction to Hovering and Vertical Flight Theory 57
+single blade section. In reality, each cross-sectional element of the rotor blade operates at a different velocity and angle of attack. Therefore, some sections may have accelerating forces, while other elements may have decelerating forces. It is necessary to integrate the forces to obtain the overall effect on the blade. Figure 2.20 shows the different regions of the rotor disk during autorotation: (1) near root: there is stall; (2) mid region: there is an accelerating force due to moderate blade speed; and (3) outer region: there is a decelerating force due to high blade speed.
+Ground effect
+The proximity of the ground to a hovering rotor increases the rotor thrust for a given power. In other words, the influence of the ground reduces the induced velocity at the rotor disk. Because of this phenomenon, a helicopter can hover in ground effect at a higher gross weight than is possible with outof-ground effect. Analytically, ground effect is studied by a method of images (Figure 2.21), where a mirror image rotor is placed beneath the ground plane so that the boundary condition of no flow through the ground is automatically satisfied. The effect of the image vortex is to reduce the inflow velocity at the rotor disk above the ground. Useful information, however, is obtained from measurements.
+The increase in thrust T
+T∞
+at a constant power can be plotted as a function
+of the height above the ground Z
+R
+
+ 
+ . It may be noted that T∞ is the thrust
+Rotor disk
+Blade
+Decelerating torque
+Accelerating torque
+Power from air to rotor
+Power from rotor to air
+Stall
+Figure 2.20
+Aerodynamic condition in terms of the in-plane sectional loads acting along the span of the blade during autorotation.
+
+
+58 Fundamentals of Helicopter Dynamics
+when the rotor is far away from the ground and T is the thrust when it is near the ground. Considering only induced power, if it is a constant, then
+λC λ C
+TT
+= ∞ ∞ (2.71)
+or
+C C
+T T
+T
+T∞ ∞
+∞∞
+== =
+λ λ
+ν
+ν (2.72)
+Cheeseman and Bennett (1955) (Cheeseman and Bennett, 1955) derived a simple expression for the ground effect of a hovering rotor, which is given as
+T
+T RZ
+∞
+=−
+1
+1 42
+( / ) (2.73)
+Rotor inflow
+Ground effect
+Ground plane
+Figure 2.21
+Rotor hovering near the ground and method of images.
+2.0
+1.5
+1.00 1.0 Z/R
+T T∞
+2.0
+Figure 2.22
+Thrust variation in hover with rotor height from ground.
+
+
+Introduction to Hovering and Vertical Flight Theory 59
+The thrust variation with ground effect, given in Equation 2.73, is plotted on Figure 2.22. It can be seen that ground effect is generally negligible when the rotor is one diameter above the ground (Z/(2R) > 1.0). Ground effect decreases rapidly with forward speed of the helicopter, since the rotor wake is swept backward. Therefore, it is evident that ground effect is also sensitive to crosswinds, which will displace the wake from the rotor. It is observed
+that ground effect also depends on rotor blade loading CT
+σ (Bramwell, 1976;
+Johnson, 1980).
+
+
+This page intentionally left blank
+
+
+61
+3
+Introduction to Forward Flight Theory
+During forward flight, as the rotor blades go around the azimuth, they experience a time-varying periodic oncoming airspeed. It is assumed that the rotor blade is rotating in a counterclockwise direction when viewed from above the rotor. This condition has been followed throughout the book. The rotor disk can be divided into two half regions: one denoted as the “advancing side” (Figure 3.1), where the relative air velocity of the blade is higher than the rotational speed, and the other denoted as the “retreating side,” where the relative air velocity is lower than the rotational speed of the blade. This asymmetry in the aerodynamic environment leads to time-varying periodic loads. Unlike the hovering condition, the time-varying nature of the blade loading creates a dynamic response of the blade, which must be included in the formulation in forward flight.
+Momentum Theory in Forward Flight
+First, let us formulate the momentum theory in forward flight to evaluate the induced flow through the rotor disk. Consider a rotor operating at a forward speed V, with an angle of attack α between the free-stream velocity and the rotor disk, as shown in Figure 3.2. Following the momentum theory in hover, let us assume that the induced velocity at the disk is ν, and in the far wake, w = 2ν. These induced velocities are assumed to be in the direction that is parallel to the rotor thrust vector T, but in the opposite direction. From momentum conservation, one can write
+T = m 2ν (3.1)
+The mass flow rate is given by
+m = ρAU (3.2)
+
+
+62 Fundamentals of Helicopter Dynamics
+ψ = Ωt
+YH
+XH
+V
+Retreating side
+Forward velocity
+0°
+270°
+180°
+90° Advancing side
+FIGURE 3.1
+Rotor disk in forward flight.
+V sin α
+V cos α
+ν
+Thrust T
+Rotor disk area A
+w
+α
+V
+FIGURE 3.2
+Direction of flow velocities in the forward-flight momentum theory.
+
+
+Introduction to Forward Flight Theory 63
+Following Glauert (Bramwell, 1976), the resultant flow velocity at the rotor disk is given by
+UV V
+UV V
+22 2
+22 2
+2
+= ++
+=+ +
+( cos ) ( sin )
+sin
+α αν
+ν αν
+(3.3)
+Using Equations 3.1 and 3.2, the expression for thrust in forward flight can be expressed as
+T=2 A V 2+ V + 2
+ρ ν ( cosα) ( sin α ν) (3.4)
+Using energy conservation, the relationship between rotor power and change in kinetic energy can be written as
+P=m V + V + −V T V
+{ }= +
+ (1 2)[( cos ) ( sin 2 ) ] ( sin )
+2 22
+/ α α ν α ν (3.5)
+For high forward speeds (V ≫ ν), one can approximate the thrust expression as
+T ≅ ρAV 2ν (3.6)
+In hover (V = 0), the thrust expression (Equation 3.4) reduces to
+T = 2ρAν2 (3.7)
+It may be noted that the resultant velocity expression (Equation 3.3), used in the definition of mass flow rate through the rotor disk, provides the thrust expressions in both limits of hover and high forward speed. In the following, as a note, a brief derivation is provided using the fixed wing theory to relate the expression for thrust at high forward speeds.
+Br i e F noT e : The finite wing theory provides the expression for the induced drag coefficient in terms of the lift coefficient and the aspect ratio as (Ref. 4)
+CC
+AR
+L
+Di =
+2
+π (3.8)
+Expressing in dimensional form, the induced drag for a planar circular wing of span b = 2R and area A = πR2 (aspect ratio AR = b2/A), operating at a speed V is
+DT
+AV
+i=
+2
+2
+2ρ (3.9)
+(noT e: Lift is denoted by the symbol T, for ease of comparison.)
+
+
+64 Fundamentals of Helicopter Dynamics
+Induced velocity ν at the wing is related to the ratio of induced power to thrust, which can be written as (using Equation 3.9)
+νρ
+== =
+P T
+VD T
+T AV
+ii
+2 (3.10)
+This expression matches with the induced velocity expression derived for a rotor operating at a high forward speed, given in Equation 3.6. At high forward speeds, the rotor wake is swept behind the plane of the disk, as in the fixed wing. Hence, at high forward speeds, the rotor behaves like a circular wing. The lifting line theory interprets ν as the induced velocity at the wing. For a circular wing, the aspect ratio becomes AR = (2R)2/(πR2). This value of aspect ratio (AR = 4/π = 1.27) is very low; hence, considerable variation in the induced velocity over the rotor disk can be expected.
+Rewriting Equation 3.4, for a given thrust, the induced velocity at any forward speed is obtained as a solution of the following equation:
+T=2 A V 2+ V + 2
+ρ ν ( cosα) ( sin α ν) (3.11)
+Since the thrust T = 2 A 2
+ρ νh in hover, one can write the induced velocity in forward flight in terms of the induced velocity in hover by equating the thrust expressions in hover and forward flight as (since thrust is basically equal to the weight of the helicopter)
+νν α αν
+=
+++
+h
+2
+22
+(V cos ) (V sin ) (3.12)
+Defining the following nondimensional quantities:
+Advance ratio: μ α
+=V
+R
+cos
+Ω (3.13)
+Total induced velocity (or total inflow): λ = V sin tan
+αν μ αλ
++= +
+ΩR i (3.14)
+Using Equations 2.12 and 3.12, the induced velocity [λi = ν/(ΩR)] expression in forward flight can be written as
+λ
+μ μ αλ
+i
+T
+i
+=
+++
+C
+22 2
+( tan ) (3.15)
+
+
+Introduction to Forward Flight Theory 65
+or, using Equation 3.14, one can write
+λμ α μλ
+=+
++
+tan CT
+2 2 2 (3.16)
+For a given value of thrust coefficient CT, advance ratio μ, and disk angle α, the induced velocity λi can be obtained by numerically solving Equation 3.15. When α = 0, at high forward speeds, μ ≫ λi, induced velocity can be approximately expressed as (from Equation 3.15)
+λ μ νρ α
+i
+CT AV
+≈=
+
+
+T or
+2 2 cos (3.17)
+Figure 3.3 shows the variation of rotor-induced velocity with forward
+speed, when α = 0. The approximation λ μ
+i
+T
+=C
+2 is quite good for μ
+λh
+> 1.5. For
+typical helicopters, when μ
+λh
+> 1.5, it corresponds to an advance ratio μ > 0.1.
+Hence, except at very low speeds the rotor wake is similar to the wake of a circular wing. The speed range 0 < μ < 0.1 is called the “transition zone,” where the rotor wake has both vertical and horizontal velocity components. The transition region has a number of special characteristics, such as a high level of blade loads and vibration due to blade–vortex interaction. A schematic of the rotor wake in forward flight is shown in Figure 3.4. The helical vortices trailing from the blade are swept downward by the
+normal velocity component λ at the disk. The wake skew angle χ μ
+λ
+=
+ 
+
+−
+tan 1
+λi = CT/2μ
+1.5
+1.0
+0.5
+0 12 3 4
+Momentum theory
+ν νh
+V νh
+FIGURE 3.3
+Variation of induced velocity with forward speed.
+
+
+66 Fundamentals of Helicopter Dynamics
+can be estimated fairly accurately using the momentum theory. The transition region 0 < μ/λh < 1.5 corresponds approximately to the wake skew angle χ = 0° to 60°. The relative position of the rotor blade and the individual wake vortices vary periodically as the blade rotates. This periodicity produces a strong variation in the wake-induced velocity encountered by the blade and also in the blade loading. The induced velocity is highly nonuniform in forward flight. Realizing the variation in induced velocity, Glauert (1926) proposed an inflow model, which is of the form
+ν=ν + ψ
+
+ 
+
+01 r
+R Kx cos (3.18)
+where ν0 is the mean induced velocity at the rotor disk and Kx is assumed to be equal to 1.2. This model simulated a longitudinal variation of induced velocity, with an upwash at the leading edge and an increase in induced velocity at the trailing edge of the rotor disk. The classical vortex theory for forward flight is based on the actuator disk model. The vorticity is distributed throughout the wake rather than being treated as concentrated discrete lines. Oftentimes, uniform loading is also assumed so that the vorticity is only on the surface of the wake cylinder and in a root vortex. These assumptions yield a simple wake model, but still, the problem is complicated. With uniform loading, the results are the same as from the momentum theory, particularly at high speed. Because of the limitations of the wake model, the vortex theory results based on the actuator disk model are presently useful to indicate the general features of the induced velocity. A detailed distribution of the inflow has to be obtained from nonuniform inflow computations, using a discrete vorticity model of the wake. A simple wake structure of the shed (γs) and trailing (γt) vortices along with a strong tip vortex is shown in Figure 3.5. Coleman, Feingold, and Stempin (1945) performed a vortex theory analysis for the induced velocity variation along the fore–aft diameter of the rotor.
+μ
+λ
+χ
+FIGURE 3.4
+Rotor wake structure at a moderate forward speed.
+
+
+Introduction to Forward Flight Theory 67
+They considered a uniform loading rotor. Drees (1949) calculated the rotorinduced velocity using the vortex theory with a bound circulation having an azimuthal variation given by Γ = Γ0 − Γ1 sin ψ. Hence, he treated both trailing and shed vorticity. Mangler and Squire (1950) treated the rotor as a lifting surface and formulated the problem of pressure jump across the surface in elliptic coordinates. Using pressure–shape functions, they obtained the induced velocity distribution over the rotor disk. All these theories provide an expression for the induced flow at the rotor disk, which can be written in a general form as
+ν=ν + ψ+ ψ
+
+ 
+
+01 K r
+R Kr
+R
+xy
+cos sin (3.19)
+where ν0 is the mean value of the induced velocity obtained from the momentum theory. Equation 3.19 represents the variation of induced velocity as a function of both radial and azimuthal locations on the rotor disk. Different researchers have derived expressions for Kx and Ky. It must be noted that Equation 3.19 represents the steady inflow in forward flight. Several research studies have been undertaken to formulate time varying unsteady inflow. This is beyond the scope of this book. Coleman, Feingold, and Stempin (1945) provided the expression for the constants as
+Kx = = + 
+
+
+tan(χ ) λ  −
+μ
+λ μ
+/2 1
+2
+(3.20)
+Ky = 0 (3.21)
+Inboard vortex sheet
+γt
+γs
+Tip vortex
+Root vortex
+Rotorblade
+FIGURE 3.5
+Sample wake structure of a rotor blade in forward flight.
+
+
+68 Fundamentals of Helicopter Dynamics
+In this model, Kx approaches unity at a high speed. Drees (1949) obtained the expressions for the constants as
+Kx = − − = − + 
+
+
+ −
+4 3
+1 18 4
+3 1 18 1
+2 2
+2
+cos .
+sin ( . )
+χμ
+χ μλ
+μ
+λ μ
+
+
+
+
+
+ (3.22)
+Ky = − 2μ (3.23)
+Kx = 0 for μ = 0, and has a maximum value of about 1.1 for μ = 0.16 and is approximately equal to 1 at μ ≈ 0.3. One can use any of these expressions for the induced velocity in forward flight while performing the rotor blade analysis. It must be borne in mind that all these theories are only approximate. There has been a continued research effort to improve the inflow model in forward flight. Currently, the focus is directed toward using the computational fluid dynamics approach to estimate the induced velocity and blade loads. However, several basic studies on helicopter dynamics and rotor blade aeroelasticity use the momentum theory because of its simplicity and ease of implementation.
+Blade element Theory in Forward Flight
+Before developing the mathematical expressions of the aerodynamic loads in forward flight, it is important to discuss the physics of the blade motion in forward flight. During forward flight, the rotor disk is moving almost horizontally in the air. Thus, the rotor blade, as it goes around the azimuth, experiences a periodically varying relative air velocity due to the forward speed as well as its angular motion (Figure 3.6). Note that out-of-plane deformation of the rotor blade due to time-varying aerodynamic lift is denoted as the flapping motion of the blade. On the advancing side, the velocity of relative airflow is more than that on the retreating side. If a constant angle of attack is assumed, then forward flight will produce different lift forces on the two halves of the rotor disk, with the advancing side producing more lift than the retreating side. (This differential lift results in a rolling moment on the rotor.) Thus, the rotor blades experience once per revolution (1/rev) variation in aerodynamic loads due to the asymmetry in the airflow. In response to this variation in loads, there is a 1/rev dynamic response of the blade in out-of-plane bending, which is the flapping motion of the blade. The inertia load associated with the flapping motion results in a net reduction in the blade root loads. To alleviate the root bending moment in flap, earlier rotor designs incorporated a root hinge (articulated rotor). In the last three decades, rotors without
+
+
+Introduction to Forward Flight Theory 69
+hinges (hingeless rotors) have been successfully designed. In these rotors, the blade root is strong enough to withstand the load and flexible enough to provide the flapping motion necessary to reduce the root loads. Increased hub moments in hingeless rotors have a significant effect on the handling qualities of the helicopter, which will be discussed in later chapters. In summary, one can state that the flapping motion of the blade reduces the asymmetry of the rotor moment during forward flight. Thus, flap motion is of principal concern in the analysis and/or design of the helicopter for good performance in forward flight. During steady forward flight, the blades experience a 1/rev load variation due to asymmetry in the flow, that is, the loads and the blade response undergo a periodic variation with period 2π (one revolution of the rotor around the azimuth). The periodic variation of the flapping motion of the rotor blade can be represented as a Fourier series.
+βψ β β ψ β ψ β ψ β ψ
+k kk k k
+( ) = + cos + sin + cos + sin +
+01 1 2 2
+22
+c s c s ......
+= + cos + sin
+=
+∞
+∑
+β β ψβ ψ
+0 1
+n kn k n
+nn
+cs
+(3.24)
+where ψ π
+kt k
+N
+=+ −
+Ω 2 1. The subscript “k” represents the kth blade in the
+rotor system, and N is the total number of blades in the rotor system. Ω is the rotor angular speed in radians per second.
+ψ = Ωt
+YH
+XH
+Vcosψ
+Vsinψ
+V
+Advancing side
+Retreating side
+Rotor disk
+V
+Forward velocity
+Blade
+90°
+180°
+0°
+270°
+FIGURE 3.6
+Description of relative air velocity in forward flight.
+
+
+70 Fundamentals of Helicopter Dynamics
+The harmonics (or the coefficients) of the series can be written as
+β πβψ
+π
+0
+0
+2
+1
+= 2 ∫ k d (3.25)
+β πβ ψψ
+π
+n k kk
+nd
+c= 1∫
+0
+2
+cos (3.26)
+β πβ ψψ
+π
+n k kk
+nd
+s= 1∫
+0
+2
+sin (3.27)
+In the analysis of rotor blade flapping motion, only a finite number of harmonics is considered to describe the periodic motion of the rotor blade. Let us examine the physical meaning of these harmonics of the flap motion. β0 represents the mean flap angle, which is called the “coning angle.” β1c and β1s generate a 1/rev variation of the flap angle, as shown in Figure 3.7. β1c represents a longitudinal tilt of the tip-path plane (TPP) with respect to the reference plane. β1s represents the lateral tilt. The higher harmonic components represent the warping of the TPP (Figure 3.8). Higher harmonic components become important at high speeds, and they must be included while performing vibration analysis. Beyond second harmonics, the harmonic contents decrease with an increase in harmonic number. For ease of understanding of the physics of the rotor response problem, only first harmonic contents are included in the analysis, and all the other harmonics are neglected. Similar to flap motion, one can express harmonic motion for both the leadlag and the elastic torsional deformation of the rotor blade. The blade lead–lag motion can be expressed as
+ςk = ς0 + ς1c cos ψk + ς1s sin ψk + ....... (3.28)
+The elastic torsional deformation of the blade can also be expressed as
+φk = φ0 + φ1c cos ψk + φ1s sin ψk + ........ (3.29)
+The main source of blade pitch is due to the pilot command or pilot input. These control inputs are specified by a mean and a first harmonic variation as
+θk = θ0 + θ1c cos ψk + θ1s sin ψk (3.30)
+θ0 is the collective pitch input. θ1c and θ1s are known as cyclic pitch inputs. Collective pitch angle θ0 controls the average blade force or, hence, the
+
+
+Introduction to Forward Flight Theory 71
+magnitude of the rotor thrust. The cyclic pitch control inputs influence the TPP tilt (1/rev flapping), that is, the orientation of the thrust vector. θ1c controls the lateral (β1s) tilt and θ1s controls the longitudinal (β1c) tilt of the TPP. This aspect will become clear while relating pilot input to flap response. The pitch input variation of the blade is achieved by a swash plate mechanism. There are also other means of achieving the pitch control of the blade, such as the Kaman servo-flap or the pitch–flap kinematics coupling. A schematic of a swash plate mechanism is shown Figure 3.9. The swash plate mechanism has rotating and nonrotating parts. The nonrotating part is connected to the control mechanism from the pilot. The pitch control link rod from each rotor blade is connected to the rotating part of the swash plate. During collective input, the pilot moves the nonrotating part of the swash
+ZH
+ZH
+XH
+YH
+β1c
+β1s
+β0
+λ
+μ
+Reference plane
+Reference plane
+Tip-pathplane
+Tip-pathplane
+Reference plane
+(b)
+(c)
+(a)
+λ
+FIGURE 3.7
+Physical meaning of rotor flapping in zero and first harmonics. (a) Coning. (b) Longitudinal tilt (view from port side). (c) Lateral tilt (view from aft).
+
+
+72 Fundamentals of Helicopter Dynamics
+FIGURE 3.8
+Rotor blade flapping in higher harmonics.
+Ω
+Pitch bearing
+Lag hinge
+Rotor blade
+Featheringaxis
+Tiltable swash plate Nonrotating ring
+Rotating ring
+Bearing
+To pilot controls
+Flap hinge
+Rotor shaft
+Pitch link to the blade horn (one for each blade)
+FIGURE 3.9
+Swash plate mechanism.
+
+
+Introduction to Forward Flight Theory 73
+plate up and down, which also makes the rotating part of the swash plate move up and down. This up-and-down motion of the swash plate changes the pitch angle of the blade by the same value at all azimuth locations of the rotor system. During cyclic input, the pilot tilts the nonrotating part of the swash plate about the longitudinal axis (or the lateral axis), thereby tilting the rotating part of the swash plate. In this configuration of the tilted swash plate, as the rotor blade goes around the azimuth, the pitch control link rod attached to the blade moves up and down, thereby changing the blade pitch once in a revolution.
+reference Planes
+It is important to choose a reference frame for the description of the motion of the blade, control pitch angle, aerodynamic loads, etc. There are different types of reference frames (Figure 3.10), each having its own advantage in the description of the rotor blade motion.
+Hub plane
+No-feathering plane
+θ0 + θ1s
+θ0 – θ1s
+θ0 + θ1c
+θ0 – θ1c
+90°
+270°
+180° 0°
+Hub plane
+Horizontal
+Swash plate plane
+Tip-path plane
+FIGURE 3.10
+Various reference planes.
+
+
+74 Fundamentals of Helicopter Dynamics
+Tip-Path Plane
+As the name suggests, it is the plane that is parallel to the plane described by the tip of the blade, particularly in the collective and first harmonic cyclic. For an observer sitting in this plane, there is no 1/rev flap motion. The orientation of the TPP with respect to any other plane defines the cyclic flap (β1c and β1s) angles.
+No-Feathering Plane
+In the no-feathering plane (NFP), there is no variation in the 1/rev pitch angle of the blade. Therefore, its orientation defines θ1c and θ1s with reference to any other plane.
+Control Plane
+The control plane (CP) represents the plane from where the pitch input is applied to the blade. This plane is the swash plate plane.
+Hub Plane
+The hub plane (HP) is normal to the shaft. This is the natural reference frame for defining blade motion as well as the blade loads. In general, these reference planes are distinct, but under certain conditions, two reference planes can coincide. For a flapping rotor with no cyclic pitch control (like the tail rotor or the auto gyro), the HP and the CP are equivalent. If there is no pitch–flap coupling or other pitch sources (which will be described in a later chapter), the CP and the NFP coincide. For a feathering rotor with no flapping (such as a propeller with a cyclic pitch), the HP and the TPP are equivalent. While analyzing helicopter rotor dynamics, one can use any reference frame for defining rotor blade velocity, blade motion, and various forces and moments. Since HP is the most convenient plane, it is used as the reference plane (Figure 3.11) in the formulation in the entire book. Let us assume that, during forward flight, the relative air velocity V is inclined to the HP at angle α. The horizontal component of relative airspeed in the HP is V cos α. In nondimensional form, it is denoted as advance ratio
+μα
+=V
+R
+cos
+Ω (3.31)
+The normal component of relative air velocity at the HP is V sin α.
+
+
+Introduction to Forward Flight Theory 75
+In nondimensional form, it is denoted as inflow due to climb
+λ αμ α
+c= =
+V R
+sin tan
+Ω
+The total inflow must be a combination of the forward flight component and the rotor-induced flow, which is given as (from Equations 3.14–3.16)
+λ = λc + λi (3.32)
+Having defined the velocity components in the HP due to helicopter forward flight, let us identify the velocity components at a typical cross section
+ZH
+ZH
+YH
+MYH
+MXH
+XH
+XH
+H
+Y
+T
+λ
+YH
+Ω
+MZH
+β
+α
+θ
+μ
+ψ
+V
+FIGURE 3.11
+Velocity, blade motion, and hub loads in the reference HP.
+
+
+76 Fundamentals of Helicopter Dynamics
+of the rotor blade at a radial distance r from the hub center and at an arbitrary azimuthal position ψ. Let us assume that the blade is centrally hinged and that it undergoes only a rigid flapping motion. For a systematic development of aerodynamic loads acting on the blade, it is essential to define the following coordinate systems (Figure 3.12). XH–YH–ZH refers to the hub-fixed nonrotating reference coordinate system. Its origin is at the center of the hub. Axis XH is pointing toward the tail of the helicopter, and axis ZH is pointing vertically up. Axis YH completes the triad following the right-hand rule. X1–Y1–Z1 refers to the hub-fixed rotating coordinate system. Its origin is at the center of the hub. The X1 axis is in the plane of the rotor hub, but moving with kth blade. X2–Y2–Z2 refers to the blade-fixed rotating coordinate system. Its origin is at the center of the hub.
+(c)
+(a) (b)
+μ
+Ω
+Ω
+β
+X1
+α
+θ
+φ
+Z2
+X1
+Y1
+Z1, ZH
+XH
+YH
+UR X1
+UR
+UT
+U
+UP –FY2
+FZ2
+FX2
+L
+D
+φ
+φ
+Y1, Y2
+Z2
+Y2
+A
+A
+β
+FIGURE 3.12
+Coordinate systems for systematic formulation. (a) In-plane velocity components UT and UR. (b) UR and blade deformation β. (c) Section A-A.
+
+
+Introduction to Forward Flight Theory 77
+Assume that the rotor blade has a uniform cross section and that the X2 axis is along the aerodynamic center of the blade (25% of chord). In addition, assume that the cross-sectional mass center is coincident with the aerodynamic center. The transformation relationship between the various coordinate systems can be written as
+
+
+
+e
+e
+e
+x
+y
+z
+kk
+k
+1
+1
+1
+0
+
+
+
+
+
+
+
+
+
+
+=−
+cos sin
+sin cos
+ψψ
+ψ ψψ k
+x
+y
+z
+e
+e
+e
+0
+0 01
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+H
+H
+H
+(3.33)
+where ψk represents the azimuth location of the kth blade, and
+
+
+
+e
+e
+e
+x
+y
+z
+kk
+2
+2
+2
+0
+01
+
+
+
+
+
+
+
+
+
+
+=
+cos(−β ) − sin(−β )
+0
+sin(− ) 0 cos(− )
+
+
+
+
+
+
+
+
+
+
+
+ββ
+kk
+x
+y
+z
+e
+e
+e
+
+
+
+1
+1
+1
+
+
+
+
+
+
+= −
+
+
+ cos( ) sin( )
+sin( ) cos( )
+ββ
+ββ
+kk
+kk
+0
+0 10 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+e
+e
+e
+x
+y
+z
+1
+1
+1
+(3.34)
+where (−βk) represents the flap angle of the kth blade from HP. The negative sign denotes that it is a clockwise rotation angle. The position vector of any arbitrary point P along the X2 axis of the kth blade is given as
+
+rp = rex2 (3.35)
+Rewriting this vector in the X1–Y1–Z1 system,
+  
+r re r e r e
+p= x = k x + k z
+2 11
+cosβ sinβ (3.36)
+The angular velocity of the rotor blade is taken as  
+ω = Ωez1.
+The velocity of point P has two components: one due to rotation and another due to flapping motion. The velocity of point P is given by
+vr r d
+dt e r d
+dt e Xr
+k
+k
+xk
+k
+pp z
+= = − sin β β + cosβ β + ω
+1 1 p (3.37)
+Taking the vector cross-product, the velocity of point P can be written as
+  
+vr d
+dt e r d
+dt e r e
+k
+k
+xk
+k
+p = − sin β β + cosβ β z + cosβk y
+1 1 Ω 1 (3.38)
+
+
+78 Fundamentals of Helicopter Dynamics
+In the blade-fixed coordinate system, the velocity of point P can be written as
+ 
+v rd
+dt e r e
+k
+p= z + k y
+ββ
+22
+Ω cos (3.39)
+Assuming that the flap angle βk is a small quantity, one can make a small angle assumption for the trigonometric functions. The reduced expression for the velocity of point P can be written as
+v re r d
+dt e re r e
+y
+k
+p≅Ω + z =Ω y + k z
+2 22 2
+β β (3.40)
+(noT e: For the sake of consistency and convenience, the time derivative of
+flap βk is nondimensionalized as  
+βββ
+ψβ
+k
+kk
+k
+d dt
+d d
+= Ω Ω = Ω = Ω . ψ is denoted as
+nondimensional time Ωt.) In the following, the dot symbol represents the nondimensional time derivative.
+The relative air velocity at the blade section due to the motion of the helicopter and the total induced flow given in Equations 3.31 and 3.32 can be written as components along the kth blade axes system as
+  
+V R e R e Re
+h = −μΩ sin ψ k y + μΩ cos ψ k x − λΩ z
+1 1 1 (3.41)
+Resolving these velocity components in the blade-fixed system, we have
+ 
+V Re R e R
+h = −μΩ sin ψ k y + μΩ cos ψ k cosβk x − μΩ cos ψ k sin
+2 2 βλ β
+λβ
+kz kz
+kx
+e Re
+Re
+
+
+22
+2
+−
+−
+Ω
+Ω
+cos
+sin
+(3.42)
+Invoking a small angle assumption, Equation 3.42 can be written as
+  
+V Re R e R e
+h k y2 k x2 k k z2
+≅ −μΩ sin ψ + μΩ cos ψ − μΩ cos ψ β − λΩRe ΩR e
+z kx
+
+22
+−λ β
+(3.43)
+The relative air velocity at the blade cross section at radial station r from the hub center is given as
+ 
+V Vv
+rel h p
+= − (3.44)
+
+
+Introduction to Forward Flight Theory 79
+Substituting Equations 3.40 and 3.43, one obtains
+V R R e R re
+rel = k − k x + − k − y
++
+( cos ) ( sin )
+(
+μΩ ψ λΩ β μΩ ψ Ω
+22
+−μΩR ψ β − λΩR − Ωrβ e
+kk k z
+cos ) 2
+(3.45)
+With reference to the airfoil cross section (Figure 3.12), using Equation 3.45, the velocity components can be expressed as follows:
+Tangential velocity component at any radial location r:
+U r R Rr
+R
+T= + k= + k
+
+ 
+
+Ω μΩ sin ψ Ω μ sin ψ (3.46)
+Radial velocity component along the blade:
+UR = μΩR cos ψk − λΩR βk (3.47)
+The normal velocity component at r:
+UP = λΩR + Ωrβk + βkμΩR cos ψk (3.48)
+Note that λ is the total inflow, which includes the normal velocity component due to forward speed V and the induced velocity v = λiΩR, that is, λΩR = μΩR tan α + λiΩR. Also, note that the time derivative of βk is with respect to the nondimensional time Ωt. Consider the two-dimensional cross section of the rotor blade. The resultant velocity of the oncoming flow can be written, by assuming that the inflow velocity UP is small compared to the oncoming velocity component UT, as
+U = U +U ≈U
+TP T
+2 2 (3.49)
+The inflow angle is given by
+tan φ = U
+U
+P
+T
+(3.50)
+or, for small angles,
+φ≈U
+U
+P
+T
+(3.51)

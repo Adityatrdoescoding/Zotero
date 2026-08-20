@@ -1,0 +1,3057 @@
+NAS AfTP-2005-213477
+Model for Vortex Ring State Influence on Rotorcraft Flight Dynamics
+Wayne Johnson Ames Research Centel; Moflett Field, California
+December 2005
+
+
+The NASA STI Program Office . . .in Profile
+Since its founding,NASA has been dedicated to the advancement of aeronautics and space science. The NASA Scientific and Technical Information (STI) Program Office plays a key part in helping NASA maintain this important role.
+The NASA STI Program Office is operated by Langley Research Center, the Lead Center for NASA's scientific and technical information.The NASA STI Program Office provides access to the NASA STI Database, the largest collection of aeronauticaland space science STI in the world. The Program Office is also NASA's institutional mechanism for disseminating the results of its research and development activities. These results are published by NASA in the NASA STI Report Series, which includes the following report types:
+TECHNICALPUBLICATION. Reports of completed research or a major significant phase of research that present the results of NASA programs and include extensive data or theoretical analysis. Includes compilationsof significant scientificand technical data and information deemed to be of continuing reference value. NASA's counterpart of peer-reviewed formal professional papers but has less stringent limitations on manuscript length and extent of graphic presentations.
+TECHNICAL MEMORANDUM. Scientific and technical findings that are preliminary or of specialized interest, e.g., quick release reports, working papers, and bibliographies that contain minimal annotation. Does not contain extensive analysis.
+CONTRACTOR REPORT. Scientific and technical findings by NASA-sponsored contractorsand grantees. .
+0 CONFERENCE PUBLICATION. Collected papers from scientific and technical conferences, symposia, seminars, or other meetings sponsored or cosponsoredby NASA.
+SPECIALPUBLICATION. Scientific,technical, or historical information from NASA programs, projects, and missions, often concerned with subjects having substantialpublic interest.
+TECHNICAL TRANSLATION. Englishlanguage translations of foreign scientificand technical material pertinent to NASA's mission.
+Specialized services that complement the STI Program Office's diverse offerings include creating custom thesauri, building customized databases, organizing and publishing research results . . .even providing videos.
+For more information about the NASA STI Program Office, see the following:
+Access the NASA STI Program Home Page at http://www.sti.nasa.gov
+E-mail your question via the Internet to help@sti.nasa.gov
+0 Fax your question to the NASA Access Help Desk at (301) 621-0134
+Telephone the NASA Access Help Desk at (301) 621-0390
+Write to: NASA Access Help Desk NASA Center for Aerospace Information 7121 Standard Drive Hanover, MD 21076-1320
+
+
+NASAITP-2005-213477
+Model for Vortex Ring State Influence on Rotorcraft Flight Dynamics
+Wayne Johnson Ames Research Centel;Moflett Field,California
+National Aeronautics and Space Administration
+Ames Research Center Moffett Field, California 94035-1000
+December 2005
+
+
+Acknowledgments
+The V-22 information was obtained courtesy of the U.S. Navy and Bell/Boeing.The steady data from Yaggy and Mort (ref. 28) were digitized by Franklin D. Harris. The data from Empey and Ormiston (ref. 33) were digitized by Kelly Corfeld.
+Available from:
+NASA Center for Aerospace Information 7121 StandardDrive Hanover, MD 21076-1320 (301) 621-0390
+National Technical Information Service 5285 Port Royal Road Springfield, VA 22161 (703) 487-4650
+
+
+iii
+TABLE OF CONTENTS
+NOTATION ............................................................................................................................................................................... vii
+SUMMARY ................................................................................................................................................................................. 1
+INTRODUCTION ....................................................................................................................................................................... 1
+OVERVIEW ................................................................................................................................................................................ 1
+ROTOR INFLOW ....................................................................................................................................................................... 2
+TEST DATA ................................................................................................................................................................................ 4
+Lock and Glauert (1926).................................................................................................................................................... 4
+Hafner (1947) ..................................................................................................................................................................... 4
+Reeder and Gustafson (1949) ............................................................................................................................................ 4
+Brotherhood (1949)............................................................................................................................................................ 5
+Drees (1949) ....................................................................................................................................................................... 5
+Castles and Gray (1951) .................................................................................................................................................... 5
+Stewart (1951) .................................................................................................................................................................... 6
+Gessow (1954).................................................................................................................................................................... 6
+Yeates (1958)...................................................................................................................................................................... 7
+Yaggy and Mort (1962) ..................................................................................................................................................... 7
+Scheiman (1964) ................................................................................................................................................................ 7
+Washizu (1966) .................................................................................................................................................................. 7
+Azuma (1968)..................................................................................................................................................................... 7
+Empey and Ormiston (1974) ............................................................................................................................................. 7
+Xin and Gao (1993)............................................................................................................................................................ 8
+Felker and McKillip (1994)............................................................................................................................................... 8
+Padfield (1996) ................................................................................................................................................................... 8
+Brinson and Ellenrieder (1998) ......................................................................................................................................... 9
+Betzina (2001) .................................................................................................................................................................... 9
+Taghizad (2002) ............................................................................................................................................................... 10
+U.S. Navy.......................................................................................................................................................................... 11
+U.S. Army ......................................................................................................................................................................... 11
+Assessment of Test Data.................................................................................................................................................. 11
+NONAXIAL FLOW .................................................................................................................................................................. 12
+TWO ROTORS.......................................................................................................................................................................... 12
+UNSTEADINESS IN VRS ....................................................................................................................................................... 12
+VRS BOUNDARIES................................................................................................................................................................. 13
+VORTEX RING STATE MODEL........................................................................................................................................... 14
+CALCULATED STABILITY BOUNDARY.......................................................................................................................... 15
+HELICOPTER VRS ENCOUNTER........................................................................................................................................ 15
+TILTROTOR VRS ENCOUNTER .......................................................................................................................................... 16
+MODEL FOR REAL-TIME SIMULATION .......................................................................................................................... 17
+
+
+iv
+CONCLUSIONS ....................................................................................................................................................................... 17
+Future Work...................................................................................................................................................................... 17
+Assessment of Test Data.................................................................................................................................................. 17
+Recommended Tests ........................................................................................................................................................ 18
+Recommended Analysis .................................................................................................................................................. 18
+REFERENCES .......................................................................................................................................................................... 18
+TABLES
+Table 1. Tests of rotors in vortex ring state. ............................................................................................................................ 22
+Table 2. Measured frequencies in vortex ring state................................................................................................................. 22
+Table 3. Algorithm to calculate the rotor induced velocity in vortex ring state. ................................................................... 23
+Table 4. VRS model parameters (velocities scaled with vh); points refer to figure 37......................................................... 24
+Table 5. D6075 helicopter model. ............................................................................................................................................ 24
+Table 6. V-22 tiltrotor model. ................................................................................................................................................... 24
+FIGURES
+Figure 1. Smoke flow visualization of a rotor in vortex ring state (Drees, ref. 20)............................................................... 25
+Figure 2. Helicopter Vz drop and tiltrotor roll-off from vortex ring state encounter, and stability boundary of VRS model.................................................................................................................................................................................. 25
+Figure 3. Rotor inflow in vertical descent, from wind tunnel test, momentum theory, and the VRS model. ..................... 26
+Figure 4. Momentum theory and inflow states in axial flow. ................................................................................................. 26
+Figure 5(a). Momentum theory in forward flight (function of Vz and Vx). .......................................................................... 27
+Figure 5(b). Momentum theory in forward flight (function of Vz and α). ............................................................................ 27
+Figure 5(c). Momentum theory in forward flight (function of V and α). .............................................................................. 28
+Figure 6. Geometry of rotors tested in vortex ring state. ........................................................................................................ 28
+Figure 7. Lock (1926) wind tunnel test: axial flow; σ = 0.0737, θtw = –9.6 deg. ................................................................ 29
+Figure 8. Brotherhood (1949) flight test: axial flow; σ = 0.0576, θtw = 0............................................................................ 29
+Figure 9(a). Castles and Gray (1951) wind tunnel test: axial flow; σ= 0.05, θtw = 0, constant chord............................... 30
+Figure 9(b). Castles and Gray (1951) wind tunnel test: axial flow; σ= 0.05, θtw = 0, 3:1 taper. ....................................... 30
+Figure 9(c). Castles and Gray (1951) wind tunnel test: axial flow; σ= 0.05, θtw = –12 deg, constant chord. .................. 31
+Figure 9(d). Castles and Gray (1951) wind tunnel test: axial flow; σ= 0.05, θtw = 0, constant chord, R = 2 ft. .............. 31
+Figure 11. Yaggy and Mort (1962) wind tunnel test: axial flow; σ = 0.20, θtw = –22.4 deg, flapping propeller. ............. 32
+Figure 12. Washizu (1966) moving track test: axial flow; σ = 0.0573, θtw = –8.33 deg..................................................... 33
+Figure 13. Empey and Ormiston (1974) wind tunnel test: axial flow; σ = 0.1051, θtw = 0. ............................................... 33
+Figure 14. Betzina (2001) wind tunnel test: axial flow; σ = 0.1194, θtw = –41 deg, rotor only. ........................................ 34
+Figure 15. Taghizad (2002) flight test: axial flow; σ = 0.083, θtw = –10 deg. ..................................................................... 34
+Figure 16(a). Yaggy and Mort (1962) wind tunnel test: nonaxial flow; σ = 0.20, θtw = –22.4 deg, flapping propeller. .. 35
+Figure 16(b). Yaggy and Mort (1962) wind tunnel test: nonaxial flow; σ = 0.20, θtw = –22.4 deg, flapping propeller. .. 35
+Figure 17(a). Washizu (1966) moving track test: nonaxial flow; σ = 0.0573, θtw = –8.33 deg.......................................... 36
+Figure 17(b). Washizu (1966) moving track test: nonaxial flow; σ = 0.0573, θtw = –8.33 deg.......................................... 36
+Figure 18(a). Empey and Ormiston (1974) wind tunnel test: nonaxial flow; σ = 0.1051, θtw = 0. .................................... 37
+
+
+v
+Figure 18(b). Empey and Ormiston (1974) wind tunnel test: nonaxial flow; σ = 0.1051, θtw = 0. .................................... 37
+Figure 19(a). Betzina (2001) wind tunnel test: nonaxial flow; σ= 0.1194, θtw = –41 deg, rotor only; from thrust.......... 38
+Figure 19(b). Betzina (2001) wind tunnel test: nonaxial flow; σ= 0.1194, θtw = –41 deg, rotor only; from thrust. ........ 38
+Figure 20(a). Betzina (2001) wind tunnel test: nonaxial flow; σ= 0.1194, θtw = –41 deg, rotor only; from torque. ....... 39
+Figure 20(b). Betzina (2001) wind tunnel test: nonaxial flow; σ= 0.1194, θtw = –41 deg, rotor only; from torque. ....... 39
+Figure 21. Taghizad (2002) flight test: nonaxial flow; σ = 0.083, θtw = –10 deg................................................................ 40
+Figure 22(a). Washizu (1966) moving track test: single rotor; σ= 0.0573, θtw = –8.33 deg.............................................. 41
+Figure 22(b). Washizu (1966) moving track test: front rotor; σ= 0.0573, θtw = –8.33 deg. .............................................. 41
+Figure 22(c). Washizu (1966) moving track test: rear rotor; σ = 0.0573, θtw = –8.33 deg. ................................................ 42
+Figure 23(a). Betzina (2001) wind tunnel test: influence of image plane; σ = 0.1194, θtw = –41 deg; axial flow, α= 90 deg. ......................................................................................................................................................................... 42
+Figure 23(b). Betzina (2001) wind tunnel test: influence of image plane; σ = 0.1194, θtw = –41 deg; nonaxial flow, α= 60 deg. ......................................................................................................................................................................... 43
+Figure 23(c). Betzina (2001) wind tunnel test: influence of image plane; σ = 0.1194, θtw = –41 deg; nonaxial flow, α= 30 deg. ......................................................................................................................................................................... 43
+Figure 24. Yaggy and Mort (1962) wind tunnel test: minimum (dotted) and maximum (solid) inflow; σ = 0.20, θtw = –22.4 deg, flapping propeller; axial flow, α = 90 deg. ........................................................................................ 44
+Figure 25. Washizu (1966) moving track test: minimum (dotted) and maximum (solid) inflow; σ = 0.0573, θtw = –8.33 deg; axial flow, α = 90 deg. ........................................................................................................................ 44
+Figure 26. Yaggy and Mort (1962) wind tunnel test: thrust fluctuations; σ = 0.20, θtw = –22.4 deg, flapping propeller. ............................................................................................................................................................. 45
+Figure 27. Washizu (1966) moving track test: thrust fluctuations; σ = 0.0573, θtw = –8.33 deg. ...................................... 45
+Figure 28. Azuma (1968) wind tunnel test: thrust and torque fluctuations; σ = 0.0573, θtw = –8.3 deg; axial flow, α= 90 deg. ......................................................................................................................................................................... 46
+Figure 29(a). Betzina (2001) wind tunnel test: thrust fluctuations; σ = 0.1194, θtw = –41 deg; axial flow, α= 90 deg. ......................................................................................................................................................................... 46
+Figure 29(b). Betzina (2001) wind tunnel test: thrust fluctuations; nonaxial flow, α = 60 deg. .......................................... 46
+Figure 29(c). Betzina (2001) wind tunnel test: thrust fluctuations; rotor only. ..................................................................... 47
+Figure 29(d). Betzina (2001) wind tunnel test: thrust fluctuations; rotor and image plane. ................................................. 47
+Figure 29(e). Betzina (2001) wind tunnel test: thrust fluctuations; rotor, wing, and image plane....................................... 47
+Figure 30. Yaggy and Mort (1962) wind tunnel test: thrust fluctuations; σ = 0.20, θtw = –22.4 deg, flapping propeller. ............................................................................................................................................................. 47
+Figure 31. Washizu (1966) moving track test: thrust fluctuations; σ = 0.0573, θtw = –8.33 deg. ...................................... 48
+Figure 32(a). Betzina (2001) wind tunnel test: thrust fluctuations; rotor only. ..................................................................... 48
+Figure 32(b). Betzina (2001) wind tunnel test: thrust fluctuations; rotor and image plane. ................................................. 48
+Figure 32(c). Betzina (2001) wind tunnel test: thrust fluctuations; rotor, wing, and image plane....................................... 48
+Figure 33. Vortex ring state boundaries. .................................................................................................................................. 49
+Figure 34. Helicopter VRS boundaries. ................................................................................................................................... 49
+Figure 35. Tiltrotor VRS boundaries........................................................................................................................................ 49
+Figure 36. Summary of minimum and maximum points of measured inflow in vertical descent (scaled to v/vh = 1 at Vz = 0)............................................................................................................................................................................ 50
+Figure 37. VRS model development. ....................................................................................................................................... 50
+Figure 38. Rotor inflow from baseline model.......................................................................................................................... 51
+
+
+vi
+Figure 39. VRS model............................................................................................................................................................... 51
+Figure 40(a). Castles and Gray (1951) wind tunnel test: axial flow; σ = 0.05, θtw = 0, constant chord; κ = 1.15. ........... 52
+Figure 40(b). Castles and Gray (1951) wind tunnel test: axial flow; σ = 0.05, θtw = 0, 3:1 taper; κ = 1.15...................... 52
+Figure 40(c). Castles and Gray (1951) wind tunnel test: axial flow; σ = 0.05, θtw = –12 deg, constant chord; κ = 1.15. ............................................................................................................................................................................. 52
+Figure 40(d). Castles and Gray (1951) wind tunnel test: axial flow; σ = 0.05, θtw = 0, constant chord, R = 2 ft; κ = 1.15. ............................................................................................................................................................................. 52
+Figure 41. Yaggy and Mort (1962) wind tunnel test: axial flow; σ = 0.20, θtw = –22.4 deg, flapping propeller; κ = 1.15. ............................................................................................................................................................................. 53
+Figure 42. Washizu (1966) moving track test: axial flow; σ = 0.0573, θtw = –8.33 deg; κ = 1.05..................................... 53
+Figure 43. Empey and Ormiston (1974) wind tunnel test: axial flow; σ = 0.1051, θtw = 0; κ = 1.10. ............................... 54
+Figure 44. Betzina (2001) wind tunnel test: axial flow; σ = 0.1194, θtw = –41 deg, rotor only; κ = 1.05. ........................ 54
+Figure 45. Taghizad (2002) flight test: axial flow; σ = 0.083, θtw = –10 deg; κ = 1.20...................................................... 54
+Figure 46. Yaggy and Mort (1962) wind tunnel test: nonaxial flow; σ = 0.20, θtw = –22.4 deg, flapping propeller; κ = 1.15. ............................................................................................................................................................................. 55
+Figure 47. Washizu (1966) moving track test: nonaxial flow; σ= 0.0573, θtw = –8.33 deg; κ = 1.05. ............................. 55
+Figure 48. Empey and Ormiston (1974) wind tunnel test: nonaxial flow; σ = 0.1051, θtw = 0; κ = 1.10.......................... 56
+Figure 49. Betzina (2001) wind tunnel test: nonaxial flow; σ = 0.1194, θtw = –41 deg, rotor only; from thrust, κ = 1.05. ............................................................................................................................................................................. 56
+Figure 50. Betzina (2001) wind tunnel test: nonaxial flow; σ = 0.1194, θtw = –41 deg, rotor only; from torque, κ = 1.05. ............................................................................................................................................................................. 57
+Figure 51. Taghizad (2002) flight test: nonaxial flow; σ = 0.083, θtw = –10 deg; κ = 1.20................................................ 57
+Figure 52. Calculated damping of heave mode for helicopter in vertical descent (real part of eigenvalue, positive value unstable)..................................................................................................................................................... 58
+Figure 53. Calculated damping of heave mode for helicopter in forward flight (real part of eigenvalue, positive value unstable)..................................................................................................................................................... 58
+Figure 54. Calculated damping of flight dynamic modes for tiltrotor in vertical descent (real part of eigenvalue, positive value unstable)..................................................................................................................................................... 59
+Figure 55. Calculated flight dynamics stability boundary for helicopter............................................................................... 59
+Figure 56. Helicopter VRS encounter: collective control change. Measurements from D6075 flight test (refs. 44, 46, 47). ............................................................................................................................................................... 59
+Figure 57. Helicopter VRS encounter: comparison of measured and calculated response; vertical case. Measurements from D6075 flight test (refs. 44, 46, 47)................................................................................................. 60
+Figure 58. Helicopter VRS encounter: comparison of measured and calculated response; forward case. Measurements from D6075 flight test (refs. 44, 46, 47)................................................................................................. 60
+Figure 59. Helicopter VRS encounter: influence of inflow time constant; vertical case...................................................... 61
+Figure 60. Helicopter VRS encounter: influence of inflow time constant; forward case. .................................................... 61
+Figure 61. Helicopter VRS encounter: influence of inflow peak value; vertical case. ......................................................... 62
+Figure 62. Helicopter VRS encounter: influence of inflow peak value; forward case.......................................................... 62
+Figure 63. Helicopter VRS encounter: influence of autopilot target forward speed (forward case).................................... 63
+Figure 65. Tiltrotor VRS encounter: prescribed collective control change. .......................................................................... 63
+Figure 64. Helicopter VRS encounter: recovery by collective increase (vertical case)........................................................ 63
+Figure 66. Tiltrotor VRS encounter: calculated symmetric response. ................................................................................... 64
+Figure 67. Tiltrotor VRS encounter: calculated asymmetric response................................................................................... 64
+
+
+vii
+NOTATION
+a lift-curve slope
+az vertical acceleration
+A rotor disk area, πR2
+B tip loss factor
+c blade chord
+CP rotor power coefficient, P/ρ(ΩR)3A
+CQ rotor torque coefficient, Q/ρ(ΩR)2RA
+CT rotor thrust coefficient, T/ρ(ΩR)2A
+N number of blades
+rc blade root cutout
+r blade radial station
+R blade radius
+P rotor power
+Pi rotor induced power
+Po rotor profile power
+Q rotor torque
+T rotor thrust
+v rotor induced velocity
+V total velocity, Vx2+Vz2
+vh velocity scale, T/2ρA
+Vx rotor horizontal speed
+Vz rotor vertical speed (positive in climb)
+Vtip rotor tip speed, ΩR
+VRS vortex ring state
+α rotor disk angle of attack (positive in descent)
+θtw blade twist
+θ75 collective pitch (75% radius)
+κ empirical inflow factor
+λh velocity scale, CT/2
+ρ air density
+σ rotor solidity, Nc/πR
+τ time constant of inflow equation
+Ω rotor rotational speed
+
+
+viii
+
+
+1
+MODEL FOR VORTEX RING STATE INFLUENCE ON
+ROTORCRAFT FLIGHT DYNAMICS
+Wayne Johnson
+Ames Research Center
+SUMMARY
+The influence of vortex ring state (VRS) on rotorcraft flight dynamics is investigated, specifically the vertical velocity drop of helicopters and the roll-off of tiltrotors encountering VRS. The available wind tunnel and flight test data for rotors in vortex ring state are reviewed. Test data for axial flow, nonaxial flow, two rotors, unsteadiness, and vortex ring state boundaries are described and discussed. Based on the available measured data, a VRS model is developed. The VRS model is a parametric extension of momentum theory for calculation of the mean inflow of a rotor, hence suitable for simple calculations and real-time simulations. This inflow model is primarily defined in terms of the stability boundary of the aircraft motion. Calculations of helicopter response during VRS encounter were performed, and good correlation is shown with the vertical velocity drop measured in flight tests. Calculations of tiltrotor response during VRS encounter were performed, showing the rolloff behavior characteristic of tiltrotors. Hence it is possible, using a model of the mean inflow of an isolated rotor, to explain the basic behavior of both helicopters and tiltrotors in vortex ring state.
+INTRODUCTION
+The behavior of a rotor operating in vortex ring state (VRS) has long been familiar to aerodynamicists, and a substantial number of VRS test programs have been reported (refs. 1–50). Yet vortex ring state is a complex phenomenon, involving large-scale unsteady wake flow, and there is much to be done to thoroughly understand the aerodynamics and develop accurate prediction methodologies. There has been renewed interest recently in vortex ring state, because of the possibility of operating rotorcraft in steep descent for approach to landing, and in particular, because of the influence of VRS on tiltrotor roll control and response.
+The subject of the present paper is the influence of vortex ring state on rotorcraft flight dynamics, specifically the vertical velocity drop of helicopters and the roll-off of tiltrotors encountering VRS. The objective is to develop a model of vortex ring state that is suitable for flight dynamics calculations and real-time piloted simulation, including training simulations. The model is based on existing flight test and wind tunnel test data, and is applicable to both helicopters and tiltrotors.
+OVERVIEW
+A rotor is operating in vortex ring state when it is descending at low forward speed with a vertical velocity that approaches the value of the wake-induced velocity at the rotor disk. In this condition the rotor tip vortices are not convected away from the disk rapidly enough, and the wake builds up and periodically breaks away (fig. 1). The tip vortices collect in a vortex ring, producing a circulating flow down through the rotor disk, then outward and upward outside the disk. The resulting flow is unsteady, hence a source of considerable low frequency vibration and possible control problems. For descent at forward speeds sufficiently high enough that the wake is convected away from the rotor, vortex ring state does not develop.
+Vortex ring state encounter can produce a significant increase in the descent rate of a helicopter or a roll-off of a tiltrotor. Figure 2 shows helicopter Vz drop and tiltrotor roll-off points measured in flight tests (refs. 44, 46, 47, 51). In figure 2, Vz is the rotor vertical velocity and Vx is the rotor horizontal velocity. This motion is an instability of the helicopter vertical or tiltrotor roll dynamics. If the aircraft rate becomes sufficiently large as a result of the instability, it will not be possible to recover using collective control for the helicopter or lateral cyclic control (differential collective) for the tiltrotor. While the response to control is still a positive acceleration increment, the control authority is not sufficient to reverse the motion. Hence recovery from VRS encounter requires
+
+
+2
+a drop in collective and forward cyclic for a helicopter, or a forward nacelle tilt for a tiltrotor. Basically it is necessary to fly out of the instability region. Also shown in figure 2 is the stability boundary specified for the VRS model developed in this paper.
+It is remarkable that the flight test data for a helicopter and a tiltrotor define essentially the same VRS boundary in figure 2, in spite of a different manifestation of the instability (vertical velocity drop for a helicopter, roll-off for a tiltrotor), and large differences in twist and solidity between the rotors of the two aircraft. This implies that basically the same aerodynamic mechanism is responsible for the behavior of both helicopters and tiltrotors in VRS.
+The instability of the aircraft in vortex ring state is a consequence of the form of the rotor inflow as a function of descent rate. Figure 3 shows the total inflow through the rotor disk, Vz+v (where v is the induced velocity) for a rotor in vertical descent. Momentum theory is not valid in descent until the total velocity is substantially negative (so the velocity is again in the same direction throughout the flow field), although it provides a reasonable result for low descent rate. The measured data show that at moderate descent rates (in VRS), the total velocity Vz+v increases as the descent rate increases. As the rotor descends into VRS, the energy losses resulting from the recirculating flow increase, hence the power (total inflow Vz+v) can increase. Where d(Vz+v)/dVz is negative (roughly Vz/vh = –0.5 to –1.5 in fig. 3), the vertical motion (and roll motion of a tiltrotor) is unstable, because an increase in descent rate at constant collective will produce an increase in total inflow and hence a reduction in thrust—resulting in negative damping. This instability mechanism has been described by several authors (refs. 18, 25, 34, 35, 43, 44). More investigations have been focused on the unsteady nature of VRS aerodynamics. The instability is defined by the character of the mean thrust and mean power of the rotor in VRS, not the unsteadiness of the flow. The challenge is to develop a model of the rotor mean inflow, applicable to simple calculations and real-time simulation, that includes this character that leads to the unstable flight dynamics.
+ROTOR INFLOW
+The flow state of a helicopter is a global phenomenon, involving low speed wake velocities in a region on the order of the rotor radius. So rotor tip speed and Mach number are not key parameters of the flow. It follows from dimensional analysis (ref. 52) that the appropriate velocity scale of the flow is vh = T/2ρA , where T is the rotor thrust, ρ the air density, and A the rotor disk area.
+The factor of 2 is included for convenience, so vh is the ideal hover induced velocity (hence the subscript h).
+The flow state depends on the rotor vertical velocity Vz (positive for climb) and horizontal velocity Vx. Alternatively, the rotor angle of attack α can be used (Vz = –Vx tan α, so α = 90 deg for vertical descent). In the context of momentum theory, the mean induced velocity through the rotor disk is rigorously defined in terms of the rotor induced power: v = Pi/T. The parasite and climb power of the rotor is given by TVz. Hence Vz+v = P/T represents the total power of the rotor, except for profile power Po. In dimensionless terms, the mean induced velocity has the form
+v/vh = Pi/Ph = function(Vz/vh, Vx/vh)
+where Ph = Tvh is the ideal hover power.
+Momentum theory provides an estimate of the rotor induced velocity (see ref. 52). The rotor is modelled as a circular disk that sustains a pressure jump, so the aerodynamic problem is steady and details of the rotor blade geometry are not considered. It is assumed that a well defined slipstream exists that is the boundary of the flow through the rotor disk. The equations of mass, momentum, and energy conservation for the entire system are solved to obtain the rotor power for a given thrust. The solution is formulated in terms of the induced velocity v at the rotor disk, and the induced velocity in the far wake of the rotor, w = 2v. The minimum induced power (ideal performance) is obtained with the far wake velocity w constant throughout the wake section, which for small inflow implies uniform induced velocity v and uniform pressure Δp = T/A at the rotor disk. The momentum theory solution in axial flow is
+v = − (Vz/2) + (Vz/2)2 + vh2 for Vz > 0
+v = − (Vz/2) − (Vz/2)2 − vh2 for Vz < −2vh
+which is plotted in figure 4. The total velocities in the far field, at the rotor disk, and in the far wake are Vz, Vz+v, and Vz+2v respectively. At the lines Vz = 0, Vz+v = 0, and Vz+2v = 0, one of these velocities changes directions, so these lines define regions with different flow states (fig. 4). The inflow states for axial flow are: normal working state (Vz > 0), vortex ring state (Vz < 0 and Vz+v > 0), turbulent wake state (Vz < 0, Vz+v < 0, Vz+2v > 0), and windmill brake state (Vz < 0, Vz+2v < 0). Only for the normal working state and windmill brake state is the velocity in the same direction throughout the flow field, so only in these regions is momentum theory valid. In the vortex ring state, the inflow is down through the rotor disk
+
+
+3
+and in the far wake (according to momentum theory assumptions) but upward in the external flow.
+For small rates of descent, the flow near the rotor disk is similar to that assumed by momentum theory, and it is found that the momentum theory solution still gives a reasonable estimate of the power. But as the descent rate increases, the total velocity through the disk Vz+v approaches zero, implying that the wake is not being convected away from the disk. In the turbulent wake state, the inflow is up through the rotor disk and in the external flow, but still downward in the far wake (according to momentum theory assumptions). So the wake is once more being convected away from the disk (upward now), although momentum theory does not give a useful estimate of the power. Real autorotation of the rotor (zero total power, including profile losses) occurs in the turbulent wake state. At ideal autorotation, P/T = Vz+v = 0, the flow through the rotor disk is zero, and the momentum theory result for axial flow is singular.
+Figure 4 shows momentum theory in terms of both total velocity Vz+v and induced velocity v, as a function of vertical velocity Vz. The Vz+v form was introduced by Lock (ref. 10), the v form by Hafner (ref. 11). Earlier practice followed Glauert (ref. 5), plotting 1/F vs. 1/f, where
+1/F = 4πρ(Vz+v)2r/(dT/dr) = (Vz+v)2/(T/2ρA) =
+((Vz+v)/vh)2
+1/f = 4πρVz2r/(dT/dr) = Vz2/(T/2ρA) = (Vz/vh)2
+Such plots are not very useful, because the sign of the velocities is lost, and by squaring the velocities their behavior near zero is obscured.
+Glauert made the connection between a rotor in axial flow and a circular wing, to obtain a momentum theory expression for the induced velocity in forward flight as well as axial flow:
+v = vh2
+Vx2 + (Vz+v)2
+(ref. 52). Figure 5a shows the momentum theory solution for several values of horizontal velocity Vx. In forward flight (Vx > 0) the singularity of momentum theory at ideal autorotation is eliminated, but it is expected that the result is still invalid near Vz+v = 0 until Vx is sufficiently large (that is, until Vx produces sufficient mass flow through the rotor disk and convects the wake away from the disk). A wind tunnel test of a rotor in descent is most conveniently conducted using a set of fixed rotor angles α. Figure 5b shows the momentum theory solution as a
+function of Vz and α; figure 5c shows the solution as a
+function of V = Vx2+Vz2 and α.
+In practical applications of momentum theory, a multiplicative factor κ is introduced: v = κvideal. The factor κ accounts for nonideal induced losses, including effects of a finite number of blades and nonuniform loading. In hover, κ = 1.10 to 1.15 typically. In high speed forward flight κ becomes very large because of the reduction of the effective span of the loading on the rotor disk.
+Measurements of the performance of a rotor can be used to define the induced velocity. Test data must be the basis for the induced velocity in vortex ring state and turbulent wake state, where momentum theory is not valid. From the definition of the induced velocity in terms of power (P/T), it follows that
+Vz+v = P − Po
+T
+where P is the total rotor power and Po is the profile power. This result depends on the estimate of profile power. Frequently it is assumed that the profile power is constant, independent of the climb/descent rate and forward speed (at least for low forward speed). Alternatively, blade element theory can be used to obtain the inflow from measurements of rotor thrust and collective pitch (T&θ):
+3
+2 (B2 − rc2 ) (1 − 1
+2 μ2) λ = − (1 + 3
+2 μ2) 6CT
+σa
++ θ75 (B3 − rc3) (1 − μ2 + 9
+4 μ4)
+3
+2 (B2 − rc2 ) λ = −
+6CT
+σa + θ75 (B3 − rc3) (1 + 3
+2 μ2)
+for flapping and rigid rotors respectively (ref. 52). Here B is the tip loss factor; rc the root cutout; and a the lift-curve slope. This result depends on the assumptions of no stall and constant lift-curve slope. A check of the evaluation of the induced velocity using these methods is provided by hover, where v = κvideal with a reasonable value of κmust be obtained. Both the T&θ method and the P/T method give an r-weighted value for the induced velocity (from ⌡⌠ λuT dr and ⌡⌠ λdCT respectively; see ref. 52). So the two methods should give nearly identical results, as illustrated in figure 3. Different results from the two methods imply problems with the measured performance data.
+The basic scaling for the rotor aerodynamics in vortex ring state is based on the air density, rotor radius, and vh = T/2ρA . Thus the principal result has the dimensionless form v/vh = function(Vz/vh, Vx/vh) = function(V/vh, α). The other parameters of the rotor must also have some
+
+
+4
+influence: twist, planform, number of blades, solidity, collective, tip speed, Reynolds number, and Mach number. With the operating condition defined by rotor thrust, collective pitch is the dependent variable. Twist, planform, solidity, and number of blades must affect the loading distribution. If the Reynolds number is too small, the wake structure and the blade maximum lift will be influenced. If the Mach number is large, the blade loading will be influenced.
+The tip speed is an alternative velocity scale, introducing λh = vh/ΩR = CT/2 and the advance ratios μx = Vx/ΩR, μz = Vz/ΩR. The parameters CT and μ influence the detailed structure of the loading and wake. For example, μ defines the geometry of the individual tip vortices, and the vertical spacing of the wake helices h and the bound circulation (tip vortex strength) Γ can be written
+h/R = v (2π /ΩN) / R = CT/2 (4π /N) (v/vh)
+Γ/vhR ≅ [T/(0.5 NρΩR2] / vhR = (4π/N) CT/2
+Γ/ΩR2 ≅ [T/(0.5 NρΩR2] / ΩR2 = (4π /N) CT/2
+To the extent that rotors operating at similar CT/σ are considered (the blade mean lift coefficient is proportional to CT/σ), a variation of solidity implies a variation of CT. So solidity can also be viewed as having a direct effect on the details of the wake, along with CT and μ.
+TEST DATA
+The following sections review the available test data for rotors operating in vortex ring state. Table 1 summarizes the principal sources of data, and figure 6 shows the twist and solidity of the rotors tested. This review includes descriptions, paraphrased from the papers cited, of the behavior of rotors and helicopters in vortex ring state.
+In many cases it was necessary for the purposes of the present work to obtain the rotor inflow from the test data as originally published. The inflow data obtained from the mean performance, for a single rotor in axial flow, are presented with this review. Then the measured data for nonaxial flow and for two rotors are presented. Finally the VRS boundaries and the available information on unsteadiness are discussed.
+Lock and Glauert (1926)
+Lock (refs. 1, 2, 4) produced the earliest data commonly cited for a rotor in vortex ring state. A 3-ft diameter, two-bladed propeller was tested in a 7-ft wind
+tunnel, for axial flow only. The blades were twisted with a constant geometric pitch, with a ratio of pitch to diameter of P/D = 0.3. The rotor root cutout was 0.167, and the solidity σ= 0.0737.
+Glauert (ref. 5) obtained the rotor inflow for these tests, using the measured thrust and collective. For the data from reference 2, results were obtained based on the uncorrected tunnel velocity (f) and the velocity measured at the plane of the airscrew disk (f1). For the data from reference 4, only the uncorrected tunnel speed was used.
+The results were presented in several reports (refs. 4, 5, 10, 16). Figure 7 shows the data. Evidently the influence of the wind tunnel was significant, for the inflow was actually less than momentum theory in the turbulent wake and windmill brake states. The inflow value at hover in contrast was substantially greater than momentum theory (κ = 1.4). Comparison with other data sets confirms that these results are not accurate in vortex ring state.
+Glauert (ref. 5) also considered data obtained by Munk (ref. 3). These data were from a test of windmilling 0.60-m diameter propellers in a 5-ft open jet wind tunnel. The data give a drag coefficient of about CD = (2vh/V)2 = 1.70 and 1.57 for two propellers, which is significantly higher than the drag of a parachute. A more reasonable result is V/vh = 1.8 or so at autorotation (ref. 52), hence CD = 1.2.
+Hafner (1947)
+Hafner (ref. 11) noted that the results of wind tunnel experiments with propellers in axial flow (Lock) did not give very satisfactory agreement with performance of full size rotors. Hafner collected various (very incomplete) data from tests on the Hafner Gyroplane, and from other investigators, and produced a new presentation of the induced flow. When Stewart (ref. 12) presented Brotherhood's results, Hafner observed that his curve was based on 20% theory, 20% experimental data, and the remainder being pure guess-work.
+Reeder and Gustafson (1949)
+Reeder and Gustafson (ref. 15) conducted flight tests of a Sikorsky R4 helicopter. In determining the power required at zero airspeed with varying rates of descent, a region was encountered in which control could not be maintained. If the power was insufficient to maintain descent at less than 500 ft/min, the helicopter would slowly increase its vertical velocity. At about 500 ft/min, the vibration became quite pronounced. Rather violent, random yawing motions then occurred with some roll, the rate of descent increased rapidly, the rotational speed of the rotor varied noticeably, and more often than not the helicopter would eventually pitch nose down and recover
+
+
+5
+by gaining speed, despite application of considerable rearward control. This behavior had many variations which apparently depended on small horizontal velocities and on power conditions. In some cases the vibration was encountered at only 300 ft/min. Loss of control appeared most severe when the power was as high as possible at the required rate of descent. No trouble was encountered for power settings permitting steady descents of about 1500 ft/min and higher. Motion picture studies of tufted blades during some of these cases showed no stalling, but did show pronounced and irregular blade bending.
+Brotherhood (1949)
+Brotherhood (ref. 16) conducted flight tests on a Sikorsky R4-B (Hoverfly Mk. I), obtaining the rotor inflow from both power and blade angle measurements. These results were earlier reported by Stewart (ref. 12), who also provided a good description of VRS. The R4-B was a three-bladed helicopter with untwisted blades and a solidity of 0.0576. The disk loading was 2.35 lb/ft2 for the test. The measurements included the weight (giving rotor thrust, neglecting download), blade angle, engine conditions, rotor speed, and rate of descent. Engine power was obtained from the maker's charts for a given manifold pressure and engine speed. An estimate of the combined transmission loss, engine cooling power, and tail rotor power was subtracted. Finally, a constant value of profile power was subtracted, and the inflow from power was calculated as Vz+v = P/T. The inflow from blade angle was calculated using blade element theory, with the measured thrust, rotor speed, and collective.
+Figure 8 shows Brotherhood's results for the inflow, along with Hafner's curve, and Brotherhood's version of Lock's data. These results are more reasonable for Vz/vh at ideal autorotation, but the inflow does not exhibit the negative slope of Vz+v vs. Vz that implies the flight dynamics instability.
+Drees (1949)
+Drees (refs. 17–20) conducted an investigation of the inflow states of a rotor. A flow visualization test of a small rotor (refs. 18 and 19) produced excellent pictures illustrating vortex ring state (such as fig. 1). Drees identified a region of roughness, in vertical flight for Vz/vh = –0.62 to –1.53, extending in forward flight to Vx/vh = 1.0. In this region the behavior is very rough, in attitude as well as in control, and unexpected loss of altitude and/or large nose-down pitching moments may occur. Drees noted that an unstable increase of collective pitch and/or power is necessary to maintain the relative position of the helicopter. The cause of the nose-down pitching moment was identified as the tailboom operating in an upflow of rather high velocity, giving a nose-down
+pitching moment, particularly if the boom is not streamlined.
+The rough behavior of the helicopter in vortex ring state was attributed to the unstable character of the flow. During the flow visualization tests (ref. 20), a periodic tumbling motion of the rotor disk was observed, caused by the fact that a complete vortex ring around the tip circle was never obtained. If the vortex on one side of the disk was building up, the vortex on the other side was seeking to get free to be carried away with the surrounding air. A moment later a new vortex was formed to replace this last one. The rough behavior was more pronounced for descent in forward flight than in vertical flight, but a very regular periodicity was observed. The rotor disk tumbled regularly with the same period as the shedding of the trailing vortices. The period of the model rotor was about 2 seconds. At a higher forward speed the rough behavior of the rotor in the vortex ring state disappeared because the vortices were blown away before they were able to build up a vortex ring around the rotor.
+Castles and Gray (1951)
+Castles and Gray (ref. 21) conducted a wind tunnel test of rotors operating in vortex ring state. Four rotors were tested: constant chord, untwisted, 6-ft diameter; 3:1 taper, untwisted, 6-ft diameter; constant chord, –12 deg twist, 6-ft diameter; and constant chord, untwisted, 4-ft diameter. Each rotor had a thrust-weighted solidity of σ = 0.05, with NACA 0015 airfoils. The wind tunnel was 9-ft diameter, open jet, with a 10-ft long test section. The rotors were operated in axial flow.
+The errors in the data obtained by Lock (ref. 4) were attributed to elastic twist and an incorrect velocity. Castles and Gray corrected their results for the blade dynamic twist (the elastic torsion produced by the propeller moment). This correction was 11–18% of the collective for the first rotor, and 2–6% for the other rotors. They measured the approximate equivalent free-stream velocity, based on the wind tunnel fan speed. The data presented in reference 21 include the thrust coefficient CT, and a torque coefficient increment ΔCQ obtained by subtracting the torque coefficient at zero thrust and zero velocity from the measured torque coefficient. Castles and Gray used blade element theory to obtain the inflow from the measured thrust and collective, and from the measured torque increment and collective. For the present paper, the inflow was calculated using Vz+v = P/T, with the climb and induced power estimated by subtracting an estimate of the profile power increase with thrust: CP = ΔCQ – ΔCPo. Based on a drag increase with angle of attack of Δcdo =
+1.25α2, it follows
+
+
+6
+ΔCPo = σ
+8 Δcdo = σ
+8 1.25 (6CT/σa)2 = 3.125 CT2
+using σ = 0.05 and a = 6.0.
+Figure 9 presents the inflow data for the four rotors tested, using the results obtained from T&θ by Castles and Gray and the results obtained from P/T as described above. No influence of thrust, rotor speed, or blade radius was observed. The influence of twist was described as an increase in rate of descent at ideal autorotation by 10%; peak v/vh increased 24%, at 17% higher Vz/vh; and fluctuations in force and moment very much larger.
+The data of Castles and Gray shows a significant influence of twist. The twisted rotor has a distinct negative slope of Vz+v, while the curve is nearly flat for the untwisted rotors. However, the possibility must be considered that there are significant facility effects with a 6-ft rotor tested in a 9-ft wind tunnel.
+Stewart (1951)
+Stewart (ref. 22) described flight experience in vortexring conditions with several helicopters: Sikorsky R-4B, R-6, S-51, Bell 47, and Bristol 171. The helicopter behavior varied from mild wallowing on the best type to a complete loss of control on the worst case. These effects were attributed to the turbulent-flow changes in the vortex ring state. The loss of control was thought to be caused by the large changes in pitching moments on the fuselage with small displacements of the helicopter relative to the unusual flow pattern.
+For the R-4B, the behavior in VRS was much worse than the other types tested. There was a great deal of wallowing or unsteadiness, random yawing movements, and considerable increase in vibration level. Then there was loss of control in the form of nose-down pitching. Full backward movement of the stick did not prevent violent nose-down pitching, and the helicopter attained a pitch angle of about 40 deg. The flight speed increased rapidly to about 40 mph with a loss in height before control was regained. Decreasing collective pitch when the unsteady conditions were approached precipitated the nose-down pitching. Increase of pitch and power, if applied immediately when the unsteadiness began, could suppress loss of control. But this was only a temporary effect on the R-4B since it had insufficient power to climb clear of VRS.
+The R-6 exhibited a general wallowing with harsh vibration, followed by moderate forward tilting. The behavior was similar to the R-4 but much less severe. The forward tilt could be kept to 5–10 deg. Decreasing collective precipitated nose-down pitching, but increase of
+pitch and power suppressed it, and the helicopter could be climbed clear of the region of roughness.
+The S-51 behaved like the R-4B and R-6, with the same type of wallowing, but much less tendency to yaw and the increase in vibration was much less noticeable. The nose-down pitching was less severe than with the R4B, but more than the R-6.
+For the Bell 47, at no time was there a complete loss of control. There was some lateral and longitudinal wallowing, often with a good deal of yawing, and the usual increase in vibration level. There was no violent pitching. The flightpath could be maintained, but with coarse control corrections needed, so it appeared there was a general loss of control effectiveness.
+The Bristol 171 exhibited the most satisfactory characteristics, somewhat better than the Bell 47. There was the usual increase in vibration and some wallowing. The behavior was similar to the Bell 47, but not as sensitive. It was easy to suppress the general roughness by increasing pitch and power and climbing clear of the region.
+Stewart concluded that the pitching was brought about by effects of the flow on the fuselage. Stewart also compared the helicopter VRS behavior with stall of a fixed-wing airplane. This comparison referred only to the general flight behavior and sensations experienced by the pilot; no aerodynamic relationship in the causes of these effects was implied. There was no question of aerodynamic stalling in the helicopter rotor, a fact proved in that increasing collective pitch during the behavior had a beneficial effect.
+Gessow (1954)
+Gessow and Myers (ref. 23) presented the rotor inflow for axial flight, using low descent rate and autorotation data from tests of a YR-4B helicopter (refs. 9 and 14), but conclusions were primarily based on the results of Lock and Brotherhood. Gessow (ref. 25) presented a curve that was a composite of flight and wind tunnel measurements (refs. 4, 5, 10, 16, 20, 21), including the data of Castles and Gray. Figure 10 shows these inflow curves.
+Gessow (ref. 25) identified the most important part of the vortex ring state region as the rates of descent where the slope of the curve is unstable, because the induced velocity increases at a faster rate than does the descent velocity. At fixed pitch, this results in a reduction in thrust with increased descent velocity. This type of instability is a contributing factor toward the well-known troubles that pilots experience when attempting to maintain steady flight in this region.
+
+
+7
+Yeates (1958)
+Yeates (ref. 27) conducted flight tests of a tandem helicopter in descending flight. Vortex ring state was entered from hover or 10 knots, by reducing power until the helicopter started to descend. The helicopter appeared to wallow around while the rate of descent steadily increased. The pilot recovered by pushing nose down and increasing forward speed. The vibration measured in vortex ring state was characterized by large irregular pulsing of the vibration envelope at a random frequency, which probably indicated shedding of vortices. The observable occurrence of vortex ring state (pulsative character of the vibration envelope) appeared to extend from Vz/vh = –0.23 to –1.25, near zero forward speed.
+For descent with forward speed near zero, the vibration envelopes were characterized by large irregular peaks, especially near Vz/vh = –1.03. The vibration envelopes seemed to pulse at random frequency that appeared to vary in response to irregular shedding of vortices.
+For descent with forward speed, 10 knots (Vx/vh = 0.67) appeared to be near the limiting speed for observable effects of vortex ring state. The pulses had more regular occurrence with forward speed than in hover, possibly indicating more regular shedding of vortices. Relative to hover, the mean vibration level increased for the rear rotor and decreased for the front rotor.
+Yaggy and Mort (1962)
+Yaggy and Mort (ref. 28) conducted a wind tunnel test of a 9.5-ft diameter flapping propeller operating in descent. The facility was the NASA 40 by 80-Foot Wind Tunnel. The propeller tested had a solidity of σ = 0.203 and twist of –22.4 deg. The measured mean thrust and collective were used to obtain the inflow for the present work (with B = 0.97, rc = 0.26, a = 5.7). In order to produce a reasonable value of inflow at hover (κ = 1.18), the measured propeller pitch (70% radius) was corrected to 75% radius collective by adding 0.05×22.4 = 1.125 deg. This suggests that the propeller was tested with positive twist (climb configuration), or could reflect the airfoil zero lift angle. For the present work, the thrust oscillations were obtained from the data presented for minimum and maximum thrust. A 12-ft diameter rigid propeller was tested as well, but attempts to obtain well behaved inflow results for this propeller were not successful.
+Figure 11 shows the inflow results for axial flow. The propeller was also tested at α = 75, 60, 45, 30 deg.
+Scheiman (1964)
+Scheiman (ref. 29; see also ref. 41) conducted flight tests of an H-34 helicopter, including operating conditions in descent. The operation at various rates of descent and
+forward speeds was characterized as rough, moderate roughness, or heavy roughness. For some cases the blades were flapping erratically, or the flight was unsteady. For the most extreme conditions the helicopter was temporarily out of control, or there was a temporary loss of directional control. The data are not, however, sufficient to contribute to the quantitative definition of the inflow.
+Washizu (1966)
+Washizu, Azuma, Koo, and Oka (ref. 30) conducted a moving track test of a 1.1-m diameter rotor in descent, for both axial and nonaxial conditions. The rotor had a solidity of σ = 0.0573 and –8.33 deg twist. Large, semiperiodic thrust variations were observed, with little torque variation. The data were low-pass filtered at a frequency of 14 Hz. Hover data were used to estimate the profile torque, and then the measured thrust and power gave the inflow, Vz+v = P/T. For each collective and speed, several inflow values were plotted, corresponding to the fluctuations in the thrust. For the present work, the maximum and minimum inflow values from each set were averaged, to obtain the mean value. In addition, the blade element expression was used to derive CT from the inflow and collective values, and hence estimate the thrust fluctuation ΔT/T.
+Figure 12 shows the inflow results for axial flow. The rotor was also tested at α = 70, 50, 20 deg.
+Washizu, Azuma, Koo, and Oka (ref. 31) tested a tandem rotor system, for both axial and nonaxial conditions (α = 90, 80, 60 deg). The 1.1-m diameter rotors had a solidity of σ = 0.0573 and –8.33 deg twist (as for the single rotor test). The rotor overlap was 17% of the diameter. Both rotors were set to almost the same thrust at the hovering state. The rotors did not have cyclic pitch control.
+Azuma (1968)
+Azuma and Obata (ref. 32) tested a 1.1-m diameter rotor in a 3-m wind tunnel, operating in axial descent. The rotor had a solidity of σ = 0.0573 and –8 deg twist. Measurements were made of the rotor inflow, as well as the thrust and torque variations. It was observed that for Vz/vh > –0.8 the inflow variation was mainly in the tip region. For Vz/vh = –0.8 to –1.2, the inflow variation was mainly inboard. For Vz/vh < –1.2, the inflow produced by descent rate gave a net upward velocity inboard.
+Empey and Ormiston (1974)
+Empey and Ormiston (ref. 33) tested a 1/8-scale AH1G helicopter (main rotor and tail rotor) in a wind tunnel. The fuselage and fin were mounted for flow visualization, but not for force measurements. Tail rotor only
+
+
+8
+measurements were made for rotor α = 90 to 0 deg (helicopter yaw), and collective pitch from 0 to 18 deg. The tail rotor had a diameter of 1.061 ft, solidity of σ= 0.1051, and no twist. The thrust and collective measurements were used to obtain the inflow for this paper (B = 0.97, rc = 0.272). In order to reduce the variation of the inflow results at high collective, a lift curve slope of clα = 6.2[1−0.5(6CT/σ)2] was used.
+Figure 13 shows the inflow results for axial flow. The rotor was also tested at α = 80 to 0 deg. In contrast to the results of Castles and Gray for an untwisted rotor, figure 13 shows a distinct region of negative slope for the Vz+v curve.
+Xin and Gao (1993)
+Xin and Gao (refs. 36, 38) conducted a whirling beam test of rotors in climb and descent, axial and nonaxial flow. Three 1.1-m diameter rotors were tested: σ = 0.0694 and no twist; σ = 0.0845 and –5.5 deg twist; σ = 0.0845 and –9.22 deg twist. Oscillations in both thrust and torque were observed. Mean and oscillatory thrust and torque data were presented, referenced to the thrust and torque at hover. A vortex ring state boundary was determined, based on inflections in Q/Qhover vs. Vz. Attempts in the present investigation to transform the data into rotor inflow, which required estimating the hover thrust and torque, were not successful.
+Felker and McKillip (1994)
+Felker and McKillip (ref. 37) reported a long track test of a 2.44-m diameter rotor in axial flight. The rotor solidity was σ = 0.0663, and the blade twist was –8 deg. Both thrust and torque measurements were presented. Attempts in the present investigation to derive consistent and reasonable inflow results from both the thrust and torque data were not successful.
+Padfield (1996)
+Padfield (ref. 39) describes vortex ring state as follows. At very low flight speeds (less than 10 knots) and moderate rates of descent (between 500 and 1500 ft/min, depending on disk loading), the rotor flow becomes entrained in a toroidal shaped vortex ring that leads to extensive recirculation in outer regions of the rotor disk. This vortex ring is very sensitive to small changes in the flow direction, and rapid fluctuating asymmetric development of the ring can lead to fierce moments being applied to the fuselage.
+As described by Padfield, the response to collective pitch at steep angles of descent can reverse, so increased collective is required to descend more rapidly. Operating near vertical descent, the helicopter can enter a state where high rates of descent can build up rapidly, and erratic pitch
+and roll oscillations can develop. In addition, control effectiveness can change markedly, particularly collective control, with normal recovery techniques seeming only to exacerbate the situation. Analogous to stall in fixed-wing aircraft, at least in terms of consequences to flightpath trajectory, but quite dissimilar in aerodynamic origin, the vortex ring condition is definitely a state to avoid, especially at low altitude. Flying qualities in vortex ring state become severely degraded and the pilot's first consideration should be to fly out of the condition.
+Padfield states that standard recovery technique involves lowering the nose until sufficient speed is gained that the vortex is washed away, then applying collective pitch to cancel the rate of descent. Different aircraft types have their own peculiar characteristics in vortex ring state. Early tests at RAE produced results from loss of control to mild wallowing instability. The aircrew manual contains entries describing the particular features and best recovery procedures. One such manual notes that rates of descent can build up to 6000 ft/min if vortex ring becomes fully established and that the aircraft pitches sharply nose down if rearward flight is attained. Another refers to an uncontrollable yaw in either direction eventually occurring, and any increase in collective pitch during established vortex ring state creates a marked pitching moment and should be avoided. All make clear that considerable height will be lost if the vortex ring state is allowed to develop fully before recovery action is taken.
+Padfield describes an RAE test of the Wessex 2. The vortex ring region was first encountered at 800 ft/min descent. With rate of descent at about 800 ft/min, the helicopter settled into vortex ring state. The rate of descent increased through 2000 ft/min in spite of increasing power to the hover torque reading. The vibration level increased, and a considerable amount of control activity was required to hold attitude, though cyclic controls always responded normally. Applying full power produced a rapid reduction of rate of descent as soon as the rotor moved into clear air. Applying collective prior to lowering the nose resulted in a height loss of about 150 ft during recovery, whereas if collective was lowered first and then increased when airspeed developed, height loss was about 500 ft.
+
+
+9
+Brinson and Ellenrieder (1998)
+Brinson and Ellenrieder (ref. 40) measured the velocities in the wake of a rotor operating in vortex ring state. Hot wire anemometry was used to measure the flow of a 1.54-m diameter rotor in a 2.6×5.5-m wind tunnel. According to Brinson and Ellenrieder, vortex ring state is characterized by sudden loss of altitude, large changes in control effectiveness (especially collective) and erratic, often violent low frequency pitch and roll oscillations. The wake measurements showed that within vortex ring state, recirculation occurred across most of the disc plane and a conical region of reverse flow existed at the disc center. Wake penetration was very limited at all but the lowest descent velocities. Periodically a partial collapse of the recirculation occurred, causing high local velocities and a highly unsteady flow regime. When vortex ring state was fully developed, a symmetric, low frequency, stable limit cycle behavior was evident in the inflow dynamics, blade dynamics and rigid body dynamics. The symmetric vertical response of the rotor and affected air mass was characterized by a state where almost zero cyclic flapping occurred and where inflow, blade coning, and rigid body pitch/roll were all in phase. The frequency of the limit cycle increased slightly as the descent angle reduced and the energy was highly concentrated in a narrow band around 1 Hz (ωR/vh = 0.62).
+Newman (2001)
+Newman, Brown, Perry, Lewis, Orchard, and Modha (refs. 42 and 50) developed an expression for a vortex ring state boundary, based on the following concepts. The vorticity in the wake sheet is convected at the mean of the velocity of the free stream outside the wake and the velocity of the flow inside the wake. A measure of the balance between vorticity deposition by the rotor in the wake (vh) and the rate at which vorticity is transported away from the rotor is
+VWTV = Vx2 + (Vz+v)2
+VRS occurs at a critical value of VWTV/vh, below which the net velocity through the rotor is insufficient to allow convection of vorticity away from the rotor. VWTVCRIT/vh = 0.74 matches the axial flow boundary of Drees and Hendal, but is not good in forward flight. So they postulate that Vx is less effective than Vz:
+VWTVE = k2Vx2 + (Vz+v)2
+VWTVE-CRIT/vh = 0.74, k = 0.65 (0.60 to 0.74 is good) matches the boundary of Drees and Hendal, and compares well with data from Brotherhood, Yaggy and Mort, Azuma and Obata, and Washizu. VWTVE represents the
+balance between the rate of growth of vortical structures produced by instability in the rotor wake and the rate at which these structures are convected downstream of the rotor.
+Brown, Newman, Leishman, and Perry (ref. 49) concluded that the onset of vortex ring state is associated with the collapse of an orderly structure of the rotor wake into a highly disturbed, irregular, aperiodic flow state. Under conditions where the upward component of the velocity normal to the rotor disk plane is a substantial fraction of the average induced velocity downward through the rotor disk, such as when descending at high rates or steep angles, the rotor can encounter vortex ring state. Under VRS conditions, the wake vorticity produced by the blades cannot convect away from the rotor and accumulates near the rotor plane, clumping or bundling together and producing large, aperiodic airloads. In aerodynamic terms, the onset of VRS is associated with collapse of an orderly structure of the rotor wake into highly disturbed, irregular, recirculating flow. Analysis of the stability of the wake was presented to show that the location of the boundary of VRS is influenced by the detailed structure of the rotor wake prior to its breakdown. Time-accurate calculations of the evolution of the rotor wake in VRS suggest that location of the boundary of VRS and the depth of the VRS regime are sensitive to the blade spanwise loading distribution, which is influenced by blade twist. Such effects are significant even at low disk loading, but at high thrust where rotor stall may be encountered, rotors with and without significant blade twist show marked, and somewhat counterintuitive, differences in behavior under VRS conditions.
+Betzina (2001)
+Betzina (ref. 43) conducted a wind tunnel test of a single 4-ft diameter rigid tiltrotor operating in descent. The facility was the NASA 80 by 120-Foot Wind Tunnel. The rotor tested had a rigid hub, with no gimbal and no cyclic control—a solidity of σ = 0.1194 and twist of –41 deg (nonlinear). The tests were conducted with just the rotor; with the rotor and an image plane (to simulate the other rotor of a tiltrotor aircraft); and with a rotor, wing, and image plane. The wing modelled the V-22 geometry, with a flap deflection of 72.5 deg and a nacelle angle of 95 deg. For the present investigation the measured mean thrust and collective were used to obtain the inflow (with B = 1.0, rc = 0.2, a = 6). Measured thrust and power were used to obtain the inflow with profile power CPo = 0.000327 (based on the hover performance). In order to obtain similar inflow results from both T&θ and P/T, an increment of 3.7 deg was added to the collective pitch, accounting for the airfoil zero lift angle.
+
+
+10
+Records four seconds long were taken (120 revs, minimum frequency 0.25 Hz). The data were low-pass filtered at 100 Hz (3.33/rev). There were high magnitudes of 3/rev and 6/rev harmonics caused by the rigid mounting of the rotor blades and hubs, and smaller peaks at other harmonics from 1/rev to 5/rev. So filtered rotor thrust time histories were obtained by removing all frequency content above 20 Hz (0.67/rev) using digital post-processing, and then evaluating the rms of the resulting filtered time histories.
+Figure 14 shows the inflow results for axial flow. The rotor was also tested at α = 80 to 0 deg.
+Betzina concluded that vortex ring effects begin at descent angles between 30 to 40 deg. No VRS effects were found at descent angles less than 20 deg. VRS causes mean rotor thrust reductions, thrust fluctuations, and an effective reduction in the rotor's lift curve slope. Betzina identified the negative damping (roll damping for a tiltrotor) implied by the change in slope of thrust vs. α, and defined a VRS boundary based on the maximum mean thrust.
+Taghizad (2002)
+Taghizad et al. (refs. 44, 46, 47) conducted flight tests of a helicopter operating in vortex ring state. The aircraft was an SA 365N Dauphin 6075, tested at the French Flight Test Center (CEV). The aircraft test weight was 3500 kg. The 5.965-m diameter main rotor had a solidity of σ = 0.083 and twist of –10 deg. The mean induced velocity of the rotor was estimated from power measurements. The main rotor power was measured in flight. The profile power was calculated using the HOST analysis. Estimates of fuselage drag and download were used to determine the rotor thrust.
+Figure 15 shows the inflow results for axial flow (ref. 47). The helicopter was also tested at forward speeds of 5, 15, 20, 25, and 40 knots.
+Taghizad et al. found the main vortex ring state characteristic to be a sudden drop in vertical velocity Vz. An increased level of vibrations was observed when the VRS area was approached. Then VRS started by a sudden increase in the rate of descent. Increasing collective did not stop the Vz fall. During the fall, the helicopter was very unstable and hard to control. VRS effects disappeared beyond a forward velocity of approximately Vx/vh = 1. In a VRS encounter, the pilot's instinctive reaction to the sudden increase in rate of descent was to increase the collective level to stabilize Vz, but the rate of descent was generally insensitive to collective. Increasing collective was an uncertain way to quickly leave VRS, but a forward velocity increase stabilized the rate of descent.
+Taghizad et al. concluded that flight in vortex ring state was unpredictable. Two VRS flights starting from close conditions could imply very different helicopter reactions. This chaotic behavior is probably explained by the turbulent flow producing VRS. For the majority of tests, a collective increase alone did not permit the helicopter to leave the VRS regime. Nevertheless, and in contrast to the common assumption, collective increase did not amplify VRS effects. The helicopter was generally insensitive to this command within the VRS area. Collective increase to a level greater than the hover value allowed the helicopter to leave VRS in a few cases, but this behavior was not predictable. VRS flights were also performed without the stabilizer. The helicopter was then more stable in VRS, in agreement with Stewart, although the VRS limits were not affected by the absence of the stabilizer.
+The flight tests were conducted with two different flight procedures to enter vortex ring state: from level flight at a given forward velocity, collective input was progressively decreased until the helicopter entered VRS, determining the VRS upper boundary; or from descending flight, forward velocity was progressively decreased until VRS was reached, determining the VRS lateral boundary. For VRS encountered by progressive collective decrease at fixed forward velocity, initially each collective decrease produced a small Vz decrease, then the last collective decrease produced a rate of descent that typically changed from –5 m/s to –15 m/s. It was assumed that the helicopter left the VRS regime when the rate of descent was stabilized. VRS encountered by deceleration was more complex. Typically it was impossible to maintain a constant rate of descent despite an increase in collective level. Moreover, Vz seemed more linked to forward velocity than to collective pitch. The VRS lateral boundary was more difficult to determine than the upper boundary, so fluctuations level was the best indicator to determine the VRS lateral boundary, instead of Vz drop.
+Taghizad et al. observed that power and collective in trimmed vertical descents remained almost constant. They concluded that this insensitivity to collective explained the Vz drop when entering the VRS regime. Descending at –5 m/s, any small reduction of collective would lead to a new trim condition corresponding to a rate of descent greater than –13 m/s, leading to the abrupt fall of Vz.
+A boundary for VRS was developed based on the mean convection of the tip vortices:
+(Vx/k)2 + (Vz+v/2)2 ≤ ε
+with k = 4 and ε = 0.1 for severe fluctuation levels, and the induced velocity v evaluated with an empirical correction in VRS. The factor k accounts for the tendency
+
+
+11
+of the vortices to stay in the plane of the disk; Vz+v/2 is the average of the vertical velocity inside and outside of the slipstream.
+U.S. Navy
+U.S. Navy NATOPS (Naval Air Training and Operating Procedures Standardization) contain descriptions of VRS encounter and recovery. Typically cues begin around 700–800 ft/min rate of descent. The cues include increased roughness followed by rapid buildup in rate of descent, and loss of control effectiveness. Recovery requires increasing airspeed or entering autorotation (altitude allowing).
+From H-60B NATOPS: VRS effect is measurable at descent rates above 700 ft/min and airspeeds from 0–20 knots and is worst at descent rates of about 1500 ft/min with airspeeds of 5-10 knots. Fully developed VRS is characterized by an unstable condition where the helicopter experiences uncommanded pitch and roll oscillations, has little or no cyclic authority, and achieves a descent rate which may approach 6000 ft/min. For retreat from the onset of the vortex ring state, reduce collective and increase airspeed. Power should be increased once the airspeed is above approximately 20 knots. The only solution for fully developed VRS is to enter autorotation to break the vortex ring and, when cyclic authority is regained, increase forward airspeed.
+From H-46D NATOPS: Power settling in an uncommanded rate of descent is caused by the helicopter encountering the vortex ring state as it settles into its own downwash. Power settling is not restricted to high gross weights or high-density altitudes. It may not be recognized and a recovery effected until considerable altitude has been lost. Helicopter rotor theory indicates that it is most likely to occur when descent rates exceed 800 ft/min during vertical descents initiated from hover and steep approaches at less than 40 knots. Indications to the pilot are rapid descent rate increase, increase in overall vibration level, and loss of control effectiveness. Recovery requires forward cyclic and decreased collective.
+From MH-53E NATOPS: Power settling is the inability to stop a rate-of-descent when the helicopter begins to settle into a vortex ring state. A vortex ring state occurs when the velocity of the downwash from the rotor is approximately equal to the rate of descent of the helicopter, causing the air to recirculate up, around, and back down through the rotor disc. The decreased rotor efficiency that results will cause a loss of lift, increased roughness, and poor control response. Settling may not be recognized as power settling, and a recovery may not be effected until considerable altitude has been lost. Recovery is best made by increasing forward speed and
+decreasing collective pitch. Increased collective pitch may further worsen the condition. Power settling is most likely to occur during conditions of high gross weight, high density altitude, low airspeed, downwind landing, and descending powered flight. Flight conditions causing power settling should be avoided at low altitudes because of the loss of altitude necessary for recovery.
+U.S. Army
+The U.S. Army Field Manual FM 1-203 (Fundamentals of Flight) contains a description of VRS encounter and recovery. The field manual defines settling with power as a condition of powered flight in which the helicopter settles in its own downwash, a condition also referred to as the vortex ring state. Operating conditions conducive to settling with power are a vertical or nearvertical descent of at least 300 ft/min and low forward speed. The rotor system must also be using some of the available engine power (20 to 100 percent). During VRS, roughness and loss of control occur because of the turbulent rotational flow on the blades and the unsteady shifting of the flow along the blade span.
+The field manual has a figure that shows regions of light and severe turbulence and thrust variation as a function of horizontal speed and vertical speed, based on the ΔT/T boundaries of Washizu. From this figure it is concluded that VRS can be completely avoided by descending on flightpaths shallower than about 30 deg. Power-settling is described as an unstable condition, in which the rate of descent can reach extremely high rates. If a large amount of excess power is applied, recovery can begin during the early stages of power-settling. If the sink rate reaches a higher value, power will not be available to alter the vortex ring state of flow.
+According to the field manual, pilots tend to recover from a descent by applying collective pitch and power. If not enough power is available for recovery, applying collective pitch may aggravate power-settling. This results in more turbulence and a higher rate of descent. The pilot can recover by increasing airspeed and lowering collective pitch. Increasing airspeed is the preferred method of recovery, since usually less altitude is lost by this method than by the method of lowering collective pitch. In tandem-rotor helicopters, recovery should be attempted using lateral cyclic and pedal inputs to make the transition to directional flight. Longitudinal cyclic inputs (differential collective) may aggravate the situation.
+Assessment of Test Data
+Based on this review, there are six reported wind tunnel and flight test programs that provide data on rotor mean inflow in vortex ring state that can be used in the present investigation: Castles and Gray (ref. 21, axial
+
+
+12
+only); Yaggy and Mort (ref. 28); Washizu, Azuma, Koo, and Oka (refs. 30 and 31), and Azuma and Obata (ref. 32, unsteady only); Empey and Ormiston (ref. 33); Betzina (ref. 43); and Taghizad et al. (refs. 44, 46, 47).
+NONAXIAL FLOW
+A number of investigations have been conducted to measure the vortex ring state behavior of rotors in nonaxial flow.
+Yaggy and Mort (ref. 28) tested a propeller at α = 90, 75, 60, 45, 30 deg.
+Washizu, Azuma, Koo, and Oka (ref. 30) tested a rotor at α= 90, 70, 50, 20 deg; and also (ref. 31) tested a tandem rotor system at α = 90, 80, 60 deg.
+Empey and Ormiston (ref. 33) tested a rotor at α = 90 to 0 deg.
+Betzina (ref. 43) tested a tiltrotor at α= 90 to 0 deg.
+Taghizad et al. (ref. 46) tested a helicopter at forward speeds of 0, 5, 15, 20, 25, 40 knots; corresponding to Vx/vh = 0, 0.23, 0.69, 0.92, 1.16, 1.85.
+Figures 16 to 21 show the inflow results for nonaxial flow. For tests conducted at constant rotor angle of attack, the inflow is plotted both as a function of vertical speed Vz and as a function of total speed V.
+TWO ROTORS
+Washizu, Azuma, Koo, and Oka (ref. 31) tested a tandem rotor system, for both axial and nonaxial conditions. Figure 22 compares the inflow results for a single rotor with the results for the front and rear rotors of the tandem configuration. It was concluded that the results were about the same for the front and rear rotors, and for the single and tandem rotors. However, the periodicity of the thrust fluctuations, remarkable for a single rotor operating in slight oblique descent (60 deg), was hardly observable for the tandem rotor.
+Betzina (ref. 43) conducted a wind tunnel test of a tiltrotor operating in descent. The tests were conducted with just the rotor; with the rotor and an image plane (to simulate the other rotor of a tiltrotor aircraft); and with a rotor, wing, and image plane. Figure 23 compares the inflow results (both from thrust and from torque) of the three configurations at α = 90, 60, and 30 deg. A significant difference in the inflow was found at angles
+from 50 to 70 deg (fig. 23b), between the rotor only and rotor with image plane configurations.
+Betzina observed that the presence of the image plane may help to stabilize the flow, reducing the oscillatory thrust magnitude. However, the image plane configuration may not be representative of a two-rotor configuration, where two unsteady rotor wakes are interacting with each other. It is anticipated that a two-rotor configuration could have greater thrust fluctuations than an isolated rotor. The image plane may not accurately represent the mean effect of another rotor and certainly was not simulating unsteady effects of two interacting rotor wakes. Nevertheless, the fact that an image plane had a large effect indicated that a second rotor would probably cause significant, although possibly different, effects.
+UNSTEADINESS IN VRS
+Vortex ring state is an inherently unsteady aerodynamic phenomenon. The unsteadiness can be characterized in several ways. Here it is the total thrust and torque of the rotor that is of interest. The characteristic frequency, or more generally the spectrum, of the loads has been measured. It is expected that the primary scaling of the frequency will be ω ~ vh/R. The minima and maxima of the thrust and power can be used to define minima and maximum of the inflow, which would be meaningful for the low frequency variations. The oscillatory or fluctuating loads (half peak-to-peak or three times the rms) are an appropriate description of the vibration associated with vortex ring state.
+Castles and Gray (ref. 21) observed that the fluctuations in force and moment were very much larger for the twisted rotor than for the untwisted rotor.
+Yeates (ref. 27) conducted flight tests of a tandem helicopter. For descent with forward speed near zero, the frequency was 1.0 to 1.5 Hz at Vz/vh ≅ –0.4; 0.7 to 0.8 Hz at Vz/vh ≅ –1.1. For descent with forward speed of 10 knots (Vx/vh = 0.67), the frequency was 1.4 Hz at Vz/vh ≅ –0.3. Table 2 summarizes the corresponding values of ωR/vh.
+Yaggy and Mort (ref. 28) conducted a wind tunnel test of a flapping propeller. The thrust oscillations were as large as ±75%. The period of oscillation was about 0.2±0.03 sec (about 0.3/rev) for all conditions, independent of test parameters. Table 2 gives the value of ωR/vh.
+Washizu, Azuma, Koo, and Oka (ref. 30) conducted a moving track test of a rotor. Large, semi-periodic thrust variations were observed, with little torque variation. In
+
+
+13
+the spectrum presented, there is a high frequency period of 1–2 sec and a low frequency period of 5–10 sec. Table 2 gives the values of ωR/vh, using CT = 0.002–0.005.
+Washizu, Azuma, Koo, and Oka (ref. 31) tested a tandem rotor system. The periodicity of the thrust fluctuation, remarkable for a single rotor operating in slight oblique descent (60 deg), was hardly observable for the tandem rotor.
+Azuma and Obata (ref. 32) tested a rotor in a wind tunnel. A torque variation for high pitch was observed, especially with untwisted blades. The maximum ΔT/T (above 15%) was found at Vz/vh ≅ 0.8; the corresponding ΔQ/Q was less than 2.5%.
+Xin and Gao (refs. 36, 38) conducted a whirling beam test of rotors. They observed oscillations in both thrust and torque. The spectrum presented has principal frequencies of 1.64, 3.01, and 0.98 Hz for Vz/vh = 0.75. Table 2 gives the values of ωR/vh, calculated using CT = 0.0055.
+Betzina (ref. 43) conducted a wind tunnel test of a tiltrotor. With the image plane, the highest oscillatory thrust (30–52%) was obtained for α = 50–80 deg. The region of highest oscillation was centered at Vx/vh = 0.37, α= 65 deg, Vz/vh = 0.8 (similar to the region from Washizu, but the tiltrotor without an image plane was different). The maximum oscillatory thrust was 52% at α= 60 deg, and the spectra showed a dominant frequency below 0.25 Hz (hence a period longer than the data record). Table 2 gives the value of ωR/vh, based on CT = 0.012–0.015 and V/Vtip = 0.06. The isolated rotor had lower thrust fluctuations at descent angles from 30–50 deg, but significantly higher (up to 91%) at higher Vz/vh and α = 80–90 deg. The spectra showed a peak at 0.5 Hz (0.25 Hz for α = 60). Table 2 gives the values of ωR/vh.
+Taghizad et al. (refs. 44, 46, 47) conducted a flight test of a helicopter. For simulations, the unsteadiness was modelled by adding a fluctuating inflow component, calculated as the sum of contributions at discrete frequencies with random phase. The frequencies were obtained from Xin and Gao (scaled down by a factor of 1.74), and the amplitudes as a function of Vz from Azuma.
+The measured frequency data, summarized in table 2, do not exhibit any clear trends. Figures 24 and 25 present the minimum and maximum inflow, from the wind tunnel tests of Yaggy and Mort (ref. 28) and Washizu, Azuma, Koo, and Oka (ref. 30) in axial flow. The minimum inflow has a much reduced value of the negative slope of the Vz+v curve in VRS, perhaps eliminated entirely in figure 25.
+Figures 26 to 29 present the fluctuating thrust, from the wind tunnel tests of Yaggy and Mort (ref. 28), Washizu, Azuma, Koo, and Oka (ref. 30), Azuma and Obata (ref. 32, only axial flow, but including torque fluctuations), and Betzina (ref. 43). The ΔT/T data show peaks of 40 to 80%. To facilitate comparisons of the data, contour plots of constant ΔT/T as a function of Vx and Vz were prepared. The contours were constructed by fitting ΔT/T = f(Vx/vh,Vz/vh) or t = f(x,z) to a second order polynomial:
+t = ax2 + bxz + cz2 + dx + ez + f
+= a(x-x0)2 + b(x-x0)(z-z0) + c(z-z0)2 + t0
+using a least-squared-error identification of the coefficients. The contour for a given value of ΔT/T is then an ellipse. Figures 30 to 32 show the contours for the tests that were performed in nonaxial conditions. The three rotors have a wide range of solidity and twist, and the thrust fluctuation data exhibit very different character. Figure 31 also shows the contours that Washizu constructed for ΔT/T = 0.15 and 0.30 (ref. 30). The contours generated here are somewhat different, because of the influence of the axial flow conditions (Vx = 0) on the identification.
+VRS BOUNDARIES
+A number of the boundaries that have been proposed for vortex ring state are presented in figure 33. The boundary from the ONERA VRS model is based on the Vz drop encountered in helicopter flight tests. The boundary for the VRS model of the present investigation is based on the flight dynamics stability of helicopters and tiltrotors. The other boundaries are based primarily on the vibration and roughness that a helicopter encounters in VRS. Of particular note are the boundaries that Washizu constructed for ΔT/T = 0.15 and 0.30 (ref. 30), which are found in numerous documents on VRS (including the U.S. Army Field Manual FM 1-203, Fundamentals of Flight).
+Figure 34 presents helicopter VRS boundaries based on the D6075 flight tests of Taghizad et al. (refs. 44, 46, 47). The vertical velocity drop primarily defines the boundary, but points where fluctuations increase are also shown. The boundary from the ONERA VRS model is included. Taghizad, et al. concluded that at a forward velocity lower than 20 km/hr, the upper boundary appears at a low and approximately constant rate of descent (Vz about –4 m/sec).
+Figure 35 presents tiltrotor VRS boundaries, based on flight tests of the V-22 (ref. 51). The key points are where
+
+
+14
+the tiltrotor experienced a roll-off as a result of VRS encounter. Approach to vortex ring state is initially indicated by an increase in thrust fluctuations. The points shown correspond to thrust fluctuations greater than 2.5%. Then asymmetries in the rotor behavior appear, particularly an increase in differential thrust error.
+Figure 2 presented both the helicopter Vz drop and tiltrotor roll-off data. In terms of flight dynamics stability, figure 2 demonstrates that VRS primarily scales with the velocity vh = T/2ρA . Rotor solidity and twist and aircraft configuration evidently have a secondary influence.
+VORTEX RING STATE MODEL
+A model is required of the rotor mean inflow in VRS. The model must be applicable to simple calculations and real-time simulation, and include the character that leads to the unstable flight dynamics in vortex ring state. The VRS model presented here is an empirical extension of momentum theory. To facilitate development and applications, the model must be parametric (although a tabular version could be used for real-time simulation).
+Development of the VRS model begins by establishing a vortex ring state stability boundary as a function of Vx and Vz, based on the helicopter and tiltrotor flight test data (fig. 2). This stability boundary is where the inflow curve has zero slope, d(Vz+v)/dVz = 0 (fig. 3). Figure 36 summarizes the values of the local minimum and maximum of the mean inflow in vertical descent, from the available test data. The stability boundary shown in figure 2 is constructed such that it encloses most of the flight test points, and such that the Vz values for vertical descent (Vx = 0) are consistent with figure 36. The equation used to define this boundary was chosen for convenience in the model development. An inflow curve in VRS that has zero slope on the specified boundary must be constructed. This construction is performed in two steps, illustrated in figure 37. The first step is to eliminate the singularity of momentum theory at ideal autorotation in vertical descent. The result of this step is referred to as the baseline model. The second step is to create the region of negative slope in vortex ring state. For both steps, third order polynomials that provide the required behavior of the inflow as a function of Vz are identified.
+Table 3 presents the algorithm used to calculate the rotor induced velocity v given values of Vz and Vx. Table 4 summarizes the parameters of the model. All velocities in the model (v, Vz, Vx) are scaled with vh. For the purposes of this section, the notation omits division of the velocities by vh.
+To eliminate the singularity of momentum theory, points A and B are identified on the two branches of momentum theory for a given Vx (fig. 37), and connected by a third-order polynomial. The coefficients of the polynomial are identified by matching v and dv/dVz at A, and v at B (with the constant term of the polynomial set to zero). As Vx increases the points A and B are moved together, so the momentum theory result is used entirely when Vx is beyond a point C. It is necessary to shape the variation of the points A and B with Vx such that the polynomial is well behaved (in particular, move the points to the right with increasing Vx, so the polynomial is matched to the right of the momentum theory peak, where dv/dVz < 0).
+A simpler baseline model for the inflow in vortex ring state and turbulent wake state is
+Vz+v = Vz (a Vz2 − b + c Vx2)
+for (1.5Vx2+(2Vz+3)2) < 1. Matching this equation to the axial-flow momentum theory results at Vz = –2 and Vz = –1 gives a = 5 /6 = 0.373 and b = (4 5 –3)/6 = 0.991. Then matching to the forward-flight momentum theory result at Vx = 1, Vz = –1.5 gives c = 0.598. This model is found in reference 52 and in a widely used comprehensive analysis. However, the measured data suggest that it is appropriate to use momentum theory down to Vz = –1.5; and there are small jumps at the transitions from this curve to momentum theory for Vx > 0. Therefore a more complex model is used here.
+The stability boundary is specified by the points X and N for vertical descent (fig. 37), and a point M in forward flight: VzN, VzX, VxM. Appropriate functions are used to generate a reasonable shape of the boundary, in terms of the variation of the points X and N with Vx. The VRS model requires an increment Δ(Vz+v) relative to the baseline model, defined by the inflow values (Vz+v)N at the minimum and (Vz+v)X at the maximum. Points D and E are specified, where the VRS model joins the baseline curve. For each of the three segments of the VRS model (D to N, N to X, X to E), a third order polynomial for Δ(Vz+v) as a function of Vz is identified by matching v and dv/dVz (except that for X to E the slope is not matched at E, so the constant term of the polynomial is zero). The final inflow value is
+v = κ (vbase + f Δvvrs)
+The factor κ is introduced to account for additional induced losses, and the parameter f allows the instability in VRS to be reduced or suppressed (κ > 1, f > 0).
+Figure 38 shows the resulting baseline model. The circles indicate where the polynomial is used to connect
+
+
+15
+the momentum theory branches in vortex ring state, for Vx < VxC = 0.75. Figure 39 shows the resulting VRS model. The circles indicate where the polynomials are used for the three parts of the curve, for Vx < VxM = 0.95.
+For transient conditions, there will be a time lag in the development of, and transition between, the flow states of the rotor. This time lag is modelled by using a first-order differential equation to calculate the inflow. Let vQS be the induced velocity calculated by the algorithm above using the instantaneous velocity and thrust of the rotor; and vTRIM the trim value. Then
+τ d(δv)/dt + δv = vQS – vTRIM
+v = vTRIM + δv
+gives the current inflow value v. The time constant is specified in terms of the rotor revolutions, so τ= τrev(2π/Ω).
+Figures 40 to 51 illustrate the VRS model, and compare its results with the available test data. The dashed line in these figures is the baseline model. The value of κ used is noted in the figure caption. The VRS model developed here is not intended to match any specific data set. The lack of any dependence on rotor parameters such as solidity and twist is undoubtedly significant.
+CALCULATED STABILITY BOUNDARY
+The VRS model was implemented in an analysis to calculate the flight dynamics of helicopters and tiltrotors. Figure 52 shows the damping calculated for the heave (vertical velocity) mode of a helicopter operating in vertical descent. The simplest model has only the vertical degree of freedom (no other aircraft rigid body motion, no blade flap motion, and quasistatic inflow). With complete aircraft dynamics (all aircraft rigid body motion and rotor blade flap motion) but quasistatic inflow, the damping of the heave mode is unchanged. Introducing the time lag in the inflow equation reduces the damping magnitude but does not change the descent rate at which the damping is zero. For all three cases, the stability boundary (zero damping) is at the values of Vz/vh that were specified in the model (VzN and VzX). With the baseline model, the helicopter is stable in vortex ring state. Figure 53 shows the damping calculated for the heave mode of the helicopter in forward flight.
+Figure 54 shows the damping calculated for a tiltrotor operating in vertical descent. For the symmetric dynamics, the damping of the heave (vertical velocity) mode is plotted. The behavior is identical to that of the helicopter (fig. 52) except for a change in magnitude of the damping.
+For the antisymmetric dynamics, the damping of the least damped mode is shown. In this case the model with just axial motion has only the roll degree of freedom, and the model with all motion has the aircraft side and yaw degrees of freedom as well as the rotor gimbal motion. The antisymmetric dynamics of the tiltrotor in vortex ring state are evidently more complicated than the symmetric dynamics.
+Figure 55 compares the calculated stability boundary of the flight dynamics of a helicopter, with the boundary specified in the VRS model. The differences between the boundaries from the eigenvalues and from the VRS model reflect primarily the fact that the eigenvalues were calculated on a rather coarse grid of Vx/vh and Vz/vh (only 0.1 resolution).
+HELICOPTER VRS ENCOUNTER
+Taghizad et al. (refs. 44, 46, 47) present flight test results for the Dauphin D6075 encountering vortex ring state. The data consist of the measured vertical and horizontal velocity in response to a reduction in collective pitch. Two cases, identified as vertical and forward, are described by Taghizad et al. as follows. The first case was vortex ring state initiation in vertical descent. The pilot progressively decreased the collective pitch (fig. 56). At first Vz responded normally to collective inputs. The first two collective reductions of about –0.2 deg produced a Vz decrease of about 2.5 m/sec. The third collective reduction, rather smaller than the previous ones, led to a descent rate higher than 15 m/sec. The second case was an example of vortex ring state initiation by collective decrease at fixed forward velocity (about 10 knots). Forward velocity was kept constant and collective progressively decreased (fig. 56). At first, each collective decrease produced a small Vz decrease. The last collective decrease produced a rate of descent that changed from –5 m/sec to –15 m/sec.
+The helicopter behavior during these vortex ring state encounters was calculated using a representative model of the D6075, described in table 5. The degrees of freedom considered are the rigid airframe motions, rigid blade flap and pitch, and the inflow time lag. An auxiliary force was used for antitorque in place of the Fenestron, so the yaw degree of freedom was not included in the maneuver calculations. The equations were integrated using a time step of 0.0025 sec, corresponding to 5.4 deg azimuth. The velocity sensor for the calculations was in the inertial axes. A simple autopilot was used, feeding back roll rate to lateral cyclic, and pitch rate and horizontal velocity
+
+
+16
+error to longitudinal cyclic. The inflow model used (Vz+v)X = 1.25 and a time constant of τ = 14 revs.
+The aircraft gross weight used was 3500 kg, and the rotor speed was 360 rpm. Hence vh = 11.2 m/sec = 2200 ft/min = 21.7 knots; CT = 0.005, CT/σ = 0.059, λh = 0.05. The initial conditions for the maneuver were obtained by averaging the first 20 sec of the measured velocities. The analysis trimmed the helicopter to these initial conditions (velocity and flightpath angle). The calculated maneuver started at the point of initial collective decrease in the measured data. The two cases were calculated for the following conditions:
+a) Vertical: 4.25 knots and –8.2 deg descent angle (horizontal velocity 2.16 m/sec, vertical velocity –0.31 m/sec); calculations started at 26.7 sec in the measured data; total collective change about –0.7 deg; autopilot target forward velocity 2.16 m/sec.
+b) Forward: 12.4 knots and –1.5 deg descent angle (horizontal velocity 6.39 m/sec, vertical velocity –0.17 m/sec); calculations started at 19.8 sec in the measured data; total collective change about –0.9 deg; autopilot target forward velocity 5.9 m/sec.
+The values of the measured collective pitch change used in the calculations are shown in figure 56.
+Figures 57 and 58 compare the measured and calculated helicopter response, for the vertical and forward conditions. Good calculation of the vertical velocity is obtained using the VRS model, while the baseline model (momentum theory with the ideal autorotation singularity removed) does not produce the correct behavior. The calculated vertical acceleration az clearly shows the character of the Vz drop.
+The good correlation between measured and calculated helicopter vertical velocity during VRS encounter establishes that the VRS model is accurate, and more generally confirms the association of this behavior with the negative slope of the inflow curve. That the corresponding comparison between the VRS model and the inflow velocity obtained by Taghizad et al. (fig. 51) is not very good probably reflects the difficulties involved in obtaining such inflow information from flight tests in VRS.
+Figures 59 and 60 show the influence of the inflow time constant on the calculated velocities. These results establish the value of τ = 14 revs for this problem. Figures 61 and 62 show the influence of the value of the inflow peak, (Vz+v)X. The calculated vertical velocity is not very sensitive to this parameter. Figure 63 shows the influence of the autopilot target forward velocity on the calculated vertical velocity, for the forward case.
+Figure 64 shows the results of attempted recovery by means of a collective pitch increase on the calculated velocity and vertical acceleration. A collective increase of about 1 deg (the collective change relative trim set to a constant 0.3 deg) was introduced at 55, 60, and 65 sec into the maneuver. Although a positive change in normal acceleration was produced in each case, only the control change at 55 sec was successful in recovering from the VRS encounter.
+Taghizad et al. (refs. 44, 46, 47) developed an empirical inflow curve, which was implemented in the HOST code. Using this analysis, the mean characteristics of the VRS observed during the experimental studies were well reproduced. They concluded that both D6075 flight test and HOST calculations demonstrated that vortex ring state can be considered as an unstable region.
+The present calculations for the D6075 establish an appropriate value for the inflow time constant: τ = 14 revs (2.4 sec), for CT = 0.005 and λh = 0.05. The dimensional time constant should scale as t ~ R/vh. Hence the general result is τrev = 0.7/λh. For the V-22 then, with CT = 0.013 and λh = 0.08, the time constant value is τ = 9 revs (1.3 sec).
+TILTROTOR VRS ENCOUNTER
+Representative behavior of a tiltrotor encountering vortex ring state was calculated using a model of the V-22, described in table 6. A complete model of the aircraft in helicopter mode was used. The pilot's controls were connected to the rotor collective and cyclic. The degrees of freedom considered were the rigid airframe motions, rotor gimbal motion with rigid blades, and the inflow time lag. The equations were integrated using a time step of 0.002 sec, corresponding to 4.9 deg azimuth. The velocity sensor for the calculations was in the inertial axes. A simple autopilot was used, feeding back roll rate to lateral control (rotor differential collective), and pitch rate and horizontal velocity error to longitudinal cyclic. The inflow model used (Vz + v)X = 1.25 and a time lag of τ= 9 revs.
+The aircraft gross weight used was 46,100 lb, and the rotor speed 409 rpm. Hence vh = 65.2 ft/sec = 3900 ft/min = 38.7 knots; CT = 0.013, CT/σ = 0.122, λh = 0.08. The initial conditions for the maneuver were Vx/vh = 0.6, Vz/vh = –0.35 (26.8 knots, –30 deg flightpath angle; autopilot target horizontal speed 23.2 knots). The analysis trimmed the tiltrotor to these initial conditions (velocity and flightpath angle). Then the collective pitch change shown in figure 65 was introduced to produce the VRS encounter.
+
+
+17
+Figure 66 shows the calculated velocity, normal acceleration, roll angle, and differential collective. The initial conditions are symmetric (wings level) flight, and the rotors are identical, so the tiltrotor encountering VRS exhibits a Vz drop, much like the helicopter. Flight tests have demonstrated however that the characteristic tiltrotor behavior in VRS is roll-off, not Vz drop. Figure 66 also shows the calculated response when the tiltrotor is trimmed in an asymmetric condition, either with –15 deg sideslip or with a 0.5 ft lateral center-of-gravity offset; but the rotors are still identical. The result is still primarily Vz drop, with little roll angle or differential collective.
+Figure 67 shows the calculated response obtained with asymmetric rotor aerodynamics, produced by using f = 0.3 on the left rotor to suppress its unstable axial behavior in VRS. Now as vortex ring state is approached, the roll autopilot introduces substantial differential collective in order to keep the wings level with the different aerodynamic behavior of the two rotors. When, in addition, a 2 deg limit on the differential collective is imposed, the tiltrotor begins to roll when the control limit is reached. A rapid and substantial increase in roll angle is produced in this case. The calculated results in figure 67 are typical of tiltrotor behavior in VRS encounters (ref. 51).
+The roll-off that is typical of tiltrotor VRS encounter appears to be associated with differences between the aerodynamics of the two rotors, not with the aircraft dynamics. That difference was simulated here by simply suppressing the unstable VRS behavior of one rotor, but the actual aerodynamic mechanism remains undetermined. Possibly the difference between the two rotors reflects the low frequency unsteadiness and randomness of vortex ring state. The aerodynamic interaction between the two rotors may also be a factor.
+MODEL FOR REAL-TIME SIMULATION
+As an empirical extension of momentum theory, the VRS model developed here is suitable for implementation in a real-time, piloted simulation. Probably the calculation of the inflow as a function of rotor horizontal and vertical velocity in descent would be performed to generate a table, and the table interpolated for the real-time calculations.
+The vibration increase as VRS is approached is an important cue. The vibration can be implemented as either a thrust or inflow variation, with the appropriate spectrum.
+The random, low frequency variations of the VRS aerodynamics could be simulated, or a completely
+deterministic model could be used. The choice depends much on the training philosophy. For a tiltrotor there must be some mechanism, again either random or deterministic, to introduce a difference in the aerodynamic behavior of the two rotors.
+CONCLUSIONS
+This paper has reviewed the available wind tunnel and flight test data for rotors in vortex ring state. It is observed that the flight test data for a helicopter and a tiltrotor define essentially the same VRS boundary, in spite of a different manifestation of the instability, and large differences in twist and solidity between the rotors of the two aircraft.
+Test data for axial flow, nonaxial flow, two rotors, unsteadiness, and vortex ring state boundaries have been described and discussed. Based on the available measured data, a VRS model has been developed. The VRS model is a parametric extension of momentum theory for calculation of the mean inflow of a rotor, hence suitable for simple calculations and real-time simulations. The VRS model is primarily defined in terms of the stability boundary of the aircraft flight dynamics.
+Calculations of helicopter response during VRS encounter were performed. Good correlation was shown with the Vz drop measured in D6075 flight tests. Calculations of tiltrotor response during VRS encounter were performed, showing the roll-off behavior characteristic of tiltrotors. With a symmetric rotor aerodynamic model, tiltrotor response to VRS encounter was a vertical velocity drop, as for the helicopter. By introducing differences between the aerodynamics of the two rotors of the tiltrotor, roll-off was calculated. Hence it is possible, using a model of the mean inflow of an isolated rotor, to explain the basic behavior of both helicopters and tiltrotors in vortex ring state.
+Future Work
+It is next necessary to correlate calculations of tiltrotor behavior in vortex ring state with flight test measurements. This is probably best accomplished as part of the development and validation of a real-time implementation of the VRS model for the rotor inflow.
+Assessment of Test Data
+There are six reported wind tunnel and flight test programs that provide data on rotor behavior in vortex ring state. The behavior of the flow that produces the unstable aircraft dynamics is clearly established by these test data, and the stability boundary appears scalable.
+
+
+18
+There is not enough data to establish the influence of twist, solidity, and other rotor parameters on VRS aerodynamics.
+There are probably facility effects in some of the tests. There may be wind tunnel wall effects in the data of Castles and Gray. The image plane in the data of Betzina probably did not produce a good simulation of a second rotor. There may be scale effects in the data of Empey and Ormiston.
+Based on reported helicopter behavior in VRS regarding loss of cyclic control, there is probably an instability in the character of rotor cyclic and linear inflow gradients in VRS, similar to the instability in the character of collective and mean inflow. There is, however, no available data relevant to such a phenomenon.
+In spite of the focus of many investigations on the unsteady nature of VRS flow, there are no clear trends in the data for frequencies or thrust fluctuations. This might reflect more sensitivity to the rotor parameters than is found for the mean thrust and power data. The possible relation between random, low frequency variations in VRS aerodynamics and the asymmetric behavior of tiltrotors is not elucidated by the available data.
+Recommended Tests
+A test of a rotor in vortex ring state must be conducted in a very large wind tunnel, so there is no question of wall effects with a large enough rotor to avoid problems with scale. It should be a flapping rotor with moderate flap hinge offset and cyclic control. The usual test matrix (thrust or collective; and Vx and Vz, or V and α) is appropriate. Cyclic control variations must also be investigated. Data records must be long enough to establish the low frequency character of the flow.
+The configurations investigated should include a matrix of solidity and twist (and possibly blade number), sufficient to establish the influence of these parameters on VRS. A tiltrotor configuration will be required to establish the magnitude and importance of rotor-rotor interference on VRS behavior.
+Such an extensive test program will be difficult to justify based on helicopter and tiltrotor experience with VRS operations. Yet without such experimental data, many aspects of VRS aerodynamics will long remain elusive.
+Recommended Analysis
+If good correlation with the six data sets described in this paper could be demonstrated, then analysis could be used with confidence to examine the influence of rotor parameters, cyclic control, rotor-rotor interference, and
+other features of vortex ring state aerodynamics. Each data set has some unique characteristics, which must be captured by the analysis. It would be necessary to account for the specific aspects of the test facilities involved.
+As vortex ring state aerodynamics involve unsteady, large-scale vortex structures, such an analysis program would be a major task, but one well worth the resources in terms of the knowledge to be gained about an important aspect of rotary wings.
+REFERENCES
+1. Fage, A.; Lock, C. N. H.; Bateman, H.; Howard, R. G.; and Williams, D. H.: Experiments with a Family of Airscrews, Including the Effect of Tractor and Pusher Bodies. Aeronautical Research Council, R&M No. 829 and No. 830, November 1922.
+2. Lock, C. N. H.; and Bateman, H.: Some Experiments on Airscrews at Zero Torque, With Applications to a Helicopter Descending with the Engine "Off," and to the Design of Windmills. Aeronautical Research Council, R&M No. 885, September 1923.
+3. Munk, M. M.: Model Tests on the Economy and Effectiveness of Helicopter Propellers. NACA TN 221, July 1925.
+4. Lock, C. N. H.; Bateman, H.; and Townend, H. C. H.: An Extension of the Vortex Theory of Airscrews with Applications to Airscrews of Small Pitch, Including Experimental Results. Aeronautical Research Counsil, R&M No. 1014, September 1926.
+5. Glauert, H.: The Analysis of Experimental Results in the Windmill Brake and Vortex Ring States of an Airscrew. Aeronautical Research Council, R&M No. 1026, February 1926.
+6. Lock, C. N. H.; and Townend, H. C. H.: Photographs of the Flow Round a Model Screw Working in Water, Especially in the "Vortex Ring State". Aeronautical Research Council, R&M No. 1043, May 1926.
+7. Lock, C. N. H.: Photographs of Streamers Illustrating the Flow Around an Airscrew in the "Vortex Ring State". Aeronautical Research Council, R&M No. 1167, April 1928.
+8. Gustafson, F. B.: Flight Tests of the Sikorsky HNS-1 (Army YR-4B) Helicopter. I-Experimental Data
+
+
+19
+on Level-Flight Performance with Original Blades. NACA L5C10, March 1945.
+9. Gustafson, F. B.; and Gessow, A.: Flight Tests of the Sikorsky HNS-1 (Army YR-4B) Helicopter. II-Hovering and Vertical-Flight Performance with the Original and an Alternate Set of MainRotor Blades, Including a Comparison with Hovering Performance Theory. NACA L5D09a, April 1945.
+10. Lock, C. N. H.: Note on the Characteristic Curve for an Airscrew or Helicopter. Aeronautical Research Council, R&M No. 2673, June 1947.
+11. Hafner, R.: Rotor Systems and Control Problems in the Helicopter. Anglo-American Aeronautical Conference, London, England, September 1947, pp. 579–632.
+12. Stewart, W.: Flight Testing of Helicopters. The Journal of the Royal Aeronautical Society, vol. 52, no. 449, May 1948, pp. 261–304.
+13. Gustafson, F. B.; and Gessow, A.: Analysis of FlightPerformance Measurements on a Twisted, Plywood-Covered Helicopter Rotor in Various Flight Conditions. NACA TN 1595, June 1948.
+14. Gessow, A.: Flight Investigation of Effects of RotorBlade Twist on Helicopter Performance in the High-Speed and Vertical-Autorotative-Descent Conditions. NACA TN 1666, August 1948.
+15. Reeder, J. P.; and Gustafson, F. B.: On the Flying Qualities of Helicopters. NACA TN 1799, January 1949.
+16. Brotherhood, P.: Flow Through a Helicopter Rotor in Vertical Descent. Aeronautical Research Council, R&M No. 2735, July 1949.
+17. Drees, J.: A Theory of Airflow Through Rotors and Its Application to Some Helicopter Problems. Journal of the Helicopter Association of Great Britain, vol. 3, no. 2, July-September 1949, pp. 79–104.
+18. Drees, J.; Lucassen, L. R.; and Hendal, W. P.: Airflow Through Helicopter Rotors in Vertical Flight. National Aeronautical Research Institute, Amsterdam, The Netherlands, NLL Report V. 1535, December 1949.
+19. Drees, J. M.; and Hendal, W. P.: The Field of Flow Through a Helicopter Rotor Obtained from Wind Tunnel Smoke Tests. National Aeronautical Research Institute, Amsterdam, The Netherlands, NLL Report A. 1205, February 1950.
+20. Drees, J. M.; and Hendal, W. P.: Airflow Patterns in the Neighbourhood of Helicopter Rotors. Aircraft Engineering, vol. 23, no. 266, April 1951, pp. 107–111.
+21. Castles, W., Jr.; and Gray, R. B.: Empirical Relation Between Induced Velocity, Thrust, and Rate of Descent of a Helicopter Rotor as Determined by Wind-Tunnel Tests on Four Model Rotors. NACA TN 2474, October 1951.
+22. Stewart, W.: Helicopter Behaviour in the Vortex-Ring Conditions. Aeronautical Research Council, R&M No. 3117, November 1951.
+23. Gessow, A.; and Myers, G. C., Jr.: Aerodynamics of the Helicopter. Macmillan, New York, 1952.
+24. McLemore, H. C.; and Cannon, M. D.: Aerodynamic Investigation of a Four-Blade Propeller Operating Through an Angle-of-Attack Range from 0o to 180o. NACA TN 3228, June 1954.
+25. Gessow, A.: Review of Information on Induced Flow of a Lifting Rotor. NACA TN 3238, August 1954.
+26. Castles, W., Jr.: Flow Induced by a Rotor in PowerOn Vertical Descent. NACA TN 4330, July 1958.
+27. Yeates, J. E.: Flight Measurements of the Vibration Experienced by a Tandem Helicopter in Transition, Vortex-Ring State, Landing Approach, and Yawed Flight. NACA TN 4409, September 1958.
+28. Yaggy, P. F.; and Mort, K. W.: Wind-Tunnel Tests of Two VTOL Propellers in Descent. NASA TN D-1766, March 1963.
+29. Scheiman, J.: A Tabulation of Helicopter Rotor-Blade Differential Pressures, Stresses, and Motions as Measured in Flight. NASA TM-X 952, 1964.
+30. Washizu, K.; Azuma, A.; Koo, J.; and Oka, T.: Experiments on a Model Helicopter Rotor Operating in the Vortex Ring State. Journal of Aircraft, vol. 3, no. 3, May-June 1966.
+31. Washizu, K.; Azuma, A.; Koo, J.; and Oka, T.: Experimental Study on the Unsteady Aerodynamics of a Tandem Rotor Operating in the Vortex Ring State. American Helicopter Society 22nd Annual National Forum, Washington, D.C., May 1966.
+32. Azuma, A.; and Obata, A.: Induced Flow Variation of the Helicopter Rotor Operating in the Vortex
+
+
+20
+Ring State. Journal of Aircraft, vol. 5, no. 4, JulyAugust 1968.
+33. Empey, R. W.; and Ormiston, R. A.: Tail-Rotor Thrust on a 5.5-Foot Helicopter Model in Ground Effect. American Helicopter Society 30th Annual National V/STOL Forum, Washington, D.C., May 1974.
+34. Heyson, H. H.: A Momentum Analysis of Helicopters and Autogyros in Inclined Descent, With Comments on Operational Restrictions. NASA TN D-7917, October 1975.
+35. Prouty, R. W.: Helicopter Performance, Stability, and Control. Robert E. Krieger Publishing Company, Malabar, Florida, 1986.
+36. Xin, H.; and Gao, Z.: An Experimental Investigation of Model Rotors Operating in Vertical Descent. 19th European Rotorcraft Forum, Cernobbio, Italy, September 1993.
+37. Felker, F. F.; and McKillip, R. M.: Comparisons of Predicted and Measured Rotor Performance in Vertical Climb and Descent. American Helicopter Society 50th Annual Forum Proceedings, Washington, D.C., May 1994.
+38. Xin, H.; and Gao, Z.: A Prediction of the Vortex-Ring State Boundary Based on Model Tests. Transactions of Nanjing University of Aeronautics and Astronautics, vol. 11, no. 2, December 1994.
+39. Padfield, G. D.: Helicopter Flight Dynamics. AIAA, The Theory and Application of Flying Qualities and Simulation Modeling. Blackwell Science, Oxford, United Kingdom, 1996.
+40. Brinson, P.; and Ellenrieder, T.: Experimental Investigation of the Vortex Ring Condition. 24th European Rotorcraft Forum, Marseille, France, September 1998.
+41. Varnes, D. J.; Duren, R. W.; and Wood, E. R.: An Onboard Warning System to Prevent Hazardous "Vortex Ring State" Encounters. 26th European Rotorcraft Forum, The Hague, The Netherlands, September 2000.
+42. Newman, S.; Brown, R.; Perry, J.; Lewis, S.; Orchard, M.; and Modha, A.: Comparative Numerical and Experimental Investigations of the Vortex Ring Phenomenon in Rotorcraft. American Helicopter Society 57th Annual Forum, Washington, D.C., May 2001.
+43. Betzina, M. D.: Tiltrotor Descent Aerodynamics: A Small-Scale Experimental Investigation of Vortex Ring State. American Helicopter Society 57th Annual Forum, Washington, D.C., May 2001.
+44. Jimenez, J.; Desopper, A.; Taghizad, A.; and Binet, L.: Induced Velocity Model in Steep Descent and Vortex-Ring State Prediction. 27th European Rotorcraft Forum, Moscow, Russia, September 2001.
+45. Abrego, A.; and Long, K.: A Wind Tunnel Investigation of a Small-Scale Tiltrotor Model in Descending Flight. American Helicopter Society Aerodynamics, Acoustics, and Test and Evaluation Technical Specialists Meeting, San Francisco, CA, January 2002.
+46. Jimenez, J.; Taghizad, A.; and Binet, L.: Helicopter Flight Tests in Steep Descents: Vortex-Ring State Analysis and Induced Velocity Models Improvement. CEAS-TRA3 Conference Royal Aeronautical Society, Cambridge, United Kingdom, June 2002.
+47. Taghizad, A.; Binet, L.; Jimenez, J.; and Heuze, D.: Experimental and Theoretical Investigations to Develop a Model of Rotor Aerodynamics Adapted to Steep Descents. American Helicopter Society 58th Annual Forum, Montreal, Canada, June 2002.
+48. Abrego, A.; Betzina, M. D.; and Long, K. R.: A Small-Scale Tiltrotor Model Operating in Descending Flight. 28th European Rotorcraft Forum, Bristol, United Kingdom, September 2002.
+49. Brown, R. E.; Newman, S. J.; Leishman, J. G.; and Perry, F. J.: Blade Twist Effects on Rotor Behavior in the Vortex Ring State. 28th European Rotorcraft Forum, Bristol, United Kingdom, September 2002.
+50. Newman, S.; Brown, R.; Perry, J.; Lewis, S.; Orchard, M.; and Modha, A.: Predicting the Onset of Wake Breakdown for Rotors in Descending Flight. Journal of the American Helicopter Society, vol. 48, no. 1, January 2003, pp. 28–38.
+
+
+21
+51. Kisor, R.; Blyth, R.; Brand, A.; and MacDonald, T.: V-22 Low Speed/High Rate of Descent (HROD) Test Results. American Helicopter Society 60th Annual Forum, Baltimore, MD, June 2004.
+52. Johnson, W.: Helicopter Theory. Princeton University Press, Princeton, NJ, 1980.
+
+
+22
+TABLE 1. TESTS OF ROTORS IN VORTEX RING STATE.
+Date Reference Facility N R, ft Vtip, ft/sec σ Twist Angle of Attack Inflow
+Lock, Glauert 1926 1–2,4–7 wind tunnel, 7 ft 2 1.5 200–230 0.074 –9.6 (P/D=.3) 90 T&θ
+Brotherhood 1949 16 flight, R-4B 3 19 448 0.058 0 90 T&θ, P/T
+Reeder and Gustafson 1949 15 flight, R-4B 3 19 448 0.058 0 90
+Drees 1949 17–20 ground 2 0.5 90, etc.
+Castles and Gray 1951 21 wind tunnel, 9 ft 3 3 377, 502 0.05 0 90 T&θ, P/T
+wind tunnel, 9 ft 3 3 377, 502 0.05 0, 3/1 taper 90 T&θ, P/T
+wind tunnel, 9 ft 3 3 377, 502 0.05 –12 90 T&θ, P/T
+wind tunnel, 9 ft 3 2 251, 335 0.05 0 90 T&θ, P/T
+Gessow 1954 8,9,14,23 flight, R-4B 3 19 448 0.058 0 90 P/T
+alternate blades 3 19 448 0.042 –8.5 90 P/T
+Yeates 1958 27 flight, tandem 3 17.5 500
+Yaggy and Mort 1962 28 wind tunnel, 40x80 3 4.75 348–701 0.20 –22.4, flapping 90,75,60,45,30 T&θ
+wind tunnel, 40x80 3 6 440–691 0.18 –46.6, rigid 90 T&θ
+Scheiman 1964 29 flight, H34 4 28 623 0.062 –8 90, etc.
+Washizu 1966 30 moving track 3 1.80 189 0.057 –8.33 90,70,50,20 P/T
+Washizu 1966 31 moving track, tandem 3 1.80 189 0.057 –8.33 90,80,60 P/T
+Azuma 1968 32 wind tunnel, 3m 3 1.80 189 0.057 –8 90
+Empey and Ormiston 1974 33 wind tunnel, AH-1G tail rotor 2 0.53 515 0.105 0 90 to 0 by 10 T&θ, P/T
+Xin and Gao 1993 36,38 whirling beam 2 1.80 265 0.069 0 90,75,60,45,30 T&θ, P/T
+2 1.80 265 0.085 –5.5 90,75,60,45,30 T&θ, P/T
+2 1.80 265 0.085 –9.22 90,75,60,45,30 T&θ, P/T
+Felker and McKillip 1994 37 long track 4 4.00 180 0.066 -8 90 T&θ, P/T
+Betzina 2001 43 wind tunnel, 80x120 3 2 377 0.119 –41 90 to 0 by 10 T&θ, P/T
+Taghizad 2002 44,46,47 flight, Dauphin 4 19.6 656 0.083 –10 90, etc. P/T
+TABLE 2. MEASURED FREQUENCIES IN VORTEX RING STATE.
+ωR/vh Condition
+Yeates 1.4–2.0 axial, Vz/vh = –0.4
+0.95–1.1 axial, Vz/vh = –1.1
+1.9 Vx/vh= 0.7, Vz/vh= –0.3
+Yaggy and Mort 3–5 all
+Washizu 0.7–1.4, 0.14–0.3 axial
+Xin and Gao 1.3, 2.5, 0.8 axial, Vz/vh = 0.75
+Brinson 0.6 axial
+Betzina < 0.1 α= 60, V/vh = 0.7, image plane
+0.2 α= 80–90, rotor only
+
+
+23
+TABLE 3. ALGORITHM TO CALCULATE THE ROTOR INDUCED VELOCITY IN VORTEX RING STATE.
+The following algorithm calculates v given values of Vz and Vx (all scaled with vh).
+The algorithm assumes VzA > VzB; VzD > VzN > VzX > VzE; and VzX ≥ VzA.
+1) if Vz ≥ 0 or Vx ≥ VxC, momentum theory is used
+2) baseline curve
+2.1) end points
+VzAID = VzA + 0.2 (Vx/VxC)2
+VzBID = VzB + 0.2 (Vx/VxC)2
+and if Vx/VxC > 0.5 then VzBID = VzBID + 0.7 (VzAID – VzBID) (2Vx/VxC – 1)3
+2.2) if VzBID < Vz < VzAID then identify v = bVz + cVz2 + dVz3
+matching at VzAID: momentum theory v, dv/dVz
+matching at VzBID: momentum theory v
+2.3) otherwise momentum theory is used
+3) VRS model: if Vz < 0 and Vx < VxM then
+3.1) stability boundary
+VzDID = VzD
+VzNID = 0.5(VzN + VzX) + 0.5(VzN – VzX) (1 – (Vx/VxM)2)0.2
+VzXID = 0.5(VzN + VzX) – 0.5(VzN – VzX) (1 – (Vx/VxM)2)1.5
+VzEID = VzE + (VzXID – VzX)
+3.2) if VzEID < Vz < VzDID then identify Δ(Vz+v) = a + bVz + cVz2 + dVz3; otherwise momentum theory is used
+3.2.1) if VzNID ≤ Vz < VzDID then
+match at VzDID: Δ(Vz+v) = dΔ(Vz+v)/dVz = 0
+match at VzNID: Δ(Vz+v) = ((Vz+v)N–(VzN+vNmom)) (1–(Vx/VxM)6)0.5 and dΔ(Vz+v)/dVz = –(1 + dvbase/dVz)
+3.2.2) if VzXID ≤ Vz < VzNID then
+match at VzNID: as above
+match at VzXID: Δ(Vz+v) = ((Vz+v)X–(VzX+vXmom)) (1–(Vx/VxM)6)0.5 and dΔ(Vz+v)/dVz = –(1 + dvbase/dVz)
+3.2.3) if VzEID < Vz < VzXID then
+match at VzXID: as above
+match at VzDID: Δ(Vz+v) = 0 (not matching slope, so a=0)
+3.2.4) baseline curve slope
+dvbase/dVz= dv/dVz of momentum theory or
+dvbase/dVz = b + 2cVz + 2cVz2
+
+
+24
+TABLE 4. VRS MODEL PARAMETERS (VELOCITIES SCALED WITH VH); POINTS REFER TO FIGURE 37.
+Point Parameter Value
+baseline model
+A VzA –1.5
+B VzB –2.1
+C VxC 0.75
+VRS model
+D VzD –0.2
+N VzN –0.45
+(V+v)N 0.85
+X VzX –1.5
+(V+v)X 1.25
+E VzE –2.0
+M VxM 0.95
+TABLE 5. D6075 HELICOPTER MODEL.
+articulated hub
+blade radius R 5.97 m
+solidity σ(chord = 0.4 m) 0.085
+number of blades 4
+twist –10 deg
+Lock number (mass = 7.5 kg/m) 6.6
+TABLE 6. V-22 TILTROTOR MODEL.
+gimballed hub
+blade radius R 19.04 ft
+solidity σ(tapered blade) 0.105
+number of blades 3
+twist (nonlinear) –38 deg
+Lock number 5.0
+
+
+25
+Figure 1. Smoke flow visualization of a rotor in vortex ring state (Drees, ref. 20).
+0.0 0.2 0.4 0.6 0.8 1.0
+-1.8
+-1.6
+-1.4
+-1.2
+-1.0
+-0.8
+-0.6
+-0.4
+-0.2
+0.0
+Vx/vh
+Vz/vh
+V-22 roll-off
+D6075 Vz drop
+D6075 Vz stabilization
+stability boundary
+Figure 2. Helicopter Vz drop and tiltrotor roll-off from vortex ring state encounter, and stability boundary of VRS model.
+
+
+26
+-3.0 -2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz/vh
+Vz+v/vh
+Betzina test (from Q)
+Betzina test (from T)
+momentum theory
+VRS model
+Figure 3. Rotor inflow in vertical descent, from wind tunnel test, momentum theory, and the VRS model.
+-3.0 -2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+Vz/vh
+Vz+v/vh
+windmill brake state .
+. Vz+2v=0 v=0
+turbulent wake state .
+vortex ring state
+-3.0 -2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+windmill brake state .
+. Vz+2v=0 Vz+v=0
+turbulent wake state .
+. vortex ring state
+Figure 4. Momentum theory and inflow states in axial flow.
+
+
+27
+-3.0 -2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+Vz+v/vh
+Vx/vh = 0
+Vx/vh = 0.4
+Vx/vh = 0.6
+Vx/vh = 0.8
+Vx/vh = 1.0
+Vx/vh = 1.4
+Vx/vh = 2.0
+Vx/vh = 4.0
+-3.0 -2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+Vz/vh
+v/vh
+Figure 5(a). Momentum theory in forward flight (function of Vz and Vx).
+-3.0 -2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+Vz+v/vh
+! = 90
+! = 75
+! = 60
+! = 45
+! = 30
+! = 15
+-3.0 -2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+Vz/vh
+v/vh
+Figure 5(b). Momentum theory in forward flight (function of Vz and α).
+
+
+28
+-3.0 -2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+Vz+v/vh
+! = 90
+! = 75
+! = 60
+! = 45
+! = 30
+! = 15
+!= 0
+-3.0 -2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+V/vh
+v/vh
+Figure 5(c). Momentum theory in forward flight (function of V and α).
+0.00 0.05 0.10 0.15 0.20 0.25
+-50.
+-40.
+-30.
+-20.
+-10.
+0.
+10.
+solidity
+twist (deg)
+Brotherhood
+Castles and Gray
+Yaggy and Mort
+Empey and Ormiston
+Betzina
+Washizu
+Azuma
+Taghizad
+other rotors
+Figure 6. Geometry of rotors tested in vortex ring state.
+
+
+29
+-3.0 -2.0 -1.0 0.0 1.0 2.0 3.0
+-3.0
+-2.0
+-1.0
+0.0
+1.0
+2.0
+3.0
+Vz/vh
+Vz+v/vh
+Lock f, 885 (Glauert 1026)
+Lock f1, 885 (Glauert 1026)
+Lock 1014 (Glauert 1026)
+Munk (Glauert 1026)
+Lock 1014
+Lock 1014 (Lock 2673)
+Lock 1026 (Lock 2673)
+Lock f (Brotherhood 2735)
+Lock f1 (Brotherhood 2735)
+momentum theory
+-3.0 -2.0 -1.0 0.0 1.0 2.0 3.0
+0.0
+1.0
+2.0
+3.0
+Vz/vh
+v/vh
+Figure 7. Lock (1926) wind tunnel test: axial flow; σ= 0.0737, θtw = –9.6 deg.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+from power
+from blade angle
+Hafner
+Lock f
+Lock f1
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 8. Brotherhood (1949) flight test: axial flow; σ= 0.0576, θtw = 0.
+
+
+30
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+T&!, CT = 0.002
+T&!, CT = 0.004
+T&!, CT = 0.005
+P/T, CT = 0.002
+P/T, CT = 0.004
+P/T, CT = 0.005
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 9(a). Castles and Gray (1951) wind tunnel test: axial flow; σ = 0.05, θtw = 0, constant chord.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+T&!, CT = 0.002
+T&!, CT = 0.004
+T&!, CT = 0.005
+P/T, CT = 0.002
+P/T, CT = 0.004
+P/T, CT = 0.005
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 9(b). Castles and Gray (1951) wind tunnel test: axial flow; σ = 0.05, θtw = 0, 3:1 taper.
+
+
+31
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+T&!, CT = 0.002
+T&!, CT = 0.004
+T&!, CT = 0.005
+P/T, CT = 0.002
+P/T, CT = 0.004
+P/T, CT = 0.005
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 9(c). Castles and Gray (1951) wind tunnel test: axial flow; σ = 0.05, θtw = –12 deg, constant chord.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+T&!, CT = 0.002
+T&!, CT = 0.004
+T&!, CT = 0.005
+P/T, CT = 0.002
+P/T, CT = 0.004
+P/T, CT = 0.005
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 9(d). Castles and Gray (1951) wind tunnel test: axial flow; σ = 0.05, θtw = 0, constant chord, R = 2 ft.
+
+
+32
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+Gessow and Myers
+Gessow NACA TN 3238
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 10. Gessow (1954): axial flow.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+! = 6 deg
+! = 9 deg
+! = 12 deg
+! = 15 deg
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 11. Yaggy and Mort (1962) wind tunnel test: axial flow; σ = 0.20, θtw = –22.4 deg, flapping propeller.
+
+
+33
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+! = 90, " = 7.5
+! = 90, " = 8.0
+! = 90, " = 4.5
+! = 90, " = 1.2
+! = 90, " = 0
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 12. Washizu (1966) moving track test: axial flow; σ= 0.0573, θtw = –8.33 deg.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+!= 0
+! =4
+!= 8
+! = 10
+! = 12
+! = 14
+! = 16
+! = 18
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 13. Empey and Ormiston (1974) wind tunnel test: axial flow; σ = 0.1051, θtw = 0.
+
+
+34
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+! = 90, from Q
+! = 90, from T
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 14. Betzina (2001) wind tunnel test: axial flow; σ= 0.1194, θtw = –41 deg, rotor only.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+1st campaign
+2nd campaign
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 15. Taghizad (2002) flight test: axial flow; σ= 0.083, θtw = –10 deg.
+
+
+35
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+! = 90
+! = 75
+! = 60
+! = 45
+! = 30
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 16(a). Yaggy and Mort (1962) wind tunnel test: nonaxial flow; σ = 0.20, θtw = –22.4 deg, flapping propeller.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+! = 90
+! = 75
+! = 60
+! = 45
+! = 30
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+V/vh
+v/vh
+Figure 16(b). Yaggy and Mort (1962) wind tunnel test: nonaxial flow; σ = 0.20, θtw = –22.4 deg, flapping propeller.
+
+
+36
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+! = 90, " = 7.5
+! = 90, " = 0-8.0
+! = 70, " = 7.5
+! = 50, " = 7.5
+! = 20, " = 7.5
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 17(a). Washizu (1966) moving track test: nonaxial flow; σ = 0.0573, θtw = –8.33 deg.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+! = 90, " = 7.5
+! = 90, " = 0-8.0
+! = 70, " = 7.5
+! = 50, " = 7.5
+! = 20, " = 7.5
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+V/vh
+v/vh
+Figure 17(b). Washizu (1966) moving track test: nonaxial flow; σ = 0.0573, θtw = –8.33 deg.
+
+
+37
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+! = 90
+! = 80
+! = 70
+! = 60
+! = 50
+! = 40
+! = 30
+! = 20
+! = 10
+!= 0
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 18(a). Empey and Ormiston (1974) wind tunnel test: nonaxial flow; σ = 0.1051, θtw = 0.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+! = 90
+! = 80
+! = 70
+! = 60
+! = 50
+! = 40
+! = 30
+! = 20
+! = 10
+!= 0
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+V/vh
+v/vh
+Figure 18(b). Empey and Ormiston (1974) wind tunnel test: nonaxial flow; σ = 0.1051, θtw = 0.
+
+
+38
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+! = 90
+! = 80
+! = 70
+! = 60
+! = 50
+! = 40
+! = 30
+! = 20
+! = 10
+!= 0
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 19(a). Betzina (2001) wind tunnel test: nonaxial flow; σ = 0.1194, θtw = –41 deg, rotor only; from thrust.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+! = 90
+! = 80
+! = 70
+! = 60
+! = 50
+! = 40
+! = 30
+! = 20
+! = 10
+!= 0
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+V/vh
+v/vh
+Figure 19(b). Betzina (2001) wind tunnel test: nonaxial flow; σ = 0.1194, θtw = –41 deg, rotor only; from thrust.
+
+
+39
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+! = 90
+! = 80
+! = 70
+! = 60
+! = 50
+! = 40
+! = 30
+! = 20
+! = 10
+!= 0
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 20(a). Betzina (2001) wind tunnel test: nonaxial flow; σ = 0.1194, θtw = –41 deg, rotor only; from torque.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+! = 90
+! = 80
+! = 70
+! = 60
+! = 50
+! = 40
+! = 30
+! = 20
+! = 10
+!= 0
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+V/vh
+v/vh
+Figure 20(b). Betzina (2001) wind tunnel test: nonaxial flow; σ = 0.1194, θtw = –41 deg, rotor only; from torque.
+
+
+40
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+Vx/vh = 0
+Vx/vh = 0.23
+Vx/vh = 0.69
+Vx/vh = 0.92
+Vx/vh = 1.16
+Vx/vh = 1.85
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 21. Taghizad (2002) flight test: nonaxial flow; σ = 0.083, θtw = –10 deg.
+
+
+41
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+single rotor, ! = 90, " = 0-8.0
+single rotor, ! = 70, " = 7.5
+single rotor, ! = 50, " = 7.5
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 22(a). Washizu (1966) moving track test: single rotor; σ = 0.0573, θtw = –8.33 deg.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+front rotor, ! = 90, " = 0.9-6.6
+front rotor, ! = 80, " = 6.2
+front rotor, ! = 60, " = 6.2
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 22(b). Washizu (1966) moving track test: front rotor; σ = 0.0573, θtw = –8.33 deg.
+
+
+42
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+rear rotor, ! = 90, " = 0.5-7.7
+rear rotor, ! = 80, " = 6.2
+rear rotor, ! = 60, " = 6.2
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 22(c). Washizu (1966) moving track test: rear rotor; σ = 0.0573, θtw = –8.33 deg.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+Q
+Q
+Q
+T; rotor only
+T; rotor and image plane
+T; rotor, wing, and image plane
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 23(a). Betzina (2001) wind tunnel test: influence of image plane; σ = 0.1194, θtw = –41 deg; axial flow, α= 90 deg.
+
+
+43
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+Q
+Q
+Q
+T; rotor only
+T; rotor and image plane
+T; rotor, wing, and image plane
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 23(b). Betzina (2001) wind tunnel test: influence of image plane; σ = 0.1194, θtw = –41 deg; nonaxial flow, α= 60 deg.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+Q
+Q
+Q
+T; rotor only
+T; rotor and image plane
+T; rotor, wing, and image plane
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 23(c). Betzina (2001) wind tunnel test: influence of image plane; σ = 0.1194, θtw = –41 deg; nonaxial flow, α= 30 deg.
+
+
+44
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+!= 6
+!= 9
+! = 12
+! = 15
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 24. Yaggy and Mort (1962) wind tunnel test: minimum (dotted) and maximum (solid) inflow; σ = 0.20, θtw = –22.4 deg, flapping propeller; axial flow, α = 90 deg.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+! = 90, " = 7.5
+! = 90, " = 8.0
+! = 90, " = 4.5
+! = 90, " = 1.2
+! = 90, " = 0
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 25. Washizu (1966) moving track test: minimum (dotted) and maximum (solid) inflow; σ = 0.0573, θtw = 8.33 deg; axial flow, α = 90 deg.
+
+
+45
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+Vz/vh
+!T/T
+" = 90, # = 6 deg
+" = 90, # = 9 deg
+" = 90, # = 12 deg
+" = 90, # = 15 deg
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+Vz/vh
+!T/T
+" = 90
+" = 75
+" = 60
+" = 45
+" = 30
+Figure 26. Yaggy and Mort (1962) wind tunnel test: thrust fluctuations; σ = 0.20, θtw = –22.4 deg, flapping propeller.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+Vz/vh
+!T/T
+" = 90, # = 7.5
+" = 90, # = 8.0
+" = 90, # = 4.5
+" = 90, # = 1.2
+" = 90, # = 0
+boundary, " = 90
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+Vz/vh
+!T/T
+" = 90, # = 0-8.0
+" = 70, # = 7.5
+" = 50, # = 7.5
+" = 20, # = 7.5
+boundary, " = 90
+boundary, " = 70
+boundary, " = 50
+Figure 27. Washizu (1966) moving track test: thrust fluctuations; σ = 0.0573, θtw = –8.33 deg.
+
+
+46
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+Vz/vh
+3Trms /T
+!= 8
+! = 12
+! = 10
+! = 14
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.00
+0.01
+0.02
+0.03
+0.04
+0.05
+0.06
+0.07
+0.08
+Vz/vh
+3Qrms /Q
+!= 8
+! = 12
+! = 10
+! = 14
+Figure 28. Azuma (1968) wind tunnel test: thrust and torque fluctuations; σ = 0.0573, θtw = –8.3 deg; axial flow, α = 90 deg.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+Vz/vh
+!T/T
+rotor only
+rotor and wing
+rotor, wing, and image plane
+Figure 29(a). Betzina (2001) wind tunnel test: thrust fluctuations; σ = 0.1194, θtw = –41 deg; axial flow, α = 90 deg.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+Vz/vh
+!T/T
+rotor only
+rotor and wing
+rotor, wing, and image plane
+Figure 29(b). Betzina (2001) wind tunnel test: thrust fluctuations; nonaxial flow, α = 60 deg.
+
+
+47
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+Vz/vh
+!T/T
+" = 90
+" = 80
+" = 70
+" = 60
+" = 50
+" = 40
+" = 30
+" = 20
+" = 10
+"= 0
+Figure 29(c). Betzina (2001) wind tunnel test: thrust fluctuations; rotor only.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+Vz/vh
+!T/T
+" = 90
+" = 80
+" = 70
+" = 60
+" = 50
+" = 40
+" = 30
+" = 20
+" = 10
+"= 0
+Figure 29(d). Betzina (2001) wind tunnel test: thrust fluctuations; rotor and image plane.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+Vz/vh
+!T/T
+" = 90
+" = 80
+" = 70
+" = 60
+" = 50
+" = 40
+" = 30
+" = 20
+" = 10
+"= 0
+Figure 29(e). Betzina (2001) wind tunnel test: thrust fluctuations; rotor, wing, and image plane.
+0.0 0.2 0.4 0.6 0.8 1.0 1.2 1.4
+-1.8
+-1.6
+-1.4
+-1.2
+-1.0
+-0.8
+-0.6
+-0.4
+-0.2
+0.0
+Vx/vh
+Vz/vh
+!T/T = 0.10
+!T/T = 0.20
+!T/T = 0.30
+measured points
+!T/T = 0.40
+!T/T = 0.50
+!T/T = 0.60
+Figure 30. Yaggy and Mort (1962) wind tunnel test: thrust fluctuations; σ = 0.20, θtw = –22.4 deg, flapping propeller.
+
+
+48
+0.0 0.2 0.4 0.6 0.8 1.0 1.2 1.4
+-1.8
+-1.6
+-1.4
+-1.2
+-1.0
+-0.8
+-0.6
+-0.4
+-0.2
+0.0
+Vx/vh
+Vz/vh
+!T/T = 0.05
+!T/T = 0.10
+!T/T = 0.15
+measured points
+!T/T = 0.20
+!T/T = 0.25
+!T/T = 0.30
+Washizu
+Figure 31. Washizu (1966) moving track test: thrust fluctuations; σ = 0.0573, θtw = –8.33 deg.
+0.0 0.2 0.4 0.6 0.8 1.0 1.2 1.4
+-1.8
+-1.6
+-1.4
+-1.2
+-1.0
+-0.8
+-0.6
+-0.4
+-0.2
+0.0
+Vx/vh
+Vz/vh
+!T/T = 0.05
+!T/T = 0.10
+!T/T = 0.15
+measured points
+!T/T = 0.20
+!T/T = 0.25
+!T/T = 0.30
+Figure 32(a). Betzina (2001) wind tunnel test: thrust fluctuations; rotor only.
+0.0 0.2 0.4 0.6 0.8 1.0 1.2 1.4
+-1.8
+-1.6
+-1.4
+-1.2
+-1.0
+-0.8
+-0.6
+-0.4
+-0.2
+0.0
+Vx/vh
+Vz/vh
+!T/T = 0.05
+!T/T = 0.10
+!T/T = 0.15
+measured points
+!T/T = 0.20
+!T/T = 0.25
+!T/T = 0.30
+Figure 32(b). Betzina (2001) wind tunnel test: thrust fluctuations; rotor and image plane.
+0.0 0.2 0.4 0.6 0.8 1.0 1.2 1.4
+-1.8
+-1.6
+-1.4
+-1.2
+-1.0
+-0.8
+-0.6
+-0.4
+-0.2
+0.0
+Vx/vh
+Vz/vh
+!T/T = 0.05
+!T/T = 0.10
+!T/T = 0.15
+measured points
+!T/T = 0.20
+!T/T = 0.25
+!T/T = 0.30
+Figure 32(c). Betzina (2001) wind tunnel test: thrust fluctuations; rotor, wing, and image plane.
+
+
+49
+0.0 0.2 0.4 0.6 0.8 1.0 1.2
+-2.4
+-2.0
+-1.6
+-1.2
+-0.8
+-0.4
+0.0
+Vx/vh
+Vz/vh
+Drees (region of roughness)
+Yeates (vibration)
+Reeder (control and vibration)
+Washizu (!T/T = 0.15, 0.30)
+Newman (wake breakdown)
+ONERA VRS model (Vz drop)
+VRS model (flight dynamics)
+Figure 33. Vortex ring state boundaries.
+0.0 0.2 0.4 0.6 0.8 1.0 1.2
+-1.6
+-1.4
+-1.2
+-1.0
+-0.8
+-0.6
+-0.4
+-0.2
+0.0
+Vx/vh
+Vz/vh
+D6075 Vz drop
+fluctuations increase
+Vz stabilization
+ONERA VRS model
+Figure 34. Helicopter VRS boundaries.
+0.0 0.2 0.4 0.6 0.8 1.0 1.2
+-1.2
+-1.0
+-0.8
+-0.6
+-0.4
+-0.2
+0.0
+Vx/vh
+Vz/vh
+V-22 roll-off
+asymmetries
+thrust fluctuations > 2.5%
+thrust fluctuations < 2.5%
+Figure 35. Tiltrotor VRS boundaries.
+
+
+50
+-3.0 -2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz/vh
+Vz+v/vh
+momentum theory
+Castles and Gray
+Castles and Gray (no twist)
+Yaggy and Mort
+Washizu
+Empey and Ormiston
+Betzina
+Taghizad
+Figure 36. Summary of minimum and maximum points of measured inflow in vertical descent (scaled to v/vh = 1 at Vz = 0).
+-3.0 -2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz/vh
+Vz+v/vh
+B.
+E.
+A
+. X ND
+momentum theory
+baseline, Vx/vh = 0
+baseline, Vx/vh = 0.75
+VRS model, Vx/vh = 0
+VRS model, Vx/vh = 0.75
+VRS model, Vx/vh = 0.95
+transition points
+Figure 37. VRS model development.
+
+
+51
+-3.0 -2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+Vx/vh = 0
+Vx/vh = 0.4
+Vx/vh = 0.6
+Vx/vh = 0.8
+Vx/vh = 1.0
+Vx/vh = 1.4
+Vx/vh = 2.0
+Vx/vh = 4.0
+end points
+-3.0 -2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+Vz/vh
+v/vh
+Figure 38. Rotor inflow from baseline model.
+-3.0 -2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+Vx/vh = 0
+Vx/vh = 0.4
+Vx/vh = 0.6
+Vx/vh = 0.8
+Vx/vh = 1.0
+Vx/vh = 1.4
+Vx/vh = 2.0
+Vx/vh = 4.0
+end points
+-3.0 -2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+Vz/vh
+v/vh
+Figure 39. VRS model.
+
+
+52
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz/vh
+Vz+v/vh
+T&!, CT = 0.002
+T&!, CT = 0.004
+T&!, CT = 0.005
+VRS model
+P/T, CT = 0.002
+P/T, CT = 0.004
+P/T, CT = 0.005
+Figure 40(a). Castles and Gray (1951) wind tunnel test: axial flow; σ = 0.05, θtw = 0, constant chord; κ = 1.15.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz/vh
+Vz+v/vh
+Figure 40(b). Castles and Gray (1951) wind tunnel test: axial flow; σ = 0.05, θtw = 0, 3:1 taper; κ = 1.15.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz/vh
+Vz+v/vh
+T&!, CT = 0.002
+T&!, CT = 0.004
+T&!, CT = 0.005
+VRS model
+P/T, CT = 0.002
+P/T, CT = 0.004
+P/T, CT = 0.005
+Figure 40(c). Castles and Gray (1951) wind tunnel test: axial flow; σ = 0.05, θtw = –12 deg, constant chord; κ= 1.15.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz/vh
+Vz+v/vh
+Figure 40(d). Castles and Gray (1951) wind tunnel test: axial flow; σ = 0.05, θtw = 0, constant chord, R = 2 ft; κ= 1.15.
+
+
+53
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz/vh
+Vz+v/vh
+VRS model
+! = 6 deg
+! = 9 deg
+! = 12 deg
+! = 15 deg
+Figure 41. Yaggy and Mort (1962) wind tunnel test: axial flow; σ = 0.20, θtw = –22.4 deg, flapping propeller; κ= 1.15.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz/vh
+Vz+v/vh
+VRS model
+! = 90, " = 7.5
+! = 90, " = 8.0
+! = 90, " = 4.5
+! = 90, " = 1.2
+! = 90, " = 0
+Figure 42. Washizu (1966) moving track test: axial flow; σ= 0.0573, θtw = –8.33 deg; κ = 1.05.
+
+
+54
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz/vh
+Vz+v/vh
+VRS model
+!= 0
+! =4
+!= 8
+! = 10
+! = 12
+! = 14
+! = 16
+! = 18
+Figure 43. Empey and Ormiston (1974) wind tunnel test: axial flow; σ = 0.1051, θtw = 0; κ = 1.10.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz/vh
+Vz+v/vh
+VRS model
+! = 90, from Q
+! = 90, from T
+Figure 44. Betzina (2001) wind tunnel test: axial flow; σ= 0.1194, θtw = –41 deg, rotor only; κ = 1.05.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz/vh
+Vz+v/vh
+VRS model
+1st campaign
+2nd campaign
+Figure 45. Taghizad (2002) flight test: axial flow; σ= 0.083, θtw = –10 deg; κ = 1.20.
+
+
+55
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+VRS model
+! = 90
+! = 75
+! = 60
+! = 45
+! = 30
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 46. Yaggy and Mort (1962) wind tunnel test: nonaxial flow; σ = 0.20, θtw = –22.4 deg, flapping propeller; κ = 1.15.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+VRS model
+! = 90, " = 7.5
+! = 90, " = 0-8.0
+! = 70, " = 7.5
+! = 50, " = 7.5
+! = 20, " = 7.5
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 47. Washizu (1966) moving track test: nonaxial flow; σ = 0.0573, θtw = –8.33 deg; κ = 1.05.
+
+
+56
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+VRS model
+! = 90
+! = 70
+! = 50
+! = 30
+! = 10
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 48. Empey and Ormiston (1974) wind tunnel test: nonaxial flow; σ = 0.1051, θtw = 0; κ = 1.10.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+VRS model
+! = 90
+! = 70
+! = 50
+! = 30
+! = 10
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 49. Betzina (2001) wind tunnel test: nonaxial flow; σ = 0.1194, θtw = –41 deg, rotor only; from thrust, κ= 1.05.
+
+
+57
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+VRS model
+! = 90
+! = 70
+! = 50
+! = 30
+! = 10
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 50. Betzina (2001) wind tunnel test: nonaxial flow; σ = 0.1194, θtw = –41 deg, rotor only; from torque, κ= 1.05.
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+-1.5
+-1.0
+-0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+Vz+v/vh
+VRS model
+Vx/vh = 0
+Vx/vh = 0.23
+Vx/vh = 0.69
+Vx/vh = 0.92
+Vx/vh = 1.16
+Vx/vh = 1.85
+-2.5 -2.0 -1.5 -1.0 -0.5 0.0 0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+Vz/vh
+v/vh
+Figure 51. Taghizad (2002) flight test: nonaxial flow; σ= 0.083, θtw = –10 deg; κ = 1.20.
+
+
+58
+-2.0 -1.5 -1.0 -0.5 0.0
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+-0.2
+Vz/vh
+damping (1/sec)
+VRS model, all motion
+VRS model (qs inflow), all motion
+VRS model (qs inflow), only vertical
+baseline model, all motion
+baseline model, only vertical
+Figure 52. Calculated damping of heave mode for helicopter in vertical descent (real part of eigenvalue, positive value unstable).
+-2.0 -1.5 -1.0 -0.5 0.0
+1.2
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+-0.2
+damping (1/sec)
+only vertical .
+Vx/vh = 0
+Vx/vh = 0.4
+Vx/vh = 0.6
+Vx/vh = 0.8
+Vx/vh = 0.9
+-2.0 -1.5 -1.0 -0.5 0.0
+1.2
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+-0.2
+Vz/vh
+damping (1/sec)
+all motion .
+Figure 53. Calculated damping of heave mode for helicopter in forward flight (real part of eigenvalue, positive value unstable).
+
+
+59
+-2.0 -1.5 -1.0 -0.5 0.0
+0.6
+0.4
+0.2
+0.0
+-0.2
+damping (1/sec)
+symmetric dynamics .
+VRS model, all motion
+VRS model (qs inflow), all motion
+VRS model (qs inflow), only axial
+baseline model, all motion
+baseline model, only axial
+-2.0 -1.5 -1.0 -0.5 0.0
+0.8
+0.6
+0.4
+0.2
+0.0
+-0.2
+Vz/vh
+damping (1/sec)
+antisymmetric dynamics .
+Figure 54. Calculated damping of flight dynamic modes for tiltrotor in vertical descent (real part of eigenvalue, positive value unstable).
+0.0 0.2 0.4 0.6 0.8 1.0
+-1.8
+-1.6
+-1.4
+-1.2
+-1.0
+-0.8
+-0.6
+-0.4
+-0.2
+0.0
+Vx/vh
+Vz/vh
+VRS model
+all motion
+only vertical motion
+V-22 roll-off
+D6075 Vz drop
+D6075 Vz stabilization
+Figure 55. Calculated flight dynamics stability boundary for helicopter.
+0. 20. 40. 60. 80. 100.
+-1.0
+-0.8
+-0.6
+-0.4
+-0.2
+0.0
+time (sec)
+collective change (deg)
+vertical
+forward
+Figure 56. Helicopter VRS encounter: collective control change. Measurements from D6075 flight test (refs. 44, 46, 47).
+
+
+60
+0. 20. 40. 60. 80. 100.
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+Vz/vh
+VRS model
+baseline model
+measured
+0. 20. 40. 60. 80. 100.
+0.0
+0.5
+1.0
+Vx/vh
+0. 20. 40. 60. 80. 100.
+0.8
+0.9
+1.0
+1.1
+1.2
+time (sec)
+az (g)
+Figure 57. Helicopter VRS encounter: comparison of measured and calculated response; vertical case. Measurements from D6075 flight test (refs. 44, 46, 47).
+0. 20. 40. 60. 80. 100.
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+Vz/vh
+VRS model
+baseline model
+measured
+0. 20. 40. 60. 80. 100.
+0.0
+0.5
+1.0
+Vx/vh
+0. 20. 40. 60. 80. 100.
+0.8
+0.9
+1.0
+1.1
+1.2
+time (sec)
+az (g)
+Figure 58. Helicopter VRS encounter: comparison of measured and calculated response; forward case. Measurements from D6075 flight test (refs. 44, 46, 47).
+
+
+61
+0. 20. 40. 60. 80. 100.
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+Vz/vh
+! = 14 rev
+! = 10
+! = 18
+measured
+0. 20. 40. 60. 80. 100.
+0.0
+0.5
+1.0
+time (sec)
+Vx/vh
+Figure 59. Helicopter VRS encounter: influence of inflow time constant; vertical case.
+0. 20. 40. 60. 80. 100.
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+Vz/vh
+! = 14 rev
+! = 10
+! = 18
+measured
+0. 20. 40. 60. 80. 100.
+0.0
+0.5
+1.0
+time (sec)
+Vx/vh
+Figure 60. Helicopter VRS encounter: influence of inflow time constant; forward case.
+
+
+62
+0. 20. 40. 60. 80. 100.
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+Vz/vh
+(Vz+v)X = 1.25
+(Vz+v)X = 1.10
+(Vz+v)X = 1.40
+measured
+0. 20. 40. 60. 80. 100.
+0.0
+0.5
+1.0
+time (sec)
+Vx/vh
+Figure 61. Helicopter VRS encounter: influence of inflow peak value; vertical case.
+0. 20. 40. 60. 80. 100.
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+Vz/vh
+(Vz+v)X = 1.25
+(Vz+v)X = 1.10
+(Vz+v)X = 1.40
+measured
+0. 20. 40. 60. 80. 100.
+0.0
+0.5
+1.0
+time (sec)
+Vx/vh
+Figure 62. Helicopter VRS encounter: influence of inflow peak value; forward case.
+
+
+63
+0. 20. 40. 60. 80. 100.
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+Vz/vh
+target Vx = 5.9 m/sec
+target Vx = 5.7 m/sec
+target Vx = 6.4 m/sec
+measured
+0. 20. 40. 60. 80. 100.
+0.0
+0.5
+1.0
+time (sec)
+Vx/vh
+Figure 63. Helicopter VRS encounter: influence of autopilot target forward speed (forward case).
+0. 5. 10. 15. 20.
+-2.5
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+time (sec)
+collective change (deg)
+prescribed control
+Figure 65. Tiltrotor VRS encounter: prescribed collective control change.
+0. 20. 40. 60. 80. 100.
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+Vz/vh
+VRS model
+trecover = 55
+trecover = 60
+trecover = 65 measured
+0. 20. 40. 60. 80. 100.
+0.0
+0.5
+1.0
+Vx/vh
+0. 20. 40. 60. 80. 100.
+0.8
+0.9
+1.0
+1.1
+1.2
+time (sec)
+az (g)
+Figure 64. Helicopter VRS encounter: recovery by collective increase (vertical case).
+
+
+64
+0. 5. 10. 15. 20.
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+Vz/vh
+symmetric
+sideslip
+lateral cg offset
+0. 5. 10. 15. 20.
+0.0
+0.5
+1.0
+Vx/vh
+0. 5. 10. 15. 20.
+0.7
+0.8
+0.9
+1.0
+az (g)
+0. 5. 10. 15. 20.
+-0.4
+-0.2
+0.0
+0.2
+roll (deg)
+0. 5. 10. 15. 20.
+-1.
+0.
+1.
+2.
+3.
+4.
+time (sec)
+diff coll (deg)
+Figure 66. Tiltrotor VRS encounter: calculated symmetric response.
+0. 5. 10. 15. 20. 25.
+-2.0
+-1.5
+-1.0
+-0.5
+0.0
+Vz/vh
+asymmetric
+diff coll limit
+0. 5. 10. 15. 20. 25.
+0.0
+0.5
+1.0
+Vx/vh
+0. 5. 10. 15. 20. 25.
+0.7
+0.8
+0.9
+1.0
+az (g)
+0. 5. 10. 15. 20. 25.
+-10.
+0.
+10.
+20.
+30.
+40.
+roll (deg)
+0. 5. 10. 15. 20. 25.
+-1.
+0.
+1.
+2.
+3.
+4.
+time (sec)
+diff coll (deg)
+Figure 67. Tiltrotor VRS encounter: calculated asymmetric response.
+
+
+65
+
+
+Form Approved
+s burden, to Department of Defense,Washington HeadquartersServices, Highway, Suite 1204, Arlington, VA 22202-4302. Respondentsshould be aware Ity for failing to comply with a collection of information if it does not displaya
+Model for Vortex Ring State Influence on Rotorcraft Flight Dynamics
+6. AUTHORtS)
+I
+5a. CONTRACT NUMBER
+5b. GRANT NUMBER
+5c. PROGRAM ELEMENT NUMBER
+5d. PROJECT NUMBER
+5e. TASK NUMBER
+5f. WORK UNIT NUMBER
+21-065-40-10
+7. PERFORMING ORGANIZATION NAME(S) AND ADDRESS(ES)
+Arnes Research Center Moffett Field, CA 94035-1000
+I
+9. SPONSORlNGlMONlTORlNG AGENCY NAME@) AND ADDRESS(ES) 10. SPONSORINGIMONITOR’S ACRONYM(S)
+8. PERFORMING ORGANIZATION REPORT NUMBER
+A-050005
+National Aeronautics and Space Administration Washington, DC 20546-0001
+REPORT NUMBER
+NAS A/TP-2005-2 13477
+12. DlSTRlBUTION/AVAILABILITY STATEMENT
+Unclassified -Unlimited Distribution: Standard Subject Category: 02 Availability: CAS1(301) 621-0390
+Point of Contact: Wayne Johnson, Arnes Research Center, MS 243-12, Moffett Field, CA 94035-1000
+13. SUPPLEMENTARY NOTES
+(650) 604-2242
+14. ABSTRACT
+The influence of vortex ring state (VRS) on rotorcraft flight dynamics is investigated, specifically the vertical velocity drop of helicopters and the roll-off of tiltrotors encountering VRS. The available wind tunnel and flight test data for rotors in vortex ring state are reviewed. Test data for axial flow, nonaxial flow, two rotors, unsteadiness, and vortex ring state boundaries are described and discussed. Based on the available measured data, a VRS model is developed. The VRS model is a parametric extension of momentum theory for calculation of the mean inflow of a rotor, hence suitable for simple calculations and real-time simulations. This inflow model is primarily defined in terms of the stability boundary of the aircraft motion. Calculations of helicopter response during VRS encounter were performed, and good correlation is shown with the vertical velocity drop measured in flight tests. Calculationsof tiltrotor response during VRS encounter were performed, showing the roll-off behavior characteristic of tiltrotors.
+Standard Form 298 (Rev. 8-98) Prescribed by ANSI Std 239.18

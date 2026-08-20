@@ -1,0 +1,1923 @@
+alessandro cocco
+COMPREHENSIVE MID-FIDELITY SIMULATION ENVIRONMENT FOR AEROELASTIC STABILITY ANALYSIS OF TILTROTORS WITH PILOT-IN-THE-LOOP
+
+
+
+
+POLITECNICO DI MILANO
+School of Industrial and Information Engineering
+Department of Aerospace Science and Technology
+PhD Degree in Aeronautical Engineering
+COMPREHENSIVE MID-FIDELITY SIMULATION ENVIRONMENT FOR AEROELASTIC STABILITY ANALYSIS OF TILTROTORS WITH PILOT-IN-THE-LOOP
+ALESSANDRO COCCO
+940 751
+Supervisor: Prof. Pierangelo Masarati
+Co-Supervisor: Prof. Andrea Zanoni
+Tutor: Prof. Franco Bernelli Zazzera
+Academic Year 2021–2022 — Doctoral Cycle: XXXV
+
+
+Alessandro Cocco: Comprehensive mid-fidelity simulation environment for aeroelastic stability analysis of tiltrotors with pilot-in-the-loop , © Novem
+ber 2022
+
+
+Dare to dream impossible thing, then wake up and start working on them. — Paolo Nespoli
+Dedicated to my family that supports me in my studies
+
+
+
+
+ABSTRACT
+Tiltrotor aircraft are challenging machines to design considering the various operating conditions and multipurpose missions that are expected to be performed by this complex type of aircraft. This machine combines the characteristic of a conventional turboprop aircraft with the vertical take-off and landing (VTOL) capability of a helicopter. In the past, some catastrophic accidents involved tiltrotors, which were caused by a combination of factors: complex three-dimensional unsteady aerodynamic flow field, structural loads, aeroelastic instabilities, and pilot control inputs. Therefore, the development of a comprehensive tool capable of capturing the combination of all these phenomena is of paramount importance for designing faster, lighter, and safer tiltrotors. The main objective of this work is to develop, validate, and evaluate the limits of aeroelastic and aeromechanical stability of a tiltrotor aircraft using a comprehensive approach in mid-fidelity. Thanks to a large amount of freely available data, the Bell XV-15 tiltrotor equipped with Advanced Technology Blades (ATB) is chosen as a representative model; however, due to the modularity and parameterization of the model, other innovative rotary-wing configurations could be studied with the proposed approach. The model is built using a co-simulation approach based on the coupling between a mid-fidelity aerodynamic solver based on the vortex particle method for wake modeling, DUST, and the multibody dynamics code, MBDyn. This coupling is managed through the partitioned multiphysics coupling library preCICE. In the first part of the work, the coupled tool is presented and validated by solving simple fixed-wing and rotary-wing problems from the open literature. In the second part, the multibody and aerodynamic modeling of each subcomponent, using the open-source software MBDyn and DUST, is illustrated and validated considering experimental and numerical results. Each subcomponent is extensively validated against the available results and, starting from these, they are extended to enable the validation with other analytical tools. Globally, a good correlation is reached in the dynamics analyses for the whole system. In particular, the coupled model shows great advantages in terms of computational time and accuracy concerning high-fidelity tools when used to estimate hover performance. A time-marching trim procedure is also proposed, and optimal longitudinal control of the tiltrotor is presented and validated to maintain altitude.
+vii
+
+
+A detailed multibody biomechanical model of the upper body of a generic pilot is presented. It is made up of connecting a previously developed detailed model of the arms to a similarly detailed model of the spine. The entire model can be adapted to a specific subject identified by age, sex, weight, and height. The spine model and the scaling procedure are validated using experimental results for seat-to-head transmissibility. The coupled spine-arms model is used to evaluate the biodynamic response in terms of involuntary motion induced in the control inceptors, including related non-linearities. Finally, the tiltrotor and pilot models are combined into a single comprehensive model in which the whirl flutter aeroelastic stability is investigated over the entire flight envelope, and the responses to discrete gusts were used to evaluate the effect of the pilot biomechanics and interactional aerodynamics. The results show that including an unsteady aerodynamic model is of paramount importance, especially when dealing with flight dynamics modes. This model enables a wide spectrum of different analyses: for example, this model will be used to study passenger comfort, and performance in transient maneuvers such as conversion and pull-up, aeroelastic stability, pilot-induced-oscillation, and pilot-augmentedoscillation phenomena. The coupled multibody-mid-fidelity tool can be used for performing the large number of aeroelastic analyses required in the preliminary design phase of innovative rotary-wing configurations, not only in the rotorcraft field but also in other domains, from wind energy to micro-aerial vehicles. Keywords: aeroelasticity; fluid-structure interaction; rotary-wing aerodynamics; multibody dynamics; tiltrotor; computational fluid dynamics; vortex particle method; pilot-biomechanis; pilot-augmented-oscillation; whirl flutter; gust response;
+viii
+
+
+SOMMARIO
+I convertiplani sono macchine impegnative da progettare considerando le varie condizioni operative e le missioni polivalenti che dovrebbero essere eseguite da questo complesso tipo di velivolo. Questa macchina combina le caratteristiche di un velivolo a turboelica convenzionale con la capacità di decollo e atterraggio verticale di un elicottero. In passato, alcuni incidenti catastrofici hanno coinvolto i convertiplani, causati da una combinazione di fattori: campo di flusso aerodinamico instabile tridimensionale, carichi strutturali, instabilità aeroelastiche e input di controllo del pilota. Pertanto, lo sviluppo di uno strumento completo in grado di catturare la combinazione di tutti questi fenomeni è di fondamentale importanza per progettare convertiplani più veloci, leggeri e sicuri. L’obiettivo principale di questo lavoro è quello di sviluppare, convalidare e valutare i limiti di stabilità aeroelastica e aeromeccanica di un velivolo convertiplano utilizzando un approccio globale a media fedeltà. Grazie alla grande quantità di dati liberamente disponibili, il convertiplano Bell XV-15 dotato di Advanced Technology Blades (ATB) viene scelto come modello rappresentativo; tuttavia, data la modularità e la parametrizzazione del modello, potrebbero essere studiate altre configurazioni innovative ad ala rotante con l’approccio proposto. Il modello è costruito utilizzando un approccio di co-simulazione basato sull’accoppiamento tra un risolutore aerodinamico di media fedeltà basato sul metodo delle particelle vorticose per la modellazione della scia, DUST e la dinamica multicorpo codice MBDyn. Questo accoppiamento è gestito attraverso la libreria di accoppiamento multifisico preCICE. Nella prima parte del lavoro, lo strumento accoppiato viene presentato e validato risolvendo semplici problemi ad ala fissa e ad ala rotante presenti in letteratura. Nella seconda parte, viene illustrata e validata la modellazione multicorpo e aerodinamica di ciascun sottocomponente, utilizzando il software open-source MBDyn e DUST, considerando i risultati sperimentali e numerici. Ogni sottocomponente è ampiamente validato rispetto ai risultati disponibili e, a partire da questi, vengono estesi per consentire la validazione con altri strumenti analitici. A livello globale, si raggiunge una buona correlazione nelle analisi dinamiche per l’intero sistema. In particolare, il modello accoppiato mostra grandi vantaggi in termini di tempo computazionale e accuratezza rispetto agli strumenti ad alta fedeltà quando utilizzato per stimare le prestazioni di volo stazionario. Viene inoltre proposta una procedura per l’ottenimento dell’assetto mediante una simulazione integrata nel tempo e viene presentato e
+ix
+
+
+convalidato il controllo longitudinale ottimale del convertiplano per mantenere l’altitudine. Da ultimo, viene presentato un modello biomeccanico multicorpo dettagliato della parte superiore del corpo di un pilota generico. Consiste nel collegare un modello dettagliato delle braccia sviluppato in precedenza a un modello altrettanto dettagliato della colonna vertebrale. L’intero modello può essere adattato a un soggetto specifico individuato per età, sesso, peso e altezza. Il modello della colonna vertebrale e la procedura di ridimensionamento sono convalidati utilizzando risultati sperimentali per la trasmissibilità sedile-testa. Il modello accoppiato colonna vertebrale-braccia viene utilizzato per valutare la risposta biodinamica in termini di movimento involontario indotto negli incettori di controllo, comprese le relative non linearità. Infine, i modelli del convertiplano e del pilota sono combinati in un unico modello completo in cui la stabilità aeroelastica a whirl-flutter viene studiata sull’intero inviluppo di volo e le risposte a raffiche discrete sono state utilizzate per valutare l’effetto della biomeccanica del pilota e dell’aerodinamica interazionale. I risultati mostrano che l’inclusione di un modello aerodinamico instabile è di fondamentale importanza, specialmente quando si ha a che fare con le modalità dinamiche di volo. Questo modello consente un ampio spettro di analisi diverse: ad esempio, questo modello verrà utilizzato per studiare il comfort dei passeggeri e le prestazioni in manovre transitorie come la conversione e il pull-up, la stabilità aeroelastica, l’oscillazione indotta dal pilota e l’aumento del pilota fenomeni di oscillazione. Lo strumento accoppiato multibody-mid-fidelity può essere utilizzato per eseguire il gran numero di analisi aeroelastiche richieste nella fase di progettazione preliminare di configurazioni innovative ad ala rotante, non solo nel campo degli elicotteri ma anche in altri domini, dall’energia eolica alla micro-veicoli aerei. Parole chiave: aeroelasticità; interazione fluido-struttura; aerodinamica ad ala rotante; dinamica multicorpo; convertiplano; fluidodinamica computazionale; metodo delle particelle vorticose; biomeccanica del pilota; oscillazione pilota aumentata; whirl-flutter; risposta a raffica;
+x
+
+
+P U B L I C AT I O N S
+During the my PhD, I co-authored the following publications:
+[
+1] Gianni Cassoni, Alessandro Cocco, Aykut Tamer, Andrea Zanoni, Pierangelo Masarati, et al. “Tiltrotor Whirl-Flutter Stability Investigation Using Lyapunov Characteristic Exponents and Multibody Dynamics.” In: 48th European Rotorcraft Forum (ERF 2022).
+2022, pp. 1–6.
+[
+2] A Cocco, S Mazzetti, S van’t Hoff, B Timmerman, P Masarati, et al. “Aeroelastic Simulation for Stability Analysis of a Tiltrotor Semi-Span Model.” In: 26th Conference of the Italian Association of Aeronautics and Astronautics (AIDAA 2021). 2021, pp. 1
+7.
+[
+3] A Cocco, A Savino, and P Masarati. “Flexible Multibody Model of a Complete Tiltrotor for Aeroservoelastic Analysis.” In: ASME 2022 International Design Engineering Technical Conferences and Computers and Information in Engineering Conference (IDETC/CIE 2022). 2022, pp. 1–10.
+[
+4] A Cocco, A Savino, D Montagnani, M Tugnoli, F Guerroni, M Palazzi, A Zanoni, A Zanotti, and V Muscarello. “Simulation of Tiltrotor Maneuvers by a Coupled Multibody-Mid Fidelity Aerodynamic Solver.” In: 46th European Rotorcraft Forum (ERF
+2020). 2020, pp. 1–8.
+[
+5] Alessandro Cocco, Pierangelo Masarati, Stefan van’t Hoff, Bart Timmerman, et al. “Tiltrotor Whirl Flutter Analysis in Support of NGCTR Aeroelastic Wind Tunnel Model Design.” In: 47th European Rotorcraft Forum (ERF 2021). 2021, pp. 1–9.
+[
+6] Alessandro Cocco, Stefano Mazzetti, Pierangelo Masarati, Stefan van’t Hoff, and Bart Timmerman. “Numerical Whirl–Flutter analysis of a tiltrotor semi-span wind tunnel model.” In: CEAS Aeronautical Journal (2022), pp. 1–16. issn: 1869-5582. doi: 10.
+1007/s13272-022-00605-2.
+[
+7] Alessandro Cocco, Alberto Savino, Andrea Zanoni, Pierangelo Masarati, et al. “Comprehensive simulation of a complete tiltrotor with pilot-in-the-loop for whirl-flutter stability analysis.” In: 48th European Rotorcraft Forum (ERF 2022). 2022, pp. 1–11.
+[
+8] Alessandro Cocco, Alberto Savino, Alex Zanotti, Andrea Zanoni, Pierangelo Masarati, and Vincenzo Muscarello. “Coupled multibodymid fidelity aerodynamic solver for tiltrotor aeroelastic simulation.” In: 9th International Conference on Computational Methods
+xi
+
+
+for Coupled Problems in Science and Engineering, Coupled Problems 2021. CIMNE. 2021, pp. 1–12.
+[
+9] Alessandro Cocco, Andrea Zanoni, Vincenzo Muscarello, and Pierangelo Masarati. “Effects of Flight Controls and Cockpit Layout Design in Rotorcraft-Pilot Couplings: A Computational Approach.” In: International Design Engineering Technical Conferences and Computers and Information in Engineering Conference. Vol. 83914. American Society of Mechanical Engineers. 2020, V
+002T02A032.
+[
+10] Federico Guerroni, Alessandro Cocco, Andrea Zanoni, and Pierangelo Masarati. “Uncertainty Quantification of Tiltrotor Whirl Flutter Aeroelastic Stability from Multibody Analysis.” In: 46th European Rotorcraft Forum (ERF 2020). 2020, pp. 1–13.
+[
+11] D Marchesoli, P Garbo, A Cocco, and A Zanoni. “The Role of the Short-Range Stiffness in Pilot Biodynamic Response Characterization.” In: 26th Conference of the Italian Association of Aeronautics and Astronautics (AIDAA 2021). 2021, pp. 1–6.
+[
+12] A Savino, A Cocco, A Zanoni, A De Gaspari, A Zanotti, J Cardoso, D Carvalhais, V Muscarello, et al. “Design and Optimization of Innovative Tiltrotor Wing Control Surfaces Through Coupled Multibody-Mid-Fidelity Aerodynamics Simulations.” In: 78th International Annual Forum Vertical Flight Society. 2022, pp. 1–15.
+[
+13] Alberto Savino, Alessandro Cocco, Andrea Zanoni, Alex Zanotti, and Vincenzo Muscarello. “A Coupled Multibody-Mid Fidelity Aerodynamic Tool for the Simulation of Tiltrotor Manoeuvres.” In: 47th European Rotorcraft Forum (ERF 2021). 2021, pp. 1–9.
+[
+14] Alberto Savino, Alessandro Cocco, Alex Zanotti, Vincenzo Muscarello, et al. “Numerical investigation of wing-propeller aerodynamic interaction through a vortex particle-based aerodynamic solver.” In: 48th European Rotorcraft Forum (ERF 2022).
+2022, pp. 1–9.
+[
+15] Alberto Savino, Alessandro Cocco, Alex Zanotti, Matteo Tugnoli, Pierangelo Masarati, and Vincenzo Muscarello. “Coupling Mid-Fidelity Aerodynamics and Multibody Dynamics for the Aeroelastic Analysis of Rotary-Wing Vehicles.” In: Energies 14.21 (
+2021), p. 6979.
+[
+16] A Tamer, A Zanoni, A Cocco, and P Masarati. “Visual Performance Evaluation Of Helicopter Pilots In Vibrating Cockpit.” In: ASME 2019 International Design Engineering Technical Conferences and Computers and Information in Engineering Conference (IDETC/CIE 2019). 2019, pp. 1–11.
+xii
+
+
+[17] Aykut Tamer, Andrea Zanoni, Alessandro Cocco, and Pierangelo Masarati. “Generalized Measure of Vibration Exposure for He
+licopter Pilots.” In: 45th European Rotorcraft Forum, Warsaw, Poland, 17-20 September, 2019. 2019.
+[
+18] Aykut Tamer, Andrea Zanoni, Alessandro Cocco, and Pierangelo Masarati. “A generalized index for the assessment of helicopter pilot vibration exposure.” In: Vibration 4.1 (2021), pp. 133–150.
+[
+19] Aykut Tamer, Andrea Zanoni, Alessandro Cocco, and Pierangelo Masarati. “A numerical study of vibration-induced instrument reading capability degradation in helicopter pilots.” In: CEAS Aeronautical Journal 12.2 (2021), pp. 427–440.
+[
+20] Aykut Tamer, Andrea Zanoni, Vincenzo Muscarello, Alessandro Cocco, Giuseppe Quaranta, and Pierangelo Masarati. “Biodynamic modeling techniques for rotorcraft comfort evaluation.” In: Aerotecnica Missili & Spazio 98.2 (2019), pp. 147–158.
+[
+21] Andrea Zanoni, Alessandro Cocco, and Pierangelo Masarati. “Multibody dynamics analysis of the human upper body for rotorcraft–pilot interaction.” In: Nonlinear Dynamics 102.3 (2020),
+pp. 1517–1539.
+[
+22] Andrea Zanoni, Alessandro Cocco, and Pierangelo Masarati. “Numerical Investigation on the Role of Control Inceptors Layout in Rotorcraft-Pilot Couplings.” In: 77th International Annual Forum Vertical Flight Society. 2021, pp. 1–12.
+xiii
+
+
+
+
+ACKNOWLEDGEMENTS
+I would like to thank my supervisor Prof. P. Masarati who gave me the opportunity to develop this work and let me participate to many publications and international projects. My thanks extend to staff and colleagues in the Dept. of Aerospace Science and Technology at Politecnico di Milano for countless discussions fueling my research, especially Prof. Quaranta, Prof. Zanotti, Prof. Muscarello, and Prof. Zanoni. A special thanks goes to my office colleagues Alberto Savino and Andrea Colli without their help and support this work would not come out like this. Moreover I am grateful to the Master students that I had the privilege to supervise during my PhD: Federico Guerroni, Angela Buccio and Stefano Mazzetti. This dissertation has been founded by the Clean Sky 2—H2020 Framework Program, under grant agreement N. 885 971 (the FORMOSA project) and under grant agreement N. 863 418 (the ATTILA project). In particular, I have to thank Stefan van ’t Hoff, Raffaele Frajese and Juan Montano Oliveros for their support and patience on developing and debugging the multibody model. A deep thank goes to my family who supported my studies and my choices. I am grateful my amazing flatmates Riccardo, Claudio and Michel, and all the guys that I met in Pareto, Salvatore and Gabriele in particular. Finally, the deepest gratitude goes to all my friend from my home town Dosson and from Milan.
+xv
+
+
+
+
+CONTENTS
+i software tools 1
+1 introduction and thesis outline 3
+1.1 Tiltrotor History and Wind Tunnel Test Campaigns 3 1.2 Introduction to Whirl Flutter Phenomenon 7 1.2.1 2-DOF model 7 1.3 Impact of Technology 11 1.3.1 Rotor 11 1.3.2 Wing 16 1.3.3 Additional Considerations 17 1.4 Tiltrotor-Rotor Pilot Couplings 18 1.5 Thesis objective and outline 21
+2 software tools used/developed 25
+2.1 MBDyn 27 2.2 DUST 30 2.2.1 Helmholtz’s decomposition 31 2.2.2 Potential velocity: Morino Formulation 32 2.2.3 Vortex Lattice 41 2.2.4 Lifting Lines 42 2.2.5 Non-linear Vortex Lattice 44 2.2.6 Coupled governing equations 46 2.2.7 Wake shedding 46 2.2.8 Rotational Velocity 47 2.2.9 Vortex particle method: dynamical equations 50 2.2.10 Generation of the vortex particles 52 2.3 Implementation of the co-simulation scheme between MBDyn and DUST 54 2.3.1 Theorical background 54 2.3.2 Implementation 59 2.3.3 Hinged surfaces modeling 59
+3 general validation and verification 63
+3.1 Introduction 63 3.2 DUST-MBDyn coupling: Goland wing 63 3.3 Non-linear vortex lattice 67 3.3.1 Finite Wing 67 3.3.2 Propeller 68 3.3.3 Rotor 70
+ii numerical model and results 77
+4 aeroelastic rotor model 79
+4.1 Introduction 79 4.2 Rotor Control chain 79 4.3 Blade-Yoke stick model 83
+xvii
+
+
+xviii contents
+4.3.1 CAMRAD-JA input data 84 4.3.2 MBDyn-DUST input data 86 4.3.3 Transformation from CAMRAD-JA to E50 format 87 4.3.4 MBDyn beam modeling 89 4.3.5 Aerodynamic modeling 92 4.3.6 Clockwise rotor 94 4.4 Drive System 95 4.5 Rotor dynamics 95 4.5.1 Rotor Campbell diagrams 95 4.5.2 Rotor mode shape 96 4.6 Rotor aeroelastic analysis 99 4.6.1 Hover condition 100 4.6.2 Airplane Mode 107
+5 fixed airframe model 117
+5.1 Introduction 117 5.2 Fixed airframe model 117 5.2.1 Structural model 117 5.2.2 Aerodynamic model 122 5.3 Trim problem of the full aircraft 124 5.3.1 Aircraft Trim 124 5.3.2 Autopilot 125 5.3.3 Control performances 128
+6 pilot biomechanical model 133
+6.1 Introduction 133 6.2 Human Spine Biomechanical Models 134 6.2.1 Lumped Parameter Models 134 6.2.2 Finite Element Models 135 6.2.3 Multibody Models 137 6.3 Upper Body model 138 6.3.1 Torso model 138 6.3.2 Upper limbs model 141 6.3.3 Seat Model 142 6.3.4 Model Parametrization 144 6.4 Solution strategies 147 6.4.1 Inverse Kinematics 148 6.4.2 Upper limbs inverse dynamics and muscular activations 149 6.4.3 Direct Dynamics 152 6.4.4 ROM Extraction 152 6.5 Comparison with Experimental Results 153 6.5.1 Biodynamic Feedthrough 156
+7 comprehensive stability analysis 165
+7.1 Introduction 165 7.2 Identification Techniques 166
+
+
+contents xix
+7.2.1 Linear Time Invariant (LTI) systems time-domain identification methods 166 7.2.2 Matrix Pencil Estimation method 167 7.3 Tiltrotor frequency response function 170 7.3.1 Stabilization diagrams 173 7.4 Whirl-flutter stability analysis 175 7.4.1 Data selection and algorithm application 176 7.4.2 Whirl flutter results 178 7.5 High speed gust response 179 7.5.1 Pilot’s Response 184 7.5.2 Internal moments: time history and frequency response 188
+8 conclusions and further developments 191
+iii appendix 195
+a aerodynamic influence coefficient 197
+a.1 Point sources 197 a.2 Point doublets 197 a.3 Surface doublets 198 a.3.1 Surface doublets: kinetic potential, D 198 a.4 Line vortices 199 a.5 Surface sources 199 a.5.1 Surface sources: kinetic potential, S 199
+b xv-15 rotor data 201
+c xv-15 airframe data 205
+d pilot’s model data 207
+d.1 Scaling Interpolation functions 207 d.2 Cockpit data 207
+bibliography 211
+
+
+LIST OF FIGURES
+Figure 1 Transcendental Model 1-G and Bell XV-3 4 Figure 2 Bell XV-15 and Bell-Boeing V-22 4 Figure 3 Bell V-280 Valor and Leonardo AW609 4 Figure 4 WRATS models 6 Figure 5 ERICA and ADYN 6 Figure 6 TRAST and ATTILA models 7 Figure 7 2-dof Proprotor Model [164] 8 Figure 8 Proprotor Natural Vibration Modes [164] 8 Figure 9 Effects of Parameters on 2-dof Whirl Flutter Model [164] 9 Figure 10 4-dof Proprotor Model [100] 10 Figure 11 Proprotor - Cantilever Wing Model [86] 10 Figure 12 Pitch-Flap Coupling [6] 13 Figure 13 Precone Effect [139] 13 Figure 14 Torsion about Inboard Sections due to Lag Motion [139] 14 Figure 15 V-22 Blade Modifications - Sweep and Tip Mass Offset [6] 15 Figure 16 Drive-train Effect [6] 17 Figure 17 Aircraft-Pilot control loop 19 Figure 18 Frequency placement of the helicopter modes and the pilot biomechanical modes 20 Figure 19 DUST user workflow 30 Figure 20 Control cube across the wake 36 Figure 21 Lifting line angles 43 Figure 22 Vortex radius behavior for a rotating propeller 50 Figure 23 Schematics of an example of conversion from panels to particles 54 Figure 24 Scheme of the communication managed through adapters for MBDyn and DUST. 55 Figure 25 DUST component reference system 57 Figure 26 Scheme for motion interpolation (left) and force and moment transfer (right). Structural points are represented by red dots. Nodes of the aerodynamic mesh and panels centers are represented with plain dot and crosses, respectively. 58 Figure 27 Flowchart of the implicit communication managed by preCICE between DUST and MBDyn [
+38]. 60
+Figure 28 Scheme of the two-dimensional hinged surface configuration 61
+xx
+
+
+List of Figures xxi
+Figure 29 Hinge reference system for a swept wing. 62 Figure 30 Control surface deflection for a deformable wing. 62 Figure 31 Goland Wing in flutter: DUST wake visualization 63 Figure 32 Goland’s wing model layout 64 Figure 33 Time history of the Goland wing-tip deflection evaluated with surface panels aerodynamic mesh at three different wind speeds. 66 Figure 34 Frequency f and damping ratio ξ of the first torsional modes vs speed U∞ for Goland’s wing 67 Figure 35 ATB rotor control chain displacement and rotation 68 Figure 36 Comparison of the propeller thrust coefficient as a function of angular velocity for different free-stream Mach number. 69 Figure 37 Visualization of the flow field computed by DUST around the complete WIPP model: Qcriterion iso-surface colored by the non-dimensional free-stream velocity component and contours of pressure coefficient on the model surface
+M∞=0.11, CT =0.4, AoA=0◦ 69
+Figure 38 omparison of the aerodynamic performances for the XV-15 proprotor in hover 71 Figure 39 Wake visualization of the XV-15 proprotor in hover by means of isosurfaces of the Q-criterion computed by DUST colored by Mach number. 72 Figure 40 Comparison of the aerodynamic performances for the XV-15 proprotor in forward flight 73 Figure 41 Wake visualization of the XV-15 proprotor in advanced flight at 5◦ collective, and α =5◦ by means of iso-surfaces of Q-criterion computed by DUST colored by Mach number. 73 Figure 42 Comparison of the aerodynamic performances for the XV-15 proprotor in airplane mode flight. 74 Figure 43 Wake visualization of the XV-15 proprotor in airplane mode by means of isosurfaces of Qcriterion computed by DUST colored by Mach number. 75 Figure 44 Layout of the XV-15 proprotor control chain 80 Figure 45 Layout of the XV-15 proprotor control chain: top view 80 Figure 46 Flowchart of the MBDyn model of the XV-15 proprotor, particularly showing the individual blade pitch control system components and their connections for the dual control path. 81
+
+
+xxii List of Figures
+Figure 47 ATB rotor control chain displacement and rotation 83 Figure 48 Structural data: dotted lines correspond to the beam evaluation section, red dot corresponds to the pitch-bearing location 85 Figure 49 blade principal axis definition 88 Figure 50 ATB blade aerodynamic mesh: deformed and undeformed view 93 Figure 51 Blade airfoil aerodynamic coefficients: CL, CD and CM for the 4 different profiles 93 Figure 52 Symmetric check: clamped blade deformation. Dots: left blade, lines: right blade 94 Figure 53 Flowchart of the MBDyn model of the XV-15 drive system 95 Figure 54 Rotor Campbell diagram in vacuum at collective pitch of 12◦ 96 Figure 55 Rotor Campbell diagram in vacuum at collective pitch of 40◦ 97 Figure 56 Collective modes at 100% RPM 98 Figure 57 Collective modes at 100% RPM Lag Flap 99 Figure 58 Collective modes at 100% RPM Lag Flap 99 Figure 59 ATB rotor hover performances 101 Figure 60 Hub moments vs CT /σ 101 Figure 61 Blade 0.1R moments vs CT /σ 102 Figure 62 Lag deformation 102 Figure 63 Flap deformation 103 Figure 64 Pitch deformation 103 Figure 65 Imposed collective angle θ0 vs measured θ075 104 Figure 66 Chordwise bending moment along the blade 104 Figure 67 Flapwise bending moment along the blade 104 Figure 68 Torsional moment along the blade 105 Figure 69 Lift coefficients (CL) along the blade 105 Figure 70 Angle of attack (α) along the blade 106 Figure 71 Wake velocity measurements of the DUST-MBDyn model: comparison with experimental results 106 Figure 72 Hover wake visualization by means of a q-criterion (Q=500) vorticity iso-surfaces, colored by local Mach value, for a collective angle of θ0 =
+12◦ 107
+Figure 73 Trim results in airplane mode 108 Figure 74 Thrust-Collective vs U∞: MBDyn vs DUST-MBDyn 109 Figure 75 Loads sharing: power on vs power off 110 Figure 76 Loads sharing: MBDyn vs DUST-MBDyn 110
+Figure 77 U∞ = 160 knts (82.3 m/2nd) 111
+Figure 78 U∞ = 300 knts (154.3 m/2nd) 111
+Figure 79 U∞ = 400 knts (205.8 m/2nd) 112
+
+
+List of Figures xxiii
+Figure 80 Eigenmodes comparison in AP mode: power on vs power off 113 Figure 81 Eigenmodes comparison in power on: AP mode vs HP mode 113 Figure 82 Eigenmodes comparison in AP mode and power on: flexibility effect 114 Figure 83 Eigenmodes comparison in AP mode and power off: flexibility effect 114 Figure 84 Eigenmodes comparison in HP mode and power on: flexibility effect 115 Figure 85 Eigenmodes comparison in HP mode and power off: flexibility effect 115 Figure 86 XV-15 MBDyn-DUST airframe during a roll maneuver 117 Figure 87 XV-15 stick model 119 Figure 88 Airframe: bending modes 119 Figure 89 Airframe: chord modes 120 Figure 90 Airframe: torsion modes 120 Figure 91 Hub modal displacement: bending modes 120 Figure 92 Hub modal displacement: chord modes 121 Figure 93 Hub modal displacement: torsion modes 121 Figure 94 Airframe modes frequency vs nacelle conversion angle 121 Figure 95 XV-15 aerodynamic mesh of the refined model 123 Figure 96 Wing-Nacelle lift coefficient: comparison between the wind tunnel data of Fergurson [61] and the surface panel and vortex lattice DUST mesh. 123 Figure 97 Static trim results 125 Figure 98 Tiltrotor autopilot loop 127 Figure 99 Rigid tiltrotor longitudinal dynamics: Bode frequency response 127 Figure 100 Gust response, SAS effect: control input-output 129 Figure 101 Gust response, SAS effect: pitch angle and rate 129 Figure 102 Gust response, SAS effect: accelerations and bending moment 129 Figure 103 Gust response, gradient effect: control inputoutput 129 Figure 104 Gust response gradient effect: pitch angle and rate 130 Figure 105 Gust response gradient effect: accelerations and bending moment 130 Figure 106 Short period airframe mode 131 Figure 107 Tiltrotor short period mode 131 Figure 108 Tiltrotor bending mode excited by a discrete gust 132
+
+
+xxiv List of Figures
+Figure 109 Lumped parameters models: (a, b) are the 4DOF12−6 and 4DOF14−9 of Ref. [16]; (c) is the model of Refs. [2, 197]; (d) is that of Refs. [29, 57]. The model elements can be generally associated with the structures of head and neck, upper torso, viscerae, and lower torso; however, in some cases they do not have a strict physical meaning, and therefore cannot be associated with specific anatomical structures. 136 Figure 110 Finite element spine model proposed in [186]. 137 Figure 111 Upper body multibody model. 139 Figure 112 Algebraic and deformable constraints connecting vertebrae nodes, indicated with V, and viscerae nodes, indicated with S. 139 Figure 113 Each node related to a vertebral section is located in the center of the corresponding vertebra’s body, with axis zi along the local tangent to the spine axis curve and axis yi pointing laterally. 140 Figure 114 Seat constraint model: the seat is connected to the rotorcraft floor trough a viscoelastic suspension of stiffness Ks and damping Cs. The elastic coefficients Kc and Kb of the cushion and the backrest can be easily found differentiating the internal force expression of eq. (200). Damping coefficients Cc and Cb are proportional to the stiffness coefficients. 143 Figure 115 Trim spring stiffness nonlinear behavior 144 Figure 116 Example of the generated ribcage geometry from the landmarks point cloud, using the model proposed by Shi et al. [175]. The spheres are located the locations predicted by the statistical ribcage model. Interpolating surfaces have been added for clarity, but are not used in the multibody model generation. 145 Figure 117 Inverse kinematics simulation of the spine for a backrest reclined by 10◦. 150 Figure 118 Comparison between the experimental apparent mass from [189] and the one resulting from the MBD 153 Figure 119 Seat to head transmissibility (STHT) in all directions: comparison with experimental results of Mandapuram [110] and numerical results from Valentini [196]. 154 Figure 120 BDFT of the pilot: comparison of upper limb and upper body model transmissibility. 157
+
+
+List of Figures xxv
+Figure 121 Phase diagrams and time history of the collective and cyclic rotation response to heave acceleration input applied to the cockpit floor, at
+different excitation magnitude a, in m/2nd2. 158 Figure 122 Muscular activations on the left arm for cockpit floor vertical acceleration of 0.3 g, 0.6 g and 0.9 g at a frequency of 2 Hz. 159 Figure 123 Muscular activations on the right arm for cockpit floor vertical acceleration of 0.3 g, 0.6 g and 0.9 g at a frequency of 2 Hz. 160 Figure 124 Intervertebral moments around the medial axis for cockpit floor vertical acceleration of 0.3 g, 0.6 g and 0.9 g at a frequency of 2 Hz. 161 Figure 125 Trajectory of the cyclic command inceptor’s grip 162 Figure 126 XV-15 MBDyn-DUST wake visualization 165 Figure 127 Wing torsional moment time response 171 Figure 128 Wing flapwise bending moment time response 171 Figure 129 Wing chordwise bending moment time response 171 Figure 130 Wing torsional moment transfer function 172 Figure 131 Wing flapwise bending moment transfer function 172 Figure 132 Wing chordwise bending moment transfer function 172 Figure 133 Wing stabilization diagram 174 Figure 134 Drive-system intershaft transfer function 174 Figure 135 Flapwise bending response 177 Figure 136 Symmetric bending stabilization diagram and clustering 178 Figure 137 Power ON, AP mode, Downstop ON: frequency diagram 180 Figure 138 Power ON, AP mode, Downstop ON: damping diagram 180 Figure 139 Power OFF, AP mode, Downstop ON: frequency diagram 180 Figure 140 Power OFF, AP mode, Downstop ON: damping diagram 180 Figure 141 Power ON, HP mode, Downstop ON: frequency diagram 181 Figure 142 Power ON, HP mode, Downstop ON: damping diagram 181 Figure 143 Power OFF, HP mode, Downstop ON: frequency diagram 181 Figure 144 Power OFF, HP mode, Downstop ON: damping diagram 181 Figure 145 Power ON, HP mode, Downstop OFF: frequency diagram 182
+
+
+Figure 146 Power-ON, HP mode, Downstop OFF: damping diagram 182 Figure 147 Power OFF, HP mode, Downstop OFF: frequency diagram 182 Figure 148 Power-OFF, HP mode, Downstop OFF: damping diagram 182 Figure 149 Configuration 2 (Power OFF, AP mode, Downstop ON): phase diagram 183 Figure 150 Pilot-in-the-loop communication scheme 184 Figure 151 Simplified DUST-MBDyn model: wake evolution 185 Figure 152 Cockpit global time history 185 Figure 153 Elevator rotations composition 186 Figure 154 Control inceptors rotation time responses 187 Figure 155 Longitudinal cyclic phase diagram 188 Figure 156 Lateral cyclic phase diagram 188 Figure 157 Collective phase diagram 189 Figure 158 Wing torsional moment 190 Figure 159 Wing flapwise bending moment 190 Figure 160 Wing chordwise bending moment 190 Figure 161 Definition of the quantities for the computation of the surface singularity AICs. 198
+LIST OF TABLES
+Table 1 Summary of DUST available components and their characteristics 30 Table 2 Goland wing properties and flight conditions [146]. 64 Table 3 Comparison of the first four natural frequencies computed for the Goland wing [71]. 65 Table 4 Comparison of flutter speed and frequency computed for Goland wing. 66 Table 5 XV-15 metallic blade rotor: main data 70 Table 6 XV-15 metallic blade rotor: profiles 71 Table 7 XV-15 main rotor data [31]. 83 Table 8 XV-15 ATB Blade airfoil distribution [31]. 92 Table 9 Errors between left and right rotor in hover 94 Table 10 Drive system modes frequency (Hz) comparison 95
+xxvi
+
+
+List of Tables xxvii
+Table 11 Frequency (Hz) comparison in non-rotating frame of the first 4 rotor modes in vacuum at 12◦ collective in HP mode: β0, β−, β+ are the collective, regressive and progressive mode respectively 97 Table 12 Frequency (Hz) comparison in non-rotating frame of the first 4 rotor modes in vacuum at 40◦ collective in AP mode: β0, β−, β+ are the collective, regressive and progressive mode respectively 97 Table 13 Airframe modes frequency [Hz] comparison 119 Table 14 Geometric characteristics of the XV-15 [108]. 122 Table 15 Pros and cons of the three types of spine mod
+els 138
+Table 16 Anthropometric parameters used to validate the scaling procedure 155 Table 17 Resonance frequency, amplitude and damping factor for the models with and without the spine.
+156
+Table 18 Whirl flutter test matrix 175 Table 19 Flutter velocities (in Knts) for each modes obtained by polynomial extrapolation 178 Table 20 Simulation parameters 183 Table 21 XV-15 ATB blade main rotor data 201 Table 22 XV-15 ATB blade inertial data in E50 format: Z-axis goes from tip to root, X-axis from the leading edge to the trailing edge. 202 Table 23 XV-15 blade stiffness data: Z-axis goes from tip to root, X-axis from the leading edge to the trailing edge. 203 Table 24 XV-15 Blade Aerodynamic center location 204 Table 25 Wing main parameters 205 Table 26 XV-15 wing inertial data in E50 format 205 Table 27 XV-15 wing stiffness data in E50 format 206 Table 28 XV-15 Rigid body inertial data in global reference frame 206 Table 29 Optimal control parameters used for the coupled model 206 Table 30 Cockpit configuration parameters. Moment of inertia of the control sticks are referred to the pivot axis. Pivot positions are referred to the pilot seat center, with the X axis pointing forward, the Y axis pointing laterally towards the left and the Z axis pointing upward 208 Table 31 Trim and balancing system’s parameters, long and heavy (LH) configuration. 208
+
+
+Table 32 Spine intervertebral deformable elements stiffness and damping coefficients of the reference subject: 34 years old, stature of 1.783 m, weight of 84 kg (resulting BMI 26.5kg m−2) . 209 Table 33 Mass, inertia moments and Cartesian coordinates of vertebral and visceral nodes of the reference subject: 34 years old, stature of 1.783 m, weight of 84 kg (resulting BMI 26.5kg m−2) 210
+xxviii
+
+
+acronyms xxix
+ACRONYMS AND NOMENCLATURE
+The following nomenclature and acronyms are used in this manuscript: AT B Advanced Technology Blade VPM Vortex Particle Method API Application Programming Interface MBD Multibody Dynamics FEM Finite Element Method LPM Lumped Parameter Model BMI Body Mass Index FRF Frequency Response Function DOF Degrees Of Freedom AM Apparent Mass ST HT Seat To Head Transmissibility DPMI Driving Point Mechanical Impedance CSD Cross Spectral Density PSD Power Spectral Density GA Genetic Algorithm MASST Modern Aeroservoelastic State Space Tools CMS Component Mode Synthesis RMS Root Mean Square RPC Rotorcraft Pilot Coupling BDFT Biodynamic Feedthrough PIO Pilot Induced Oscillation PAO Pilot Augmented Oscillation VT OL Vertical Take-Off and Landing MPE Matrix Pencil Estimation Method LT I Linear Time Invariant LT P Linear Time Periodic FMM Fast Multiple Method DAE Differential Algebraic Equation AR Aspect Ratio EA Elastic Axis CG Center of Gravity AoA Angle of Attack
+
+
+xxx acronyms
+f Frequency [Hz] ξ Damping factor VL Vortex lattice SP Surface panel LL Lifting line NL − VL Non-linear vortex lattice U∞ Free-stream speed Ω Rotor speed [RPM] ρ Air density [kg/m3] c Aerodynamic chord [m] R Rotor radius [m] N Number of blades σ Rotor solidity = (Nc)/(πR) N/rev Number of rotor revolutions T Rotor thrust [N] Q Rotor torque [Nm] CT Rotor thrust coefficient = T/(ρπR4Ω2) CQ Rotor torque coefficient = Q/(ρπR5Ω2) FM Rotor figure of merit = CT
+pCT /2/CQ
+p Static pressure [Pa] p∞ Free-stream static pressure [Pa] CP Pressure coefficient = (p − p∞)/(0.5ρ∞U2∞) CL Lift coefficient = L/(0.5ρ∞U2∞S) L Lift [N] ψ Blade azimuthal angle [deg] δa Aileron deflection [deg] Iij Moment of inertia about axis ij [kgm2]
+
+
+Part I
+SOFTWARE TOOLS
+
+
+
+
+1
+INTRODUCTION AND THESIS OUTLINE
+1.1 tiltrotor history and wind tunnel test campaigns
+Tilting rotor aircraft, or tiltrotors, with their outstanding ability to take off and land vertically like helicopters and, at the same time, to achieve high speeds up to twice those of helicopters in forward flight when operating like conventional turboprop aircraft, represents one of the few successful examples of advanced vertical lift configurations. After a long development phase that encompassed few experimental aircraft that successfully made it to flight noticeably the Transcendental Model 1-G (a tilting rotor concept) shown in Fig. 1a, which flew about 100 hours without ever completing a full conversion [109] and the Bell XV-3 (a tilting rotor configuration), shown in Fig. 1b, in the 1950s [51], and the Bell XV-15 (a tilting rotor/nacelle configuration) in the 1980s [109] shown in Fig. 2a, unlike other less fortunate technology demonstrators, the concept finally proved its soundness with the Bell-Boeing V-22, shown in Fig. 2b (a tilting rotor/nacelle configuration) [168], a military aircraft that after an almost 25 years long development phase, has been operated by the US Marine Corps with an increasing reward for the last 15 years, and is entering service for carrier onboard delivery in the US Navy. Remaining in the military arena, the Bell V-280 Valor, shown in Fig. 3a, (a tilting rotor configuration), after a test campaign started in 2017, is currently being evaluated by the US Army for its Future Long-Range Assault Aircraft (FLRAA) program [58]. However, with then Bell-Agusta and now Leonardo AW609,shown in Fig. 3b, (a tilting rotor/nacelle configuration) [144] about to become operational after a long and thorough development [63], the tiltrotor design appears to be mature enough to also enter the civil air transport market [1]. Nevertheless, tiltrotor design remains a rather challenging engineering task, considering the various operating conditions and multipurpose missions that are expected to be accomplished by this complex type of aircraft. In particular, the problem of assessing whirl flutter stability limits is at the same time fundamental and challenging. Whirl flutter is an aeroelastic stability phenomenon that affects both turboprop and tiltrotor aircraft [34]. When a rotor mounted on a flexible structure rotates, the normal vibration modes associated with the supporting structure may interact with the precession motion of the rotor.
+3
+
+
+4 introduction and thesis outline
+(a) Transcendental Model 1-G (b) Bell XV-3
+Figure 1: Transcendental Model 1-G and Bell XV-3
+(a) Bell XV-15 (b) Bell-Boeing V-22
+Figure 2: Bell XV-15 and Bell-Boeing V-22
+(a) Bell V-280 Valor (b) Leonardo AW609
+Figure 3: Bell V-280 Valor and Leonardo AW609
+
+
+1.1 tiltrotor history and wind tunnel test campaigns 5
+When its motion is perturbed, each point on the rotor axis of rotation draws paths about its reference position. This motion changes the way each rotor blade is affected by the incoming airspeed, correspondingly altering the overall aerodynamic loads. At the verge of whirl flutter, when this phenomenon is triggered, perturbations result in a periodic orbit. The resulting forces can cause divergence in the response of the system, which represents a true aeroelastic instability [165]. Today, although key aspects of the phenomenon in tiltrotor aircraft are understood, the ability to predict with high computational efficiency it is still limited, despite the availability of sophisticated aeroelastic analysis tools. The difficulty lies in its dependence on several factors, including geometric design, structural properties, actuator dynamics, and aerodynamic interaction between different components, which can all contribute to the whirl flutter characteristics in ways that are not always intuitive. The problem may be exacerbated when unconventional configurations are considered, as is the case of propeller- and rotor-driven advanced air mobility concepts [95]. Aeroelastic testing, especially when it comes to stability and flutter, can be extremely dangerous. For this reason, wind tunnel testing is needed to understand phenomena and increase the level of trust in predictions in support of their mandatory verification in flight. As a consequence, the possibility to validate numerical predictions using experimental data is of paramount importance from an industry point of view. Wind-tunnel testing of tiltrotor configurations, and its use for validation and correlation with numerical predictions,have been widely used for tiltrotor development. Due to the need to aeroelastically scale also the wing portion of the model, of extreme miniaturization of the rotor consider, for example, the need to reproduce in detail rather complex blade root attachments and pitch control mechanisms, aeroelastic wind-tunnel models of tiltrotor aircraft can be even more complex than helicopter ones. Several wind-tunnel models have been developed to explore the concept of whirl flutter in prop- and tiltrotor configurations. However, specific wind tunnel tests of configurations that were intended to be tested in flight date only back to the early development of the V-22 when Bell designed and manufactured a 1/5-scale semi-span model and used it for wind tunnel tests and correlation with the simulation capabilities available at that time [158]. Eventually, this model evolved in the Wing and Rotor Aeroelastic Test System (WRATS) 4, which has been in use for several years to explore various aspects of tiltrotor aeroelasticity, including aeroelastic tailoring of the wing [45, 139], several parametric studies (e.g., in [155]), active control for flutter suppression [70, 101], an interesting four-blade, articulated soft-inplane configuration for hub load reduction [140, 141], and several nu
+
+
+6 introduction and thesis outline
+merical studies of stiff- and soft-inplane configurations successfully correlated with experiments [114, 121, 173, 174].
+(a) Three-blade, stiff-in-plane (b) Four-blade, articulated soft-in-plane
+Figure 4: WRATS models
+Another effort towards wind tunnel testing of the aeroelastic stability of tiltrotors took place in Europe, within the EUROFAR program [
+82]. Subsequent efforts were aimed at developing an original European tiltrotor concept, ERICA [137]. This concept is characterized by the tilt of the outer portions of the wing, affected by the downwash of the rotor. These efforts resulted, among others, in the ADYN project [
+22, 98], aimed at studying the aeroelasticity and noise characteristics of the concept.
+(a) ERICA (b) ADYN
+Figure 5: ERICA and ADYN
+Currently, in the USA, a US Army-coordinated program called TRAST, shown in Fig. 6a, is ongoing to develop a testbed for research into tiltrotor aeroelasticity [15, 96, 203, 205, 214]. Another effort is underway at the University of Maryland, where a reconfigurable wind tunnel tiltrotor model is being developed [48, 183, 193] and recently underwent preliminary whirl flutter stability tests [74, 184, 204].
+
+
+1.2 introduction to whirl flutter phenomenon 7
+At about the same time, another effort is ongoing in Europe, within the CleanSky2 initiative, within the ATTILA project (a rendering is shown in Fig. 6b), to design, manufacture, and test a tiltrotor wind tunnel model in support of the Next-Generation Civil Tilt Rotor-Technology Demonstrator (NGCTR-TD), a fixed-engine tilting rotor configuration. The preliminary modeling efforts of the wind tunnel testbed were initially presented in [40, 42, 73] and a detailed comparison between the numerical models can be found in [41].
+(a) TRAST wind tunnel model (b) ATTILA multibody model [41]
+Figure 6: TRAST and ATTILA models
+1.2 introduction to whirl flutter phenomenon
+In airplane mode, under high flow conditions and when there are small variations in flow, considerable differences in load distribution cause the nacelle and the wing structure to bend or twist. Motiondependent forces can then result in greater wing motion and pylon and hub motion, initiating a repetitive cycle of aeroelastic oscillations, which can, under certain circumstances, ultimately lead to structural failure.
+1.2.1 2-DOF model
+Whirl flutter is a very complex type of instability. Although more and more comprehensive models have been developed over the years, a very simplified representation can still provide a basic understanding of the phenomenon. The first description proposed consists of a truly rigid propeller on a pylon with pitch and yaw degrees of freedom. A detailed discussion is presented in [164], and the representation of the model is shown in Figure 7.
+
+
+8 introduction and thesis outline
+Figure 7: 2-dof Proprotor Model [164]
+The governing equations of motion (Equation 1) include contributions from various forces and moments acting on the system. In addition to conventional inertia, damping, and elastic forces, the rotating propeller introduces gyroscopic and aerodynamic forces.
+
+
+Iθ ̈ + cθθ ̇ + Sθθ − IxΩψ ̇ = aLz + My
+Iψ ̈ + cψψ ̇ + Sψψ + IxΩθ ̇ = aLy + Mz
+(
+1)
+Aerodynamic terms, on the right-hand side of Eq. 1, include the net effect of the vertical force Lz and the pitching moment My and the horizontal force Ly and the yawing moment Mz. The rotation of the propeller also affects the natural vibration modes, as shown in Figure
+8.
+Figure 8: Proprotor Natural Vibration Modes [164]
+In particular, while in the non-rotating case the pitch and yaw modes can be excited independently, this is not true for the rotating propeller, for which the gyroscopic action introduces a coupling effect. The modes then become characterized by a whirl or precession mode, with reference to how the hub is with respect to the static thrust axis. In this case, even for the symmetric stiffness properties of the system, the expected frequencies for the whirl modes are different. The forward whirl, defined as occurring in the same direction of propeller rotation, manifests itself at higher frequency, whereas the
+
+
+1.2 introduction to whirl flutter phenomenon 9
+backward whirl, defined as opposed to propeller rotation, occurs at lower frequency. When these whirl modes produce a change in the angle of attack of the blade element, the aerodynamic forces generated are those that could cause the instability mechanism. At airstream velocities V < Vcrit the mechanism is stable, so a disturbance causes the hub to trace
+a spiral path that converges to the initial equilibrium position, in cases where V > Vcrit a divergent condition occurs. For a rigid propeller
+configuration, the instability occurs in the backward-whirl mode. When analyzing the separate contributions in terms of propeller aerodynamics, a significant impact is given by the yaw moment due to pitch Mz(θ) or the pitch moment due to yaw My(ψ), which generates a cross-stiffness (destabilizing) moment. In the backward whirl mode, this driving moment is resisted by the aerodynamic and structural damping moments, so that oscillations may become neutrally stable when the contributions of driving and resisting terms are exactly counterbalanced. Several studies and experimental test campaigns conducted on this type of configuration highlighted that the most important parameters found to influence the critical velocity at which whirl flutter occurs are stiffness, damping, pivot location, and propeller advance ratio. The main effect and role of each term can be summarized as shown in Fig. 9.
+Figure 9: Effects of Parameters on 2-dof Whirl Flutter Model [164]
+In particular, in relation to parameter variations, it is interesting to note that:
+• In terms of stiffness, a system having equal pitch and yaw stiffness is significantly more subject to flutter when compared to a case where one stiffness is greatly reduced
+• In terms of damping, an increased damping is significantly stabilizing
+• In terms of pivot location, moving the pivot aft is significantly stabilizing
+The 2-dof model presented, often referred to as the classical whirl flutter model, is mainly included for historical reasons and due to the
+
+
+10 introduction and thesis outline
+fact that the derivation of the exact expression for the stability boundaries is possible. However, it is commonly acknowledged that it is at least necessary to consider a 4-dof model (flapping rotor on a pylon with pitch and yaw degree of freedom) to obtain a more appropriate representation, especially when considering a tiltrotor proprotor. A schematic view of this configuration is shown in Fig. 10.
+Figure 10: 4-dof Proprotor Model [100]
+Also, for this case, which at least overcomes the limitations given by rigid propeller modeling, it may be required to add at least a few more degrees of freedom for both rotor and support in order to obtain meaningful results. Johnson [87] later proposed a theoretical model that provided the ability to investigate the dynamics of the proprotor on a cantilever wing, as shown in Fig. 11.
+Figure 11: Proprotor - Cantilever Wing Model [86]
+
+
+1.3 impact of technology 11
+The discussed model was applicable to the case of axial flight and included a modal representation for the wing, considering a total of nine degrees of freedom (6 for the three-bladed rotor system and 3 fundamental wing modes). The analytical results obtained correlated well with the full-scale test results and the model was then extended to include elastic blade characteristics and helicopter and conversion modes of operation, effectively forming the basic tiltrotor model theory for the complete CAMRAD rotorcraft code [32, 88]. Although this review of theoretical models is by no means meant to be exhaustive, it was of interest to discuss some of the modeling choices and typical procedures involved. In general, also for more sophisticated models, as discussed in [164], it is very convenient to adopt a two-phase approach, where the main components are analyzed separately and then the complete aircraft behavior is examined:
+1. In the first phase, the major components should be studied individually, for example, by considering a flexible propellernacelle system mounted on a rigid wing structure or a flexible wing with the assumption that the contribution of the nacellepowerplant can be treated as rigidly attached to the wing
+2. In the second phase, the equations of motion of each component should be coupled together.
+1.3 impact of technology
+In this Section, a brief overview of the contributions of the major tiltrotor components is presented. The considerations and findings of the work by Nixon [139], [140] and Acree [9], [6], [7], [8] are outlined on the impact of technology and design options on aeroelastic stability.
+1.3.1 Rotor
+1.3.1.1 Hub Concept
+Possible solutions to the design of the rotor hub include the use of:
+• gimballed or hinged configurations
+• hingeless configurations
+Two different hub concepts, mounted on the WRATS model for airplane mode testing, are shown in Fig. 4. The gimballed solution is currently the preferred approach and common practice and has been adopted for the XV-15, V-22, V-280, and AW609. Due to the kinematic constraints of the configuration, gimballed rotors do not scale well to a number of blades greater than three.
+
+
+12 introduction and thesis outline
+The semi-articulated solution, for example, that proposed by Bell Helicopters for the Army VGART program, having no gimbal but employing a standard blade flap hinge and elastomeric bearing for lag motion, was specifically conceived for a better scalability and growth potential by allowing the use of more than three blades. The hingeless solution, having no blade flapping, lead-lag hinges, or rotor-flapping gimbal, contains fewer parts and would allow for higher helicopter mode pitch and yaw control moments, but is cause of higher loads for blade, hub, and main transmission, providing considerable penalties from a weight perspective and also regarding the life of the structural components. The hingeless hub has not received as much attention as the gimbal counterpart, but it is acknowledged that it seems to be less susceptible to whirl flutter. In relation to the type of hub concept adopted, it is common to perform a distinction between soft-in-plane and stiff-in-plane configurations, in cases where the ratio between the in-plane natural frequency and main rotor harmonic is respectively below or above 1. Stiff-in-plane rotors are not affected by concerns for ground resonance in hover and generally provide higher whirl flutter boundaries and adequate damping margins at subcritical speeds. However, particularly during maneuvers, very high in-plane dynamic loads may develop. However, several studies including [140] have highlighted that softin-plane systems are beneficial from a load perspective, as they produce significantly lower dynamic loads, but provide reduced damping margins and stability boundaries compared to their stiff-in-plane counterparts under the same operating conditions.
+1.3.1.2 Rotor Couplings
+pitch-flap coupling The kinematic coupling between blade flapping and pitch is called δ3. This pitch-flap coupling creates an aerodynamic spring force that moves the flap frequency away from the rotation frequency (1P) and thus away from a resonant condition. Following common convention, a positive δ3 implies a nose-down pitching for upward flapping. Even if counter-intuitive, this type of coupling is destabilizing for some modes, typically lag modes, as it creates an aerodynamic-based increase in flapping stiffness, leading to an eventual mode coalescence as the collective is increased with airspeed. For this reason, a negative value for δ3 is adopted in the conventional tiltrotor design. The typical scheme for pitch-flap coupling is shown in Fig. 12 for a gimballed configuration for which an offset pitch horn is used. It should also be noted that a negative δ3 is as effective as a positive δ3 in reducing the maximum transient flapping response and that the potential range of values actually implementable from a practical point of view is limited by the blade spacing.
+
+
+1.3 impact of technology 13
+Figure 12: Pitch-Flap Coupling [6]
+pitch-lag coupling Pitch-Lag coupling is strongly influenced by rotor precone and control system stiffness. In relation to precone, the value of βp, as shown in Figure 13, is chosen to improve blade loads in helicopter mode, when the disk loading is high and large blade bending moments arise. In this condition, the precone angle allows a component of centrifugal force that counteracts the contribution of the lift bending moment, so the net moment is reduced compared to the case without precone.
+Figure 13: Precone Effect [139]
+However, an excessive precone leads to a destabilizing effect in airplane mode, due to the role of a generated pitch-lag coupling. In cruise condition, disk loading is considerably reduced with respect to hover, and the centrifugal force component is reduced as well, owing to the lower rotor speed. The significant imbalance that is then created causes a torsion moment about the blade inboard section proportional to the lag bending deflection, as shown in Fig. 14, generating a destabilizing coupling effect. The mentioned pitch-lag coupling is also affected to some extent by the stiffness of the control system. Studies conducted in relation to the stability of a rigid hub have shown that decreasing the stiffness of the control system had a destabilizing effect, while analyses of a flexed hub configuration demonstrated that this negative effect is less severe or has little impact on stability considerations [155]. The flexed
+
+
+14 introduction and thesis outline
+Figure 14: Torsion about Inboard Sections due to Lag Motion [139]
+hub is designed specifically to allow the rotor to flatten out in cruise flight, reducing the design precone angle βp by the angle βh and consequently reducing the total pitch-lag coupling.
+1.3.1.3 Blade Design
+The blade aerodynamic design is what primarily determines the twist of the blade and the definition of the planform. The twist and chord distributions are typically based on a compromise between the figure of merit in hover and propeller efficiency in airplane mode, with chord selection subject to low-speed maneuvering capability requirements. The blade has an intermediate twist between that of a conventional rotor and that of a propeller and is characterized by an airfoil selection which depends on the radial location. The adopted profiles are thicker at the root for structure build-up, are selected to provide a maximum lift-to-drag ratio in the middle, and are thin outboard. Blade taper improves hover efficiency, but reduces the propeller one. Regarding blade design for improved stability margins, several studies have discussed the impact of variations in the center of gravity of the blade and the aerodynamic center along the blade. In particular, Acree [9] has shown that small forward offsets of the aerodynamic center with respect to the elastic and pitch axis, obtained by moving the airfoil quarter-chord, considerably increased stability boundaries, while small forward offsets of the center of gravity had a similar but less pronounced effect. The blade parametric variations were distributed from root to tip along four radial stations, and the offset contributions were analyzed separately, which also showed that the effect was largest in the outboard blade segments. The findings of the work were interesting because they proved that an increased chordwise distance between the center of gravity of the blade and the aerodynamic center, the classical approach adopted to increase stability for an isolated airfoil, was also applicable to the entire rotor-wing dynamic system, given the highly coupled nature of the whirl-mode instability. An important aspect that emerged from the investigation was related to the role of the proposed variations in the mean and oscillatory rotor loads. While the potential to define variations that increase stability should be considered, it should always be verified
+
+
+1.3 impact of technology 15
+that such modifications do not have a severe adverse effect on loads in both helicopter and airplane modes. Acree [6] later extended the focus to other design modifications, with an approach that clearly grew from previous efforts. Specifically, in relation to blade design, both the sweep of the outboard sections and the moving of the balance weights at the tip ahead of the elastic axis were evaluated. Figure 15 shows the case for the considered swept blade modification derived from the baseline V-22 rotor.
+Figure 15: V-22 Blade Modifications - Sweep and Tip Mass Offset [6]
+The research revealed how the most favorable combinations greatly increased the damping of the critical modes in terms of stability, fully stabilizing the rotor. In a more general analysis of advanced geometry blades on whirl flutter stability, the tip anhedral has also been shown to increase the speed of flutter, while the planform taper, the tip dihedral and the forward sweep have proven detrimental on the stability margins [178].
+1.3.1.4 Operational Speed
+An important driver to consider in the structural design phase, especially in relation to the strong impact it has on blade dynamics, is the operational speed of the rotor. The value adopted is generally defined according to different considerations. In airplane mode, it is about 80% the value in helicopter mode. In this wide range of operating conditions, it is of paramount importance to guarantee adequate separation of the fundamental flap, lag, and torsion frequencies of the blade from harmonics associated with the operating speeds of the rotor during hover and cruise and to avoid any destabilizing frequency crossings.
+
+
+16 introduction and thesis outline
+While it is true that a reduction in rotor speed reduces the forces that drive whirl flutter, the issues related to frequency placement and modal coupling are potentially exacerbated. Ultimately, it is clear that rotor system design must always consider the important trade-offs that exist between the necessary required stability margins and blade loads that arise when adopting one solution rather than the other.
+1.3.2 Wing
+The current practice in tiltrotor design is to employ a high-mounted wing with a tilting engine nacelle configuration. Some studies have also been performed considering low-wing configurations, for example in relation to the NASA Large Civil Tiltrotor (LCTR) program. Low-mounted wing designs have associated requirements that include fixed engines with tilting shafts, longer rotor shafts or extreme dihedral for fuselage clearance in hover, and hingeless rotors for adequate pitch control in hover. As the hingeless rotor tends to be less susceptible to whirl flutter, this wing configuration would potentially allow for a less strict torsional stiffness requirement. However, a wing with a tilting shaft and fixed engines will have different maximum torsional design loads with respect to the high-wing tilting engine nacelle counterpart because of the different offset between the rotor thrust vector and the wing center of gravity [7]. Conventional high-wing configurations are very stiff and thick (with a thickness-to-chord ratio around 0.23) and are characterized by a limited aspect ratio. Although a reduced wing thickness would be beneficial from a high-speed performance point of view, by allowing for a great reduction in profile drag, it would drastically limit the possibility of meeting the aeroelastic stability requirements. For this reason, the authors, including Nixon [139], have proposed solutions based on aeroelastic wing modifications to introduce beneficial couplings without incurring excessive weight penalties. Composite tailoring, in particular, would provide the opportunity to increase stability margins when considering a thin-wing configuration by modifying mode shapes and frequency placement of the main wing modes. However, in this case, the internal structure of the wings must still be able to accommodate the transmission cross shaft and the fuel tanks, so a thickness reduction driven by performance considerations alone may not always be possible. In addition to the dynamics of the wings itself, the stability margins of the whirl flutter are greatly affected by the characteristics of the associated wing components, such as the stiffness of the transmission adapter, mast and pylon, conversion spindle, and downstop [139]. Among these, the downstop plays a particularly important role, which is the mechanism that allows locking the pylon to the wing
+
+
+1.3 impact of technology 17
+for a tiltrotor in airplane mode configuration. When not engaged, the stiffness of the attachment is governed by that of the conversion actuator only and is greatly reduced compared to the downstop-on configuration. The contribution of the drive system should also be considered for a proper modeling approach, as it has a significant impact on both the pylon/wing system and on the proprotor aeroelastic behavior. In relation to the effects of the drivetrain, Acree [6] considered the impact of eliminating the drivetrain entirely or eliminating only the flexibility of the drivetrain (thus considering a rigid drivetrain model). In both cases, it appeared that the presence of the drive train caused a significant loss of predicted damping on symmetric and antisymmetric wing beamwise-bending modes. Figure 16 shows the comparison between the results considering the symmetric wing bending mode (SWB).
+Figure 16: Drive-train Effect [6]
+As neglecting the presence of the drive system leads to non-conservative results in terms of damping, this contribution should definitely be taken into account in both the design and the testing phase.
+1.3.3 Additional Considerations
+From the discussion presented, it is clear that the rotor and wing cannot be designed independently. Although it is true that performance goals for hover and cruise determine the initial rotor design and the set wing area and maximum thickness, loads associated with the sizing condition determine the structural design. The need to account for the potential onset of dynamic instabilities should be considered early in the design, as performance in airplane mode may be limited by whirl flutter rather than by aerodynamics or installed power. A posteriori corrections of the design may not always be feasible and are always cause of cost penalties and schedule delays, and should thus be avoided. In general, there are several options for improving tiltrotor aeroelastic stability margins, and it is either possible to consider passive or active techniques, as well as a combination of both.
+
+
+18 introduction and thesis outline
+In relation to active techniques, a very promising solution consists of the adoption of active stability augmentation system [128]. However, flutter suppression systems are not accepted, at least up to date, from a regulatory point of view: the tiltrotor should be free (with margins) from any instability phenomena in the entire flight envelope. In relation to passive techniques, a summary of the most important aspects and considerations is presented in view of the design options discussed in previous sections and the findings from [75]:
+1. The rotor design parameters that have the greatest influence on whirl flutter stability are pitch-flap and pitch-lag couplings
+2. The wing design parameters that have the greatest influence on whirl flutter stability are wing vertical bending and torsion stiffness, as well as vertical bending-torsion coupling
+3. Modest changes in key design parameters for rotor and wing may provide a significant flutter speed increase
+4. Generally, flutter speed has shown a greater sensitivity towards variations in rotor rather than wing design
+Ultimately, having identified whirl flutter as a critical design requirement for the tiltrotor configuration, it is evident that the tools adopted in the design phase should be able to capture the behavior of parametric modifications on key design parameters and allow to easily analyze each component both separately and as part of the integrated vehicle. From a modeling point of view, tools that provide the capability to use anisotropic beam theory are often the only viable option to reproduce the most important coupling effects in the design without leading to excessive computational times. This is especially true when the goal is to assess the impact of different design options at an early design stage, as excessive computational time for each analysis would drastically hinder the applicability of the approach.
+1.4 tiltrotor-rotor pilot couplings
+Rotorcraft-pilot-couplings (RPC) [149] are events that are caused by the pilot’s erroneous perception of vehicle dynamics. RPC phenomena can be divided into two families:
+• Pilot-Induced Oscillations (PIO): when the pilot inadvertently excites divergent vehicle oscillations by applying control inputs that are in the wrong direction or have phase lag with aircraft motion.
+• Pilot-Assisted Oscillations (PAOs) are the result of involuntary control inputs by the pilot in the loop that may destabilize the
+
+
+1.4 tiltrotor-rotor pilot couplings 19
+aircraft due to inadvertent man-machine couplings. Generally, for PAO to occur, an involuntary involvement of the pilot due to his biodynamic response to vibrations is required.
+PAOs usually occur in the frequency range between 2 − 8 Hz. In PAOs, airframe vibrations are transferred through the biodynamic feed-through (BDFT) to the control input, which in turn causes new structural vibrations. A block diagram of the pilot-aicraft close loop is shown in Fig. 17.
+zd
+−
++
+z ̈
+z
++
++
+∆u
+voluntary action
+involuntary action
+aircraft
+Figure 17: Aircraft-Pilot control loop
+Although PAO phenomena have also been identified in fixed-wing aircraft, it is in rotorcraft that they showed a very high incidence [55, 147, 148]. Rotorcrafts are more susceptible to those high-frequency occurrences since their high-order dynamics play a prominent role, as shown in Fig. 18. The control inputs given by the pilots through the cockpit inceptors are transmitted through the swashplate to the blades, thus affecting the rotor flapping and control moments transferred to the airframe. The rotating mechanism can generate, for any control at frequency ω, oscillations at ω ± Ω, where Ω is the angular speed of the rotor. Thus, low-frequency pilot inputs generate high-frequency blade excitation. An interesting analysis of the effects of pilot BDFT on the V-22 was presented in [145], while a more comprehensive analysis of all PAO phenomena that can occur on a tiltrotor, without considering the interaction with FCS, can be found in [135]. Recently, in the work of Muscarello and Quaranta [136], the structural coupling problems for tiltrotors are investigated, considering not only the interaction of the flight control system with the flexible structure, but also the potentially adverse effects on aeroservoelastic stability. The investigation is focused on the analysis of side effects that could appear at high speed in the flight regime of aircrafts, where the whirl flutter boundaries may be significantly reduced. A detailed linearized tiltrotor model, representative of the Bell XV-15 and of a flight control system, has been built and joined with a linearized pilot biodynamic model acting on the power lever and on the center stick. The model has been developed in MASST [120] that connects the substructures using a Craig-Bampton component mode synthesis approach [47].
+
+
+20 introduction and thesis outline
+10-1 100 101 102
+Frequency [Hz]
+Flight Mechanics
+Rotor Dynamics
+Flight Control System
+Engine/Drivetrain Dyn
+Airframe Dynamics
+Pilot Biodynamics
+Handling Qualities Structural Dynamics Flight Controls Rigid RPC Aeroelastic RPC
+Swashplate Actuators Bandwidth
+Pilot Biodynamics Bandwidth Active Pilot Bandwidth
+:: Dutch Roll ::
+:: Fuel Control ::
+:: 1st Spine Bending ::
+:: Pitch/Roll Coupling ::
+:: 1st Drivetrain Torsion ::
+:: Flap/Lag ::
+1/REV :: 1st Airframe Bending :: :: 1st Elastic Flap ::
+:: SAS Induced Flap Regression ::
+:: Involuntary Collective ::
+:: Pelvis Rotation :: :: 1st Axial Spine ::
+:: 2nd Drivetrain Torsion ::
+Figure 18: Frequency placement of the helicopter modes and the pilot biomechanical modes
+A dramatic accident in which a PAO phenomenon led to the loss of the tiltrotor and the two pilots was the one that occurred in AW609 in 2015. The accident occurred during high-speed dive maneuvers. As stated in the final accident report1:
+"The third dive, test R20, was commenced during a left 180◦ turn. After rollout, a slight lateral-directional oscillations have begun to develop (roll at t=4 sec. and yaw at t=5 sec. and further on) such as to cause an “outof-trim” condition by the FCS developed. At such oscillations, the crew did not initially react with inputs that were in contrast to them. Later, when the oscillations became greater, this phenomenon was initially contrasted with counterphase input roll maneuvers by the PF (roll tracking) and finally by pedal inputs, to contrast the yaw oscillations. However, these actions did not dampen the oscillations, which instead became divergent, bringing the sideslip angle to reach values above the maximum allowed in those speed conditions."
+Finally, the report stated that the causes of the accident were mainly three.
+1. The development of latero-directional oscillations
+2. to the FCS control laws unable to maintain conditions of controlled flight
+3. to the project simulator (SIMRX), which did not foresee the event in any way:
+In particular, the flight simulator was not representative at such high speeds of aircraft behavior, since the aerodynamic model behind was too weak: "Anyway, the test on SIMRX would have not been representative, at high speed, of real aircraft behavior, as confermed also by ANSV verification on simulator, possibly due to unexpected aerodynamic characteristics
+1 https://www.ansv.it/cgi-bin/ita/FinalReportN609AG.pdf
+
+
+1.5 thesis objective and outline 21
+in this extreme flight condition of speed, having extreme: AOA values, flaperon deflection angles and elevator deflection angles. This condition occurs, in particular, for cross-coupled sideslip and roll (example: left sideslip/right roll)."
+1.5 thesis objective and outline
+The main objective of this work is to develop, validate, and evaluate the aeroelastic and aeromechanical stability limits of a tiltrotor aircraft using a comprehensive approach. The final goal is to provide a set of validated, open-source, and multipurpose tools to the scientific and industrial community that can simulate in a single environment all of the ingredients that participate in the aeroelastic loop: this objective is motivated by the lack of such framework in the current literature, which is a gap to be filled to enable considering whirl flutter and also phenomena such as PIO and PAO early in the design process of future tiltrotors while accounting for effects such as the detailed resolution of aerodynamic interactions, general flexible structures, and coupling with the pilot dynamics. For what concerns the aerodynamic part, two models are adopted: a low-fidelity model based on pure 2D strip theory and a mid-fidelity model based on the vortex particle method developed in open source code DUST. The structural part and the control part are modeled using the multibody code MBDyn. The communication between the two software is handled by the open-source coupling library preCICE. Finally, the completely non-linear biomechanical model of the pilot is coupled with the aeroservoelastic tiltrotor model: this model is developed in MBDyn. Thanks to the large amount of public data [4, 25, 31, 61, 62] the XV15 tiltrotor aircraft equipped with Advanced Technology Blade (ATB ) is chosen as the base model. This work is organized as follows.
+• Chapter 2: In this chapter, the used and developed software tools are presented from a theoretical perspective. A brief theoretical overview of the MBDyn code is given, and instead, a detailed theoretical overview of the DUST code is provided. Finally, the tight coupling between the two codes is presented, focusing on the implementation of the interpolation scheme that is needed to correctly deform the aerodynamic mesh and send the aerodynamic loads to the structure.
+Contribution: The non-linear vortex lattice elements are implemented, then the coupling between DUST and MBDyn is developed improving, in particular, the interpolation scheme and the wake shedding.
+
+
+22 introduction and thesis outline
+• Chapter 3: In this chapter, validation, and verification of the developed software tools is presented; in particular, the coupling between DUST and MBDyn is verified, evaluating the flutter speed of the Goland wing[71] against the results present in the literature. In the second part of the chapter, the new DUST nonlinear vortex lattice element is validated, starting from a fixedwing case, then considering a wing-propeller example, and finally evaluating the aerodynamic performances of the XV-15 metallic blade rigid rotor against high-fidelity simulation and experimental data.
+Contribution: data collection, building the numerical models, running the analyses, and postprocessing the results.
+• Chapter 4: In this chapter, the aeroelastic ATB blade rotor model is presented and extensively validated against the experimental results [60]. The two aerodynamic models are compared from an aeroelastic perspective in both hover and axial flow conditions.
+Contribution: Implementation of parametric tiltrotor generator TiPa, data collection, building the numerical models, running the analyses, and postprocessing the results.
+• Chapter 5: In this chapter, the aeroelastic stick model of the XV15 tiltrotor is presented and validated from a dynamic point of view. Then, a simple optimal control regulator needed to maintain altitude is presented and tested under a discrete gust external input.
+Contribution: data collection, building the numerical model, implementation of the trim procedure, running the analyses, and postprocessing the results.
+• Chapter 6: In this chapter, the upper-body pilot model is presented: the model is build-up by joining a detailed torso multibody model with the upper-limb multibody model.
+Contribution: Implementation of the pilot’s model parameterization technique, joining the spine model with the upper limb model, running the analyses, and postprocessing the results.
+• Chapter 7: In this chapter, all the ingredients are combined into a single comprehensive tiltrotor model. First, the identification technique needed to evaluate the aeroelastic stability of the aircraft is presented, and then the whirl flutter boundaries of the XV-15 machine are investigated covering the complete flight envelope of the machine. Finally, the pilot is inserted into the loop and its effect is compared by looking at the response of the aircraft after a discrete gust. The effects of the two aerodynamic models are therefore compared.
+
+
+1.5 thesis objective and outline 23
+Contribution: Coupling the tiltrotor model with the pilot model, running the analyses, and postprocessing the results.
+• Chapter 8: In this chapter, the conclusions and further development are discussed.
+
+
+
+
+2
+SOFTWARE TOOLS USED/DEVELOPED
+The design of complex rotary-wing vehicles, such as tiltrotors, represents a challenge for engineers and scientists. Being able to perform complete aeroelastic simulations considering the coupling of rotarywing aerodynamics with the structural dynamics of the vehicle is essential for the development of novel aircraft configurations [17]. Sophisticated numerical tools have been developed to support the analysis of rather different operating flight conditions typical of VTOL vehicles with increasing level of detail. In fact, substantial effort has been made in recent years to develop sophisticated structural dynamics codes (CSD) that were used effectively for rotorcraft applications (see, e.g., references [20, 89, 207]). In detail, the structural dynamics of the rotary wings vehicles was typically investigated using the multibody approach [69, 160], which takes into account the non-linear dynamics of the interconnected rigid and flexible bodies that represent the components of the aircraft during transients. The multibody approach was also used to investigate aeroelastic phenomena, especially in flight in airplane mode, where whirl flutter instabilities can occur [127]. A particular effort in this research field was made at the Politecnico di Milano, where, starting in the 1990s, a free general purpose multibody software called MBDyn (https:
+//public.gitlab.polimi.it/DAER/mbdyn) was developed, with the
+aim of gaining autonomous modeling capabilities of generic problems related to the dynamics of complex aeroelastic systems, specifically rotorcraft and tiltrotors [119]. A tiltrotor flight mission is characterized by vertical take-off and landing, typical of helicopters, and by a cruise flight condition typical of fixed-wing airplanes. The transition between the two flight conditions occurs through the so-called conversion maneuver, in which the proprotor-nacelle system is tilted. Therefore, an accurate model for the evaluation of unstable loads that occur during transients must be considered for a correct analysis of the complex dynamics characterizing these vehicles. However, multibody solvers, such as MBDyn, are typically equipped with simplified aerodynamics models based on Blade Element/Momentum Theory (BE/MT). This type of approach does not consider aerodynamic interference between the rotors and the actual geometry of the lifting surfaces, which can lead to misrepresentation of aerodynamic loads and loss of information related to periodic actions. Accurate computation of unsteady aerodynamic loads for rotary wing vehicles was the main goal of several research groups that developed, in recent decades, different high fidelity Computational Fluid
+25
+
+
+26 software tools used/developed
+Dynamics (CFD) codes employing the use of high-fidelity NavierStokes equations solvers. To name a few examples, ONERA, University of Glasgow, DLR, Airbus Helicopters Deutschland and Politecnico di Milano developed, respectively, elsA [33], HBM3 [27], FLOWer [97], and ROSITA [26], high-fidelity CFD codes based on the block-structured grid, finite volume, and Chimera approach for the simulation of rotating bodies. These tools were developed in Europe for studies of rotorcraft and tilt rotor applications [52, 56, 84]. Similarly, considerable research effort was dedicated in the USA to the numerical study of rotorcraft, particularly to tiltrotor aerodynamics, as shown for instance by the works of Meakin [129], Potsdam and Strawn [159] and Wissink et al. [201], where hover configurations were simulated using different implementations of the Navier-Stokes equations, and by the recent works of Lim Tran et al. [105, 190–192] that investigated the aerodynamic interaction between rotors and the wing of the XV-15 tiltrotor aircraft. The combination of CSD codes with high-fidelity CFD solvers has been successfully investigated and implemented in the last two decades for aeroelastic simulation of rotorcraft applications [12, 49, 92, 176, 177, 206]. The coupled CSD/CFD numerical approach was successfully validated against experimental results, e.g., for the flutter calculations of a vertical tail model [65] and for the analysis of the structural loads of the rotor blade of a complete helicopter model tested in a transonic wind tunnel [126]. However, despite continuous advances in the field of high-performance computing, coupled simulations of CSD and time-accurate URANS simulations of complete rotorcraft configurations still require a robust computational effort, not suitable for the preliminary design stage of novel VTOL aircraft configurations such as tiltrotors, which requires a great number of simulations to reproduce the different flight conditions that characterize their mission. In recent years, considerable effort was dedicated by several research groups to the development of mid-fidelity aerodynamic solvers based on the use of the vortex particle method (VPM) [46, 199] for wake modeling. This numerical methodology showed a fairly accurate representation of the aerodynamic interactions among several bodies typical of complex rotorcraft configurations and a limited computational time with respect to URANS CFD simulations. To cite few examples, Lu et al. [107] developed an optimization methodology for helicopter design based on a viscous VPM model combined with an unsteady panel hybrid method. Alvarez and Ning developed a VPM-based code [13] for the investigation of multirotor configurations. Tan et al. [187] used a vortex-based approach coupled with a viscous boundary model to study rotor-rotor interactional problems that occur during shipboard operations [187]. Recently, Politecnico di Milano developed a novel, flexible mid-fidelity computational tool,
+
+
+2.1 mbdyn 27
+called DUST (https://public.gitlab.polimi.it/DAER/dust) aimed
+at representing a fast and reliable asset for the simulation of the aerodynamics of complex rotorcraft configurations, such as the electrical Vertical Take Off and Landing (eVTOL) aircraft. DUST is an open source code, released under MIT license,that integrates different aerodynamic models for solid bodies, as thick surface panels, thin vortex lattice elements, and lifting line elements. Moreover, a VPM method was implemented for wake modeling that provides a stable Lagrangian description of the free-vorticity flow field, which is suitable for numerical simulations of configurations characterized by strong aerodynamic interactions. DUST was thoroughly validated by comparison with results from high-fidelity CFD simulations and experimental data on complex rotorcraft configurations, such as eVTOLs [194] and tiltrotors [211]. Consequently, this novel open-source tool is reaching maturity for simulation of the aerodynamics of complex rotorcraft configurations, accurately reproducing the interaction between rotors and wings. The combination of a multibody dynamics solver with a mid-fidelity aerodynamic tool aims at representing an ideal trade-off between speed of execution and accuracy of the solution, aimed at the preliminary design of novel rotary-wing aircraft configurations. A novel open-access aeroelastic tool was built by tightly coupling MBDyn to DUST. The coupling of the two codes is based on the partitioned multiphysics coupling library preCICE [30], a very useful and robust tool for managing communication between different solvers. After a brief description of the multibody dynamics and a detailed description of the theory behind the mid-fidelity aerodynamics solvers, updated in the latest release, the chapter describes the details of the methodology used for the coupling. An interesting novelty proposed by this tool is the ability to model the deflection of a control surface, which represents an essential aspect in the simulation of aircraft maneuvers. This chapter represents an extension of the work [171].
+2.1 mbdyn
+MBDyn is a general-purpose multibody solver, developed at the Department of Aerospace Science and Technology of Politecnico di Milano and distributed as free software. MBDyn automatically writes and solves the equations of motion of a system of entities possessing degrees of freedom (nodes) connected through algebraic constraints and subjected to internal and external loads. Constraint equations are explicitly taken into account, follow
+
+
+28 software tools used/developed
+ing a redundant coordinate set approach. Thus, the resulting system of Differential-Algebraic Equations (DAE) takes the form
+M(x, t)  ̇x = p (2a)
+ ̇p = φT
+/xλ + fi(x ̇ , x, t) + fe(x ̇ , x, t) (2b)
+0 = φ(x) (2c)
+where x is the vector of the kinematic unknowns, p that of the momentum unknowns, λ that of the algebraic Lagrangian multipliers, M is a configuration- and time-dependent inertia matrix, fi, fe are arbitrary internal and external forces, φ(x) is the vector of the (usually nonlinear) algebraic equations that express kinematic (holonomic) constraints, and φ/x is the Jacobian matrix of the constraints with respect
+to the kinematic unknowns. Each node instantiates the corresponding balance equations 2b, while only nodes with associated inertia properties instantiate the definitions of the related momenta 2a. Additional states associated with scalar fields (namely, hydraulic pressure, temperature, electric potential) and thus the corresponding balance equations can be taken into account through dedicated sets of nodes. The nodes that describe the kinematics of the structural problem can be connected either by elastic/viscoelastic internal forces (namely lumped structural components [113], beams [19, 68], shells [131], Component Mode Synthesis (CMS) elements [47]) expressed by fi, with a variety of viscoelastic constitutive laws, or by the kinematic constraints of Equation (2c). Simple aerodynamics can be modeled by built-in elements that exploit the 2D strip theory model by look-up tables of the aerodynamic coefficients and classical rotor inflow models based on momentum theory. The DAE system can be integrated using several different A/L stable integration methods, among which is an original multistep method with tunable algorithmic dissipation, specifically designed for the class of problems usually solved with MBDyn. Coupling with an external solver is performed through an external force element. This type of element communicates with the external solver by passing the kinematics of the model and receiving the corresponding loads. The coupling can be loose (that is, an explicit scheme) or tight (that is, an implicit scheme). For further details on the possible type of coupling with an external solver, the reader is referred to [115]. The external forces can be formulated directly in the absolute frame, or referred to a reference node. In the former case, operations are straightforward; in the latter, the kinematics are first reported in the reference frame of the reference node and then sent to the peer along with the motion of the reference node. The latter returns nodal forces and moments oriented according to the reference frame of the reference node.
+
+
+2.1 mbdyn 29
+stability analysis The stability analysis of a nonlinear multibody model, formulated in an absolute reference frame, is critical, as the problem can be time-variant. In principle, since in the configuration under analysis the flow is essentially axial, this specific problem could be reduced to time-invariant through the so-called multiblade coordinates, with the possibility to determine a steady solution, when asymptotically stable, for its linearization and analysis using methods for linear, time-invariant (LTI) problems. However, due to the flexibility of the wing and the opportunity to trim the aircraft at non-zero angles of attack, at the trim point, the flow may not be perfectly axial; furthermore, aerodynamic interferences between the rotor and the wing may break the symmetry of the axial flow, introducing 1/rev periodicity in the motion of each blade and Nb/rev periodicity in the overall response of the system. Thus, it is convenient to use methods specifically designed to address problems of this kind. A typical approach, based on Floquet’s theory as introduced in the stability analysis of rotorcraft by Peters & Hohenemser in 1971 [152], evaluates the stability of linear, timeperiodic (LTP) problems. It requires the integration of the state transition matrix of the problem over a revolution, which is called the monodromy matrix; this is often impractical when using multibody solvers, which formulate the problem as a large number of non-linear DAEs, as discussed in [21]. A generalization of Floquet’s approach to non-linear, aperiodic problems, possibly subjected to random excitation, has been recently proposed in [185], based on Lyapunov’s theory of characteristic exponents (LCE); however, the applicability of this method to systems of DAE is still debated [117], and hardly practical from a computational viewpoint for large systems. An interesting approach, based on proper orthogonal decomposition (POD) of snapshots of large sets of coordinates of the problem, taken during free response transients at each revolution of the rotor, has been proposed in [161] and has been used successfully with MBDyn. The equivalents of Floquet’s characteristic coefficients are obtained from the eigenanalysis of a matrix that corresponds to Floquet’s monodromy matrix, resulting in a least-squares fitting of the snapshots. All the previously mentioned methods can, to a different extent, evaluate the contraction characteristic of the free response of the system (e.g., the real part of the eigenvalues, when defined, or the characteristic coefficients of Floquet’s theory, or the characteristic exponents of Lyapunov’s theory), but some are unable to determine its periodicity, when the free response is oscillatory ([21], [161], [185]), while others suffer from limitations in the interpretation of the imaginary part of the eigenvalues of the monodromy matrix ([152]), although attempts have been made to overcome them (see, for example, [153]).
+
+
+30 software tools used/developed
+2.2 dust
+DUST is an open-source software designed using object-oriented paradigms of the latest FORTRAN standards. Different classical potential-based elements are implemented in the code, such as lifting line [66, 156], surface panels [133], and linear vortex lattice elements [91] and nonlinear vortex lattice element [39]. Even if incompressible potential flow is considered in the code assumptions, compressibility effects are considered in the computations. In particular, a Prandtl-Glauert correction [103] is considered for the calculation of steady aerodynamic loads with surface panels and vortex lattice elements. On the other hand, lifting line and non-linear vortex lattice elements intrinsically include compressibility and viscous effects introduced by Machdepending tabulated sectional aerodynamic coefficients, obtained by experiments or by 2D RANS numerical simulations. Figure 19 summarizes the typical workflow needed to build and run a DUST model.
+Components
+Mesh DUST
+preprocessor Geometry Reference Frames
+DUST solver
+DUST results
+DUST postprocessor
+Visualizations
+Processed data
+MBDyn solver
+Figure 19: DUST user workflow
+Lifting Line (LL) Vortex Lattice (VL) Non-Linear VL (NL-VL) Surface Panel (SP)
+3D Unsteady Yes Yes Yes Yes Thickness Yes (Via database) No Yes (Via database) Yes Camber Yes (Via database) Yes Yes Yes Viscous effects Yes (Via database) No Yes (Via database) No Compressibility Yes (Via database) Yes (Via correction) Yes (Via database) Yes (Via correction) Physical shape No No No Yes Numerical scheme Explicit Implicit Implicit Implicit Computational cost Low Low Medium High
+Table 1: Summary of DUST available components and their characteristics
+DUST simulations only require surface meshes, as the core of the mid-fidelity aerodynamic code is the vortex particle method (VPM)
+
+
+2.2 dust 31
+[
+46, 199], a grid-free Lagrangian approach that is used to model the free vorticity of wakes and does not require a volume mesh of the flow surrounding the object of investigation. Vortex particles reproduction of the flow enabled one to obtain a robust representation of the interacting wakes caused by lifting surfaces and bodies, as typically occurs in rotary-wing vehicle applications. In particular, to reduce the computational cost associated with reproducing vortex particle interactions, a Cartesian fast multipole method (FMM) [106], which provides a hierarchical background decomposition of the domain into clusters of cells, is implemented. In the following paragraphs, we develop the theory behind DUST.
+2.2.1 Helmholtz’s decomposition
+The mathematical formulation of the aerodynamic solver relies on a vorticity-velocity formulation of the aerodynamic problem, founded on the Helmholtz decomposition of the velocity field and a Lagrangian description of the vorticity field. The Helmholtz decomposition of the velocity field states that the velocity field u(r, t) can be written as the sum of an irrotational field, the potential velocity, uφ = ∇φ, and a soleinoidal field, the rotational velocity, uψ = ∇ × ψ,
+u(r, t) = uφ(r, t) + uψ(r, t) (3)
+Since the rotational velocity is a solenoidal vector field, the incompressibility constraint reduces to the Laplace equation for the kinetic potential φ(r, t) in the fluid domain Ω,
+0 = ∇ · u = ∇ · uφ + ∇ · uψ
+| {z }
+∇·(∇×ψ)≡0
+→ ∆φ = 0 (4)
+Since the potential velocity is an irrotational velocity field, the vorticity field ω(r, t) acts as a volume forcing of the Poisson equation for the vector potential ψ(r, t),
+ω = ∇ × uφ
+| {z }
+∇×∇φ≡0
++∇ × uψ → −∆ψ = ω (5)
+given the vector identity ∆ψ = ∇(∇ · ψ) − ∇ × ∇ × ψ and the gauge condition ∇ · ψ = 0. Then, the Lagrangian description of the dynamical equation governing the vorticity field ω(r, t) of an incompressible flow reads: Dω
+Dt = (ω · ∇)u + ν∆ω (6)
+where ν is the flow kinematic viscosity and the material derivative of the vorticity field Dω/Dt represents the material derivative of the vorticity associated with a material particle. Differential problems defined in the fluid domain Ω are manipulated using the Green function
+
+
+32 software tools used/developed
+method, to obtain a grid-free volume formulation of the aerodynamic problem.
+2.2.2 Potential velocity: Morino Formulation
+For completeness, in the following paragraphs the complete Morino’s [132] formulation will be derived, starting from the Laplace equation written for the potential velocity and eventually highlighting the matrices that form the aerodynamic problem for the different elements.
+2.2.2.1 Mixed potential-velocity Morino formulation and panel method
+The idea of Morino’s formulation is to solve the Laplace equation without making the hypothesis of simple solutions. The Green function method will then be applied to recast the differential problem governed by Laplace’s equation for the perturbation kinetic potential, supplied with the appropriate boundary conditions, with an integral boundary problem. The Green function method is applied to the potential aerodynamic problem, in order to recast a differential problem defined in the threedimensional fluid domain as a boundary value problem, involving only the boundary of the potential flow domain Ωφ. The idea is to solve Laplace’s equation by some repetitive integrations. Let us recall the Laplace problem and its Neumann- and Dirichlet boundary conditions:
+
+
+∆φ = 0 in Ω
+φ = b in ∂Ωd ∂φ
+∂ ˆn = a in ∂Ωn
+(
+7)
+The Laplace equation can be seen as a particular case of the Poisson equation: ∆φ = f. Let G be the Green function; we can integrate in the Ω domain the Poisson equation pre-multiplied by the Green function:
+Z
+Ω
+G∆φ =
+Z
+Ω
+Gf = (8)
+Integrating by parts the first term, we obtain:
+Z
+Ω
+G∇ · (∇φ) =
+Z
+Ω
+∇ · (G∇φ) −
+Z
+Ω
+∇G · ∇φ (9)
+For the divergence theorem, the first right-hand side term can be rewritten as
+Z
+Ω
+∇ · (G∇φ) =
+Z
+∂Ω
+G · ∂φ
+∂ ˆn =
+Z
+∂Ω
+G · ˆn · ∇φ = (10)
+
+
+2.2 dust 33
+Then, we get rid of one derivative:
+Z
+Ω
+G∇ · (∇φ) =
+Z
+∂Ω
+G · ∂φ
+∂nˆ −
+Z
+Ω
+∇G · ∇φ (11)
+Using the identity:
+φ∇ · ∇G = ∇ · (φ∇G) − ∇G∇φ (12)
+We obtain the following.
+Z
+∂Ω
+G · ∂φ
+∂ ˆn −
+Z
+Ω
+∇G · ∇φ =
+Z
+∂Ω
+G · ∂φ
+∂nˆ +
+Z
+Ω
+φ∇ · ∇G −
+Z
+Ω
+∇ · (φ∇G)
+(
+13)
+We can apply the divergence theorem to the last term obtaining the following. Z
+Ω
+∇ · (φ∇G) =
+Z
+∂Ω
+∂G
+∂nˆ (14)
+Then the original Poisson equation is transformed as:
+Z
+Ω
+G∇ · (∇φ) =
+Z
+Ω
+φ∆G +
+Z
+∂Ω
+G ∂φ
+∂nˆ −
+Z
+∂Ω
+φ ∂G
+∂ ˆn (15)
+Z
+Ω
+φ∆G =
+Z
+Ω
+Gf +
+Z
+∂Ω
+G ∂φ
+∂ ˆn −
+Z
+∂Ω
+φ ∂G
+∂nˆ (16)
+As a result, we find that in the domain Ω the potential derivative φ is no longer present; instead, its first derivative ∂φ/∂ ˆn is evaluated along the boundary ∂Ω. The Green function method exploits the property of the Dirac delta that its integral is equal to the unit:
+Z
+Ω
+δ(r − r0) = 1 (17)
+Then, if we compute applying the Dirac delta to a generic function f, we obtain: Z
+Ω
+f(r)δ(r − r0) = f(r0) (18)
+We can now define Green’s function as G = G(r, r0), a solution of the following problem:
+
+
+∆G = δ(r − r0) in Ω
+G = 0 in ∂Ωd ∂G
+∂n = 0 in ∂Ωn
+(
+19)
+
+
+34 software tools used/developed
+We can rewrite equation 16, knowing that the boundary is the sum of the Neumann and Dirichlet boundary ∂Ω = ∂Ωn + ∂Ωn, as:
+Z
+Ω
+φ∇G =
+Z
+Ω
+φδ(r − r0) = φ(r0) = (20)
+=
+Z
+Ω
+G(r, r0)f+ (21)
++
+Z
+∂Ωd
+G ∂φ
+∂nˆ +
+Z
+∂Ωn
+G ∂φ
+∂nˆ − (22)
+−
+Z
+∂Ωd
+φ ∂G
+∂ ˆn −
+Z
+∂Ωn
+φ ∂G
+∂nˆ (23)
+Let us solve the Laplace equation for the Green function defined in a R∞ space:
+Z
+Ω
+∆G∞(r, r0) =
+Z
+Ω
+δ(r − r0) = 1 if r0 ∈ Ω (24)
+But we can rewrite the integral using the divergence theorem:
+Z
+Ω
+∆G∞ =
+Z
+Ω
+∇ (∇ · G∞) =
+Z
+∂Ω
+nˆ · ∇G· =
+Z
+∂Ω
+∂G
+∂nˆ (25)
+In an isotropic space, the solution does not depend on the orientation of the space, so Green’s function depends only on the absolute value r of the vector r − r0. We can solve the integral in a spherical domain:
+Z
+∂Ω
+G(R)
+∂n =
+Z 2π
+0
+Zπ
+0
+∂G(R)
+∂n R2 sin γdγdθ = (26)
+= 2π ∂G(R)
+∂n R2
+Zπ
+0
+sin γdγ = (27)
+= 2π ∂G(R)
+∂n R2 · 2 = (28)
+= 4π ∂G(R)
+∂n R2 = 1 (29)
+Then G(R) is equal to:
+G(R) = − 1
+4πR → G(r, r0) = − 1
+4π|r − r0| (30)
+where the integral is performed on the variable r0 and E(r) is the indicator function of the domain Ω,
+E(r) =
+
+
+1 r∈ α
+4π r ∈ ∂Ω
+0 r ∈/ V ̄
+(
+31)
+where α is the solid angle of the domain Ω, seen from the point r on its boundary ∂Ω. As an example, if the boundary of the domain is smooth in r, the solid angle Ω is equal to 2π, and thus E(r) = 1/2.
+
+
+2.2 dust 35
+From a direct comparison of the Green function (31) and the kinetic potential induced by a point source (245), it is possible to identify the Green function as the opposite of the kinetic potential induced in r by a unitary point source located in r0 (and viceversa):
+φs(r, r0) = −G(r, r0) (32)
+The gradient of the Green function with respect to the first argument r reads1
+∇G(r, r0) = − 1
+4π
+r − r0
+|r − r0|3 (34)
+and its scalar product with a unit vector vˆ is equal to the kinetic potential (247) induced in r by the point doublet with axis vˆ located in r0,
+φd(r, r0) = vˆ · ∇G(r, r0) (35)
+2.2.2.2 Boundary conditions for the aerodynamic configuration
+The boundary ∂Ω of the potential flow domain is the union of the surfaces of solid bodies (∂Ωs) and both sides of the zero-thickness surfaces involved in vortex lattice (∂Ωv), lifting line (∂Ωl), free panel wake models (∂Ωw), and the far-field control surface (∂Ω∞):
+∂Ω = ∂Ωs ∪ ∂Ωv ∪ ∂Ωl ∪ ∂Ωw ∪ ∂Ω∞ (36)
+where Si = S+
+i ∪ S−
+i , for i ∈ {v, l, w}.
+On the body surface ∂Ωs non-penetration boundary conditions are applied:
+ˆn · (ub − U∞ − uψ)(r0t) = nˆ · uφ(r0t) = nˆ · ∇0φ(r0t) =: σ(r0t) (37)
+At the far-field ∂Ω∞ the following condition on the velocity is applied:
+U · ˆn = U∞ · nˆ (38)
+The boundary conditions across the wake can be derived by applying the mass and momentum conservation over a control cube, as described in Fig. 20. We can make the hypothesis of a thin wake contained in the x − y plane, where ˆn is the normal of the wake, nˆ + and nˆ − are, respectively, the normal of the upper and lower surfaces of the wake, such that nˆ = nˆ + = −nˆ −, while Us is the velocity of the wake, U + and U −
+1 The gradient of the Green function with respect to the second argument is the opposite,
+∇G(r, r0) = −∇0G(r, r0) (33)
+
+
+36 software tools used/developed
+∆x y
+x
+z
+∆y
+nnn−
+nnn−
+uuu+ + δuuu
+δy + ...
+uuu
+nnn+
+∆z
+nnn
+Figure 20: Control cube across the wake
+are, respectively, the velocity perturbation of the upper and lower surface of the wake. We can write the mass balance:
+ρ(U + − Us) · nˆ +dA + ρ(U − − Us) · nˆ −dA = 0 (39)
+ρ(U + − Us) · nˆ +dA + ρ(U − − Us) · ˆn−dA = 0 (40)
+(U + − Us ) · ˆn+dA + (U − − Us ) · nˆ −dA = 0 (41)
+U + · nˆ − U − ˆn = 0 (42)
+This means that the normal component of the velocity does not change across the wake. The momentum conservation can be written, where p+ and p− are the pressure acting on the upper and lower surface.
+ρU +(U + − Us) · nˆ + + ρU −(U − − Us) · ˆn− = −p+nˆ + − p+nˆ − (43)
+(
+44)
+Since this is a vectorial equation, we can treat the normal and tangential components separately:
+ρU + · ˆn+(U + − Us) · nˆ − ρU − · nˆ +(U − − Us) · nˆ = −p+nˆ + · nˆ s − p− ˆn− · nˆ
+(
+45)
+ρU + · ˆn+(U + − Us) − ρU − · nˆ +(U − − Us) = −p+ + p− (46)
+ρU + · ˆn+ (U + − Us)nˆ − (U − − Us)nˆ
+| {z } 0,for mass conservation
+= −p+ + p− = 0 → p+ = p−
+(
+47)
+For the tangential part, we have the following:
+ρU + · τˆ (U + − Us) · nˆ s − ρU − · τˆ (U − − Us) · ˆns = 0 (48)
+The wake represents a discontinuity surface in the tangential component of the velocity, which means U + · τˆ ̸= U − · τˆ , so the only way to get the momentum conservation is:
+(U + − Us) · nˆ s = (U − − Us) · nˆ s = 0 → U +/− · nˆ s = Us · ˆns
+(
+49)
+
+
+2.2 dust 37
+Finally, we evaluate the jump of the potential across the wake through the unsteady Bernoulli theorem.
+
+
+∂φ+
+∂t + p+
+ρ +1
+2 ∥U +∥2 = C
+∂φ−
+∂t + p−
+ρ +1
+2 ∥U −∥2 = C
+(
+50)
+Subtracting the first and second equations, we obtain the following.
+∂φ+
+∂t − ∂φ−
+∂t + p+ − p−
+ρ +1
+2 ∥U +∥2 − ∥U −∥2 = 0 (51)
+∂∆φ
+∂t + 1
+2 ∥U +∥2 − ∥U −∥2 = 0 (52)
+∂∆φ
+∂t + (∥U +∥ + ∥U ∥)
+2
+| {z }
+Um
+∥U +∥ − ∥U ∥ = 0 (53)
+We know that U + = U∞ + u+ and U − = U∞ − u−, where u is the velocity perturbation; that means U + − U − = u+ − u−. We also know that the potential is defined starting from the velocity perturbation: u = ∇φ, that is,
+u+ − u− = ∇φ+ − ∇φ− = ∇(∆φ) (54)
+So, Bernoulli’s theorem is written as the material derivative with respect to the mean velocity of the wake:
+∂∆φ
+∂t + (Um · ∇) ∆φ = 0 → DUm∆φ
+Dt = 0 (55)
+This means that along the wake the potential jump remains constant on a particle that is moving at a mean velocity Um, in practice, the potential jump is transported with the average speed. Moreover, the particle must remain in the wake, so that the normal component of the mean velocity is equal to the normal component of the velocity:
+Um · nˆ = Us · ˆn.
+In conclusion, the following conditions apply to the wake:
+
+
+U + · nˆ = U − · nˆ
+p+ = p−
+U +/− · nˆ = Us · ˆn
+DUm ∆φ
+Dt = 0
+(
+56)
+
+
+38 software tools used/developed
+2.2.2.3 Solution of the aerodynamic problem
+We can separate the integral into subdomains:
+Eφ(r0) =
+Z
+∂Ω
+φ ∂G
+∂ ˆn − G ∂φ
+∂nˆ = (57)
+=
+Z
+∂Ωb
+φ ∂G
+∂ ˆn − G ∂φ
+∂nˆ +
+Z
+∂Ω∞
+φ ∂G
+∂nˆ − G ∂φ
+∂ ˆn + (58)
++
+Z
+∂Ωw+
+φ ∂G
+∂nˆ − G ∂φ
+∂ ˆn +
+Z
+∂Ωw−
+φ ∂G
+∂nˆ − G ∂φ
+∂ ˆn (59)
+where Ωb = ∂Ωs ∪ ∂Ωv ∪ ∂Ωl.
+Let considered the far-field integral: we can represent the domain as a sphere of infinite radius:
+Z
+∂Ω∞
+φ ∂G
+∂nˆ = Rli→m∞
+Z 2π
+0
+Zπ
+0
+φ ∂G
+∂R R2 sin γdγdθ = (60)
+= Rli→m∞
+Z 2π
+0
+Zπ
+0
+φ
+4πR2 R2 sin γdγdθ = (61)
+= Rli→m∞
+Z 2π
+0
+Zπ
+0
+∞ X
+n=1
+fn(γ, θ) Rn
+1
+4π sin γdγdθ ≈ (62)
+≈ Rli→m∞
+Z 2π
+0
+Zπ
+0
+fn(γ, θ)
+R
+1
+4π sin γdγdθ = 0 (63)
+and the other term is:
+Z
+∂Ω∞
+G ∂φ
+∂nˆ = Rli→m∞
+Z 2π
+0
+Zπ
+0
+−1
+4πR − f(γ, θ)
+R2 R2 sin γdγdθ = 0 (64)
+Consider the wake term. We know u+ · ˆn = u− · ˆn from the mass balance equation. We can expand the two terms of the condition as follows:
+
+
+u+ · ˆns = nˆ + · ∇φ+ = ∂φ+
+∂nˆ
+u− · ˆns = −nˆ + · ∇φ+ = ∂φ−
+∂nˆ
+→ ∂φ+
+∂ ˆn = − ∂φ−
+∂ ˆn (65)
+We can then simplify the wake term:
+Z
+∂Ωw+
+φ ∂G
+∂ ˆn − G ∂φ
+∂nˆ +
+Z
+∂Ωw−
+φ ∂G
+∂ ˆn − G ∂φ
+∂nˆ (66)
+Z
+∂Ωw+
+φ ∂G
+∂ ˆn −
+Z
+∂Ωw−
+φ ∂G
+∂nˆ −
+Z
+∂Ωw+
+G ∂φ
+∂nˆ +
+Z
+∂Ωw−
+G ∂φ
+∂nˆ (67)
+Z
+∂Ωw
+φ ∂G
+∂nˆ − φ− ∂G
+∂nˆ =
+Z
+∂Ωw
+∆φ ∂G
+∂nˆ (68)
+
+
+2.2 dust 39
+In the end, the problem is transformed into an integral equation plus the non-penetration boundary condition, in which the unknown is the potential on ∂Ωs:
+
+
+Eφ(r0) = R
+∂Ωs φ ∂G
+∂ ˆn − G ∂φ
+∂nˆ + R
+∂Ωw ∆φ ∂G
+∂nˆ ∂φ
+∂nˆ = σ(r0, t)
+(
+69)
+kutta’s condition Kutta condition represents the vorticity balance at the trailing edge and determines the intensity of the wake panel shed into the domain. Kutta condition is naturally satisfied by a vortex lattice and lifting line description of a lifting surface, whereas a row of implicit wake panels is introduced at the trailing edge of thick bodies modeled with surface panels, in order to satisfy the potential jump equivalent to the Kutta condition. The intensity μwTE of the trailing edge doublets and the intensity
+μ ̃ w of the wake doublets released at the previous time steps are identified in the wake doublet vector, μw = ( μwTE, μw ̃ ).
+Kutta condition relates the intensity of the ith
+TE element of the first
+row of the wake panels with the doublet intensity of the surface panels at the trailing edge,
+μw, iTE = μsu, iTE − μsl, iTE (70)
+In this way, we can incorporate the integral on the wake domain into the one on the body surface, since now the intensity of the wake is implicitly linked to the one of the surface panel.
+Eφ(r0) =
+Z
+∂Ω
+φ ∂G
+∂ ˆn − G ∂φ
+∂nˆ (71)
+2.2.2.4 Solution of the discretized problem
+The problem is solved by the collocation method: the surface of the solid bodies ∂Ωb and the potential part of the wake ∂Ωw are subdivided into panels and the velocity is evaluated in the center of the panel for each element. We can divide the domain of the integral 71 into two subdomains: one for the surface panels ∂Ωs and the remaining will include the flat elements (vortex lattice, lifting line and wake)
+∂Ω ∂Ωs:
+Eφ(r0) =
+Z
+∂Ωs
+φ ∂G
+∂nˆ − G ∂φ
+∂nˆ +
+Z
+∂Ω ∂Ωs
+φ ∂G
+∂ ˆn − G ∂φ
+∂nˆ (72)
+The last term cancels out for the non-penetration boundary condition on the flat body. Using a uniform-intensity panel discretisation and defining the intensity of the doublets, μis = −φis, and the sources,
+
+
+40 software tools used/developed
+σis = ˆnis · (ub − U∞ − uψ)is, the discrete counterpart of the problem
+reads
+N Xs
+ks=1
+Aisks μks +
+N Xv
+kv=1
+Aiskv μkv +
+Nl
+X
+kl=1
+Aiskl μkl + (73)
+N Xs
+ks=1
+Bisks σks +
+N Xw
+kw=1
+Aiskw μkw = 0 ∀is = 1 : Ns (74)
+where Aik and Bik represents the induced potential of the kth doublet and the source panel at the point ri,
+Aik = −
+Z
+Sk
+∂G(r0, ri)
+∂ ˆnks
+Bik = −
+Z
+Sk
+G(r0, ri)
+(
+75)
+except for the self-induction potential Aerodynamic Influence Coefficient (AIC) of a doublet,
+Aisis = E(ris ) −
+Z
+Sis
+∂G(r0, ris ) ∂ ˆnis
+=1
+2 (76)
+At each time step, the intensity σks of the sources is provided by
+the non-penetration boundary condition as a function of the velocity of the body surface ub and the rotational velocity uψ at the collocation points r0, while the intensity μkw of the wake doublet elements
+is known from previous time steps. The boundary element problem (
+73) for the solid bodies modeled with the surface panels is a linear system of Ns -equation in the N = Ns + Nv + Nl unknown doublet intensities μk, associated with all surface panels, the vortex lattice, and the lifting line elements. This linear system is underdetermined if vortex lattice or lifting line elements are used to build the model, along with surface panels.
+loads evaluation Using the Eulerian description of the system, the unsteady Bernoulli theorem for an irrotational flow of an incompressible fluid with constant density ρ, without any volume force states:
+∂φ
+∂t + |U |2
+2 +P
+ρ = C(t) (77)
+where φ is the kinetic potential, U = ∇φ is the velocity field, and P the pressure field. The kinetic potential and velocity fields can be decomposed as the sum of the free-stream and perturbation contributions as
+φ = φ∞ + φ → ∇φ = ∇φ∞ + ∇φ (78)
+so that φ∞ = U∞ · r, being r the space variable.
+
+
+2.2 dust 41
+In a panel method, it may be useful to write equations with an ALE (Arbitrary Lagrangian Eulerian) description to compute loads on a moving body by means of the Bernoulli equation. This approach has the advantage of using the spatial derivatives computed with the surface grid of the body and the temporal derivatives for given material points of the solid surface, as was done to compute the wake boundary condition. The time derivative of a physical quantity for a material point rb (of the solid component) moving with velocity
+ub = ∂x
+∂l rb
+is expressed as follows.
+∂
+∂t rb
+=∂
+∂t + ub · ∇ (79)
+Thus, the ALE description of the Bernoulli theorem (77) reads as follows:
+∂φ
+∂t rb
+− ub · ∇φ + |U |2
+2 +P
+ρ = C(t) (80)
+By equating the decomposition (78) and the free-stream condition taken as reference, the Bernoulli equation (80) is simply as follows:
+∂(φ∞ + φ)
+∂t rb
+− ub · ∇(φ∞ + φ) + |U |2
+2 +P
+ρ = (81)
+= ∂φ∞
+∂t rb
+− ub · ∇φ∞ + |U∞|2
+2 + P∞
+ρ (82)
+Thus, the pressure for a single panel can be calculated as follows.
+Pi = P∞ + ρ |U∞|2
+2 − ρ ∂φi
+∂t rb
+− ub · ∇φ + ρ |U |2
+2 (83)
+PP−G
+i = Pi
+p
+1 − Ma2 (84)
+The force for a single panel will then be:
+Fi = − P∞ − PP−G
+i dAi · nˆ i (85)
+2.2.3 Vortex Lattice
+Thin lifting bodies can be modeled as a zero-thickness two-dimensional vortex sheet ∂Ωv, where the non-penetration boundary condition must hold:
+nˆ · uφ = ˆn · (ub − U∞ − uψ) =: σ on ∂Ωv (86)
+The vortex-lattice method provides aerodynamic elements for the discrete representation of the mean surface of thin lifting bodies, modeled as a sheet of vortex rings of intensity Γiv, equivalent to a piece
+wise uniform surface doublet distribution with the same intensity
+
+
+42 software tools used/developed
+μiv = Γiv, iv = 1 : Nv. The boundary condition at the collocation
+point riv reads:
+N Xs
+ks=1
+Civks μks +
+N Xv
+kv=1
+Civkv μkv +
+Nl
+X
+kl=1
+Civkl μkl + (87)
++
+N Xs
+ks=1
+Divks σks +
+N Xw
+kw=1
+Civkw μkw = σiv ∀iv = 1 : Nv (88)
+where Cik and Dik represents the induced velocity of the kth doublet and the source panel at the point ri,
+Cik = −∇
+Z
+Sk
+∂G(r0, ri)
+∂ ˆnks
+Dik = −∇
+Z
+Sk
+G(r0, ri)
+(
+89)
+Given the value of the surface variables σk, from the movement of the body and the rotational part of the velocity, and the intensity of the wake doublet elements μkw, from previous time steps, the boundary
+conditions (87) are Nv linear equations in the N unknown doublet intensities μk.
+loads evaluation For vortex lattice elements, aerodynamic loads are calculated using the unsteady formulation of the Kutta-Joukowsky theorem with a Prandtl-Glauert compressibility correction. For a stripe that contains nstr panels from istr = 1 : nstr, starting from the leading edge, we see that the force acting on the i-th panels is:
+
+
+Fi = ρ∞
+(Vi × dli)
+q
+(1 − Ma2)
+· (Γi − Γi−1) − ρdAi
+d∆Γ
+dt · ˆni if i ̸= 1
+Fi = ρ∞
+(Vi × dli)
+q
+(1 − Ma2)
+· (Γi) − ρdAi
+dΓ
+dt · ˆni if i = 1
+(
+90)
+Where ρ∞ is the flow density, Vi is the induced velocity on the panel by all elements, dli is the spanwise vector, Ma is the local Mach, d∆Γ
+dt
+is the time derivative of the circulation calculated by an explicit Euler, dAi and ˆni are respectively the panel area and normal.
+2.2.4 Lifting Lines
+A lifting line is a 1-D model of thin slender lifting bodies, whose sectional aerodynamic coefficients are provided as a function of the local angle of attack α, the local Reynolds number Re and the local Mach number M,
+{cl, cd, cm} (α, Re, M; r) (91)
+
+
+2.2 dust 43
+Figure 21: Lifting line angles
+The circulation Γl(r, t) of the lifting line is determined as the solution of a non-linear problem, connecting Γl(r, t) with the tabulated aerodynamic coefficients of its lifting sections. Both a loosely coupled α-method [156] and a Γ -method [66] solver are available; however, only the Γ -method can be used when the element is coupled with an external structural solver, such as MBDyn, although this method suffers from numerical instabilities for low aspect ratio wings when coupled with flexible elements. The Γ -method consists in the equivalence of the semiempirical expression of the sectional lift and its analytical expression from the Kutta-Joukowski theorem.
+1
+2 ρ |u2D(r, t)|2c(r) cl(α(r, t); r) = −ρ |u2D(r, t)| Γ (r, t) (92)
+where c(r) and cl(α; r) represent the chord and the lift curve of the aerodynamic sections of the component, and the local angle of attack α and the relative velocity u2D are functions of the circulation of the lifting line Γl through the induced velocity. The total velocity vl(r, t) acting on the control point at time t of the lifting line l can be calculated as follows:
+vl(r, t) = U∞ − ul,b + utot\l(r, t) + ul(r, t) (93)
+where ul(r, t) is the induced velocity of the lifting on the other lifting lines: this contribution is proportional to the circulation of the lifting calculated in the previous iteration (k − 1) times the induction of a point doublet in the control point: utot l(r, t) = Γ (k−1)
+l φd(r, r0). In
+fact, each lifting line element constitutes a vortex ring along with its trailing vortices, and the last line vortex released in the wake aligned with the span-wise direction. The intensity of this vortex ring is equivalent to a uniform surface doublet μl = Γl. utot\l(r, t) is the velocity
+induced by the other elements on the lifting line and ul,b is the body
+velocity of the lifting line. Then, the velocity is projected on the ˆn − tˆ plane:
+u2D = (vl(r, t) · ˆnl) nˆ l + vl(r, t) · tˆl tˆl (94)
+
+
+44 software tools used/developed
+Angle of attack  ̃αl is calculated as:
+ ̃αl = tan−1 u2D · ˆnl
+u2D · tˆl
+(
+95)
+This angle must be corrected by taking out the velocity induced by the lifing line itself, according to [156] this correction is equal to:
+α2Dl = Γ (k−1)
+l
+π ci |u2D(r, t)| (96)
+Equation 96 is a simplification of the Kutta-Joukowski theorem for an airfoil with a lift slope coefficient of 2π. Eventually, the angle of attack used to enter in the look-up tables is computed as α =  ̃α − α2D, and the velocity used to calculate the Mach and Reynolds numbers is
+u2D.
+The discrete version of equation 92 can be formally formulated as a fixed-point problem:
+μil = fil (μks , μkv , μkl , σks , μkw ), il = 1 : Nl (97)
+in which the convergence is reached when the difference between the singularity magnitudes between two consecutive iterations is below a certain threshold.
+loads evaluation The loads for the lifting line are calculated in the same way as the vortex lattice (considering the case with only 1 in the chord) plus an additional term due to viscosity, calculated using strip theory:
+F visc
+i =1
+2 ρ∞|urel(r, t)|2dA · cd sin(αi) ˆn + cos(αi)tˆ (98)
+Then, the total force acting on a single lifting line is:
+Fi = ρ∞(Vi × dli) · (Γi) − ρdAi
+dΓ
+dt · ˆni + dF visc
+i (99)
+2.2.5 Non-linear Vortex Lattice
+To overcome both limitations of the lifting line (due to numerical scheme instabilities that occur when the lifting line is used to evaluate the lift of a short aspect ratio wing) and the vortex lattice (related to the capture of viscous effects), the two elements were joined together, providing a new non-linear vortex lattice element. In the first step, the potential solution of the linear vortex lattice is calculated by solving the linear system that imposes the non-penetration boundary condition on the vortex lattice panel as described in2.2.3. Then, the idea behind the method is to modify the right-hand side term of the complete aerodynamic system to obtain the match between the calculated lift coefficient and the tabulated one. The modification of the
+
+
+2.2 dust 45
+right-hand side occurs only on the rows of the linear system that are linked to μvnl, which is the unknown intensity of the surface doublet
+for the i − th non-linear vortex lattice panel. Any modification occurs on the left-hand side of the system, which means that the overall system is factorized only once for each time step. After the solution of the system, it is possible to calculate the angle of attack of each stripe in the component as for the lifting line case. The total velocity vvnl(r, t) acting on the control point (center) at time
+t of each stripe can be calculated as follows:
+vvnl (r, t) = U∞ − uvnl,b + utot\vnl (r, t) + uvnl (r, t) (100)
+where uvnl(r, t) is the induced velocity of the stripe on the other
+stripes. In this case, the total stripe intensity is calculated following the load calculation formula of the vortex lattice.
+Γvnl = dΓv1
+nl +
+N X
+i=2
+dΓvi
+nl − dΓvi−1
+nl (101)
+where dΓvi
+nl is the intensity panel i -th of the stripe calculated in the
+previous iteration. A fixed-point iterative problem is then solved, as for the lifting line Γ -method, by imposing a convergence between the lift coefficient derived from the aerodynamic look-up table and the one calculated from the stripe intensity. For each iteration, the vortex lattice linear system is solved by modifying only the right-hand side and taking as results the updated circulations. To numerically stabilize the method, two types of relaxation are available:
+• Constant relaxation, where the updated right-hand side of the system is:
+RHSk = RHSk−1 + α · r (102)
+where α is the constant relaxation factor and r is the residual vector, defined as the difference between the lift coefficient solved from the linear system and the one obtained for the aerodynamic look-up table in iteration k.
+• Aitken acceleration [99], where the updated right-hand side of the system is
+αk = −αk−1
+rk−1 · ∆rk ∆rk · ∆rk
+(
+103)
+where αk is the Aitken relaxation factor for iteration k, and r is the residual vector and ∆rk is the difference between the residuals in iteration k and k − 1. Then RHS is updated as described in Eq. 102.
+
+
+46 software tools used/developed
+loads evaluation For non-linear vortex lattice elements, aerodynamic loads are calculated using the unsteady formulation of the Kutta-Joukowsky theorem, as for the linear case plus a viscous correction on the drag term:
+dFi∈s = dF sys
+i∈s + 1
+2 ρ∞(u(r, t))2dAi∈scs
+d cos(α)tˆ + sin αnˆ (104)
+where i ∈ s stands for a panel i that belongs to the stripe s and dF sys
+i∈s
+is the force calculated from the system.
+2.2.6 Coupled governing equations
+The potential contribution of the velocity field is the result of the superposition of the free-stream velocity and the induced velocity from the doublet and source singularities, modeling the bound vorticity on the surface of the investigated bodies. Given the free stream velocity, the rotational component of the velocity field, the state of the wake, and the motion of the solid components of the model, the intensity of the surface doublets are the actual unknowns of the potential problem obtained combining Eqs. (73), (87) and (97) and the subdividing vortex lattice in the linear (vl) and non-linear case (vnl):
+
+
+
+  
+Ass Asvl Asvnl Asl
+Cvls Cvlvl Cvlvnl Cvll
+Cvnls Cvnlvl Cvnlvnl Cvnll
+
+  
+μ=
+−
+
+  
+Bss 0svl 0svnl
+Dvls −Ivlvl 0vlvnl
+Dvnls 0vnlvl −Ivnlvnl
+
+  
+σ−
+
+  
+Asw
+Cvlw
+Cvnlw
+
+  
+μw
+μl = fl(μ; σ, μw)
+(
+105)
+where the vector μw collects the intensity of the wake doublets, the vector μ = (μs, μvl, μvnl, μl) collects the intensity of the body dou
+blets on the surface panel, the vortex lattice and the lifting line elements, the vector σ = (σs, σvl, σvnl) contains the unperturbed rel
+ative normal velocity at the collocation points of the surface panels and the vortex lattice elements, 0sv is a null matrix Ns × Nv, Ivv is the identity matrix Nv × Nv. The aerodynamic problem (105) can be written in a compact form as
+Yμ = −Zσ − Ywμw
+μl = fl(μ; σ, μw) (106)
+2.2.7 Wake shedding
+Lifting bodies release wakes from their trailing edges. Kutta condition represents the vorticity balance at the trailing edge and determines
+
+
+2.2 dust 47
+the intensity of the wake panel shed into the domain. Kutta condition is naturally satisfied by a vortex lattice and lifting line description of a lifting surface, whereas a row of implicit wake panels is introduced at the trailing edge of thick bodies modeled with surface panels, in order to satisfy the potential jump equivalent to the Kutta condition. The intensity μwTE of the trailing edge doublets and the intensity
+μ ̃ w of the wake doublets released at the previous time steps are identified in the wake doublet vector, μw = ( μwTE, μw ̃ ).
+Kutta condition relates the intensity of the ith
+TE element of the first
+row of the wake panels with the doublet intensity of the surface panels at the trailing edge,
+μw, iTE = μsu, iTE − μsl, iTE , μwTE = Tμs (107)
+where su is the SP element with the unit normal approximately aligned with the unit normal vector of the wake surface, sl is the SP on the opposite side of the trailing edge, and the connectivity matrix T provides the matrix form of the Kutta condition. The implicit contribution of the trailing edge doublets in Eq. (106) are separated from the explicit wake terms,
+Ywμw = [YwTE Yw ̃ ]
+"
+μwT E
+μw ̃
+#
+= YwTE Tμs + Yw ̃ μw ̃ (108)
+so that the boundary value problem for the potential velocity becomes
+Y ̃ μ = −Zσ − Yw ̃ μw ̃
+μl = fl(μ; σ, μw ̃ ) (109)
+where the matrix Y ̃ collects the AICs contributions of the body singularities along with the trailing edge wake doublets shed by SP elements, Y ̃ =
+hY ̃ s Yv Yl
+i , Y ̃ s = Ys + YwTE T . (110)
+2.2.8 Rotational Velocity
+The mathematical formulation of the solver implemented in DUST is based on the decomposition of the velocity field as the sum of the potential contribution, induced by the surface elements, and the rotational contribution described in this section. The calculation of the rotational contribution uψ is based on a vortex particle method (VPM) to provide a grid-free Lagrangian description of the velocity-vorticity formulation of the governing equations of the fluid, as an alternative to classical Eulerian grid methods. This numerical method is particularly suited for these flows, where vorticity is confined only to a small fraction of the volume domain, such as in many aeronautical flows of interest. The vorticity field is represented as the sum of the elementary contributions associated with
+
+
+48 software tools used/developed
+the vortex particles, the material particles moving with the local fluid velocity. Thus, the evolution of the vorticity field is governed by the Lagrangian form of the vorticity equation and the kinematic equation of the material particles:
+
+
+Dω
+Dt = (ω · ∇)u − ν∆ω
+Dr(t)
+Dt = u(r(t), t)
+(
+111)
+The evolution of the vorticity of a material particle is influenced by vortex stretching/tilting and viscous effects. In the VPM method, these terms are computed for each particle at each time step as the sum of the elementary interaction with all the other particles and potential elements. Since this is a O(N2) operation and the number of vortex particles increases as the simulation advances in time, the computation of these interactions is accelerated by a Cartesian Fast Multiple Method (FMM), targeting the theoretical O(N) computational cost. Following Helmholtz’s decomposition of the velocity field, the rotational component of the velocity field is defined as the curl of the vector potential, uψ(r, t) = ∇ × ψ(r, t), and the vorticity field corresponds to the curl of the rotational component of the velocity, ω(r, t) = ∇ × uψ(r, t). Using these two relations, we have a Poisson equation for the vector potential ψ(r, t) where the vorticity field ω(r, t) acts as the volume forcing.
+−∆ψ = ω (112)
+is obtained, given the vector identity ∆ψ = ∇(∇ · ψ) − ∇ × ∇ × ψ and the divergence-free condition ∇ · φ = 0. The potential vector field ψ(r, t) is computed as the solution of the Poisson equation using the Green function method, namely:
+ψ(r, t) =
+Z
+Ω0
+G(r, r0)ω(r0, t)dΩ0 = 1
+4π
+Z
+Ω0
+ω(r0, t)
+|r − r0| dΩ0 (113)
+if the boundary contributions vanish, as in the case of unbounded aerodynamic flows. The rotational part of the velocity field uψ is evaluated taking the curl of the vector potential field (113),
+uψ(r, t) = ∇ × ψ(r, t) = 1
+4π ∇ ×
+Z
+Ω0
+ω(r0, t)
+|r − r0| dΩ0 =
+=− 1
+4π
+Z
+Ω0
+r − r0
+|r − r0|3 × ω(r0, t)dΩ0 =
+(
+114)
+and can be interpreted as the convolution of the Biot-Savart kernel,
+K(x) = ∇eG(x) = − 1
+4π
+x
+|x|3 , with the vorticity field.
+
+
+2.2 dust 49
+2.2.8.1 Vortex particles: singular model
+Vortex particle methods introduce a finite-dimensional approximation of the vorticity field ω(r, t) in the expression of the rotational part of the velocity: the vortex particle method assumes the following form of the vorticity field:
+ω(r, t) =
+N Xp
+p=1
+αp(t)δ (r − rp(t)) (115)
+where rp(t) denotes the coordinate of the pth vortex particle, αp(t) is the intensity vector of the pth vortex particle, and δ (r − rp(t)) is the Dirac delta. Introducing the approximation (115) of the vorticity field in expression (113), the approximation of the vector potential field ψ(r, t) becomes:
+ψ(r, t) = 1
+4π
+N Xp
+p=1
+αp(t)
+Z
+Ω0
+δ(r0 − rp(t))
+|r − r0| dΩ0 =
+=1
+4π
+N Xp
+p=1
+αp(t)
+|r − rp(t)|
+(
+116)
+and the rotational part of the velocity fields follows,
+uε(r, t) = − 1
+4π
+N Xp
+p=1
+r − rp
+|r − rp|3 × αp(t) (117)
+Both the vector potential and the rotational velocity (and its space derivatives) are singular at the location of the vortex particles: the velocity intensity grows to infinity at that point. Regularized models are introduced to avoid infinite-intensity interactions between particles.
+2.2.8.2 Vortex particles: regular(ised) model
+In order to avoid singularities, the vortex particle method assumes the following form of the vorticity field.
+ωh
+ε (r, t) =
+N Xp
+p=1
+αpζε (r − rp(t)) (118)
+where rp(t) denotes the coordinates of the pth vortex particle and the regular cut-off function ζε(x) replaces the Dirac delta of the singular model. It can be proven that the regular expression (118) is equal to the convolution of the singular vorticity field (115) with the cutoff function ζε(r). Several regularized Green functions are available in the literature with their respective regular Biot-Savart kernels. In
+
+
+50 software tools used/developed
+DUST, the Rosenhead kernel is implemented as a regularized version of the Biot-Savart kernel,
+Kε(x, y) = − 1
+4π
+x−y
+(|x − y|2 + δ2)3/2 (119)
+defined as the gradient of the Plummer potential;
+Gε(x, y) = 1
+4π(|x − y|2 + δ2)1/2 (120)
+where the regularization parameter δ is proportional to the radius of the vortex particles. The vortex radius is automatically set with a radius equal to the radius of the circumscribed circle on the correspondent wake panel, which is converted into a particle. In this way, the overlap between the particles is always guaranteed.
+Figure 22: Vortex radius behavior for a rotating propeller
+2.2.9 Vortex particle method: dynamical equations
+A Lagrangian description of the rotational velocity and the vorticity fields is provided by the kinematic equation of the trajectory of the material particles and the vorticity equation:
+
+
+drp(t)
+dt = U (rp(t), t)
+Dω
+Dt = (ω · ∇)U + ν∇2ω
+(
+121)
+where rp(t) is the position of the pth material particles and D/Dt is the material derivative, which describes the time rate of change of a physical quantity of a material particle. These equations must be supplemented with appropriate initial conditions and are directly related to the wake-shedding criterion of solid bodies in the simulations of flows of aeronautical interest. The discrete counterpart of the dynamical equations (121) reads,
+
+
+drp(t)
+dt = u(rp(t), t)
+dαp
+dt = (αp · ∇)u(rp(t), t) + ν∇2αp
+(
+122)
+
+
+2.2 dust 51
+where u = U∞ + uφ + uψ is the complete velocity field and the operator ν∇2αp represents the viscous term that acts on the p -th particle:
+ν∇2αp = ν
+Z
+Vp
+∇2ω (123)
+The irrotational velocity uφ is the solution to the linear problem, the rotational velocity uψ is replaced by its regularized approximation of uε. The diffusion term is approximated by means of Particle-Strength Exchange (PSE).
+2.2.9.1 Vortex stretching/tilting term
+For incompressible flows, three different equivalent expressions of the vortex stretching and tilting term are available;
+(ω · ∇)u (direct scheme) (ω · ∇T )u (adjoint scheme)
+1
+2 (ω · ∇)u + (ω · ∇T )u (symmetric scheme)
+(
+124)
+Although these schemes are equivalent in the continuous framework, their discrete counterparts are not. In the following, only the discrete version of the transpose scheme of the particle-to-particle direct interactions in the near field implemented in DUST is detailed. The transposed scheme is very special: it guarantees the exact conservation of the total vorticity and, moreover, leads to a weak solution of the vorticity equation[199]. The direct scheme can be easily derived by following the same procedure. The computation of panel-to-particle interactions requires the expression of the velocity gradient (or its transpose), while the far-field interactions are accelerated with the Cartesian FMM.
+transpose scheme The transpose scheme for inviscid flows is as follows. 
+
+drp(t)
+dt = u(rp(t), t)
+dαp
+dt = (αp · ∇T )u(rp(t), t)
+(
+125)
+where the index expression of the vortex stretching/tilting term reads:
+(αp · ∇T )u(rp(t), t)i = αp
+k ∂i uk(rp(t), t) (126)
+This term is evaluated using the Rosenhead kernel (119). The influence on the particle p of all particles q = 1 : N is computed in vector form as:
+dαp
+dt = − 1
+4π
+X
+q
+1
+R3 αq × αp − 3
+R5 ∆rpq(αq · αp × ∆rpq) =
+=− 1
+4π
+X
+q
+1
+R3 αq × αp − 3
+R5 ∆rpq(∆rpq · αq × αp)
+(
+127)
+
+
+52 software tools used/developed
+where R = (|∆rpq|2 + δ2)1/2 and ∆rpq = rp − rq.
+2.2.9.2 Viscous term: Particle Strength Exchange (PSE) method
+The viscous term in the vorticity equation is modeled with the PSE method, whose idea is to replace the differential Laplacian operator with an integral one. The motivation here is that integrals are much better suited for particle methods than second-order differential operators. It is possible to prove that the integral operator:
+∆εω(x) = ε−2
+Z
+V
+[ω(y) − ω(x)] ηε(y − x)dVy (128)
+is a good approximation of the differential Laplacian operator. If the kernel function is defined as ηε(x) = 1
+ε3 η x
+ε and η(x) satisfies the
+following moment conditions:
+Z
+V
+xixjη(x)dV = 2δij for i, j = 1, 2, 3 Z
+V
+xi1
+1 xi2
+2 xi3
+3 η(x)dV = 0 if i1 + i2 + i3 = 1 or 3 ⩽ i1 + i2 + i3 ⩽ r + 1 Z
+V
+|x|r+2|η(x)| < ∞
+(
+129)
+For vortex particle methods, the integral (128) can be approximated as the sum of all particles in the domain:
+∆εω(x) ≃ ε−2 X
+q
+Vq [ωq − ω(x)] ηε(rq − x) (130)
+where Vq is the volume of the qth vortex particle. Thus, the integral
+PSE approximation of the viscous term ∇2αp = R
+Vp ∆εω reads:
+∇2αp = ε−2 X
+q
+[Vpαq − Vqαp] ηε(rq − rp) (131)
+Winkelmans provides some examples of kernel functions with spherical symmetry, η ̃ (r) = η(r), with r = |r|. Some of them are listed here,
+with the respective regularization function ζ ̃(r), which must satisfy
+ ̃η(r) = − ζ ̃ ′(r)
+r . In DUST, the high-order algebraic kernel function is
+currently used in the PSE method:
+ζ ̃(r) = 15
+8π
+1
+(1 + r2)7/2 →  ̃η(r) = 105
+8π
+1
+(1 + r2)9/2 (132)
+2.2.10 Generation of the vortex particles
+The vortex particles are generated from wake-vortex lattices. At each time step, the wake panels are advected downstream and another panel is generated; after a prescribed nwp number of time steps of
+
+
+2.2 dust 53
+existence of a panel, the panel is converted into a particle, generating after the initial transient a wake with nwp rows of panels attached to the trailing edges followed by a particle wake. It is possible to obtain a complete particle wake by prescribing nwp = 1, which leaves only the first row of implicit panels, necessary to enforce the Kutta condition. When each panel is converted into a particle, the intensity comes from the integration of the vorticity contribution from the sides of the vortex lattice element. However, since each vortex-ring panel has a constant intensity and represents a closed path, the simple integration of its sides would lead to a zero value. For this reason, the actual intensity of each side due to the superposition of the sides of the neighboring panels is considered, and the contribution of each side is distributed to the neighboring particles that are about to be generated, as shown in Fig. 23. While the neighboring elements in the direction normal to the flow are converted simultaneously and their contribution is shared with the respective particles, the previous panel in the streamwise direction was already converted the previous time-step. For this reason, each particle is formed with the contribution of the two lateral sides of the panel, the rearmost side and a line vortex left by the previous panel, while the present panel leaves the foremost side as a line vortex attached to the following panel. The contribution from each lateral side can be defined as:
+Js =
+
+
+Z
+s
+1
+2 (μw,i − μw,in)dl if neighbour in present
+Z
+s
+μw,idl if neighbour in absent
+(
+133)
+where s is one side and the contribution is the whole vorticity of the side if no neighbor is present or half of the net contribution of the side. The other half will be assigned to the neighboring particle. The end-side contribution is as follows.
+JE =
+Z
+s
+(μw,i − μiend )dl (134)
+where μiend is the intensity of the corresponding end line vortex, and
+thus defining JL, JR the contribution from the two lateral sided, the intensity of the generated particle is:
+αip = JL + JR + JE (135)
+The newly generated particle is placed in the center of the previous panel and then begins to evolve according to (121). Both the calculation of the intensity and the initial placement are approximations; however, they do not introduce a significant error, while using a more complex distribution of particles to describe a converted panel does not lead to a noticeable increase in accuracy.
+
+
+54 software tools used/developed
+Figure 23: Schematics of an example of conversion from panels to particles
+2.3 implementation of the co-simulation scheme between
+mbdyn and dust
+2.3.1 Theorical background
+Communications between DUST and MBDyn are managed by preCICE (Precise Code Interaction Coupling Environment), a coupling library for partitioned multiphysics simulations, originally developed for fluid-structure interaction and conjugate heat transfer simulations. preCICE offers methods for transient equations coupling, communication means, and data mapping schemes. It is written in C++ and offers additional bindings for C, Fortran, MATLAB, and Python. preCICE (https://github.com/precice/) is a free software released under the LGPL3 license. Although MBDyn uses its own C++, C, Fortran, and Python Application Programming Interface (API) to communicate with external software without any further modification of the C++ source code, no API was already available in DUST. Thus, new Fortran modules that collect all classes, subroutines, and functions required by the adapter for preCICE were implemented to support coupling with DUST. A new adapter was implemented to support the communication of all kinematic variables (position, orientation, velocity, and angular velocity), plus the forces and moments that act on the nodes of a model MBDyn exposed through an external structural force element. Figure 24 shows the communication and information exchange scheme managed through the adapters for the two solvers. The interface between structural and aerodynamic grids is obtained as a weighted average of the anisotropic distance between the nodes of the two grids and is used for motion interpolation and consistent force and moment reduction. Figure 26 shows the q nodes of the structural grid, namely Qq. The centers and vertices of each aero
+
+
+2.3 implementation of the co-simulation scheme between mbdyn and dust 55
+188 and functions required by the adapter for preCICE were implemented to support coupling with DUST. 189 The optional coupling with external codes was managed through pre-processor directives. 190 A new adapter was implemented for support the communication of all the kinematic variables 191 (position, orientation, velocity and angular velocity) plus forces and moments acting on the nodes of a 192 MBDyn model exposed through an external structural force element. Figure 1 shows a scheme of the 193 communication and information exchange, managed through the adapters for the two solvers.
+Structural block Aerodynamic block
+MBDyn Python API preCICE
+interface adapter preCICE adapter DUST
+Figure 1. Scheme of the communication managed through adapters for MBDyn and DUST
+194 The interface between structural and aerodynamic grids is obtained as a weighted average of the 195 distance between the nodes of the two grids and is used for motion interpolation and consistent force 196 and moment reduction. Figure 2 shows the q nodes of the structural grid, namely Qq. The centers and 197 the vertices of each aerodynamic mesh are respectively Pe and Pp, where e and p are the corresponding 198 indices.
+Figure 2. Scheme for motion interpolation (left) and force and moment transfer (right). Structural points are represented by red dots. Nodes of the aerodynamic mesh and panels centers are represented with plain dot and crosses, respectively;
+Figure 24: Scheme of the communication managed through adapters for MBDyn and DUST.
+dynamic mesh are, respectively, Pe and Pp, where e and p are the corresponding indices. The kinematic variables φp, of a point p positioned on the aerodynamic surface of a DUST component, are evaluated as the following weighted average:
+φp =
+X
+q
+wpqφq (136)
+where φq is the same kinematic variable associated with the qth structural node of the MBDyn model. In general, the weights wpq are a set of non-negative real numbers that satisfy the normalization conditions.
+X
+q
+wpq = 1 ∀p (137)
+since they define the weighted average of the variables associated with the structural nodes q in the aerodynamic nodes p. These coefficients are proportional to the inverse distance of the anisotropic norm of the vectors ∥(Pp − Qq)∥. As an example, using the local coordinates in the reference configuration rpq, the norm of these vectors can be defined as
+∥(Pp − Qq)∥2 := RT
+pq W Rpq (138)
+where W is a positive semidefinite matrix that provides an anisotropy degree of freedom in defining the norm [166]:
+W=
+
+  
+0.001 0 0
+0 1. 0
+0 0 0.001
+
+  
+(
+139)
+and Rpq is the rotation matrix that rotates the structural coordinates from the MBDyn reference frame to the DUST component one. These weights are also used to interpolate rotations, using the orientation vector parameterization φpq.
+2.3.1.1 Automatic generation of the Rpq matrix
+In DUST, the aerodynamic component is defined reference system:
+• The X-axis goes from the leading edge to the trailing edge.
+
+
+56 software tools used/developed
+• The Y-axis is along the aerodynamic center axis and goes from the root to tip.
+• The Z-axis is determined by the right-hand rule.
+while in MBDyn, the generic beam component is placed in the reference system:
+• The X-axis is along the feathering or elastic axis of the beam and goes from the root of the beam to the tip.
+• The Y-axis coincides with the section chord from the trailing edge to the leading edge.
+• The Z-axis is determined by the right-hand rule.
+To pass from the local MBDyn beam reference frame to the DUST wind axis reference frame, the following rotation matrices are used:
+• Rotation matrix from the DUST reference frame to the MBDyn reference frame:
+Rb =
+
+  
+0 10
+−1 0 0
+0 01
+
+  
+(
+140)
+• Twist rotation of the MBDyn node around the beam axis x1.
+Rθ =
+
+  
+cos θ 0 sin θ
+0 10
+− sin θ 0 cos θ
+
+  
+(
+141)
+• Sweep rotation of the MBDyn node. The sweep is taken to be positive for a rotation about −z.
+Rλ =
+
+  
+cos λ − sin λ 0 sin λ cos λ 0
+0 01
+
+  
+(
+142)
+• Dihedral rotation of the MBDyn node.
+Rδ =
+
+  
+10 0
+0 cos δ sin δ 0 − sin δ cos δ
+
+  
+(
+143)
+1 In the case of a rotor blade, this matrix is equal to the identity, as the aerodynamic twist has already been integrated to build the structural beam. Then, the twist of each region will be zero, since it will be taken from the MBDyn node orientation
+
+
+2.3 implementation of the co-simulation scheme between mbdyn and dust 57
+Then, the generic rotation matrix for a right component is:
+Rright = RbRθRλRδ (144)
+The generic rotation matrix for a left component is
+Rleft = RbRθRT
+λ RT
+δ (145)
+Dihedral
+Sweep
+Twist
+Ref. Chord Fraction Starting Point
+x
+y
+z
+Figure 25: DUST component reference system
+2.3.1.2 Kinematic and Load Variables
+The position of a point P in the global reference frame g of the aerodynamic surface is evaluated as
+(Pp − O)g =
+X
+Q∈IP
+wpq (Qq − O)g + Rr→g
+Q (Pp − Qq) (146)
+where Q ∈ Ip indicates the subset of structural points Qq that belong to the aerodynamic component Ip, (Qq − O)g is the distance from the origin of the Qq structural point, and Rr→g
+Q (Pp − Qq) rotates in
+global coordinates the distance between the aerodynamic point and the structural one. Its angular velocity ωP and velocity vP, respectively, are
+ωP =
+X
+Q∈IP
+wpq ωQ vP =
+X
+Q∈IP
+wpq vQ + ωQ × (P − Q) (147)
+Aerodynamic forces and moments are evaluated at the evaluation points Pe located in the center of each panel and then transferred For the component of
+the lifting line, the loads are evaluated at the center of the lifting line, which is placed at 25% of the chord
+
+
+58 software tools used/developed
+to the structural nodes using the sum of forces and the transport of moments as follows:
+fQ =
+X
+e∈JQ
+wqe fe mQ =
+X
+e∈JQ
+wqe {me + (Pe − Qq) × fe} (148)
+where e ∈ JQ indicates the subset of evaluation points that belong to each sub-component JQ, and the weights wqe are calculated using Equations (138) and (146), by computing the distance between each structural node and the evaluation point. It can be shown that these expressions of the loads are consistent with the expressions of the kinematic variables. The power of the loads acting on the structure, Ws, is equal to the power of the loads acting on the aerodynamic surface, Wa, which is equivalent to saying that the virtual work performed by the aerodynamic forces is equal to the structural: δWs = δWa.
+Ws =
+X
+Q
+fQ · vQ + mQ · ωQ = (149)
+=
+X
+Q
+weq
+
+
+X
+e∈JQ
+fe · vQ +
+X
+e∈JQ
+[me + (Pe − Q) × fe] · ωQ
+
+=
+(
+150)
+=
+X
+Q
+X
+e∈JQ
+weq fe · vQ + [me + (Pe − Q) × fe] · ωQ = (151)
+=
+X
+e
+X
+Q∈Ie
+weq fe · vQ + [me + (Pe − Q) × fe] · ωQ = (152)
+=
+X
+e
+
+fe ·
+X
+Q∈Ie
+weq vQ + ωQ × (Pe − Q) + me ·
+X
+Q∈Ie
+weq ωQ
+
+=
+(
+153)
+=
+X
+e
+{fe · ve + me · ωe} = Wa (154)
+Figure 26: Scheme for motion interpolation (left) and force and moment transfer (right). Structural points are represented by red dots. Nodes of the aerodynamic mesh and panels centers are represented with plain dot and crosses, respectively.
+
+
+2.3 implementation of the co-simulation scheme between mbdyn and dust 59
+2.3.2 Implementation
+Figure 27 shows the flow of information during the coupled simulation between the two solvers for an implicit tight serial scheme. First, the object precice of class t_precice is declared to handle a coupled simulation through the preCICE library. This object is used to manage both data communication and to update coupled components of the aerodynamic model. Then, the instance of DUST participating in the coupled simulation is created, reading the XML preCICE configuration file. After some preliminary operations, the mesh used to couple the codes is defined, and the fields involved in the communication are initialized. The initialization of the Fast Multiple Kernels, wake, and linear system follows. Before the time loop starts, communication is first established between the coupled codes. The time loop starts with the update of DUST’s explicit aerodynamic elements (lifting lines and actuator disks). A checkpoint of the exchanged fields is stored, to be reloaded during sub-iterations of preCICE’s implicit coupling. DUST then receives the kinematic variables of the structural nodes from external software MBDyn, and updates the surfaces of the coupled components and the near-field wake elements. The linear system is then updated and solved, calculating the strengths of the vortexes of the surface panels and the vortex lattice elements. The solution of the non-linear vortex lattice and lifting line problems follows. The aerodynamic forces and moments are reduced to the nodes of the interface between the aerodynamic and structural meshes and sent to MBDyn. The convergence check on the kinematics variables follows. If convergence is not reached, the checkpoint fields are reloaded and a new subiteration begins. If convergence is attained, the time step is finalized, saving the status and updating the wake and the geometry of the uncoupled components for the next time step. At each internal preCICE iteration, the location of the trailing edge point is updated consistently to correctly position the leading edge of the wake and then correctly position the released particle.
+2.3.3 Hinged surfaces modeling
+Modeling the deflection of a control surface is essential for the simulation of aircraft maneuvers and for trimming in the aircraft in free-free condition. In MBDyn, the deflection of a control surface can be easily modeled as a rigid/deformable body properly constrained to the fixed part of the vehicle to allow only its relative rotation about the hinge axis. In DUST, the possibility of including a control surface in the aerodynamic mesh has only recently been introduced. In the following, the description of the model implemented for hinged sur
+
+
+60 software tools used/developed
+Iterative loop
+Start
+preCICE XML
+DUST initialisation MBDyn initialisation
+Initialize communication
+Starting structural dynamics computation
+Save
+t < tend
+Send kinematic variables to aerodynamic mesh nodes
+Update aerodynamic loads DUST
+Update structure dynamics MBDyn
+Save iteration
+preCICE convergence
+Stop
+no
+yes
+no
+yes
+Figure 27: Flowchart of the implicit communication managed by preCICE between DUST and MBDyn [38].
+
+
+2.3 implementation of the co-simulation scheme between mbdyn and dust 61
+faces in DUST is first introduced with a two-dimensional example and then extended to three-dimensional deformable components. As outlined by the scheme in Fig. 28 (left), in a two-dimensional problem the control surface can be defined in the local reference frame of the component, by means of the hinge axis position H, the chordwise direction ξ and a blending region [−u, u] introduced to avoid irregularities in the mesh as the surface rotates at an angle θ. Furthermore, in the 2D modeling, it is assumed that the rotation axis
+ˆh is orthogonal to the plane of the airfoil. As shown in Fig. 28, an orthonormal reference frame for the hinge
+is defined with the origin in H and the axes ξˆ, ηˆ = ˆh × ξˆ. The position of a point with respect to this reference frame is as follows.
+r = ξ ξˆ + η ηˆ + h ˆh (155)
+Three regions are defined using the coordinates based on this reference frame:
+1. ξ ⩽ −u: no influence on control surface rotation;
+2. ξ ⩾ u: rigid rotation on the hinge:
+∆r = sin θ ˆh × r + (1 − cos θ) ˆh × ˆh × r (156)
+3. −u ⩽ ξ ⩽ u: blending region to avoid irregularities, defined as an arc of a circle whose center is located at point C and whose radius is:
+CC′ = C′H
+tan θ
+2
+where C′H = u (157)
+Figure 28: Scheme of the two-dimensional hinged surface configuration
+In a three-dimensional problem, the reference configuration of a control surface for a generic swept wing is defined in the wind axis reference frame of the component, as shown in Fig. 29. Therefore, the aerodynamic sections involved in the deflection of the control surface are those that satisfy condition y(A) < y(P) <
+
+
+62 software tools used/developed
+xwind
+ywind
+h
+A
+B
+Figure 29: Hinge reference system for a swept wing.
+Figure 30: Control surface deflection for a deformable wing.
+y(B), where y(P) is the ordinate of the aerodynamic mesh point Pi − th expressed in the wind reference system. As in the 2D case, one can define the three regions for each stripe identified at the previous point. The y coordinate of the origin of the sectional reference frame is determined by linear interpolation between points A and B. When the movable surface is coupled with a structural component in MBDyn, the orientation of the hinge in the DUST nodes comes from the orientation of the nodes of the MBDyn model. The rotation
+axis is defined as ˆh = (B − A)
+∥B − A∥ . Each point of the movable surface is
+linked to the hinge nodes, which obtains its kinematic variables as a weighted average of the motion induced by the rotation of the hinge nodes. Weights wph are evaluated using only the h components of the vectors connecting the control surface points to the hinge nodes. The weights wph are then combined with the structural interpolation weight w to allow deformation of the structure, as shown in Fig. 30. The weights are calculated for each point of the aerodynamic mesh, while the weights wph are specifically used to impose the rigid deflection of the moving surface.
+
+
+3
+G E N E R A L VA L I D AT I O N A N D V E R I F I C AT I O N
+3.1 introduction
+Figure 31: Goland Wing in flutter: DUST wake visualization
+The implemented codes are validated considering several test cases [38, 39, 169, 171]. The first validation is provided by analyzing Goland wing, a numerical test case that was widely used in the literature as a benchmark for flutter predictions. This validated the coupling procedure between DUST and MBDyn. The second groups of test cases are related to the validation of the nonlinear vortex lattice element. Three cases are considered:
+1. A fixed finite wing with a non-symmetric profile: the validation is made by comparing the nonlinear vortex lattice against the lifting line element and the CFD results.
+2. A propeller operating at different inflow conditions and angular velocities. Comparisons are made with the lifting line and the experimental results.
+3. XV-15 rotor equipped with metallic blades: here the validation is made comparing the experimental result and the CFD results in hover condition, advanced flight and axial flow.
+3.2 dust-mbdyn coupling: goland wing
+This section presents the application and validation of the coupled software to the Goland wing [71], which is widely used in the literature to test and validate aeroelastic codes. This low aspect ratio (AR ≈ 3.33) is also interesting for highlighting the impact on flutter calculations of 2D and 3D aerodynamic models. Figure 32 shows the layout of the problem. EA indicates the elastic axis; CG indicates the
+63
+
+
+64 general validation and verification
+center of gravity axis. U∞ is the free-stream velocity. All relevant geometrical and structural properties are reported in Table 2. They have been obtained from [146].
+U∞
+ECAG
+Figure 32: Goland’s wing model layout
+Table 2: Goland wing properties and flight conditions [146].
+Wing properties
+Half span 6.096 m Inertia/unit span1 8.64 kg m Chord, c 1.8288 m Mass/unit span 35.71 kg m−1 Elastic axis 0.33 · c Torsional stiffness 0.99×106 N m2 Center of gravity 0.43 · c Bending stiffness 9.77×106 N m2
+Flight condition
+Air density 1.020 kg m−3 AoA Perturbation 0.05 deg
+Two aerodynamic meshes are considered. In the first case, the wing is modeled as a flat plate using linear and nonlinear vortex lattice elements, while in the second case it is modeled with surface panels reproducing its geometrical shape and thickness. The results of a convergence analysis on the computed aerodynamic loads indicated the need to use 30 elements in the span-wise direction to obtain a correct spatial discretisation for both models. The flat mesh vortex lattice requires 30 uniform divisions in the chordwise direction, whereas the surface panel model requires 30 divisions for the lower and upper sides of the wing, with half-cosine-refined distribution at leading edge. The structural model built in MBDyn consists of four beams based on a C0 beam discretisation based on the concept of finite volume proposed in [68]. A satisfactory number of beam elements is obtained by satisfying a convergence requirement in the first four modes of the wing, as indicated by comparing the frequencies of the first four normal vibration modes of the wing computed by MBDyn with respect to Goland’s work [71] and NASTRAN shown in Table 3. Tight coupled time-marching simulations are performed using a time discretization of 0.001 s and considering for the evolution of the wake particles a fourteen-chord-long box behind the wing, resulting in a developed wake made of about three thousand vortex
+
+
+3.2 dust-mbdyn coupling: goland wing 65
+Table 3: Comparison of the first four natural frequencies computed for the Goland wing [71].
+Goland [71] Hz NASTRAN Hz MBDyn Hz
+1st Bending 7.66 7.66 7.66
+1st Torsion 15.24 15.24 15.21
+2nd Bending 38.80 38.59 38.54
+2nd Torsion 55.33 54.84 54.79
+particles. The computation time to perform a time-marched coupled simulation with a total duration of one second, using a workstation
+equipped with an Intel® CoreTM i9-9980XE processor running at a base frequency of 3.00 GHz, with 18 physical cores and 2 threads for each core, was about 9 and 13 min for the linear and non-linear vortex lattice simulation, and about 29 min for surface panel. To study the flutter instability, a non-zero angle of attack non-zero of 0.05 deg is introduced as a perturbation, as in reference [134]. The frequency and damping of the response are identified from the time history of wingtip deflection using the matrix pencil estimation (MPE) method [80]. Figure 33 presents the z displacement of Further deatails
+about this method are given in Section 7.2.2
+the last external structural node in the onset of the flutter calculated with the SP model. The red line corresponds to a stable damped response, whereas the blue line shows the condition of incipient flutter, in which a constant-amplitude free oscillation is reached. The green line shows the unstable response at a speed greater than the flutter speed. A corresponding representation of the deformed mesh associated with the bending-torsion instability and the related distribution of the pressure coefficient is shown in Figure 33 (left). These results indicate the ability of the coupled simulation to correctly capture fixedwing flutter. Table 4 reports a comparison of the speed and frequency of flutter calculated by several independent authors. The results computed with the coupled code agree quite well with those obtained by similar codes using 3D aerodynamic models [134, 146, 198]. In detail, the discrepancy with the results obtained with the same MBDyn structural model, but using its built-in aerodynamics based on two-dimensional unsteady strip theory, indicates the superior capability of the coupled code in the investigation of aeroelastic problems. The comparison of the results from the literature reported in Table 4, obtained with 2D and 3D models, confirms the need for a three-dimensional aerodynamic model for a correct and realistic flutter analysis of low aspect ratio wings. To evaluate the capabilities of the coupled code using the different aerodynamic models employed, Figure 34 presents the frequency
+
+
+66 general validation and verification
+0.0 0.5 1.0
+
+0.5
+
+1.0
+CP
+Figure 33: Time history of the Goland wing-tip deflection evaluated with surface panels aerodynamic mesh at three different wind speeds.
+Table 4: Comparison of flutter speed and frequency computed for Goland wing.
+Author Model Vf m s−1 ff Hz
+Goland [71] Analytical 137.2 11.25 Patil et al. [146] Intrinsic beam + strip theory 135.6 11.17 Present Work MBDyn’s built-in strip theory 135.1 11.07 Wang et al. [198] ZAERO 174.3 Wang et al. [198] Intrinsic beam + UVLM 163.8 Murua et al. [134] SHARP, Displacement beam + UVLM 165.0 10.98 Present Work DUST (VL)-MBDyn 168.2 10.84 Present Work DUST (NL-VL)-MBDyn 174.2 11.06 Present Work DUST (SP)-MBDyn 174.2 11.06
+
+
+3.3 non-linear vortex lattice 67
+and damping of the torsional mode of the first beam of the wing as functions of the free-stream velocity.
+(a) Frequency (b) Damping
+Figure 34: Frequency f and damping ratio ξ of the first torsional modes vs speed U∞ for Goland’s
+wing. Coupled DUST-MBDyn simulations results (VL, NL-VL and SP mesh) and MBDyn results with 2D strip theory aerodynamic model
+The numerical results of the coupled simulations using a panel mesh (SP) show slightly higher aerodynamic damping compared to those obtained using VL. A predicted flutter speed increase of approximately 3.7% is observed (Figure 34 right). However, the fairly limited differences in the results of the two models indicate that, for simple configurations, without complex aerodynamic interaction between bodies, a vortex lattice mesh is more convenient than surface panels, as computational cost is significantly reduced.
+3.3 non-linear vortex lattice
+The present section describes the results of the validation of the novel non-linear vortex lattice element tested on both fixed-wing and rotarywing benchmark cases available from the literature for aerodynamic and aeroelastic problems.
+3.3.1 Finite Wing
+Firstly, a simple finite wing benchmark case is considered to test the correct implementation of the method. In particular, the test case consists of a rectangular wing with an aspect ratio equal to 12, a constant chord of 1 m and a constant NACA4415 airfoil section. Figure 35b shows the comparison of the wing lift coefficient as a function of the angle of attack calculated by high-fidelity CFD simulations by Hosangadi et al. [154] and by DUST using both the LL and VL elements already implemented and the novel non-linear vortex lattice method (NL-VL). The effectiveness of the non-linear vortex-lattice method is evident, as shown by the remarkable agreement with the curves
+
+
+68 general validation and verification
+obtained using the lifting-line approach implemented in DUST and with high-fidelity CFD simulations, both considering viscous contributions for airloads evaluation. This result confirms the correctness of the novel implementation based on the integration of the viscous aerodynamic 2D data and shows the capabilities of the method to capture stalled and post-stalled conditions with respect to the purely potential VL model.
+(a) Wake visualization (b) Lift coefficient (CL) as function of angle of at
+tack
+Figure 35: Comparison of the NACA 4415 wing lift coefficient (CL) as function of angle of attack:
+high-fidelity CFD simulations results from [154] (CFD), DUST vortex lattice (VL), lifting line (LL) and non-linear vortex lattice (NL-VL) simulations results.
+3.3.2 Propeller
+As second test case, the results of the Workshop for Integrated Propeller Prediction (WIPP) [79] are compared with the DUST simulations. The WIPP model represents a useful test case for validating aerodynamic codes, since an intense experimental campaign was carried out, the results of which constitute a powered wind tunnel test database. The tests were carried out at the Lockheed Martin Low Speed Wind Tunnel (LSWT) in Marietta, Georgia, USA, as part of the NASA/Armstrong X-57 research program [79]. The model consisted of a 40.5% scale semi-span wing designed for the wind tunnel test campaign to be mounted on the LSWT external balance. The span, from the tunnel floor to the top of the nacelle, is equal to 1.772 m, with a root chord of 0.295 m and a tip chord of 0.218 m. The wing has a sweep at the leading edge of 1.9◦. The model incorporates a non-metric boundary layer splitter plate 0.163 m high, which is mounted on the tunnel floor. The model is equipped with an existing C-130 four-blade propeller with a diameter of 0.411 m and a blade pitch angle of 38◦. The propeller was also extensively used in previous activities to test a 10% scale C-130 aircraft model. The propeller is mounted on a nacelle at the tip of the wing. The nacelle is 0.613 m long with a maximum diameter of 0.12 m. The accurate geometries
+
+
+3.3 non-linear vortex lattice 69
+necessary for the construction of the numerical model are extracted by scanning a digital version of the wind tunnel model. Figure 36 shows the comparison of the propeller thrust coefficient as a function of the RPM for three different conditions of the Mach number in the free stream using the lifting line and the non-linear vortex lattice.
+Figure 36: Comparison of the propeller thrust coefficient as a function of angular velocity for different free-stream Mach number.
+Very good agreement with the experimental data is found for all three free-stream Mach numbers considered for both elements against the experimental results, even if for the non-linear vortex lattice the thrust is slightly under predicted. A global visualization of the flow field computed by DUST around the complete WIPP model is provided in Fig. 37, showing the Qcriterion isosurface colored by the non-dimensional free-stream velocity component and the contours of the pressure coefficient on the model surface. The flow representation clearly shows the DUST capability to capture the interaction of the helical structure generated by the propeller blade tip vortices with the wing-nacelle surface. Moreover, the DUST numerical solution also appreciates a secondary helical vortical structure generated from the blades with the trailing edge interacting with the nacelle surface. Further details about this
+Figure 37: Visualization of the flow field computed by DUST around the complete WIPP model: Q-criterion iso-surface colored by the non-dimensional free-stream velocity component and contours of pressure coefficient on the model surface M∞=0.11, CT =0.4,
+AoA=0◦
+
+
+70 general validation and verification
+test case, and in particular related to the DUST propeller-wing interaction capability, can be found in [170].
+3.3.3 Rotor
+A third benchmark case, this time in the field of rotorcraft, consisting of the simulation of the proprotor of the XV-15 tiltrotor with metal blades in different flight conditions, that is, hover condition, forward flight in helicopter mode and airplane mode. The main rotor data and the aerodynamic profiles are provided in Table 5, and Table 6. For the present test case, the three propeller blades were modeled as rigid blades using non-linear vortex lattice elements only. The tabulated aerodynamic performances of the propeller airfoils were taken from [62]. DUST simulations were performed considering a propeller revolution length of 10 with a discretization time of 5◦ of the azimuthal angle of the blade. The computational time required to complete the simulation of the rotor configuration was about 8 minutes using a workstation with a Dual Intel Xeon Gold 6230R @ 2.10Ghz with 104 core processor. In the following, the results of DUST simulations obtained using the NL-VL approach are compared with the recent results of highfidelity numerical simulations obtained by Jia et al. [83] using a Detached Eddy Simulation (DES) approach and with the experimental data collected in the test campaigns described by Felker et al. [62] and Betzina [25].
+Table 5: XV-15 metallic blade rotor: main data
+Parameter Value Unit
+Blade 3 Solidity 0.0891 Radius (R) 3.81 m Precone β 2.5 deg Chord 0.3556 m Twist 45 deg Nominal speed (Ω) 589 RPM
+3.3.3.1 Hover flight condition
+Figures 38a and 38b show the comparison of the rotor thrust coefficient (CT ) as a function, respectively, of the collective angle of the blade and of the rotor torque coefficient(CQ), while Fig. 38c shows

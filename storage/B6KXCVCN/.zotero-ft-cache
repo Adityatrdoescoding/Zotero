@@ -1,0 +1,356 @@
+Christopher Simpson
+
+Home
+About Me
+Publications
+Thursday, April 30, 2015
+Temporal and Spatial Stability Analysis of the Orr-Sommerfeld Equation
+This is the second and final part of the stability analysis of the Orr-Sommerfeld Equation. In my previous post, I went through the derivation and nondimensionalization of the Orr-Sommerfeld Equation. In this part, I show how to perform the temporal and spatial stability analyses.
+
+
+Blasius Velocity Profile
+A 2-D Blasius boundary layer can be expressed as
+
+	U¯=f′(η)		(1)
+
+where
+
+η=yU∞2νx
+f‴+ff″	=0
+f(0)=f′(0)	=0
+f′(∞)	=1
+
+This is a nonlinear ordinary differential equation that is most easily solved using a shooting method. In a shooting method, the boundary value problem is made into an initial value problem, whereby an initial guess of one parameter is iteratively updated until the opposite boundary conditions are met. In the present case, the unknown boundary condition is f″(0) , so it is iteratively adjusted until |f′(10)−1|≤10−6. The present case uses a fourth-order Runge-Kutta method of integration. The initial condition The transformation of the Blasius velocity profile from η to ξ is performed by determining the distance from the wall, δ, where the stream-wise velocity is 99.9% of the free-stream velocity.
+
+	U¯(ξ)	=U¯(ηδ)
+U¯″(ξ)	=1δ2U¯″(ηδ)		(2)
+
+The figure below shows the Blasius velocity profile and its derivatives.
+
+
+
+
+Temporal Stability
+The Orr-Sommerfeld equation can be analyzed for temporal stability by assuming that α¯ is real. This enables us to rearrange the non-dimensional Orr-Sommerfeld equation as follows.
+	(−U¯α¯2−U″+iα¯3Reδ)ϕ¯+(U¯−2iα¯Reδ)ϕ¯″+(iα¯Reδ)ϕ¯⁗=c¯(ϕ¯″−α¯2ϕ¯)		(3)
+If we discretize this equation using a finite difference approximation for ϕ¯″ and ϕ¯⁗, we get an equation of the form
+	AΦ=c~BΦ		(4)
+where Φ is a vector containing values ϕ¯i at discrete locations. This is nothing more than an eigenvalue problem, where c~ is a diagonal matrix of eigenvalues for the discrete system. The present calculations use a second order central differencing scheme to approximate the second and fourth derivative terms.
+	ϕ¯i″	≈ϕ¯i−1−2ϕ¯i+ϕ¯i+1h2
+ϕ¯i⁗	≈ϕ¯i−2−4ϕ¯i−1+6ϕ¯i−4ϕ¯i+1+ϕ¯i+2h4		(5)
+At the boundaries, ϕ¯=0, so the first and last columns of A and B are removed. However, ϕ¯′=0 also at the boundaries. Fortunately, using a backward difference method at the boundary gives ϕ¯−1≈ϕ¯0, so the ϕ¯i−2 term can be omitted from the ϕ¯⁗ approximation just inside the wall boundary. Similarly, the ϕ¯i+2 term can be omitted just inside the free-stream boundary.
+The finite difference approximations in Equation 5 gives a pentadiagonal A and tridiagonal B.
+	A	=1h4[a11	a21	a3		0
+a21	⋱	⋱	⋱
+a3	⋱	⋱	⋱	a3
+	⋱	⋱	⋱	a2n
+0		a3	a2n	a1n]
+B	=1h2[b1	b2		0
+b2	⋱	⋱
+	⋱	⋱	b2
+0		b2	b1]		(6)
+where
+	a1i	=h4(−U¯iα¯3−U¯i″α¯+iα¯Reδ)−2h2(U¯iα¯−2iα¯Reδ)+6(iReδ)
+a2i	=h2(U¯iα¯−2iα¯Reδ)−4(iReδ)
+a3	=iReδ
+b1	=−h2α¯3−α¯
+b2	=α¯		(7)
+The coefficients in A depend on the velocity profile, which varies with the distance from the wall. However, B is constant for a given α¯. In addition, B is guaranteed to be real and symmetric, and is thus guaranteed to be invertible. We can thus left multiply Equation 4 by B−1 and rewrite the equation as follows.
+	B−1AΦ=B−1c~BΦ		(8)
+It is clear that the eigenvalues of B−1A are the eigenvalues in c~. Matlab's eig function was used to solve for the eigenvalues for each combination of α¯ and Re. The following figure shows the eigenvalues of the discrete system using one value of α¯ and Re. Each combination of α¯ and Re gives a unique set of eigenvalues similar to these.
+
+
+
+Because this is a stability analysis, we only care about the most unstable eigenvalue. The governing equation is related to eiα(x−(cr+ici)t). If α is real, then any instabilities must come from an eigenvalue with a positive imaginary component. For this reason, the interesting eigenvalue is the eigenvalue with the maximum imaginary component. This analysis was done over a range of α¯ and Re, and the most unstable eigenvalue was stored for each combination. Matlab's contour function was then used to plot the contours shown in the following figure.
+
+
+
+It is important to note that the contours shown here differ from those found by Wazzan in [7] because the Orr-Sommerfeld equation has been nondimensionalized in a different manner. The present case used the boundary layer thickness δ, while Wazzan used displacement thickness δ∗.
+
+
+Spatial Stability
+The temporal stability analysis is performed assuming that α¯ is real. In the spatial stability analysis, we assume that ω is real. It is possible to derive a polynomial eigenvalue problem for the eigenvalues α¯, but solving the polynomial eigenvalue problem presented some challenges. Namely, at least one of the coefficient matrices was singular.
+
+
+
+To circumvent this challenge, a mapping method has been used to give a relation between a complex α¯ and a complex ω. In the present case, we hold α¯i at a specific value and vary α¯r. For each α¯r, the discrete eigenvalue problem is solved for ω, and the most unstable eigenvalue is kept as before. By varying α¯r with α¯i, a curve of ω values can be plotted in the complex plane, as shown in the figure above. We then determine if there is an α¯r that gives ωi=0 and store any locations that satisfy this condition. This process is repeated for a range of Re for all interesting α¯i values. The results of this process are shown in the figure below.
+
+
+
+
+Discussion
+This report is not the first on this topic, and the results do match fairly well with the references. Once the discretization was properly arranged, the eigenvalue computation was trivial using Matlab's built-in functions. Some factors added complexity to the project. The temporal stability curves are sensitive to the discretization step size and the number of Re and α¯ values used. However, the spatial stability curves were far more sensitive. 
+
+
+It turns out that an insufficient number of α¯r values will give bad resolution in the complex ω plane, periodically overestimating the zero locations. This caused some oscillations at larger values of Re. Additionally, a large number of Reynold's Number steps were required to ensure that the each of the desired contours were visible.Compounding the issue was the fact that an extra variable effectively raised computation time by nearly an order of magnitude.
+
+
+References
+J. D. Anderson. Fundamentals of Aerodynamics. Aeronautical and Aerospace Engineering Series. McGraw Hill, 4th edition, 2007.
+M. J. Maghrebi. Orr Sommerfeld Solver using Mapped Finite Di fference scheme for plane wake fl ow. Journal of Aerospace Science and Technology, 2(4):55-63, December 2005
+P. J. J. Moeleker. Linear Temporal Stability Analysis. Technical report, Delft University of Technology, 1998. Series 01: Aerodynamics 07.
+B. S. Ng and W. H. Reid. Simple Asymptotics for the Temporal Spectrum of an Orr-Sommerfeld Problem. Applied Mathematics Letters, 13:51-55, 2000.
+S. A. Orszag. Accurate Solution of the Orr-Sommerfeld Stability Equation. Technical report, Massachusetts Institute of Technology, May 1971.
+T. Patel. Stability Properties of Self-propelled Wakes. Master's Thesis, University of California, San Diego, 2012.
+A. R. Wazzan, T. T. Okamura, and A. M. O. Smith. Spatial and Temporal Stability Charts for the Falkner-Skan Boundary-layer Profiles. Technical report, Douglas Aircraft Company, 1968.
+F. M. White. Viscous Fluid Flow. McGraw-Hill Series in Mechanical Engineering. McGraw Hill, 2nd edition, 1991.
+
+
+Matlab Codes
+These are the Matlab files needed to perform this analysis. Please feel free to use them as you will, but please give me credit. A link to my blog is always appreciated.
+Main Stability Analysis Code: cs_orr_sommerfeld_stability.m
+Fourth Order Runge-Kutta Routine: cs_rk4.m
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Posted by Christopher at 12:17 AM 
+Email This
+BlogThis!
+Share to X
+Share to Facebook
+Share to Pinterest
+13 comments:
+maxiantorJuly 24, 2015 at 6:17 PM
+
+Very interesting blog. Thank you for this entry, saved me quite some time. The derivations and explanations are easy to follow.
+
+Reply
+maxiantorJuly 26, 2015 at 4:17 PM
+
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[german]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{listings}
+\begin{document}
+
+Just some thoughts appearing after actually trying to implement this in python instead of just grasping the idea:
+
+You wrote: "At the boundaries, $\overline{\Phi}=0$, so the first and last columns of A and B are removed. However, $\overline{\Phi}=0$ also at the boundaries."
+-> I think you meant $\overline{\Phi}'(0,\infty)=0$ the second time (prime missing)
+
+Some explicitly shown matrices, instead of only the general band structure, would have helped understanding a bit more. Especially with how the boundary conditions were applied. But this can be derived from your source code.
+
+I also wonder how you made this blog entry. Did you write this in latex? If so, which latex2html converter did you use?
+
+
+\section{Boundary Conditions}
+
+You wrote: ''Fortunately, using a backward difference method at the boundary gives $\overline{\Phi}_{-1} \approx \overline{\Phi}_0$, so the $\overline{\Phi}_{i-2}$ term can be omitted from the $\overline{\Phi}''''$ approximation just inside the wall boundary. Similarly, the $\overline{\Phi}_{i+2}$ term can be omitted just inside the free-stream boundary.''
+
+About these boundary conditions I'm really really unsure about what was done and so on.
+First: Saying that because of BDS $\Phi_{i-1} \approx \Phi_{i}$ and using that to eliminate $\Phi_{i-2}$ in $\Phi''''$ is wrong twice. First I would understand if you wrote: ''to eliminate $\Phi_{i-1}''$. Although I see, that BDS to an interval $2h$ instead of only $h$, thereby yielding $\Phi_0 \approx \Phi_{-2}$.
+With this you could simplify
+\begin{align}
+\Phi''''(0) = \frac{\Phi_{-2} -4 \Phi_{-1} + 6 \Phi_0 - 4\Phi_1 + \Phi_2}{h^4} + \mathcal{O}\left( h^2 \right) \\
+\overset{\text{Boundary}}{\Rightarrow}
+\Phi''''(0) = \frac{\Phi_{0} -4 \Phi_{-1} + 6 \Phi_0 - 4\Phi_1 + \Phi_2}{h^4} + \mathcal{O}\left( h^2 \right)
+\end{align}
+you seem to furthermore say that you can also eliminate $\Phi_{-1}\approx\Phi_0 = 0$ with this. Where $\Phi_0=$ because of the boundary condition. This would yield
+\begin{align}
+\Phi''''(0) = \frac{- 4\Phi_1 + \Phi_2}{h^4} + \mathcal{O}\left( h^2 \right)
+\end{align}
+For the neighbouring point you seem to do something similar (looking at how you define A in your matlab sourecode).
+
+The problem with that approach is the error scaling! If you use BDS and plug it into the 4th derivative you get:
+\begin{align}
+0 = \Phi''(0) = \frac{\Phi_{0}-\Phi_{-2}}{2 h} + \mathcal{O}(h) \\
+\Rightarrow
+\Phi''''(0) = \frac{ 2h \Phi''(0) + \Phi_{-2} -4 \Phi_{-1} + 6 \Phi_0 - 4\Phi_1 + \Phi_2}{h^4} + \mathcal{O}\left( h^2 \right) \\
+= \frac{ \Phi_{0}-\Phi_{-2} + \mathcal{O}\left( h^2 \right) + \Phi_{-2} -4 \Phi_{-1} + 6 \Phi_0 - 4\Phi_1 + \Phi_2}{h^4} + \mathcal{O}\left( h^2 \right) \\
+= \frac{ -4 \Phi_{-1} + 6 \Phi_0 - 4\Phi_1 + \Phi_2}{h^4}
+\mathcal{O}\left( \frac{1}{h^2} \right)
++ \mathcal{O}\left( h^2 \right)
+\end{align}
+Note the error scaling which is actually 1 over h squared !!!. So in order to somehow use the boundary condition $\Phi'(0)=0$ to eliminate something you would have to use a BDS or CDS scheme with error scaling $\mathcal{O}\left( h^5 \right)$. This would look like:
+\begin{align}
+f''''(0) = \frac{2 f_{-1} -9 f_0 + 16f_1 -14 f_2 + 6 f_3 - f_4 }{h^4} + \mathcal{O}\left(h^2\right) \\
+f''(0) = \frac{ -\frac{1}{5} f_{-1} -\frac{13}{12} f_0 + 2 f_1 - f_2 + \frac{1}{3} f_3 - \frac{1}{20} f_4 }{h} + \mathcal{O}\left(h^5\right) \\
+\label{eq:f4leftboundary}
+f''''(0) + \frac{10}{h^3} f''(0) \overset{f_0=0}{=}
+\frac{ 36 f_{1} - 24 f_2 + \frac{28}{3} f_3 - \frac{3}{2} f_4 }{h^4} + \mathcal{O}\left(h^5\right) \\
+\end{align}
+
+Reply
+Replies
+sashilFebruary 15, 2017 at 3:06 AM
+
+Hello sir, I didn't quite understand the objection you have raised here.
+
+Reply
+maxiantorJuly 26, 2015 at 4:17 PM
+
+Note that I used some mix of CDS and FDS for the 4th derivative, because I don't want more than one function value to lie beyond the border, because I can only eliminate one value with $\Phi'(0)=0$.
+
+You can test everything about the error scaling and inserting the boundary condition e.g. with $f(x)=\arctan(x)-\frac{x^6}{12} - \arctan(1) + \frac{1}{12}$ like I did. This function has $f(1)=0$ and $f'(1)=0$, so you can test it at $x=1$.
+
+\section{Removing first and last row}
+
+I'm also really really not sure about this step. I see why one could remove the first and last column, i.e. because $\Phi_0=0$, but the first row is an equation for $\Phi_0$ and this equation is only trivial if maybe $\Phi''(0)=0$ and $\Phi''''(0)$. That just what I did, because without removing these rows I don't know how to solve the eigenvalue equation. It's possible to reason that the boundary conditions are only to limit the spatial width of the perturbation wave function, so it wouldn't be all that wrong to say that higher order derivatives also go to $0$ at infinity or 0. This should only narrow the wave down a bit.
+
+Simply saying $\Phi_{i-2}=0=\Phi{-1} = 0=\Phi_{0}$ is also dangerous I think. This is what you basically did by using BDS. But this can also be seen as the statement, that $\Phi(x<0)$ is completely 0 beyond the border. But this would mean $\Phi$ is a piecewise function. And then this would mean that we tried differentiating this piecewise function at the critical point $x=0$ where it changes form with a CDS! But a CDS may not be defined at that point. Only pure BDS and FDS would be defined there and they would most likely not be equal with BDS always being 0 and FDS not!
+
+
+\section{Comparison}
+
+So I compared my solution using your Matrix A and B with my solution using a tad different boundary conditions like reasoned above. The only difference I could spot was a small shift of the thumb curve to higher Re (maybe Faktor 1.3). And the thumb curve looks a tiny bit thicker.
+
+here is $A_4$ which I use for $\Phi'''' =: \frac{A_4}{h^4} \vec{\Phi}$:
+
+
+\begin{lstlisting}[language=Python] A4 = np.zeros( [N,N] ) for i in xrange(len(A4)):     imax = len(A4)-1     if i == 0:         #A4[i][i+1] = 36.         #A4[i][i+2] =-24.         #A4[i][i+3] = 28./3.         #A4[i][i+4] =-1.5         # new approach: set f''(\infty) = 0 = f''''(\infty)         A4[i][i]   = 0     elif i == 1:         A4[i][i  ] = 16         A4[i][i+1] =-9         A4[i][i+2] = 8./3.         A4[i][i+3] =-1./4.         # scheme like Christopher simpson did         #A4[i][i-1] =-4    # will be cut of ...         #A4[i][i  ] = 6         #A4[i][i+1] =-4         #A4[i][i+2] = 1     elif i == 2:         A4[i][i-2] = 0    # boundary condition: \phi_0 = 0         A4[i][i-1] =-4         A4[i][i  ] = 6         A4[i][i+1] =-4         A4[i][i+2] = 1     elif i >= 3 and i <= imax-3:         A4[i][i-2] = 1         A4[i][i-1] =-4         A4[i][i  ] = 6         A4[i][i+1] =-4         A4[i][i+2] = 1     elif i == imax-2:         A4[i][i-2] = 1         A4[i][i-1] =-4         A4[i][i  ] = 6         A4[i][i+1] =-4         A4[i][i+2] = 0    # boundary condition: \phi_{i_\mathrm{max}} = 0     elif i == imax-1:         # see imax == 1         A4[i][i  ] = 16         A4[i][i-1] =-9         A4[i][i-2] = 8./3.         A4[i][i-3] =-1./4.         # scheme like Christopher simpson did ...         #A4[i][i-2] = 1         #A4[i][i-1] =-4         #A4[i][i  ] = 6         #A4[i][i+1] =-4    # will be cut of ...     elif i == imax:         #A4[i][i-1] = 36.         #A4[i][i-2] =-24.         #A4[i][i-3] = 28./3.         #A4[i][i-4] =-3./2.         # new approach: set f''(\infty) = 0 = f''''(\infty)         A4[i][i]   = 0 \end{lstlisting}
+
+
+\end{document}
+
+Reply
+Replies
+ChristopherJuly 26, 2015 at 9:05 PM
+
+First of all, thanks for the feedback. I'm glad to see someone is actually benefiting from my work. That makes it all worthwhile. I'll try my best to answer your questions here.
+
+"I think you meant $\overline{\Phi}'(0,\infty)=0$ the second time (prime missing)"
+Thanks for spotting that mistake. I have updated the post.
+
+"Some explicitly shown matrices, instead of only the general band structure, would have helped understanding a bit more."
+Noted. Ordinarily, I would have left the terms in the matrix, but I am constrained by the size of the page. My goal is to explain things clearly enough that you don't need to view the source code to understand the process. I'll try to be better about that in the future.
+
+"I also wonder how you made this blog entry. Did you write this in latex? If so, which latex2html converter did you use?"
+I use MathJax for the math. It allows me to use latex-style math inside the Blogger editor. You use \ ( and \ ) around inline formulas (without the spaces) and \ [ and \ ] around displayed formulas. I don't know if it works within comments. I guess I can try.x=3
+
+x=3
+If those are rendered, it works.
+
+"About these boundary conditions I'm really really unsure about what was done and so on."
+That is all my fault. I had to go back and look at my code to see what I was actually doing. Shame on me. What is not clear in the post is that I am using backward difference to approximate ϕ′. Since ϕ0′=ϕ0=0, this gives ϕ−1′≈0. I then apply the central difference method to approximate ϕ1⁗ (just inside the wall), where my stencil includes nodes -1, 0, 1, 2, and 3.
+
+"The problem with that approach is the error scaling!"
+I think you are right. I should have gone with a forward differencing scheme near the boundary instead. That's what I get for rushing things.
+
+"I'm also really really not sure about this step. I see why one could remove the first and last column, i.e. because $\Phi_0=0$, but the first row is an equation for $\Phi_0$ and this equation is only trivial if maybe $\Phi''(0)=0$ and $\Phi''''(0)$."
+The first and last rows can be removed because we already know a value for ϕ at the boundaries. If you only delete the columns, I believe you would find that you have two linearly dependent equations that reduce to 0 = 0. This is common practice when applying boundary conditions in finite difference equations.
+
+maxiantorJuly 30, 2015 at 9:14 AM
+
+Ok, thank you for your reply. That clears things up :)
+
+Reply
+AnonymousJanuary 17, 2016 at 10:19 AM
+
+Hi Christopher,
+
+I posted a question here:
+
+http://math.stackexchange.com/questions/1615447/orr-sommerfeld-equation-blasius-boundary-layer
+
+I was wondering if you could help out with this?
+
+Thanks!
+J
+
+Reply
+UnknownJanuary 9, 2017 at 10:56 AM
+
+Amazing work man....can't thank you enough!
+Could you help me on what I need to change to change the velocity profile?
+Thanx in Advance!
+
+
+
+Reply
+sashilFebruary 15, 2017 at 3:09 AM
+
+How to change the boundary conditions here?
+
+Reply
+JonatasMarch 28, 2017 at 8:57 AM
+
+How can I use de contour command? What are the arguments?
+
+Reply
+AnonymousNovember 17, 2020 at 2:03 PM
+
+Thanks for the awesome work! I have a quick question about the assumption made in the code. Is the flow for this problem considered inviscid or are the viscous terms included?
+
+Reply
+wadeOctober 5, 2021 at 8:45 AM
+
+hi can you give access to matlab file ?
+thank you
+
+Reply
+AnonymousApril 14, 2024 at 4:13 AM
+
+Sir, What is the Critical Reynolds number here?
+
+Reply
+
+Newer Post
+Older Post
+Home
+Subscribe to: Post Comments (Atom)
+Search This Blog
+	
+Topics
+CFD
+Embedded Programming
+Hardware
+Numerical Methods
+Software Bug
+Teensy
+Blog Archive
+►  2019 (1)
+►  2016 (2)
+▼  2015 (3)
+▼  April (2)
+Temporal and Spatial Stability Analysis of the Orr...
+Derivation and Nondimensionalization of the Orr-So...
+►  February (1)
+►  2014 (1)
+Contact Me
+
+Name
+
+
+Email *
+
+
+Message *
+
+
+About Me
+Christopher
+I am currently a graduate student at the University of Alabama. I am earning a Master's Degree in Aerospace Engineering and Mechanics. My interests include CFD, numerical methods, and really anything that relates to aircraft.
+View my complete profile
+	
+Copyright © 2015 Christopher Simpson. Powered by Blogger.

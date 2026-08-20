@@ -1,0 +1,387 @@
+Engineering Notes
+Real-Time Simulation of a Shipborne Rotor via Linearized State-Space FreeVortex Wake Models
+Umberto Saetti∗
+University of Maryland, College Park, Maryland 20740
+https://doi.org/10.2514/1.C037389
+I. Introduction
+I
+N AUGUST 2017, an MV-22B Osprey crashed into the ship deck of USS Green Bay off the coast of Queensland, Australia, killing 3 and injuring 23. A similar occurrence in December 2015 saw a nearmiss in which an Osprey landed short of the deck of an amphibious transport ship and hung halfway off the back of the ship. Subsequent investigations attributed the cause of both mishaps to heavy rotor downwash, which, in its interactions with the ship deck, ship hull, and water surface, recirculated into the rotor, causing increased power demands and an uncontrolled response about the roll axis, ultimately leading to a tragic end [1]. As such, modeling of the rotor downwash and its interactions with the sea surface, ship deck, and ship superstructures is key to understanding the adverse effects on the flight dynamics and performance of rotorcraft in shipboard operations. Moreover, the ability to replicate these interactions in real-time flight simulations could help supplement the creation of launch and recovery envelopes (LREs) aboard naval vessels. In fact, this virtual approach to LRE certification could be used to replace potentially unsafe live simulations during a dynamic interface (DI) period. Additionally, flight control laws designed to compensate for the adverse effect of shipboard interactions could lead to constructive simulations to further supplement and abate the cost of LRE certification and ultimately enable fully autonomous launch and recovery. Key to the development of flight control laws is the derivation of linear models of the coupled rotorcraft and wake dynamics that account for adverse shipboard interactions. Simulations of rotorcraft flight dynamics have advanced significantly over the past decade. To provide rapid simulations of generalized maneuvering flight, flight dynamics models were once restricted to relatively low-fidelity aeromechanics models, e.g., finite-state inflow and rigid blade element models. On the other hand, comprehensive aeromechanics simulations historically used much higher-fidelity aeromechanics, e.g., free vortex-wake modeling or even computational fluid dynamics (CFD) coupled with structural dynamics, at the cost of longer run times with analysis restricted to trim or very simple maneuvers. However, in recent years, increasingly higher-fidelity aeromechanics have made their way into flight dynamics simulations and even into real-time piloted simulations.
+Real-time, time-accurate free wake modeling was implemented in the General Helicopter (GenHel) [2] simulation and demonstrated using the CHARM Wake Module [3] in the early 2000s. The CHARM Wake Module was subsequently implemented in Navy training simulators, coupled with ship airwake effects [4]. An alternative model, FLIGHTLAB, has the capability to use viscous vortex particle models (VVPMs) [5]. Both free wake and VVPM models have the capability to predict rotor inflow and rotor wake interference effects in generalized maneuvering flight, moving beyond simplified empirical models that have been historically used in flight simulations. In 2017, Oruc et al. [6] even investigated the feasibility of using Eulerbased CFD methods in real-time simulation models. While those results indicated that such an approach is theoretically possible, the CFD methods applied would need to be greatly simplified and rely on massively parallelized computations. In any case, the gap between the fidelity of rotorcraft flight simulation models and rotorcraft comprehensive models is steadily closing. In the meantime, new configurations have become more complex. In fact, future vertical lift (FVL) and urban air mobility (UAM) configurations feature multiple rotors and high levels of aerodynamic interactions (e.g., rotor–wing interactions in tilt-rotors and rotorrotor interactions in co-axial helicopters), especially in shipboard approach and landing operations. This occurs because, in the vicinity of the ship deck, downwash of the rotorcraft interacts with the ship deck itself, sea surface, and vertical hull of the ship and may become re-ingested by the rotor system, leading to performance and handling quality penalties. Examples of these shipboard interactions include ground effect due to ship deck and sea surface and recirculation due to vertical walls; these are shown qualitatively in Fig. 1 for a tilt-rotor aircraft. These features drive the need for advanced aeromechanics models while at the same time making real-time speeds (or even sufficiently fast execution speeds for routine design) much more difficult. A number of free-wake solutions were developed over the years for the modeling ground effect [7–9], including the partial ground effect and sloped surfaces [10]. Interactions with more complex objects, such as naval ships, have been investigated using a variety of methods, including free-vortex wake modeling [11], Euler-based CFD methods [6,12], finite state inflow models [13], and grid-based models [14]. However, none of these methods demonstrated realtime performance. This is because modeling aerodynamic interactions requires larger amounts of wake to be computed, and rigid rotor systems (e.g., hingeless or bearingless rotors) require more costly structural dynamics models of the blades. Thus, while more advanced aeromechanics models are feasible, it is likely that, in many cases, execution speeds required for real-time simulations or routine design applications will remain elusive. It is therefore critical that high-fidelity aeromechanics models are formulated in such a way that they can be readily linearized and/or simplified to extract more tractable and less expensive models. Linearized state space models are particularly attractive from the control designer’s perspective. Not only are linearized models used in the majority of practical control design methodologies, but linear model analysis provides many physical insights into system dynamics. To this end, a first-order state variable implementation of the aeromechanics (or state-space implementation) that can be efficiently linearized is a highly desirable feature for future advanced simulations. There have been some recent efforts to extract linearized statespace models from free-wake and VVPM models using system identification methods [15,16]. These approaches perform frequency sweep excitations on the rotor wake model, and then perform frequency domain system identification to extract a low-order linearized model. These are in the form of finite-state inflow models and thus can be readily employed in simulation models. The method has the
+Presented as Paper 2022-3646 at the 2022 AIAA Aviation 2022 Forum, Chicago, IL, & Virtual, June 27–July 1, 2022; received 14 August 2023; revision received 7 December 2023; accepted for publication 11 January 2024; published online Open Access 19 February 2024. Copyright © 2024 by Umberto Saetti. Published by the American Institute of Aeronautics and Astronautics, Inc., with permission. All requests for copying and permission to reprint should be submitted to CCC at www.copyright.com; employ the eISSN 1533-3868 to initiate your request. See also AIAA Rights and Permissions www.aiaa.org/randp. *Assistant Professor, Department of Aerospace Engineering. Senior Member AIAA.
+1025
+JOURNAL OF AIRCRAFT Vol. 61, No. 3, May–June 2024
+Downloaded by "Indian Institute of Technology, Bombay" on August 7, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C037389
+
+
+advantage that it can be applied to almost any wake model, and the wake model does not need to be in state variable form. However, it is not a self-contained or automated process. Frequency sweeps need to be generated across the range of flight conditions of interest, and the system identification process needs to be performed and checked for each of these flight conditions. In [17], a state-space free-wake model is introduced in which the method of lines is used to express the partial differential equations (PDEs) constituting the University of Maryland Free Wake (MFW) model [18,19] into first-order state variable form. The formulation of the MFW model is well-suited for state space implementation due to the introduction of the wake age parameter, such that a particular wake state represents the position of a free wake node of a given age. The wake age is an angular distance measured along the vortex starting from the vortex release point on the wing/blade trailing edge. The underlying PDEs are governed by the Biot–Savart law, which is the most expensive part of the free-wake computation. These PDEs are discretized with respect to the wake age using a fourth-order fivepoint biased upwind (5PBU4) scheme. The discretized system becomes a set of first-order ODEs in time (i.e., a state space system), which can be accurately integrated forward in time and linearized. This wake model consists of only the wake node positions. The vortex strength was not considered in the system state, so by assumption, vortex strength is constant along the filament. There are two major challenges to linearizing the wake model: i) the wake states are inherently periodic in equilibrium, and ii) the number of wake states can be quite large (the simulation described in the section below has 1728 wake states, but this could grow even larger depending on the number of rotors and/or rotor blades), such that numerical perturbations of all states become expensive [20]. One approach is to average the effect of perturbations over a revolution, but a more rigorous approach is to generate a linear time-periodic (LTP) model by generating linear models across a range of azimuthal positions. One then has the option to extract an LTP model, convert this LTP model to linear time-invariant (LTI) through averaging, or extract a harmonic decomposition model. Recently, the harmonic decomposition method [21] was adopted to represent LTP systems with higher-order LTI models for use in the prediction of loads and vibration in a control design framework [22,23]. Additionally, a modified harmonic balance algorithm based on harmonic decomposition was developed to simultaneously solve for the periodic solution of nonlinear time-periodic (NLTP) systems and to provide harmonic decomposition models about that orbit [24]. Still, the cost of linearization needs to be addressed. Given this, the objectives of the proposed investigation are threefold. The first objective is to develop a state-variable implementation of a free-vortex wake model that is self-contained, inherently linearizable, and that can predict complex shipboard interactions. The second objective is to demonstrate the linearization of this highfidelity aeromechanics model. The third objective is the investigation of model-order reduction methods to guide the development of linearized wake simulations toward real-time performance while
+still capturing the underlying physics of the complex shipboard interactions. The discussion that follows begins with a discussion of the mathematical background behind NLTP systems, corresponding linearization methods, and the proposed state-space free-vortex wake model. This is followed by the results of the implementation and validation of the free-vortex wake model as applied to a blade element representation of a utility helicopter rotor similar to that of a UH-60 in shipboard operations. Next, linearized models of the coupled rotor and free-vortex wake dynamics are obtained for different positionings of the rotor with respect to the ship deck. Simulations are used to validate the response of the linearized dynamics against that of the nonlinear simulations. Reduced-order models are also investigated. The final remarks summarize the overall findings of the study.
+II. Methodology A. Mathematical Background
+The current investigation adopts the method described in [25–28], which is summarized as follows: Consider an NLTP system in firstorder form representative of the coupled rotor and free-vortex wake dynamics [22–31]:
+x_ f x; u; t (1a)
+y g x; u; t (1b)
+where x ∈ Rn is the state vector, u ∈ Rm is the control input vector, y ∈ Rl is the output vector, and t is the dimensional time in seconds. The nonlinear functions f and g are T-periodic in t such that
+f x; u; t f x; u; t T (2a)
+g x; u; t g x; u; t T (2b)
+It is convenient to note that dimensional time can be related to the azimuth angle ψ of a reference blade, also known as nondimensional time, via the following relation: ψ Ωt, where Ω the main rotor angular speed in rad/s. It follows that the fundamental period of the system is T 2π∕Ω seconds, which corresponds to 2π radians or one rotor revolution. Let x t and u t represent a periodic solution of the system such that x t x t T and u t u t T . Also, consider the case of small disturbances:
+x x Δx (3a)
+u u Δu (3b)
+where Δx and Δu are the state and control perturbation vectors from the periodic solution. Then, the NLTP system can be linearized about the periodic solution to yield an LTP system of the form
+Fig. 1 Examples of rotor wake and ship-deck interactions in shipboard operations for a tilt-rotor aircraft.
+1026 J. AIRCRAFT, VOL. 61, NO. 3: ENGINEERING NOTES
+Downloaded by "Indian Institute of Technology, Bombay" on August 7, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C037389
+
+
+Δx_ F t Δx G t Δu (4a)
+Δy P t Δx Q t Δu (4b)
+where
+F t ∂f x; u
+∂x x ; u (5a)
+G t ∂f x; u
+∂u x ; u (5b)
+P t ∂g x; u
+∂x x ; u (5c)
+Q t ∂g x; u
+∂u x ; u (5d)
+Note that the state-space matrices in Eq. (5) have T-periodic coefficients. Hereafter, the notation is simplified by dropping the Δ in front of the linearized perturbation state and control vectors while keeping in mind that these vectors represent perturbations from a periodic equilibrium. Next, the state, input, and output vectors of the LTP system are decomposed into a finite number of harmonics of the fundamental period via Fourier analysis:
+x x0
+N
+i1
+xic cos 2πit
+T xis sin 2πit
+T (6a)
+u u0
+M
+j1
+ujc cos 2πjt
+T ujs sin 2πjt
+T (6b)
+y y0
+L
+k1
+ykc cos 2πkt
+T yks sin 2πkt
+T (6c)
+Based on this decomposition, the harmonic decomposition methodology [21] is used to transform the LTP model into an approximate higher-order linear time-invariant (LTI) model in first-order form:
+X_ AX BU (7a)
+Y CX DU (7b)
+where the augmented state, control, and output vectors are
+XT x0T x1Tc x1Ts : : : xTNc xTNs (8a)
+UT u0T u1Tc u1Ts : : : uTMc uTMs (8b)
+YT y0T y1Tc y1Ts : : : yTLc yTLs (8c)
+with A ∈ Rn 2N 1 ×n 2N 1 , B ∈ Rn 2N 1 ×m 2M 1 , C ∈
+Rl 2L 1 ×n 2N 1 , and D ∈ Rl 2L 1 ×m 2M 1 . Closed-form expressions for these coefficient matrices are found in [21].
+B. Model-Order Reduction
+Because the harmonic decomposition models described above may become very high-order depending on the number of states and number of state harmonics retained, they can result in runtime performance that is significantly slower than real time. To improve the runtime performance, it is desired to obtain reduced-order models. Not only do reduced-order models yield decreased simulation time, but they also remove the need to measure or estimate the
+higher-harmonic states, which may be challenging or impractical when performing control system design. Ideally, these reduced-order models do not include the higher harmonic states but still retain part of the higher-harmonic response characteristics. This can be achieved through residualization, a portion of singular perturbation theory that pertains to LTI systems [32]. Assuming that one or more states of the system have stable dynamics that are faster than those of the remaining states, the state vector in Eq. (8a) can be partitioned into fast and slow components:
+XT XsT XT
+f (9)
+Then, the system in Eq. (7a) can be rewritten as
+X_ s
+X_ f
+As Asf
+Afs Af
+Xs
+Xf
+Bs
+Bf
+U (10)
+By neglecting the dynamics of the fast states (i.e., X_ f 0) and performing a few algebraic manipulations, the equations for a reduced-order system with the state vector composed of the slow states may be found:
+X_ s A^ Xs B^ U (11)
+where
+A^ As − Asf A−1
+f Afs (12a)
+B^ Bs − Asf A−1
+f Bf (12b)
+Note that Af must be invertible. This is guaranteed if Af is nonsingular; i.e., no eigenvalue has a real part that is equal to zero. Additionally, to apply residualization, Af must be asymptotically stable; i.e., all eigenvalues have their real part that is strictly negative. In this study, the slow states are chosen as the zeroth harmonic states, whereas the fast states are taken as the higher harmonics:
+Xs x0 (13a)
+XT
+f x1Tc x1Ts : : : xTNc xTNs (13b)
+For the residualized model to retain information about the influence or the residualized dynamics on not only the zeroth harmonics of the output but also on its higher output harmonics, consider partitioning the output equations in Eq. (7b) as
+Y Cs Cf
+Xs Xf
+DU (14)
+Then, it can be shown that the residualized output equations are
+Y_ C^Xs D^ U (15)
+where
+C^ Cs − CfA−1
+f Afs (16a)
+D^ D − CfA−1
+f Bf (16b)
+If now the augmented output vector is selected to coincide with the augmented state vector such that
+YT x0T x1Tc x1Ts : : : xTNc xTNs (17)
+J. AIRCRAFT, VOL. 61, NO. 3: ENGINEERING NOTES 1027
+Downloaded by "Indian Institute of Technology, Bombay" on August 7, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C037389
+
+
+then, the residualized model will be able to predict the influence of the residualized dynamics on the zeroth and higher-harmonic states.
+III. Simulation Model A. Rotor Model
+A helicopter main rotor model in the PSUHeloSim flight simulation code [33] is used as a base for the implementation of the state-space free-vortex wake model. This rotor is representative of the rotor of a notional utility helicopter similar to the UH-60 and is based on [2]. The model contains rigid flap and lead-lag rotor blade dynamics, a three-state Pitt–Peters inflow model [34], and nonlinear aerodynamic lookup tables for the rotor blades. The rotor-state vector is
+xTR β0 β1c β1s β0D β_ 0 β_ 1c β_ 1s β_ 0D ζ0 ζ1c ζ1s ζ0D ζ_0 ζ_1c ζ_1s ζ_0D
+λ0 λ1c λ1s ψ (18)
+where β0; β1c; β1s; and β0D are the flapping angles in multiblade coordinates; ζ0; ζ1c; ζ1s; and ζ0D are the lead-lag angles in multiblade coordinates; λ0; λ1c; and λ1s are the main rotor induced inflow ratio harmonics; and ψ is the azimuth angle of a reference blade. Note that when the rotor is two-way coupled with the free-vortex wake, the Pitt–Peters inflow states are bypassed and the induced velocities at each blade element as predicted by the free-vortex wake are used instead. The rotor control input vector is
+uTR θ1c θ1s θ0 u v w p q r φ θ ψ x y z u_ v_ w_ p_ q_ r_ Ω _Ω (19)
+where θ1c; θ1s; and θ0 are lateral and longitudinal cyclic, and collective rotor inputs; u; v; and w are the longitudinal, lateral, and vertical velocities in the body-fixed frame; p; q; and r are the roll, pitch, and yaw rates in the body-fixed frame; and Ω and _Ω are, respectively, the main rotor angular speed and acceleration. Note that u, v, w, p, q, and r are the states of the rigid-body (or fuselage) dynamics. However, because the fuselage dynamics are not included in this study, these variables are treated as inputs to the rotor module. No powerplant dynamics are included, and thus the angular speed and acceleration of the rotor are control inputs as well.
+B. State-Space Free-Vortex Wake Model
+A state-space free-vortex wake model was implemented into the PSUHeloSim flight simulation code following the model of [18,19]. In PDE form, trajectory of a wake node at nondimensional time ψ and wake age ζ is governed by
+∂r ψ; ζ ∂ψ
+∂r ψ; ζ ∂ζ
+1
+Ω V r ψ; ζ (20)
+where the right-hand side is governed by the Biot–Savart law, which is the most expensive part of the free-wake computation. The wake model was implemented in state-variable form generally following the approach of [17], with some updates. Specifically, the model includes states to define vortex strength at each of the free wake nodes, allowing for varying vortex strength along the filament. The model assumes linearly varying vortex strength along each linear vortex line segment, following the formulation of [35]. The vortex strength state of the youngest node is defined as the peak circulation on the blade from which filament originates. This same vortex strength then propagates along the filament as the age of the segment
+increases. Assuming that vortex strength is conserved, the PDE representation is simply
+∂Γ ψ; ζ ∂ψ
+∂Γ ψ; ζ
+∂ζ 0 (21)
+This expression can then be converted to a first-order ODE using the same approach as Celi. Age-dependent terms can also be added to account for decay and core growth (although they are not currently featured in this preliminary implementation). In practice, to avoid algebraic loops due to the feedback of the induced velocities at the rotor blades, vi, the induced velocities at the rotor blades are added to the system of ODE as states. Their dynamics are governed by a firstorder filter with a time constant of τvi 0.005 s. The resulting system of ODEs expressed in dimensional time is
+r_ −ΩAζr V r t; ζ (22a)
+_Γ −ΩAζΓ (22b)
+v_i
+1
+τvi
+V rB t; ζ − vi (22c)
+where Aζ is the finite difference matrix corresponding to the 5PBU4 scheme from [17] and rB is the position of the rotor blade elements. As such, the coupled rotor and free-vortex wake dynamics are formulated as an NLTP system in first-order form:
+x_ f x; u; t (23a)
+y g x; u; t (23b)
+where x ∈ Rn is the state vector, u ∈ Rm is the control input vector, y ∈ Rl is the output vector, and t is the dimensional time in seconds. The nonlinear functions f and g are T-periodic in t such that
+f x; u; t f x; u; t T (24a)
+g x; u; t g x; u; t T (24b)
+It is convenient to note that dimensional time can be related to the azimuth angle ψ of a reference blade, also known as nondimensional time, via the following relation: ψ Ωt, where Ω the main rotor angular speed in rad/s. It follows that the fundamental period of the system is T 2π∕Ω seconds, which corresponds to 2π radians or one rotor revolution. The state vector consists of the rotor states and the free-wake states such that xT xTR xTW , where xR is the rotor
+state vector and xTW rT ΓT viT is the rotor wake state vector. The control input vector is assumed equal to the rotor control input vector such that u uR. The output vector comprises the state vector and the induced velocities at the blade elements such that yT xTR xTW viT .
+IV. Results A. Implementation and Validation
+Consider the examples shown in Fig. 2, in which an MH-60 helicopter is hovering above the ship deck of a Formidable-class frigate. The ship geometry was taken from [6]. In Fig. 2a, the helicopter is hovering on top of the deck, whereas in Fig. 2b the helicopter is crossing the ship deck. In both examples, the ship and helicopter have a longitudinal velocity of 18 kts, corresponding to the cruise speed of the Formidable-class frigate. The coupled rotor and state-space free-vortex wake model is implemented in MATLAB®/Simulink using a 10 deg time step, corresponding to a dimensional time step of approximately dt 6.46e − 4 s, and four revolutions of rotor wake. The resulting NLTP system has a state vector with dimension n 2448 (20 rotor states and 2428 wake states), a control vector with dimension m 17 and an output vector
+1028 J. AIRCRAFT, VOL. 61, NO. 3: ENGINEERING NOTES
+Downloaded by "Indian Institute of Technology, Bombay" on August 7, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C037389
+
+
+of dimension l 2494. Interference effects due to the sea surface, ship deck, and ship superstructures are modeled using the method of images [9], where one or multiple mirror rotor wakes, or portions of these, are used in the Biot–Savart calculations so that the wake does not penetrate the boundaries given by the sea surface, ship deck, and ship superstructures. In the first example, the rotor wake is expected to interact with the ship deck and ship superstructures to form recirculation in the area where the ship deck meets the ship superstructure. Indeed, the recirculation effect is captured by the state-space free-wake using the method of images, as shown in Figs. 3a and 3c. Additionally, the ground effect is also captured. In the second example, the rotor wake is expected to interact with the ship deck and water surface in complex ways, such that the fore part of the wake is operating in ground effect and the aft part of the wake is operating in ground effect as well, but due to the water surface. The ground effect from
+the sea surface is expected to be of lower entity with respect to that of the ship deck, as the sea surface is 15 ft below the ship deck. Again, the complex interactions of the wake with the ship deck and water surface are captured by the wake model, as shown in Figs. 3b and 3d. The recirculation effect from the first example can also be observed by looking at the induced velocity at the rotor disk. Figure 4 shows the contour plot of induced velocities over one revolution for the two examples in consideration. The UH-60 rotor hovering on top of the ship deck (Fig. 4a) shows a higher induced velocity in the fore part of the disk compared to the same rotor in a ship-deck crossing (Fig. 4b). This is an indication that the flow recirculates into the fore part of the rotor due to the interactions with the ship’s superstructure. These results indicate that the combination of a state-space free-vortex wake model and the method of images is suitable for predicting shipboard interaction in approach and landing phases. In fact, the proposed
+50 0 -50 x [ft]
+0
+10
+20
+30
+40
+h [ft]
+-40
+-20
+0
+20
+40
+60
+Inuced velocity, vz [ft/s]
+Ship Deck
+50 0 -50 x [ft]
+0
+10
+20
+30
+40
+h [ft]
+-40
+-20
+0
+20
+40
+60
+80
+Inuced velocity, vz [ft/s]
+Ship Deck
+Sea Surface
+a) Free-vortex wake for a UH-60 rotor hovering on top of the ship deck
+b) Free-vortex wake for a UH-60 rotor in a ship-deck crossing
+c) Flow field visualization for a UH-60 rotor hovering on top of the ship deck
+d) Flow field visualization a UH-60 rotor in a ship-deck crossing
+Fig. 3 Examples of rotor wake and ship-deck interactions in shipboard operations for a UH-60 helicopter as computed with the state-space free-vortex wake model.
+Fig. 2 Test cases involving shipboard operations of an MH-60 helicopter on a Formidable-class frigate.
+J. AIRCRAFT, VOL. 61, NO. 3: ENGINEERING NOTES 1029
+Downloaded by "Indian Institute of Technology, Bombay" on August 7, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C037389
+
+
+approach yields similar results to those in [6,36] obtained with Eulerbased CFD simulations, but with a lower computational cost. In fact, while Euler-based CFD simulations [6,36] required massive parallelization (i.e., 2400 cores) to achieve near-real-time speeds, free-wake simulations run a few hundreds of times slower than real time on a single processor (results discussed in more detail below and reported in Table 1). Thus, the free-wake approach alone reduces the computational cost by one order of magnitude. Note that the wake position states are inherently periodic (e.g., in equilibrium, the lateral position of a wake node of a certain age oscillates at 1/rev, with amplitude equal to the width of the wake at that location). Figure 5 shows the position of a wake state in the simulations shown previously, with four different wake ages 270 deg apart. The 1/rev oscillation and expected phasing are clearly seen, with higher-harmonic distortions increasing as the wake ages. These kinds of wave forms are readily approximated by a truncated Fourier series. This allows the periodic wake dynamics to be approximated as time invariant through the harmonic decomposition method.
+B. Linearized Models
+This section demonstrates the linearization of the coupled rotor and wake dynamics for the second example shown above, in which the helicopter rotor is in a ship-deck crossing. A first step toward the linearization of the system involves solving for the periodic equilibrium x t and u t . The initial rotor states and control inputs are found by trimming the coupled fuselage and rotor dynamics without free wake using PSUHeloSim [33] at 18 kts forward flight. This was done to have control inputs representative of the full vehicle trim for the flight condition in consideration. Because both the rotor and wake dynamics are stable, such that the coupled system is stable, the control inputs are then frozen and the coupled rotor and wake dynamics are time-marched until convergence. In practice, this requires approximately eight rotor revolutions. Then, the system is linearized about the periodic equilibrium and thus found at incremental time steps over one rotor revolution to yield a set of LTI systems that together constitute an LTP system. In a subsequent step, harmonic decomposition is applied to approximate the LTP system
+-40
+-20
+0
+20
+rx [ft]
+= 10 deg = 280 deg = 550 deg = 820 deg
+-20
+0
+20
+ry [ft]
+Non-dimensional time, t/T
+-20
+-10
+0
+rz [ft]
+0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+-40
+-20
+0
+20
+rx [ft]
+= 10 deg = 280 deg = 550 deg = 820 deg
+-20
+0
+20
+ry [ft]
+0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1 Non-dimensional time, t/T
+-20
+-10
+0
+rz [ft]
+a) UH-60 rotor hovering on top of the ship deck b) UH-60 rotor in a ship-deck crossing
+Fig. 5 Representative wake node locations in periodic equilibrium.
+1 0.5 0 -0.5 -1 y/R
+-1
+-0.8
+-0.6
+-0.4
+-0.2
+0
+0.2
+0.4
+0.6
+0.8
+1
+x/R
+-30
+-20
+-10
+0
+10
+20
+30
+40
+50
+60
+70
+80
+Inuced velocity, v z [ft/s]
+-1 -0.5 0 0.5 1 y/R
+-1
+-0.8
+-0.6
+-0.4
+-0.2
+0
+0.2
+0.4
+0.6
+0.8
+1
+x/R
+-30
+-20
+-10
+0
+10
+20
+30
+40
+50
+60
+70
+80
+Inuced velocity, v z [ft/s]
+a) UH-60 rotor hovering on top of the ship deck b) UH-60 rotor in a ship-deck crossing
+Fig. 4 Contour plot of induced velocities at the rotor disk over one revolution. Advancing side is y∕R > 0; retreating side is y∕R < 0.
+1030 J. AIRCRAFT, VOL. 61, NO. 3: ENGINEERING NOTES
+Downloaded by "Indian Institute of Technology, Bombay" on August 7, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C037389
+
+
+with a higher-order LTI model by retaining up to the fourth state and output harmonics (i.e., N L 4). Only the zeroth harmonic of the input is retained, as this study only considers control inputs with frequency considerably lower than the rotor angular speed (i.e., M 0). This translates into being able to only predict the influence of low-frequency control inputs (i.e., primary flight controls) on the averaged and higher harmonic content of the response. Note that one would have to retain control input harmonics higher than the zeroth in the case of higher-harmonic control (HHC). The resulting LTI system has 22,032 states, 17 control inputs, and 22,446 outputs. The eigenvalues of the high-order, residualized, and averaged dynamics are shown in Fig. 6. Notably, all eigenvalues of the high-order LTI model are strictly negative, so the use of residualization is justified. To assess the accuracy of the harmonic decomposition model thus obtained, the response of the high-order LTI dynamics is compared to that of the nonlinear dynamics. Figure 7 shows some responses of the nonlinear, high-order LTI, and averaged LTI dynamics to a 3 deg doublet in the collective control input. Figure 7a shows the perturbation of one of the wake vortex nodes from the periodic equilibrium. In
+this figure, the response of the harmonic decomposition model (highorder LTI) is similar to the response of the nonlinear system and predicts the oscillatory behavior, indicating the validity of the proposed method. On the other hand, as expected, the averaged LTI dynamics are not able to capture the oscillatory behavior of the rotor wake states. The model was obtained by residualizing the states corresponding to the higher harmonics while retaining all state harmonics as part of the output. Note that each output perturbation response from this model is reconstructed from that output harmonic coefficient time history using Eq. (6c). Likewise, each state perturbation response from the high-order LTI model is reconstructed from that state harmonic coefficient time history using Eq. (6a). Although the residualized model is in the same order as the averaged dynamics, the residualized model is capable of predicting the higher harmonic content, nearly overlapping the high-order LTI and response. In Fig. 7b, the induced velocity at one of the blade elements (approximately located at 76% radius) is shown. The high-order LTI model better captures the oscillatory velocity profile of the nonlinear model compared to the averaged LTI model. Indeed, the averaged model is
+Real
+-400
+-300
+-200
+-100
+0
+100
+200
+300
+400
+Imag
+LTI (high order) LTI (residualized) LTI (averaged)
+-400 -350 -300 -250 -200 -150 -100 -50 0 -400 -350 -300 -250 -200 -150 -100 -50 0 Real
+-400
+-300
+-200
+-100
+0
+100
+200
+300
+400
+Imag
+LTI (high order) LTI (residualized) LTI (averaged)
+a) UH-60 rotor hovering on top of the ship deck b) UH-60 rotor in a ship-deck crossing
+Fig. 6 Eigenvalues of the coupled rotor and wake dynamics.
+-1
+-0.5
+0
+0.5
+1
+rx [ft]
+NLTP LTI (high order) LTI (residualized) LTI (averaged)
+01234567
+01234567
+-1
+-0.5
+0
+0.5
+1
+ry [ft]
+Time [s]
+-1
+-0.5
+0
+0.5
+1
+rz [ft]
+0 1 2 3 4 5 6 7 01234567 Time [s]
+-20
+0
+20
+40
+60
+80
+100
+Induced velocity, vz [ft/s]
+NLTP LTI (high order) LTI (residualized) LTI (averaged)
+a) Sample wake node position (perturbation from periodic equilibrium) b) Induced velocity at blade element at 76% rotor radius
+Fig. 7 Time history of some periodic states following a 3 deg doublet in collective pitch.
+J. AIRCRAFT, VOL. 61, NO. 3: ENGINEERING NOTES 1031
+Downloaded by "Indian Institute of Technology, Bombay" on August 7, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C037389
+
+
+not expected to capture any peaks; it just captures the averaged response, not the oscillations. The residualized model gives a very similar response to the high-order LTI model.
+C. Runtime Performance
+The runtime performance is assessed for each of the simulation models and compared. The analysis is performed using a MATLAB® R2022a implementation of the simulation model and a fourth-order Runge–Kutta solver on a 2022 Mac Studio computer equipped with an Apple M1 Ultra processor. Note that the number of surfaces with which the rotor wake interacts affects the cost of the simulation of the nonlinear dynamics. This is because for each mirror wake/wake portion that is added, the cost of simulation (and linearization) increases as one needs increased Biot–Savart computations. Based on a wake discretization and time step of Δψ Δζ 10 and four rotor wake revolutions [17], the NLTP simulation of the isolated rotor runs approximately 131× slower than real time. When simulating ground effect only (i.e., the second example with the rotor in a shipdeck crossing), only one mirror wake is added, which roughly doubles the runtime of the NLTP simulation compared to that of the isolated rotor. When simulating both ground effect and interaction with one vertical surface (i.e., the first example with the rotor hovering on top of the ship deck and facing the ship superstructure), three mirror wakes are added, which roughly quadruples the runtime of the NLTP simulation compared to that of the isolated rotor. Note that the increase in runtime is not exactly by a factor of four, as the ship superstructure, like the ship deck, is a finite surface that only requires a portion of the rotor wake to be mirrored. Further, because the position of the wake nodes varies with time, they may or may not need to be mirrored depending on whether they are contained in the projection of the ship’s superstructure surface along the direction normal to that surface. While the runtime performance of the nonlinear simulations depends on the factors mentioned above, the runtime performance of the linearized models will only depend on their order. In fact, the linearized models associated with each of these simulations will have the same runtime performance because the nonlinear Biot–Savart calculations are embedded into the time-invariant coefficients of the state-space model. The high-order LTI models have a runtime 87× slower than real time, which is approximately 1.5× faster than the NLTP simulation of the rotor alone. On the other hand, the residualized LTI model runs 1.08× faster than real time while providing very similar predictions to those of the NLTP and high-order LTI models. This is approximately a 142× runtime improvement with respect to the NLTP simulation of the rotor alone, and a 467× runtime improvement compared to the NLTP simulation of the first example. When compared to Euler-based CFD methods [6,36], which were demonstrated to approach real-time speed using massive parallelization (i.e., 2400 cores), the resulting computational cost abatement amounts to approximately three orders of magnitude. It is speculated that by increasing the simulation time step, by further reducing the order of the residualized system, and/or by performing the simulation on a faster machine, faster runtimes may be possible. It is also worth noting that these models are available in Simulink and could be autocoded to C for faster executions. Lastly, the averaged dynamics of the coupled rotor and vortex wake run approximately 2.12× faster than real time. However, it does not retain information on the higher harmonics of the system. These results are reported in Table 1, along
+with the time associated with the computation of a time step for each simulation strategy.
+V. Conclusions
+This paper describes the implementation and linearization of a free-vortex wake model in state-variable form and its use in the prediction of complex aerodynamic interactions during shipboard launch and recovery operations. Following a detailed mathematical description, the wake model is implemented for a UH-60 rotor and tested in different flight conditions and for simple control inputs. Interference effects due to the sea surface, ship deck, and ship superstructures are modeled using the method of images. A periodic solution to the wake model is found by time-marching the coupled rotor and vortex wake dynamics. Next, linearized harmonic decomposition models are obtained and validated against nonlinear simulations. Order reduction methods are explored to guide the development of linearized wake models with increased runtime performance compared to nonlinear and linearized harmonic decomposition wake models while guaranteeing satisfactory prediction of the periodic response of the wake. Based on the current work, the following conclusions can be reached: 1) Linearized harmonic decomposition models are shown to accurately predict the nonlinear wake response of a helicopter rotor in a shipboard environment for relatively small amplitude control inputs and for the cases in consideration. More study is required to understand over what amplitude range the linear models will be accurate. While these harmonic decomposition models yield only a slight decrease in simulation runtime when compared to nonlinear dynamics, their order can be conveniently reduced with linear time-invariant model-order reduction methods. 2) Reduced-order models obtained by residualizing the linearized harmonic decomposition models are shown to provide an accurate prediction of the nonlinear wake dynamics at a fraction of the computational cost. 3) Based on the current number of rotor revolutions of wake used, wake discretization, and time step, the coupled nonlinear rotor-wake simulations run approximately 274× slower than real time for when interacting with the ship deck and water surface only, and 430× slower than real time when interacting with the ship deck, ship superstructure, and sea surface. Based on the current number of state, input, and output harmonics retained in the linearized harmonic decomposition models, the simulation of these models run 87× slower than real time. Residualized models run slightly faster than real time, thus providing a two-order-of-magnitude runtime improvement with respect to the nonlinear simulations. The averaged linear dynamics run 2.12× faster than real time but do not capture the harmonic behavior of the response. 4) While the runtime performance of the nonlinear simulations and the cost of linearization largely depend on the amount of interaction with nearby obstacles, the runtime performance of the linearized models will only depend on their order. This is because the added nonlinear Biot–Savart calculations stemming from the image rotor(s) used to model interactions with nearby obstacles become embedded into the time-invariant coefficients of the state-space model.
+Acknowledgment
+This research was partially funded by the U.S. Government under agreement no. N00014-22-1-2342. The views and conclusions contained in this document are those of the authors and should not be interpreted as representing the official policies, either expressed or implied, of the Aviation Development Directorate or the U.S. Government.
+References
+[1] Eckstein, M., “Investigation: 2017 Osprey Crash Due to Heavy Downwash; Excessive Aircraft Weight May Have Contributed,” USNI News, May 21, 2018, https://news.usni.org/2018/05/21/investigation-2017osprey-crash-due-heavy-downwash-excessive-aircraft-weight-maycontributed.
+Table 1 Runtime performance with a time step of Δψ Δζ 10 deg and four rotor wake revolutions
+Simulation type 1 time step, s × Real time
+No. of states
+No. of outputs NLTP (Isolated Rotor) 8.49e−1 131 2,448 2,494
+NLTP (Example 2) 1.78 274 2,448 2,494 NLTP (Example 1) 2.78 430 2,448 2,494 High-order LTI 5.64e−1 87 22,032 22,446 Residualized LTI 6.0e−3 0.92 2,448 22,446 Averaged LTI 3.0e−3 0.47 2,448 2,494
+1032 J. AIRCRAFT, VOL. 61, NO. 3: ENGINEERING NOTES
+Downloaded by "Indian Institute of Technology, Bombay" on August 7, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C037389
+
+
+[2] Howlett, J. J., “UH-60A Black Hawk Engineering Simulation Program. Volume 1: Mathematical Model,” NASA CR-166309, 1980. [3] Horn, J. F., Bridges, D. O., Wachspress, D. A., and Rani, S. L., “Implementation of a Free-Vortex Wake Model in Real-Time Simulation of Rotorcraft,” Journal of Computing, Information, and Communications, Vol. 3, No. 3, 2006, pp. 93–107. https://doi.org/10.2514/1.18273 [4] Keller, J. D., Wachspress, D. A., and Hoffler, J. C., “Real Time Free Wake and Ship Airwake Model for Rotorcraft Flight Training Applications,” Proceedings of the 71st Annual Forum of the American Helicopter Society, American Helicopter Soc., Fairfax, VA, 2015. [5] Zhao, J., and He, C., “A Viscous Vortex Particle Model for Rotor Wake and Interference Analysis,” Journal of the American Helicopter Society, Vol. 55, No. 1, 2010, Paper 012007. https://doi.org/10.4050/JAHS.55.012007 [6] Oruc, I., Horn, J. F., Shipman, J., and Polsky, S., “Towards Real-Time Pilot-in-the-Loop CFD Simulations of Helicopter/Ship Dynamic Interface,” International Journal of Modeling, Simulation, and Scientific Computing, Vol. 8, No. 4, 2017, Paper 1743005. https://doi.org/10.1142/S179396231743005X [7] Saberi, H. A., and Maisel, M. D., “A Free Wake Rotor Analysis Including Ground Effect,” Proceedings of the 43rd Annual Forum of the American Helicopter Society, American Helicopter Soc., Fairfax, VA, 1987. [8] Brown, R. E., and Whitehouse, G. R., “Modeling Rotor Wakes in Ground Effect,” Journal of the American Helicopter Society, Vol. 49, No. 3, 2004, pp. 238–249. https://doi.org/10.4050/JAHS.49.238 [9] Griffiths, D. A., Ananthan, S., and Leishman, J. G., “Predictions of Rotor Performance in Ground Effect Using a Free-Vortex Wake Model,” Journal of the American Helicopter Society, Vol. 50, No. 4, 2005, pp. 302–314. https://doi.org/10.4050/jahs.62.012006 [10] Xin, H., “Development and Validation of a Generalized Ground Effect Model for Lifting Rotors,” Ph.D. Thesis, Georgia Inst. of Technology, Atlanta, 1999. [11] McKillip, R., Boschitsch, A., Quackenbush, T., and Keller, J., “Dynamic Interface Simulation Using a Coupled Vortex-Based Ship Airwake and Rotor Wake Model,” Proceedings of the 58th Annual Forum of the American Helicopter Society, American Helicopter Soc., Fairfax, VA, 2002. [12] Alpman, E., Long, L., Bridges, D., and Horn, J. F., “Fully-Coupled Simulations of the Rotorcraft/Ship Dynamic Interface,” Proceedings of the 63rd Annual Forum of the American Helicopter Society, American Helicopter Soc., Fairfax, VA, 2007. [13] Zhao, J., and He, C., “A Viscous Vortex Particle Model for Rotor Wake and Interference Analysis,” Journal of the American Helicopter Society, Vol. 55, No. 1, 2010, pp. 1–14. https://doi.org/10.4050/JAHS.55.012007 [14] Friedmann, L., Ohmer, P., and Hajek, M., “Real-Time Simulation of Rotorcraft Downwash in Proximity of Complex Obstacles Using GridBased Approaches,” Proceedings of the 70th Annual Forum of the American Helicopter Society, American Helicopter Soc., Fairfax, VA, 2014. [15] Keller, J., McKillip, R., Wachspress, D., Tischler, M., and Juhasz, O., “Linearized Inflow and Interference Models from High Fidelity Free Wake Analysis for Modern Rotorcraft Configurations,” Proceedings of the 75th Annual Forum of the Vertical Flight Society, Vertical Flight Soc., Fairfax, VA, 2019. https://doi.org/10.4050/F-0075-2019-14638 [16] He, C., Syal, M., Tischler, M., and Juhasz, O., “State-Space Inflow Model Identification from Viscous Vortex Particle Method for Advanced Rotorcraft Configurations,” Proceedings of the 73rd Annual Forum of the Vertical Flight Society, Vertical Flight Soc., Fairfax, VA, 2017. [17] Celi, R., “State-Space Representation of Vortex Wakes by the Method of Lines,” Journal of the American Helicopter Society, Vol. 50, No. 2, 2005, pp. 195–205. https://doi.org/10.4050/1.3092855 [18] Bagai, A., and Leishman, G. J., “Rotor Free-Wake Modeling Using a Pseudo-Implicit Technique–Including Comparison with Experimental Data,” Journal of the American Helicopter Society, Vol. 40, No. 3, 1995, pp. 29–41. https://doi.org/10.4050/JAHS.40.29. [19] Bhagwat, M. J., “Transient Dynamics of Helicopter Rotor Wakes Using a Time-Accurate Free-Vortex Method,” Ph.D. Thesis, Univ. of Maryland, College Park, MD, 2001.
+[20] Corle, E., Kang, H., Floros, M., and Schmitz, S., “Time- and FrequencyDomain Whirl-Flutter Analysis Using a Vortex Particle Method,” Proceedings of the 75th Annual Forum of the Vertical Flight Society, Vertical Flight Soc., Fairfax, VA, 2019. [21] Lopez, M. J. S., and Prasad, J. V. R., “Linear Time Invariant Approximations of Linear Time Periodic Systems,” Journal of the American Helicopter Society, Vol. 62, No. 1, 2017, pp. 1–10. https://doi.org/10.4050/jahs.62.012006 [22] Saetti, U., and Horn, J. F., “Load Alleviation Flight Control Design Using High-Order Dynamic Models,” Journal of the American Helicopter Society, Vol. 65, No. 3, 2020, pp. 1–15. https://doi.org/10.4050/JAHS.65.032009 [23] Saetti, U., Horn, J. F., Berger, T., and Tischler, M. B., “HandlingQualities Perspective on Rotorcraft Load Alleviation Control,” Journal of Guidance, Control, and Dynamics, Vol. 43, No. 10, 2020, pp. 17921804. https://doi.org/10.2514/1.G004965 [24] Saetti, U., and Rogers, J. D., “Revisited Harmonic Balance Trim Solution Method for Periodically-Forced Flight Vehicles,” Journal of Guidance, Control, and Dynamics, Vol. 44, No. 5, 2021, pp. 10081017. https://doi.org/10.2514/1.G005553 [25] Saetti, U., and Horn, J. F., “Implementation and Linearization of a Rotor Simulation with a State-Space Free-Vortex Wake Model,” Proceedings of the 78th Annual Forum of the Vertical Flight Society, Vertical Flight Soc., Fairfax, VA, 2022. https://doi.org/10.4050/F-0078-2022-17577 [26] Saetti, U., and Horn, J. F., “Implementation and Linearization of a State-Space Free-Vortex Wake Model for Flapping-Wing Flight,” Proceedings of the 78th Annual Forum of the Vertical Flight Society, Vertical Flight Soc., Fairfax, VA, 2022. https://doi.org/10.4050/F-0078-2022-17578 [27] Saetti, U., and Horn, J. F., “Implementation and Linearization of StateSpace Free-Vortex Wake Models for Rotary- and Flapping-Wing Vehicles,” Journal of the American Helicopter Society, Vol. 68, No. 4, 2023, pp. 42,004–42,017. https://doi.org/10.4050/JAHS.68.042004 [28] Saetti, U., and Bugday, B., “Tiltrotor Simulations with Coupled Flight Dynamics, State-Space Aeromechanics, and Aeroacoustics,” Journal of the American Helicopter Society, Vol. 69, No. 1, 2024, pp. 1–18. https://doi.org/10.4050/JAHS.69.012003 [29] Saetti, U., Bugday, B., Horn, J. F., and Brentner, K. S., “Linearized Models of the Coupled Rotorcraft Flight Dynamics and Acoustics for Real-Time Noise Prediction,” Journal of the American Helicopter Society, Vol. 69, No. 2, 2024. https://doi.org/10.4050/JAHS.69.022002 [30] Saetti, U., and Horn, J. F., “Linear Time-Invariant Approximations of Nonlinear Time-Periodic Systems,” Journal of the American Helicopter Society, Vol. 68, No. 1, 2024, pp. 1–10. https://doi.org/10.4050/JAHS.68.012006 [31] Saetti, U., and Lovera, M., “Time-Periodic and High-Order TimeInvariant Linearized Models of Rotorcraft: A Survey,” Journal of the American Helicopter Society, Vol. 67, No. 1, 2022, pp. 1–19. https://doi.org/10.4050/JAHS.67.012008 [32] Kokotovic, P. V., O’Malley, R. E., and Sannuti, P., “Singular Perturbations and Order Reduction in Control Theory: An Overview,” Automatica, Vol. 12, No. 2, 1976, pp. 123–132. https://doi.org/10.1016/0005-1098(76)90076-5 [33] Horn, J. F., “Non-Linear Dynamic Inversion Control Design for Rotorcraft,” Aerospace, Vol. 6, No. 3, 2019, p. 38. https://doi.org/10.3390/aerospace6030038 [34] Pitt, D. M., and Peters, D. A., “Theoretical Prediction of DynamicInflow Derivatives,” Proceedings of the 6th European Rotorcraft and Powered Lift Aircraft Forum, 1980.
+[35] Johnson, W., Rotorcraft Aeromechanics, Cambridge Univ. Press, Cambridge, England, U.K., 2013. https://doi.org/10.1017/CBO9781139235655 [36] Oruc, I., Horn, J. F., and Shipman, J., “Coupled Flight Dynamics and Computational Fluid Dynamics Simulations of Rotorcraft/Terrain Interactions,” Journal of the American Helicopter Society, Vol. 54, No. 6, 2017, pp. 2228–2241. https://doi.org/10.2514/1.C034101
+J. AIRCRAFT, VOL. 61, NO. 3: ENGINEERING NOTES 1033
+Downloaded by "Indian Institute of Technology, Bombay" on August 7, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C037389

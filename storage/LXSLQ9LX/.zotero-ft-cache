@@ -1,0 +1,567 @@
+NASA-CR-197420
+An Investigation of Helicopter Dynamic Coupling
+Using An Analytical Model
+/.--"},,,j ,,r 4..
+,//2 L-' _:- - "
+.d/ ..,ySo
+Jeffrey D. Keller Princeton University Princeton, New Jersey
+6A6 -5 1 t ]. "->
+Abstract
+Many attempts have been made in recent years to predict the off-axis response of a helicopter to control inputs, and most have had little success. Since physical insight is limited by the complexity of numerical simulation models, this paper examines the off-axis response problem using an analytical model, with the goal of understanding the mechanics of the coupling. A new induced velocity model is extended to include the effects of wake distortion from pitch rate. It is shown that the inclusion of these effects results in a significant change in the lateral flap response to a steady
+pitch rate. The proposed inflow model is coupled with the full rotor/body dynamics, and comparisons are made between the model and flight test data for a UH-60 in hover. Results show that inclusion of induced velocity variations due to shaft rate improves correlation in the pitch response to lateral cyclic inputs.
+a
+a o, a i, b l
+AI, B I
+%,c ,cM
+E
+es
+h
+Ib
+KR
+i%
+[Li], [M i] [M], [F], [G] P,q r
+Notation
+Blade lift curve slope
+Multi-blade flapping coordinates
+Lateral and longitudinal cyclic pitch
+Rotor aerodynamic thrust, roll, and pitch moment coefficients
+¢
+Non-dimensional hinge offset, E - R
+Hinge stiffness parameter, Es esb
+=[--_ Rotor hub height above fuselage center of gravity (ft)
+Blade second moment of inertia (slug-ft 2)
+Wake distortion parameter due to shaft rate
+Wake distortion parameter due to shaft translation
+Dynamic inflow static gain and apparent mass matrices
+System mass, state, and control matrices Fuselage angular rates about body axes (deg/sec) Radial position (ft)
+(NASA-CR-197_20) AN OF HELICOPTER DYNAMIC USING AN ANALYTICAL MODEL Report (Princeton Univ. )
+INVESTIGATION COUPLING Final
+23 p
+N95-23217
+Unclas
+G3/05 0042750
+
+
+R
+Sb
+U, V
+u
+V 0 ,V c ,Vs
+Vo,V¢,VS
+_o
+Vnld
+x
+Y
+8_, 61o"
+n
+'_.
+I
+D
+Rotor radius (it)
+Blade first moment of inertia (slug-fi)
+Fuselage translational velocities along body axes (ft/sec) Control input vector Induced velocity components (ft/sec)
+Induced velocity components, non-dimensionalized by £2R
+Steady uniform induced velocity, T o = _/__r.
+Induced velocity at rotor disk State vector
+Rotor blade flap angle Lock number
+Lateral and longitudinal cyclic stick position (in)
+Rotor blade lag angle
+Multi-blade lagging coordinates
+Coordinates of vortex ring position, used in induced velocity calculation
+Orientation of vortex ring, used in induced velocity calculation
+Fuselage Euler angles (deg)
+Inflow time constant, non-dimensionalized by
+Rotor solidity Azimuth angle
+Rotor rotational speed (rad/sec)
+Introduction
+The design of modem helicopters is characterized by the requirement of high agility for highprecision tasks. To support this, accurate mathematical models of the dynamics are needed in simulation and control system design. In addition, high-bandwidth flight control system design necessitates the inclusion of rotor flap and lag degrees of freedom, resulting in highly complex models with many dynamic states [1]. The development of these dynamic models has matured to the point where the prediction of the primary response of single rotor helicopters to small control inputs, or the on-axis response, is well understood. The introduction of hingeless rotors helicopters and decoupled flight control systems has increased concern with the secondary or off-axis response [2]. However, accurate prediction of the off-axis response is more problematic and has perplexed researchers for many years.
+A number of helicopter flight dynamics models have been documented in the literature in the past few years. Reference 3 contains an:example of a typical advanced flight dynamics model. In this reference, Takahashi develops a nonlinear model including rotor blade flap and lag degrees of freedom. A comparison between the nonlinear model, a linearized version of the model, and flight data for the UH-60 in hover is shown in Fig. 1. The agreement between the predicted and measured
+
+
+roll ratefor a lateralstickinputis good,but themodelpredictsaninitial pitch accelerationwhich is oppositein signto theactualresponse.Similarobservationasremadeby Ballin and Dalang-Secretan
+using a real-time version of Sikorsky's GENHEL [4]. Results of this study, shown in Fig. 2, compare the model to flight data for the UH-60 in hover. Again, the initial pitch response of the model to a lateral input is incorrect. Other numerical simulation studies for the UH-60 [5] and the AH-64 [6,7] have resulted in similar conclusions. These investigations substantiate the general statement of some researchers that the "off-axis response characteristics are not understood" [8,9].
+It is apparent that the correlation problems in these investigations are a result of some significant physical phenomena which is missing from each model. It is interesting to note that most of these studies use fairly simple models for the induced velocity of the main rotor which neglect the non-uniformities caused by the tip vortices and trailing wake system. In addition, the theories make the assumption that the rotor shaft is fixed or translating and do not include the variations of induced velocity due to pitch or roll rate. It was speculated by the authors of [9] that the induced velocity model is the source of error between theory and experiment, and recent work by Rosen and Isser seems to support this claim [10]. However, it is necessary to understand the coupling between the induced velocity model and the rest of the dynamics before the limitations of existing models can be assessed. It is difficult, perhaps impossible, to determine the interaction between different elements of a numerical simulation model. Therefore, the current research effort is directed toward the
+development of an analytical model of the coupled rotor/body dynamics. Using an analytical model, the effects of the induced velocity model on the off-axis response can be examined clearly.
+While one of the ultimate goals of any flight dynamics study is the accurate prediction of the off-axis response, it should be emphasized that the present investigation concentrates on understanding the underlying physics. The contents of this paper are as follows. First, an overview of the analytical model development is given. Although problems with the off-axis response prediction occur in all flight regimes, only the pitch-roll coupling in hover is examined in this paper, simplifying the analysis. Next, the limitations of existing induced velocity models are discussed, and a new induced velocity model is proposed. It is shown that harmonic induced velocity variations occur due to pitch rate and that inclusion of these variations result in a significant change in the lateral flapping response. Finally, the proposed induced velocity model is coupled with the full rotor/body dynamics, resulting in improved correlation between predicted response and flight test data.
+Analytical Model Development
+In this section, an overview is given outlining the development of an analytical model of the coupled rotor/body dynamics. A more detailed discussion can be found in [11]. Since many flight dynamics problems are concerned only with small magnitude responses to small control inputs, the equations of motion of the helicopter can be linearized. This is important for the development of an analytical model. Linearizing the equations yield further simplifications in hover because the vertical and yaw degrees of freedom approximately decouple from the lateral/longitudinal dynamics. This occurs because of the axial symmetry of the main rotor, the primary load contributor in hover. Note that this is only approximate because additional coupling occurs between pitch/roll motion and yaw motion due to cross products of inertia as well as to the presence of a canted tail rotor.
+
+
+The general procedure to derive an analytically linearized model uses a perturbation analysis around a hover trim condition. Periodic coefficients which result from the rotating reference frame of the rotor are eliminated by expressing the blade flap and lag angles in terms of multi-blade coordinates in the following manner:
+13(t) = a o -a I cosV- bl sinv
+_(t) = to - 71 cos_- 72 sinv (i)
+The coordinates a I and b I physically describe the longitudinal and lateral tilt of the tip path plane
+while Ti and "1'2describe the lateral and longitudinal displacement of the rotor center of gravity,
+respectively. In hover, the coning dynamics (a o, _) decouple from the lateral/longitudinal dynamics in a similar manner as the vertical and yaw degrees of freedom. Therefore, only harmonic flap and lag motion is considered in this analysis.
+The individual rotor blades are assumed to be articulated with hinge offset. The model has been generalized to include torsional springs around the flap and lag hinges to account for hingeless hub configurations. Mechanical lag damping is included with a linear damper model. In the present analysis, the effects of blade flexibility are ignored.
+Rotor blade aerodynamic loads are calculated using quasi-steady, two-dimensional strip theory. The effects of compressibility and blade stall are neglected. The aerodynamic loads on the fuselage are found by resolving the out-of-plane and in-plane shear forces at the hinge into the nonrotating frame of the fuselage. All aerodynamic forces and moments are linearized and expressed as stability derivatives. The aerodynamics forces and moments from the fuselage and tail surfaces as well as the loads contributed by the tail rotor are neglected in the current analysis.
+Induced Velocity Model
+Discussion of Existing Models
+Most flight dynamics models for single rotor helicopters use a version of the dynamic inflow theory developed by Pitt and Peters [12]. In non-dimensional form, the differential equations representing the dynamics of airmass through the rotor disk are given by the following equations:
+[L'i][MldVcf+'lv:I": lEd
+LVsJ l,Vsj
+(2)
+where inflow states can be viewed as coordinates of a modal/harmonic expansion of the induced velocity in the form of:
+4
+
+
+^r r
+Vind (rAl/,t) = ¢,o(t) + Vc(t)_-cos_+ _s(t)_'sin _1/ (3)
+The form of [Mi] and [Li] are given in [12] as a function of advance ratio and inflow ratio. In hover, the matrices reduce to the following decoupled form:
+[Mi] = _1_._6 0_6
+45_
+0
+[' o]
+1_ 0 0
+[L,] -1
+o0 0
+(4)
+These equations are equivalent to steady momentum theory with apparent mass terms. In a later paper, Peters and He extended the basic dynamic inflow theory by expanding the induced velocity in an arbitrary number of radial and harmonic basis functions [13]. Although this theory allows for better resolution of the inflow non-uniformities associated with forward flight, it does not give improvement in the off-axis correlation in hover as discussed in [5]. It is important to note that both [12] and [13] assume the rotor is only translating and does not consider the effect of shaft rate, an assumption which is violated by a helicopter in flight.
+Recently, Rosen and Isser developed an aerodynamic model of a rotor undergoing steady pitching motion [ 10]. Their analysis included the effect of blade motion relative to a single tip vortex, where the position of the tip vortex is prescribed. It was shown that the inclusion of this wake distortion from rotor blade and shaft motion results in a sign change of the lateral flapping due to pitch rate. While this work illustrates the importance of pitch rate effects on induced velocity, there are some limitations of the analysis. First, Rosen and Isser do not calculate an induced velocity distribution for the rotor and hence do not compute the spanwise blade loading. In addition, their analysis is not general in that only steady pitching motion is assumed and a-priori knowledge of the wake structure is required.
+It is important to recognize that the theories developed in [12] and [13] have been used throughout the helicopter flight dynamics community because of their advantage over more complicated analyses. Since the rotor wake structure is unstable in hover and low speed forward flight, advanced free-wake codes are unable to use time-marching schemes and are not readily coupled to a dynamics model of a helicopter undergoing arbitrary body motion [14]. Also, the implementation of real-time simulators necessitates fast calculation of the induced velocity and aerodynamics loads, and the simpler finite state models represented by first order differential equations have clear advantages over more a complicated prescribed wake analysis. Therefore, there is a need of an induced velocity theory which contains the important effects observed in [10] yet is
+
+
+compactfor usein flight dynamicsandreal-timesimulationstudies. Beforea candidatetheoryis presenteda, qualitativediscussionof wakedistortionis presented.
+Wake Distortion Effects
+To understand the effect of rotor pitching motion on the induced velocity distribution, consider the wake structure for a hovering rotor shown schematically in Fig. 3a. This figure illustrates the location of the tip vortices at a given instant in time neglecting wake contraction. Because of axial symmetry, the velocity induced by the wake is the same for all blades. For the case of a rotor undergoing translational motion, the vortex system is blown back, resulting in the skewed wake structure shown in Fig. 3b. The effect of the modified structure is a harmonic variation in the induced velocity. This result has been well documented theoretically and experimentally (for example, in Refs. 15 and 16).
+The wake skew effect can also be described as a simple distortion of the wake from the hovering condition. If it is assumed that the tip vortices are convected downward from the rotor at a constant velocity and since the rotor is translating as the vortex system propagates away, it appears from a reference frame fixed to the rotor as if the wake is deforming with respect to the axisymmetric condition. This argument can be extended to a rotor undergoing a steady pitch rate. In this case, as the tip vortex system is convected away from the rotor, the rotor plane tilts back, resulting in a higher density of vortices at the rear of the rotor. In the idealized case shown in Fig. 3c, the wake lies along an arc with radius inversely proportional to the pitch rate. Since the buildup of tip vortices induces a larger component of downwash at the rear of the rotor than at the front, a harmonic variation in the induced velocity results.
+Induced Velocity for Pitching Rotor
+To determine quantitatively the effect of pitch rate on the induced velocity distribution of a hovering rotor, a simple analysis is performed. Approximating the rotor as an actuator disk with constant bound circulation and neglecting wake contraction, the wake is replaced with a vortex tube. Although these assumptions allow an analytical solution for a non-distorted wake, the more complicated geometry associated with a rotor undergoing a steady pitch rate requires a numerical solution.
+The induced velocity for a distorted vortex tube is calculated by replacing the tube with a series of vortex rings. It is assumed that each vortex ring uniformly moves downstream from the rotor at constant velocity. The geometry of a single vortex ring (see Fig. 4) can be expressed in terms
+of the average induced velocity (vo) and pitch rate (q) as follows:
+_w. =(-_)sinrl
+6
+
+
+_= qtI (5)
+wherethe positionof the vortexring center(_._,_) is non-dimensionalizebdy rotor radius. The parametetr_representtshetimewhenthevortexring wasshedfrom therotor.
+FromEq. (5), it canbe seenthatthe positionof wakecenterlinelieson a spiral. For small
+s_E
+pitch rates ( v. << 1), the centerline may be approximated by a circular arc, simplifying the geometry
+and the induced velocity calculation. The downward velocity component induced at the rotor by a vortex ring is calculated in terms of complete elliptic integrals, as given in [17]. The induced velocity
+distribution of the rotor is found by numerically integrating the effects of the individual vortex rings in the wake.
+The results of this calculation are shown in Fig. 5, where the induced velocity distribution is plotted for different non-dimensional pitch rates. Note that the largest non-dimensional pitch rate shown in Fig. 5 corresponds to approximately 10 deg/sec for the UH-60. This plot demonstrates that variation in induced velocity is nearly linear with radius, although the distribution becomes more
+curved as pitch rate increases. Fitting the induced velocity with the linear distribution v o + v c if, the
+radial variation is plotted as a function of non-dimensional pitch rate in Fig. 6. For small pitch rates, the radial variation in induced velocity can be approximated by the relation:
+(6)
+where K R is calculated to be 1.5 using this analysis. The form of Eq. (6) is similar when induced velocity variations for a translating rotor are considered:
+(7)
+For small rotor plane angles of attack, the vortex tube analysis results in a value of K.r equal to 0.5. This result is equivalent to the result of Coleman et al. [16].
+Modified Momentum Theory_
+Since the dynamic inflow theory of [12] only considers a rotor in translation and not general motion including shaft rate, it is necessary to include the effects discussed in the previous section in a systematic way. In hover, the induced velocity variations from changes in blade loading are given by Eqs. (2) and (4) while the variations due to rotor shaft motion are given in Eqs. (6) and (7). Because the preceding analyses are linear, the induced velocity variations due to blade loading can be superimposed on the variation due to rotor motion. The resulting induced velocity model for general shaft motion is as follows:
+7
+
+
+• 1 K(Uhub'_+K (q_
+'l_iV$ + VS-- -- _SCL + I_T_-_J't" KR (8)
+The subscript "hub" is included to emphasize that the translational velocities are referenced to the rotor hub. It is assumed that the effects of unsteady shaft motion are accounted with the time constant
+'i:i. Although the new induced velocity model appeals to physical intuition, it is necessary to verify that the assumptions used to derive Eq. (8) are valid. This is an area of ongoing research.
+The second and third terms on the right-hand side of Eq. (8) are referred to as wake distortion effects due to shaft translation and shaft rate, respectively. Although the magnitudes of the
+parameters K.r and K R were calculated using a vortex tube analysis in this paper, it is possible to use non-vortex methods to compute their values. For example, linearization of the general, non-linear
+dynamic inflow theory proposed in [18] results in a value of the parameter K. r equal to 0.736. It is important to recognize that while many induced velocity models in the literature include translational
+distortion effects (with different values of K.r), no model has included variations in induced velocity from pitch rate in this manner [15].
+Coupled Flap-Pitch Response
+Before the interaction between the proposed induced velocity model and the dynamics of a helicopter can be understood, it is useful to examine the coupled flap/inflow problem since rotor harmonic flapping is important in the generation of the forces and moments on the fuselage. To illustrate the effect of the wake distortion terms, consider the flap response of a rotor to a steady pitch rate. Neglecting the translational motion of the shaft, the equations governing the flapping motion in hover, expressed in terms of multi-blade coordinates, are as follows:
+(9)
+The lag dynamics only weakly couple with the flap dynamics and are neglected. To couple the induced velocity equations, expressions for the aerodynamic pitch and roll moment coefficients on the rotor are found• Using blade element .theory, these are:
+a fil ,, q
+8
+
+
+ao r l ) A ] (10)
+where fi, f2, and t'3 are parameters which are functions only of the hinge offset:
+I 4E E 4
+fl =4 x2(x-E)dx = 1---_--+--_
+I 8g _4
+f2 = 4 x(x-E)2dx = 1--_+2E 2 ---_E
+f3 =4I x3dx = l-e4 (I1)
+The steady-state tilt of the tip path plane can be found by setting the time derivatives in Eqs. (8) and (9) to zero, reducing the equations to algebraic relations. An interesting result occurs when the case of a centrally hinged rotor is considered. If the cyclic pitch angles are set to zero, the steady-state flap from pitch rate is:
+a! -
+1
+bl--_(1- KR)q (12)
+where y is the reduced Lock number as discussed in [19]. The important result in Eq. (12) is that the
+wake distortion parameter only appears in the expression for the steady lateral flapping. Using the
+value of K R derived in the previous section, the inclusion of induced velocity variations due to pitch rate results in a change in sign of the lateral tip path plane tilt. Because the moments on the helicopter are approximately proportional to the harmonic flapping angle, the inclusion of this wake distortion effect will have a significant effect on the off-axis response.
+The flap response of a uniform blade to a steady pitch rate is plotted as a function of the nondimensional hinge stiffness parameter, Es, in Fig. 7. It can be seen from the plot that the longitudinal
+tip path plane tilt is most influenced by the inclusion of induced velocity variations from blade loading and the effect of wake distortion due to pitch rate is small. However, the addition of the wake distortion terms results in a change in sign of the lateral flap response for all values of hinge stiffness parameter. It is interesting to note that very similar results were observed by Rosen and Isser in [I0] using a significantly more complicated Prescribed wake analysis.
+9
+
+
+Simulation Model
+To examine the effects of the proposed induced velocity model on the coupled rotor/fuselage
+response, comparisons between the model and flight test data are made. The analytically linearized equations of motion are coupled with the induced velocity model described in the preceding section through the aerodynamic moments on the rotor as well as through shaft motions. Because the translational velocities in Eq. (8) are referenced to the rotor hub, it is necessary to relate the hub motion to the fuselage motion:
+Uhub = U-- hq
+Vhub = v + hp (13)
+The fuselage, rotor, and induced velocity kinematics and dynamics are described by a system of linear differential equations in the following form:
+where
+[Ml_x = [F]_x + [Glu
+/tl bl I_I YI _/l Y2 Y2 vc Vs] w
+_x=[u q ® v p _ a I
+u: [51o. lat]T (14)
+The state matrices [M], [F], and [G] are analytic and expressed in terms of physical parameters of the
+helicopter as well as trim parameters such as the thrust coefficient and steady blade flap angle.
+The above model is driven by measured pilot control inputs. Comparisons to flight test measurements for the UH-60 are made in the time domain and frequency domain. Data for time
+domain comparisons are taken from the USAAEFA flight test program. In this test program, high
+quality step response measurements were made for a UH-60 hovering out of ground effect and operating at a gross weight of approximately 15,900 pounds.
+Frequency domain comparisons are made from frequency sweep data taken in the RASCAL flight test program. Frequency responses are extracted from data using the CIFER software package, developed by the U.S. Army and Sterling Software for helicopter frequency domain system identification [20]. This software allows for rapid generation of accurate frequency response pairs and coherence functions using advanced, multi-variable spectral analysis techniques. The RASCAL
+flight tests were conducted on a UH-60 operating at a slightly lower gross weight of 14,350 pounds. Differences between both test programs are accounted for in the comparisons shown in this paper.
+10
+
+
+Discussion of Results
+Time Domain Comparison
+A comparison between flight test measurements and predicted model response for a lateral cyclic stick input is shown in Fig. 8. The predicted roll rate response demonstrates good correlation to the flight test data during the test time. The useful test time is limited to about 6 seconds because an unmodeled gust corrupted the flight test data. Inclusion of wake distortion terms in the induced velocity model does not have a significant effect on the helicopter on-axis response. This result is expected based on the small change in the on-axis flapping response, as discussed in an earlier section of this paper.
+The pitch rate response to a lateral input is shown in the bottom of Fig. 8. The model response without wake distortion terms contains the sign error in the initial pitch acceleration that was observed in [3] and [4]. Inclusion of only the translational wake distortion effect in the induced velocity model results in worse correlation during the first few seconds after the control input is made. This occurs because the sideward velocity of the helicopter induces a harmonic inflow variation which increases the longitudinal tilt of the tip path plane and hence the pitch acceleration. However, when both shaft rate and translational effects are included, the model predicts a small nose down acceleration initially and contains trends which are similar to the measured response. The sign change in the initial acceleration is a direct result of the change in the off-axis flapping behavior when rate distortion terms are included in the induced velocity model. Although discrepancies still exist between the model and data, the overall correlation is generally improved using the new induced velocity model. The remaining error in the initial pitch response may be a result of the simplifying assumptions in this analysis, such as neglecting yaw coupling and tail rotor effects.
+Frequency Domain Comparison
+Frequency response magnitude and phase plots for the roll rate to lateral cyclic stick transfer function are shown in Fig. 9a. The coherence function, which represents the portion of the output that can be linearly attributed to the input, is shown for the flight test data in Fig. 9b. Coherence plots for the model are identically equal to one since the model is linear. Good correlation is observed in both magnitude and phase plots, except for a slight mismatch in the comer frequency corresponding to the coupled body-flap mode which occurs at approximately 5 rad/sec. Again, the effect of the wake distortion terms in the induced velocity model is small for the on-axis case.
+The pitch rate to lateral stick frequency response and coherence plot are shown in Figs. 10a and 10b, respectively. The model without wake distortion terms compares fairly well in amplitude but gives an error of approximately 180 degrees in phase when compared to data. This is equivalent to the sign error in the response observed in time domain comparisons. When both shaft rate and translational distortion effects are added to the model, the correlation in the phase plot is significantly improved. The mismatch in the low frequency amplitude may also be a result of the modeling assumptions in this analysis.
+11
+
+
+The dropin magnitudeandphaseincreasewhich occursatabout7 rad/se icn thetestdata,a
+characteristiocf a transferfunctionzero,is not correcdypredictedby themodelwith wakedistortion
+terms. Because the amplitude decrease is predicted with the original inflow model, this discrepancy at higher frequencies suggests that induced velocity model does not correctly model the effects of unsteady shaft motion. It should be noted that the coherence plot drops sharply in this frequency range, indicating that the extracted frequency response is of poorer quality and that the data is less reliable (see Fig. 10b).
+Conclusions
+This paper examines the interaction between the induced velocity model and the off-axis response. It is shown that the distortion of the wake for a rotor undergoing a steady pitch rate results in a harmonic induced velocity variation. A new induced velocity model that is suitable for flight
+dynamics applications is proposed which includes these wake distortion effects parametrically. This model has a form similar to dynamic inflow theory.
+It is shown that inclusion of wake distortion effects due to pitch rate results in a significant
+change in the lateral flap response. Results with this induced velocity model for the flap response to a steady pitch rate compared favorably to a more complicated prescribed wake analysis. However, the clear advantage of the simpler theory is that it is easily coupled to the rotor/body dynamics of helicopter. The response of the fully coupled system to control inputs is compared with flight test data, and significant improvement in the off-axis response is observed. While errors still exist between model and data, inclusion of the induced velocity variations due to pitch and roll rates are
+important for predicting the initial off-axis response.
+Future research must address the simplifying assumptions of this study. Current efforts are directed toward verification of the proposed induced velocity model with a more rigorous analysis. The effects of unsteady shaft motion also need to be characterized. In addition, basic measurements of the induced velocity and wake geometry of pitching rotors would provide additional insight and establish data for direct comparison to the model. Efforts are also being made to couple the induced velocity model with a more accurate flight simulation model and to compare the model to the measured responses of different helicopters. Continued correlation with other data is important in the validation of the new induced velocity model.
+Acknowledgments
+The author would like to express thanks to Prof. Howard Curtiss, Dr. Uwe Arnold, and Mr. Bruce Kothmann for their insightful discussions and continued support throughout this work. This
+research was supported by NASA Ames Research Center Grant NAG 2-561.
+12
+
+
+References
+1. Curtiss, H.C., "Stability and Control Modeling," Vertica, Vol. 12, (4), 1988.
+2. Blanken, C.L., Pausder, H.J., Ockier, C.J., and Simmons, R.C., "Rotorcraft Pitch-Roll
+Decoupling Requirements from a Roll Tracking Maneuver," presented at the 50th Annual Forum of the American Helicopter Society, Washington D.C., May 1994.
+3. Takahashi, M.D., "A Flight-Dynamic Helicopter Mathematical Model with a Single FlapLag-Torsion Main Rotor," NASA TM 102267, USAAVSCOM TM 90-A-004, Feb. 1990.
+4. Ballin, M.G. and Dalang-Secretan, M.A., "Validation of the Dynamic Response of a BladeElement UH-60 Simulation Model in Hovering Flight," presented at the 46th Annual Forum of the American Helicopter Society, Washington D.C., May 1990.
+5. He, C.J. and Lewis, W.D., "A Parametric Study of Real-Time Mathematical Modeling
+Incorporating Dynamic Wake and Elastic Blades," presented at the 48th Annual Forum of the American Helicopter Society, Washington D.C., June 1992.
+6. Harding, J.W. and Bass, S.M., "Validation of a Flight Simulation Model of the AH-64
+Apache Attack Helicopter Against Flight Test Data," presented at the 46th Annual Forum of the American Helicopter Society, Washington D.C., May 1990.
+7. Chaimovich, M., Rosen, A., Rand, O., Mansur, M.H., and Tischler, M.B., "Investigation of the Flight Mechanics Simulation of a Hovering Helicopter," presented at the 48th Annual Forum of the American Helicopter Society, Washington D.C., June 1992.
+8. Curtiss, H.C., "On the Calculation of the Response of Helicopters to Control Inputs," presented at the 18th European Rotorcraft Forum, Avignon, France, Sept. 1992.
+9. Tischler, M.B., Driscoll, J.T., Cauffman, M.G., and Freedman, C.J., "Study of Bearingless Main Rotor Dynamics from Frequency-Response Wind Tunnel Test Data," presented at the American Helicopter Society Aeromechanics Specialists Conference, San Francisco, CA, Jan. 1994.
+10. Rosen, A. and Isser, A., "A New Model of Rotor Dynamics During Pitch and Roll of a Hovering Helicopter," presented at the 50th Annual Forum of the American Helicopter Society, Washington D.C., May 1994.
+11. Curtiss, H.C. and McKillip, R.M., "Coupled Rotor-Body Equations of Motion: Hover Flight," MAE Technical Report No. 1894T, Princeton University, Princeton, NJ, June 1990.
+12. Pitt, D.M. and Peters, D.A., "Theoretical Prediction of Dynamic-Inflow Derivatives," Vertica, Vol. 5, (1), 1981.
+13
+
+
+13. Peters,D.A. andHe, C.J.,"Correlationof MeasuredInducedVelocitieswith a Finite-State
+WakeModel,"Journal of the American Helicopter Society, Vol. 36, (3), July 1991.
+14. Quackenbush, T.R., Bliss, D.B., and Wachspress, D.A., "Computational Analysis of Hover Performance Using a New Free Wake Method," presented at the Second International Conference on Rotorcraft Basic Research, College Park, MD, Feb. 1988.
+15. Chen, R.T.N., "A Survey of Nonuniform Inflow Models for Rotorcraft Flight Dynamics and
+Control Applications," Vertica, Vol. 14, (2), 1990.
+16. Coleman, R.P., Feingold, A.M., and Stempin, C.W., "Evaluation of the Induced-Velocity Field of an Idealized Helicopter Rotor," NACA ARR L5E10, June 1945.
+17. Kuchemann, D. and Weber, J., Aerodynamics of Propulsion, McGraw-Hill Book Company,
+New York, 1953, pp. 305-310.
+18. Peters, D.A. and HaQuang, N., "Dynamic Inflow for Practical Applications," Journal of the American Helicopter Society, Vol. 33, (4), Oct. 1988.
+19. Curtiss, H.C. and Shupe, N.K., "A Stability and Control Theory for Hingeless Rotors,"
+presented at the 27th Annual Forum of the American Helicopter Society, Washington D.C., May 1971.
+20. Tischler, M.B. and Cauffman, M.G., "Frequency-Response Method for Rotorcraft System Identification: Flight Applications to BO-105 Coupled Rotor/Fuselage Dynamics," Journal of the
+American Helicopter Society, Vol. 37, (3), July 1992.
+14
+
+
+2O
+10
+.t
+_. 0
+e<,
+-10
+-2O
+i
+i
+I
+1
+ii
+i
+• I q | iI
+: ! ! I !L,.E..,'ED .....
+' i , I MODEL -" "" MODEL
+2.... .. ' ! ...._: : ....... _.__
+S " . AEFA TEST 203
+,i II
+2O
+"_ I0
+e
+d
+<o
+u
+__ -10
+G.
+-2O
+i
+,!
+•" ! i
+iIi !
+I
+i
+ii
+!!
+I I"
+II
+i ! ,E,, TE',S2T0_
+II ..... IL ...... _...__ _._. ..................... ..'_'.
+l ,,
+!
+i iI
+, I • i M°DEL
+MODEL
+0 I 2 34 5 $ TIME, sec
+Fig. 1. Comparison between model and flight test data for lateral cyclic input of UH-60 in hover (from [3]).
+Fig. 2.
+25
+o
+7L.,"
+2O
+15
+10
+5
+0
+-5
+-10
+-15
+-20
+-25
+._ ..... °°.oo°-''°°°°'°
+_- Fhght text .... Revised model
+..o-''''-.
+° .o o
+0 1.0 2.0 3.0 4.0 - Time. lee
+5.0 6.0 7.0
+Comparison between model and data of pitch rate response to lateral input for UH-60 in hover (from [4]).
+15
+
+
+Rotor
+Wake
+Tip vortex
+a) In hover
+U
+\
+b) In forward flight
+c) For steady pitch rate
+Fig. 3. Wake structure of rotor.
+16
+
+
+vortex ring S
+\
+_W
+Fig 4. Geometry of vortex ring in induced velocity calculation.
+17
+
+
+O
+..oo ._.
+Ov
+r"eaO
+0
+0.5
+1
+1.5-1
+qR _ 0
+Vo
+I-_'n" =o.o7s 
+\ ,_
+I V° ]
+I I ! I _t I | I ! | I I I | I |
+-0.5 0 0.5 1
+Radial position (r/R)
+Fig. 5. Induced velocity distribution for rotor in steady pitch rate.
+18
+
+
+o
+o
+"0_0.E
+-0.1
+-0.2
+.3 ,r|| ,,|T
+0.2 ........... I
+i
+0.1
+-0.3
+-0.2
+ti
+l
+I
+. i _ i i | i . | . . | m. i .
+/
+i /f
+I I t | _| i ! , i |! i |¢! | ¢s| = i i ! | J i I | D! ii
+-0.15 -0.1 -0.05 0 0.05 0.1 0.15 0.2
+Pitch rate (qR/vo)
+Fig. 6. Radial variation of induced velocity as a function of pitch rate.
+19
+
+
+4,5 'n"j0JvaOa'o0!, I__----
+...................n.o wake n_,n,_,nn" : -,_........................,.............._-'_-'_'_--, .......................
+wakl_ distortion
+. . ,n_,uu,nu
+.............................'..................................._.................................!....................-...................i....................................
+| I I•
+i "." i 
+! ! t ..-.-- ....
+I I .°I ,_°°°
+.............................T..................................".............................._..'.:.".-."_" ..... _ ......i............................
+i ,+ ..°,_°*_ i !
+l ......--- - _,.;_."" i
+.... _''" i ................................. ! i "
+.............................T........ No inflow variations............................................
+' ' ' i '' ' ' '' 1'' ' I ' ' '
+I ii
+4
+_-... 3.5
+0:io" 3
+2.5
+OI
+..0Cj 2
+1.5
+1.5
+1
+•_. 0.5
+_o
+_ "_ -0.5
+_J
+-1
+-1.5
+i
+i .." • i
+i
+........................................................................................:...._......=........_...........-.,.._............-......._....'..._
+= ==.,=.=_ ==""_'= °° °oo_o°-_-°'i _°°°_°°°_
+.... _.:..._, ......_. ,..-..-.._:..'...,-_-..:...'.:.._ "..........._..-........................i..............................................
+i! i
+' ' ' I I , , I I I I II I I I I
+0 0.02 0.04 0.06 0.08 0.1
+Hinge stiffness parameter (eSb/I b)
+Fig. 7. Effect of induced velocity model on flap response to steady pitch rate (7 = 7.94, (_ = 0.0928,
+cr =0.0067).
+20
+
+
+15 =t
+=t
+....................T.........................._................._..,.-..... ................._.....................T..................
+.................................................................................................
+|]|I |II| ||II II '| lll|]llill _
+o 10
+ID "_0 5
+,=-o- 0
+-5
+10
+Ao 5
+"0 0
+(9
+t
+O -5
+n
+-10
+ii
+:!
+i Translation effect only ] __
+i _ _ _.-._- ii_ I
+..... " - -,---- _'- ' _T-'_. "-"...................
+.............................F..!.]..g......!...!.e..s..t..._.._............ ...........................
+i i T a slation and
+i i rate effect
+! t J J j j j j "J , J = i [ i i _ , _ , _ . ] _ , ] j
+i
+0 23 4 5 6
+Time (sec)
+Fig. 8. Effect of induced velocity model on response to lateral cyclic stick input for UH-60 in hover.
+21
+
+
+."._Q -10
+v
+0
+-30
+0
+-50
+"I0D
+0o')
+,-" -I00
+D.
+: .. !
+................ :............ :..... -..
+......... _._.¢_,._,_. _.._ _,.._ _..__._ _._, ,_,.__ _._ _._, _._ "_" "A" "Z "_"°. .......... ._.- y .....
+'-" "-",_'_J _ _r_,"=_._ O'C_ _ _:_,mO_) _ " . • : :
+............... . ............ , ..................................................... . ........... .
+0 Right test data
+Model, no distortionterms Model, with distortionterms
+i m i ! i _•
+-150
+10 °
+oo : ! ! i i i i
+..........i................................i...........i.........i........i......!........
+............................................. -............. - ........ - ....... : ...... .- ._.._:. - •
+Frequency (rad/sec)
+a) Frequency response
+ooO
+ltOO-D
+0.5
+)000000000000000000ooOuOOO°°oOGOoou°°OuOOuOoGOuO0_
+00 ' , ,
+Frequency (rad/sec)
+b) Coherence
+Fig. 9. Effect of induced velocity model on p/_5_t frequency response in hover.
+22
+
+
+-2(
+"_ --4O ID
+.,.,
+-60
+<E
+-80
+4O0
+_O00000000r_r_r_ 0,.: : : : : : : :
+- -_ • 0000 : : :: • .
+--_ °°c_°°°°°°oo ! i i i .L..
+: i i i" .od ° L. -:- "
+0 Flight test data
+.... Model, no distortion terms Model, with distortion terms
+l i l i ; I li
+o_ 200
+ID
+V
+0
+,'- 0
+13..
+.......... + ...... ::__
+............................ : ....................... _" "- "':" _ .... " u'.L'"': ...... : ................ : _4. :
+• , ',,,. ,
+, %.
+: :k
+. : : -. . .
+_'_ .o..o.o:O.O._.Q.Oo.oi
+-2000o ...... : , , ' 101 Frequency (rad/sec)
+a) Frequency response
+t0o2
+0cO
+0.5
+0°
+Frequency (rad/sec)
+0o
+0000
+)00000 O0
+oOO°°°°oO°°oo oOi
+00_ _ _00. --: .... :.......... '0 .................. •..... -.0-
+.......................... ,_,., o,., " " " 0 0
+0
+00 0 0 :0 o_
+|I
+10 _
+b) Coherence
+Fig. l 0. Effect of induced velocity model on qhStat frequency response in hover.
+23

@@ -1,0 +1,329 @@
+Rotary Wing Aerodynamics
+(AE 667)
+
+
+Blade Dynamics
+
+
+Helicopter Rotor Hub
+
+
+Helicopter Rotor Hub
+
+
+Helicopter Rotor Hub degrees of freedom
+oFlapping hinges: Allows blade to
+flap up or down. Avoids
+transmission of bending moments
+to the shaft
+oLead-Lag hinges: Avoids stresses
+at the blade root due to Coriolis
+forces.
+(Lead-lag motion neglected from
+aerodynamic perspective)
+oPitch / Feathering (bearing, swash
+plate, pitch links): Control blade
+pitch for controlling helicopter
+motion.
+
+
+Hub type: Rigid
+oOnly feathering (pitching), No Flapping
+oMoments transmitted to the rotor head
+oHigh degree of control power.
+oFewer parts ➔ less maintenance
+http://www.helistart.com/RotorheadTypes.aspx
+
+
+Hub type: Teetering
+oBlades connected together through a common pivot
+oBlades fixed at an average coning angle to reduce stress
+oRotor disc can tilt in any direction
+oLesser degree of control compared to rigid system
+http://www.helistart.com/RotorheadTypes.aspx
+
+
+Swash Plate Animation
+https://www.youtube.com/watch?v=83h6QK-oJ4M
+
+
+Coordinate Systems
+oHub Plane (Shaft Plane)
+o ‘Z’ axis along rotor shaft
+o Rotor is seen flapping and feathering (changes pitch) about this plane
+oTip Path Plane (TPP)
+o Plane in which the tips of the rotor blades move
+o Rotor is seen to be only feathering. No flapping motion
+oNo Feathering Plane (NFP)
+o Pitch constant when seen from this plane
+o Rotor is seen to be flapping only
+
+
+Coordinate Systems
+Tip Path Plane
+NFP
+
+
+Coordinate Systems
+Hub Plane
+
+
+Azimuthal angles
+Ψ = 0o
+Ψ = 90o
+Ψ = 180o
+Ψ = 270o
+Ψ
+
+
+Tip Path Plane &Flapping Angle
+Hub/Shaft Plane
+β0 + β1c
+β0 - β1c
+β1c
+Ψ = 0o
+Ψ = 180o
+() ()
+(Flapping Angle)  0 + 1c cos  + 1s sin 
+Higher order terms/harmonics relevant while studying vibration
+
+
+Blade Dynamics
+(Blade Flapping Dynamics)
+
+
+Forces and Moments on Rotor Blade
+oWe assume 0 hinge offset for simplicity
+oSteady forward flight: Net moments at hinge due to aerodynamic, centrifugal, & inertial forces cancel out to achieve equilibrium
+dL
+dFcentri
+r
+β d[Inertia]
+
+
+Moment Balance
+oCounter-clockwise moments
+o Aerodynamic:
+oClockwise moments:
+o Centrifugal:
+o Inertial
+(due to angular acceleration in flapping direction):
+()
+(as derived while studying hover coning)
+sin
+2
+1
+0
+2
+
+=
+=
+
++
+rR
+r
+c r V  rCldr
+(as derived while studying hover coning)
+I2
+
+I
+
+
+Moment Balance
+oClockwise Moments = Counter-clockwise moments
+oThe equation resembles a harmonic oscillator with natural frequency of Ω and the forcing term (right hand side) also consisting of first, second, and higher harmonics of Ω
+oAerodynamic damping ensures stability of the otherwise resonant system
+()
+sin
+2
+1
+0
+2
+2
+=
+=
+
++ = +
+rR
+r
+I  I  c r V  rCldr
+
+
+Solving ODE (Partially)
+oAssume forcing function (RHS) of the form: Asin(Ωt)
+oAssume a damping term in LHS of form: c dβ/dt
+oResulting expression:
+oAssuming the solution to be of form:
+oSubstituting and solving, we get
+I + c + I = Asin t
+  2
+ = B sin t + C cos t
+()
+2
+cos sin 
+ −
+
+=
+
+=− t
+c
+A
+t
+c
+A
+
+
+Solving ODE (Partially)
+oSolution β = A
+cΩ sin Ωt − πΤ2 for forcing field A sin Ωt
+➔response lags 90o from excitation force.
+➔ the blades will flap upward to the highest level 90o after the highest pitch azimuth.
+[Gyroscopic Precession!]
+For example: In forward flight, the highest pitch setting is at Ψ = 270o and the lowest pitch setting is at Ψ = 90o. Hence blades flap up at Ψ = 0o and down at Ψ = 180o (or in other words, TPP tilts forward). The overall thrust points forwards (to counter drag and to accelerate)
+
+
+Gyroscopic Precession
+o Please check out the following two videos on Gyroscopic Precession for a better understanding
+https://youtu.be/ty9QSiVC2g0
+Gyroscopic Precession Gyroscopic precession -- An intuitive explanation
+https://youtu.be/n5bKzBZ7XuM?t=204
+
+
+General form of blade flapping motion
+• The blade flapping dynamics ODE
+Iሷ
+β + IΩ2β = න
+r=0
+r=R 1
+2 ρc Ωr + V∞ sin ψ 2rCldr
+• has solution of the form: β = β0 + β1c cos ψ + β1s sin ψ + β2c cos 2 ψ + β2s sin 2 ψ +•••
+• For aerodynamics purpose, terms upto the first harmonic ψ are sufficient. Higher harmonics (2ψ and above) are important from dynamics and vibration perspective
+Note that β0 is the coning angle and ψ = Ωt
+
+
+Ψ = 0o
+Ψ = 90o
+Ψ = 180o
+Ψ = 270o
+Significance of β1c
+oβ1c is how much the TPP tilts forwards or backward w.r.t shaft
+plane. Positive β1c implies forward tilt
+Hub/Shaft Plane
+β0 + β1c
+β0 - β1c
+β1c
+Ψ = 0o
+Ψ = 180o
+Front Back
+
+
+Significance of β1s
+oβ1s is how much the TPP tilts sidewards w.r.t shaft plane. Positive β1s
+implies left side tilt (when seen from the back)
+Hub/Shaft Plane
+β0 + β1s
+β0 - β1s
+β1s
+Ψ = 90o
+Ψ = 270o
+Left Right
+Ψ = 0o
+Ψ = 90o
+Ψ = 180o
+Ψ = 270o
+
+
+Pitch Control (Pilot Input)
+oPilot controls collective and cyclic pitches of the blades through swashplate.
+Pitch at 75%R (definition as per convention)
+Longitudinal Cyclic (Fore & Aft)
+Lateral Cyclic (Side wards)
+Collective Pitch
+Where,
+cos sin
+75%
+1
+1
+0
+75% 0 1 1
+=
+=
+=
+=
+=+ +
+R
+s
+c
+Rc s
+
+
+
+
+    
+Ψ = 0o
+Ψ = 90o
+Ψ = 180o
+Ψ = 270o
+
+
+Ψ = 0o
+Ψ = 90o
+Ψ = 180o
+Ψ = 270o
+Longitudinal Control and Angles
+Hub/Shaft Plane β1c
+Ψ = 0o
+Ψ = 180o
+Front
+Back
+θ1s
+θ1s
+Blade cross section at Ψ = 90o
+θ1s + β1c is independent of coordinate system of measurement (as the relative angle between the NFP and TPP does not change with coordinate system)
+θ = θ0 + θ1c cos ψ + θ1s sin ψ
+θψ=90o = θ0 + θ1s
+β1c
+
+
+Lateral Control and Angles
+Hub/Shaft Plane
+β1s
+Ψ = 90o
+Ψ = 270o
+Left
+Right
+θ1c
+Blade cross section at Ψ = 180o
+θ1c - β1s is independent of coordinate system of measurement (as the relative angle between the NFP and TPP does not change with coordinate system)
+Ψ = 0o
+Ψ = 90o
+Ψ = 180o
+Ψ = 270o
+θ = θ0 + θ1c cos ψ + θ1s sin ψ
+θψ=180o = θ0 − θ1c
+
+
+Angles in different coordinate systems
+•ȁ
+θ TPP = θ pitch as observed from Tip Path Plane •ȁ
+β NFP = β flap angle as obsered from No Feathering Plane
+• β1c + θ1s = ȁ
+β1c NFP = ȁ
+θ1s TPP
+• β1s − θ1c = ȁ
+β1s NFP = ȁ
+−θ1c TPP
+•ȁ
+β TPP = β0 ȁ
+and θ NFP = θ0 by definition
+(β1c + θ1s) and (β1s − θ1c) will always appear as single terms in the future derivations. That is so, because aerodynamics on a blade section is independent of whether the resultant pitch is due to direct pilot input (θ)or due to tilting of the TPP (β)
+
+
+Equivalence of Flapping and Pitching Motions
+All Planes Horizontal: β0 = 5 ; β1c = 0 θ0 = 10 ; θ1s = 0
+If entire shaft axis (black) is tilted by 5 degrees with frozen flapping and feathering:
+β0 = 5 ; β1c = 0 ; θ0 = 10 ; θ1s = 0
+Blade angle at 900 = 5; Blade angle at 2700 = 15 (w.r.t horizontal)
+If flapping + feathering enabled with frozen shaft axis (red):
+β0 = 5 ; β1c = 5 ; θ0 = 10 ; θ1s = −5
+Blade angle at 900 = 5; Blade angle at 2700 = 15 (w.r.t horizontal)

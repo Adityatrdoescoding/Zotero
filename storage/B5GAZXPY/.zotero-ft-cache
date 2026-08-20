@@ -1,0 +1,398 @@
+http://ijr.sagepub.com/
+Robotics Research
+The International Journal of
+http://ijr.sagepub.com/content/31/11/1279
+The online version of this article can be found at:
+DOI: 10.1177/0278364912455954
+The International Journal of Robotics Research 2012 31: 1279 originally published online 21 August 2012
+Vijay Kumar and Nathan Michael
+Opportunities and challenges with autonomous micro aerial vehicles
+Published by:
+http://www.sagepublications.com
+On behalf of:
+Multimedia Archives
+Additional services and information for The International Journal of Robotics Research can be found at:
+Email Alerts: http://ijr.sagepub.com/cgi/alerts
+Subscriptions: http://ijr.sagepub.com/subscriptions
+Reprints: http://www.sagepub.com/journalsReprints.nav
+Permissions: http://www.sagepub.com/journalsPermissions.nav
+Citations: http://ijr.sagepub.com/content/31/11/1279.refs.html
+What is This?
+OnlineFirst Version of Record - Aug 21, 2012
+>> Version of Record - Sep 11, 2012
+Downloaded from ijr.sagepub.com at SIMON FRASER LIBRARY on November 16, 2014
+
+
+Opportunities and challenges with autonomous micro aerial vehicles
+The International Journal of Robotics Research 31(11) 1279–1291 © The Author(s) 2012 Reprints and permission: sagepub.co.uk/journalsPermissions.nav DOI: 10.1177/0278364912455954 ijr.sagepub.com
+Vijay Kumar and Nathan Michael
+Abstract
+We survey the recent work on micro unmanned aerial vehicles (UAVs), a fast-growing field in robotics, outlining the opportunities for research and applications, along with the scientific and technological challenges. Micro-UAVs can operate in three-dimensional environments, explore and map multi-story buildings, manipulate and transport objects, and even perform such tasks as assembly. While fixed-base industrial robots were the main focus in the first two decades of robotics, and mobile robots enabled most of the significant advances during the next two decades, it is likely that UAVs, and particularly micro-UAVs, will provide a major impetus for the next phase of education, research, and development.
+Keywords
+Aerial robots, quadrotors, UAVs, MAVs, autonomy, planning, control, perception
+1. Introduction
+The last decade has seen many exciting developments in the area of micro unmanned aerial vehicles (UAVs) that are between 0.1–0.5 m in length and 0.1–0.5 kg in mass. Just as the incorporation of two-dimensional mobility reinvigorated robotics research in the 1990s, the ability to operate in truly three-dimensional environments is bringing in new research challenges along with new technologies and applications. Indeed by some estimates (UAV Market Research, 2011), the UAV market is estimated to exceed US$60 billion in the next 3 years, and this forecast is conservative since it does not account for the thousands of micro-UAVs that are likely to be fielded in the near future. Our focus in this paper is mainly on the autonomy of UAVs that have gross weights of the order of 1 kg and below, although it is difficult to limit the discussion only to autonomy since platform development represents a challenge in its own right (Mettler, 2001; Pines and Bohorquez, 2006; Bouabdallah, 2007; Gurdan et al., 2007; Bermes, 2010). While commercial products ranging from 5 to 350 g are available, most of these products do not carry the sensors and processors required for autonomous flight. Many of these small aircraft do not have the endurance required for missions of longer than 5 minutes. Longer endurance requires bigger batteries, and with the current energy densities of Li-polymer batteries (of the order of several hundred Wh/kg), the mass fraction used by batteries is significant, often between 25–50% of the gross weight.
+There are many types of micro-UAVs that are in various phases of research, development, and practice. Fixed-wing aircraft are less adept than rotor craft at maneuvering in constrained, three-dimensional environments. While avian-style flapping wing aircraft are potentially more agile (Mackenzie, 2012), our limited understanding of the aeroelasticity and the fluid–structure coupling in such aircraft presents a formidable challenge (Faruque and Humbert, 2010). Insect-style flapping wing vehicles provide the ability to hover in place while also enabling forward flight (Mackenzie, 2012).1 However, it is unclear whether they represent a significant advantage over rotor craft or ducted fans in terms of efficiency, endurance, or maneuverability, but they do incur a significant increase in complexity (Ratti and Vachtsevanos, 2011). There are two configurations of rotor craft that have gained acceptance in the research community. Co-axial rotor craft, exemplified by the Skybotix Coax (Bouabdallah, 2007), are equipped with two counter-rotating, co-axial rotors and with a stabilizer bar (Bermes et al., 2009). Prototypes of less than 300 g (without sensors or processors) with a hover time of nearly 20 minutes make them attractive for robotics applications. In addition, the stabilizer bar
+University of Pennsylvania, Philadelphia, PA, USA
+Corresponding author:
+Vijay Kumar, University of Pennsylvania, 220 South 33rd Street, Philadelphia, PA 19104-6315, USA. Email: kumar@grasp.upenn.edu
+Downloaded from ijr.sagepub.com at SIMON FRASER LIBRARY on November 16, 2014
+
+
+1280 The International Journal of Robotics Research 31(11)
+improves the stability of the rotorcraft making it easier to control. However, we argue (in Section 2) that multi-rotor aircraft exemplified by quadrotors currently represent the best bet in terms of maneuverability and their ability to carry small payloads. Thus, in this paper we are mainly concerned with the research challenges underlying the development and deployment of autonomous quadrotors. The paper builds on a conference presentation (Kumar and Michael, 2011). We discuss design and scaling challenges in Section 2, the modeling and control problems in Section 3, and algorithms for planning in Section 4. Three-dimensional perception and state estimation for quadrotors are discussed in Section 5 and the control and coordination of multiple aerial robots is presented in Section 6. We conclude with a discussion of other challenges related to scaling down in size in Section 7.
+2. Rotor craft designs and scaling laws
+In this section, we explore the effect of choosing length scales on the inertia, payload, and ultimately angular and linear acceleration. In particular, we can analyze maneuverability in terms of the robot’s ability to produce linear and angular accelerations from a hover state. If the characteristic length is L, the rotor radius R scales linearly with L. The mass scales as L3 and the moments of inertia as L5. On the other hand, the lift or thrust, F, and drag, D, from the rotors scales with the cross-sectional area and the square of the blade-tip velocity, v. If the angular speed of the blades is defined by ω = v
+R , F ∼ ω2L4, and D ∼ ω2L4. The linear
+acceleration a scales as a ∼ ω2L4
+L3 = ω2L.
+For multi-rotor aircraft such as the quadrotor, thrusts from the rotors produce a moment with a moment arm L. Thus, the angular acceleration α ∼ ω2L5
+L5 = ω2. However,
+the rotor speed also scales with length since smaller motors produce less torque which limits their peak speed because of the drag resistance that also scales the same way as lift. There are two commonly accepted approaches to scaling: Froude scaling and Mach scaling (Wolowicz et al., 1979). Mach scaling is used for compressible flows and essentially assumes that the tip velocities are constant leading to ω∼ 1
+R . In other words, the rotor speed scales inversely with length. Froude scaling is used for incompressible flows and assumes that for similar aircraft configurations, the Froude
+number, v2
+Lg , is constant. Here g is the acceleration due to
+gravity. This yields ω ∼ √1R . Neither Froude or Mach number similitudes take motor characteristics into account. As shown in Figure 1, the nominal hover speed, ω0, for the propellers is determined by matching the motor torque and the drag on the propellers for a fixed design. This, in turn, determines the lift that can be achieved, and therefore the payload that can be supported by the craft. It is clear that the motor torque (τ ) scales with length. The surface area, which goes as R2 ∼ L2, and the
+volume of the core, which scales as R3 ∼ L3, are both important variables governing motor performance. On the other hand, the coefficient of performance of the propeller suffers with speed and the quadratic scaling of the lift with speed is no longer a good model. It turns out that Froude scaling (ω ∼ √1R ) is consistent
+with τ ∼ L2 while Mach scaling (ω ∼ 1
+R ) is consistent with
+τ ∼ L3. While the reality might be somewhere in between, these two limiting cases are meaningful for our analysis. Froude scaling suggests that the acceleration is independent of length while the angular acceleration α ∼ L−1. On the other hand, Mach scaling leads to the conclusion that a ∼ L while α ∼ L−2. In other words, smaller aircraft are much more agile. Note that this conclusion is based on the assumption that the propeller blades are rigid, the efficiency of the blade is independent of the length scale and the inertia associated with the blades can be neglected. These factors can be important but considering the inertia of the blade further emphasizes the benefits of scaling down: longer blades require larger cross-sections to minimize stresses and the inertia grows faster than L5. For other types of rotor craft, including co-axial rotor craft, the linear acceleration scales in a similar way. Of course, since the lift generated increases with the rotor radius, a single large rotor generates more lift and therefore higher linear accelerations than multi-rotor configurations. However, the angular acceleration scales differently because the moment arm associated with the rotors is exactly L. This moment arm does not scale the same way with coaxial helicopters. Similarly the scaling law for conventional helicopters and ducted fans appears to be different. Thus, if our objective is to build small, highly maneuverable aircraft, multi-rotor helicopters such as the quadrotor represent a good design point. The other advantage with the quadrotor design is that there are no mechanisms for changing the blade pitch nor any flaps or hinges. The gyroscopic moments that are generated during sharp turns are transmitted through a relatively simple, rigid structure, unlike in conventional helicopter designs where these moments will cause the blades to flap. Finally, as we argue later in the paper, the simplicity of the design allows reasonably good models to be developed for control and planning. While rotorcraft with six and eight rotors have been developed and are commercially available,2 the main benefits appear to be redundancy due to the number of rotors and increased safety because of the compactness of a six-rotor design over a four-rotor design. There are three design points that are illustrative of the quadrotor configuration. We use the Pelican quadrotor from Ascending Technologies3 equipped with sensors (approximately 2 kg gross weight, 0.75 m diameter, and 4000 rpm nominal rotor speed at hover), consuming approximately 400 W of power. The Hummingbird quadrotor from Ascending Technologies (500 g gross weight, approximately 0.5 m diameter, and 5000 rpm nominal rotor speed at hover) consumes about 75 W. Attempts to develop a smaller
+Downloaded from ijr.sagepub.com at SIMON FRASER LIBRARY on November 16, 2014
+
+
+Kumar and Michael 1281
+Fig. 1. The operating speed for the rotors (ω0), and therefore the maximum payload (W0), is determined by matching the motor torque–speed characteristics to the drag versus speed characteristics of the propellers.
+quadrotor (Miller et al., 2010; Mellinger et al., 2012) suggest that a quadrotor of mass around 50–60 g, 0.075 m diameter, and between 8000 and 9000 rpm rotor speed consumes a little over 10 W of power. Unfortunately, with energy densities for current lithium-ion polymer batteries being only around 500 J/g, the flight time with a battery mass of 30% of the total mass ranges from 10 to 20 minutes.
+3. Control
+3.1. Dynamics
+The dynamics of quadrotors can be simplified to rigid-body dynamic models with approximations to the aerodynamic forces (Michael et al., 2010). In Figure 2, the inertial frame, A, is defined by the triad a1, a2, and a3 with a3 pointing upward. The body frame, B, is attached to the center of mass of the quadrotor with b1 coinciding with the preferred forward direction and b3 perpendicular to the plane of the rotors pointing vertically up during perfect hover (see Figure 2). Let r denote the position vector of the center of mass C in A. The vehicle has mass m and the components of the inertia tensor is given by the 3×3 matrix J along the principal axes bi. The rotation matrix describing B in A is given by R ∈ SO( 3), while the angular velocity of the vehicle, ∈ R3, is defined as
+ ̇R = R ˆ
+where the operator ·ˆ is defined such that ˆxy = x × y for all x, y ∈ R3.
+The forces on the system are gravity, in the −a3 direction, the lift forces from each of the rotors, Fi, and the drag moments from the rotors Mi, all in the b3 direction. Each rotor has an angular speed ωi and produces a lift force and drag moment modeled as Fi = kFω2
+i and Mi = kM ω2
+i,
+b1
+b2
+b3
+e2
+e1
+a1
+a2
+a3
+e2
+r
+1
+2
+3
+4C
+O
+Fig. 2. The vehicle model. The position and orientation of the robot in the global frame are denoted by r and R, respectively.
+respectively. The constants, kF and kM , are related to the drag and lift coefficients, the cross-sectional area and the rotor speed as discussed in Section 2. However, for a specific rotor, it is quite easy to determine these empirically. The thrust input is given by
+u1 =
+∑4
+i=1
+Fi
+while the moment input vector is
+u2 = L
+⎡
+⎣
+0 1 0 −1 −1 0 1 0 μ −μ μ −μ
+⎤
+⎦
+⎡
+⎢⎢⎣
+F1 F2 F3 F4
+⎤
+⎥⎥⎦
+where L is the distance of the rotor axis from C, and μ = kM
+LkF is a non-dimensional coefficient that relates the
+drag (moment) to the lift (force) produced by the propeller blades. The dynamic model is given by
+m ̈r − mge3 = u1Re3
+J  ̇ + × J = u2
+where e3 = [0, 0, 1] T.
+3.2. Control
+The control problem, to track smooth trajectories ( Rdes( t), rdes( t) ) ∈ SE( 3), is challenging for several reasons. First, the system is underactuated: there are four inputs ( u1, u2) while SE( 3) is six dimensional. Second, the aerodynamic model described above is only approximate. Finally, the inputs are themselves idealized. In practice, the motor controllers must generate the required speeds to realize these inputs. The dynamics of the motors and their interactions with the drag forces on the propellers can be quite difficult to model, although first-order linear models are a useful approximation.
+Downloaded from ijr.sagepub.com at SIMON FRASER LIBRARY on November 16, 2014
+
+
+1282 The International Journal of Robotics Research 31(11)
+The first challenge, the underactuation, can be overcome by recognizing that the quadrotor is differentially flat. See Murray et al. (1995) and Nieuwstadt and Murray (1998) for a discussion of differential flatness. To see this, we consider the outputs r and ψ as shown in Figure 2, and show that we can write all state variables and inputs as functions of the outputs and their derivatives. Derivatives of r yield the velocity v, and the acceleration,
+a= 1
+m u1b3 + g.
+By writing the unit vector:
+e1 = [cos ψ, sin ψ, 0] T
+we can define the body frame from ψ and a as follows:
+b3 = a − g
+‖a − g‖ , b2 = b3 × e1
+‖b3 × e1‖ , b1 = b2 × b3
+provided that e1 ×b3 = 0. This defines the rotation matrix R as a function of a and ψ. To write the angular velocity and the inputs as a function of the outputs and their derivatives, we write the derivative of acceleration or jerk,
+j= 1
+m  ̇u1b3 + 1
+m u1 × b3
+and, finally, the snap or the derivative of jerk
+s= 1
+m u ̈1b3 + 2
+m u ̇1 × b3 + 1
+m u1  ̇ × b3
++1
+m u1 ×( × b3)
+where
+ ̇ = J −1( u2 − × J ) .
+From the equations above it is possible to verify that there is a diffeomorphism between the 18 × 1 vector:
+[r T , v T , a T , j T , s T , ψ, ψ ̇ , ψ ̈ ] T
+and
+R × [r T , r ̇ T , T , u1, u ̇1,  ̈u1, u T
+2
+]T .
+Accordingly define the vector of flat outputs and their derivatives to be:
+z = [rT, vT, aT, jT, ψ, ψ ̇ ] T = [z T
+1 ,zT
+2 ,zT
+3 ,zT
+4 , z5, z6
+]T .
+We can also define a vector of fictitious inputs
+v = [v T
+1 , v2
+]T
+related to the original inputs by a nonlinear transformation of the form:
+[v1 v2
+]
+= g( z)
+[  ̈u1 u2
+]
++ h( z) (1)
+so the state equations are linear:
+ ̇z = Az + Bv (2)
+with
+A=
+⎡
+⎢⎢⎢⎢⎢⎢⎣
+03×3 I3×3 03×3 03×3 03×1 03×1
+03×3 03×3 I3×3 03×3 03×1 03×1
+03×3 03×3 03×3 I3×3 03×1 03×1
+03×3 03×3 03×3 03×3 03×1 03×1
+01×3 01×3 01×3 01×3 0 1
+01×3 01×3 01×3 01×3 0 0
+⎤
+⎥⎥⎥⎥⎥⎥⎦
+,
+B=
+⎡
+⎢⎢⎢⎢⎢⎢⎣
+03×3 03×1
+03×3 03×1
+03×3 03×1
+I3×3 03×1
+01×3 0
+01×3 1
+⎤
+⎥⎥⎥⎥⎥⎥⎦
+.
+This obviously makes the control problem trivial. See Figure 3 for a graphical description of the controller design. There are several difficulties following this naive approach. First, the linear controller based on (2) only works if the dynamics can be effectively linearized. This in turn depends on the cancellation of the dynamics in (1) which is difficult because the dynamic model only represents an approximation of the aerodynamic forces and our knowledge of the model parameters is not perfect. While parameter estimation and adaptive control techniques (e.g. Ortega and Spong, 1988) can be used to learn and adapt to these parameters, it is often not possible to get access to the low-level signals involving higher-order derivatives of the state and the inputs. Indeed, the second challenge is to derive estimators that yield the extended state, z, which includes not only the position and velocity, but also the acceleration and jerk. Knowledge of the thrust (u1) and attitude (b3) allows us to estimate acceleration. Similarly, measuring the derivative of the thrust ( ̇u1), which is related to the rate of change of motor speeds, and the angular rates ( ) allows us to estimate the jerk. Unfortunately, this information is often not available from the low-level motor controllers. However, this model of exact linearization is useful since it allows us to design trajectories in the 18-dimensional space of flat outputs and their derivatives which are guaranteed to respect the dynamics and constraints we might want to impose on the state variables. In most previous work (Bouabdallah, 2007; Gurdan et al., 2007; Purwin and D’Andrea, 2009), the control problem is addressed by decoupling the position and attitude control subproblems as illustrated in Figure 4. The position controller is obtained by projecting the position error (and its derivatives) along b3 and applying the input u1 that cancels the gravitational force and provides the appropriate proportional plus derivative feedback:
+u1 = mb T
+3
+( ̈rdes + Kd(  ̇rdes − r ̇) +Kp( rdes − r) −g) . (3)
+Downloaded from ijr.sagepub.com at SIMON FRASER LIBRARY on November 16, 2014
+
+
+Kumar and Michael 1283
+Rigid body dynamics
+u1, u2
+z
+(x, x ̇ )
+Rigid body dynamics
+u1, u2 x, x ̇ )
+Trajectory Planner
+zdes Linear Controller
+Transformation, synthesis of real inputs
+v1, v2
+Nonlinear feedback
+z
+z ̇ = Az + Bv
+Fig. 3. Nonlinear feedback allows us to reduce the nonlinear system to a linear system (2).
+Rigid body dynamics
+Motor controller
+Attitude controller
+Position controller
+Trajectory Planner
+gy controller dynamics
+Attitude con
+ntroller ntroller
+Rdes
+zdes
+R,
+r , r ̇
+u1
+u2
+Fig. 4. The inner loop is an attitude control loop that achieves the desired orientation. The desired orientation, Rdes, is computed from the errors in position from the outer position control loop.
+The attitude controller varies based on the representation which is either using Euler angles, quaternions or rotation matrices. Euler angle representations have singularities and are suitable only for small excursions from the hover position. In most cases, it is sufficient to use linear controllers that are based on the linearization of the plant dynamics around the hover position (Bouabdallah, 2007; Huang et al., 2009; Purwin and D’Andrea, 2009; Mellinger et al., 2010a; Michael et al., 2010). The use of quaternions permits the exact cancellation of dynamics and a nonlinear controller that is exponentially stable almost everywhere in SO( 3) (Wen and Kreutz-Delgado, 1991). A similar result with rotation matrices is available in Lee et al. (2010). In both of the last two cited papers, the error is defined on the rotation group and does not require the error to be small. Lee et al. (2010) showed that the two controllers result in a nonlinear controller that explicitly track trajectories in SE( 3). The key idea is to design exponentially converging controllers in SO( 3) using an accurate measure of the error in rotations instead of taking linear approximations:
+ˆeR = 1
+2
+(( Rdes) T R − R T Rdes) (4)
+which yields a skew-symmetric matrix representing the axis of rotation required to go from R to Rdes and with the magnitude that is equal to the sine of the angle of rotation. Computing the proportional-plus-derivative error terms on SO( 3) and compensating for the nonlinear inertial terms gives us
+u2 = J ( −kReR − k e ) + × J
+−J
+( ˆ RT Rdes des − RT Rdes  ̇ des)
+(5)
+If we do not consider constraints on the state or the inputs, Equations (4)–(5) achieve asymptotic convergence to specified trajectories in SE( 3) (Lee et al., 2010). From a practical
+standpoint it is possible to neglect the last two terms in the controller and achieve satisfactory performance (Mellinger and Kumar, 2011). Scaling down in length influences the performance of the attitude stabilization subsystem. It is easy to see if we consider the stability of the control system around the hover configuration without considering the position variables. As shown by Lee et al. (2010), in the absence of constraints on inputs, the maximum permissible error on the angular velocity for stable hover is proportional to the inverse of the square root of the largest moment of inertia. In other words, the size of the basin of attraction for attitude stabilization controllers, which is arguably a good measure of stability, scales as ‖e ‖ ∼ √1
+L5 . Thus, smaller quadrotors are significantly less sensitive to initial conditions with large angular rates. While it is true that smaller vehicles have tighter input constraints (τ ∼ L2 or L3), it is also true that they are capable of higher angular accelerations (α ∼ 1
+L or 1
+L2 ) with
+these input constraints.
+3.3. Adaptation and learning
+The dynamic models suffer from two types of limitations. First, such parameters as the location of the center of mass, the moments of inertia and the motor time constants are not precisely known. Second, the aerodynamic models are only approximate. The first difficulty is overcome using parameter estimation algorithms. Because the unknown parameters appear linearly in the equations of motion (as in the case for robot manipulators (Whitcomb et al., 1993; Craig et al., 1986; Niemeyer and Slotine, 1988)), we can write the state equations in discrete time as follows,
+yk+1 = θ T k, (6)
+Downloaded from ijr.sagepub.com at SIMON FRASER LIBRARY on November 16, 2014
+
+
+1284 The International Journal of Robotics Research 31(11)
+where θ is the parameter vector, and k and yk are the regressor and the measurement at the kth time step. A simple linear least-squares method can be used to estimate the unknown parameters as shown by Mellinger et al. (2011) either in a batch or in a recursive algorithm provided that the dynamics are persistently excited. These methods can also be used to determine the offsets in inertial measurement unit (IMU) readings and for online calibration (Shen et al., 2011b). Adapting to varying aerodynamic conditions such as those encountered in narrow passages or perturbations due to wind gusts is harder because of the interaction between the time scales of estimation and control. Model Reference Adaptive Control techniques can be used in such settings, although it is necessary to get good measurements of the inputs (motor currents or speeds) and state variables for effective adaptation. Iterative learning has been used effectively by Lupashin et al. (2010) and Mellinger et al. (2010a) for acrobatic maneuvers. Such techniques allow the robot to learn trajectories and inputs without knowing a precise aerodynamic model. Regardless of the specific platform, it is unlikely that a conventional model-based approach to control can work without a robust adaptation mechanism. The small length scales and inertias lead to variations in dynamics that are very difficult to model and impossible to reason about in real time. However it is also unlikely if purely datadriven approaches can be used for control of micro-UAVs. While apprenticeship methods and variants of reinforcement learning algorithms (see, for example, Abbeel, 2008) have achieved remarkable results, they require an expert human operator to generate data for model and control identification. Further, it is unclear whether these methods can generalize the results to cases not a priori encountered, where training data is not available. Indeed, in much of the work considered by our own group (Mellinger et al., 2010a; Turpin et al., 2011), it is very challenging if not impossible for a trained human operator to fly the robot in the specified manner.
+4. Planning
+Incremental search (Likhachev et al., 2003) and samplingbased techniques (Lavalle, 2006), which are excellent for planning in configuration spaces, are not particularly well suited for planning motions for underactuated systems. Rapidly exploring random trees (RRT) methods and their variants can solve problems with dynamic constraints. For example, Shen et al. (2011b) used a RRT planner is used to generate trajectories online through a cluttered environment via sensor information acquired by a laser and a camera, but for dynamic models obtained by linearization around the hover operating point. However, the complexity of a 12-dimensional state space with four inputs makes such techniques impractical for planning fast motions through
+constrained environments. Smaller problems, such as planning motions in the plane, can be solved using reachability algorithms (Gillula et al., 2010). However, these methods do not readily extend to consider the full 12-dimensional state space. An alternative approach is to use a combination of planning algorithms for configuration spaces along with controller synthesis techniques to ensure the UAVs can execute the planned trajectory. For example, RRT-like techniques have been used with LQR-like control synthesis techniques to find trajectories and sufficing (and even optimal) control policies (Tedrake, 2009). Similarly, uncertainty in dynamics and estimation can be addressed using LQG techniques with motion planners (van der Berg et al., 2011). However, techniques such as this have yet to be applied to three-dimensional motion planning of UAVs. Model predictive control (MPC) techniques represent a third approach that can be used to solve planning and control problems for underactuated systems (Yu et al., 1999; Kim et al., 2002). These techniques are promising since they combine open-loop (optimal) motion planning with feedback control, by generating open-loop trajectories based on environmental models periodically with a time interval that is much smaller than the horizon of planning, yielding corrective motions that can be generated to accommodate changes in the environment. However, with such approaches, convergence guarantees are difficult to prove. It is possible to prove stability of the MPC algorithm when the linearized model is fully controllable about the goal position (Yu et al., 1999) (which is generally possible when the goal corresponds to a static hover position), or if a control Lyapunov function can be synthesized for goal positions (Jadbabaie and Hauser, 2005). Guarantees aside, the synthesis of optimal control solutions even with a finite horizon and a terminal cost function can be difficult with limited onboard processing resources. Thus, it appears to be difficult to directly apply such techniques to the trajectory generation of a quadrotor with guarantees. It appears that a hierarchical approach that combines incremental search- or sampling-based techniques in the configuration space with optimal control techniques that refines configuration space trajectories in state space is the best framework to solve such problems. If a configuration space planner can be used first to establish waypoints and constraints in R3, optimal trajectories that respect these constraints and the dynamics of the UAV can be generated in the full state space (including rotations and angular velocities) as a second step. Cowling et al. (2007) and Mellinger and Kumar (2011), the property of differential flatness is used to develop an algorithm that enables the generation of optimal trajectories through a series of keyframes or waypoints in the set of positions and orientations, while ensuring safe passage through specified corridors and satisfying constraints on achievable velocities, accelerations, and inputs. Since the cost function and all of the constraints can be written as algebraic functions of the flat output
+Downloaded from ijr.sagepub.com at SIMON FRASER LIBRARY on November 16, 2014
+
+
+Kumar and Michael 1285
+vector, z, the general setting reduces to solving the problem:
+mv(it)n
+∫T
+0
+L( z) dt, s.t. g( z) ≤ 0. (7)
+A simple choice for L( z) is the square of the norm of the input vector, which turns out to be the equivalent of finding the trajectory that minimizes the snap and the yaw acceleration along the trajectory. It also has the added benefit of yielding a convex cost function. Recall that trajectories in this flat space automatically satisfy the dynamic equations of motion. Thus, the only constraints in g( z) ≤ 0 are those on the position (obstacles), velocity (maximum angular rates because of gyro saturation), accelerations (saturation of the IMU), and inputs (propellers can only exert positive lift). All except the position constraints are linear. By linearizing the position constraints the optimization in (7) becomes a convex program. The unconstrained problem, the minimum snap trajectory optimization, yields an analytical solution: a seventh-degree polynomial function of time for which we can introduce a polynomial basis for the trajectories. We can similarly use polynomial functions (if necessary of higher order) to satisfy all of the constraints in (7). The resulting trajectories have interesting time scaling properties (Cowling et al., 2007; Mellinger and Kumar, 2011) and can be refined efficiently for different values of T to obtain the fastest trajectory to satisfy all of the constraints. In fact, this quadratic program can be solved in real time quite efficiently, and even in a distributed MPClike setting for multiple quadrotors at speeds approaching 20 Hz (Turpin et al., 2011). It is difficult to use these techniques to plan trajectories with constraints on orientations as well as positions. For example, consider the problem of flying through a narrow gap where the constraints are on the three-dimensional position, roll, and pitch angles. Rather than attempt to automatically generate plans in 12-dimensional space, it is beneficial to judiciously compose motion primitives that are specially designed for such aggressive maneuvers. For example, as shown by Mellinger et al. (2010a), it is possible to combine the minimum snap trajectory from (7) to generate linear momentum with an attitude-only controller that yields an approximately constant linear momentum trajectory with reorientation to navigate narrow gaps or to land on inclined perches with close to zero normal velocity. These ideas can be formalized to generate three-dimensional motion primitives with symmetries (Frazzoli et al., 2005) and it may be possible to use these primitives with lattice-based motion planning techniques which have been shown to work for simpler kinematic primitives in non-holonomic vehicles (Likhachev and Ferguson, 2009).
+5. State estimation and perception
+State estimation is a fundamental necessity for any application involving autonomous UAVs. However, platform
+xy
+z
+Fig. 5. Sequential composition of attitude only and trajectory controllers allows the robot to build up momentum and reorient itself while coasting with the generated momentum.
+design, mobility, and payload constraints place considerable restrictions on available computational resources and sensing. The agility and three-dimensional mobility of the vehicle require sensors that provide low-latency information about the three-dimensional environment surrounding the vehicle. Although in open outdoor domains, this problem is seemingly solved with onboard GPS, IMU, camera, and LIDAR sensors (Sharp et al., 2001; Saripalli et al., 2002; Scherer et al., 2007), indoor domains and cluttered outdoor environments still pose a considerable challenge. In such complex environments, the vehicle must be able to localize, detect obstacles, generate trajectories to navigate around the obstacles and track the trajectories with reasonable accuracy. Any failure to successfully achieve any of these requirements may in fact lead to a complete failure of the vehicle. Obscurants such as smoke (Sevcik et al., 2010), direct sunlight, and GPS shadowing can adversely affect estimation algorithms while wind effects either due to external gusts or varying downwash arising from vehicle–environment interactions (Michael et al., 2010) can introduce perturbations in the vehicle dynamics. The fusion of information from multiple onboard sensors such as IMUs, lasers, and cameras (monocular, stereo, and RGB-D) helps address these issues but this leads to an increased cost on processing demands, payload, and power. Thus, there is a real need to find a balance between the types of sensors used, onboard versus off-board processing and operating conditions, which in turn lead to restrictions on the level of autonomy that is attainable. Initial developments in the area focused on systems capable of navigating indoor environments with algorithms leveraging laser and IMU information to generate a map and localize within the map (He et al., 2008; Grzonka et al., 2009; Bachrach et al., 2011). Processing for estimation and mapping is shared between local and external computational resources. The integration of camera sensors with IMUs enable a lightweight alternative to designs based on laser range finders. Algorithms for self-calibration and the elimination of the biases in the IMU facilitate such solutions (Mirzaei and Roumeliotis, 2008; Kelly and Sukhatme, 2011). The
+Downloaded from ijr.sagepub.com at SIMON FRASER LIBRARY on November 16, 2014
+
+
+1286 The International Journal of Robotics Research 31(11)
+nonlinear observability analysis with applications to mapping is reported in Jones and Soatto (2011). Algorithms for self-calibration, pose estimation and scalable motion estimation with onboard implementation on a micro-UAV were recently demonstrated by Weiss et al. (2012). However, most solutions incur a high computational cost. Wenzel et al. (2010) employed a low-cost vision sensor that provides hardware-level blob detection for real-time (course) pose estimation for hover stabilization. An optical flowbased approach to enable stable flight with off-board processing is proposed by Zingg et al. (2010). Similarly, full pose estimation and localization of ground terrain in GPSdenied environments via off-board processing of monocular camera and IMU sensor data is presented by Bourquardez et al. (2009), Blosch et al. (2010), Weiss et al. (2011), and Milford et al. (2011). However, it is difficult to maintain uninterrupted, lowlatency communication with off-board processing except in carefully structured settings. In addition, the time delay introduced by communication adversely impacts the performance of the feedback control system. To address these limitations, we developed algorithms that were optimized to enable full on-board, real-time processing (Shen et al., 2011b). We demonstrated autonomous navigation using an IMU, camera, and laser to generate three-dimensional maps throughout large and multi-story environments using only limited onboard processing (1.6 GHz, 5 Watt Atom processor with 1 GB RAM). As all of the processing occurs in real time and on the vehicle, we are able to leverage the feedback from the state estimator to drive model-based adaption to account for external disturbances due to gusting wind and ground effects in a 100 Hz control loop. Similar progress is reported by researchers in the vision community leveraging recent advances in onboard processing capabilities and specialized hardware (Meier et al., 2011). These include vision-only three-dimensional mapping (Heng et al., 2011a), obstacle avoidance (Heng et al., 2011b), and simultaneous localization and mapping (SLAM) (Lee et al., 2011) and point to lightweight, low-power solutions for three-dimensional autonomous flight. Figure 6 summarizes and provides a graphical comparison of these approaches. There is a direct correlation between the available computational processing power and the capabilities achievable for laser- and vision-based methods. The last several years have seen impressive progress toward full autonomy with fully onboard sensing and processing. Vision-only solutions are becoming more robust and catching up with solutions that require laser range finders in spite of the need for increased onboard processing capabilities. Thus far, the discussion focuses on autonomous navigation, where the vehicle plans and controls to goals provided by an external entity. A remaining question is the introduction of perception, planning and control to permit autonomous exploration, where perception algorithms must
+Processing Power
+Perception and Estimation Capabilities
+(Zingg et al., 2010)
+(Wenzel et al., 2010)
+(Bourquardez et al., 2009)
+(Weiss et al., 2011)
+(Heng et al., 2011b)
+(Lee et al., 2011)
+(Heng et al., 2011a)
+Relative Pose
+Estimation SLAM Autonomous
+Navigation
+Autonomous Exploration
+(Blosch et al., 2010)
+Onboard Processing
+Offboard Processing
+(Grzonka et al., 2009)
+(He et al., 2008)
+(Bachrach et al., 2011)
+(Shen et al., 2011b)
+(Shen et al., 2011a)
+(Milford et al., 2011)
+Fig. 6. A comparison of processing power required versus the complexity of estimation and perception algorithms with laserbased and vision-based approaches in underlined and normal fonts, respectively. The last 2 years have seen significant advances in both laser- and vision-based methods enabling autonomy with fully onboard sensing and computation.
+also allow the UAV to reason about the environment to determine control policies that will yield maximal information for mapping. However, a major challenge in moving toward this direction is the lack of three-dimensional sensors that can be mounted on UAVs, which are required for three-dimensional exploration. Unfortunately, rich sensor sources such as three-dimensional laser range finders and omnidirectional cameras either do not fit the vehicle payload constraints or are prohibitive given the limited computational resources. Sensors that provide dense three-dimensional information such as RGB-D cameras and flash LIDAR suffer from a limited field of view. As such, it is necessary to focus on new algorithmic methods to explore an environment given limited sensing and computational resources. A current strategy we are pursuing in ongoing research (Shen et al., 2011a) is the application of stochastic-differential equations to establish information frontiers between spatial regions that represent the known, explored environment and regions that represent the unexplored environment. The approach strives to find a balance between the computationally complexity of analyzing a full three-dimensional map and the onboard computational resources and limited field-of-view sensing. The area of autonomous exploration and perception is clearly an important area of research with significant challenges that are surmountable as computing and sensing options improve in time.
+6. Coordination of multiple UAVs
+Micro-UAVs have a fundamental payload limitation that is difficult to overcome in many practical applications. However, larger payloads can be manipulated and transported by multiple UAVs either using grippers (Mellinger et al., 2010b) or cables (Michael et al., 2011a). Applications such as surveillance that require imagery from multiple sensors can be addressed by coordinating multiple UAVs, each with
+Downloaded from ijr.sagepub.com at SIMON FRASER LIBRARY on November 16, 2014
+
+
+Kumar and Michael 1287
+Fig. 7. Multi-UAV formation flight with labeled robots and formation graphs (left) and leaderless aggregation with unlabeled robots (right).
+different sensors (Stump and Michael, 2011). In this section, we provide a broad overview of challenges underlying the control and planning of multiple UAVs in tasks that require coordinated flight. Before addressing the specific problem of coordination of UAVs, it is useful to summarize the dynamic models that are required for groups of robots. At the highest level we may wish to consider populations of hundreds or thousands or larger which are often called swarms and can be seen in nature (Parrish and Hamner, 1997; Jeanne, 1999). At this scale, the explosion of the state space makes it impractical to develop dynamic models that label individual robots and incorporate the interactions in the joint state space and design algorithms that are exponential in the number of robots. Models of leaderless aggregation and swarming with aerial robots are discussed by Michael and Kumar (2011) where the challenge of enumerating labeled interactions between robots is circumvented by controlling such aggregate descriptors of formation as statistical distributions without even counting the robots in the formation (see Figure 7(right)). These rely on low-level controllers that drive the group to a desired shape while ensuring safety. For groups that consist of tens of robots we can consider models of flocks where it is possible to label and model individual robots but the exponential complexity makes it impractical to develop centralized algorithms and architectures. In this setting, it is possible to model and control the dynamic interactions within the group by requiring each robot to follow one or more neighbors and there are external commands or inputs that drive one or more leaders (Figure 7(left)). The external commands or inputs determine a gross trajectory for the group while the shape of the formation is determined by the leader–follower interactions which are specified using relative position vectors and bearing information (Desai et al., 2001). More generally, the team must follow the specified group trajectory while achieving or tracking the specified shape, both of which can vary with time. The problem of controlling a formation of robots to follow a group motion while maintaining a reference shape or structure using only local information and the formulation using control graphs is analyzed by Desai et al.
+(2001). The problem of designing decentralized controllers for trajectory tracking for three-dimensional rigid structures is now fairly well understood (Beard et al., 2001; Egerstedt and Hu, 2001). The theoretical framework for flocking (Vicsek et al., 1995; Tanner et al., 2007; Bullo et al., 2009) allows us to derive local controllers for robots modeled with second-order dynamics in three dimensions to achieve specifications on desired formations. However, the underlying assumptions, which include point-robot models without state and input constraints, simplified dynamics and graph connectivity, are likely to limit practical applications to flocks of UAVs. Owing to the relatively short time scales associated with aerial robot dynamics, and the dynamic interactions between different robots, it is not sufficient to simply rely on feedback policies. It is necessary to develop trajectory planners for each robot that rely only on information on the current state and planned trajectory of each neighbor, in addition to addressing feedback controllers for following the planned trajectory. Thus, the work on model predictive or receding horizon control (Jadbabaie et al., 2001), and the extensions to decentralized model predictive control (Shim et al., 2003; Keviczky and Johansson, 2008) are relevant to leader–follower formation control for micro-UAVs. Further, the coupling between control and communication and the influence of network time delays, however small they may be, are critical to the time scale of dynamics for small UAVs (Schwager et al., 2011). Our preliminary work in developing decentralized trajectory generation algorithms for formations of quadrotors with studies on time delays is reported in Turpin et al. (2011). The methods discussed above are difficult to apply in settings where there are significant changes in threedimensional shape. One reason for this is because our mathematical models rely on labeling robots and their destinations which introduces unnecessary complexity in motion planning and coordination. This is illustrated in Figure 8. If robots must change the shape of the formation in flight to a straight line formation, it is natural to let the robot that is in front of the formation (robot 3 in the figure) assume the leader’s position as shown on the right. However, if the
+Downloaded from ijr.sagepub.com at SIMON FRASER LIBRARY on November 16, 2014
+
+
+1288 The International Journal of Robotics Research 31(11)
+14
+2 3
+4321
+14
+2 3
+1243
+Fig. 8. Changing shapes to a straight line formation. Assigning labels to UAVs and goal positions in the formation (left) introduces complexity in motion planning. Removing restrictions on the labeling of goal positions (right) simplifies the planning problem but introduces difficulties in modeling, bookkeeping, and coordination.
+Ri
+Gi
+Gj
+Ri
+Ri
+Rj
+Rj
+Rj
+Rj
+Rj
+Ri Ri
+relabeling
+Ri
+Gi
+Gj
+Ri
+Ri
+Ri
+Rj
+Rj
+Rj
+Rj
+Fig. 9. Labeled UAVs (left) can encounter collisions during changes in shape. Unlabeled UAVs (right) can dynamically change their assignments (Ri and Rj change goals) within the formation to enable safe changes in shape.
+formation is described with a shape that has robot 1 in the front and robot 4 in the rear as shown in the left panel, the motion planning problem is more difficult. One can view the relabeling problem as a target assignment or a task assignment problem which have many standard approaches but none that lend themselves to real-time solution at the timescales of robot flight, except for small groups. A potential approach to solving this problem is to use suboptimal assignments but allow reassignments on the fly when collisions are imminent as shown in Figure 9. Future advances in this direction must build on provably safe, complete algorithms that achieve consensus in real time while satisfying the constraints of the UAV dynamics.
+7. Discussion
+Micro-UAVs are potentially game changers in robotics. They can operate in constrained three-dimensional environments, explore and map multi-story buildings, manipulate and transport objects, and even perform such tasks as assembly. Our recent experiments with quadrotors in collapsed buildings in Sendai, Japan in July 2011 (Michael et al., 2011b) demonstrated many benefits of using autonomous quadrotors for mapping unknown environments, searching in collapsed buildings, and exploration in settings that are too dangerous for human rescue workers or inaccessible to ground vehicles. The biggest overarching challenge in creating small, completely autonomous UAVs arise from size, weight, and power constraints. Packaging constraints are severe. Sensors and processors have to be smaller due to the limitations on payload. Owing to this, it is difficult to create autonomous quadrotors (with onboard computation and
+sensing) at small length scales. The smallest autonomous quadrotors capable of exploring, mapping, and scouting an unknown three-dimensional building-like environment have a characteristic length of approximately 0.75 m, mass of a little less than 2 kg, and power consumptions over 400 W, leading to a mission life of around 10 minutes (Shen et al., 2011b). The main reason for the size is the need to carry sensors such as the Hokuyo laser range finders or Microsoft Kinect cameras. This in turn leads to highpower consumption. Many impressive advances have been made in mapping and estimation for autonomous navigation using just an IMU and a camera (Blosch et al., 2010). Recent results point to algorithms that yield estimates of three-dimensional metric information from just monocular vision combined with a good IMU (Mourikis et al., 2009; Kneip et al., 2011). This suggests that the sensor payload challenges associated with scaling can be overcome in the near future. However, it is not clear whether there are any easy routes to developing batteries with improved energy density and the current lithium-ion-based solutions suggest that the battery mass will continue to account for between 20% and 30% of the vehicle mass in the near future. A second challenge that limits applications of small UAVs raises from payload constraints. Since the linear acceleration scales with L (Section 2), it is impossible to design small UAVs that are able to carry significant payloads. Today’s micro UAVs with L ∼ 1 m have a maximum payload of around 1 kg. One way to overcome this constraint is by using multiple UAVs to cooperatively transport or manipulate payloads. Recent work suggests that the challenges in coordinating multiple UAVs and adapting individual vehicles to constraints imposed by other vehicles is possible in different settings ranging from payloads suspended from UAVs (Jiang and Kumar, 2010a,b; Fink et al., 2011; Michael et al., 2011a) to payloads rigidly grasped by UAVs (Mellinger et al., 2010b). However these solutions give rise to two other challenges. The first is the need for low mass, flexible end effectors for grasping, a problem area that is significant in its own right in the grasping community. Second, because the dynamics of the robot are significantly altered during grasping and by the addition of payloads, it is important to also be able to compensate for and adapt to changes in the dynamics caused by the grasped payload (Mellinger et al., 2010b; Pounds and Dollar, 2010). Parameter estimation methods for estimating the grasped payload (Mellinger et al., 2011) and the ability to adapt to the payloads (Lindsey et al., 2011) appear promising. This
+Downloaded from ijr.sagepub.com at SIMON FRASER LIBRARY on November 16, 2014
+
+
+Kumar and Michael 1289
+line of inquiry suggests that micro-UAVs will soon be capable of truly three-dimensional grasping since they can, in principle, approach objects or assemblies from any direction, and because they can sense disturbance forces without additional sensors. A third challenge with micro-UAVs which needs to be addressed is the lack of high-fidelity dynamic models. It is difficult to model air drag, the interactions between the motor, rotor, and the fluid through which the propeller blades must move, the dynamics of the flexible propeller blade and the different nonlinearities and saturation effects in the sensors and actuators. Indeed the effects of changes in the aerodynamics in three-dimensional environments are hard to study and model (Zarovy et al., 2010). Such difficulties are compounded when the rigid body dynamics interact with the aerodynamics and the fluid–structure coupling effects become significant, as is the case in flapping-wing vehicles or rotor craft with long blades. As discussed earlier in Section 3.3, adaptive control and iterative learning techniques can be used to handle some of these challenges. However, parameterizing the set of uncertainties and ensuring the appropriate level of sensing and actuation to identify these parameters may not always be possible. Methods such as those described by Lupashin et al. (2010), Mellinger et al. (2010a), and Mellinger et al. (2011) are good starting points for such studies. In conclusion we believe the future for micro UAVs is bright. Just as the advent of mobile robots led to a flurry of activity with new research problem areas simply because the workspace of the robot increased dramatically allowing robots to travel to application areas, micro-UAVs will inevitably lead robotics research in new and exciting directions as robots are now able to extend their workspace in the third dimension.
+Notes
+1. See also the Aeroenvironment nano hummingbird, http:// www.avinc.com/nano. 2. See http://www.asctec.de 3. See http://www.asctec.de
+Funding
+This work was supported by the Army Research Laboratory (grant number W911NF-08-2-0004), the Army Research Office (grant number W911NF-05-1-0219), National Science Foundation (grant number *1113830), and the Office of Naval Research (grant numbers N00014-07-1-0829 and N00014-09-1-1051).
+References
+Abbeel P (2008) Apprenticeship Learning and Reinforcement Learning with Application to Robotic Control. Ph.D. Thesis, Stanford University, Stanford, CA. Bachrach A, Prentice S, He R and Roy N (2011) RANGE - robust autonomous naivigation in GPS-denied environments. Journal of Field Robotics 28: 644–666.
+Beard RW, Lawton J and Hadaegh FY (2001) A coordination architecture for spacecraft formation control. IEEE Transactions on Control Systems Technology 9: 777–790. Bermes C (2010) Design and Dynamic Modeling of Autonomous Coaxial Micro Helicopters. Ph.D. Thesis, ETH Zurich, Switzerland. Bermes C, Schafroth D, Bouabdallah S and Siegwart R (2009) Modular simulation model for coaxial rotary wing MAVs. In Proceedings of the International Symposium on Unmanned Aerial Vehicles.
+Blosch M, Weiss S, Scaramuzza D and Siegwart R (2010) Vision based MAV navigation in unknown and unstructured environments. In Proceedings of the IEEE International Conference on Robotics and Automation, Anchorage, AK, pp. 21–28 Bouabdallah S (2007) Design and Control of Quadrotors with Applications to Autonomous Flying. Ph.D. Thesis, Ecole Polytechnique Federale de Lausanne, Lausanne, Switzerland. Bourquardez O, Mahony R, Guenard N, Chaumette F, Hamel T and Eck L (2009) Image-based visual servo control of the translation kinematics of a quadrotor aerial vehicle. IEEE Transactions on Robotics 25: 743–749.
+Bullo F, Cortés J and Martínez S (2009) Distributed Control of Robotic Networks: A Mathematical Approach to Motion Coordination Algorithms (Applied Mathematics Series). Princeton, NJ: Princeton University Press. Cowling ID, Yakimenko OA, Whidborne JF and Cooke AK (2007) A prototype of an autonomous controller for quadrotor UAV. In Proceedings of the European Control Conference, Kos, Greece. Craig J, Hsu P and Sastry S (1986) Adaptive control of mechanical manipulators. In Proceedings of the IEEE International Conference on Robotics and Automation, vol. 3, pp. 190–195. Desai JP, Ostrowski JP and Kumar V (2001) Modeling and control of formations of nonholonomic mobile robots. IEEE Transactions on Robotics 17: 905–908.
+Egerstedt M and Hu X (2001) Formation constrained multi-agent control. IEEE Transactions on Robotics and Automation 17: 947–951. Faruque I and Humbert JS (2010) Dipteran insect flight dynamics. Part 2: Lateral-directional motion about hover. Journal of Theoretical Biology 265: 306–313.
+Fink J, Michael N, Kim S and Kumar V (2011) Planning and control for cooperative manipulation and transportation with aerial robots. The International Journal of Robotics Research 30: 324–334. Frazzoli E, Dahleh M and Feron E (2005) Maneuver-based motion planning for nonlinear systems with symmetries. IEEE Transactions on Robotics 21: 1077–1091.
+Gillula JH, Huang H, Vitus MP and Tomlin CJ (2010) Design of guaranteed safe maneuvers using reachable sets: Autonomous quadrotor aerobatics in theory and practice. In Proceedings of the IEEE International Conference on Robotics and Automation, Anchorage, AK, pp. 1649–1654. Grzonka S, Grisetti G and Burgard W (2009) Towards a navigation system for autonomous indoor flying. In Proceedings of the IEEE International Conference on Robotics and Automation, Kobe, Japan, pp. 2878–2883. Gurdan D, Stumpf J, Achtelik M, Doth KM, Hirzinger G and Rus D (2007) Energy-efficient autonomous four-rotor flying robot controlled at 1 kHz. In Proceedings of the IEEE International Conference on Robotics and Automation, Rome, Italy, 361–366.
+Downloaded from ijr.sagepub.com at SIMON FRASER LIBRARY on November 16, 2014
+
+
+1290 The International Journal of Robotics Research 31(11)
+He R, Prentice S and Roy N (2008) Planning in information space for a quadrotor helicopter in a GPS-denied environment. In Proceedings of the IEEE International Conference on Robotics and Automation, Pasadena, CA, pp. 1814–1820. Heng L, Lee GH, Fraundorfer F and Pollefeys M (2011a) Realtime photo-realistic 3D mapping for micro aerial vehicles. In Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems, San Francisco, CA, pp. 4012–4019. Heng L, Meier L, Tanskanen P, Fraundorfer F and Pollefeys M (2011b) Autonomous obstacle avoidance and maneuvering on a vision-guided MAV using on-board processing. In Proceedings of the IEEE International Conference on Robotics and Automation, Shanghai, China, pp. 2472–2477. Huang H, Hoffman GM, Waslander SL and Tomlin CJ (2009) Aerodynamics and control of autonomous quadrotor helicopters in aggressive maneuvering. In Proceedings of the IEEE International Conference on Robotics and Automation, Kobe, Japan, pp. 3277–3282. Jadbabaie A and Hauser J (2005) On the stability of receding horizon control with a general terminal cost. IEEE Transactions on Automatic Control 50: 674–678.
+Jadbabaie A, Yu J and Hauser J (2001) Unconstrained recedinghorizon control of nonlinear systems. IEEE Transactions on Automatic Control 46: 776–783.
+Jeanne RL (1999) Group size, productivity, and information flow in social wasps. In Information Processing in Social Insects. Basel: Birkhäuser. Jiang Q and Kumar V (2010a) The direct kinematics of objects suspended from cables,. In ASME International Design Engineering Technology Conference and Computers and Information in Engineering Conference.
+Jiang Q and Kumar V (2010b) The inverse kinematics of 3-d towing. In Lenarcic J and Stanisic MM (eds), Advances in Robot Kinematics, pp. 321–328. Jones E and Soatto S (2011) Visual–inertial navigation, mapping and localization: A scalable real-time causal approach. International Journal of Robotics Research; in press.
+Kelly J and Sukhatme GS (2011) Visual–inertial sensor fusion: Localization, mapping and sensor-to-sensor self-calibration. International Journal of Robotics Research 30: 56–79.
+Keviczky T and Johansson KH (2008) A study on distributed model predicitve consensus. In IFAC World Congress, vol. 17, Seoul, Korea. Kim H, Shim D and Sastry S (2002) Nonlinear model predictive tracking control for rotorcraft-based unmanned aerial vehicles. In Proceedings of the American Control Conference, vol. 5, Anchorage, AK, pp. 3576–3581. Kneip L, Martinelli A, Weiss S, Scaramuzza D and Siegwart R (2011) Closed-form solution for absolute scale velocity determination combining inertial measurements and a single feature correspondence. In Proceedings of the IEEE International Conference on Robotics and Automation, pp. 4546–4553.
+Kumar V and Michael N (2011) Opportunities and challenges with autonomous micro aerial vehicles. In Proceedings of the International Symposoium of Robotics Research, Flagstaff, AZ. Lavalle SM (2006) Planning Algorithms. Cambridge: Cambridge University Press. Lee GH, Fraundorfer F and Pollefeys M (2011) MAV visual SLAM with plane constraint. In Proceedings of the IEEE International Conference on Robotics and Automation, Shanghai, China, pp. 3139–3144.
+Lee T, Leok M and McClamroch NH (2010) Geometric tracking control of a quadrotor UAV on SE(3). In Proceedings of the IEEE Conference on Decision and Control, Atlanta, GA, pp. 5420–5425. Likhachev M and Ferguson D (2009) Planning long dynamically feasible maneuvers for autonomous vehicles. The International Journal of Robotics Research 28: 933–945.
+Likhachev M, Gordon G and Thrun S (2003) ARA*: Anytime A* with Provable Bounds on Sub-optimality (Advances in Neural Information Processing Systems, vol. 16).
+Lindsey Q, Mellinger D and Kumar V (2011) Construction of cubic structures with quadrotor teams. In Proceedings of Robotics: Science and Systems, Los Angeles, CA.
+Lupashin S, Schollig A, Sherback M and D’Andrea R (2010) A simple learning strategy for high-speed quadrocopter multiflips. In Proceedings of the IEEE International Conference on Robotics and Automation, Anchorage, AK, pp. 1642–1648. Mackenzie D (2012) A flapping of wings. Science 335: 1430–1433. Meier L, Tanskanen P, Fraundorfer F and Pollefeys M (2011) PIXHAWK: A system for autonomous flight using onboard computer vision. In Proceedings of the IEEE International Conference on Robotics and Automation, Shanghai, China, pp. 2992–2997. Mellinger D and Kumar V (2011) Minimum snap trajectory generation and control for quadrotors. In Proceedings of the IEEE International Conference on Robotics and Automation, Shanghai, China, pp. 2520–2525. Mellinger D, Kushleyev A and Kumar V (2012) Mixed-integer quadratic program trajectory generation for heterogeneous quadrotor teams. Submitted. Mellinger D, Lindsey Q, Shomin M and Kumar V (2011) Design, modeling, estimation and control for aerial grasping and manipulation. In Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems, San Francisco, CA, pp. 2668–2673. Mellinger D, Michael N and Kumar V (2010a) Trajectory generation and control for precise aggressive maneuvers with quadrotors. In Proceedings of the International Symposium on Experimental Robotics, Delhi, India.
+Mellinger D, Shomin M, Michael N and Kumar V (2010b) Cooperative grasping and transport using multiple quadrotors. In International Symposium on Distributed Autonomous Systems, Lausanne, Switzerland.
+Mettler B (2001) Modeling Small-Scale Unmanned Rotorcraft for Advanced Flight Control Design. Ph.D. Thesis, Carnegie Mellon University, Pittsburgh, PA. Michael N, Fink J and Kumar V (2011a) Cooperative manipulation and transportation with aerial robots. Autonomous Robots 30: 73–86. Michael N and Kumar V (2011) Control of ensembles of aerial robots. Proceedings of the IEEE 99: 1587–1602.
+Michael N, Mellinger D, Lindsey Q and Kumar V (2010) The GRASP multiple micro UAV testbed. IEEE Robotics and Automation Magazine 17: 56–65.
+Michael N, Tadokoro S, Nagatani K and Ohno K (2011b) Experiments with air ground coordination for search and rescue in collapsed buildings. Working Paper. Milford MJ, Schill F, Corke P, Mahony R and Wyeth G (2011) Aerial SLAM with a single camera using visual expectation. In Proceedings of the IEEE International Conference on Robotics and Automation, Shanghai, China, pp. 2506–2512.
+Downloaded from ijr.sagepub.com at SIMON FRASER LIBRARY on November 16, 2014
+
+
+Kumar and Michael 1291
+Miller DS, Gremillion G, Ranganathan B, et al. (2010) Challenges present in the development and stabilization of a micro quadrotor helicopter. In Autonomous Weapons Summit and GNC Challenges for Miniature Autonomous Systems Workshop.
+Mirzaei F and Roumeliotis S (2008) A Kalman filter-based algorithm for IMU–camera calibration: Observability analysis and performance evaluation. IEEE Transactions on Robotics 24: 1143–1156. Mourikis AI, Trawny N, Roumeliotis SI, Johnson AE, Ansar A and Matthies L (2009) Vision-aided inertial navigation for spacecraft entry, descent, and landing. IEEE Transactions on Robotics 25: 264–280. Murray RM, Rathinam M and Sluis W (1995) Differential flatness of mechanical control systems: A catalog of prototype systems. In Proceedings of the ASME International Congress and Exposition.
+Niemeyer G and Slotine J-J (1988) Performance in adaptive manipulator control. In Proceedings of the IEEE Conference on Decision and Control, vol. 2, pp. 1585–1591.
+Nieuwstadt MJV and Murray RM (1998) Real-time trajectory generation for differentially flat systems. International Journal of Robust and Nonlinear Control 8: 995–1020.
+Ortega R and Spong MW (1988) Adaptive motion control of rigid robots: a tutorial. In Proceedings of the IEEE Conference on Decision and Control, vol. 2, pp. 1575–1584. Parrish J and Hamner W (eds) (1997) Animal Groups in Three Dimensions. New York: Cambridge University Press. Pines D and Bohorquez F (2006) Challenges facing future micro air vehicle development. AIAA Journal of Aircraft 43: 290–305. Pounds P and Dollar A (2010) Hovering stability of helicopters with elastic constraints. In ASME Dynamic Systems and Control Conference.
+Purwin O and D’Andrea R (2009) Performing aggressive maneuvers using iterative learning control. In Proceedings of the IEEE International Conference on Robotics and Automation, Kobe, Japan, pp. 1731–1736. Ratti J and Vachtsevanos G (2011) Towards energy efficiency in micro hovering air vehicles. In IEEE Aerospace Conference, Big Sky, MT, pp. 1–8. Saripalli S, Montgomery JF and Sukhatme GS (2002) Visionbased autonomous landing of an unmanned aerial vehicle. In Proceedings of the IEEE International Conference on Robotics and Automation, Washington, DC, pp. 2799–2804. Scherer S, Singh S, Chamberlain L and Saripalli S (2007) Flying fast and low among obstacles. In Proceedings of the IEEE International Conference on Robotics and Automation, Rome, Italy, pp. 2023–2029. Schwager M, Michael N, Kumar V and Rus D (2011) Time scales and stability in networked multi-robot systems. In Proceedings of the IEEE International Conference on Robotics and Automation, Shanghai, China, pp. 3855–3862. Sevcik KW, Kuntz N and Oh PY (2010) Exploring the effect of obscurants on safe landing zone indentification. Journal of Intelligent Robotic Systems 57: 281–295.
+Sharp CS, Shakernia O and Sastry SS (2001) A vision system for landing an unmanned aerial vehicle. In Proceedings of the IEEE International Conference on Robotics and Automation, vol. 2, Seoul, Korea, pp. 1720–1727. Shen S, Michael N and Kumar V (2011a) Autonomous indoor 3D exploration with a micro-aerial vehicle. Submitted. Shen S, Michael N and Kumar V (2011b) Autonomous multi-floor indoor navigation with a computationally constrained MAV. In
+Proceedings of the IEEE International Conference on Robotics and Automation, Shanghai, China, pp. 20–25. Shim D, Kim H and Sastry S (2003) Decentralized nonlinear model predictive control of multiple flying robots. In Proceedings of the IEEE Conference on Decision and Control, vol. 4, pp. 3621–3626. Stump E and Michael N (2011) Multi-robot persistent surveillance planning as a vehicle routing problem. In Proceedings of the IEEE Conference on Automation Science and Engineering, Trieste, Italy, pp. 569–575. Tanner H, Jadbabaie A and Pappas GJ (2007) Flocking in fixed and switching networks. IEEE Transactions on Automatic Control 52: 863–868. Tedrake R (2009) LQR-Trees: Feedback motion planning on sparse randomized trees. In Proceedings of Robotics: Science and Systems, Seattle, WA. Turpin M, Michael N and Kumar V (2011) Trajectory design and control for aggressive formation flight with quadrotors. In Proceedings of the International Symposium of Robotics Research, Flagstaff, AZ. UAV Market Research (2011) U.S. Military Unmanned Aerial Vehicles (UAV) Market Forecast 2010–2015. Available at: http://www.uavmarketresearch.com/. van der Berg J, Abbeel P and Goldberg K (2011) LQG-MP: Optimized path planning for robots with motion uncertainty and imperfect state information. The International Journal of Robotics Research 30: 895–913.
+Vicsek T, Czirók A, Ben-Jacob E, Cohen I and Shochet O (1995) Novel type of phase transition in a system of self-driven particles. Physical Review Letters 75: 1226–1229. Weiss S, Achtelik MW, Chli M and Siegwart R (2012) Versatile distributed pose estimation and sensor self-calibration for an autonomous MAV. In Proceedings of ICRA, Saint Paul, MN. Weiss S, Scaramuzza D and Siegwart R (2011) MonocularSLAM-based navigation for autonomous micro helicopters in GPS-denied environments. Journal of Field Robotics 28: 854–874. Wen J and Kreutz-Delgado K (1991) The attitude control problem. IEEE Transactions on Automatic Control 36: 1148–1162.
+Wenzel KE, Rosset P and Zell A (2010) Low-cost visual tracking of a landing place and hovering flight control with a microcontroller. Journal of Intelligent Robotic Systems 57: 297–311. Whitcomb L, Rizzi A and Koditschek D (1993) Comparative experiments with a new adaptive controller for robot arms. IEEE Transactions on Robotics and Automation 9: 59–70.
+Wolowicz CH, Bowman JS and Gilbert WP (1979) Similitude Requirements and Scaling Relationships as Applied to Model Testing. Technical Report, NASA. Yu J, Jadbabaie A, Primbs J and Huang Y (1999) Comparison of nonlinear control design techniques on a model of the caltech ducted fan. In IFAC World Congress, pp. 53–58. Zarovy S, Costello M, Mehta A, et al. (2010) Experimental study of gust effects on micro air vehicles. In AIAA Conference on Atmospheric Flight Mechanics. American Institute of Aeronautics and Astronautics, paper AIAA-2010-7818. Zingg S, Scaramuzza D, Weiss S and Siegwart R (2010) MAV navigation through indoor corridors using optical flow. In Proceedings of the IEEE International Conference on Robotics and Automation, Anchorage, AK, pp. 3361–3368.
+Downloaded from ijr.sagepub.com at SIMON FRASER LIBRARY on November 16, 2014

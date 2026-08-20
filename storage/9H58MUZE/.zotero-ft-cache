@@ -1,0 +1,2828 @@
+An in-flight experimental investigation of helicopter main
+rotor/tail rotor interactions
+by
+Lieutenant Commander A D S Ellin Royal Navy
+Defence Research Agency
+and
+University of Glasgow
+Dissertation submitted to the University of Glasgow
+for the degree of Doctor of Philosophy
+April 1993
+The research reported in this dissertation was funded by the UK MoD Strategic
+Research Programme (item ASO11Q09)
+© Controller, Her Majesty's Stationary Office London 1993
+
+
+ProQuest Number: 13815547
+All rights reserved
+INFORMATION TO ALL USERS The quality of this reproduction is d e p e n d e n t upon the quality of the copy subm itted.
+In the unlikely e v e n t that the a u thor did not send a c o m p le te m anuscript and there are missing pages, these will be noted. Also, if m aterial had to be rem oved, a n o te will ind ica te the deletion.
+uest
+ProQuest 13815547
+Published by ProQuest LLC(2018). C opyright of the Dissertation is held by the Author.
+All rights reserved. This work is protected against unauthorized copying under Title 17, United States C o d e M icroform Edition © ProQuest LLC.
+ProQuest LLC. 789 East Eisenhower Parkway P.O. Box 1346 Ann Arbor, Ml 4 8 1 0 6 - 1346
+
+
+\
+^V°Vl
+GLASGOW UNIVERSITY
+LIBRARY
+
+
+Preface
+The work described in this dissertation was carried out by the author whilst a
+full-time student of the Department of Aerospace Engineering of the University of
+Glasgow during the period August 1990 to April 1993. The dissertation is original in
+content except where otherwise stated.
+The author wishes to express his gratitude for the advice and encouragement
+given him by his supervisor, Professor R A McD Galbraith, during the course of this
+work. He would also like to thank Dr G D Padfield and the other members of the
+Helicopter Aeromechanics Section at DRA Bedford for their assistance.
+Defence Research Agency,
+Bedford
+A D S Ellin
+April 1993
+
+
+Summary
+Experience had shown that the fidelity of the yaw control characteristics of the
+computer simulation models used at DRA Bedford and elsewhere was not up to the
+standard required for ACT control law development. It was therefore decided that the
+DRA model, Helistab, should be improved in this respect and a research activity
+initiated. In the absence of suitable published information or detailed data on the
+performance of the tail rotor, two experimental flight test programmes were conducted,
+the first with a Puma, the second with a Lynx AH Mk5. This dissertation describes the
+planning and conduct of the second experiment and the analysis of the data collected in
+both.
+Building on the DRA's considerable experience in main rotor research, the
+instrumented tail rotor blade for the Lynx was designed to make use of the Pressure
+Indicator Sensor technique which, provided that the local in-plane velocity is known,
+permits the local blade loading to be estimated from the pressures read at two points on
+the upper surface leading and trailing edges of the blade. The lack of this velocity
+information for the tail rotor presents problems, solutions to which are discussed.
+With the aircraft experimental installation completed, it was flown for fifteen
+hours, during which time data on over 1200 flight conditions were collected from
+within the Lynx low speed flight envelope. New techniques had to be developed to
+allow efficient analysis of this large database so that the information contained therein
+could be extracted.
+From the initial analysis of the data it was determined that the Lynx AH Mk5
+low speed flight envelope can be sub-divided into six regions. In each of these regions,
+the mechanism of main rotor/tail rotor interaction is different. One or more flight
+conditions in each region were selected for in-depth analysis so that the detail of the
+mechanisms could be determined. Each interaction is covered in turn.
+
+
+Once the predominant mechanisms of the main rotor/tail rotor interaction were
+isolated, their respective effects on the yaw performance of the helicopter could be
+assessed and a decision taken as to whether or not they should be included in the
+model. The dominant interaction, that taking place in quartering flight, should be
+included in all tail rotor models. This effect has been modelled and, when included in
+Helistab, the trim results obtained show a marked improvement over those previously
+available. The remaining interactions are not so significant and their inclusion would
+depend on the detail required in the model and the purpose for which it was intended.
+The Lynx AH Mk5 experiment is seen as the first part of a comparative study:
+an additional trial with a Lynx AH Mk7, in which the tail rotor rotates in the opposite
+direction, is proposed as the second. The instrumented tail rotor blade designed for that
+aircraft includes an extra sensor that should enable the in-plane velocity to be
+determined.
+In addition to the model improvements, this research has suggested the use of
+cyclic control of tail rotor pitch to improve tail rotor efficiency. The use of this control
+technique has the potential to expand the low speed flight envelope, though it could
+only be incorporated as part of a helicopter ACT system. It is recommended that tail
+rotor cyclic control, and some other aspects of tail rotor performance highlighted by this
+present research programme, be more fully investigated in the future.
+
+
+Contents
+Page: Chapter 1. Introductory
+1.1 Introduction. 1
+1.2 Review of existing work. 4
+1.3 Initial phases of the RAE/DRA tail rotor research programme. 10
+1.4 Scope of the present study. 12
+1.5 Nomenclature, abbreviations and display conventions. 15
+Chapter 2. Experimental set up and measurement techniques.
+2.1 Introduction. 18
+2.2 Methods of rotor blade instrumentation. 19
+2.3 The Pressure Indicator Sensor Technique. 20
+2.4 Derivation of chordwise velocity. 23
+2.4.1 Derivation of velocity field by computation. 24
+2.4.2 Twin leading edge sensor. 26
+2.4.3 Tip pitot. 27
+2.5 Design and manufacture of Lynx AH Mk5 instrumented blade and tail
+rotor assembly. 28
+2.6 Aircraft instrumentation system and ground based replay facilities. 31 2.7 Instrumentation calibration and test. 32
+2.8 Concluding Remarks. 35
+Chapter 3. Experimental procedure.
+3.1 Introduction. 37
+3.2 Choice of location. 38
+3.3 Choice of test points. 39
+3.4 Problems experienced and lessons learned. 41
+3.5 Study of data quality. 43
+3.6 Concluding remarks. 44
+Chapter 4. Analysis techniques and data presentation.
+4.1 Introduction. 45
+4.2 The velocity problem. 46
+4.3 Frequency domain analysis. 48
+4.4 Time domain analysis. 50
+4.5 Data animation. 52
+
+
+4.6 Analysis of manoeuvre.
+4.7 Concluding remarks.
+55
+55
+Chapter 5. Features of tail rotor loading distributions.
+5.1 Introduction 57
+5.2 The wake of an isolated rotor 58
+5.3 The hover 62
+5.4 Forward flight 64 5.4.1 The interaction between a main rotor blade trading tip vortex and a tail
+rotor blade trailing tip vortex in forward flight. 67
+5.4.2 The interaction between a main rotor blade trailing tip vortex and the
+inboard region of a tail rotor blade in forward flight. 70
+5.5 Interaction between the main rotor wake and the tail rotor in quartering
+flight. 73
+5.6 Main rotor effects observed on the tail rotor in sidewards and rearwards
+flight. 77
+5.7 Concluding remarks. 79
+Chapter 6. Aspects of tail rotor and yaw control modelling.
+6.1 Introduction. 80
+6.2 Current tail rotor and yaw control modelling. 81
+6.3 Main rotor steady wake model. 82 6.4 Potential improvements in tail rotor modelling. 86
+6.5 Concluding remarks. 89
+Chapter 7. Conclusions and recommendations for further research.
+7.1 Introduction. 91
+7.2 Experimental set up and measurement technique. 92
+7.3 Experimental procedure. 94
+7.4 Analysis techniques and data presentation. 95
+7.5 Features of tail rotor loading distributions. 96
+7.6 Aspects of tail rotor and yaw control modelling. 101
+7.7 Cyclic control of tail rotor pitch. 102
+7.8 Concluding remarks. 104
+References. 105
+
+
+Appendices.
+1 Lynx AH Mk5 instrumentation 116
+2 Lynx AH Mk5 Flight Trial Instruction 117
+3 Summary of data collected. 129
+4 The design of the Lynx AH Mk7 instrumented tail rotor blade and thrust
+sensor. 136
+5 Principle Puma & Lynx AH Mk5 frequencies. 141
+Figures.
+
+
+List of Figures.
+1. 1.1
+1. 1.2
+1.3.1
+1.4.1
+1.4.2
+2.3.1
+2.3.2
+2.3.3
+2.4.2.1
+2 . 4 . 2.2
+2.4.3.1
+2.5.1
+Plot showing the variation in yaw control margin for changes in relative
+wind speed and direction for the Lynx AH Mk5 recorded during the
+flight trial. Aircraft all up mass is 4700kg.
+Plot showing the variation in yaw control margin for changes in relative
+wind speed and direction as calculated by Helistab when configured as a
+Lynx AH Mk5.
+RAE Flight Research Puma
+RAE Bedford Lynx AH Mk5
+Plot showing the variation in yaw control margin for changes in relative
+wind speed and direction as calculated by Helistab when modified with
+the Beddoes main rotor wake model.
+Comparison between normal force coefficient and leading edge pressure
+coefficient.
+Correlation between lift and upper surface pressure coefficient at 2%
+chord derived from steady wind tunnel tests of NACA 0012 profile.
+Correlation between lift and incidence derived from steady wind tunnel
+tests of NACA 0012 profile.
+Lines of constant dynamic head for sensor at 2% chord on the upper
+surface of NACA 0012 section.
+Lines of constant dynamic head for sensors at 2% and 50% chord on the
+upper surface of NACA 0012 section showing unique nature of
+intercepts.
+Drawings of the main rotor blade tip pitot fitted to Lynx AH Mk7
+ZD559.
+Lynx AH Mk5 instrumented tail rotor blade schematic sensor layout.
+
+
+2 . 5.2
+2.5.3
+2.5.4
+2.5.5
+2 .6.1
+2.7.1
+3.2.1
+3.2.2
+3.2.3
+3.5.1
+3.5.2
+3.5.3a
+3.5.3b
+3.5.4
+3.5.5
+4.2.1
+4.2.2
+Photograph of Lynx AH Mk5 instrumented tail rotor blade during
+construction showing wiring loom, strain gauge and pressure sensor tag
+strip.
+Photograph of Lynx AH Mk5 instrumented tail rotor blade during
+construction showing blade root tag strip.
+Part cross-section of Lynx AH Mk5 instrumented tail rotor blade
+showing fairing profiles.
+Photograph of the Lynx AH Mk5 tail rotor amplifier unit and 18 way
+slip-ring assembly.
+Schematic Lynx AH Mk5 instrumentation diagram.
+Photograph of the pressure sensor calibration vessel.
+Map of Villafranca Airfield.
+The flight trial did not disrupt the routine operation of the airfield.
+Photograph of the car and anemometer. This figure is not referenced in
+the text.
+Pressure coefficient recorded at the 85% rotor radius trailing edge
+sensor showing high frequency oscillation. Relative wind is 20
+kts/064°.
+Power Spectral Density of the signal in figure 3.5.1 showing increased
+noise around the filter cut-off frequency, 600Hz.
+Power Spectral density of the signal recorded in the same event but on
+the 55% rotor radius leading edge sensor showing low levels of noise
+compared with the tail rotor harmonics.
+Same data as figure 3.5.3a but to the same scale as figure 3.5.2.
+Pressure coefficient time history for the data in figure 3.5.3.
+Data in figure 3.5.1 after being passed 5 times through a 300Hz low
+pass Butterworth filter with the time base readjusted.
+Effect of change in normal velocity component.
+Effect of change in in-plane velocity component.
+
+
+4.3.1 Isometric presentation of frequency content
+4.3.2 Displaced presentation of frequency content.
+4.3.3 Lynx AH Mk5 low speed flight envelope showing regions where
+different main rotor/tail rotor interactions were observed. Areas 3 & 4
+have similar mechanisms.
+4.4.1 Plot of variation in -Cp for one revolution of the tail rotor in hover
+OGE. Aircraft AUM 4600kg.
+4.4.2 Sequence of single revolution plots of Lynx AH Mk5 tail rotor -Cp data
+during 30kts forward flight OGE showing passage of main rotor blade
+trailing tip vortex interference effects. Aircraft AUM is 4700kg.
+4.4.3 Plot of average -Cp over 160 revolutions.
+4.4.4 Standard deviation of -Cp over 160 revolutions.
+4.4.5 Range of -Cp variation over 160 revolutions.
+4.4.6 Standard plots of Compass heading, Pedal position, Yaw rateand 85%
+blade radius trailing edge pressure.
+4.5.1 -Cp data at 165° azimuth in the order as recorded.
+4.5.2 Datum main rotor position for each tail rotor revolution.
+4.5.3 Data in figure 4.5.1 reordered by nearest main rotor blade position.
+4.5.4 Data in figure 4.5.1 reordered by red main rotor blade position.
+4.5.5 Format used for original "cartoon" animation of Puma tail rotor pressure
+data.
+5.2.1 Variation in bound circulation along a blade of an isolatedrotor in the
+hover.
+5.2.2 Position of tip vortices calculated for an isolated 4-bladed rotor in the
+hover. The marked change in direction of vortex movement after the
+first blade passage is indicated.
+5.2.3 Comparison of Rankine & Scully vortex velocity distributions.
+5.2.4 Velocity distribution at the blade of an isolated rotor in the hover.
+
+
+5.2.5
+5.2.6
+5.3.1
+5.3.2
+5.3.3
+5.3.4
+5.3.5
+5.3.6
+5.3.7
+5.4.1
+5.4.2
+5.4.3
+Figure from Rossow(1977) showing 2 vortices of equal magnitude and
+sign rotating round each other.
+Sketch showing how the wake behind a helicopter in forward flight
+resembles that of a fixed wing aircraft.
+Variation of Puma main rotor leading edge -Cp over one revolution in
+the hover.
+Variation of Puma tail rotor leading edge -Cp over one revolution in the
+hover.
+Frequency content of puma tail rotor leading edge sensor signals in the
+hover.
+Variation of Lynx AH Mk5 tail rotor leading edge -Cp over one
+revolution in the hover. AUM=4610kg.
+Frequency content of Lynx AH Mk5 tail rotor leading edge sensor
+signals in the hover.
+Standard deviation of Lynx AH Mk5 tail rotor leading edge -Cp over
+160 revolutions in the hover.
+Variation of Lynx AH Mk5 tail rotor leading edge -Cp over one
+revolution in the hover. AUM=3945kg.
+Lynx tail rotor - 30 kts forward flight OGE. Leading edge pressure
+sensor frequency content.
+Sequence of plots of single revolutions of Puma tail rotor leading edge 
+Cp in 10 kts forward flight OGE showing passage of main rotor blade
+trailing tip vortex interference effects.
+Variation in -Cp at the 98% blade radius leading edge sensor for one
+revolution of the tail rotor. The localised reduction in -Cp indicated by
+the vertical line is caused by the interaction of a main rotor blade trailing
+tip vortex and the preceding tail rotor blade.
+Variation in -Cp at the 75% blade radius leading edge sensor for one
+revolution of the tail rotor. A main rotor vortex is approaching the
+
+
+5.4.6
+5.4.1.1
+5.4.1.2
+5.4.1.3
+5.4.2.1
+5.4.2.2
+5.5.1
+5.5.2
+5.5.3
+5.5.4
+5.5.5
+sensor and the localised increase in -Cp indicated by the vertical line is
+due to the velocity induced by that vortex opposing blade rotation.
+Variation in -Cp at the 75% blade radius leading edge sensor for one
+revolution of the tail rotor. A main rotor vortex has just passed the
+sensor and the localised reduction in -Cp indicated by the vertical line is
+due to the velocity induced by that vortex being with blade rotation.
+Plot showing the position of the datum main rotor blade as the main
+rotor blade trailing tip vortex interference effect is detected at each tail
+rotor blade leading edge sensor.
+Sketch of main rotor blade trailing tip vortex/tail rotor blade trailing tip
+vortex interaction showing three phases of interaction.
+Vortex interaction model starting positions.
+Plots showing calculated changes in the tail rotor blade trailing tip vortex
+produced by the model over the first 10 milliseconds. The main rotor
+vortex only showed a slight bulge in the same timescale.
+Theoretical variation in V^ with blade radius for a tail rotor rotating top
+blade forward. The effect of a main rotor blade trailing tip vortex is
+shown for three vortex locations (25, 50 & 75% rotor radius).
+Theoretical variation in V^ with blade radius for a tail rotor rotating top
+blade aft. The effect of a main rotor blade trailing tip vortex is shown for
+three vortex locations (25, 50 & 75% rotor radius).
+Definition of quartering flight.
+Direction of rotation of both "wing tip" vortices is bottom-away from
+aircraft centreline.
+"Wing tip" vortex coincident with tail rotor.
+"Wing tip" vortex forward of tail rotor.
+Percentage change in overall tail rotor dynamic head as a representative
+"wing tip" vortex tracks diametrically across the disc. Tail rotor radius is
+1.1m.
+
+
+5.5.6
+5.5.7
+5.5.8
+5.5.9
+5.5.10
+5.5.11
+5.5.12
+5.6.1
+5.6.2
+5.6.3
+5.6.4
+5.6.5
+5.6.6
+6.2.1
+6.3.1
+Signal frequency content in quartering flight.
+Variation in minimum separation distance between individual blade
+trailing tip vortices within the "wing tip" vortices with aircraft speed as
+calculated for a Lynx AH Mk5.
+Standard deviation of Lynx AH Mk5 tail rotor leading edge -Cp over
+160 revolutions in flight 20 kts/60° OGE.
+Variation in trailing edge Cp at 85% blade radius with tail rotor blade
+azimuth over 160 revolutions in flight 20kts/060° OGE.
+Variation in total tail rotor dynamic head as calculated using Helistab in
+conjunction with the Beddoes wake model.
+Variation in tail rotor blade root pitch angle as calculated using Helistab
+in conjunction with the Beddoes main rotor wake model.
+Frequency content of the 84% tail rotor radius leading edge sensor on
+the Puma during tail rotor buzz.
+Puma tail rotor blade leading edge sensor frequency content in flight
+20kts/180° OGE.
+Lynx tail rotor blade leading edge sensor frequency content in flight
+30kts/150° OGE.
+Lynx AH Mk5 tail rotor leading edge -Cp averaged over 160 revolutions
+in flight 30kts/150° OGE.
+Standard deviation of Lynx AH Mk5 tail rotor leading edge -Cp over
+160 revolutions in flight 30kts/150° OGE.
+Variation of -Cp with tail rotor azimuth and main rotor azimuth during
+flight at 30kts/210° OGE. Interpretation of plot is fully explained in text.
+Lynx leading edge pressure sensor frequency content during flight at
+30kts/300° OGE.
+Figure showing Bo 105 yaw rate response to a pedal input and Helistab
+model response to the same input.
+Beddoes main rotor wake model configured as a Lynx at 30 kts.
+
+
+6.3.2
+6.3.3
+6.3.4
+A4.1
+A4.2
+A4.3
+Variation in number of main rotor blade trailing tip vortices passing
+through the tail rotor disc with flight condition as calculated using
+Beddoes wake model.
+Reduction in tail rotor dynamic head calculated using data from figure
+6.3.2.
+Variation in pedal margin with flight condition as calculated using data
+from figure 6.3.3. Compare with figure 1.4.2.
+Cross-section through the proposed Lynx AH Mk7 pressure
+instrumented tail rotor blade.
+Cross section through Lynx AH Mk7 tail rotor blade core showing
+depressions required. Dimensions in mm.
+Section through Lynx AH Mk7 tail rotor gearbox showing the seal ring
+to be modified for thrust measurement.
+
+
+1
+Chapter 1.
+Introductory
+1.1 Introduction
+The yaw control device of a helicopter has three primary functions. These are:
+i. To provide a moment to counteract the main rotor torque reaction on the
+fuselage.
+ii. To enable the pilot to select a desired heading whilst in the hover or a
+desired sideslip angle in translational flight.
+iii. To enable the pilot to apply yawing moments in manoeuvre to effect
+coordinated and uncoordinated turns.
+With the possible exception of it's use in certain 'aerobatic' manoeuvres, main
+rotor torque induced yawing motion of the fuselage is an unwanted effect. It would be
+beneficial if the yaw control device fitted to the helicopter could automatically provide
+the requisite moment to counter any such motion without conscious effort from the
+pilot.
+It would also be desirable if heading or sideslip angle control could be achieved
+smoothly, linearly and progressively. Yaw control in a helicopter is the one 'attitude'
+control that is the most 'mission oriented', especially in the hover, and is often used in
+the performance of some pointing task such as fixed weapon firing. It should therefore
+be instinctive and unobtrusive so that the pilot attention is not unnecessarily distracted
+from his mission.
+
+
+2
+Unfortunately yaw control implementation in current generation helicopters
+requires considerable effort from the pilot and, in many cases, falls far short of
+providing the quality of control described above. There are several reasons for this;
+those affecting the conventional open tail rotor are as follows:
+The tail rotor is not the only part of the helicopter that can provide a moment to
+counter the main rotor torque reaction. When the aircraft is flying with a relative wind
+from any direction other than straight ahead or backwards, the wind acting on the
+fuselage will try to turn the fuselage so that it is pointing nose to wind. The moment
+produced by this weathercocking effect will act either with or against the main rotor
+torque reaction depending on the relative wind direction. The main rotor downwash
+over the rear fuselage can also produce a yawing moment that changes with speed and
+direction of travel. In addition, the main rotor torque reaction will vary with the
+aircraft's all up mass. It can therefore be seen that, when all these factors are taken into
+account, the thrust required from the tail rotor to counter whatever yawing moment
+exists will vary quite considerably with flight condition.
+Once the thrust required from the tail rotor is known the air mass flow rate
+required to produce it can be calculated if required and, under uniform flow conditions,
+the tail rotor blade pitch angle required to achieve this set. However, the operating
+regime of the tail rotor is seldom uniform. The flow field round the tail rotor is affected
+by the main rotor downwash, the influence of the rear fuselage and fin and, under
+certain flight conditions, the proximity of the ground. The relative proportions of these
+effects will vary significantly with flight condition and, to some extent, on the tail rotor
+thrust itself. The tail rotor blade pitch angle required to produce a given thrust will
+therefore change markedly with flight condition.
+The end result of this changing thrust requirement and tail rotor operating
+environment is a yaw control that is anything but smooth, linear or progressive. An
+illustration of these non-linearities is given at figure 1.1.1. This portrays the variation in
+
+
+3
+yaw control-margin with relative wind speed and direction for the Westland Lynx AH
+Mk5 aircraft. The centre point on the plot indicates a still-air-hover with radial distance
+out from the centre, the relative wind speed. Zero degree sideslip indicates a relative
+wind from ahead with 90° sideslip, a wind on the starboard (right) beam. It highlights
+the major reduction in pedal margin when the relative wind is approximately 50 degrees
+right of the nose at 15 - 25 knots. These circumstances can potentially limit the
+achievable yaw acceleration, and hence flight in situations where heading accuracy can
+be vital. This has implications in nap-of-earth and deck operations for example where
+any restrictions in the out-of-wind capabilities of the aircraft can seriously affect its
+operational effectiveness. The tail rotor is not unique in possessing these
+characteristics. The other less conventional methods of yaw control each suffer from
+their own idiosyncrasies giving rise to comparable non-linearities in control.
+As helicopters become more and more complex it is incumbent on designers to
+minimise pure piloting effort within the accepted technologies. Currently, Active
+Control Technology (ACT) is considered one of the most effective ways of achieving
+this end whilst maintaining or improving vehicle performance. When applied to the yaw
+axis, ACT should be capable of controlling tail rotor thrust automatically, thus
+reducing that part of the pilot's workload.
+Experience with the implementation of ACT systems on fixed wing aircraft has
+highlighted the requirement for a high level understanding of the factors governing
+control of the vehicle. It would be difficult to develop the necessary control laws
+without an accurate model of the aircraft response. Contemporary yaw control models
+have major shortcomings and this provided the impetus for the present work. The
+deficiencies in our understanding are illustrated in figure 1.1.2. This shows how the
+DRA helicopter simulation model, Helistab (Padfield (1981)), predicts the Lynx AH
+Mk5 yaw control-margin plot and the disparities between this and figure 1.1.1 are
+evident. These discrepancies are largely due to the absence of any main rotor or
+fuselage flowfield effects in the tail rotor model.
+
+
+4
+The preliminary objective was to check whether or not the then available data
+were sufficient to improve the Padfield model. As shall be discussed in section 1.2 no
+suitable data could be found and so the present investigation was initiated. Tail rotor
+blade surface pressures were recorded in flight using specially instrumented blades on
+both Puma and, more extensively, Lynx AH Mk5 helicopters. Analysis routines were
+developed to permit the large quantities of data to be studied as efficiently as possible.
+Initial observation of the data revealed strong similarities between the features noted on
+the two aircraft types. The presence of six different variations of main rotor/tail rotor
+interaction were detected within the Lynx AH Mk5 low speed flight envelope and, from
+a more rigourous analysis of some of the data, detailed mechanisms determined for the
+three most significant. From the understanding of tail rotor operation gained a more
+accurate model of yaw control performance has been formulated. This now has the
+potential to be included in either Helistab or the next generation simulation model, thus
+achieving the aims of the programme.
+This introductory chapter will continue with a review of the existing work
+carried out in this field. Section 1.3 will discuss the initial stages of the RAE/DRA tail
+rotor research programme before the scope of the present study is described in section
+1.4. Finally the nomenclature and display conventions used throughout this report will
+be laid out in section 1.5.
+1.2 Review of existing work.
+Despite its extensive use in helicopter designs, the aerodynamics of the tail rotor
+has been minimally researched when compared to its companion main rotor. As an
+increase in main rotor efficiency has a greater effect on the overall vehicle performance
+than a comparative tail rotor improvement, resources expended on the main rotor has
+always been easier to justify.
+
+
+5
+Early tail rotor design work normally made use of main rotor or propeller theory
+though some theoretical work was carried out by Amer & Gessow (1954) which
+considered the tail rotor effect on directional stability. Tail rotor design has tended to be
+of an iterative nature with each manufacturer broadly sticking with a basic tried and
+tested design as the start point for a new aircraft and making subsequent small
+variations as required. In many cases, it was only when the yaw handling of a new
+helicopter was unsatisfactory that research was carried out. Although understanding of
+the tail rotor has improved over the years, new tail rotor designs are regularly proving
+to be deficient necessitating re-working either before or after the aircraft enters service.
+One well documented case is that of the YAH-64 Apache Helicopter (Prouty &
+Amer 1982) This aircraft was fitted with 5 different designs of horizontal stabiliser and
+2 different designs of tail rotor before handling was considered satisfactory. Changes to
+the UH-1 series of aircraft were described by Lynn,Robinson,Batra & Duhon (1969).
+The UH-1 tail rotor was altered from a tractor to a pusher configuration. The original
+five bladed, symmetrical section tail rotor fitted to the Westland Sea King was replaced
+when the thrust developed became insufficient for the weight growth of the aircraft. A
+new six bladed rotor was fitted in conjunction with a tail boom strake which sufficiently
+off-loaded the tail rotor in right sideways flight (Brocklehurst (1985)). Following the
+development of a cambered tail rotor blade section (Wilby (1976)) and subsequent trials
+on a Sea King (Hansford (1976) & Cook (1976)) which indicated an increased tail
+rotor thrust, new versions of the aircraft reverted to a five bladed rotor. The Westland
+Lynx is also on it's second tail rotor design. The original rotor rotated top blade
+forwards and had blades of RAE 9615 section. This has been replaced by a rotor
+rotating top blade aft with blades of RAE 9670 section. This greatly improved the
+aircraft's handling, especially in quartering flight (Phipps (1985) & Phipps (1987)). A
+reduction in the aeroacoustic signature of the aircraft was also apparent (Leverton,
+Pollard & Wills (1975) & Leverton (1981)). Changes in tail rotor design of the
+Westland/Agusta EH101 have yet to be fully documented.
+
+
+6
+Some tail rotor research has been undertaken by operators rather than
+manufacturers of aircraft. The Royal Australian Airforce had perceived a problem with
+the yaw handling of their Bell 206B-1 helicopters and their investigation, although it
+was not particularly conclusive, was reported by Ward (1981) and included an
+interesting discussion on tail rotor vortex ring states. Several studies simply gave a
+"state of the art" report on tail rotors and their inherent problems, eg.Cook (1978). The
+initial report of this current investigation (Smith(1987)) was produced to bring the RAH
+to an equivalent level of understanding.
+The reports discussed above concentrated on the manifestations of the problems
+and their solutions. Very little mention was made of the mechanisms associated with
+and hence possible causality of the problems. A similar statement could easily be made
+for the majority of the non-aircraft-type-specific reports that considered tail rotors. With
+the exception of some full scale tests conducted on an isolated Lynx AH Mk5 tail rotor
+on an outdoor whirl stand (Signor, Yamauchi, Smith & Hagen (1989)), the remainder
+of the reports studied documented work carried out using models in wind tunnels.
+Most of these wind tunnel experiments concentrated on the overall effects of the
+tail rotor interactions on the aircraft rather than the interactions themselves. Huston &
+Morris (1971) considered the ground vortex effect in low speed flight. This work, in
+conjunction with the later study by Yeager, Young & Mantay (1974), using the same
+experimental set-up, highlighted the manner in which the aircraft fin force varied with
+relative wind speed and angle, with tail rotor/fin separation, with tail rotor thrust and,
+more surprisingly, with tail rotor direction of rotation. These findings were
+corroborated by Weisner & Kohler (1973 & 1974) and Sheridan, Hanker & Blake
+(1984), who demonstrated the effect of change in height above the ground. Although
+each of these reports illucidate different aspects of the various tail rotor interactions, it
+was considered that the interaction mechanisms had to be determined prior to
+satisfactory modelling.
+
+
+7
+In 1985 Alan Brocklehurst of Westland Helicopters Limited conducted a series
+of wind tunnel experiments which specifically considered main rotor/tail rotor/fin
+interactions. His work on fin blockage effects (Brocklehurst (1985/3) & (1985/4)) did
+not fully support the findings of Yeager, Young & Mantay (1974) since he found that
+the fin force was independent of tail rotor thrust, provided that blade stall had not
+occurred. Equations, derived from his observations, were given to allow fin blockage
+effects to be taken into account. Brocklehurst (1985/1) considered the effect of the tail
+rotor wake on the main rotor and observed distortions to the tail rotor wake. These
+distortions caused the wake to wrap around the edge of the main rotor disc in flight
+conditions approaching the hover. This mechanism was then invoked to explain the
+azimuthal variations observed in main rotor pressure distributions on the RAE Puma
+(Tarttelin (1989)). An aspect of the interaction that was not considered was the similar
+effect on the tail rotor pressure distribution in the hover; this will be discussed in
+chapter 5. Brocklehurst (1985/1) also discusses the effect of changing the position of a
+trailing blade tip vortex in relation to the following blade and how that affects the
+loading distribution on that following blade. This was helpful during the development
+of the proposed mechanism associated with main rotor blade trailing tip vortex effects
+on the outer portion of a tail rotor blade in low speed forward flight; discussed in
+section 5.4.1.
+Of this series of Westland reports, Brocklehurst(1985/2) provides the most
+comprehensive coverage of the predominant interaction affecting tail rotor performance.
+It discusses how, in quartering flight, the tail rotor can be immersed in the rolled up tip
+vortices trailed from the edge of the main rotor disc. The resultant flow field changes
+the dynamic head at the tail rotor blade giving the quoted 20% difference in the tail rotor
+thrust/pitch gradient between rotors rotating top-blade-forward and top-blade-aft.
+Brocklehurst concludes by stating that an accurate main rotor wake geometry model is
+required to reproduce the effect. Such a model will be described in chapter 6 with it's
+use noted in section 5.4.
+
+
+8
+Not all reports on tail rotor performance have been written from an aerodynamic
+standpoint. With the increasing requirement for military helicopters to avoid detection
+and for civil helicopters to be more "environmentally friendly", aeroacoustics has
+become a major field of study. As the acoustic signature is produced by the
+aerodynamic effects at the blades, valuable information on the performance might come
+from study of acoustic data. In addition to the two reports on Lynx aeroacoustics
+mentioned above, other reports on the topic include Pegg & Shidler (1978), Schreier
+(1982) and Fitzgerald & Kohlhepp (1988). The latter two of these reports discuss the
+effect of variations in tail rotor thrust on the noise generated. Tadghighi & Cheeseman
+(1983), although specifically referring to tail rotors in the title, considered the noise
+generated from an isolated rotor in smooth air conditions and cannot be said to relate to
+the noise emanating from a tail rotor in flight. Of more interest , however, was the
+work of Schinker & Amiet (1983)who considered the interaction of the tail rotor with a
+main rotor trailing tip vortex in low speed forward flight. Although the interference
+between the main rotor blade trailing tip vortex and it's tail rotor counterpart was not
+mentioned, it's effect, when interfering with the blade itself, is given significant
+coverage.
+At an early stage, it became apparent that a good knowledge of the features of
+the main rotor wake would be required. There are several hundred reports pertaining to
+main rotor wakes, not all of which are directly relevant to the current work.
+Immediately following the Second World War, the RAE started investigating main rotor
+wake distributions. Brotherhood (1947) and (1952) showed detail of the flow in hover
+and vertical descent. Elsewhere,Heyson & Katzoff (1957) described experimentally
+and theoretically derived data for the induced velocity distribution of a lifting rotor disc
+and so formed a foundation for much of the work that followed. Simons, Pacifico &
+Jones (1967) gave information on blade trailing tip vortices and discusses the time
+taken these to roll up (up to 60 degrees of blade rotation). Experimental studies of the
+main rotor wake in the hover, leading to prescribed wake formulations for that flight
+
+
+9
+condition, were described by both Landgrebe (1971) and Kocurek, Berkowitz & Harris
+(1980). For forward flight, however, the prescribed wake model from Beddoes (1985)
+has been found to give good correlation with flight data and will be further discussed in
+Chapter 6. Few people have considered the main rotor wake with the intention of
+improving tail rotor performance prediction. Fortunately Quackenbush, Bliss &
+Mahajan (1989) and other reports by the same author(s) who did consider the
+interactions of interest, presented useful information for the present study. Recently,
+Gray (1991) reviewed the USA effort producing a good introduction to this area of
+interest. The work carried out by Messrs. Young and Markiewicz at RAE (now DRA)
+Famborough also deserves mention even though their main rotor loading prediction
+methods can not be directly applied to the tail rotor.
+There have been many reports on blade/vortex interaction, for example Horner,
+Saliveros &Galbraith (1991/1) and (1991/2) but almost all are concerned with main
+rotor interactions of the parallel configuration. Although this may cover some of the tail
+rotor interactions, the interactions between main rotor vortices and the tail rotor are not
+catered for.
+The conventional tail rotor is but one of a variety of yaw control methods
+investigated. For example Mouille (1970) and (1979), Vuillet & Morelli (1986) and
+Vuillet (1989) are a few of the papers representing Aerospatiale experience with the
+Fenestron, the latter offering a comparison between the Fenestron and an equivalent tail
+rotor. Lemont (1982) considered the ringfin augmentation technique. McDonnell
+Douglas have persevered with their NOTAR to effect as discussed by Van Horn (1982)
+and Bregger & Dawson(1992) amongst others. The Fantail fitted to the Commanche
+has also been considered (Clemmons(1992)).
+The reports mentioned above constitute a representative sample of the wide and
+comprehensive coverage given to many aspects of rotor aerodynamic research. The
+desire for an improved understanding of main rotor tail rotor interactions was a
+
+
+10
+reoccurring theme, though little action has hitherto been taken to address it. Although
+pertinent, the reports were not found to contain the detailed information on tail rotor
+operation and performance required to fulfil the needs of this programme.
+1.3 Initial phases of the RAE/DRA tail rotor research programme.
+The RAE tail rotor research programme was instigated in 1985 with the first
+phase undertaken by Lieutenant Commander A C Smith Royal Navy. As reported in
+Smith (1987), he conducted a limited literature search to acquire an appreciation of yaw
+related phenomena within the low speed flight envelope. These he identified as being:
+1. Operation of the tail rotor in vortex ring in left sideways flight.
+2. Main rotor torque variation in sideways flight inside ground effect
+(IGE).
+3. Increased tail rotor inflow in right sideways flight.
+4. Main rotor wake/tail rotor interaction; especially in quartering flight.
+5. The effects of the fuselage shape on yaw stability. This includes
+weathercocking and the effects of tail boom strakes.
+The following should be added to the list for it to detail all the most significant
+factors affecting yaw control:
+6. The effect of the main rotor ground vortex in rearward flight IGE.
+7. The interference between the main rotor wake and the tail fin.
+In addition to the above, Smith also considered the effects of tail rotor
+configuration and the alternative Fenestron form of yaw control.
+
+
+As Smith's work progressed it was decided that an instrumented tail rotor trial
+should be conducted using the RAE Flight Research Puma helicopter (figure 1.3.1).
+Design of the instrumented tail rotor assembly was commenced and, by the time that Lt
+Cdr Smith RN was relieved at Bedford by Lieutenant S F Baldwin Royal Navy in
+1987, the blades and hub were being manufactured. Whilst these were under
+construction, it had been decided that a short flight trial would take place with a
+standard, non-instrumented tail rotor fitted to the Puma. The intention was to identify
+those regions of the low speed flight envelope that warranted in-depth investigation
+with the instrumented rotor. With this complete and the instrumented tail rotor fitted,
+the aircraft was taken to IAF Villafranca in the Po Valley of Northern Italy in April
+1988 to conduct the trial with The instrumented rotor. Villafranca was selected as the
+trial location for the reasons given in section 3.2. All the intended flight conditions were
+flown and the aircraft returned for Bedford.
+Unfortunately, no provision had been made for data quality checks at
+Villafranca. It was not until the data tapes were inspected at Bedford that the tail rotor
+sliprings failure part-way through the flight programme was discovered. The
+consequence of this was that, although aircraft rates, accelerations and control inputs
+had been recorded, no tail rotor pressure data had been collected after the fourth of
+eighteen flights. This notwithstanding, the collected data were of good quality and
+subsequently produced much useful information.
+The design and manufacture of the Puma's instrumented tail rotor , the results
+obtained with the standard tail rotor and the conduct of, and some sample pressure plots
+from, the instrumented blade trial were recorded in Baldwin & Handley (1988). Lt
+Baldwin RN left Bedford In 1988 and was replaced by the author before any detailed
+analysis of the data collected could take place . It is appreciated that the achievements of
+the present work built on that of Lt Cdr Smith RN and Lt Baldwin RN together with
+the efforts of the Helicopter Aeromechanics Section of the DRA Flight Systems
+Division.
+
+
+12
+1.4 Scope of the present study.
+Shortly after the instrumented tail rotor trial discussed in the previous section,
+the Puma was replaced by a Westland Lynx AH Mk5 (figure 1.4.1). As the Mk5 Lynx
+was only bought in small numbers by the MOD it had been decided that they should all
+be converted to Lynx AH Mk7 standard by the end of 1991. One of the most significant
+changes to the aircraft included in the modification programme was that the tail rotor
+was changed from the original, which rotated top-blade-forward, to one with a different
+blade section that rotated top-blade-aft. As the direction of rotation of the tail rotor had
+been identified as one of the most significant configuration changes affecting it's
+performance (Smith (1987), Lynn, Robinson,Batra &Duhon (1969)), it was
+recognised that the RAE had an excellent, and probably unique, opportunity to look in
+depth at the effects of tail rotor rotational direction with the two different tail rotors
+mounted on the same aircraft. It was therefore decided to pressure instrument a tail
+rotor blade on the Lynx AH Mk5 and conduct flight trials, before repeating the exercise
+with the Lynx AH Mk7.
+An instrumented tail rotor was designed and manufactured to make use of the
+Pressure Indicator Sensor Technique of blade pressure measurement and load
+estimation (Brotherhood & Riley (1990)). Due to the restricted timescale imposed by
+the date of the Mk7 conversion, the instrumentation followed closely that used on the
+Puma. Even though the local blade in-plane velocity, an important part of the Pressure
+Indicator Sensor Technique, could not be established, it was decided that this
+instrumentation layout would lead to significant advances in the understanding of tail
+rotor aerodynamic phenomena. Details of the system are given in Chapter 2.
+Following a thorough testing of the aircraft instrumentation system, the flight
+trials were conducted at IAF Villafranca in April 1991 and utilised the experience gained
+from the earlier work with the Puma. A portable data replay system had been acquired
+
+
+and was used to inspect each data tape soon after recording. This was particularly
+important for it was clear that this was to be the last trial of an instrumented tail rotor on
+a Lynx AH Mk5 (Bedford's was the last remaining Lynx of this Mark). To make
+maximum use of the opportunity, more test points were flown than were strictly
+required for the present investigation. For example, in addition to the steady flight
+conditions within the low speed flight envelope, data were also collected in high speed
+and manoeuvring flight. The conduct of the experiment will be presented in Chapter 3.
+Whilst the Lynx Ah Mk5 instrumented tail rotor was being built, the pressure
+data collected on the Puma was investigated. Due to the rate at which tail rotor pressure
+data varies in comparison with equivalent main rotor data, the analysis routines
+developed at RAE for the main rotor research were not directly applicable. A suite of
+analysis programs were therefore developed and applied to the Puma data in such a way
+that they could be adapted for use on the Lynx data. During this process, the speed
+of the data analysis was greatly improved by increased automation and an appreciation
+gained of the interactional phenomena observed. Both frequency and time domain
+analysis techniques were used and a method evolved for re-ordering the data so that
+animation techniques could be employed to highlight the finer features not apparent on a
+steady image; these routines will be discussed in Chapter 4.
+On completion of the flight trial, the Lynx data were inspected and found to be
+of a contemporary high quality. A significant quantity of the data from the 1270 test
+points flown were processed using the developed analysis routines. After cursory
+inspection it was reassuring to observe that the features noted and identified in the
+Puma data were also evident for the Lynx. A consideration of the frequency content of
+the Lynx data, from steady sideslips, revealed different characteristics in different
+regions of the envelope. This indicated that different main rotor/tail rotor interactions
+were taking place dependant on flight condition. From each of the six regions identified
+a few test points were selected for further analysis.
+
+
+14
+In forward flight two different interactional mechanisms were determined; one
+between the main rotor blade trailing tip vortex and the tail rotor blade trailing tip vortex
+and the other between the main rotor blade trailing tip vortex and the inboard region of
+the tail rotor blade. The effect on the performance of these interactions was found to be
+quite small. This was not the case with the interaction between the main rotor wake and
+the tail rotor in quartering flight, where the tail rotor blade dynamic head could be
+reduced by as much as 35% for a tail rotor rotating top-blade forward. A detailed
+description of these interactions, and to a lesser extent those occurring in rearward
+flight is given in Chapter 5.
+The limitations of current tail rotor computer models have already been
+mentioned in section 1.1. In order to test the hypotheses for the main rotor/tail rotor
+interactions discussed above it has been necessary to develop suitable models. For the
+forward flight case it was necessary for the model to consider the individual blade
+vortex interaction in detail whilst that for the quartering flight case could employ a more
+"broad-brush" treatment. It was found that by taking a prescribed main rotor wake
+model already developed for the calculation of main rotor blade loadings (Beddoes
+(1985)) it was possible to generate an appropriate flow in the region of the tail rotor.
+The incorporation of this model in the Helistab program resulted in a marked
+improvement in the prediction of yaw control margins (figure 1.4.2). A discussion of
+the different facets of tail rotor modeling will be given in Chapter 6.
+In addition to detailing the conclusions drawn from this research programme,
+Chapter 7 will give recommendations for additional work to be carried out in this field
+including a comparable flight trial programme with a pressure instrumented tail rotor
+blade fitted to a Lynx AH Mk7.The standard tail rotor on the Lynx AH Mk7 is made
+predominantly of composite material rather than metal as used on the Mk5. This will
+enable a better instrumented tail rotor to be constructed for the second part of the
+comparative trial that should allow the in-plane velocities to be determined. From the
+
+
+15
+deduced blade loading data it should be possible to assess how evenly the tail rotor is
+loaded around it's azimuth for the different phases of flight.
+Although the primary aim of the research programme has been the improvement
+of yaw control modelling for conventional and ACT control law development, there has
+also been the potential for improvements in tail rotor design, leading to increased
+efficiency. An example of this may be the use of cyclic control of tail rotor pitch
+enabling the redistribution of tail rotor lift in flight conditions where a large disparity in
+blade loading around the disc is currently experienced. The future flight experiment
+with the Lynx AH Mk7 and the possible advantages of tail rotor cyclic control will be
+discussed, together with the conclusions from the present investigation, in Chapter 7.
+1.5 Nomenclature, abbreviations and display conventions.
+a Lift curve slope
+A&AEE Aircraft & Armament Experimental Establishment
+AH Army Helicopter
+ASE Auto Stabilisation Equipment
+b Number of blades
+Cp Coefficient of pressure
+Cjq Normal force coefficient
+c Blade chord
+DRA Defence Research Agency
+FCF Flight Clearance Form
+FTI Right Trials Instruction
+IAF Italian Air Force
+IGE Inside Ground Effect
+L Lift
+MODAS MOdular Data Acquisition System
+
+
+16
+Nr Main rotor rotational speed expressed as a percentage of 318.21 rpm.
+OGE Outside Ground Effect
+P Raw recorded pressure
+PO Static pressure
+PCB Printed Circuit Board
+PRIU Processor Recorder Interface Unit
+R Main rotor fundamental frequency
+Rt Tail rotor blade radius. (1.105m for Lynx AH Mk5)
+rt Radial position along tail rotor blade
+RAE Royal Aerospace Establishment
+RAF Royal Air Force
+REME Royal Electrical & Mechanical Engineers
+T Tail rotor fundamental frequency
+U Local inflow velocity
+V Local blade velocity
+va Aircraft's translational velocity
+vr In-plane velocity induced by blade motion
+vv In-plane velocity induced by main rotor vortex
+z Vertical distance above main rotor disc
+a Blade incidence angle
+P Main rotor advance ratio
+P Air density
+0 Blade root pitch angle ( No twist on blade)
+'Pm Main rotor blade azimuth
+'Pt Tail rotor blade azimuth
+Main rotor angular velocity
+Tail rotor angular velocity
+
+
+17
+The following display conventions are used throughout the report:
+i. Zero degrees azimuth for both main and tail rotors is with the datum or
+instrumented blade pointing aft. Azimuth angles are given in degrees and
+increase in the direction of blade rotation.
+ii. The tail rotor is viewed from the port (left) side of the aircraft. If the fin were
+shown, it would be behind the tail rotor on the Lynx but in front of it on the
+Puma.
+iii. The rotor Cp data variations are shown by means of coloured contour lines
+connecting points of similar value. The solid line in each colour represents the
+lowest value of that colour in the key table. -Cp is displayed for reasons given
+in the text.
+iv. Relative winds may be quoted in the form "30kts/064°". This represents a wind
+speed of 30 knots coming from a direction 64 degrees to the right of the
+aircraft's nose. Note that, depending on aircraft type, the direction of increasing
+relative wind angle may be different from that of increasing main rotor azimuth
+angle.
+
+
+Chapter 2.
+Experimental set up and measurement techniques.
+2.1 Introduction
+The aim of the programme has been stated in section 1.1 as being to improve
+the fidelity of existing computer models of helicopter yaw handling and performance
+through improved understanding of the aerodynamic interaction mechanisms. In section
+1.2 a search of the available literature established that there were insufficient data
+already existing to achieve this goal. It was therefore decided to conduct an experiment
+during which suitable flight test data would be collected. The subsequent analysis of
+that data would then provide the information required to enable the model to be
+improved. Although the data analysis was the most significant part of the experiment,
+the correct data had to be recorded in a suitable manner so that the analysis could yield
+the desired results. This chapter discusses the design of the data collection phase of the
+experiment.
+With all the factors that can affect the tail rotor thrust, it was not considered
+sufficient to measure the total thrust provided by the tail rotor but rather to arrive at this
+figure by integrating up the blade loads produced over the tail rotor disc. Indeed, at this
+stage in the programme, a sensor had yet to be designed that would give a single output
+of tail rotor thrust. The various methods of instrumenting rotors shall be discussed in
+section 2.2, with the Pressure Indicator Sensor Technique actually employed described
+in section 2.3. Originally developed for main rotor research, the technique relies on a
+knowledge of the local in-plane velocity at the blade which, as detailed in section 2.3,
+cannot be directly inferred for the tail rotor. The different techniques that can overcome
+this problem, some of which can be applied retrospectively to existing data, are covered
+in section 2.4.
+
+
+19
+The design and manufacture of an instrumented tail rotor for the Lynx AH Mk5
+is covered in section 2.5. Once the pressures were detected at the blade sensors, the
+electrical signals they produced, suitably amplified, filtered and digitised, were
+recorded on the aircraft tape recorder. Subsequently, the data, suitably calibrated, were
+transcribed onto a different medium on a ground replay unit for long term storage and
+analysis. The aircraft instrumentation system and ground replay facilities are discussed
+in section 2.6 with system calibration and testing described in section 2.7.
+2.2 Methods of rotor blade instrumentation
+As discussed in the previous section, the tail rotor had to be instrumented to
+allow the variations in blade loading over the disc to be estimated. From this a value for
+total tail rotor thrust could then be derived. Theoretically it should be possible to derive
+the thrust directly from the blade coning angle, a technique used with some success on
+the main rotor. The variation in tail rotor blade coning angle is found to be very small in
+practice, partly because of the effect of the A3 hinge in reducing blade flap. Derivation
+of thrust from this angle is therefore subject to significant measurement errors. A
+sensor to measure tail rotor thrust directly from the tail rotor gearbox is currently under
+development and will be discussed in Chapter 7.
+The blade loading could be derived from the local axial flow velocity changes
+induced by the tail rotor. This would necessitate the measurement of the velocity both
+upstream and downstream of the rotor to account for variations in the flow caused by
+agencies other than the tail rotor itself. It would also be necessary to record at discrete
+points over the whole disc. A rake of pitot tubes would be cumbersome and adversely
+affect the flow characteristics. Laser velocimetry techniques could be used. This
+method, although widely used in the controlled environment of the wind-tunnel and for
+the measurement of gust turbulence at a single point relative to a wing, is not one that
+lends itself readily to the recording of a rapidly changing field over a large area. In
+
+
+20
+addition, the Helicopter Aeromechanics Section at Bedford had no previous experience
+in the use of lasers in flight investigations and insufficient time within the programme to
+explore this technology. The use of high speed cameras to record the motion of smoke
+or other particles was not considered compatible with the accuracy required although,
+qualitatively, it would have proved quite useful. Hot film sensors bonded to the blade
+surface could show the location of the stagnation point at the blade leading edge and the
+transition point but previous experience within the Section had not shown their use to
+be particularly rewarding.
+Any variation in loading will cause a rotor blade to deform. The strains induced
+in the blade could be recorded with a suitable array of strain gauges from which the
+deformation could subsequently be reconstituted. A method of strain pattern analysis
+(SPA) is currently under development for use on the main rotor of the DRA Flight
+Research Lynx AH MK7 helicopter. The analysis is complex and relies on a
+comprehensive calibration of the blade displacement / induced strain relationship. The
+tail rotor blade on a Lynx AH Mk5 is quite rigid and the deformations induced by the
+loading variation small. It is highly unlikely that any such method would be able to
+show the effects of a main rotor blade trailing tip vortex passing over the tail rotor disc.
+The derivation of blade loading from surface mounted pressure sensors had
+previously been used with effect and was the method selected. A full description of the
+technique employed is given in the next section.
+2.3 The Pressure Indicator Sensor technique.
+The Helicopter Aeromechanics section at DRA Bedford has, over many years,
+developed expertise in performing in-flight rotor blade pressure measurement. Early
+research aimed at investigating the attributes of different aerofoil sections used an array
+of approximately twenty pressure sensors placed about the main rotor blade test section
+at one radial station. The recorded pressures could then be integrated to derive the blade
+
+
+21
+loading. This technique gave accurate results but required the use of a large number of
+individual sensors to measure the total loading. More recent research has been aimed at
+improving understanding of the loading variations over the whole rotor disc in flight.
+To use twenty sensors at each of up to twenty radial stations on a main rotor blade
+would necessitate the use of a recording system more capable than that currently
+available. The number of sensors required at each radial station had to be significantly
+reduced to make the research viable.
+During the course of the work with the full chordwise sensor arrays just
+described, it had been noted that there was, under most conditions, a good general
+correlation between the variation in the local blade loading and the change in Cp
+measured at 2% chord on the upper surface of the blade (figure 2.3.1). Further research
+showed that wind tunnel data could be used to produce unique relationships over a
+range of Mach numbers between the Cp at this point on the blade chord and the local
+C n and a (figures 2.3.2 & 2.3.3). These relationships have been expressed in tabular
+form for ease of use in analysis routines. The 2% chord position is in the vicinity of the
+aerofoil's suction peak and so has optimum sensitivity to loading variation.
+Unfortunately the relationships break down when the aerofoil stalls. A second sensor
+must therefore be fitted close to the blade trailing edge to detect flow separation in that
+region. When stall has occurred the value of Cn must be calculated in a different way;
+in the current analysis routines the Cn is held at it's immediately pre-stall value whilst
+the flow remains separated. The use of one leading edge and one trailing edge pressure
+sensor to derive local blade incidence and loading has become a standard method at
+DRA Bedford known as the Pressure Indicator Sensor Technique (Brotherhood &
+Riley(1990)). Brotherhood & Riley(1990) also discuss the effects of compressibility
+and phase lead of Cn to Cp on the results obtained.
+The presence of different lines for each Mach number in figures 2.3.2 & 2.3.3
+illustrates the techniques susceptibility to errors caused by inaccuracy in the value of
+local Mach number used. For main rotor work, this does not normally present a
+
+
+22
+problem since the local in-plane velocity can be obtained from a knowledge of the
+blades rotational velocity, the sensor radial location, the blade azimuth angle and the
+aircraft's translational velocity,ie:
+V=Qmr + Vasin xf/m Eqn 2.1
+Although in-plane velocities induced by the main rotor's own tip vortices are
+ignored, this gives a close approximation for the majority of cases.
+Unfortunately this is not the case for the tail rotor as the in-plane velocity is
+unknown and can be significantly affected by the main rotor wake and the influences of
+the fuselage, fin and ground in varying combinations. A representative value for tail
+rotor blade tip speed could be approximately 700 ft/sec and the corresponding main
+rotor downwash velocity, 60 ft/sec. If the tail rotor was fully immersed in the main
+rotor wake, it's blades would experience a variation of in-plane velocity of ±9% at the
+tip and ±20% at the root. If the tail rotor were only partially immersed in the main rotor
+wake the velocity changes experienced by its blades would be different. In this
+situation, the main rotor blade trailing tip vortices would also cause localised variations
+as they crossed the tail rotor disc, especially as the velocities they induced would be
+strongest in the plane of the tail rotor.
+The use of tail rotor Cp calculated using a similar equation to Eqn 2.1 would
+generally result in a very poor approximation to Cn and a , although under certain
+flight conditions such as hover and low speed rearwards flight OGE, the effect of the
+main rotor wake would be small and this approach might be acceptable. For the rest of
+the flight envelope, however, an alternative method must be used to calculate the in
+plane velocity. Some candidate techniques will be discussed in the next section.
+Use of the Pressure Indicator Sensor Technique will not give as accurate a value
+for local blade loading as the use of a chordwise array of twenty sensors. There is a
+research programme at DRA Bedford to further investigate the source of the errors and
+
+
+23
+thus improve the analysis routines (Brotherhood (1992)). The pressure instrumented
+main rotor blade manufactured for the DRA Flight Research Lynx AH Mk7 helicopter
+has two chordwise arrays fitted in addition to the arrays of leading edge and trailing
+edge sensors so permitting continuation of this research(Tarttelin(1990)). The principle
+source of error when using the technique to study the tail rotor is in the estimation of
+the in-plane velocity. Once this error is reduced to an acceptable level, the detailed
+improvements currendy being embodied in the main rotor analysis routines will be
+incorporated in their tail rotor counterparts. Experience gained during analysis of the tail
+rotor data so far undertaken has allowed these velocity-induced errors to be taken into
+account during the interpretation of the data; the techniques used and the information
+gleaned will be detailed in the chapters that follow.
+2.4 Derivation of chordwise velocity.
+It has already been established that a knowledge of the local chordwise velocity
+is required before the Pressure Indicator Sensor technique can be used to derive values
+for Cn and a . Where this velocity can be closely approximated by Eqn 2.1 for the
+main rotor, the same can not be said for the tail rotor. Three different methods of
+producing this velocity data have been established which are as follows:
+i. By calculation using main rotor wake models.
+ii. Using twin leading edge sensors.
+iii. Tip pitot.
+Of these three techniques, all but the first require extra sensors to be fitted to the
+instrumented blade which must therefore be embodied in the design stage. For a blade
+fitted with just the standard single leading edge and trailing edge sensors, the velocity
+can only be estimated by calculation. As, however, it is intended that a second
+experiment be carried out with a more comprehensively instrumented tail rotor blade
+
+
+24
+fitted to ZD559 after conversion to Mk7 standard, it should be possible to take data on
+the flow field affecting the tail rotor from that experiment and apply it retrospectively to
+test points flown at the same flight conditions as a Mk5. As the only design change that
+could affect the aircraft aerodynamics has been in the tail rotor itself, the effect on that
+rotor’s flow field of the main rotor wake, the fuselage, fin and ground should be
+substantially the same.
+The 3 methods are discussed in more detail below.
+2 . 4 . 1 Derivation of velocity field by computation.
+As stated in section 2.3, the local in-plane velocity at the leading edge sensors
+on main rotor blades has been determined by calculation using equation 2.1. This
+simple calculation yields a reasonably accurate velocity over the majority of the main
+rotor disc with the exception of those areas where a close blade/vortex interaction
+occurs. It should be possible to calculate the positions where such interactions occur
+and produce more accurate velocity values for those locations. Over the past 20 years
+much effort has been applied to the problem of predicting the wake beneath a rotor in
+hovering and translational flight, Landgrebe (1971) and Kocurek, Berkowitz & Harris
+(1980) being two of the many reports covering the hover and Beddoes (1985), forward
+flight. The research on which these reports are based has been aimed at improving main
+rotor loading predictions.
+When considering tail rotor in-plane velocity distributions, the proportion of the
+disc affected by blade/main rotor wake interactions is significantly greater than on the
+main rotor discussed above. There is, however, no reason why the same philosophy
+cannot be adopted. If a main rotor wake model of sufficient accuracy could be
+formulated, the main rotor induced velocity distribution it produced for the tail rotor
+region could be applied to the tail rotor data. The most significant research into
+producing an accurate model of the main rotor flow field in the vicinity of the tail rotor
+
+
+25
+has been carried out by Continuum Dynamics Inc of New Jersey, USA; one of several
+reports on the work being Quackenbush, Bliss & Mahajan (1989). The main rotor flow
+field produced by their analysis predicts the passage of the main rotor blade trailing tip
+vortices with some accuracy but, at present does not consider the distortions to that
+flow field caused by the tail rotor.
+When applying the in-plane velocities produced by such an analysis to the tail
+rotor pressure data the effects of this distortion could be taken into account. From an
+examination of the leading edge data in pressure coefficient form with the in-plane
+velocity derived from equation 2.1 it would be possible to plot the paths of the main
+rotor blade trailing tip vortices as they cut across the tail rotor disc and judge the age of
+that tip vortex in terms of main rotor azimuth angle. Using this information it should
+then be possible to adjust the position of the main rotor wake produced by the analysis
+to match that observed. The velocity field thus generated could then be applied to the
+pressure data and accurate loading calculations performed.
+The technique just described would be expensive in terms of the computing time
+required as each tail rotor revolution would need to be matched to a flow field generated
+at the appropriate main rotor azimuth position. A result of reasonable accuracy could be
+achieved by a slightly different technique. Just as the velocities induced by direct
+blade/vortex interaction are ignored in DRA main rotor analysis as affecting a small
+area, the same could be done on the tail rotor. As above, the tail rotor pressure data
+could be examined to ascertain the path of the main rotor blade trailing tip vortices. A
+time averaged main rotor wake velocity distribution could then be positioned over the
+tail rotor using the tip vortex path as a locator and loading calculations subsequently
+performed. For a given flight condition it should therefore be sufficient to make one
+calculation of the main rotor wake distribution instead of one per tail rotor revolution.
+The loading distribution thus achieved would take into account the broader features of
+the main rotor flow without the complications of the smaller detail. Because of the
+
+
+26
+simplification it ought to be possible to use a less rigorous main rotor wake model than
+the Continuum Dynamics flow field discussed above.
+There is no pretence that velocity distributions derived by computation would be
+as accurate as those directly measured at the blade. This technique does, however,
+provide a means of producing loading distributions of reasonable accuracy where the
+instrumentation required to measure the in-plane velocities was not available at the time
+of the experiment.
+2.4.2 Twin leading edge sensor.
+Without any velocity information, the single leading edge sensor of the standard
+Pressure Indicator Sensor technique can only provide a value for the local pressure.
+From wind tunnel data it is possible to construct a graph showing the relationship
+between the dynamic pressure measured and the local incidence and Mach number
+(figure 2.4.2.1). Without velocity information it is impossible to convert these P-P()
+values into incidence.
+If the leading edge sensor were mounted at a different point along the chord line
+the slope of the lines of constant dynamic pressure would be different. By mounting a
+second sensor on the chordline it should be possible to chose a location such that the
+two lines of constant dynamic pressure from the two sensors intercept uniquely and
+thus define both the incidence and the Mach number (figure 2.4.2.2).
+In choosing the location of the two sensors, the 2% chord position fulfils the
+criterion for one of them, namely high sensitivity to incidence. For the second sensor
+the sensitivity must be significantly less in order to provide a good intercept but not so
+low as to make the measurements overly susceptible to recording errors. The
+requirements for a good intercept and the reduction of compressibility effects dictate
+that the second sensor be placed further aft along the chord at approximately 40-50%
+
+
+27
+chord. A suitable fairing must be produced to cover both sensors without significantly
+altering the blade section. Although 50% chord can hardly be called the blade leading
+edge, the sensor at that location is referred to as a leading edge sensor to maintain the
+differentiation between the sensors used to derive Cjsf and a and the trailing edge
+sensor that must still be fitted to detect flow separation.
+As with the single sensor technique, the accuracy of this method relies on the
+free-stream airflow along the chordline being uniform. Any velocity gradient in the
+flow affecting the blade will result in a change in the pressure profile round the aerofoil
+and thus change the value of velocity returned. The sensitivity of the technique to
+changing velocity must be determined. It is not expected that it will give accurate results
+during the passage of a main rotor vortex core.
+2.4.3 Tip pitot
+The use of a pitot tube mounted at the tip of a tail rotor blade, used in
+conjunction with the aircraft static system, probably represents the simplest method of
+measuring the broader features of the tail rotor flow regime. The tip pitot measures the
+dynamic pressure at the blade tip and once the contributions of rotor rotation and
+aircraft translation are removed will give the velocity at the blade tip due to the main
+rotor wake etc. It can therefore be used to measure the background features of the flow
+but will not give detail of the velocity variations induced by main rotor tip vortices as
+they pass over the tail rotor disc unless they happen to affect the pitot itself.
+A tail rotor tip pitot for the Lynx AH Mk7 would have to be designed with care
+to keep it's weight to a minimum as the rivets fitted to retain the blade tip weight
+assembly are already highly loaded when the blade is rotating. As only the broader
+details of the flow would be measured there would be no additional advantage in fitting
+the pitot to the instrumented blade over fitting it to one of the others; indeed it would be
+
+
+28
+better to fit it to the opposite blade to assist in balancing the rotor system. The tip pitot
+fitted to the Lynx Main rotor is shown in figure 2.4.3.1.
+2.5 Design and manufacture of the Lynx AH Mk5 instrumented
+blade and tail rotor assembly.
+The design of the instrumented tail rotor blade for the Lynx AH Mk5 flight trial
+was similar to that used previously on the Puma which, in turn, had been based on the
+design of the main rotor instrumented blades. When the Lynx programme was initiated,
+timescales were such that the design of the blade had to be finalised at a very early stage
+and manufacture started. For this reason, even though the basic principles of the
+multiple leading edge sensor technique were evolved before instrumentation was
+complete, it was decided to stick with the original single leading edge plus trailing edge
+sensor layout. It was however decided that any instrumented tail rotor blade for the
+Lynx AH Mk7 would be fitted with multiple leading edge sensors.
+The layout of the sensors on the blade was as shown at figure 2.5.1. Seven
+leading edge sensors were fitted at 2% chord with a concentration biased towards the
+tip; three with trailing edge sensors mounted directly behind them at 95% chord. This
+configuration was chosen to give a better coverage of the loading peak near the tip. This
+layout would give a more accurate estimate of blade thrust and improved understanding
+of the main rotor blade trailing tip vortex/tail rotor blade trailing tip vortex interaction at
+the expense of information on the interactions occurring inboard. Some strain gauges
+were fitted to monitor blade flap lag and torsion but the signals from all but three of
+these sensors were not recorded due to slip ring constraints. The wiring layout was
+designed to minimise connections and components on the blade surface with as many
+interconnections as possible, and all sensor temperature compensation resistors, at the
+blade root. The pressure sensor tag strips, strain gauges and wiring were bonded to the
+blade surface after paint removal as shown at figures 2.5.2 & 2.5.3; all work being
+
+
+29
+carried out in accordance with the relevant Westlands process sheet. The pressure
+sensors themselves were fitted after construction of the leading edge fairing. The
+pressure sensors used were Kulite pressure transducers type LQS-61-125-25SG, all of
+which had previously been used during main rotor investigations and then
+comprehensively tested prior to re-use
+With metal main rotor blades built round an extruded alloy main spar there is
+generally sufficient metal at 2% chord to allow the sensor to be set down within the
+existing blade profile. With metal tail rotor blades that is not the case as a proportionally
+much greater part of the spar would have to be removed. The leading edge sensor must
+therefore be surface mounted and covered by a suitable fairing to restore the
+aerodynamic shape. The Lynx AH Mk5 tail rotor blade was of RAE 9615 section
+which, whilst based on the NACA 0012 section, had a drooped leading edge. Blade
+chord was 185mm. The external profile of the fairing was RAE 9615 for the first 15%
+of blade chord but with ordinates based on the 190mm chordlength that had been
+calculated to give sufficient depth of fairing to bury the sensor. The drooped leading
+edge of the blade provided extra clearance at the sensor location thus reducing the size
+of the fairing required. Aft of 15% chord the profile was faired back to that of the
+original blade by the point of it's maximum thickness ensuring that continuity of profile
+gradient was maintained. This fairing profile, shown in figure 2.5.4, was chosen as it
+was considered that a sensor mounted in it at 2% chord would respond to changes in
+velocity and incidence as if it were buried within a pure RAE 9615 section. In other
+words, the departures from RAE 9615 were small enough and sufficiently downstream
+of the sensor that their effect on the pressure recorded at the sensor could be neglected.
+The addition of the fairing shifted the quarter chord position of the aerofoil forward
+from that of the original blade but the structural implications of this and the additional
+weight of the instrumentation and fairing were not considered significant by
+Westlands. The fairing was made from balsa wood bonded to the outside of the blade
+anti-erosion shield and covered with a thin glass fibre scrim. The fact that the anti
+
+
+30
+erosion shield was still in place, albeit no longer at the blade surface, meant that,
+although the fairing might be affected by impact damage, the structural integrity of the
+blade would not be affected. The balsa wood was fitted in three sections each covering
+approximately a third of the length of the working section of the blade to reduce the
+imbalance that would occur should part of the fairing become unbonded. All four
+blades were given identical fairings for ease of balancing and for uniformity of flow.
+As the purpose of the trailing edge sensors is to detect flow separation at stall,
+minor discontinuities in the profile at this point could be tolerated. The trailing edge
+sensors were therefore bonded directly to the blade at 95% chord and surrounded with
+a small blister fairing.
+When all 4 blades had been completed each of the non instrumented blades were
+statically balanced against the instrumented blade on a simple beam balance. Weight
+adjustments were achieved by judicious application of paint, care being taken to ensure
+that the edges were well feathered to reduce the likelihood of the paint layers separating
+in the airflow.
+As originally schemed, it had been intended that the signals from the sensors
+would pass through a 44 way slip ring assembly prior to being amplified in the aircraft.
+It was however discovered that the 44 way slip ring, designed to fit on the tail rotor
+gearbox of a Lynx AH Mk7 was not compatible with that on the Mk5. The design of
+the installation was modified to make use of the 18 way slip ring assembly already
+fitted to the aircraft for the fatigue monitoring instrumentation. An amplifier unit was
+designed and manufactured to fit on the outside of the tail rotor pitch change beam
+(figure 2.5.5). The signals from the sensors were amplified to a level compatible with
+the 10 volt full scale deflection of the recording system and filtered at 600Hz; this
+frequency selected to give 7 samples per cycle at the 10th harmonic of the tail rotor
+fundamental frequency for good amplitude resolution. All tail rotor data was sampled at
+4096Hz giving an azimuthal resolution of 2.7 degrees. By amplifying before the
+
+
+sliprings the number of slipring channels required was virtually halved(l wire per
+sensor plus a common 0 volts reference as opposed to 2 wires per sensor) and the
+potential impact of any noise generated by the slip rings reduced. The amplifier unit
+also included a power supply unit to convert the ±15 volts from the aircraft system to
+the ±5 volts required by the sensors. With this unit, the signals from the 10 pressure
+sensors, the 3 strain gauge bridges required for the fatigue monitoring package and the
+instrumented blade flap angle sensor could all be recorded. Tail rotor specific
+instrumentation fitted to the fuselage included a tail rotor azimuth sensor and tail rotor
+servo jack position indicator. By combining the output from the blade flap angle sensor
+with that from the servo jack position, the blade feather angle could be calculated.
+Although the aircraft had been fitted with a tail rotor torquemeter, this could not be
+made serviceable in time for the trial. The aircraft also had provision for recording the
+tail rotor near field noise with a microphone mounted on a tail boom access panel but
+again that was not fitted for this experiment. All the detailed design work required for
+this installation was carried out by the design staff of Aircraft Department, DRA
+Bedford. Blade instrumentation and manufacture of the tail rotor amplifier unit and all
+other items not commercially available were also done in house.
+2.6 Aircraft instrumentation system and ground based replay
+facilities.
+The instrumentation system fitted to the DRA flight research Lynx AH Mk5
+helicopter at the time of the tail rotor investigation was based on the Plessey Modular
+Data Acquisition System (MODAS) Mkl PCM data recorder. The signals from the tail
+rotor sensors were passed into the fuselage via the slip ring assembly (figure 2.6.1) and
+thence down screened wire pairs down the length of the aircraft to the Signal
+Conditioning Unit on the instrumentation rack. This SCU was intended to house any
+additional signal conditioning cards that were required to bring the signals to the
+required standard. In the event no additional conditioning was required and the signals
+
+
+passed unchanged through the SCU to the MODAS acquisition units. The heart of the
+MODAS was the Processor and Recorder Interface Unit (PRIU). This multiplexed the
+signals from acquisition units and fed the multiplexed data out to a 1" tape recorder.
+The total system sampling rate was 128k with each acquisition unit able to handle
+signals from 128 sensors. The rate at which each signal was sampled was controlled by
+a program within the PRIU, a different program being written for each experiment
+depending on the data required. When writing the program care was required in
+selecting the correct sampling rate as having too high a sampling rate can be as bad as
+having one too low. In addition, sensors in the same area, eg the tail rotor pressure
+sensors, must be sampled as close together as practicable to reduce the time skew in the
+data. As configured the system had two acquisition units; the MIPROC being the one
+handling all data from the main rotor slip rings with the other taking the data from the
+rest of the aircraft. A complete list of all sensors monitored during this investigation is
+given at Appendix 1. Each 1" flight tape could record up to 40 minutes of flight and
+was used only once to reduce data corruption. The data was recorded on the tape as
+counts, the range 0-4095 counts reflecting a 10 volt change in the amplified signal.
+Two levels of ground replay were available. The first was a portable replay
+system which allowed selected signals from the flight tape to be inspected on hard copy
+as counts without any calibration. This unit was invaluable for monitoring recording
+system integrity. The second fixed base ground replay system was used to transfer
+calibrated data in edit sequences taken from the flight tape to 0.5" computer compatible
+tape whence the data could be de-multiplexed and analysed.
+2.7 Instrumentation Calibration and test.
+All the aircraft instrumentation was calibrated prior to the experiment. With the
+exception of the instrumentation fitted specifically for this experiment, all the other OxA
+sensors had been calibrated in the past. A repeat calibration was carried^>n these
+
+
+sensors to ensure that they had not drifted and that, if the wiring had been disturbed,
+the sensor had been reconnected to the appropriate MODAS channel in the correct
+sense. As well as checking for operation over the sensor full range, the output signal
+was also inspected for noise and, where excessive noise was found, the source located
+and the problem dealt with. The sensors were all exercised in both directions to check
+for hysteresis. Calibrations were performed on the complete recording system, ie. with
+the sensor being fed by the aircraft power supply and recording the output on the
+aircraft MODAS equipment. Where a sensor had to be removed from the aircraft for
+calibration, eg rate gyro calibration on a rate table, it was connected to the aircraft
+system by a specially made wiring harness to ensure minimum disruption to the aircraft
+system.
+As the tail rotor instrumentation was new for the experiment, additional work
+was required to ensure an adequate calibration. An estimate was made of the range of
+operation of the sensors in flight and the amplifier gains were set from the published
+sensor voltage output to give as large a MODAS count variation as possible. A quick
+calibration was then carried out to check the range and to allow adjustment of the
+amplifier offset. On completion of these adjustments a full calibration was then
+performed. If it became apparent during the test flying that the range or offset was
+incorrect an adjustment would be made and a further calibration performed. The blade
+pressure sensors were calibrated by removing the instrumented blade from the aircraft
+and placing it in a heavy gauge steel pressure vessel (figure 2.7.1) with electrical
+connection to the aircraft via a wiring harness. The air pressure in the vessel was then
+varied from 11 psi below atmospheric to 10 psi above in 1 psi steps and all 10 sensors
+calibrated together. Unlike that used for main rotor blade calibrations,the tail rotor blade
+pressure vessel was made air portable and taken to the trial location so that repeat
+calibrations could be performed as required. Following calibration of the blade flap
+angle sensor and yaw servo jack position indicator, these 2 parameters were varied
+together and the resultant blade feather angle recorded. All tail rotor calibrations were
+
+
+34
+carried out on site immediately before flying commenced and repeated again on
+completion.
+Installation testing had two separate phases. It is a requirement that all changes
+to the aircraft that might affect it's control, performance or handling qualities be
+subjected to a rigourous flight test programme with it's own Flight Trial Instruction. As
+the tail rotor is a vital part of the helicopters control system in which any failure or
+restriction could have a potentially catastrophic result, this flight clearance flight
+programme was approached with some care. Without electrical power to the
+instrumentation itself, the rotor system was run at 100% Nr for 30 seconds before
+shutting down to inspect the tail rotor blade fairings and amplifier unit for security. This
+inspection was repeated after each element of a test schedule designed to gradually
+increase the tail rotor loading. This schedule, flown at a heavy all up mass, covered
+hover IGE and OGE, spot turns, low speed manoeuvres, high speed flight in and out
+of balance and culminating in an aerobatic sequence. Where a manoeuvre could be
+flown in 2 directions, eg spot turns to the left and the right, the first of the pair flown
+would be that which required the higher tail rotor loading to initiate and thus the lower
+thrust for recovery. As no security problems were found and the pilot reported no
+appreciable changes to handling or performance, the aircraft was cleared for flight
+throughout it's normal envelope with the instrumented tail rotor installed. When, during
+the experiment with the instrumented tail rotor fitted, the pilot experienced an airframe
+vibration that he had not previously noted, that same flight condition was repeated at the
+end of the experiment once the standard rotor had been refitted. As a very similar
+vibration was once more experienced, this ruled out the possibility that the vibration
+was due to the installation and gave extra confidence in the assumption that the
+instrumentation had not markedly affected the tail rotor's performance.
+Once the physical safety of the installation had been assured, it could then be
+switched on in flight and it's operation assessed. This could be checked in 2 different
+ways. One single sensor of interest could be dialed up on the MODAS control panel
+
+
+and the variation in the counts monitored on the digital display. With a rapidly changing
+signal the display turned into a blur but this at least gave confidence that the sensor was
+responding. For a more detailed check a test tape would be recorded in flight an the
+output inspected on the ground to ensure that it was sensible, that the amplifier gain and
+offset were appropriate and that signal quality was up to standard with the minimum of
+noise. A problem with the tail rotor instrumentation became immediately apparent when
+all the tail rotor sensors shut down as the rotor speed passed 95% Nr . This was
+eventually traced to some capacitors on the power supply board within the tail rotor
+amplifier unit that had been insufficiently secured to withstand the rotation and were
+breaking circuit. New fly-leads were soldered to the components which were then
+bonded to the circuit board with epoxy resin. Some of the wiring in the tail pylon was
+also replaced at this time as it was considered that faulty insulation was affecting the
+signals. No further problems of this nature were experienced.
+Discovery of this problem reinforced the decision that a portable replay system
+was an essential part of the experimental equipment. Without it, this defect would have
+gone undetected and a lot of effort and considerable expense would have been wasted
+recording worthless data tapes. As it was, a check on the health of the recording system
+could be made at the end of each sortie to minimise data loss in the event of further
+failures.
+2.8 Concluding remarks.
+The aim of the experiment as reiterated in the Introduction to this chapter was to
+improve the fidelity of helicopter yaw control modelling; this chapter has described how
+the experiment was set up to record the data required to achieve that goal.
+The tail rotor had to be instrumented so that changes in blade loading with both
+time and blade azimuth could be deduced. Of all the measurement techniques discussed
+in section 2.2, the use of pressure sensors acting as Pressure Indicator Sensors was
+
+
+36
+selected. Section 2.3 detailed the operation of the Pressure Indicator Sensor Technique
+and discussed the means by which the maximum amount of information on the loading
+distribution could be derived from the fewest possible sensors. The bounds of
+applicability of the technique were discussed, as was the problem of in-plane velocity
+measurement. Different methods of overcoming this problem were discussed in section
+2.4, one of which, the use of computed flow fields, does not require any additional
+instrumentation on the blade. The remaining methods, which supply more accurate
+velocity information should be implemented on the instrumented tail rotor blade for the
+Lynx AH Mk7. As will be discussed in Chapter 4, the lack of any in-plane velocity
+information does not prevent significant advances being made on the understanding of
+main rotor/tail rotor interactions. The use of calculated velocity fields, application of
+which has yet to be fully investigated, is recommended for study at a later date.
+A set of tail rotor blades were acquired for the Lynx AH Mk5 and instrumented
+as described in section 2.5 with the full aircraft installation discussed in section 2.6 and
+calibration in section 2.7. The instrumentation technique chosen was limited and,
+indeed, will not be used in the updated follow-on phase of the programme but, given
+the constraints of time and our initial understanding of the problem, it has permitted the
+recording of data that has fulfilled the requirements and allowed the aim of the
+programme to be achieved. The procedure followed to collect all the test points during
+the flight trial required will be covered in the next Chapter.
+
+
+37
+Chapter 3.
+Experimental procedure.
+3.1 Introduction
+Any experimental flight research programme is an expensive and potentially
+dangerous undertaking. The utmost care must therefore be taken during the programme
+design phase to ensure that maximum value is obtained from each hour's flying and that
+test manoeuvres are carried out in accordance with carefully thought out and approved
+procedures.
+Whilst the aircraft is engaged in an instrumented rotor trials programme, it is not
+available to earn revenue doing other work. Special weather conditions were required
+for this programme that are not regularly experienced at Bedford. The extra time spent
+waiting for these conditions would add to the length of the trial and overtime costs
+would be incurred. It therefore made good operational and fiscal sense to perform the
+trial away from base. The reasoning behind the choice of IAF Villafranca as the trial
+location is given in Section 3.2
+The selection of test points and the manner in which they were to be flown were
+laid down in a Flight Trials Instruction. This FTI, which had to be fully authorised
+before any flying could commence, is included as Appendix 2. The reasoning behind
+the choice of test points is discussed in Section 3.3. During the course of the flight
+programme it was decided that time would be better spent if this initial selection were
+slightly amended. A summary of the test points actually collected is also given.
+Although great thought had been applied to the design of the instrumentation and the
+experimental programme, some unforseen problems did occur. These are described in
+Section 3.4.
+
+
+38
+3.2 Choice of Location.
+Some care had to be taken in selecting a suitable location for the experiment.
+Meteorological conditions were the prime driver. As the helicopter yaw axis response is
+particularly sensitive to changes in relative wind speed and direction it had been decided
+to conduct the experiment in an area where very low ambient wind conditions could be
+expected on a daily basis. In addition, the susceptibility of the tail rotor blade leading
+edge fairings to impact damage ruled out operation from an unprepared site or flight in
+precipitation, dust or over cut grass. In addition to these requirements the conduct of
+the experiment would require undisturbed access to a long strip of runway/taxiway for
+the length of the flight, thus precluding operation from any busy airfield. Taking these
+constraints into consideration, DRA Bedford Airfield was ruled out due to excessive
+wind and a meteorological survey was carried out to determine which areas of the
+world would best fulfil the requirements. Two ares emerged as possibilities. The first
+was Colorado in the United States of America, a location favoured by A&AEE
+Boscombe Down. This was ruled out as the war in the Gulf was employing all
+available RAF Hercules aircraft and transporting the Lynx to America by sea would not
+fit the available time scale. The alternative was the Po Valley in Northern Italy which
+was within sensible Lynx flying distance and had been used previously during the
+earlier tail rotor investigation with the Puma (Baldwin & Handley, 1988).
+A request was therefore sent to the authorities at IAF Villafranca, near Verona,
+through the British Embassy in Rome asking for permission to conduct the experiment
+at Villafranca and outline approval received. Details of our requirements were sent to
+the airfield and the finer points were all sorted out by the Project Officer and the Project
+Pilot during a 2 day visit to the airfield a month before the experiment was due to
+commence. Hangarage was arranged and permission received to operate along the main
+taxiway at Villafranca, a one mile stretch of concrete (figure 3.2.1), on the
+understanding that the movements of the indigenous Starfighters and AMXs took
+priority.
+
+
+For the transit flight from Bedford to Villafranca, a standard tail rotor was fitted
+to the Lynx because of the limited life of the instrumented tail rotor blade set and the
+flight restrictions they imposed. The Lynx was flown to Italy over 3 days with night
+stops at Reims and Nice in France. The remainder of the experimental equipment and
+the REME maintenance team were flown to Villafranca in one of the DRA BAC 1-1 Is
+to arrive at the same time as the helicopter. The instrumented tail rotor was then fitted,
+calibrated and tested before the experimental data was collected.
+It was found that the airfield lived up to expectation. By flying between 0530
+and 0900 each day almost calm wind conditions could be expected and sufficient data
+points collected before the remainder of the airfield sprang to life. Provided that the
+Italian military movements were minimal, as at weekends, no problems were
+experienced with other conflicting traffic as is illustrated in figure 3.2.2.
+3.3 Choice of test points
+The test points flown during the flight programme were designed to exercise the
+tail rotor in a controlled manner to the limits of the aircraft low speed flight envelope.
+Complete descriptions of each manoeuvre including all safety precautions to be
+observed were laid out in the Flight Trials Instruction given at Appendix 2. The FTI
+formed the definitive document on which the conduct of the experimental flying was
+based and had to be authorised by the Commanding Officer of the DRA's Experimental
+Flying Wing prior to the trial.
+Two factors were taken into consideration when choosing the flight conditions
+to be flown during the experiment. An initial selection was made knowing the depth
+and capabilities of the analysis to be undertaken in this phase of the research
+programme. Experience gained whilst working with the data collected on the Puma had
+shown that the analysis technique worked best on steady flight data. For this reason the
+majority of the programme consisted of pure hovers, straight and level flight with
+
+
+40
+relative winds of different speed and direction and constant yaw rate spot turns over a
+range of rotational velocities. Each test point was flown at 2 different all up weights,
+thus altering the tail rotor thrust requirement. They were also flown both inside and
+outside ground effect (IGE and OGE) to examine the effect of ground proximity.
+An additional selection of test conditions was made on the basis that the
+experiment was unrepeatable. As ZD559 was programmed for conversion from a Lynx
+AH Mk5 to a Lynx AH Mk7 within weeks of completion of this experiment, it would
+not be possible to refit the instrumented tail rotor for an additional flight trials
+programme at a later date. It was therefore decided to fly some manoeuvres that were
+beyond the capabilities of the current analysis routines but that exercised the tail rotor
+more rigorously than was possible under steady conditions. These manoeuvres
+included sidesteps over a fixed distance and sidewards and rearwards accelerations.
+Some high speed flight cases were also flown, mainly to provide data for
+aeroacousticians.
+Although the conduct of each test point was explicitly detailed in the FTI, some
+margin was allowed to permit extra events of the same type to be flown to further
+investigate regions of interest that became apparent during the course of the experiment.
+It had originally only been intended to perform sideslips to port in 30 degree steps.
+However, when these test points were flown, a higher than usual vibration was
+experienced. The interval was therefore changed to 10 degrees to more fully investigate
+the phenomenon. It was also discovered that there was little point in flying the hover
+turns as described in the FTI since they did not tax the aircraft's yaw performance any
+more than the spot turns already flown; they were therefore omitted. A full tabulation of
+the test points flown is given at Appendix 3.
+
+
+41
+3.4 Problems experienced and lessons learned.
+The effort that had been put into making the FTI as comprehensive as possible
+paid dividends in Italy. Once the instrumentation was up and running, all the test points
+were flown well within the three weeks programmed, even allowing for days lost due
+to the passage of several unseasonal frontal systems. In the 15 hours of recorded
+flying, all the test cases were flown; in most instances more than once.
+The only major problem experienced, other than that already covered in section
+2.7, was impact damage to the balsa wood fairings on the tail rotor blades. No similar
+problem had been experienced on the Puma and the hardstanding and taxiways used
+were all in good condition and swept regularly. Even so, at the end of early flights at
+Villafranca, small stones up to the size of a large grain of rice were found embedded in
+the blade leading edge fairings. The one difference between the Lynx configuration and
+the Puma's that may have been a contributory factor was the Lynx's lower tail rotor
+ground clearance. The problem was overcome by covering the blade leading edges with
+a 4" wide strip of thin self-adhesive plastic film which, although it eventually started to
+come off after several hours flight, provided sufficient cushioning and protection to
+prevent. recurrence of the damage.
+At the end of the trial, all those involved at Villafranca discussed the flying
+programme and compiled a list of lessons learned and factors that would improve the
+Lynx Mk7 programme, if the flying were again carried out at Villafranca. The pertinent
+ones were as listed below:
+1. Don't plan to arrive on a Friday - the Italians stop work at 1400. Wednesday
+would appear to be the best day to plan to arrive as that would enable the transit
+flight out to start on the Monday.
+
+
+2. Plan to fly daily from 0600-0800. Once the AMXs and Starfighters start
+operating after 0800 the taxiway is in regular use preventing useful trials flying.
+For this reason, the weekend would be the most productive period.
+3. Civil servants to wear greens and servicemen uniform on the airfield at all
+times. This should help to prevent identity problems with the local soldiers.
+4. Arrange to receive daily phonecalls from base from the outset. It is difficult to
+phone home except from the Hotel.
+5. Take the following stores: Bladefold Kit
+Tail rotor gust lock
+NATO to LYNX Hydraulic adaptor
+Jacking point adaptor
+Lifting eye
+Microfiche reader
+6. Formally arrange all stores requirements in advance with DRA Aircraft
+Department.
+7. Arrange procedures to obtain spares during the detachment. It may not be
+required but it's easier than having to arrange it by phone.
+8. Check the pace car daily before and after use.
+9. The replay system is essential. It is not possible to send tapes home to be
+checked.
+10. Give the pilot a structured sortie. Have daily/weekly briefings and produce a
+sortie planning chart.
+
+
+43
+3.5 Study of data quality.
+As previously mentioned a proportion of the data was examined at the end of
+each flight to ensure that the instrumentation system was still functioning correctly and
+that an unacceptable number of drop-outs had not been experienced. Once the
+instrumentation was up and running, to everyone's relief, no problems of this nature
+were encountered.
+Once back at Bedford a more detailed inspection of the data took place. As a
+whole the data was found to be of a contemporary high quality. Very few drop-outs
+were found and few other anomalies discovered. Those that were found were due to
+low signal levels and thus Uuer signal to noise ratio.
+Figure 3.5.1 shows a plot against time of the pressure coefficient calculated for
+the trailing edge pressure sensor at 85% rotor radius for one flight condition and shows
+a marked high frequency oscillation. Inspection of the frequency content of this signal
+(Figure 3.5.2) shows a degree of noise on the signal at frequencies between 550 and
+650Hz. The cut-off frequency of the filter used on this channel was 600Hz and the
+noise is assumed to be an artifact of the filter. For comparison, the frequency content of
+one of the leading edge pressure sensors was also inspected (Figure 3.5.3) and,
+although that same noise is thought to be there, it is lost in the background frequencies
+of the measured signal. Indeed the high frequency variation in the signal is also present
+at the same amplitude but it is not so significant when compared with the rest of the data
+(Figure 3.5.4). During the analysis of the data, which shall be discussed in Chapter 4,
+no further filtration was made of the leading edge sensor as the high frequency noise
+was above the frequencies of interest and did not significantly affect the results.
+However, as the amplitude of the pressure variations at the blade trailing edge were
+much smaller and the shape of the signal important for detecting the bounds of flow
+separation, it was decided that that data should be filtered before subsequent analysis as
+
+
+44
+indicated on Figure 3.5.5. Having been filtered in this manner, the initial value of the
+time base of the data had to be carefully adjusted to ensure that skewing of the data did
+not occur.
+The tail rotor blade flap angle sensor signal also contained this same high
+frequency noise and has been treated in the same manner as the trailing edge pressure
+data.
+The sensors in the fuselage were not found to suffer from this problem; they
+had a different filter and a lower sampling rate. The care taken to screen all the signal
+leads, provide good quality earthing and isolate the signals from the 400Hz aircraft
+power supplies was rewarded by the acquisition of good quality data. With the
+exception of the tail rotor torquemeter which, as already reported, could not be made to
+function, all of the sensors have produced data which subsequently caused few
+problems in analysis and of which the trials team felt they could justifiably be proud.
+3.6 Concluding remarks
+This chapter set out to describe the experimental procedure and it's brevity is an
+illustration of the value of a comprehensive Flight Trials Instruction. Once the aircraft,
+trials personnel and support equipment arrived at the selected location and the
+instrumentation was assembled and checked, the programme ran as laid down in that
+document. As an end result, 15 hours experimental flying yielded 1277 test events of
+which all those so far inspected have provided data of a contemporary high quality.
+When the trials team returned home to Britain, they could do so in the knowledge that
+they had achieved what they had set out to do in a logical and professional manner.
+
+
+Chapter 4.
+Analysis techniques and data presentation.
+4.1 Introduction
+The fifteen hours of experimental flight data collected as described in the
+previous chapter represent a substantial data-base of Lynx AH Mk5 tail rotor blade
+leading and trailing edge pressure time histories. The aim of the research programme,
+however, was not just to collect this data-base but primarily to analyse enough of it that
+the mechanisms producing the variations observed could be explained. With such a
+large quantity of information it was important to establish an efficient analysis routine
+with which the data could be processed in a predominantly automatic fashion. The
+function of this routine was to highlight the significant features of the raw flight data so
+that the important phenomenological detail embedded in little pockets within it could be
+recovered. Once that detail was detected, it could then be more thoroughly investigated
+to determine the mechanisms causing the effects observed.
+Just as with the main rotor, blade loading distribution on the tail rotor varies
+from flight condition to flight condition. The variations will stem from a changing tail
+rotor thrust requirement caused by changing main rotor torque and fuselage sideforce in
+addition to alterations in the effects of the fuselage, fin and ground on the flow through
+the tail rotor. As well as long term rotor trim changes there will be shorter term,
+revolution to revolution, variations in loading distribution brought about by the cyclical
+nature of the main rotor flow field. The analysis routine was designed to show the
+presence of both the long term and short term loading patterns in as efficient a manner
+as could be found within a reasonable timescale. The routine was built up from
+individual programs employing both frequency and time domain techniques. Inspection
+of the data in the frequency domain showed the natural frequencies of the agencies
+
+
+46
+causing the loading variations. It was also necessary to look at these variations in the
+time domain to see how the interaction effects changed across the tail rotor disc.
+It has already been stated in section 2.3 that more complete local velocity
+information would be required before accurate loading and thrust calculations could be
+carried out for the majority of flight conditions. This chapter will commence with a
+discussion as to why that detail is not essential for the determination of the interaction
+mechanisms. The next two sections will discuss the frequency and time domain
+analyses with section 4.5 showing how the data can be manipulated to allow the time
+domain techniques to be extended by means of data animation.
+The analysis routine has been developed for use on data collected whilst the
+helicopter was in a steady flight condition and is not readily transferable to that collected
+in manoeuvring flight. The reasons for this are discussed in section 4.6 and, although
+the analysis of manoeuvring flight is beyond the aims of this current phase of the tail
+rotor research, some pointers are given as to the perceived way forward with this aspect
+of the work.
+4.2 The velocity problem.
+Chapter 2 discussed the Pressure Indicator Sensor technique that the
+instrumentation on the Lynx AH Mk5 tail rotor blade was designed to employ. The
+problems associated with derivation of an accurate value of local chordwise velocity
+were also detailed. The conventional metal construction of the standard Lynx AH Mk5
+tail rotor blade meant that the multiple leading edge sensor method for measuring the
+chordwise velocity (discussed in section 2.4.2) would have been very difficult to
+embody. This and the short time available before aircraft conversion to Mk7 standard
+resulted in the blade being manufactured with only the single leading edge and trailing
+edge sensor arrays.
+
+
+47
+Although there was no means of measuring the local chordwise velocity built
+into the Lynx AH Mk5 instrumented tail rotor blade, it was considered that the data
+collected with it would allow a considerable extension of the understanding of tail rotor
+operation gained using the data collected on the Puma (Baldwin & Handley (1988)).
+When working with the Puma data it had been found that the lack of this velocity
+information did not significantly hinder the advances made in improving our
+understanding of tail rotor interactions. If loading calculations were needed, a computed
+flow field could potentially be used to generate the velocities required. However, for
+flight conditions where the main rotor wake does not impinge on the tail rotor, such as
+in sideways and rearwards flight, estimates of tail rotor loading could be made without
+recourse to such a flow field.
+With the advances in main rotor wake prediction already discussed in section
+2.4.1, the more sophisticated models should produce velocity fields of reasonable
+accuracy. One area where these models can be inaccurate is in the placing of the main
+rotor vortices as they cross the tail rotor. By first examining the pressure data without
+the use of a calculated velocity field it is possible, especially in forward flight, to
+position the main rotor vortices quite precisely within the computed flow field and thus
+improve the accuracy of the pressure coefficients calculated.
+So far, few calculations have been made with applied velocity fields for the
+present data. In the analysis programs the raw pressures have been non
+dimensionalised with respect to the blade rotational and aircraft translational velocities:
+4.1
+where + Vasin'F^ 4.2
+The value of pressure coefficient thus created is somewhat artificial as the
+remaining velocity terms, some of which can be significant, are ignored. This non
+
+
+48
+dimensionalisation step has been taken as it allows the pressure data recorded to be
+compared between flights in a form similar to that previously experienced during main
+rotor blade studies. If these Cp values were to be used to calculate Cn and a , unknown
+errors could be introduced. If, however, the analysis process is halted at the Cp stage,
+the effects of the errors could be more easily understood and accounted for. This would
+still allow the effects of the various main rotor/tail rotor interactions to be determined.
+The blade local velocity can be split into three components; spanwise, normal to
+the chord and in the plane of the disc. Changes in the spanwise component will have
+little or no effect on the pressure distribution provided that conditions of supercritical or
+separated flow are not encountered. A change in the normal component will directly
+affect the local blade incidence (figure 4.2.1) and will therefore be detected by the
+sensor and displayed accordingly. Changes in the in-plane component, however,
+cannot be inferred from the sensor (figure 4.2.2). As this velocity component has been
+artificially constrained in the analysis as discussed above, a change of in-plane velocity
+would be incorrectly presented as a change in incidence, were this to be calculated. The
+effects of the errors introduced will be covered in more detail in chapter 5.
+4 .3 Frequency domain analysis.
+Any helicopter has, almost by definition, a large number of rotating parts. All of
+the major rotating components rotate at speeds that are designed to be non-integer
+multiples of each other to reduce the risk of a vibration from one component exciting a
+harmonic of another. Just as the analysis of the frequency content of a vibration
+measured at a point within the airframe can be of assistance in the diagnosis of a fault
+on the helicopter, examination of the instrumented tail rotor blade pressure sensor
+signals in the frequency domain can give guidance as to which rotating parts of the
+aircraft are affecting the performance of the tail rotor.
+
+
+The airflow through the tail rotor is never uniform, whatever the flight
+condition. It is rarely possible to select a point on the tail rotor blade where the flow
+conditions remain constant for a complete revolution. The frequency content of the
+signals recorded at the leading edge pressure sensors will therefore include the tail rotor
+fundamental frequency, IT, and the tail rotor harmonics, 2T, 3T, 4T etc. A listing of
+the principle rotor frequencies for both the Puma and Lynx AH Mk5 is given
+Appendix 5. The relative power of each frequency at any one sensor will vary with
+flight condition. It will also change with sensor radial location. Under most flight
+conditions within the low speed flight envelope the change in inflow induced by the fin
+will be the most significant source of once per revolution variation in the signals.
+Unless the aircraft is perfectly trimmed the pilot will be making small
+corrections to maintain the required flight condition. The resultant changes in tail rotor
+pitch will be reflected in the frequency response as a low frequency peak. The size of
+that peak can be used as a guide to the amount of control activity required to maintain
+the flight condition.
+Other than the tail rotor itself, the most significant rotating component
+influencing the signals from the pressure sensors will be the main rotor. This can affect
+the tail rotor airflow in a variety of ways and, although on occasion main rotor/tail rotor
+interactions will induce variations at the main rotor fundamental frequency, 1R, the
+most common forcing frequency will be the main rotor blade passing frequency which
+for the Puma and Lynx is 4R. In addition to the responses at 4R and it's harmonics, the
+interference between the main and tail rotors will induce beat frequencies at nT±4R.
+Again these will be present in varying proportions dependant on flight condition.
+As part of the standard set of plots made from each event, two different plots ;
+of the sensor signal frequency content have been created as shown in figures 4.3.1
+and 4.3.2. It has been found that by comparing these plots for sideslips at different
+relative wind speeds and directions it is possible to split the low speed envelope up into
+
+
+50
+regions where the frequency content contained similar features as shown in figure
+4.3.3. The boundaries between the regions are not hard. The effects change gradually
+from one region to the next over a small area. The features in the frequency content
+observed in each region will be described in the appropriate section of Chapter 5.
+4.4 Time domain analysis.
+Once the data has been examined in the frequency domain and the presence of a
+main rotor/tail rotor interaction noted, it must then be studied in the time domain so that
+the interaction mechanism(s) can be determined.
+Study of the varying pressure at an individual sensor in the time domain is not
+particularly enlightening. The simplest meaningful display format for the data is as
+polar contour plots of tail rotor blade leading edge -Cp (figure 4.4.1). Negative Cp is
+conventionally plotted as a suction peak produces an area of increased blade loading.
+Some care must be exercised when studying these plots as, although they appear to
+represent the effect at the rotor at one instant in time, the data give a time history as the
+tail rotor blade sweeps from 0° to 360° azimuth. The interval of 1/Qt must be taken into
+account, especially when observing effects at the rear of the disc where each revolution
+starts and finishes, or when following the passage of a main rotor tip vortex from one
+side of the tail rotor disc to the other. That break point was chosen as the majority of the
+interactional features of interest happen to the front of the disc. If the discontinuity does
+mar display of an effect, then the break point should be repositioned elsewhere.
+Prior to producing any such polar plots some thought is required as to the
+purpose for which those plots is intended. When looking at plots of main rotor data
+recorded in steady flight, consecutive plots will not differ markedly from each other. It
+is therefore generally sufficient to study only one revolution in detail. With the tail
+rotor, however, the data can change from revolution to revolution due to the passage of
+the main rotor interactional effects. This changing pattern will repeat after an interval
+
+
+dictated by the main rotor/tail rotor gearing ratio, so it may prove necessary to study up
+to 200 revolutions to observe a complete cycle. Plotting out this many revolutions is
+very time consuming but if full detail on the interaction is required there are few
+alternatives. Careful selection of a smaller number of revolutions may be sufficient to
+show the general trend of movement of an interaction as shown in figure 4.4.2. A
+detailed description of the interactional effects in this figure will be given in Section
+5.4.
+If, however, the data is being examined with a view to determining the tail rotor
+thrust for trim, it is worth considering that the aircraft's yaw rate response will not be
+high enough to react to the thrust changes from one revolution of the tail rotor to the
+next. A composite revolution could be constructed by taking the average of all data
+values for each sensor at each azimuthal position (figure 4.4.3) and using that, the long
+term tail rotor thrust value could be calculated. The revolution to revolution changes
+may be felt as a high frequency (probably 4R) vibration. Some idea as to the
+significance of the changes could be gained by studying the standard deviation or range
+of data values at each point (figures 4.4.4 &4.4.5). These last two plots will also help
+to highlight the areas of the disc where the stronger cyclical interactional effects exist.
+The variations exposed on these plots will be greater if the pilot has not maintained a
+steady flight condition through the event. To gauge the quality of the event, plots were
+taken from the raw data as shown in figure 4.4.6 showing the variation in compass
+heading, yaw rate and pedal position with time. The opportunity was also taken to
+include a plot of a sample of the signal from one of the trailing edge pressure sensors.
+This would give a visual indication as to whether the presence of trailing edge flow
+separation was likely in that event. Although analysis of the trailing edge data forms an
+integral part of the Pressure Indicator Sensor Technique it was not performed during
+the work carried out to date. It's true significance only comes into play when values of
+Cjq and loading are calculated which are beyond the scope of the present study.
+
+
+Derivation of a method for the analysis of the trailing edge pressure data will be
+required in the future and is briefly discussed in Chapter 7.
+In order to reduce the plotting undertaken, only plots of data average, standard
+deviation and range have been made for each event inspected. Plots of individual
+revolutions have just been produced for those events selected for more complete
+analysis.
+4.5 Data animation.
+The production of a series of selected single revolution polar plots is a good
+simple method for permitting the study of the more obvious activity within the tail rotor
+disc. It is not, however, so good for spotting the more unexpected smaller effects or for
+observing phase shifts within the data. It has been found that the use of dynamic
+graphics can highlight these features as the movement makes them stand out. The
+animation can be produced by the rapid sequential display of a series of individual
+revolutions either on a computer terminal capable of performing this function or by the
+use of standard cartoon making techniques. As a suitable computer was not available at
+the start of the programme, animation was achieved by the very time consuming
+process of producing individual hard copies of each frame and then filming each one in
+sequence at the desired frame rate.As well as being a lengthy process, an additional
+drawback with this technique was that the format or view direction, once selected,
+could not be changed without repeating the process. The use of computer animation is
+therefore preferable and for that reason an Iris Indigo computer was acquired towards
+the end of the programme with a resultant improvement in flexibility and throughput..
+Which ever method is employed, the correct frame order for the data must be
+found. An attempt to animate the data by showing the revolutions in the order in which
+they were recorded would show very little of the main rotor/tail rotor interaction. The
+relative gearing between the main and tail rotors on the Lynx (1:5.8) is such that a
+
+
+trailing tip vortex from a main rotor blade would be detected only once or twice by the
+instrumented tail rotor blade as it crossed the tail rotor disc. The visible result of the
+non-integer nature of the gearing ratio is that a series of successive tail rotor revolutions
+would display a pseudo randomness in the main rotor induced activity which would not
+be at all conducive to smooth animation. This is demonstrated in figure 4.5.1 which
+shows, for the event illustrated in figure 4.4.2, the variation in negative Cp for each
+successive revolution as the instrumented tail rotor blade passes 165 degrees azimuth.
+For the eye to see steady motion with the data in this order, they would have to be
+smoothed to such an extent that the only movement visible would be that caused by the
+low frequency control inputs. A method of interpolation is required to increase the data
+rate.
+In order that the aircraft would be flying in non turbulent air, the maximum
+wind speed permitted for the experiment was 3 knots. As a result, the wake from each
+main rotor blade could be assumed to be repeatable and that, as each main rotor blade
+passes through the same azimuthal position, the total main rotor wake would affect the
+tail rotor in a similar manner each time. The logical consequence of this would be that if
+the plots of tail rotor revolutions were re-ordered such that their datum main rotor blade
+positions were in ascending order, then the main rotor interference effect would
+advance accordingly. The datum main rotor blade position for a tail rotor revolution
+has been arbitrarily defined as the position of the main rotor when the instrumented tail
+rotor blade was at 180 degrees azimuth. If the radial distributions shown in figure 4.5.1
+were re-ordered in this manner such that the position of the most rearward main rotor
+blade advances from 315 to 045 degrees (see figure 4.5.2), the resultant plot would be
+as shown in figure 4.5.3. This plot shows that the main rotor interference effects have
+been brought into some semblance of order by this transformation.
+Unfortunately display of the revolutions in this order still failed to give a
+smooth image. Study of the inboard sensor data in figure 4.5.3 reveals an unacceptable
+spread in the passage of the interference effects. This variation is the product of the
+
+
+54
+incorrect assumption that all 4 main rotor blades produce the same wake. Even small
+changes in main rotor blade trim will produce variations in the wake pattern. Changing
+the assumption to read that each individual blade will produce the same wake each time
+it passes the same azimuth position once again re-orders the revolutions. With them
+now ordered such that the datum (red) main rotor blade position advances from 0 to
+360 degrees (figure 4.5.4), animation is now possible and shows smooth progression
+of the interference effects. Even so, animation by this technique will only work for a
+steady flight condition. If it were attempted on a manoeuvre case the changes in tail
+rotor trim would, when the revolutions were re-ordered, make the animation too jumpy
+to be of any use.
+The polar contour plot used for single hard copy display is not a suitable format
+for animation. The algorithms employed to position the contour lines must interpolate
+between the sensor positions and, where the distance between the sensors is large,
+small changes at the sensors can result in large variations in the positions of the
+contours. It is also possible for the interaction feature to fall between 2 sensors and not
+to significantly affect either of them. As the contour plot is continuous and does not
+show the sensor locations, the eye is deceived into thinking that it depicts the truth at all
+points. A better display format is one that only shows what is happening at the sensor
+locations. The format shown in figure 4.5.5 was that used with the original cartoon
+technique. Although the shape of the plot was hard to relate to the shape of the tail rotor
+disc, it was quick to produce and did show the interference effects. Several different
+display formats were used on the Indigo and no one of these was found to fulfil all
+requirements. The ease at which these formats could be interchanged and adjusted,
+however, made the need for one single format less pressing than it had been
+previously.
+
+
+4.6 Analysis of manoeuvre.
+Once an acceptable understanding of the operation of the tail rotor under steady
+conditions has been achieved, the next logical stage would be the analysis of the data
+recorded during manoeuvre. As discussed in the previous section, it would not be
+possible to reorder and animate the data in the same way to highlight the interactional
+effects and some other technique will be required. It is however expected that the
+interaction mechanisms determined for the differing steady flight conditions will apply
+as the aircraft manoeuvres through that flight condition. Though this has not been
+attempted to date, it should be possible to examine the data to see if that assumption
+holds and proceed accordingly .
+4.7 Concluding remarks.
+The work detailed in this chapter commenced with the requirement to take a
+large data-base of tail rotor pressure time histories and distil from it nuggets of
+information on the interactions affecting tail rotor blade loading distributions. The work
+was carried out under the assumption that the interaction mechanisms could be
+determined without a detailed knowledge of the blade local chordwise velocities and
+that most loading calculations performed would be to some extent erroneous.
+An analysis routine was developed to reduce the data from each event down to
+three polar plots showing the long term variations in pressure coefficient and those
+areas of the disc most affected by the shorter term main rotor induced effects. An
+additional multi-graph plot designed to demonstrate the quality of the flying in the event
+and to indicate the possible presence of blade trailing edge flow separation has also
+been produced. The frequency content of the leading edge sensor pressure coefficients
+has been plotted in two different formats so that the relative proportions of the various
+forcing frequencies could be observed. From these plots it has been possible to divide
+
+
+56
+the Lynx AH Mk5 low speed flight envelope into six regions. Events within a region
+exhibited common features that were not found in most of the other five. It has also
+been possible to select a representative event from each region for further in-depth
+analysis. Each of these regions will be discussed in the next chapter.
+An additional tool in the form of data animation has also been developed.
+Although it was not generally meaningful to attempt to animate the data in the order
+recorded, re-ordering in the manner described has allowed extra detail on the
+interactions to be observed that would otherwise have remained hidden.
+Given time, a more effective suite of analysis programs could undoubtedly have
+been developed. However, that used has proved to be effective in allowing the
+information required to be extracted.
+
+
+57
+Chapter 5.
+Features of tail rotor loading distributions.
+5.1 Introduction
+The preceding four chapters have discussed the background and aims of the
+current research programme, the aircraft installation, the conduct of the experiment and
+the analysis routine applied to each data event. Section 4.3 concluded by stating that,
+from the frequency domain analysis of each event, the low speed flight envelope of the
+Lynx AH Mk5 could be split up into 6 different regions (figure 4.3.3), each with it's
+own characteristics. This chapter will examine each of those areas in turn, discussing
+the features revealed by the analysis routine. Additionally, from the in-depth
+investigation of one or more event in each area, the interaction mechanisms explaining
+the phenomena observed will be described.
+As the understanding of those mechanisms will depend on a good knowledge of
+the wake produced by a rotor, the chapter will commence with a brief description of the
+wake of an isolated rotor (ie one rotor, no fuselage, no ground) and the factors that
+affect it. Section 5.3 will cover the effects noted on the tail rotor in the hover and show
+the close similarities between the data for the Lynx AH Mk5 and that of the Puma, even
+though the tail rotors rotate in opposite directions. Section 5.4 will discuss the effects in
+low speed forward flight and show how the interaction mechanism changes depending
+on the position of the trailed main rotor blade tip vortex with relation to the tail rotor
+blade span. Section 5.5 will look at the most significant main rotor/tail rotor interaction
+which occurs in quartering flight (areas 3 & 4 on figure 4.3.3). Here the effects of
+variation in tail rotor blade dynamic head caused by the main rotor blade trailing tip
+vortices will be discussed. Deductions about the interactions taking place in sideways
+and rearwards flight will finally be presented in section 5.6.
+
+
+58
+The investigation has concentrated on the interactions between the tail rotor and
+the main rotor wake. The effect of the fin has not been studied in depth and will only be
+mentioned where it has significance in the effect of the main rotor.
+5.2 The wake of an isolated rotor
+Research into the geometry and characteristics of main rotor wakes has been
+taking place since the advent of the helicopter. Although much of this work has been
+carried out in the wind tunnel, a proportion has taken place in flight with sometimes
+quite rudimentary instrumentation. Early RAE reports on the subject (eg. Brotherhood
+(1947)&(1952)) describe the use of smoke either held by hand on a pole beneath a
+hovering rotor, mounted on the fuselage beneath the rotor in vertical flight or trailed
+behind another aircraft in forward flight. The use of smoke or other particulate display
+media is also much favoured in wind tunnel rotor experiments.
+One of the more thorough reports on the geometry of the wake of a hovering
+rotor is Landgrebe (1971), others such as Kocurek, Berkowitz & Harris (1980)
+offering broadly similar results. In a pure steady hover the bound circulation on a rotor
+blade will vary with blade radius in the form shown in see figure 5.2.1. From zero at
+the blade root, it will rise to a maximum before dropping back to zero again. The
+position of maximum bound circulation will, for reasons described shortly, be just
+inboard of the blade tip. A sheet vortex will be shed behind the blade between the root
+and the point of maximum circulation with another of opposite sense between that point
+and the tip. These vortex sheets will tend to roll up at the root and the tip. The rate of
+roll up will be dependant on the rate of change of bound circulation with distance along
+that part of the blade from which that sheet vortex was shed. For the tip vortex, roll up
+will be complete within approximately 60 degrees of blade rotation (Simons, Pacifico &
+Jones (1967)), roll up at the root will be significantly slower (in excess of 3 or 4
+
+
+59
+revolutions). Although the rolled up vortex trailed from the root may have little effect
+on the blade bound circulation, that trailed from the tip will be quite significant.
+As the wake contracts beneath the rotor, the rolled up tip vortex has been
+shown to move rapidly inwards towards the rotor axis until it passes close beneath the
+following rotor blade (figure 5.2.2). At this point it's rate of descent will increase and
+the relative rate of radial motion will be reduced. In practice, it has generally proved
+possible to track the first four or five blade trailing tip vortices beneath the rotor disc.
+After this point the path followed by individual vortices will vary because of interaction
+between the vortices and turbulence in the wake causing the structure of the wake to
+progressively break down. Before a shed vortex sheet rolls up it will descend beneath
+the blade at a faster rate than a corresponding rolled up trailing vortex at the same radial
+position(Landgrebe( 1971)). Swirl velocities within the wake will be small, so the
+vortices can be considered to move almost vertically downwards.
+The mechanism of tip vortex roll up has been examined in great detail (eg
+Saffman (1974)). Although not technically correct, the rolled up vortex can be
+considered to consist of an inviscid core with an associated velocity field. The core
+radius will be approximately 5% of the chord of the blade behind which that vortex is
+trailed (Simons, Pacifico & Jones (1967)). The strength of the velocity field will vary
+with distance from the vortex axis. The simplest model of the vortex is that given by
+Rankine (Milne-Thomson (1958)) though a more accurate representation is given by
+Scully (1975). A comparison between these two models is given at figure 5.2.3. Once
+formed the trailing tip vortices will maintain their form for a protracted period until they
+eventually breakdown and disperse (Saffman (1974). The structure of the vortex core is
+such that there will be some axial flow within the core moving towards the blade from
+which the vortex is trailed (Moore & Saffman (1973). the magnitude of this flow is
+small and, for the purposes of this study has been ignored.
+
+
+60
+As the rotor blade rotates it will pass over the trailing tip vortices and shed sheet
+vortices from preceding blades. As it does so it will be affected by the velocity fields
+associated with those vortices. The velocity field associated with a vortex sheet is not as
+significant as that from a rolled up trailing vortex and, as the vortex sheet is descending
+at approximately twice the speed of the trailing tip vortex, the velocities it induces at the
+blade will be relatively small. The trailing tip vorticies will have a major effect on the
+local velocity at the blade with the vortex trailed from the immediately preceding blade
+having the strongest effect of all. If the effect of all the shed and trailed vortices are
+summed, the axial velocity at the blade will be as shown in figure 5.2.4, thus
+explaining the location of the point of maximum blade circulation. As the tip vortex
+trailed behind the immediately preceding blade has such a significant effect on the
+bound circulation, any change in it's location relative to the blade being studied will
+have a major effect on that blade's loading distribution. A brief investigation of this
+effect was given in Brocklehurst (1985/1). The effect of the vortices on the overall disc
+loading distribution will be to form an axis-symmetric loading peak around the disc
+towards the blade tip.
+Consider now the wake as the rotor ojj- from the hover to level forward
+flight. The vortices will also no longer be of uniform strength but will vary with
+azimuth as the blade incidence changes with alterations in cyclic pitch and in-plane
+velocity. The relative rate of descent of the tip vortices will also change with those
+trailed from the rear of the disc moving down faster than those at the front. The vortices
+at the front of the disc can, under certain conditions, pass over, instead of under, the
+following blade. This variation will increase the effect on a blade of the tip vortex
+trailed from the immediately preceding blade at the front of the rotor disc with the
+opposite effect at the rear.
+The helical form of the trailing tip vortices will skew as the rotor translates.
+Even at a very low advance ratio equating to 10-15 knots, the trailing tip vortices shed
+at the rear of the disc will no longer pass under the blade but, when viewed from
+
+
+above, be left behind by the aircraft's motion. The effect of this on the rotor disc
+loading distribution will be to reduce the loading peak at the rear of the disc; the small
+inflow peak remaining being due to the blade dynamic head. Similarly, at the front of
+the disk, the trailing tip vortices will move backwards relative to the disc to leave a
+broader or double peak of smaller magnitude; the effect of the vortices moving inboard
+away from that of the dynamic head at the tip. As the advance ratio increases, so the
+position of the tip vortices will change in relation to the rotor disc with associated
+variations in loading distribution.
+The effect of aircraft translation on the vortices trailed from the two edges of the
+disc (ie. approximately 90 and 270 degrees main rotor azimuth) will be to reduce the
+separation between vortices trailed from adjacent blades. It has already been stated that
+each tip vortex can be considered to have a solid inviscid core. Each vortex core will
+therefore be affected by the velocity field associated with each other vortex and, where
+sufficient curvature of that vortex's axis exists, by the velocity field of other parts of the
+same vortex. Two vortices of similar sign and strength (like two trailing tip vortices
+from adjacent blades for example) will each affect the other such that they are caused to
+rotate about each other whilst maintaining constant separation (figure 5.2.5 from
+Rossow(1977)). This effect need not be constrained to only 2 vortices, any number can
+join in with their relative rates of rotation being dependant on their strengths and
+separation. The individual blade tip vortices will therefore roll round each other and
+form a pair of large "wingtip" vortices somewhat akin to those trailed behind the
+wingtips of a fixed wing aircraft (figure 5.2.6). These "wingtip" vortices will descend
+at a comparatively slow rate dependant on their strength and separation.
+From the preceding paragraphs it can be appreciated that, in forward flight, the
+blade trailing tip vortices descend at different rates depending on the position of the
+blade as they were formed; the effect of this variation is well covered by a notable
+report by Heyson & Katzoff (1957). For accuracy these effects must be included in any
+prescribed rotor wake model. This is done in the model described in Beddoes (1985)
+
+
+62
+which, although it does not fully represent the formation of the "wingtip" vortices, has
+proved quite accurate and most useful. This model and its uses for tail rotor studies will
+be covered in Chapter 6.
+This brief discussion of rotor wake geometry has only considered steady non
+manoeuvring flight OGE but should give sufficient background to render the remainder
+of this chapter more meaningful.
+5.3 The hover
+From the previous section it would be expected that rotor disc loading in the
+hover would be axis-symmetric with a marked loading peak just inboard from the blade
+tip. The Helicopter Aeromechanics Section at Bedford had, in the past, conducted an
+investigation of main rotor loading distributions in the hover with it's flight research
+Puma helicopter. A plot showing one revolutions worth of data from that programme is
+given figure 5.3.1. This plot of variation in negative Cp displays such a loading peak
+and is virtually axis-symmetric with the exception of the region between 300 and 360
+degrees rotor azimuth where the loading peak is absent. When initially observed this
+feature was thought to be caused by the aircraft drifting slightly in the 150 degree
+azimuth direction. Because the flights were conducted at altitude with minimal natural
+visual cues, positioning was achieved by formating on a brown smoke puff fired from
+a Very pistol to check for vertical movement. Fore & aft and lateral motion was
+countered by the pilot reacting to an observer in the cabin describing the motion of a
+tell-tale string attached to a ball suspended beneath the aircraft. Even with these aids it
+took precise flying to achieve good hover accuracy; even 10 knots of translational
+velocity would be enough to produce a similar effect to the one shown. It was not until
+the data from the instrumented tail rotor programme on the Puma was inspected that it
+was realised that the presence of a similar feature on the tail rotor indicated that the gap
+in the loading peak on the main rotor was caused by the tail rotor and vice verca.
+
+
+63
+A plot showing the Puma tail rotor in a hover OGE is given at figure 5.3.2.
+Again the almost axis-symmetric loading peak is present, indicated by the ring of high
+negative Cp values. As just mentioned, there is a gap in the loading peak, this time
+between approximately 165 and 240 degrees blade azimuth. The other main feature of
+note is the region of increased negative Cp at approximately 120 degrees blade azimuth.
+This is the result of the rotor inflow being locally reduced by the fin which is positioned
+just upstream of the tail rotor at this point. The reduced inflow velocity results in an
+increase in blade incidence thus giving rise to increased loading and the rise in negative
+Cp shown.
+Examination of the pressure signals' frequency content in a similar manner to
+that described for the Lynx in section 4.3 showed little evidence of main rotor
+frequencies and mainly featured the tail rotor harmonics and evidence of control activity
+(figure 5.3.3 and Appendix 5). This indicated that, although the tail rotor loading
+distribution was being affected by the main rotor wake as discussed in the previous
+paragraph, it was not wholly or partially immersed in it. This fact was reinforced by the
+invariance in the tail rotor data from revolution to revolution. Brocklehurst (1986/1)
+shows photographs taken in a wind tunnel of a representative main rotor/tail rotor
+system in a hover and illustrates the tail rotor wake wrapping round the outside of the
+main rotor disc in this condition. A mechanism offering an explanation of the effect is
+also given. This phenomenon indicates that neither of the two rotors need to be
+immersed in the wake of the other for there to be a resultant change to their loading
+distributions.
+The first Lynx AH Mk5 data to be examined was that recorded in a heavy
+(4610kg) hover OGE. A principal reason for selecting this case was comparison of the
+collected data with the corresponding Puma hover data just described. Figure 5.3.4
+shows the variation in negative Cp for one revolution of the Lynx tail rotor for this
+flight condition. The strong similarities between this plot and its Puma equivalent
+shown previously in figure 5.3.2 are readily apparent; the loading peak with it's
+
+
+64
+missing segment and the effect of the fin interference are both present. Study of the
+frequency content of the data in this event (figure 5.3.5) again reveals the absence of
+any main rotor frequencies. Figure 5.3.6 shows the standard deviation of the Cp data
+as described in section 4.4 and, because of the small values, illustrates the steady nature
+of the data with little variation from revolution to revolution.
+The location of the gap in the loading peak is not always the same. Figure 5.3.7
+shows the variation in negative Cp for one revolution of the Lynx AH Mk5 tail rotor in
+a hover OGE but in this case at the much lighter weight of 3945kg. The missing
+segment is lower down on the tail rotor disc than before indicating a slightly different
+main rotor wake geometry.
+The indicative features in the data discussed above are not only found in an
+absolute hover but also exist in a limited region about the hover as depicted in area 1 on
+figure 4.3.3. With a forward speed above 5 knots the main rotor wake starts to cross
+the tail rotor disc rather than passing in front of it. Similarly, as translational velocities
+build up in other directions the relative positioning of the main rotor wake and the tail
+rotor/tail rotor wake is altered and different effects are observed.
+5.4 Forward flight.
+As discussed in section 5.3, the front of the tail rotor disc will start to be
+immersed in the rearward part of the main rotor wake as the aircraft forward speed
+increases above 5 knots (Region 2 on figure 4.3.3). This can be identified from the
+frequency content of the tail rotor leading edge Cp data as frequencies attributable to the
+main rotor are observed (figure 5.4.1). The fundamental main rotor frequency is that
+of the blade passing frequency, 4R, rather than the main rotor rotational frequency. The
+beat frequencies caused by the interaction between the two rotor systems, ie nT±4R,
+are commonly more significant than the 4R frequency itself. Comparing the frequency
+content of the signals from the different sensors, that of the fourth (85%) sensor is
+
+
+65
+often the strongest. The reason for this will be made apparent shortly. As expected, at
+speeds where the main rotor wake just clips the front of the tail rotor disc, main rotor
+frequency content towards the root of the tail rotor blade is reduced.
+In forward flight, the Puma data and the Lynx data again show strong
+similarities although the change in direction of tail rotor rotation creates some
+differences in the effect of the interaction of the main rotor blade trailing tip vortices and
+the inner part of the tail rotor blade. A sequence of plots showing the passage of a main
+rotor blade trailing tip vortex across the Lynx tail rotor in 30 knots forward flight OGE
+has already been given in figure 4.4.2. A similar sequence for the Puma at 10 knots
+forward flight OGE is shown at figure 5.4.2. The path of the interaction for the two
+aircraft at the same flight speed will not be the same as the aircraft attitude and the
+positioning of the tail rotor with respect to the main rotor will be different. Ignoring the
+main rotor interference, the fin interference effect will be observed as in the hover,
+though slightly further aft. The blade tip loading peak is only present at the front of the
+disk as the tail rotor blade trailing tip vorticies that produce it have been left behind, as
+described in section 5.2.
+In both figure 4.4.2 and figure 5.4.2 the individual plots have been ordered to
+show the effect of the main rotor blade trailing tip vortex advancing across the tail rotor
+disc. The interaction has two different effects. Outboard, within the tip loading peak
+region, the main rotor vortices cause a local reduction in negative Cp. Figure 5.4.3 is a
+plot of the negative Cp calculated for the 98% blade radius leading edge sensor on the
+Lynx for one revolution of the tail rotor blade at 25 knots forward flight OGE and
+illustrates this effect. Inboard, on the Lynx AH Mk5, the main rotor vortices cause a
+local peak followed by a trough in the negative Cp values. These are illustrated in
+figures 5.4.4 & 5.4.5 which show the variation in negative Cp over two different
+revolutions of the tail rotor as calculated for the 75% rotor radius sensor at the same 25
+knot flight condition. The peak shown in figure 5.4.4 is stronger than the trough in
+figure 5.4.5; quite commonly the trough does not stand out at all. On the Puma, with
+
+
+66
+it's opposite direction of tail rotor rotation, the trough should come before the peak
+though it is seldom observed.
+The position of the interactional features are not always as easily identifiable as
+in the two cases illustrated here. The plot of the standard deviation of the Cp values
+(figure 4.4.4) can help to ease this problem. A comparison between this figure and
+figure 4.4.2 showed how the standard deviation plot identified the location of the
+interaction with the Lynx. It was thought that the plot of the range of the data (figure
+4.4.5) might yield some additional information but that has not proved to be the case.
+Close examination of these interactional effects, especially with the data
+animated as described in section 4.5, revealed a discontinuity between the timings of
+the passage of the effect outboard to that on the inner part of the tail rotor blade. Figure
+5.4.6 shows the main rotor azimuth position at which the interactional effects were
+noted at the various sensor locations on the Lynx blade. If it is assumed that the main
+rotor vortex passes the inboard sensors midway between the peak and the trough (as
+shall be discussed in section 5.4.2), then this plot reveals a phase shift of
+approximately 15.5 degrees of main rotor rotation between the effects noted outboard
+and those inboard. 15.5 degrees of main rotor rotation equates to 90 degrees of tail
+rotor rotation on this aircraft. A similar phase shift was apparent on the Puma. The
+effect of this phase shift is to delay the appearance of the interactional feature at the tip
+until after it has appeared further inboard. This would suggest that two different
+interactional mechanisms are employed, one covering the interaction between a main
+rotor blade trailing tip vortex and it's tail rotor counterpart and the other between that
+4
+main rotor vortex and the tail rotor blade itself. These two mechanisms will be
+discussed in more detail in the sections that follow. There would appear to be a region
+on the blade that is affected to some extent by both mechanisms; this in the vicinity of
+the 85% sensor, thus giving rise to the increased main rotor frequency content at that
+sensor.
+
+
+67
+Although the two interactions described have a noticeable effect on the tail rotor
+Cp distribution, their overall effect on the tail rotor thrust is small. It is considered that
+there would be little to be gained from any attempt to reduce their effect still further.
+The relative magnitude of the overall tail rotor loading variation should be considered
+when deciding whether to include the effects of these interactions in a computer model.
+On a simple model of tail rotor thrust they could perhaps be ignored.
+5.4.1 The interaction between a main rotor blade trailing tip
+vortex and a tail rotor blade trailing tip vortex in forward flight.
+The interactional mechanism described in this section takes place in flight
+conditions where the tip vortices trailed from the main rotor blades are cut by the tail
+rotor blades. For there to be an effect on the tail rotor loading distribution this
+intersection must take place when the tail rotor blade in question is at an azimuth angle
+where the loading peak is evident. This will limit the visible effect of this interaction to
+the front of the tail rotor disc.
+Assuming that the wakes from the main rotor and the tail rotor were
+independent and that each had no effect upon the other, the blade trailing tip vortex
+systems from the two rotors could be drawn as skewed helices. To add complication,
+the shape of each element on the helices trailed from a rotor would be distorted by the
+wake contraction and the influence of all the other vortex elements in that rotor's wake.
+The relative geometry of the main rotor and tail rotor dictates that the helical wake
+systems from the two rotors will intermesh orthogonally. As the external influences on
+both wake systems are the same at any given point, the separation between a vortex
+trailed from a main rotor blade and one from a tail rotor blade will remain constant. The
+separation between a main rotor vortex element and a tail rotor vortex element will
+therefore be dependant on the location of that main rotor vortex element when the tail
+rotor vortex element was formed. As already described in section 5.2, a tail rotor blade
+
+
+68
+trailing tip vortex is formed by the rolling up of the vortex sheet shed from the blade
+outboard of the point of maximum circulation. This roll up process is complete by the
+time that the blade tip has travelled one rotor radius (ie 60 degrees of blade rotation)
+(Simons, Pacifico & Jones (1967)) and the main rotor blade trailing tip vortex will have
+been present at it's final location whilst this roll up was taking place. The separation
+distance between successive main rotor and tail rotor vortices will be different because
+of the non-integer gearing ratio between the two rotors.
+Contrary to the assumption made at the beginning of the last paragraph, the two
+wake systems are not independent and each main rotor vortex element will induce
+motion in each tail rotor vortex element and vice versa. The velocities induced will
+depend on the strengths of the vortices and the distance between them. Figure 5.4.1.1
+shows a sketch of the tip of a tail rotor blade with the trailing tip vortex rolling up
+behind it. The tail rotor blade is about to cut a main rotor blade trailing tip vortex. That
+main rotor vortex can induce large variations in the local chordwise velocity at the
+blade, possibly affecting the point of maximum circulation on the blade and thus
+subsequently the strength and location of the tip vortex. The vortex sheet shed by the
+blade may be distorted by the velocities induced by the main rotor vortex. This would
+affect the roll up process which would again change the properties of the tail rotor tip
+vortex. Once the roll up process has been completed the two vortices would continue to
+interact.
+The overall mechanism of this interaction process is indeed complex. In an
+attempt to illucidate the interaction that would occur once the tail rotor blade trailing tip
+vortex was fully formed (and there is some doubt as to whether this would happen) a
+simple computer model was constructed. Two Scully vortices of approximately Lynx
+main and tail rotor vortex strengths were placed, one along the x-axis and the other
+parallel to the z-axis as shown in figure 5.4.1.2. The minimum separation distance
+between the centrelines of the two vortices was set as being the sum of the two vortex
+core diameters (10 cm). The vortices were initially divided up into 4mm long elements.
+
+
+69
+The Biot-Savart Law (Landgrebe (1971) Appendix 3) was then employed to calculate
+the velocities induced at the core of each vortex element node by the velocity field of
+each vortex element from both vortices. Neglecting any inertial effects, the
+displacement of each node was then calculated over a 1 millisecond timestep. This
+process was then repeated several times. The distortion induced in the tail rotor vortex
+after each time step is shown in figure 5.4.1.3. The interaction produced was very
+unstable with the vortex cores touching after only four iterations and the convoluted
+bundle of distorted vortices growing rapidly thereafter. It was observed that the vortex
+elements close to the interaction were very rapidly stretched. To reduce the errors
+introduced by using straight vortex elements in regions of high vortex curvature, each
+element was kept close to it's original length by cutting it in half whenever it stretched
+to twice it's original length. This model, though simple and restrictive, illustrates the
+stretching of the vortex elements close to the original point of minimum separation
+which is considered to be significant.
+Theoretical research has been carried out on the effect of strain on a line vortex
+(Moore & Saffman (1970)). This suggested that a line vortex will "disintegrate" (their
+word) if the ratio of applied strain rate over vortex circulation strength exceeds a given
+value. Applying this principle to the interaction under consideration, each vortex
+element is subjected to a varying strain by the others. This may suggest that, when the
+main and tail rotor blade trailing tip vortices are close enough together, then at least the
+tail rotor vortex, and possibly the stronger main rotor vortex, would disintegrate and
+the local induced velocity field(s) fall to zero. This would have only a minimal effect on
+the blade trailing the vortex. However section 5.1 discussed how the strength of the
+loading peak near the tip of a blade is most significantly affected by the location of the
+tip vortex trailed from the preceding blade. If that tip vortex had a discontinuity
+produced by the interaction just described, then a reduction in the loading peak on the
+next blade would follow.
+
+
+70
+For such an effect to be recorded on the instrumented tail rotor blade, the main
+rotor blade trailing tip vortex would have had to interact with the tip vortex trailed from
+the preceding tail rotor blade. This will affect the timing of the interactional feature
+noted in the data, effectively delaying it by 90 degrees of tail rotor rotation. This agrees
+with the phase shift noted on figure 5.4.6.
+The reduction in the loading peak will not be limited to the passage of one tail
+rotor blade. The reduction in the loading peak on one blade will reduce the strength of
+the tip vortex trailed behind that blade and thus affect the loading peak on the next,
+though to a lesser extent. Therefore, although the loading peak will be rapidly reduced
+by the interaction , it will return to it’s original value at a slower rate.
+5.4.2 The interaction between a main rotor blade trailing tip
+vortex and the inboard region of a tail rotor blade in forward flight.
+For the interaction described in section 5.4.1 to take place a main rotor blade
+trailing tip vortex must be cut by that part of a tail rotor blade that is outboard of the
+point of maximum bound circulation. If the main rotor vortex is positioned such that it
+will lie inboard of that point then a different interaction will occur. With the main rotor
+vortex far enough inboard, its distance from the tail rotor trailing tip vortex should
+result in there being insufficient strain on that vortex for disintegration to occur.
+In low speed flight, the dominant loading variations over the region of the tail
+rotor blade inboard of the loading peak is caused by the change in the local chordwise
+velocity. This is in contrast with the dominant variations outboard being caused by
+changes in the inflow velocity. The inboard vortex sheet shed from a tail rotor blade
+does not have a particularly strong effect on the following blades. Any disruption of
+this shed vorticity by a main rotor blade trailing tip vortex will therefore not
+significantly alter the blade loading.
+
+
+71
+The axis of tail rotor rotation lies parallel to the centrelines of the main rotor
+blade trailing tip vortices that pass across it. Although there is some axial flow within
+the main rotor vortex core, it will only affect a very small part of the tail rotor disc (the
+core diameter being approximately 4cm) and can thus be ignored. The effects of the
+changes in tail rotor blade chordwise velocity induced by the main rotor vortex will
+vary dependent on the tail rotors direction of rotation. The vortex's velocity field will
+always rotate in a top-forward direction.
+The lift produced by an element of the blade, dr, at radius r is given by:
+The effect of the main rotor blade trailing tip vortices on the in-plane velocity at
+the tail rotor blade is of a very transitory nature. For this reason, it has been assumed
+that the local inflow velocity, U, will not have time to change in response to the
+changing in-plane velocity and incidence.Therefore, when the local chordwise velocity
+Eqn 5.1
+where:
+Eqn 5.2
+giving:
+L=^pdrcaV2(0-tan" 1^) Eqn 5.3
+increases not only does the term increase but the local incidence does as well.
+Concentrating on the term and expanding:
+Eqn 5.4
+If the chordwise component of the vortex induced velocity V is against the
+direction of blade rotation, then:
+V2=vr 2 + 2Vr IVyl + IVvl2 Eqn 5.5
+
+
+72
+If , however, Y is in the direction of blade rotation:
+v2=vr2 - 2Vr Ivvl + IVyl2 Eqn 5.6
+Therefore, at a given point on the blade, the increase in blade loading that
+results from a vortex induced chordwise velocity opposing blade motion will be greater
+than that from the same velocity in the direction of blade travel.The major perturbation
+in blade loading will therefore be a sharp upwards peak to one side of the vortex core
+with a much smaller downwards one on the other. For a tail rotor with top-blade-aft
+rotation, such as that on the Puma of Lynx AH Mk7 the region of reduced will be
+on the side of the vortex centreline closer to the rotor axis. As the value of Vr is lower
+the further you are from the blade tip the region of reduced loading will be smaller and
+have less effect than would be the case with a tail rotor rotating top-blade-forward.
+Figures 5.4.2.1 and 5.4.2.2 show plots of against tail rotor blade radius for the 2
+different blade rotations. Main rotor vortices are shown in three locations demonstrating
+that, for both directions of blade rotation, the effect of the vortex decreases as it moves
+towards the centre of the rotor. It should be remembered that the interaction described
+in section 5.4.1 will mask the effect described in this section from about 80% rotor
+radius outwards at the front of the tail rotor disc in forward flight.
+The observed effect of this interaction will be altered to some extent by the
+display technique used. As previously stated, the tail rotor pressure data has been
+displayed as plots of pressure coefficients with the velocity term based on the blade's
+rotational and aircraft translational velocities alone as expressed in equation 2.1. The Cp
+value will not, therefore, take account of the chordwise velocity changes that produce
+this particular interaction. If they were to do so, only the effects of changing incidence
+would be seen and a major part of the effect of this interaction would be masked.
+
+
+73
+5.5 Interaction between the main rotor wake and the tail rotor in
+quartering flight.
+Of all the main rotor/tail rotor interactions examined in this study, that occurring
+in quartering flight and described in this section has the most significant effect on tail
+rotor performance. In this context, "quartering flight" describes the flight condition
+when the sideslip angle is such that the tail rotor is affected by the wake from the edge
+of the main rotor disc as depicted in figure 5.5.1. In forward flight the tail rotor will be
+in the centre of the main rotor wake and, where they affect the tail rotor, will cut each
+main rotor blade trailing tip vortex in sequence as they are trailed from the rear of the
+disc. In quartering flight, ie with a sideslip angle of between 45 and 70 degrees
+depending on aircraft configuration, the main rotor wake effect on the tail rotor can be
+much more significant as the tail rotor may be immersed h\ one of the two 'wingtip'
+vortices described in section 5.2.
+The wingtip vortex is formed from a number of main rotor blade trailing tip
+vortices rotating round each other. In forward flight the velocity field of each of these
+trailing vortices will also be rotating such that motion below the vortex centreline will
+be directed outwards, away from the aircraft centreline as shown in figure 5.5.2. The
+wingtip vortex will therefore constitute a significant velocity field, all rotating in this
+direction. Once the aircraft develops a sideslip angle the wingtip vortices maintain their
+position with respect to the aircraft's track which will no longer be aligned with the axis
+of the helicopter. As just mentioned above, with a sideslip angle of 45 to 70 degrees the
+helicopter's tail rotor may end up tracking along one of these vortices. If the tail rotor
+rotates top-blade-forward and the centre of the wingtip vortex passes through the centre
+of the tail rotor disc as in figure 5.5.3, then the tail rotor blades will be rotating within a
+mass of air that already has a component moving in the same direction. The flow
+velocity over the blades will therefore be reduced. The resultant reduction in dynamic
+
+
+head means that an increased tail rotor blade pitch is required to produce the necessary
+thrust. This increased pitch requirement is reflected in the helicopter transmission and
+control system by a reduction in pedal margin. The situation is the same whether the tail
+rotor is affected by the wingtip vortex from either the advancing or the retreating side of
+the main rotor disc (areas 3 & 4 on figure 4.3.3). The only difference that exists
+between the two is that when the tail rotor is affected by the vortex from the retreating
+side of the main rotor, the tail rotor is off-loaded to some extent by the weathercocking
+action of the fuselage and the change in tail rotor inflow due to the sideways motion.
+The yaw control margin is therefore greater than with the same relative wind from the
+other side of the nose and its reduction proportionally smaller. When the centre of the
+tail rotor disc is displaced from the vortex centreline as depicted in figure 5.5.4, that
+part of the tail rotor disc between the vortex centreline and the axis of rotor rotation will
+experience an increase in dynamic head. As shown in figure 5.5.5 the effect of a vortex
+tracking diametrically across the tail rotor will be an initial rise in dynamic head
+followed by a much larger fall before a mirror image effect on the other side of the
+disc. The strength of the vortex used in this figure is not representative of that behind a
+Lynx main rotor but merely illustrative to show the effect.
+With a tail rotor that rotates top-blade-aft the effect of the wingtip vortex on the
+yaw control margin is reversed.
+From the point of view of the measurement technique employed, calculated
+values of leading edge pressure coefficient will not take account of changes of in-plane
+velocity as already described. The effect of vortex induced changes in dynamic head
+will therefore be accentuated towards the centre of the tail rotor. Were true Cp values to
+be calculated using the correct in-plane velocity at each point, only the effects of the
+changes in incidence just described would be seen on a Cp plot, though accurate
+loading calculations could then be made.
+
+
+75
+If the position of the tail rotor along the length of the wingtip vortex were to be
+considered then it could be expected that the tail rotor would be closer to the start than
+the end of the roll up process. The velocity fields of the individual main rotor blade
+trailing tip vortices would therefore appear at the leading edge pressure sensors as a
+marked cyclical variation at the blade passing frequency or some multiple of it. Even if
+the roll up was well established this frequency would still be evident provided that the
+rolled up vortices retained their identities. As the effect of the main rotor wake on the
+tail rotor is stronger in quartering flight than in forward flight, it would be reasonable to
+expect that the main rotor induced frequencies would also be more significant. This has
+not been found to be the case. Figure 5.5.6 shows the frequency content of the leading
+edge sensor signals recorded when flying OGE with a relative wind of 25 knots at 064
+degrees. The traces show an almost total lack of any main rotor induced frequency
+content. This would suggest that the individual main rotor blade trailing tip vortices
+have lost their individual centres of circulation and merged into one larger vortex.
+Vortex merging of this nature has been noted during research into wake minimisation
+techniques for large transport aircraft (Rossow (1977)). One of the most significant
+criteria that determined whether or not two vortices merged was found to be the ratio
+between the distance between their centrelines and the core diameters. If merging of this
+nature has occurred in the wingtip vortices by the time that they influence the tail rotor,
+it would suggest that the roll up process was approaching completion. The strength of
+the flow field of such rolled up wingtip vortices requires further investigation as does
+the rate of vortex dispersion.
+In order to demonstrate whether this vortex merging was indeed the cause of the
+noted reduction in main rotor frequencies in the data, the Lynx main rotor wake model
+described in section 6.3 was created. The model was run at different flight speeds and
+the separation between the vortices noted (figure 5.5.7). Calculation of the vortex
+separation ratio discussed in the previous paragraph indicated that such merging was
+
+
+76
+possible at the flight speeds that the Lynx suffered from yaw control margin
+restrictions.
+The absence of main rotor frequencies in figure 5.5.6 is reflected in the low
+standard deviation in the Cp values over most of the tail rotor disc as shown in figure
+5.5.8. The exception to this is in the region of the tail fin were some marked Cp
+variations are to be found. Although full analysis of the data from the trailing edge
+sensors has yet to be carried out, visual inspection of the trailing edge negative Cp
+values when plotted against tail rotor azimuth angle for all 160 revolutions in the event
+(figure 5.5.9) shows a distinct peak as the instrumented blade passes the position of the
+tail fin. From experience with similar main rotor data, as briefly discussed in Chapter 4,
+this peak can be stated as indicating the presence of blade stall. This stall requires
+further investigation but is currently thought to be caused by the turbulent nature of the
+flow round the fin in a flight condition where the fin, when considered as an aerofoil, is
+at a very high angle of attack.
+As the changes in dynamic head induced by the main rotor wingtip vortices
+cannot be derived from the instrumentation fitted to the Lynx AH Mk5 instrumented tail
+rotor, it was decided to use the main rotor wake model described above to produce a
+calculated value as shall be described in section 6.3. Figure 5.5.10 shows the plot of
+percentage reduction in dynamic head thus produced for all conditions of relative wind
+speed and direction within the low speed flight envelope. These values were then used
+in conjunction with the values of tail rotor pitch angle calculated with Helistab to
+produce an amended pitch angle (figure 5.5.11) which was subsequently translated into
+yaw control margin to give the plot already presented in figure 1.4.2. The close
+agreement between this plot and the equivalent plot of yaw control margin as measured
+on the aircraft (figure 1.1.1) indicates that:
+i . Variation in dynamic head is one of the most significant factors affecting
+tail rotor performance throughout the low speed flight envelope, and
+
+
+77
+ii. The wake model used is sufficiently accurate to be able to provide
+reasonable velocity values at the tail rotor for steady trimmed flight.
+That the yaw control margin in quartering flight is still slightly over predicted
+indicates that the effect of the fin interference must also be taken into account to include
+the effects of blade stall in this region.
+As previously stated, the tail rotor on the Puma rotates top-blade-aft and so does
+not suffer from yaw pedal margin deficiencies in the same way as the Lynx AH Mk5.
+However, one feature was recorded on the Puma tail rotor in quartering flight that has
+not been found on the Lynx. Figure 5.5.12 shows the frequency content of the data
+recorded on the Puma tail rotor whilst the aircraft was translating IGE with a relative
+wind of 15 knots from 300 degrees. It should be remembered that, as the main rotor on
+the Puma rotates in the opposite direction to that on the Lynx, right sideslip angles on
+the Lynx equate to left sideslip on the Puma when considering the effects of the main
+rotor wake on the tail rotor. By comparing Figure 5.5.12 with Figure 5.3.3, it can be
+seen that in addition to the tail rotor and control induced frequency content previously
+observed, another peak is to be found at a frequency equating to twice the main rotor
+blade passing rate. This frequency is almost isolated having very weak harmonics and
+not producing any beat frequencies with the tail rotor at all. Whilst this event was being
+recorded the pilot experienced 'tail rotor buzz', a high frequency vibration felt through
+the airframe and pedals. The mechanism of this particular interaction has not been
+determined and it deserves some additional research for completeness.
+5.6 Main rotor effects observed on the tail rotor in sidewards and
+rearwards flight.
+In sidewards and rearward flight the Lynx main rotor wake does not approach
+the tail rotor and it was expected that the distinct lack of main rotor induced frequencies
+observed in the Puma data in rearwards flight (Figure 5.6.1) would be repeated. This
+
+
+78
+however was not found to be the case. Figure 5.6.2 shows the frequency content of the
+Lynx data with the aircraft translating OGE with a relative wind of 30 knots from 149
+degrees. Although the main rotor blade passing frequency is only just apparent on the
+outer 3 sensors, the frequencies equating to T±4R are evident at a uniform strength
+along the blade. The plot of the average Cp (figure 5.6.3) shows that the remaining
+segment of the loading peak is now at the rear of the disc as the aircraft translation is
+essentially backwards. The plot of standard deviation of Cp (figure 5.6.4) indicates that
+the loading peak is almost steady and that the maximum variation is in the fin
+interference effect region. When the data was animated, no clear cyclical patterns were
+observed; the Cp variation in the lee of the fin was found to be almost random. The
+most likely cause of this latter effect was thought to be flow breakdown round the fin
+although no concrete evidence of blade stall was to be found.
+On closer inspection by a different means a very slight cyclical variation at the
+main rotor blade passing frequency was found. Figure 5.6.5 shows a carpet plot of the
+Cp derived from the sensor at 85% tail rotor radius. The horizontal axis represents the
+tail rotor azimuth changing from 0 to 360 degrees. Equally spaced up the plot are the
+Cp values from all 160 tail rotor revolutions. The revolutions have been so ordered that
+the main rotor azimuth position increments from 0 to 360 degrees going up the plot.
+The contours have then been drawn through lines of equal Cp. If the green lines
+representing a Cp value of 1.33 towards the left-hand and right-hand edges of the plot
+are followed up the page, a four cycle oscillation can be observed. Four cycles in 360
+degrees of main rotor rotation equate to the main rotor blade passing frequency. If the
+whole of the plot is studied in a similar manner, this same variation can be observed,
+except at the tail rotor azimuth position where the fin interference effect occurs.
+In this instance, therefore, although the main rotor wake is passing well clear of
+the tail rotor, a main rotor induced cyclical variation is to be found over most of the
+disc. It is considered that the variations observed are caused by the main rotor wake
+exciting the fuselage, causing the tail to shake laterally and thus imparting a flapping
+
+
+79
+motion to the tail rotor blades. This would affect the Cp values in a similar manner to
+that shown and affect the whole disc.
+This effect was noted over the whole of the rear half of the flight envelope as
+indicated in figure 4.3.3 as region 6. A related but slightly different effect was noted in
+region 5 where, instead of the main rotor blade passing frequency being present, the
+main rotor fundamental frequency was observed (Figure 5.6.6). The mechanism in this
+region is thought to be similar to that outlined above but with the main rotor exciting a
+different mode in the fuselage.
+Neither of the two interactions described in this section are considered
+significant. It is for that reason that no more effort was spent refining the detail of the
+interaction mechanisms. There is, at present, not thought to be much advantage to be
+gained by the inclusion of the effects of these interactions in a computer model.
+5.7 Concluding remarks.
+In Chapter 4, it was shown that study of the frequency content of the data
+recorded on the Lynx AH Mk5 tail rotor had different attributes depending on aircraft
+relative speed and direction. The low speed flight envelope of the aircraft was thus
+divided into six regions. In this chapter, the effects noted in each of the six regions
+were investigated in some depth and details on the interaction mechanisms taking place
+revealed. Some of the mechanisms are clearly aircraft configuration related but it is
+thought that others will be more universal in their application. Nearly all of the
+mechanisms postulated warrant additional research, most of which would be best
+carried out in a controlled wind tunnel environment.
+
+
+80
+Chapter 6.
+Aspects of tail rotor and yaw control modelling.
+6.1 Introduction
+In Chapter 1 the problems experienced with the current generation of helicopter
+yaw control models were mentioned. A plot given at Figure 1.1.2 showed the
+inaccuracies in the representation of the Lynx AH Mk5 yaw control margin as produced
+by the DRA's current helicopter model, Helistab. Low fidelity yaw control modelling is
+not unique to the DRA but is almost universally found to be a problem area. In many
+instances the tail rotor representation in a simulation model is less accurate than it's
+main rotor counterpart as deficiencies in the main rotor model have a greater impact on
+the overall model performance. In addition, the information to produce a high quality
+tail rotor model has not been available. One of the prerequisites of a high fidelity tail
+rotor model is an accurate main rotor wake model that will reproduce the wake
+geometry whatever the flight condition. This main rotor wake model must be able to
+run in real time for piloted simulation work.
+This chapter will start with an overview of the tail rotor model in Helistab
+(Padfield (1981)) and discuss some of it's shortcomings. Section 6.3 will then look at
+the two different types of main rotor wake model and cover, in some detail, the use of a
+wake model that has been found to give encouraging results when applied to the tail
+rotor problem. Finally section 6.4 will discuss, in outline terms, a method by which
+such a wake model could be coupled into a piloted simulation model in an attempt to
+overcome some of the shortcomings previously encountered.
+
+
+6.2 Current tail rotor modelling in Helistab.
+In Helistab, the tail rotor is represented by a disc model which was developed
+using the same basic assumptions as the main rotor. It has rigid blades which are
+hinged at the shaft. Blade flapping motion is included, albeit in a simplified form, but
+there is no lag. As the tail rotor rotational frequency is high, the time taken for the
+blades to respond in flap is correspondingly fast. For this reason the dynamics of the
+tail rotor blades are modelled in a quasi-steady manner such that a tail rotor collective
+input results in an instantaneous alteration in thrust and tail rotor coning. Cyclic
+variation in flap is neglected so the thrust produced by the tail rotor is always along the
+shaft axis which is assumed to be uncanted. The Blackhawk, for example, with it's
+canted tail rotor cannot therefore be accurately modelled at present though a minor
+modification would make this possible. The tail rotor inflow is of the Glauert
+trapezoidal type and will respond to changes in sideslip angle etc. Only the uniform
+component of the inflow is, however, included.The tail rotor blade drag is calculated
+for each point on the disc and then averaged over the disc so that the tail rotor torque
+can be estimated. No fuselage reaction to changes in tail rotor torque is included. A
+simple model of fin blockage can be incorporated if required but there is no means by
+which the effect of the main rotor wake on the tail rotor can be represented. A model of
+the weathercocking action of the fuselage is also used.
+When it is configured to represent the Lynx AH Mk5, these factors combine to
+give the model a yaw performance which, although it may be adequate for manoeuvres
+at higher speeds as illustrated in Figure 6.2.1, is less representative of that found in the
+real aircraft within the low speed flight envelope as demonstrated by a comparison
+between Figures 1.1.1 and 1.1.2. It is considered that improvements could be made to
+this aspect of Helistab and these will be discussed later in this chapter.
+
+
+82
+6.3 Steady main rotor wake model.
+To reiterate what was said in the introduction to this chapter, no representative
+tail rotor model can exist in isolation. Instead it must operate in conjunction with a main
+rotor wake model so that the effects of the relevant main rotor/tail rotor interactions can
+be included at the appropriate flight conditions. This section will look at the
+requirements for such a main rotor wake model, discuss one that has been used to
+effect within this programme and show some of the results obtained with it.
+Rotor wake models fall into two generic categories: the free wake and the
+prescribed wake representations. In a free wake model the initial conditions of the wake
+are laid out and then, as the rotor revolves the wake is left to evolve under the
+influences of the various velocity fields that affect it until, at each time step, it reaches
+an quasi-equilibrial condition. A good free wake model should be capable of producing
+an accurate wake geometry under most conditions but has the following drawbacks:
+i. For the wake to form accurately all influences on it's geometry must be
+represented. To calculate the effect of each vortex element on all the other
+elements can be computationally intensive, especially since, for each time step,
+the calculation of the induced velocities must be repeated until equilibrium is
+achieved. Generally, when an isolated main rotor model is considered, time
+steps equating to not less than one twentieth of a main rotor revolution are used;
+any shorter an interval and the number of calculatio^increases dramatically. If a
+blade element tail rotor model were to be run along side that main rotor model
+the time step would have to equate to that same proportion of a tail rotor
+revolution to give adequate resolution. This would reduce the time step by a
+factor of the main rotor/tail rotor gearing ratio giving rise to an unacceptable
+computing burden. One method that has been used with some success to reduce
+the effects of this problem has been to artificially increase the size of the main
+rotor blade trailing tip vortex cores, thus reducing the resolution required,
+
+
+83
+performing the wake calculations and then subsequently modifying the result
+with a 'fudge factor' to reduce the vortices and their effects to scale proportions
+(Quackenbush, Bliss & Mahajan (1989) and other reports by the same authors).
+ii. If an attempt is made to calculate the wake geometry in a low speed/high thrust
+condition, it is unlikely that a free wake model will achieve the equilibrium state
+required and will probably diverge. As discussed in the preceding chapters,
+most of the significant main rotor/tail rotor interactions take place at low speed
+when the main rotor will be at high thrust.
+It is the second of these two points rather than the first which would tend to
+make a free wake main rotor wake model unsuitable for tail rotor modelling
+applications. That is not to say, however, that it could not be used when a high degree
+of accuracy is required in a high speed flight condition.
+A prescribed rotor wake model produces a representation of the wake geometry
+in a significantly less computationally intensive manner. The rotor wake is studied
+either in flight or in a wind-tunnel and it's geometry noted. A set of equations are then
+derived which account for the distortions in the wake observed. These equations must
+effectively arrive at the quasi-equilibrium state in one step that is achieved by iteration in
+the free wake model. Prescribed wake models are seldom as accurate as free wake
+models and will not portray the finer details. The wake from which the equations were
+initially derived will be of one particular rotor configuration and care must be taken to
+ensure that wakes produced for other aircraft are accurate and that the parameters that
+prescribe the shape of the wake do not require adjustment.
+Notwithstanding the above, the use of a prescribed main rotor wake in tail rotor
+investigations does have certain advantages. As iteration is not required to reach wake
+equilibrium, the model can be used for the low speed/high thrust situation described
+earlier. A prescribed rotor wake model will require orders of magnitude less computing
+
+
+84
+time than it's free wake counterpart and is thus better suited to real time or near real time
+operation.
+Whilst investigating the main rotor/tail rotor interaction occurring in quartering
+flight, as described in section 5.5, the requirement arose for a main rotor wake model to
+aid in the investigation of some of the effects noted. Advice was taken from Mr Todd R
+Quackenbush of Continuum Dynamics Inc. of Princeton, New Jersey, as to the best
+form of model to use and some of his comments have been summarised above. He
+suggested the use of a flat wake model as described in Curtis & Quackenbush (1989).
+Although such a model would have been wholly appropriate in higher speed forward
+flight (|i above 0.15), it was not thought that it would be sufficiently accurate to model
+the effects occurring at low speed and high sideslip angles. The model used had to
+reflect the distortions found at the edge of the main rotor disc as detailed by Heyson &
+Katzoff (1957).
+The model eventually selected was the prescribed wake model developed at
+Westland Helicopters Ltd by Mr Tom Beddoes (Beddoes (1985)). Originally intended
+for use in main rotor loading distribution calculations, all the equations required to
+generate the wake geometry are given in the report. Figure 6.3.1 shows the wake
+geometry created using the model. The vortices trailed from blades at the rear of the
+disc initially descend at a slightly faster speed than those from the front whilst those
+from the edges of the disc hardly descend at all, simulating the position of the blade
+vortices within the rolled up wingtip vortices trailing from this position. The model is
+not totally representative in this area as the blade vortices do not roll round each other as
+described in section 5.1. This has not, however, been found to be a problem in the uses
+to which the model has been put. Using the equations given, the main rotor wake
+model was coded up to represent a Lynx AH Mk5 with the facility to place the tail rotor
+at the correct place within the wake for any combination of speed and sideslip angle.

@@ -1,0 +1,412 @@
+EXPERIMENTAL-NUMERICAL INVESTIGATION OF THE AERODYNAMIC INTERACTION BETWEEN TANDEM PROPELLERS REPRODUCING A TILTWING eVTOL IN TRANSITION MANEUVER
+Alex Zanotti, Alessandro Velo, Chiara Pepe, Alberto Savino, Donato Grassi, Luca Riccobene Politecnico di Milano, Dipartimento di Scienze e Tecnologie Aerospaziali, via La Masa 34, 20156, Milan, Italy
+ABSTRACT
+The present work investigates the aerodynamic interactions in a tandem propellers configuration during the transition manoeuvre, focusing on how the relative position and the propellers angle of attack influence the performance of the whole vehicle. The main objective is to broaden the available literature regarding eVTOL concepts, which as of today is primarily devoted to the analysis of pure cruise conditions. An experimental activity was performed with the aim of studying the interference effects through the comparison between the performance of a single propeller configuration and of the rear one in a tandem configuration, both in terms of load measurements and flow fields. A numerical analysis was performed by means of the mid-fidelity solver DUST to extend the experimental database and to provide further insights on the comprehension of the interaction effects produced on the rear propeller disk. In the perspective of a preliminary design phase, this work demonstrates that particular attention must be paid to the flight regime, since the free-stream velocity heavily affects the propulsive system behaviour. As a general outcome, higher vertical distances between propellers guarantee satisfactory performance despite the presence of mutual interference phenomena. Moreover, results analysis confirms the reliability and accuracy of DUST solver in the description of the complex propeller-propeller aerodynamic interactions mechanisms in this flight regime.
+INTRODUCTION
+Increasing demand for reduced traffic congestion, combined with the need for sustainable solutions to be adopted, pushes towards the development of new concept vehicles, classified as eVTOLs (Electric Vertical Take Off and Landing). In this current framework, eVTOLs represent the most viable solution to combine at the same time the improvement in urban mobility and the regulation of emissions with respect to traditional vehicles like helicopters. The most peculiar common feature of various eVTOL configurations is the implementation of a distributed electric propulsion (DEP) system, composed of multiple propellers distributed on different lifting surfaces. Thus, multi-propellers aerodynamic interaction represents one of the main challenges associated with eVTOLs development. Indeed, the arise of propellers aerodynamic interaction phenomena, both mutual and with lifting surfaces, may cause detrimental effects on the performance and control capability of the vehicle. An increasing interest in propeller/propeller mutual influence has therefore grown in recent literature. Nevertheless, most of the works dedicated to the investigation multi-rotor aerodynamic interaction are fo
+Copyright Statement.
+The authors confirm that they, and/or their company or organization, hold copyright on all of the original material included in this paper. The authors also confirm that they have obtained permission, from the copyright holder of any third-party material in-cluded in this paper, to publish it as part of their paper. The authors confirm that they give permis-sion, or have obtained permission from the copy-right holder of this paper, for the publication and distribution of this paper as part of the ERF pro-ceedings or as individual offprints from the pro-ceedings and for inclusion in a freely accessible web-based repository.
+cused on hover (Ref. 1) or cruise flight conditions (Ref. 2). However, among the most investigated eVTOL architectures, vectored thrust eVTOLs are affected by the transition phase from hover to cruise configuration, hence a thorough analysis of this phase is fundamental for the development of such vehicles. A certain gap in the analysis of this flight condition is present in literature, as only few works aimed at investigating the transition phase are mainly applied to tiltrotor concept (Ref. 3).
+The aim of the present work is therefore to improve knowledge about tandem propellers aerodynamic interactions by filling the lack related to the study of interacting flow mechanisms occurring in a multi-rotor configuration from hover to airplane mode flight conditions. Indeed, a systematic series of wind tunnel tests were performed on two propeller models in tandem configuration by changing their lateral separation distance at fixed axial distance. Moreover, the propellers tilting angle (αP) with the incoming flow was progressively changed to reproduce steady-state points of the complete transition manoeuvre from helicopter to aircraft mode, while the freestream velocity was accordingly varied. Measurements spanning configurations with tilting angle of attack for a tandem propeller system represent the main novelty of the present work and are aimed to fill the outcomes obtained by the previous activity by Zanotti et al. (Ref. 4) focused on cruise flight conditions. Wind tunnel tests included loads measurements to evaluate, particularly, the effects on rear propeller performance provided by aerodynamic interaction of front propeller slipstream. Moreover, PIV surveys were performed to accurately evaluate novel insights about the interacting flow field between propellers wakes. In addition to experimen
+1
+
+
+tal activity, numerical simulations reproducing some selected wind tunnel test configurations were performed using the midfidelity aerodynamic solver DUST (Ref. 5). The numerical activity was aimed to provide insights useful to enhance the physical comprehension of the interactional mechanisms for such complex flow conditions. Generally, the present activity was aimed to provide a free comprehensive experimental database over a wide set of tandem propellers configurations to be considered as a novel and suitable tool for scientific and industrial communities to validate numerical solvers and to guide the design of eVTOLs architectures.
+EXPERIMENTAL SET UP
+The experimental campaign was performed in the Sergio De Ponte wind tunnel at Politecnico di Milano. This closed loop facility, characterized by a test chamber of rectangular section with dimensions 1.5m x 1m x 3m, operates at subsonic speeds with turbulence intensity below 0.1%. Two twin propeller models were employed for the experimental wind tunnel tests. Both of them feature a three-bladed VarioPropeller 12C with a diameter of 300 mm, secured to a 65 mm diameter spinner made of aluminum. The blades are integrated into a hub mechanism which enables simultaneous adjustment of their pitch angle, set to 20.5◦ for the purposes of the present campaign. The propellers are driven by a Scorpion HKII-4235-630KV brushless electric motor equipped with a Hall effect sensor to measure the rotational speed. A Futek MBA500 strain gauge bi-axial load cell embedded in the nacelle of the models was used to measure propellers thrust and torque. Load cell has a F.S. range of ±50 lbs for thrust and of ±50 lbs-in for torque (non-linearity ±0.25% R.O., nonrepeatability ±0.05% R.O.). Readers are referred to (Ref. 4) for a detailed description of the propeller models. The propeller models are positioned within the test chamber using a framework constructed from Bosch© tubes, affording flexibility in configuring their placement inside the chamber. The propellers were mounted in tandem configuration with a fixed axial distance (Dx) between the propellers disk equal to 5 rotor radii, while the vertical position between propeller axis of rotation (Dy) was modified to test different overlaps between disks. Both propellers tilting angle (αP) setting was changed by the same amount using a rolling joint to reproduce a dual lifting surface tiltwing eVTOL configuration. Figure 1 some pictures of the two co-axial propellers in the wind tunnel at the different tilting angles tested.
+The definition of reference system, propellers relative distances, tilting angle of attack and blades azimuthal angle ψ is shown in Fig. 2.
+The experimental investigation is complemented by the analysis of the flow field at the inflow of the rear propeller in tandem configurations, obtained by means of 2C Particle Image Velocimetry (PIV). The PIV setup is made by two ILA.PIV.sCMOS CLHS cameras produced by Canon and equipped with a CMOS sensor with a resolution of 2560x2160 pixels, 16 bit dynamic range, a quantum efficiency of > 60% and a charge-to-voltage conversion for each pixel. The PIV
+(a) Dy = 0, αP = 15◦
+(b) Dy = 0, αP = 30◦
+(c) Dy = 0, αP = 45◦
+(d) Dy = 0, αP = 60◦
+Figure 1. Wind tunnel setup of the tandem propellers at different tilting angles tested αP.
+2
+
+
+Figure 2. Schematic of the tandem propeller configuration including definitions of relative distances, tilting angle of attack and blades azimuthal angle of rotation.
+arrangement involves an Evergreen Dual-Nd:YAG laser with a pulse energy of 200 mJ, operating at a wavelength of 532 nanometers. This laser system is positioned beneath the plexiglass flooring of the wind tunnel testing chamber, as shown in Figure 3. A 90◦ mirror is used to deflect the laser and properly enlighten the area of interest at the inflow of the rear propeller. A uniform insemination of the flow field was performed by PIVpart30 equipped with Laskin atomizer nozzles, which produces oil droplets with a diameter in the range of 1 − 2μm, small enough to accurately follow the flow structures. The use of dual cameras during the experimental campaign provides the possibility to capture a broader region of the rear propeller inflow. The two cameras were rigidly fixed to a metallic external structure composed of Bosch© tubes. Figure 3 shows the cameras set up from an internal view of the test chamber, together with the plexiglass floor placed exactly under the two propellers for the passage of the laser sheet. For each run, 200 image pairs were acquired, while the flow fields resulted from the averaging of the instantaneous correlated images obtained from each pair. The algorithm at the basis of the post-processing phase consists of a multi-grid interrogation method, which reduces the initial interrogation window with dimension of 128 pixels × 128 pixels to multiple subdomains of 32 pixels × 32 pixels.
+Wind tunnel test conditions consisted of runs performed with tandem co-rotating clockwise propellers with rotational speed of both propellers controlled to 7050 RPM. This RPM target value was considered to reproduce a typical tip Mach number, i.e. Mt = 0.325, of full-scale eVTOL aircraft propellers in cruise flight condition (Refs. 6, 7). Tests included single propeller configurations to obtain reference conditions to evaluate interactional effects in tandem configurations. Single and tandem configurations tests included a range of tilting angles between 0◦ to 90◦ with a step of 15◦. Different advance ra
+Figure 3. Internal view of the test chamber showing PIV setup.
+tios i.e. J = [0.32, 0.53, 0.75, 0.95] were considered during the experimental campaign to reproduce the different phases of the transition maneuver from take-off to cruise. Advance ratio was modified by changing the wind tunnel free-stream velocity in the test chamber while keeping constant the propellers RPM.
+DUST NUMERICAL MODEL
+Numerical simulations were performed using the mid-fidelity aerodynamic solver DUST, developed by Politecnico di Milano (Ref. 5). DUST is a VPM-based (Refs. 8, 9) solver implementing several numerical elements as lifting lines, surface panels and non-linear vortex lattices. A numerical model of the propeller was built using a CAD model digitally created by means of a 3D scanning of the blade model. A total number of 12 sections were extracted along the span direction. For each section, the airfoil geometry was extracted and the distribution of twist, chord, sweep and dihedral was derived along the blade radial coordinate (r). Blade numerical model was built considering airfoils of the GOE, NACA, and MH series reproducing the sectional geometries derived from the scan. The 2D aerodynamic coefficients of the selected airfoils required for lifting line modelling of the blades were calculated by XFOIL simulations (Ref. 10) in the range of angles of attack before stall. The Viterna method (Ref. 11) was used to calculate the post-stall behavior of the sectional aerodynamic load coefficients in the angle of attack range between ±180◦. Lifting lines elements were used to model each blade, while spinner-nacelle surface was modelled using surface panels. More details about numerical model can be found in (Ref. 12). DUST simulations reproduced single and some selected tandem propellers configurations with different tilting angle of attack, as tested during the experiments.
+3
+
+
+Figure 4. Propeller model mesh for DUST simulations.
+RESULTS AND DISCUSSION
+Single propeller
+Figure 5 shows thrust and power coefficients curves, respectiely CT and CP, measured for the single propeller at different tilting angles of attack. The curves behaviour are consistent with results obtained by (Ref. 2) using a similar test set up. The performance curves tend to diverge increasing advance ratio, which leads to a significant change in the effective angle of attack of the blades over the propeller disk. Furthermore, a decreasing trend of the curves was found with respect to advance ratio for αP < 60◦, while an increasing trend is
+observed for αP = 75◦ and 90◦.
+The change of the curves slope for high propeller tilting angles can be explained considering the axial induced velocity impinging on propeller disk at the different attitudes, as described by Ortun et al. (Ref. 13) and Stokkermans et al. (Ref. 14). Indeed, for a propeller at incidence the wake shed by the blade in the advancing side of the disk is stronger compared to the wake released by the blade in the retracting side. As a result, the induced velocity field is stronger on advancing side rather than on retreating side, leading to a clockwise rotation of the axial induced velocity over the disk. This effect provides a phase lag (Ref. 13) of the blades effective angle of attack, therefore also of the generated thrust. The stronger is the imbalance between the two sides of the disk, the larger is the magnitude of phase lag, thus the imbalance become larger both increasing propeller tilting angle of attack and advance ratio. This physical effect can be clearly supported by numerical simulations results performed with DUST as shown in (Ref. 12).
+Moreover, in order to support the reliability of the DUST numerical model built for the present activity, a validation study for the single propeller is reported in Fig. 6 showing the comparison between numerical and experimental thrust coefficients evaluated from low to high tilting angles of attack. As can be observed, a quite good agreement between the experimental and the numerical curves is found from low to high tilting angles of attack, thus confirming the suitability of the numerical model for the investigation of the tandem propellers test case.
+0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+0
+0.05
+0.1
+0.15
+0.2
+0.25
+(a)
+0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+0
+0.05
+0.1
+0.15
+(b)
+Figure 5. Thrust and power coefficients curves as function of advance ratio J for the single propeller at different tilting angle of attack.
+Tandem propellers
+Results for tandem propellers are analysed by considering the the initial and the last phase of the transition maneuver for the sake of consistency. readers are referred to (Ref. 12) for the complete analysis of the experimental and numerical database collected in the present activity.
+First phase of transition In the first phase of transition, Vahana-like eVTOLs flight conditions are typically characterised by low air speeds and high propellers tilting angles of attack. This said, the experimental results for the higher angles αP = 60◦, αP = 75◦ and αP = 90◦ are firstly presented over the entire span of the investigated advance ratios, before moving the focus to the most realistic operating conditions for the configurations under analysis. The first results to be presented are the trends of thrust and power coefficients deriving from the experimental measurements, reported in Figures 7, 8 and 9. These results provide a first insight on the most
+4
+
+
+0 0.2 0.4 0.6 0.8 1
+0
+0.05
+0.1
+0.15
+0.2
+0.25
+(a) αP = 15◦
+0 0.2 0.4 0.6 0.8 1
+0
+0.05
+0.1
+0.15
+0.2
+0.25
+(b) αP = 45◦
+0 0.2 0.4 0.6 0.8 1
+0
+0.05
+0.1
+0.15
+0.2
+0.25
+(c) αP = 75◦
+Figure 6. Comparison between experimental and numerical thrust and power coefficients evaluated by DUST for the single propeller at different tilting angles of attack.
+0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+0
+0.05
+0.1
+0.15
+0.2
+(a)
+0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+0
+0.02
+0.04
+0.06
+0.08
+0.1
+0.12
+0.14
+0.16
+(b)
+Figure 7. Thrust and power coefficients curves for the single propeller and the rear one in tandem configurations with different vertical offsets and αP = 60◦.
+remarkable effects produced by the aerodynamic interaction between propellers. Indeed, each plot refers to a single angle of attack and contains four curves to show the behaviour of the tandem configurations for three different vertical distances as compared to single propeller, used as a baseline for the comparison and plotted as dashed black line.
+By looking at the figures, several considerations can be derived regarding the behaviour in terms of performance losses for the tandem configurations. The first appreciable result is the effect of the variation of the vertical separation between propellers on thrust coefficient trends. As expected indeed, the largest detrimental effects are observed for Dy = 0, for all the propeller angles of attack. As a general trend for the lower incidences αP = 60◦ and αP = 75◦, the curves for Dy = 0.5R appear to be closer to the Dy = R case rather than to the coaxial configuration. This trend proves a rapid decrease of the interactional effects while shifting the rear propeller upwards, while the αP = 90◦ configuration evidences a more linear trend of performance losses as Dy becomes larger, as can be noted in Figure 9a. Moreover, different magnitude of the interactional effects impacting on the trends of power co
+5
+
+
+0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+0
+0.05
+0.1
+0.15
+0.2
+(a)
+0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+0
+0.02
+0.04
+0.06
+0.08
+0.1
+0.12
+0.14
+0.16
+(b)
+Figure 8. Thrust and power coefficients curves for the single propeller and the rear one in tandem configurations with different vertical offsets and αP = 75◦.
+efficient is apparent. Indeed, while the CT curves show a more progressive thrust recovery while increasing Dy, the power coefficient experiences a slight reduction in the coaxial case Dy = 0, while remains approximately the same of he single propeller for higher vertical distances. This trend is particularly visible at lower incidences αP = 60◦ and αP = 75◦, while
+for αP = 90◦ a slightly more progressive trend is found as shown in Fig. 9b.
+Different behaviours of the thrust coefficient while changing the advancing ratio can be observed at the three considered propeller angles of attack. Looking at Fig. 7 for αP = 60◦, single propeller configuration shows that the thrust generated by the propeller appears to be almost independent from the advance ratio. On the contrary, for lower vertical separations, the interactional effects result in a change of slope of the CT − J curve, which shows a significant decrease with J. For higher propeller incidence instead, i.e. αP = 75◦, detrimental effects appear to be less relevant in terms of curves slope. Indeed, the trend of CT keeps increasing with J. Nonetheless, for both αPs the curves tend to diverge increasing the advance ratio, where the higher free-stream velocity is responsible of drag
+0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+0
+0.05
+0.1
+0.15
+0.2
+(a)
+0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+0
+0.02
+0.04
+0.06
+0.08
+0.1
+0.12
+0.14
+0.16
+(b)
+Figure 9. Thrust and power coefficients curves for the single propeller and the rear one in tandem configurations with different vertical offsets and αP = 90◦.
+ging the front propeller wake more downstream, modifying the rear propeller inflow and causing a certain amount of interaction between the two rotors. A different behaviour of the thrust coefficient is instead found for αP = 90◦ where the curves tend to converge also for J = 0.95, thus highlighting a substantial absence of interactional phenomena in this latter configuration. A relevant feature shared by all the three cases is the collapsing behaviour of the four curves in the point corresponding to J = 0.32, in which almost absent interference effects between the front and the rear propellers are evidenced. As far as the power coefficient is concerned, the mutual interaction does not produce significant effects on the power required by the propeller, in particular for αP = 60◦ and
+αP = 75◦. Also in this case the curves tend to assume similar values for the lower advance ratio J = 0.32, hence further underlining the absence of interference effects in this condition. These results turn out to be important in the perspective of a conceptual design phase, proving that for the realistic operative conditions of the first transition stage, combining high angles of attack with low velocities, no performance losses are found to affect the vehicle propulsive system.
+6
+
+
+What said for the experimental curves collected through the load cells is further supported by means of the flow field visualizations obtained through PIV, shown in Figs. 10, 11 and 12. The visualizations are provided in terms of averaged inplane velocity around the rear propeller in the three high incidence tandem configurations for increasing values of vertical offset, at J = 0.32. As expected from the experimental curves presented above, in the case of the first transition phase the results of the PIV measurements reveal the absence of interactional phenomena. Indeed, the front propeller wake never impacts on the rear one, hence not producing any relevant effect in terms of thrust losses. Starting from the configuration with αP = 60◦, depicted in Figure 10, a small portion of the front slipstream is still visible in the lower right corner of the framing of the cameras for the coaxial configuration, while it substantially disappears moving to larger vertical separations, as can be expected by shifting the front propeller downwards. For Dy = 0.5R, a slightly higher velocity region is still visible in the left portion of the image beneath the rear propeller, possibly induced by the front rotor wake which in turn goes out from the PIV interrogation window. Similar considerations can be derived for the two remaining configurations, for which the absence of aerodynamic interaction phenomena is even more evidenced. Indeed, by looking at Figures 11 and 12, the front propeller slipstream does not appear in the framing already in the coaxial configuration. In both cases, a slightly brighter portion, corresponding to a local flow acceleration region, can again be appreciated below the rear propeller and is found to progressively move downward for higher Dy. To conclude, the flow field visualizations provided by the PIV measurements support the experimental findings in terms of thrust and power coefficients and emphasize the absence of detrimental effects during the first phase of transition.
+A deeper analysis made by combination of numerical and experimental results is dedicated in the following to the test condition with αP = 60◦ and J = 0.53, which can be considered a potentially operative condition for a certain amount of eVTOL vehicles specifically designed to withstand such operative conditions while ensuring safety and reliability. Before, a proof of the reliability of the numerical tool is required also for the tandem configuration, where a large amount of wakerotor interaction is present. Therefore, as shown by Fig. 13, experimental and numerical results are compared in terms of thrust and power coefficients ratios with respect to single propeller in order to evaluate the impact of the occurring aerodynamic influence.
+Figure 13 shows a good correspondence between the experimental and numerical ratios, except for small and consistent numerical underestimation of CT and overestimation of CP. As expected from the experimental findings previously presented, relevant detrimental effects are observed in the coaxial configuration, while a tendency to reach the single propeller performance is identified for increasing values of the vertical separation. These results highlight the reliability of the numerical solver in correctly catching the trend of the rear propeller performance in the tandem configurations. For this reason, the numerical results can be exploited as a valuable tool
+(a) Dy = 0R
+(b) Dy = 0.5R
+(c) Dy = 1R
+Figure 10. Flow field visualizations provided by PIV measurements for αP = 60◦ at J = 0.32.
+to explain the physics behind the experimental curves and to add further information on the interactional phenomena.
+Further validation of DUST capabilities to reproduce interactional mechanisms for this configuration is given by comparison between the flow fields generated by the numerical tool and the ones retrieved by means of PIV.
+7
+
+
+(a) Dy = 0R
+(b) Dy = 0.5R
+(c) Dy = 1R
+Figure 11. Flow field visualizations provided by PIV measurements for αP = 75◦ at J = 0.32.
+The flow fields comparison provided below refer to the configurations with αP = 60◦ at J = 0.53 and Dy = 0, 0.5R, 1R. Both the numerical and experimental images display the magnitude of the in-plane velocity on the symmetry plane. Flow fields for the coaxial configuration can be analysed looking at Fig. 14a. In this case, a small region of impingement is identified in the lower portion of the rear rotor disk. However, the comparison with PIV reveals that no direct wake impact
+(a) Dy = 0R
+(b) Dy = 0.5R
+(c) Dy = 1R
+Figure 12. Flow field visualizations provided by PIV measurements for αP = 90◦ at J = 0.32.
+8
+
+
+0 0.5 1 1.5
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+(a)
+0 0.5 1 1.5
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+(b)
+Figure 13. Experimental and numerical ratios of rear propeller thrust and power coefficients in the three tandem configurations with respect to single propeller coefficients at αP = 60◦ and J = 0.53.
+is found experimentally, proving a numerical underestimation of the front slipstream inclination. Hence, this latter looks to be slightly closer to the rear rotor in the numerical images. This trend is found also for the increasing values of Dy, as evidenced by the comparison with the correspondent PIV images in Figs. 14b and 14c and can be reasonably considered to be the cause of the slight overestimation of the detrimental effects predicted by the numerical solver, as already observed in Fig. 13a. Now going to investigate configurations with a certain vertical offset, both PIV and numerical results clearly appreciate the front propeller wake moving downward, hence proving the reduction of interactional effects already observed in performance coefficients. Considering rear propeller slipstream shape and velocity magnitude, a good correspondence can be found comparing numerical and experimental images, except for a slight underestimation of the rear wake velocity magnitude for DUST calculation. In the case with Dy = 0, a quite different flow physics can be observed beneath the rear propeller due to the front wake impingment. However,
+it still not significantly affects the slipstream developing from the rear rotor, which appears to be comparable in numerical and experimental images. In spite of a consistent overestimation of the front wake vertical position, the flow field analysis proves the capability and reliability of DUST in correctly catching the physics of the interactional phenomena in a quite large region surrounding the rear propeller. Additionally, the coherence of the numerical flow fields with what expected from the predicted loads demonstrates the usefulness of the numerical tool not only to quantitatively predict detrimental effects, but to capture the flow features.
+Thus, a more detailed explanation of the local effects of the interaction on the rear propeller disk is provided by the sectional distribution of velocity components and effective angle of attack on the propeller blades. This analysis is achieved through several polar plots that display the variations of the variables of interest in the tandem configuration with respect to the corresponding single propeller condition. The rotor disks presented in this section focus on the variations of velocity components, axial velocity u and tangential velocity w respectively and of the local effective angle of attack deriving from the combination of the two. This latter quantity is strictly correlated to the trend of the thrust produced by the propeller, thus serving as a clear indicator to evaluate the rear rotor performance and the impact of the aerodynamic interference. Firstly, it is necessary to understand how the axial and tangential velocity components are influenced by the aerodynamic interaction and how they combine in defining the effective angle of attack of each blade section. For what concerns the coaxial configuration, the pattern of the axial velocity variation presented in Fig. 15a can be explained by considering the rear rotor inflow modifications provided by front propeller slipstream ingestion. Due to the high incidence of the propellers and a quite limited advance ratio, a direct slipstream impingement on the rear rotor is substantially absent except for a minor impact observed in the coaxial case, as will be confirmed later in this work by means of flow field visualizations. Nevertheless, the lack of a direct impact of the slipstream on the rear rotor does not rule out the presence of a certain rotor-wake interaction. Indeed, the presence of the highly inclined wake coming from the front propeller could determine the arise of a non negligible vertical velocity component directed downwards, that would inevitably affect the rear propeller performance. This latter component would produce a decrease of of the angle of attack experienced by the rear rotor compared to single propeller case, thus generating some differences in the sectional distributions. Indeed, a decrease in the propeller angle of attack reduces the transversal component of the velocity impinging on the rotor disk and leads to a weaker disk imbalance between the advancing and the retracting sides. Hence, the advancing side would be responsible of a little lower thrust generation while the aerodynamic loads produced by the retracting part would be subject to a small increment. These variations, also taking into account the presence of a certain phase lag, reflect in differences of axial induced velocity. Hence, being the variation expressed in terms of difference Δu = u − usingle, its pattern turns out to
+9
+
+
+(a) Dy = 0R
+(b) Dy = 0.5R
+(c) Dy = 1R
+Figure 14. Comparison between the flow field visualizations provided by DUST and PIV measurements in terms of averaged in-plane velocity for the tandem propellers configurations with αP = 60◦, J = 0.53 and three different vertical offsets, Dy = 0, 0.5R, 1R.
+10
+
+
+(a) Δu, Dy = 0R
+(b) Δw, Dy = 0R
+(c) Δα, Dy = 0R
+Figure 15. Variations of the axial velocity Δu = u − usingle, tangential velocity Δw = w − wsingle and effective angle of attack Δα = αe f f − αe f f single over the rear propeller disk
+in the tandem configuration at Dy = 0R and αP = 60◦ with respect to the single rotor configuration, J = 0.53.
+be complementary with respect to the u distribution over the single propeller disk. Specifically, in the rear rotor disk a relative decrement of the axial induced velocity is found in the region where u is maximum, i.e in the central-upper part of the advancing side, while an increment is produced where u is minimum, hence in the lower region of the retracting part of the rotor.
+Regarding the distribution of the tangential velocity, see Fig. 15c, this component would reduce due to a lower effective propeller incidence, thus producing a different result when combining with the tangential velocity generated by the rotational speed of the blades. In particular, if a smaller transversal component is present, then the resulting tangential velocity in the rear propeller compared to the isolated case will be lower in the advancing side, as evidenced by the negative delta for 90◦ < Ψ < 180◦, and higher in the retracting half of the disk. The distributions of the two velocity components combine to determine the disk for the local angle of attack reported in Fig. 15d. The first thing to underline is that the upper half of the disk appears to be quite unaffected by large angle variations, leading to a negligible decrease of the thrust generated by this region. In fact, since this disk portion is further from the front propeller slipstream, this is less influenced by the arise of the aforementioned vertical velocity component. Secondly, the Δα plot evidences the predominant role of the axial component variation in producing stronger effects on the effective angle of attack. Indeed, the disk mainly reflects the one in Fig. 15a and evidences strong α reductions in the regions where the axial velocity is maximum, while a modification of the tangential velocity component appears not to significantly influence the Δα distribution. All the regions characterised by negative Δα are responsible for thrust losses, thus for worse performance with respect to the single propeller at αP = 60◦, as observed in Fig. 13.
+After presenting the results for the coaxial configuration, the effects of a change in the vertical separation between the front and the rear propellers are here investigated. The vertical distance is therefore increased to Dy = 0.5R and Dy = 1R, also allowing the disks collected in this section to be compared to the ones presented for the coaxial configuration. The first evidence of the comparison is the strongly reduced impact of the effects related to the potential inflow modifications introduced by the presence of the front propeller. In particular, the sectional distributions shown in Figs. 16,17 and 18 present the same pattern as for the coaxial configuration, but characterised by gradually decreasing intensity. As can be expected, moving the front propeller downwards brings its slipstream further from the rear rotor, thus potentially inducing a lower vertical velocity component in the rear inflow. Thus, the impact in terms of effective angle of attack reduction will be smaller and gradually lower variations will be found on the rear rotor disk. The comparison between the two Dy configurations permits to appreciate the evolution of the sectional distributions while progressively approaching the ones of the single propeller. Indeed, the variations of velocity components and effective angle of attack show increasingly larger portions characterised by substantially null deltas. This trend
+11
+
+
+(a) Δu, Dy = 0.5R
+(b) Δu, Dy = 1R
+Figure 16. Variations of the axial velocity Δu = u − usingle over the rear propeller disk in the tandem configuration respect to the single rotor configuration, αP = 60◦, J = 0.53. is coherent with what evidenced by the experimental curves presented in the first part of this section, which showed the rear propeller performance gradually approaching the one of the single propeller. However, some limited effects of the front slipstream are still visible on the disks, as expected from the values of the numerical CT /CTsingle ratio shown in Fig. 13a never reaching the unit value. Indeed, the distribution of the local angle of attack in Fig. 18b presents a negative variation for 150◦ < Ψ < 240◦ where Δu is maximum, further confirming that α is mainly determined by the axial velocity component. Nevertheless, even in the case of Dy = 0.5R, the effects in terms of angle of attack variations are quite limited, showing a considerable improvement with respect to the configuration with Dy = 0R. In particular, the case with Dy = 1R reveals to be the most advantageous in terms of performance losses.
+Last phase of transition The last stages of the transition are typically performed at high air speeds, close to cruise con
+(a) Δw, Dy = 0.5R
+(b) Δw, Dy = 1R
+Figure 17. Variations of the tangential velocity Δw = w − wsingle over the rear propeller disk in the tandem configuration respect to the single rotor configuration, αP = 60◦, J = 0.53.
+ditions, with low propellers angles of attack. Thus, this section describes results obtained on the configurations with both propellers placed at αP = 0◦ and αP = 15◦, which allow to compare a pure cruise condition with the final phase of the transition manoeuvre. As done before, the experimental performance curves are the starting point of the analysis. Figures 19 and 20 report the curves for thrust and power coefficients as function of advance ratio and vertical separation between propellers respectively for test conditions at αP = 0◦
+and αP = 15◦.
+As previously observed, the curves increasingly approach the ones obtained for single propeller as Dy becomes larger, with the case Dy = 1R appearing quite close to the reference condition, especially when the propeller angle of attack is larger, i.e. when αP = 15◦. A different trend of the interactional effects with J can be observed though. In the previous cases representing the first stage of transition, the curves converged in a single point in J = 0.32 to subsequently diverge for higher
+12
+
+
+(a) Δα, Dy = 0.5R
+(b) Δα, Dy = 1R
+Figure 18. Variations of the effective angle of attack Δα = αe f f − αe f f single over the rear propeller disk in the tandem configuration respect to the single rotor configuration, αP = 60◦, J = 0.53.
+values of advance ratio. Differently, the opposite trend is observed in this flight condition. When the angle of attack is small, the front slipstream is not tilted like for higher incidences and a way larger portion of the rear disk is affected by the impingement of the wake coming from upstream. At small advance ratios, the thrust generated by the propeller at low incidence is maximum, hence the shed slipstream impinging on the rear disk will be much stronger. As a consequence, it will lead to equally higher detrimental effects, as clearly visible for J = 0.32. At the opposite extreme, for J = 0.95, the front propeller almost works in windmill conditions and generates a very low amount of thrust and a consequent much weaker slipstream. Hence the rear propeller, even if fully invested by the front wake, experiences a very small modification of the inflow conditions, as evidenced by the negligible variations found in the generated thrust and in the required power. As expected, the experimental findings show that increasing the propeller incidence the interactional effects turn out to be
+0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+0
+0.05
+0.1
+0.15
+0.2
+(a)
+0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+0
+0.02
+0.04
+0.06
+0.08
+0.1
+0.12
+0.14
+0.16
+(b)
+Figure 19. Thrust and power coefficients curves for the single propeller and the rear one in tandem configurations with different vertical offsets and αP = 0◦.
+quite smaller over the whole range of investigated vertical distances. This is due to the fact that tilting the front propeller, its slipstream will be slightly dragged downward, and will determine a smaller impingement region on the rear disk and thus weaker detrimental effects.
+For the purposes of comparison with DUST simulations results, an advance ratio of J = 0.75 was selected as can be considered the most realistic condition for an eVTOL approaching cruise operations, also representing the maximum efficiency velocity in cruise. Figures 21 and 22 display the comparison between experimental and numerical loads coefficients as function of vertical separation for αP = 0◦ and
+αP = 15◦ at J = 0.75.
+For both the tilting angles, the coaxial configuration turns out to be the most detrimental one, while a larger vertical separation results in a significant performance recovery by the rear propeller. A good accordance between the experimental and numerical results was found, particularly in the coaxial configuration the numerical solver is able to better capture the loads acting on the rear propeller when the angle of attack αP is higher, thus with lower rotor-wake interaction. On the
+13
+
+
+0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+0
+0.05
+0.1
+0.15
+0.2
+(a)
+0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+0
+0.02
+0.04
+0.06
+0.08
+0.1
+0.12
+0.14
+0.16
+(b)
+Figure 20. Thrust and power coefficients curves for the single propeller and the rear one in tandem configurations with different vertical offsets and αP = 15◦.
+contrary, the detrimental effects at Dy = 0.5R appear to be better caught in the case of lower value of propeller angle of attack. Lastly, in the case with Dy = 1R the interactional effects are found to be accurately predicted at both propeller incidences. Overall, the interactional phenomena appear to be numerically slight overestimated in all cases, except for the coaxial case with αP = 0◦ which reveals a certain underestimation. Nevertheless, the trend followed by thrust and power coefficients while increasing Dy is correctly captured by the numerical solver.
+A further validation of the DUST approach is shown by the flow field comparison presented in Fig. 23 for the test case with αP = 15◦. The best accordance is found in the coaxial case, as expected from the good correspondence between the detrimental effects reported in terms of thrust coefficient ratios in Fig.22. In the comparison between the two visualizations shown in Fig. 23a, DUST appears to accurately capture the region of impact of the slipstream on the lower part of the rear propeller, net of a slight overestimation of its vertical position. Indeed, as proven by the red region beneath the rear propeller slipstream in the PIV image, the front wake is
+0 0.5 1 1.5
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+(a)
+0 0.5 1 1.5
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+(b)
+Figure 21. Experimental and numerical ratios of rear propeller thrust and power coefficients in the three tandem configurations with respect to single propeller coefficients at αP = 0◦ and J = 0.75.
+seemingly characterised by a higher inclination with respect to what found on the left. The intensity of the wake coming from upstream appears to be quite comparable between the two images, while DUST returns a slight underestimation of the rear propeller slipstream intensity. Furthermore, from the numerical flow field it is possible to appreciate the different intensity of the lower and upper parts of the front slipstream produced as a consequence of phase lag.
+Regarding the case with Dy = 0.5R, the front propeller slipstream moving downward with respect to the coaxial configuration is clearly visible in the left picture in Fig. 23b. The upper part of the front wake now impinges on the spinner of the nacelle and is then directed towards the higher half of the rear rotor, as clearly visible from the numerical flow field. In turn, the lower part of the front wake withdraws from the rear propeller inflow, sensibly reducing the region of disk affected by wake impingement. Once more, the smaller numerical slipstream inclination with respect to the PIV image is highlighted, as also visible from the larger blue region found
+14
+
+
+0 0.5 1 1.5
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+(a)
+0 0.5 1 1.5
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+(b)
+Figure 22. Experimental and numerical ratios of rear propeller thrust and power coefficients in the three tandem configurations with respect to single propeller coefficients at αP = 15◦ and J = 0.75.
+beneath the rear wake in the right image. Both numerical and experimental approaches show a good correspondence in the rotor inflow and reveal the absence of a wake impact on the lower half of the rotor on the symmetry plane considered in the image. Still, the visualization resulting from the numerical simulation shows a wake developed by the rear rotor which is comparable and coherent in intensity with the experimental findings.
+For what concerns the last case with Dy = 1R, the comparison presented in Fig. 23c returns a slightly lower correspondence between the numerical and the experimental approaches. Indeed, in addition to the numerical overestimation of the front wake vertical position, the rear rotor slipstream in the PIV image appears to have a higher intensity. The lower part of the front slipstream moves further downward, while the upper region, in both numerical and experimental visualizations, now affects only the lower side of the rear disk, thus significantly decreasing the overall detrimental effects.
+As previously done, a more detailed explanation of the lo
+cal effects of the interaction on the rear propeller disk is provided by the sectional distribution of velocity components and effective angle of attack on the propeller blades. The sectional characteristics discussed before over the disk are reported in Fig.24 for the two coaxial configurations simulated with DUST, with αP = 0◦ and αP = 15◦. The first thing which can be immediately appreciated is the loss of symmetry over the disk when the propellers are placed with a certain incidence. Indeed, the advancing side of a propeller with αP > 0◦ generates more thrust compared to the retracting side. As a consequence, the slipstream that develops from the former will be stronger and will result in a larger modification of the inflow of the rear propeller. Therefore, while this latter is perfectly symmetric when αP = 0◦, the same cannot be said for the two propellers placed with a certain incidence.
+Focusing on the case with αP = 0◦, Figs. 24a, 24c and 24e report respectively the change in axial velocity, tangential velocity and effective angle of attack with respect to the single propeller configuration. For this flight condition the rear propeller is completely invested by the slipstream of the front one. As a result, this configuration appears to be the worst in terms of loss of performance, as depicted in Figure 21. The polar disks representation provides useful information on the regions of the front propeller responsible of the highest thrust generation, that correspond to the rear disk zones affected by the largest variations in axial and tangential velocities. The generated thrust should increase monotonically from the root to the tip of the blade, hence the intensity of the wake shed by the front propeller reflects this trend. Therefore, the highest variations with respect to the single propeller test case can be found on the outer part of the rear disk. However, this hypothesis is not confirmed by Figs. 24a and 24c, in which the outer region appears not to be affected by any velocity change. This apparent inconsistency may be easily explained by considering the contraction of the slipstream of the front propeller while moving downstream, which decreases its sectional area and thus the region of the rear rotor affected by its impingement. The rest of the disk is thus affected by a positive variation of axial velocity, as well as by a decrease of the tangential component experienced by the blades, being the propellers co-rotating. As a consequence, as shown by Fig. 24e, almost the entire disk is subject to a relevant decrease of the effective angle of attack, especially in the regions where the largest axial velocity increase is found. This distribution leads to a significant decrement in the thrust generated by the rear propeller.
+Moving to the case with αP = 15◦, the disks show a loss of symmetry due to both the non-uniform slipstream coming from the front propeller and the intrinsic imbalance between the two sides of a rotor placed with a certain incidence. In particular, a positive axial velocity variation with a maximum of 3.5m/s is found for 60◦ < Ψ < 210◦, while an almost negligible delta is obtained for 270◦ < Ψ < 360◦. Additionally, the disk shows a certain counter-clockwise rotation of the Δu distribution, caused by the phase lag affecting the front propeller. Figure 24d shows the variation of tangential velocity having a peculiar distribution with respect to the axial velocity
+15
+
+
+(a) Dy = 0R
+(b) Dy = 0.5R
+(c) Dy = 1R
+Figure 23. Comparison between the flow field visualizations provided by DUST and PIV measurements in terms of averaged in-plane velocity for the tandem propellers configurations with αP = 15◦, J = 0.75 and three different vertical offsets, Dy = 0, 0.5R, 1R.
+16
+
+
+(a) Δu, αP = 0◦ (b) Δu, αP = 15◦
+(c) Δw, αP = 0◦ (d) Δw, αP = 15◦
+(e) Δα, αP = 0◦ (f) Δα, αP = 15◦
+Figure 24. Variations of the axial velocity Δu = u − usingle, tangential velocity Δw = w − wsingle and effective angle of attack Δα = αe f f − αe f f single over the rear propeller disk in the tandem configurations at Dy = 0R and αP = 0◦, 15◦ with respect to the single rotor configuration, J = 0.75.
+17
+
+
+one. To clarify this different behaviour, it is necessary to better highlight the features of the slipstream impinging on the rear rotor. Indeed, the front propeller releases a wake which has a rotational component in the disk plane and an axial component which would advect the wake in the same direction as the rotor axis in absence of free-stream velocity. In the case of a propeller immersed in a flow like the one under analysis, the wake is dragged downstream and the axial velocity imparted by the rotor combine with the free-stream velocity. As a consequence, the slipstream turns out to be no more parallel to the rotor axis, but directed more horizontally. In the present case, with a high value of advance ratio, this effect is amplified and the slipstream of the front propeller appears to be almost completely horizontal. Figure 24b confirms this behaviour, showing almost the entire rear propeller disk affected by the impingement of the wake. This said, the slipstream coming from the front rotor can be seen as a rotational velocity in the rotor disk plane advected by an horizontal velocity, higher than the free-stream one thanks to the acceleration provided by the propeller. Hence, the variation of horizontal velocity inside the wake would have a component orthogonal to the rear propeller disk, which is the one reported in Fig. 24b and a component in the rear rotor plane. As a consequence, the disk displaying Δw in Fig. 24d would be a complex composition of the variations given by the rotational part of the wake and the ones that are related to the in-plane contribution of the wake horizontal velocity. Additionally, the distribution of intensity of the slipstream developing from the different regions of the front rotor would affect the Δw pattern as well. For the sake of clarity, the two contributions are shown separately in Fig. 25. Focusing on Fig. 25a, the contribution Δwwfront given by the rotational velocity imparted by the front propeller is firstly displayed. The maximum decrease of tangential velocity is found to be located in correspondence of the front disk region responsible of the largest thrust generation, which thus sheds a more powerful wake. Figure 25b shows instead the contribution related to the positive variation of the horizontal velocity impinging on the rotor disk. As an effect of the increase in the horizontal velocity, the rear rotor experiences an increment of the tangential component in the advancing part and a decrement in the retracting one. Differently from the single propeller case, due to the non-uniformity of the wake intensity over the disk, this contribution is much stronger in the region of the disk with the highest loads generation. As a consequence, the positive Δwufront affecting the advancing side will be way larger than the decrement found in the retracting one. Combining the two contributions displayed in Fig. 25, the overall variation of tangential velocity in Fig. 24d can be therefore explained. Indeed, the combination of the axial and tangential velocities produces the distribution of the disk plotting the variation of the effective angle of attack reported in Fig. 24f. In particular, the disk reflects the same distribution found for the u variation, confirming this latter as the dominant component in determining α variations. The disk shows a negative Δα where Δu is maximum, for 60◦ < Ψ < 210◦, as well as a negligible variation for 240◦ < Ψ < 360◦ where Δu is substantially null. Eventually, the comparison between
+(a) Δww f ront
+(b) Δwu f ront
+Figure 25. Variations of the tangential velocity over the rear propeller disk in the tandem configuration at Dy = 0R
+and αP = 15◦ with respect to the single rotor configuration, J = 0.75: contributions given by the rotational velocity (a) and the horizontal velocity (b).
+the disks displaying the effective angle of attack variations for αP = 0◦ and αP = 15◦ clearly highlights the loss of symmetry in the Δα distribution. Indeed, the higher incidence configuration shows a highly affected region in the lower part of the advancing side, while appears almost unperturbed on the upper part of the retracting one.
+The effects of the vertical separation between propellers are then discussed in the following. As already discussed for the first stage of the transition, detrimental effects are found to decrease for higher vertical separations. Additionally, the cases with propellers placed at zero incidence tend to show a more relevant loss of performance over the whole range of investigated vertical distances.
+First, the zero incidence configuration with Dy = 0.5R can be analysed looking at Fig. 26a. Focusing on the distribution of Δu, a relevant effect of the front propeller slipstream is clearly visible on the rear rotor. Indeed, almost the entire lower part of
+18
+
+
+(a) Δu, Dy = 0.5R (b) Δu, Dy = 1R
+(c) Δw, Dy = 0.5R (d) Δw, Dy = 1R
+(e) Δα, Dy = 0.5R (f) Δα, Dy = 1R
+Figure 26. Variations of the axial velocity Δu = u − usingle, tangential velocity Δw = w − wsingle and of the effective angle of attack Δα = αe f f − αe f f single over the rear propeller disk in the tandem configuration with respect to the single rotor
+configuration, αP = 0◦, J = 0.75.
+19
+
+
+(a) Δu, Dy = 0.5R (b) Δu, Dy = 1R
+(c) Δw, Dy = 0.5R (d) Δw, Dy = 1R
+(e) Δα, Dy = 0.5R (f) Δα, Dy = 1R
+Figure 27. Variations of the axial velocity Δu = u − usingle, tangential velocity Δw = w − wsingle and of the effective angle of attack Δα = αe f f − αe f f single over the rear propeller disk in the tandem configuration with respect to the single rotor
+configuration, αP = 15◦, J = 0.75.
+20
+
+
+the disk is invested by the wake coming from upstream, while only a small part of the upper half of the rotor is affected by the impingement. Two distinct regions appear instead not to be subject to the influence of the front propeller, namely the upper part of the disk and the central lower one. The former is not invested by the wake since the front propeller is vertically shifted by a quantity 0.5R, while the latter clearly shows the footprint of the front propeller nacelle. Moving to Fig. 26e, a certain correspondence can be found between the highest axial velocity variations and the most relevant decrements of effective angle of attack experienced by the blades. Increasing the vertical separation Dy, as displayed in Fig. 26b, the slipstream of the front propeller moves downward and affects only the lower half of the rear propeller. Indeed, this region is characterised by a significant increase of the axial velocity experienced by the rotor blades. Again, it is possible to recognize a part of the footprint of the front nacelle on the rear disk, in correspondence of which no axial acceleration is found. A remarkable feature can be noted in Fig. 26d, where the variation of tangential velocity is shown. Due to the presence of two co-rotating propellers and a certain vertical separation, the upper side of the front slipstream impinges on the lower part of the rear rotor, thus the horizontal components of the rotational velocities of the rear blades and of the front wake are directed in the opposite way. Hence, the central part of the disk showing Δw evidences an increase of tangential velocity, especially in the region close to the blades root, while in the outer part the footprint of the front nacelle leads to an almost null Δw.
+Once again, focusing on the disk showing the variation of effective angle of attack in Fig. 26f, this latter is coherent with the distribution of Δu already discussed and underlines a decrease of α where Δu is higher. Furthermore, despite the non negligible increase of tangential velocity in the central region of the lower side of the disk, this appears to be not relevant enough to determine an increment of α. To conclude, the comparison between Figs. 24e, 26e and 26f immediately explains the trend shown by the curve in Fig. 22. Indeed, as a consequence of the front propeller slipstream moving more and more downward for higher Dy, the rear rotor disk is decreasingly affected by a decrement of effective angle of attack. Eventually, the increment of Dy leads to a progressive recovery of rear propeller performance.
+For the case with αP = 15◦, shown in Fig. 27, the advance ratio turns out to be high enough to make the front propeller slipstream almost horizontal. This result is further confirmed by the vertical position of impingement that remains quite the same as in the αP = 0◦ configuration. Differently from the previous case, being the propeller placed with a certain incidence, the wake coming from the front rotor is stronger in the region shed by the advancing side and presents a certain amount of counter-clockwise rotation due to phase lag. This effect can be easily noted in Fig. 27a, where the lower half of the advancing side of the rear rotor appears to be affected by a much larger variation of axial velocity. For the higher value of Dy = R instead, the strongest part of the wake shed by the front propeller no more impinges on the rear rotor, which is
+now only affected by the weaker part of the incoming slipstream. As a result, smaller u variations are visible in Fig. 27b. For what concerns the distribution of the tangential velocity, the interaction between the upper and lower sides of the front wake and the rear disk respectively produces the positive Δw clearly visible in Fig. 27d. In conclusion, for both vertical separations, the variations of effective angle of attack reflect the distributions of Δu and show a significant decrease of α in the regions of impingement of the front propeller slipstream. Comparing Figs. 24f, 27e and 27f it is clear that the regions affected by the front wake impact get increasingly smaller, thus leading to the progressive reduction of detrimental effects as shown in Fig. 22 and already evidenced for the case with αP = 0◦.
+CONCLUSIONS
+The aerodynamic interaction phenomena occurring between tandem propellers during the transition manoeuvre typical of an eVTOL flight envelope was deeply investigated and analysed both through experimental and numerical activities. A comprehensive experimental database including both propellers loads measurements and PIV surveys were generated for a tandem propeller test case with disks overlapping. The mid-fidelity solver DUST was used to numerically reproduce some selected configurations tested in the wind tunnel, with the aim to prove its potentialities as a valuable tool to drive the preliminary design choices and to extend the set of information collected experimentally.
+The presentation of the most significant results are distinguished between the main working conditions of the transition stages, to be representative of the most realistic and viable operations a typical eVTOL vehicle is subject to during its flight envelope. For what concerns the first phase of the manoeuvre, characterised by the lowest free-stream velocity, a substantially absent rotor-rotor interaction is found and confirmed by means of the flow field visualizations. For this reason, the rear propeller behaviour replicates the single propeller behaviour, without showing any loss in thrust and performance. An additional analysis is conducted on a slightly higher advance ratio that highlights some detrimental effects on the rear propeller and reveals the arise of interactional phenomena. In this case, the comparison between different vertical offset configurations clearly evidences the beneficial effects of an increment of the propellers distance, with an increasingly partial recovery of the single propeller performance.
+In the analysis of the final stage of the transition, the effects of a non-null propeller incidence are investigated through the comparison with the pure cruise condition. As expected, the tandem coaxial configuration at zero incidence results to be the worst one in terms of performance losses. Indeed, the rear rotor is completely invested by the front slipstream that produces an overall reduction of the blades effective angle of attack on the rear disk. An increase in the vertical separation produces lower negative impacts on performance. The introduction of a certain propeller incidence produces beneficial effects in terms of mitigation of the performance decrement.
+21
+
+
+Nonetheless, the high value of the free-stream velocity typical of this phase makes the front propeller slipstream to be horizontally advected downstream, thus generating complex aerodynamic phenomena and impacting heavily on the rear rotor. For this reason, the mitigation effect is quite limited, and the results closely resemble the ones found for the null incidence configuration. Even in this case, the introduction of a certain vertical distance turns out to be an advantageous and convenient design choice. In all cases, the numerical flow field visualizations turn out to be an useful tool to observe and understand the evolution of the front propeller slipstream, as function of the rotor incidence and the free-stream velocity. Moreover, they confirm the gradually reducing impingement region on the rear rotor for increasing values of vertical distance.
+The present results could be considered useful for a preliminary design phase of a tiltwing eVTOL aircraft, as show that higher vertical distances between propellers guarantee satisfactory performance despite the presence of mutual interference phenomena. Furthermore, this work demonstrates that particular attention must be paid to the flight regime, since the free-stream velocity heavily affects the propulsive system behaviour.
+REFERENCES
+1. Zhou, W., Ning, Z., Li, H., and Hu, H., “An experimental investigation on rotor-to-rotor interactions of small UAV propellers,” 35th AIAA applied aerodynamics conference, 2017.
+2. Stokkermans, T. C., Usai, D., Sinnige, T., and Veldhuis, L. L., “Aerodynamic interaction effects between propellers in typical eVTOL vehicle configurations,” Journal of Aircraft, Vol. 58, (4), 2021, pp. 815–833.
+3. Droandi, G., Gibertini, G., Grassi, D., Campanardi, G., and Liprino, C., “Proprotor–wing aerodynamic interaction in the first stages of conversion from helicopter to aeroplane mode,” Aerospace Science and Technology, Vol. 58, 2016, pp. 116 – 133.
+4. Zanotti, A., and Algarotti, D., “Aerodynamic interaction between tandem overlapping propellers in eVTOL airplane mode flight condition,” Aerospace Science and Technology, Vol. 124, 2022, pp. 107518. DOI: https://doi.org/10.1016/j.ast.2022.107518.
+5. Tugnoli, M., Montagnani, D., Syal, M., Droandi, G., and Zanotti, A., “Mid-fidelity approach to aerodynamic simulations of unconventional VTOL aircraft configurations,” Aerospace Science and Technology, Vol. 115, 2021, pp. 106804. DOI: https://doi.org/10.1016/j.ast.2021.106804.
+6. Polaczyk, N., Trombino, E., Wei, P., and Mitici, M., “A Review of Current Technology and Research in Urban On-Demand Air Mobility Applications,” Proceedings of the Vertical Flight Society’s 6th Annual Electric VTOL Symposium, 29–31 January 2019.
+7. Droandi, G., Syal, M., and Bower, G., “Analysis of the Interactional Aerodynamics of the Vahana eVTOL Using a Medium Fidelity Open Source Tool,” Proceedings of the VFS Aeromechanics for Advanced Vertical Flight Technical Meeting, January 21-23 2020.
+8. Cottet, G.-H., Koumoutsakos, P. D., Petros, D., et al., Vortex methods: theory and practice, Cambridge University Press, 2000.
+9. Winckelmans, G. S., Topics in vortex methods for the computation of three-and two-dimensional incompressible unsteady flows, Ph.D. thesis, California Institute of Technology, 1989.
+10. Drela, M., “XFOIL: An Analysis and Design System for Low Reynolds Number Airfoils,” Low Reynolds Number Aerodynamics, edited by T. J. Mueller, 1989.
+11. Viterna, L. A., and Janetzke, D. C., “Theoretical and experimental power from large horizontal-axis wind turbines,” Technical report, NASA Lewis Research Center, Cleveland, OH (United States), 1982.
+12. Pepe, C., and Velo, A., Experimental and Numerical Investigation of Aerodynamic Interaction between Tandem Propellers in Conversion Manoeuvre, Master’s thesis, Politecnico di Milano, 2023.
+13. Ortun, B., Boisard, R., and Gonzalez-Martino, I., “Inplane airloads of a propeller with inflow angle: prediction vs. experiment,” 30th AIAA Applied Aerodynamics Conference, 2012.
+14. Stokkermans, T. C., and Veldhuis, L. L., “Propeller performance at large angle of attack applicable to compound helicopters,” AIAA Journal, Vol. 59, (6), 2021, pp. 2183–2199.
+22

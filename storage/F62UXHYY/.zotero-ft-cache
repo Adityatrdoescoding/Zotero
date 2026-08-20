@@ -1,0 +1,69 @@
+Rotary Wing Aerodynamics
+(AE 667)
+
+
+Tail Rotor Design
+
+
+Functions
+o Provide anti torque reaction
+o Provide yaw control.
+o Provides yaw stability.
+
+
+Design Parameters
+o Diameter / Disk Loading
+o Tip speed
+o Number of blades
+o Twist
+o Pusher or Tractor?
+o Direction of rotation
+o Location
+
+
+Design Parameters
+o Diameter/Disk Loading
+o Large diameter/Low Disk Loading: Reduces power required
+o Small diameter/High Disk Loading: Lower weight; smaller
+problems with helicopter c. g. position; better ground clearance; better clearance with main rotor, horizontal stabilizer and tail boom.
+o Aim for smallest possible diameter that meets all design
+requirements.
+o Tip speed
+o Low tip speed : minimizes noise and compressibility effects.
+Requires higher torque.
+o High tip speed: minimizes component weight and stall effects. Higher noise, higher control forces.
+
+
+Design Parameters
+o Number of blades
+o Fewer blades: cheaper to build and maintain
+stubby blades & higher tip losses
+o Thumb rules:
+o Blade aspect ratio between 5 and 9.
+o Solidity between 0.03 and 0.06.
+o Twist
+o Similar to main rotor blade.
+o High twist is good for hover, but penalizes forward flight
+performance.
+o < 10 degrees twist is used.
+
+
+Design Parameters
+o Pusher or Tractor?
+o Net thrust on tractor less than on pusher.
+Thrust
+Wake towards the fin
+Thrust
+Wake away from fin
+PUSHER TRACTOR
+
+
+Design Parameters
+o Direction of rotation :“AFT AT THE TOP”
+o Why?
+o Found to be more effective...
+o Main-rotor tail-rotor interaction effect
+
+
+Design Parameters
+o Tail rotor position w.r.t main rotor and C.G:

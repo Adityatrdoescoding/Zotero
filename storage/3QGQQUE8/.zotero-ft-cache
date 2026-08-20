@@ -1,0 +1,448 @@
+Rotary Wing Aerodynamics
+(AE 667)
+
+
+Rotor Hover Performance
+Prediction Methods
+
+
+Contextual definition of Performance
+o Range of Thrust for a rotor (stall limits)
+o Power consumption at a given thrust
+Will define Figure of Merit (FM) connecting power with thrust
+
+
+Prediction Theories
+o Momentum Theory (MT)
+o Blade Element Theory (BET)
+o Blade Element Momentum Theory (BEMT)
+o Vortex Theory
+o Prescribed wake method
+o Free wake method
+
+
+Momentum Theory
+
+
+Significance
+o Developed in 1865
+o Uses simple Mass, Momentum and Energy balance, flow details not covered
+o Easy ‘back of an envelop’ type of calculations
+o Can predict hover and steady climb (no edgewise component)
+
+
+Assumptions
+o Rotor modeled as an actuator disk (no description of blades, number of blades, etc)
+o The actuator disk adds momentum to the flow for generating force
+o Flow is:
+o Incompressible, Steady, Inviscid, Irrotational
+o Flow is 1-Dimensional (totally uniform over the rotor disk)
+o No Swirl
+
+
+Control Volume
+V
+• V : Climb velocity • v : Induced velocity • A : Rotor Disk Area • S : Total control volume section area
+• Station 1: Far upstream • Station 2: Just above the rotor • Station 3: Just below the rotor • Station 4: Far downstream
+Station 1
+Station 2
+Station 3
+Station 4
+V+v2
+V+v3
+V+v4
+A
+V
+V
+S
+Rotor
+mሶ 1 mሶ 1
+
+
+Same thing as a propeller
+V V + v4
+Aircraft Propeller
+
+
+Mass Conservation
+oMass Inflow
+o through top = ρVS
+o through side =
+oMass Outflow
+o through bottom
+oInflow = Outflow:
+oFlow through Rotor Disk:
+o Therefore, v2 = v3 = v
+1
+m
+V (S − A4 ) + (V + v4 ) A4
+m1 = v4 A4
+
+()
+( )( )
+44
+23
+m AV v
+m AV v AV v
+=+
+= += +
+
+
+
+
+
+
+Momentum Conservation (Global)
+oMomentum Inflow
+o through top = ρV2S
+o through side =
+oMomentum Outflow
+o through bottom
+oNo pressure difference above and below
+oThrust = Outflow – Inflow:
+m1V = A4v4V
+
+4
+2 44
+V 2 (S − A ) + (V + v ) A
+T A4 (V v4 )v4 mv4
+= + =
+
+
+Momentum Conservation (at Disk)
+oMomentum Inflow:
+o ρ(V+v)2A
+oMomentum Outflow
+o ρ(V+v)2A
+oThrust = A(P3 – P2)
+P2
+P3
+V+v
+V+v
+
+
+P2
+P3
+V+v
+V+v
+1
+2
+3
+4
+V+v
+V+v4
+V
+P2
+P3
+P
+P
+V+v
+At Disk Global
+
+
+Energy Conservation
+oOn a particle going through the disk, Bernoulli can be applied between 1-2 & 3-4 (Why?)
+()
+() ( )
+4
+4 32
+2
+4
+2
+3
+2
+2
+2
+v
+2
+v
+v
+2
+1
+v
+2
+1
+2
+1
+v
+2
+1
+
+
+
+− =+
++ + =+ +
++ + =+
+
+
+pp V
+pV p V
+p V pV
+
+
+
+1
+2
+3
+4
+V+v
+V+v4
+V
+p2
+p3
+p
+p
+V+v
+
+
+Combining
+p3 − p2 = ρ V + v4
+2 v4
+∴ T = A p3 − p2
+= ρA V + v4
+2 v4
+Also, T = ρA V + v v4
+Hence:v = v4/2
+
+
+Finding Induced Velocity
+() ()
+A
+T
+A
+VT
+T AV v AV v v
+
+
+
+2
+v
+In Hover, climb velocity V 0
+2 22
+V
+v
+v2
+2
+4
+=
+=
++
+
+
+
+
+=+
+= += +
+
+
+Ideal Power Consumption
+Tv
+A
+T
+= T 2 =
+In hover, ideal power
+()
+( )( )
+
+
+
+
+
+
+
+ +
+
+
+
+
+=+
+= += +
+= +−
+=
+A
+VV T
+T
+m V TV
+mm
+P
+2 2 2
+2v v v
+V
+2
+1
+V 2v
+2
+1
+Energy flow out - Energy flow in
+2
+2
+2
+
+
+
+
+Which losses did we ignore?
+Real power requirement to be more because of:
+o Non-uniformity of flow
+o Tip losses
+o Viscous losses
+o Swirl losses
+o Compressibility effects (shocks)
+
+
+After-Class Activity
+Demonstrate by a numerical example that nonuniformity of flow through the rotor leads to more power consumption for a given rotor disk area and thrust demand
+Uniform Flow Case A, T, PU
+Non-Uniform Flow Case A, T, PNU
+
+
+Non-Dimensional Forms
+• CT = Thrust Coefficient = T
+ρA ΩR 2
+• CP = Power Coefficient = P
+ρA ΩR 3
+• CQ = Torque Coefficient = Q
+ρAR ΩR 2
+In hover, Power = Angular velocity x Torque
+P = ΩQ
+CP = CQ
+
+
+Figure of Merit
+P
+T T
+C
+C
+C
+T
+FM
+2
+P
+v
+Actual Power in Hover
+Ideal Power in Hover
+==
+=
+Defined for Hover case only
+(Hence a measure of hover performance only)
+In the range of 0.65 – 0.8 for Helicopter rotors
+
+
+Non-Dimensional Forms
+P
+T T
+i
+C
+C
+C
+T2
+P
+v
+FM Figure of Merit
+2
+C
+2A
+T
+R
+1
+R
+v
+Induced inflow T
+= ==
+=
+
+=
+
+= =
+
+
+
+Other terms
+oPower Loading = Thrust / Power
+o Pure helicopters: 3.7 – 6.1 kgf/kW
+o Tilt rotors: 1.2 – 3.7 kgf/kW
+o VTOL fighter jets: < 1.2 kgf/kW
+oDisk Loading = Thrust / Disk Area
+o Pure helicopters: 4.8 – 9.6 kgf/m2
+o Tilt rotors: 19.2 – 38.4 kgf/m2
+o VTOL fighter jets: in the order of 2500 kgf/m2
+
+
+Accounting for viscous losses
+Ωr
+v D’
+R
+dr
+
+
+Accounting for viscous losses
+oD’ = Drag force per unit blade span (N/m) =
+oPower consumed by drag force at a unit blade section at radius r = D’(Ωr)
+[neglecting v over Ωr]
+Ωr
+v D’
+()
+Cd ( r )c Cd ( r) c
+2
+2
+2
+2
+1
+v
+2
+1   +  
+
+
+Accounting for viscous losses
+oOverall viscous drag power loss
+Ωr
+v D’
+CP,Pr ofile = CP,0 = PPr ofile
+ρA ΩR 3 = bcR
+πR2
+Cd
+8 = σ Cd
+8 where σ = Solidity = Blade area / Disk
+R
+dr
+PProfile = b න
+root
+tip
+D′ Ωr dr (here b = number of blades)
+= bන
+0
+R1
+2 ρcCd Ωr 2Ωrdr
+≅ bc
+8 ρCd ΩR 3R (for rectangular blade, constant value of Cd)
+
+
+Solidity (σ)
+b
+b
+
+
+Total Power
+Total power = Induced Power + Profile Power
+CP,induced = CT
+CT
+2 ; CP,Pr ofile = σ Cd
+8
+CP = CT
+CT
+2 + σ Cd
+8
+Accounting for other sources of power losses through factor k
+CP = κCT
+CT
+2 + σ Cd
+8 where k ≈ 1.15
+
+
+Limitations of Momentum Theory
+oNot sufficient to design rotors
+oDoes not account for:
+o Number of blades
+o Airfoil characteristics
+o Blade shape (taper, twist, sweep)
+o Compressibility effects

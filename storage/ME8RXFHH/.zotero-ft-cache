@@ -1,0 +1,718 @@
+See discussions, stats, and author profiles for this publication at: https://www.researchgate.net/publication/372359200
+Unmanned Wingless Rotorcraft Scaling
+Article in Journal of Aircraft · July 2023
+DOI: 10.2514/1.C037299
+CITATIONS
+4
+READS
+687
+5 authors, including:
+Dima Usov The University of Manchester
+7 PUBLICATIONS 12 CITATIONS
+SEE PROFILE
+Antonio Filippone The University of Manchester
+166 PUBLICATIONS 2,076 CITATIONS
+SEE PROFILE
+Ben Parslew The University of Manchester
+36 PUBLICATIONS 180 CITATIONS
+SEE PROFILE
+Peter Michael Hollingsworth The University of Manchester
+55 PUBLICATIONS 861 CITATIONS
+SEE PROFILE
+All content following this page was uploaded by Dima Usov on 02 August 2023.
+The user has requested enhancement of the downloaded file.
+
+
+Unmanned Wingless Rotorcraft Scaling
+Iuliu-Cezar Ardelean∗, Dima Usov†, Antonio Filippone‡, Ben Parslew§, Peter Hollingsworth¶ The University of Manchester, Manchester, M13 9PL, United Kingdom
+The work addresses the allometric scaling of unmanned rotorcraft. Compound unmanned
+rotorcraft were not considered in this study. A population of 93 unmanned rotorcraft is compiled
+into a single dataset comprising size and performance parameters, including maximum take-off
+weight, maximum payload weight, battery mass, battery capacity, rotor diameter, endurance,
+range, maximum speed, and operational ceiling. Rotorcraft are grouped based on rotor
+configuration, propulsion type, and perceived application to study the clustering of the data
+points. An apparent performance limit for unmanned electric rotorcraft is found at 120 minutes
+endurance and 70 kilometers range; higher range and endurance are currently only achievable
+using thermal propulsion systems. Further, the regression analysis links size and performance
+parameters in easy-to-use expressions for the preliminary design of unmanned rotorcraft. It is
+determined that size parameters have a stronger correlation with maximum take-off weight
+than performance parameters do. Comparative analysis suggests that unmanned rotorcraft
+cannot be treated as a sub-class of conventional helicopters due to distinct scaling behaviors. A
+comparison with theoretical models based on first-order physics principles highlights the major
+role of low-Reynolds number aerodynamic effects in rotorcraft scaling.
+Nomenclature
+A = net actuation area; as defined in Eq. (2), m2
+D = rotor diameter, m
+Eb = battery energy capacity, Wh
+g = gravitational acceleration, m s−2
+H = ceiling altitude, m
+Ik = power to kinetic energy conversion coefficient, s
+Ip = power to potential energy conversion coefficient, s
+k = generic coefficient of proportionality
+∗Ph.D. Student, Department of Mechanical, Aerospace & Civil Engineering. †Ph.D. Student, Department of Mechanical, Aerospace & Civil Engineering. E-mail: dmitrij.usov@manchester.ac.uk. ‡Professor, Department of Mechanical, Aerospace & Civil Engineering. E-mail: a.filippone@manchester.ac.uk. §Senior Lecturer, Department of Mechanical, Aerospace & Civil Engineering. ¶Senior Lecturer, Department of Mechanical, Aerospace & Civil Engineering.
+
+
+KE = kinetic energy; 1
+2 mV2, J
+m = generic mass, kg
+mb = battery mass, kg
+NP = number of rotors
+P = rotor power, W
+Pe = battery discharge power, W
+Pmax = maximum available power, W
+Pshaft = rotor shaft power, W
+Pideal = ideal induced power in hover at sea level; as defined in Eq. (3), W
+Pr = maximum available power to shaft power ratio; as defined in Eq. (6)
+PE = potential energy; mgH, J
+R2 = coefficient of determination
+Re = Reynolds number
+S = range, km
+t = maximum endurance time, min
+T = rotor thrust, N
+V = maximum speed, km h−1
+W = maximum take-off weight, kg
+Wp = maximum payload weight, kg
+ρ = density, kg m−3
+κ = power correction factor
+κe = discharge to ideal induced power ratio; Pe/Pideal
+ ̃
+μ3 = moment coefficient of skewness
+σ = standard deviation
+I. Introduction
+T
+he popularity of the "camera drone" (unmanned rotary-wing system for aerial photography and videography) made
+the unmanned rotorcraft into a mass-produced consumer product. This success story, as well as technological
+advancements in electronics components miniaturization, batteries, and autopilots, sparked the interest of industry
+and academia to explore other applications where unmanned rotorcraft can be used. Consequently, there is now an
+abundance of commercial off-the-shelf unmanned rotorcraft spanning several orders of magnitude in size, but their
+scaling behavior has not been studied sufficiently. This work addresses the allometric scaling of unmanned rotorcraft.
+2
+
+
+The analysis is based on a population of commercially available rotorcraft and four prototypes of cargo wingless
+multirotors for urban air mobility. The objective is to determine the regression between rotorcraft primary performance
+and size parameters and contrast these with conventional rotorcraft data.
+A similar paper by Lorenz [1] aimed to describe the allometric relations for fixed-wing, rotary-wing, and lighter-than
+air vehicles. Lorenz compiled data on 64 rotorcraft, with a maximum take-off weight (MTOW) from 0.1 kg to 50 000 kg,
+and only ten of these had a mass less than 500 kg. Lorenz collected aircraft MTOW, rotor radius, installed power, and
+maximum speed. Hence, found empirical relations to describe the correlation between these. Other work in this field
+was accomplished by Filippone [2] and Rand and Khromov [3], who used statistical means to describe populations of
+manned rotorcraft. Although there have been follow-up studies on fixed-wing aircraft such as [4], no studies looked at
+rotary-wing aircraft in the past two decades. Moreover, there has been a significant increase in the number of commercial
+off-the-shelf unmanned rotorcraft since the 2010s, driven by the commercialization and affordability of "camera drones".
+This study extends the allometric analysis to smaller rotorcraft scales and introduces new categories, such as endurance,
+range, battery mass, battery capacity, rotor configuration, and propulsion type. The allometric relations would be
+useful for preliminary design analyses, as well as studying the effect of the scale of unmanned aerial systems, e.g., for
+drone-delivery networks or environmental monitoring.
+A well-known study by Stolaroff et al. [5] assessed the effect of rotorcraft scale on the specific energy consumption
+of drone delivery networks in support of comparison with conventional road-based transportation networks. They
+used the momentum theory to model the power of two aircraft, a tetra-rotor and an octa-rotor, with "representative"
+maximum payload masses of 0.5 kg and 8.1 kg, respectively. The study found that the tetra-rotor was seemingly more
+suitable for drone-delivery operations and therefore recommended that drone size should be kept limited as much as
+possible. However, no evidence was presented as to why the particular values that emerged from their momentum theory
+model were actually representative of tetra- and octa-rotor vehicles. For example, the payload represented 19.5% of the
+tetra-rotor base-case take-off weight and approximately 29.2% for the octa-rotor, respectively. Also, the base-case disk
+loading was 12.5 kg m−2 for the tetra-rotor and the 20.5 kg m−2 for the octa-rotor, respectively. Therefore, this raises
+the question: are the conclusions of this well-known study due to the incongruities mentioned above, or are smaller
+rotary-wing aircraft actually more effective than larger ones?
+Typically, rotorcraft sizing studies couple aerodynamic power modeling (e.g., using momentum theory) with
+individual component scaling along the powertrain, which is decomposed into a battery, electronic speed controller,
+motor, and rotor [6–16]. The coupled system takes inputs such as flight time, payload mass, and rotor radius and
+iterates until the system’s MTOW converges, giving a powertrain weight breakdown. The methodology is then verified
+against known aircraft configurations to estimate modeling error. The main problem with these types of studies is the
+inconsistencies between the assumed scaling laws. For instance, Bershadsky et al. [8] assumed that the airframe mass
+represents 19% of MTOW based on a population of a few aircraft, while Budinger et al. [12] assumed a proportion of
+3
+
+
+29%. This makes comparisons between studies difficult and raises questions about the veracity of the conclusions. By
+contrast to typical rotorcraft studies, this paper aims to describe how rotorcraft size influences the main performance
+parameters based on a statistically-significant population of unmanned rotorcraft. By extending the analysis to an
+unmanned rotorcraft dataset and comparing it with conventional helicopters, scaling behavior associated with small-scale
+phenomena may be revealed, the importance of which might have been neglected or poorly understood before. This
+study also introduces energy-based criteria that divide the combined conventional and unmanned rotorcraft population
+into clusters based on propulsion technology and rotorcraft class.
+II. Methodology
+A. Data Collection
+A conventional helicopter database was obtained from [2] and complemented with additional categories from
+[17]. Data on unmanned rotorcraft were collected from multiple sources [18–49], including rotorcraft manufacturers’
+online catalogs and the Vertical Flight Society (VFS) electric vertical take-off and landing (eVTOL) directory [50]. No
+unmanned compound rotorcraft were present in this study. The most prominent manufacturers of unmanned rotorcraft
+were identified based on a web search; the online product catalogs were itemized and appended to the database according
+to rotorcraft specifications sheets. In general, different manufacturers reported different performance parameters. For
+example, some manufacturers reported maximum endurance at a given advance ratio [18], while others did not report
+the flight regime in which the maximum endurance was achieved [34]. Where no datum was available, the entry was
+left blank, increasing the database sparsity. For marketing purposes, some parameters may be exaggerated under the
+assumption of ideal flight conditions (such as air temperature, wind speed, and operating altitude) and may not reflect the
+actual rotorcraft performance. In the absence of a consensus within the industrial and academic rotorcraft community,
+some database sparsity could not be avoided, which has also been flagged by Zhang et al. [51].
+Because the database did not feature custom-built aircraft, such as those found in academic research projects, it is
+expected that some variation in design performance parameters could have been lost. The data was limited to unmanned
+rotorcraft since conventional helicopters are a more mature technology; instead, where applicable, this paper compares
+the present work on unmanned rotorcraft with established analyses on rotorcraft allometry, such as described in Chapter
+6 in [52] and in [1–3].
+B. Data Grouping
+The dataset comprised 93 unmanned rotorcraft described by 12 parameters. The parameters encapsulate information
+about the classification, performance, and size of the rotorcraft, as defined below. Table 1 and Table 2 offer a statistical
+summary of the performance and size parameters, respectively.
+4
+
+
+1. Classification Parameters
+Rotor type: describes the rotor configuration of an aircraft, e.g., “O1“, “C4“. The first character specifies the rotor
+type: “C“ for coaxial, “D“ for ducted, and “O“ for open rotors. The second character corresponds to the number of
+rotors in the propulsion group. There were 93 non-empty rotor-type entries in the dataset. The modal rotor type was
+“O4“, i.e., open tetra-rotor configuration (47 entries). The least frequent rotor types were coaxial hexa-rotor, coaxial
+octa-rotor, and open 16-rotor configuration (1 entry each). The distribution of unmanned rotorcraft based on the rotor
+type is shown in Fig. 1a.
+Application: describes the perceived use of a rotorcraft. Five subcategories were identified: agricultural, consumer,
+defense, educational, and enterprise. Only a fraction of rotorcraft manufacturers directly stated the intended use case. If
+the use case was not present, the authors manually assigned an application entry based on manufacturer scope, the
+most apparent use scenario, and vehicle acquisition costs. Commercial and educational rotorcraft were on the lower
+end of the MTOW spectrum, while the defense, agricultural, and enterprise rotorcraft were on the upper end. The
+most common application was enterprise (56 entries), the least common was educational (2 entries), and there were 91
+non-empty entries. Figure 1b shows the distribution of the rotorcraft based on the type of perceived application.
+Propulsion type: indicates whether the rotorcraft were electrically or thermally powered. The propulsion type
+indicated the form of energy storage. Electrical rotorcraft used batteries, and thermal used fossil fuels as the primary
+energy source. To clarify, this work classified hybrid-propulsion rotorcraft, i.e., which used fossil fuels to power electric
+motors, as thermal propulsion rotorcraft. Neither gas turbines nor hydrogen fuel-cell technology were present in the
+collected dataset. The propulsion-type entries were fully populated in the dataset. The database featured 16 thermal
+propulsion vehicles and 77 electric. Thermal engines only appeared above the 14 kg mark, which is likely due to a
+technological limit on the feasible miniaturization of that technology.
+2. Performance Parameters
+Endurance: represents the maximum flight time in minutes [min], subject to the size of fuel tanks or battery and the
+payload configuration. Technical specifications appeared inconsistent across manufacturers, who did not usually provide
+a thorough description of the advance ratio and payload fraction at which endurance was obtained. In this work, the
+endurance was interpreted as the hover endurance at zero payload. The minimum endurance was 7.2 min, the maximum
+was 480 min, and the median was 40.2 min. There were 91 non-empty entries.
+Range: maximum distance in kilometers [km] that can be covered by the aircraft. Similar to endurance, the operating
+condition at which the range was measured is not usually described. This parameter was interpreted as the maximum
+ferry range of the rotorcraft. Some manufacturers may have reported the range limited by the data link distance, which
+is a performance limitation of such a class of vehicles [25]. Therefore, this parameter does not consistently reflect the
+performance of rotorcraft as in the helicopter nomenclature definition.The minimum was 1 km, the maximum was
+5
+
+
+(a) Rotor type grouping (b) Application grouping
+Fig. 1 Unmanned rotorcraft classification.
+1020 km, the median was 21 km. There were 49 non-empty entries.
+Maximum speed: in kilometers per hour [km h−1]. Some manufacturers reported the maximum speed limited using
+software [18]. Nonetheless, this number was interpreted as the maximum speed as in its conventional definition. The
+minimum value of maximum speed was 22 km h−1, the maximum was 240 km h−1, and the median was 70 km h−1.
+There were 80 non-empty entries.
+Ceiling: represents the maximum operational altitude, provided in meters [m] above sea level. Some manufacturers
+specify a maximum tested ceiling, and others claim a theoretical operating ceiling. This parameter is interpreted as
+the maximum hover altitude at MTOW. The minimum ceiling was 30 m, the maximum was 7000 m, the median was
+4500 m. There were 68 non-empty entries.
+Table 1 Performance parameters summary.
+Parameter Notation Unit Min Median Max Mean σa μ ̃3b Entries
+Endurance t min 7.2 40.2 480 82.2 105.1 2.11 91
+Range S km 1 21 1020 79 190 3.91 49
+Maximum speed V km h−1 22 70 240 78 42 1.65 80
+Ceiling H m 30 4500 7000 4200 1760 −0.54 68
+a σ - standard deviation b μ ̃3 - moment coefficient of skewness
+6
+
+
+3. Sizing Parameters
+Maximum take-off weight: represents the maximum take-off weight in kilograms [kg]. The MTOW was used as
+the independent size parameter for the analysis because it was the most consistently reported size parameter by the
+manufacturers. The minimum MTOW was 0.03 kg, the maximum was 800 kg, and the median was 12 kg. There were
+91 non-empty entries.
+Maximum payload: represents the maximum payload capacity of a vehicle in kilograms. For fully-electric rotorcraft,
+maximum payload is usually specified for the smallest available battery (lowest-capacity battery). Increased sparsity
+in data can be observed in the 0.1 kg to 1 kg MTOW range because, at that mass range, consumer rotorcraft with
+camera payloads dominate. For ”camera drones” with fixed payloads, the maximum payload weight was omitted by
+the manufacturers. This is likely because some aerial photography/videography rotorcraft such as DJITM Mavic 3 [18]
+have a fixed payload that is embedded in the structure of the aircraft, and further payload cannot be accommodated.
+The minimum value for maximum payload was 0.015 kg, the maximum was 225 kg, and the median was 9.5 kg. The
+number of non-empty entries was 60.
+Rotor diameter: represents the diameter in meters of an individual rotor. For multirotor aircraft, the size of the
+rotors was identical. For helicopters, the main rotor diameter was used. The rotor diameter ranged 0.045 m to 7.7 m.
+The median rotor diameter was 0.46 m. The number of non-empty entries was 69.
+Battery mass: the total mass of the batteries given in kilograms. Battery mass was only collected for electric
+rotorcraft. The battery mass ranged from 0.01 kg to 12 kg. The median was 0.37 kg. The number of non-empty entries
+was 34.
+Battery capacity: the total energy capacity of the batteries expressed in watt-hours [Wh]. Battery capacity was only
+collected for electric rotorcraft. The minimum battery capacity was 0.74 Wh, the maximum was 4560 Wh, the median
+was 89 Wh. The number of non-empty entries was 50.
+Table 2 Size parameters summary.
+Parameter Notation Unit Min Median Max Mean σa μ ̃3b Entries
+MTOW W kg 0.03 11 800 68 161 3.14 91
+Maximum payload Wp kg 0.02 9.5 225 30 55 2.59 60
+Rotor diameter D m 0.05 0.46 7.7 1.2 1.7 2.32 69
+Battery mass mb kg 0.01 0.37 12 1.6 2.9 2.38 34
+Battery capacity Eb Wh 0.74 89 4560 390 720 4.12 50
+a σ - standard deviation b μ ̃3 - moment coefficient of skewness
+7
+
+
+C. Analysis Procedure
+The regression analysis was performed in the MATLAB® environment using the MathWorks® native Statistics and
+Machine Learning Toolbox. The primary goal of the analysis was to explore the data via clustering and regression
+techniques and to extract easy-to-use empirical relations. Following that, the objective was to contrast the empirical
+models with those derived from perfect allometric scaling principles, which could be considered as working hypotheses.
+Perfect allometric scaling means that all volume-based properties of an object would scale with length to the power
+of three, i.e., V ∝ L3, all area-based properties with length to the power of two, A ∝ L2, and mass would scale with
+volume as follows, M ∝ V. In this case, volume-based properties translate to aerodynamic properties, e.g., related to
+viscous effects and turbulent mixing. Assuming geometric scaling and constant rotorcraft system density, the total
+actuation area, and the aircraft weight are expected to follow the square-cube law; therefore, the first hypothesis is
+A ∝ W2/3 (1)
+where W is the maximum take-off weight and A is the net actuation area, given as follows
+A=π
+D
+2
+2
+NP (2)
+where D is an individual rotor diameter and NP is the number of rotors in the rotorcraft configuration, assuming all
+rotors in a multirotor system are identical. The total actuation area, A, represents the sum of all primary rotor areas in
+the rotor system; this definition is applicable for both single- and multi-rotor aircraft. According to the momentum
+theory, the ideal power in hover at maximum take-off weight is
+Pideal = T 3/2
+(2ρ A)1/2 (3)
+where ρ is the ambient air density in [kg m−3] and T is the rotor thrust corresponding to the maximum take-off weight.
+Assuming the first hypothesis is correct, as in [15], and substituting Eq. (1) in Eq. (3), it can be demonstrated that the
+rotor power should scale according to
+P ∝ W 3/2
+A1/2 ∝ W 3/2
+(W 2/3)1/2 = W 7/6 (4)
+For electric aircraft operating at maximum endurance conditions, the battery discharge power is
+Pe = Eb
+t (5)
+where Eb is the battery energy in watt-hours and t is the maximum endurance time as provided by the manufacturer,
+8
+
+
+given in hours. Considering perfect allometric scaling, the second hypothesis is that the Pe and Pideal scales isometrically.
+For an electric rotorcraft, the endurance is a function of battery energy capacity and the rate of energy dissipation
+t = Eb/P. Assuming constant battery-specific energy and battery mass fraction, it is expected that t ∝ W/P. Further,
+assuming ideal power scaling, P ∝ W7/6, the third hypothesis states that the endurance for electric rotorcraft scales
+according to t ∝ W −1/6, i.e., the endurance shallowly reduces with rotorcraft size.
+III. Results
+A. Sizing Parameters
+Figure 2a shows maximum payload mass variation with MTOW according to Wp = 0.30 · W1.03, also provided for
+convenience in Table 3. This represents approximately isometric scaling, meaning that the ratio between the maximum
+payload mass and MTOW is constant across the entire rotorcraft range, irrespective of propulsion and rotor type. This
+is in agreement with the data on the conventional rotorcraft class [2], shown in Fig. 2b. This allometric relation can
+be used during the preliminary phases of unmanned rotorcraft design to quickly estimate MTOW based on a given
+maximum payload mass.
+(a) Propulsion type grouping (b) Rotorcraft class comparison
+Fig. 2 Maximum payload vs maximum take-off weight of a rotorcraft population.
+The regression analysis in Fig. 3 shows that battery mass scales with MTOW according to mb = 0.29 · W0.87. The
+relation suggests that, for larger rotorcraft, the battery mass represents a relatively smaller proportion of MTOW than
+predicted by perfectly allometric scaling. A possible explanation for this behavior is that larger electrical components
+may be more efficient than their miniaturized versions, therefore reducing the necessary battery energy [7, 53–55].
+9
+
+
+Speculatively, it could also be that large batteries do not scale well due to internal resistance build-up and heat dissipation
+effects making large batteries untenable choices. Not plotted here, but the relation between battery mass and battery
+capacity was Eb = 177 · m0.98
+b , with a determination coefficient R2 = 0.98, based on the unmanned electric rotorcraft
+population. This means that battery capacity scales almost perfectly allometrically with battery mass [7, 8, 10].
+Fig. 3 Battery mass vs maximum take-off weight.
+Figure 4a shows the total actuation area scales proportionally to MTOW according to A = 0.13 · W0.87. The
+square-cube law predicts that A ∝ W2/3; this means that the rotor area exhibits positive allometric scaling. The three
+aircraft outside the 95% confidence interval are ducted tetra-rotors, as annotated in Fig. 4b, which typically have a higher
+disk loading. The comparison with conventional rotorcraft, shown in Fig. 4c, suggested that conventional rotorcraft
+actually have a negative allometric scaling. This is consistent with the data in Chapter 6 in [52], which attributed this
+effect to nonaerodynamic constraints. In reality, it is observed that for conventional rotorcraft, the number of blades and
+rotor solidity increase with vehicle size [2], which explains the negative allometry of the area with MTOW. On the
+other hand, the analysis by Lorenz [1] found that, for conventional rotorcraft, the rotor area exhibits positive allometry,
+A ∝ W0.80, which contradicts the findings and discussion in [2, 52].
+From Fig. 4c, it can be seen that the total actuation area of unmanned rotorcraft is lower than predicted by
+extrapolation of the regression analysis of the conventional helicopter population. This can be attributed to the fact
+that at a small scale, the maximum available power to shaft power ratio is disproportionately large for the size of
+the rotorcraft [56]. Additionally, this could also be due to the multirotor form factor and volumetric constraints that
+affect multirotor more than single-rotor aircraft. Moreover, mission profiles within the visual line of sight, typical for
+unmanned rotorcraft, may involve more acceleration and deceleration due to reduced operational volume, which could
+10
+
+
+also be a cause for unmanned rotorcraft to be overpowered. This explains an apparently steeper gradient of the area
+regression curve for the unmanned population compared with the conventional population.
+Figure 4d shows the disk loading variation with MTOW for unmanned and conventional rotorcraft. It can be seen
+that electric rotorcraft exhibit lower disk loadings than conventional rotorcraft. This could be due to less stringent
+structural constraints at smaller scales. Moreover, low Reynolds number effects at a smaller scale increase the effective
+disk loading [52]. Therefore, the disk loading may be smaller by design to compensate for this performance penalty,
+which is explained in more detail in Sec. III.B. Although conventional rotorcraft do not suffer from low Reynolds
+number effects, structural and material constraints are a bigger concern.
+B. Performance Parameters
+There was no noticeable pattern between MTOW and maximum speed, as evidenced by a low coefficient of
+determination, R2 = 0.23. This finding is consistent with the analysis by Lorenz [1], who attributed this phenomenon to
+the high complexity of helicopters. In the case of unmanned rotorcraft, software limitations might result in an extra
+layer of uncertainty and inconsistency in the data. Similarly, there was no correlation between MTOW and ceiling.
+However, incorporating the maximum speed and the ceiling into kinetic and potential energies, respectively, helped
+to discriminate between conventional, thermal, and electric unmanned rotorcraft, as shown in Fig. 5. This analysis
+is similar to that by [1], who used maximum speed and maximum installed power in the form of k · W x · V y. The
+maximum installed power was unavailable, but the maximum potential and kinetic energy were used instead, as the
+maximum ceiling and the maximum velocity can be linked to the maximum available power.
+Figure 5c shows the ratio of the kinetic energy to ideal induced power. This ratio incorporates non-ideal aerodynamics
+effects, κ, the capabilities of the system to convert power into maintaining the state of maximum kinetic energy, Ik, and
+the ratio of the maximum available power to the shaft power, Pr . The ratio of kinetic energy to ideal induced power in
+hover can thus be decomposed as
+KE
+Pideal
+= Ik Pmax
+Pideal
+= Ik
+Pmax
+Pshaft
+Pshaft
+Pideal
+= Ik Pr κ (6)
+where Pmax is the maximum available power; Pshaft and Pideal are the shaft power and the ideal power at sea-level
+conditions, respectively. The results suggested that unmanned aircraft have a lower kinetic energy to ideal power ratio
+than conventional rotorcraft. This could be attributed to parasitic power playing a more important role for smaller
+rotorcraft and the fact that multirotors rely on pitching the entire airframe for thrust vectoring as they lack swashplate
+mechanisms. Furthermore, software-based limitations on maximum speeds could also affect multirotor aircraft. At the
+same time, for larger aircraft, the ratio is limited by the tip Mach number, which results in constant kinetic energy to
+ideal power ratio.
+11
+
+
+(a) Unmanned rotorcraft propulsion type grouping (b) Unmanned rotorcraft rotor configuration grouping
+(c) Rotorcraft class comparison (d) Disk loading comparison
+Fig. 4 Net actuation area of a rotorcraft vs maximum take-off weight.
+Figure 5d shows the ratio of the potential energy to ideal induced power, which is analogously decomposed as
+PE
+Pideal
+= Ip Pr κ (7)
+where Ip is a measure of the capability of the system to convert power into maintaining the state of maximum potential
+energy. Figure 5d shows that the potential energy to power ratio is smaller for conventional rotorcraft compared to
+12
+
+
+unmanned rotorcraft. This could be because smaller rotorcraft have relatively more excess power than their larger
+counterparts.
+(a) Kinetic-potential energy clustering (b) Ideal power clustering
+(c) Kinetic energy to power clustering (d) Potential energy to power clustering
+Fig. 5 Maximum potential and kinetic energy. Note, el. and th. stand for electric and thermal, respectively.
+According to the results in Fig. 6a, the ideal power regression shows a good agreement with perfect allometric
+scaling. However, the battery discharge power scales with MTOW according to Pe = 114 · W0.79, as shown in Fig. 6b.
+This exhibits negative allometry since the second hypothesis predicted P ∝ W7/6. Simultaneously, the ratio between
+13
+
+
+the discharge and the ideal power, κe, is inversely proportional to MTOW, as depicted in Fig. 6c; this matches the
+results in [1]. The power ratio is a measure of the electric rotorcraft’s overall efficiency. It incorporates both losses in
+the electrical powertrain and non-ideal aerodynamics effects such as induced and viscous losses. The power ratio is
+intended to bridge between required battery power and ideal induced power. Small-scale rotorcraft appear to consume
+more power than predicted by momentum theory and geometric scaling. The power penalty is likely caused by low
+Reynolds number aerodynamic effects and powertrain efficiency degradation [1, 7, 52–55, 57–59]. Another possible
+reason for the power penalty is the low quality of rotor blades at small scales [60]. Although ideal power shows a good
+agreement between manned and conventional rotorcraft, as shown in Fig. 6d, it is not a good metric for comparing the
+two rotorcraft classes. Lorenz [1] found that the installed power of conventional helicopters scales with MTOW as
+P ∝ W1.10, which is closer to perfect allometric scaling. This disparity suggests that unmanned rotorcraft cannot simply
+be considered as a sub-class of full-scale conventional helicopters due to aerodynamic and technological factors.
+Based on Fig. 7a, which shows the flight endurance against MTOW, two clusters are distinguishable, corresponding
+to electric and thermal propulsion types. Note that the endurance was not usually measured at the MTOW reported
+by the manufacturer. For electric rotorcraft, the best-fit relation between endurance and MTOW is t = 0.49 · W0.09,
+which is in contrast with the third hypothesis, t ∝ W −1/6. This outcome is unexpected, also considering that the battery
+mass had a negative allometric scaling with respect to MTOW, mb = 0.29 · W0.87. No comparison could be made
+with conventional helicopters because the corresponding data on endurance does not exist in the literature. Figure 7b,
+unmanned rotorcraft range, similarly shows two clusters for electric and thermal propulsion. The transition from electric
+to thermal propulsion takes place at around 70 km range and 120 min of endurance. After this, thermal propulsion is
+superior to electric propulsion by approximately one order of magnitude in terms of range and endurance. This further
+evidences the difference between electric and thermal technology, highlighting the potential limitations of wingless
+multirotor for urban air mobility, given the current technological level.
+Range and endurance affect the suitability of an unmanned rotorcraft for a given application, yet during data collection,
+it was found that these parameters were not usually reported coherently. Moreover, even when reported, confounding
+factors persisted; these included unclear assumptions (e.g., safety factors, depth-of-discharge), terminology (e.g.,
+maximum flight time and maximum hover time), and testing conditions (e.g., atmospheric conditions, repeatability) [51].
+From a transparency perspective, it would be beneficial for the academic and industrial communities to "develop a
+consensus" on measuring and reporting unmanned rotorcraft performance [51].
+IV. Conclusions
+An allometric study was conducted on the size and performance parameters of an unmanned rotorcraft population
+with maximum take-off weight ranging from 0.03 kg to 800 kg. The rotorcraft population was manually gathered from
+different sources and summarized based on 12 parameters, describing rotorcraft size and performance. The regression
+14
+
+
+(a) Unmammed rotorcraft ideal power (b) Battery discharge power
+(c) Battery discharge to ideal power (d) Rotorcraft class comparison
+Fig. 6 Power vs maximum take-off weight.
+study was carried out, and scaling laws were established. Further, the unmanned rotorcraft population was compared
+against conventional helicopters over fundamental size-performance relations.
+The rotorcraft exhibited a strong correlation between the maximum take-off weight and size parameters (battery
+mass, battery capacity, net actuation area, and maximum payload weight). The regression between maximum take-off
+weight and performance parameters (maximum endurance, maximum range, maximum flight speed, and operational
+15
+
+
+(a) Endurance (b) Range
+Fig. 7 Mission performance parameters.
+Table 3 Regression equations.
+Parameter Equation R2 MPEa MAPEb RMSPEc Rotorcraft population
+Maximum payload Wp = 0.30 · W1.03 0.94 0.12 0.38 0.83 unmanned
+Maximum payload Wp = 0.12 · W1.11 0.80 0.22 0.52 1.12 conventional [2]
+Battery mass mb = 0.29 · W0.87 0.96 0.06 0.28 0.40 electric unmanned
+Battery capacity Eb = 177 · m0.98
+b 0.98 0.03 0.19 0.30 electric unmanned
+Battery capacity Eb = 53 · W0.85 0.93 0.11 0.39 0.67 electric unmanned
+Total actuation area A = 0.13 · W0.87 0.95 0.13 0.40 0.77 unmanned
+Total actuation area A = 0.65 · W0.64 0.83 0.03 0.19 0.26 conventional [2]
+Ideal power Pideal = 55 · W1.06 0.99 0.02 0.16 0.22 unmanned
+Ideal power Pideal = 24 · W1.18 0.99 0.01 0.10 0.14 conventional [2]
+Discharge power Pe = 114 · W0.79 0.92 0.10 0.34 0.59 electric unmanned
+Power ratio κe = 2.11 · W −0.30 0.74 0.07 0.30 0.42 electric unmanned
+a MPE - mean percentage error b MAPE - mean absolute percentage error c RMSPE - root mean squared percentage error
+ceiling) was weaker; this can be attributed to inconsistencies in the performance reported by unmanned rotorcraft
+manufacturers and a lack of standardized testing methods.
+The comparative analysis based on combined size and performance criteria revealed that unmanned rotorcraft
+exhibit distinct allometric behavior to conventional helicopters. Hence, regression relations derived for conventional
+helicopters cannot be applied to unmanned rotorcraft, suggesting that unmanned rotorcraft cannot be treated as a scaled
+16
+
+
+sub-class of conventional helicopters. The regression analysis indicated that the unmanned rotorcraft performance
+degrades as the aircraft size decreases due to aerodynamic effects associated with low Reynolds numbers and poor
+powertrain efficiency at small rotorcraft scales. The range and endurance performance of thermal propulsion rotorcraft
+are superior to electrical propulsion rotorcraft. The transition between electric and thermal propulsion takes place at
+around 70 km range and 120 min of endurance. This reveals a technological limit that must be addressed for large-scale
+electric rotorcraft to become a competitive type of aerial vehicle.
+The presented data and analysis are useful for rotorcraft engineers and aerial roboticists who aim to study the effects
+of aircraft scale on a given problem, such as urban air mobility, environmental monitoring, or drone delivery services.
+Future work should focus on developing novel battery technologies to fill the gap between the electric and thermal
+propulsion rotorcraft. Small-scale aerodynamics should be investigated to develop mitigation strategies for the apparent
+performance limitation of small rotorcraft. This could open the door for novel and exciting applications for small
+rotorcraft.
+Appendix
+Table 4 Unmanned rotorcraft dataset.
+Name Rotor Prop. W, kg D, m Wp, kg mb, kg Eb, Wh t, min S, km H, km V, km h−1
+Acecore NEO X8 [32] O8 el. 19.0 0.46 9.00 − 511 25 16.0 − 91
+Acecore NOA 6 [32] O6 el. 37.0 0.71 20.0 − 1100 55 16.0 − 85
+Acecore ZOE X4 [32] O4 el. 12.0 0.46 6.00 − 377 35 16.0 − 91
+Aerialtronics Altura Zenith [43] C4 el. 9.65 0.41 3.00 − 444 40 − − 72
+Aerovironment Vapor 55 mx [40] O1 el. 29.5 2.29 10.0 − − 75 32.0 3.7 54
+Airbus VSR700 [19] O1 th. 700 7.20 − − − 480 − 6.0 185
+Alpha ALPHA 800 [26] O1 th. 14.0 1.80 3.00 − − 180 50.0 3.0 −
+Autel EVO 2 [37] O4 el. 2.00 0.23 − 0.36 82.0 40 25.0 7.0 72
+Autel EVO 2 DUAL 640T [37] O4 el. 2.00 0.23 0.85 0.36 82.0 38 22.0 7.0 72
+Autel EVO 2 Enterprise v3 [37] O4 el. − 0.23 − − − 42 − 7.0 72
+Autel EVO 2 Pro V3 [37] O4 el. 2.00 0.23 − 0.36 82.0 40 25.0 7.0 72
+Autel EVO 2 RTK [37] O4 el. − 0.23 − − − 36 21.0 7.0 72
+Autel EVO lite [37] O4 el. 0.83 0.22 − − 68.7 40 24.0 4.0 65
+Autel EVO nano [37] O4 el. 0.25 0.12 − − 17.3 28 16.8 4.0 54
+Autoflight F240 Hot Wheels [47] O8 el. 320 − 100 − − − − − −
+Bitcraze Crazyflie 2.1 [35] O4 el. 0.04 0.04 0.01 0.01 0.74 7 1.0 − −
+BlackSwift E2 [33] O4 el. 8.80 0.47 2.00 − 944 60 − − −
+Boeing Cargo Air Vehicle [48] C6 el. 545 − 225 − − − − − −
+Challenger CP-A5 [27] O6 el. 18.0 0.71 7.00 − − 75 5.0 4.5 33
+Continued on next page
+17
+
+
+Table 4 – continued from previous page
+Name Rotor Prop. W, kg DR, m Wp, kg mb, kg Eb, Wh t, min S, km H, km V, km h−1
+Challenger CPXD-6R-16L [27] O6 el. 37.5 − 16.0 − − 21 3.0 2.0 36
+Challenger H-4 [27] O4 el. 21.5 − 11.0 − − 60 1.0 4.5 65
+Challenger H-4 Plus [27] C4 el. 32.0 − 18.0 − − 60 1.0 4.5 65
+Challenger H-6 [27] O6 el. 30.0 − 18.0 − − 75 1.0 4.5 72
+Challenger H-8 [27] O8 el. 52.5 − 36.0 − − 120 1.0 4.5 86
+Challenger ODIN-X [27] O1 th. 44.5 2.41 20.0 − − 120 − 3.2 −
+Challenger ODIN-XL [27] O1 th. 85.0 2.70 30.0 − − 120 − 3.2 −
+DJI Agras T10 [18] O4 el. 24.8 0.84 8.00 3.80 492 17 − 4.5 25
+DJI Agras T16 [18] O4 el. 42.0 0.84 16.0 − 907 18 − 2.0 25
+DJI Agras T20 [18] O4 el. 47.5 0.84 20.0 6.40 932 15 − 2.0 25
+DJI Agras T30 [18] O6 el. 78.0 0.97 41.5 10.1 1500 20 − 4.5 25
+DJI Agras T40 [18] C4 el. 101 1.37 51.0 12.0 1570 18 − − −
+DJI Air 2s [18] O4 el. 0.59 0.18 − 0.20 41.4 30 18.5 5.0 68
+DJI Avata [18] D4 el. 0.41 0.07 − 0.16 35.7 18 11.6 5.0 97
+DJI FPV [18] O4 el. 0.80 0.13 − 0.29 44.4 20 16.8 6.0 97
+DJI Inspire 2 [18] O4 el. 4.25 0.38 0.81 0.52 97.6 27 − 5.0 94
+DJI Matrice 30 [18] O4 el. 4.00 0.41 − 1.37 263 41 − 5.0 83
+DJI Matrice 300 RTK [18] O4 el. 9.00 0.53 2.70 2.70 548 55 − 5.0 83
+DJI Matrice 600 Pro [18] O6 el. 15.5 0.53 6.00 4.08 780 32 − 4.5 65
+DJI Mavic 2 Enterprise [18] O4 el. 1.10 0.22 0.19 0.30 59.3 31 − 6.0 72
+DJI Mavic 3 [18] O4 el. 0.90 0.24 − 0.34 77.0 46 30.0 6.0 68
+DJI Mavic 3 Classic [18] O4 el. 0.90 0.24 − 0.34 77.0 40 30.0 6.0 76
+DJI Mavic 3 Enterprise [18] O4 el. 1.05 0.24 − 0.34 77.0 45 32.0 6.0 54
+DJI Mavic Air 2 [18] O4 el. 0.57 0.18 − 0.20 40.4 34 18.5 5.0 68
+DJI Mini 2 [18] O4 el. 0.25 0.12 − 0.09 17.3 31 − 4.0 58
+DJI Mini 3 Pro [18] O4 el. 0.25 0.15 − 0.12 28.4 47 25.0 4.0 58
+DJI Mini SE [18] O4 el. 0.25 − − 0.08 17.3 30 − 3.0 47
+DJI P4 Multispectral [18] O4 el. 1.49 0.24 − 0.47 89.2 27 − 6.0 58
+DJI Phantom 4 PRO [18] O4 el. 1.39 0.24 − 0.47 89.2 30 − 6.0 72
+DJI Phantom 4 PRO v2.0 [18] O4 el. 1.38 0.24 − 0.47 89.2 40 − 6.0 72
+DJI Phantom 4 RTK [18] O4 el. 1.39 0.24 − 0.47 89.2 30 − 6.0 58
+DJI Spark [18] O4 el. 0.30 0.12 − 0.10 16.9 16 − 4.0 50
+Draganfly Commander [42] O4 el. 3.75 − 1.00 − − 25 − − 50
+Draganfly Commander 3 XL [42] O4 el. 25.0 − 11.8 − − 50 38.6 − 72
+Draganfly Heavy Lift Drone [42] O8 el. 74.0 0.82 30.0 − 4560 54 20.0 − 79
+Draganfly X4P [42] O4 el. 3.75 − 1.00 − − 18 − 2.4 50
+Ehang 216L [49] C8 el. 600 − 220 − − 21 35.0 − 130
+FLIR Black Hornet [46] O1 el. 0.03 0.12 − − − 25 − − 22
+Continued on next page
+18
+
+
+Table 4 – continued from previous page
+Name Rotor Prop. W, kg DR, m Wp, kg mb, kg Eb, Wh t, min S, km H, km V, km h−1
+FLIR Skyranger R70 [46] O4 el. 5.00 − 3.50 − 99.0 60 − − 50
+Flyability Elios 2 [45] D4 el. 1.45 0.13 − 0.55 98.8 10 − − 23
+Flyability Elios 3 [45] D4 el. 2.50 0.13 0.60 0.62 99.0 12 − − −
+Freefly Alta X [44] O4 el. 34.9 0.84 15.3 − 710 50 − − −
+Freefly Astro [44] O4 el. 6.67 0.53 1.50 1.03 157 38 − − −
+Inspired Flight IF1000 [30] O6 el. 9.90 0.43 3.30 − − 35 10.0 5.4 65
+Inspired Flight IF1200 [30] O6 el. 20.0 0.46 8.00 5.80 977 33 − 6.8 79
+Inspired Flight IF750 [30] O4 el. 6.20 0.43 2.00 − − 30 10.0 5.9 65
+Leonardo AWHERO [20] O1 th. 200 4.00 85.0 − − 360 − 4.3 167
+Parrot Anafi Ai [36] O4 el. 0.90 − − 0.37 29.9 32 22.5 5.0 61
+Riegl RiCOPTER [29] C4 el. 25.0 − 6.50 − − 30 14.5 4.0 50
+Riegl RiCOPTER-M [29] C4 el. 40.0 − 15.0 − − 25 12.5 3.0 50
+Ryze Tello Edu [34] O4 el. 0.08 0.08 − 0.03 4.18 13 − 0.0 29
+Schiebel CAMCOPTER S-100 [25] O1 th. 200 3.40 50.0 − − 360 200.0 5.5 240
+SkyFront PERIMETER 4 [28] O4 th. 15.0 − 4.00 − − 300 50.0 − 57
+SkyFront PERIMETER 8 [28] O8 th. 19.0 − 5.50 − − 300 100.0 − −
+SkyFront TAILWIND [28] O4 th. 12.0 − 3.00 − − 300 250.0 0.1 56
+Skydio 2+ Enterprise [39] O4 el. 0.80 0.17 − − 48.8 27 6.0 4.5 58
+Skydio X2E [39] O4 el. 0.80 0.17 − − − 35 6.0 3.6 40
+Steadicopter Black Eagle 50 [23] O1 th. 35.0 2.16 5.00 − − 240 − 3.0 126
+Steadicopter Black Eagle 50H [23] O1 th. 50.0 2.80 12.0 − − 210 − 5.0 126
+Threod Systems TITAN [31] O4 el. 17.0 1.05 6.00 − − 50 5.0 − −
+UAVOS UVH 170 [22] O1 th. 45.0 2.60 10.0 − − 300 350.0 2.5 120
+UAVOS UVH 25EL [22] O1 el. 25.0 2.60 5.00 − − 90 67.0 3.5 100
+UAVOS UVH 500 [22] O1 th. 500 6.28 160 − − 420 840.0 2.5 209
+UAVOS UVH R22 [22] O1 th. 635 7.70 180 − − 360 1020.0 4.2 189
+UAVOS UVM 2E [22] O4 el. 21.0 0.76 1.00 − − 55 10.0 1.6 55
+UMS Skeldar V-150 [24] O1 th. 150 3.50 30.0 − − 240 100.0 3.0 120
+UMS Skeldar V-200 [24] O1 th. 235 4.60 − − − 300 200.0 3.0 150
+Velos Rotors UAV [21] O1 el. 24.0 1.95 10.0 − − 75 − − 130
+Velos Rotors V3 [21] O1 el. 25.0 1.95 10.0 − − 90 − − 130
+Volocopter VoloDrone [41] U16 el. 800 − 200 − − 30 40.0 − 110
+Yuneec H3 [38] O6 el. 2.00 − − − 79.8 25 − 0.5 72
+Yuneec H520E [38] O6 el. 1.65 − − − 79.8 28 − 0.5 61
+Yuneec H850 RTK [38] O6 el. 8.80 − 3.00 − 584 65 − 5.0 72
+Yuneec Typhoon H Plus [38] O6 el. 2.00 − − − 79.8 28 − 0.5 48
+19
+
+
+Acknowledgments
+The authors would like to thank Ethan Bond for his help with data gathering. This research is part-funded by
+the U.K. Research Council (EPSRC) Methods and Experiments for Rotorcraft (MENtOR), EPSRC Doctoral Training
+Programme Grant EP/R513131/1, EPSRC Grant EP/W010119/1 Greener Aviation with Advanced Propulsion Systems
+(GAAPS), and the President’s Doctoral Scholar Award at the University of Manchester.
+References
+[1] Lorenz, R. D., “Flight Power Scaling of Airplanes, Airships, and Helicopters: Application to Planetary Exploration,” Journal
+of Aircraft, Vol. 38, No. 2, 2001, pp. 208–214. https://doi.org/10.2514/2.2769.
+[2] Filippone, A., “Data and performances of selected aircraft and rotorcraft,” Progress in Aerospace Sciences, Vol. 36, No. 8,
+2000, pp. 629–654. https://doi.org/10.1016/S0376-0421(00)00011-7.
+[3] Rand, O., and Khromov, V., “Helicopter Sizing by Statistics,” Journal of the American Helicopter Society, Vol. 49, No. 3, 2004,
+pp. 300–317. https://doi.org/10.4050/JAHS.49.300.
+[4] Verstraete, D., Palmer, J. L., and Hornung, M., “Preliminary Sizing Correlations for Fixed-Wing Unmanned Aerial Vehicle
+Characteristics,” Journal of Aircraft, Vol. 55, No. 2, 2018, pp. 715–726. https://doi.org/10.2514/1.C034199.
+[5] Stolaroff, J. K., Samaras, C., O’Neill, E. R., Lubers, A., Mitchell, A. S., and Ceperley, D., “Energy use and life cycle
+greenhouse gas emissions of drones for commercial package delivery,” Nature Communications, Vol. 9, No. 1, 2018, p. 409.
+https://doi.org/10.1038/s41467-017-02411-5.
+[6] Usov, D., Filippone, A., and Bojdo, N., “Analysi of eVTOL Multicopter Weight And Power Budget as a Function of the Number
+of Rotors,” 47th European Rotorcraft Forum, Royal Aeronautical Society, Glasgow, 2021.
+[7] Gur, O., and Rosen, A., “Optimizing Electric Propulsion Systems for Unmanned Aerial Vehicles,” Journal of Aircraft, Vol. 46,
+No. 4, 2009, pp. 1340–1353. https://doi.org/10.2514/1.41027.
+[8] Bershadsky, D., Haviland, S., and Johnson, E. N., “Electric Multirotor UAV Propulsion System Sizing for Performance
+Prediction and Design Optimization,” 57th AIAA/ASCE/AHS/ASC Structures, Structural Dynamics, and Materials Conference,
+American Institute of Aeronautics and Astronautics, San Diego, CA, 2016. https://doi.org/10.2514/6.2016-0581.
+[9] Nam, T., Soban, D., and Mavris, D., “A Generalized Aircraft Sizing Method and Application to Electric Aircraft,” 3rd
+International Energy Conversion Engineering Conference, Vol. 1, American Institute of Aeronautics and Astronautics, San
+Francisco, CA, 2005, pp. 598–615. https://doi.org/10.2514/6.2005-5574.
+[10] Gatti, M., and Giulietti, F., “Preliminary Design Analysis Methodology for Electric Multirotor,” IFAC Proceedings Volumes,
+Vol. 46, No. 30, 2013, pp. 58–63. https://doi.org/10.3182/20131120-3-FR-4045.00038.
+20
+
+
+[11] Ampatis, C., and Papadopoulos, E., “Parametric Design and Optimization of Multi-Rotor Aerial Vehicles,” Applications
+of Mathematics and Informatics in Science and Engineering, Springer International Publishing, 2014, pp. 1–25. https:
+//doi.org/10.1007/978-3-319-04720-1_1.
+[12] Budinger, M., Reysset, A., Ochotorena, A., and Delbecq, S., “Scaling laws and similarity models for the preliminary design of
+multirotor drones,” Aerospace Science and Technology, Vol. 98, 2020, p. 105658. https://doi.org/10.1016/j.ast.2019.105658.
+[13] Winslow, J., Hrishikeshavan, V., and Chopra, I., “Design Methodology for Small-Scale Unmanned Quadrotors,” Journal of
+Aircraft, Vol. 55, No. 3, 2018, pp. 1062–1070. https://doi.org/10.2514/1.C034483.
+[14] Traub, L. W., “Range and Endurance Estimates for Battery-Powered Aircraft,” Journal of Aircraft, Vol. 48, No. 2, 2011, pp.
+703–707. https://doi.org/10.2514/1.C031027.
+[15] Avanzini, G., de Angelis, E. L., and Giulietti, F., “Optimal performance and sizing of a battery-powered aircraft,” Aerospace
+Science and Technology, Vol. 59, 2016, pp. 132–144. https://doi.org/10.1016/j.ast.2016.10.015.
+[16] Delbecq, S., Budinger, M., Ochotorena, A., Reysset, A., and Defay, F., “Efficient sizing and optimization of multirotor
+drones based on scaling laws and similarity models,” Aerospace Science and Technology, Vol. 102, 2020, p. 105873.
+https://doi.org/10.1016/j.ast.2020.105873.
+[17] Rendal, D., Aircraft Recognition Guide, 2nd ed., Jane’s, Harper Collins Publishers, London, U.K., 1999.
+[18] DJI, “DJI - Official Website,” https://www.dji.com/uk, 2022. Accessed: Nov. 2022.
+[19] Airbus, “Airbus | Pioneering sustainable aerospace,” https://www.airbus.com/en, 2022. Accessed: Nov. 2022.
+[20] Leonardo, “Aerospace, Defence and Security | Leonardo,” https://www.leonardo.com/en/home, 2022. Accessed: Nov. 2022.
+[21] Velos, “Velos UAV: World Class UAV Helicopter, Fly with The Best,” https://www.velosuav.com/, 2022. Accessed: Nov. 2022.
+[22] UAVOS, “UAVOS - Unmanned Systems Development, Research and Integration,” https://www.uavos.com/, 2022. Accessed:
+Nov. 2022.
+[23] Steadicopter, “Steadicopter - Black Eagle Rotary Unmanned Aerial Vehicles,” https://steadicopter.com/, 2022. Accessed: Nov.
+2022.
+[24] Skeldar, “Home - UMS SKELDAR,” https://umsskeldar.aero/, 2022. Accessed: Nov. 2022.
+[25] Schiebel, “Home - Schiebel,” https://schiebel.net/, 2022. Accessed: Nov. 2022.
+[26] Alpha Unmanned Systems, “Home - Alpha,” https://alphaunmannedsystems.com/, 2022. Accessed: Nov. 2022.
+[27] Challenger Aerospace, “Challenger Aerospace & Defense - Excellence in Unmanned Systems,” https://challengeraerospace.com/,
+2022. Accessed: Nov. 2022.
+[28] Skyfront, “Skyfront | Leaders in long endurance hybrid drones,” https://skyfront.com/, 2022. Accessed: Nov. 2022.
+21
+
+
+[29] Riegl, “RIEGL - RIEGL Laser Measurement Systems,” http://www.riegl.com/, 2022. Accessed: Nov. 2022.
+[30] Inspired Flight, “Inspired Flight | Commercial Heavy-Lift Drones, American Made,” https://inspiredflight.com/, 2022. Accessed:
+Nov. 2022.
+[31] Threod Systems, “Threod Systems,” https://threod.com/, 2022. Accessed: Nov. 2022.
+[32] Acecore, “Home - Acecore Technologies,” https://acecoretechnologies.com/, 2022. Accessed: Nov. 2022.
+[33] BlackSwift, “Precision Unmanned Aerial Solutions | Black Swift Technologies,” https://bst.aero/, 2022. Accessed: Nov. 2022.
+[34] Ryze Robotics, “Tello Official Website-Shenzhen Ryze Technology Co., Ltd.” https://www.ryzerobotics.com/, 2022. Accessed:
+Nov. 2022.
+[35] Bitcraze, “Home | Bitcraze,” https://www.bitcraze.io/, 2022. Accessed: Nov. 2022.
+[36] Parrot, “Parrot | European leader in professional drones,” https://www.parrot.com/uk, 2022. Accessed: Nov. 2022.
+[37] Autel, “Autel Robotics UK: Autel Drones misc Store - Autelpilot.co.uk,” https://autelpilot.co.uk/, 2022. Accessed: Nov. 2022.
+[38] Yuunec, “Home,” http://yuneec.uk/, 2022. Accessed: Nov. 2022.
+[39] Skydio, “Skydio 2+TM and X2TM– Skydio Inc. | Skydio,” https://www.skydio.com/, 2022. Accessed: Nov. 2022.
+[40] AeroVironment, “AeroVironment, Inc. | Unmanned Aircraft Systems (UAV), Tactical Missile Systems, Unmanned Ground
+Vehicles,” https://www.avinc.com/, 2022. Accessed: Nov. 2022.
+[41] Volocopter, “Volocopter brings urban air mobility to life,” https://www.volocopter.com/, 2022. Accessed: Nov. 2022.
+[42] Draganfly, “Draganfly - UAV & Drone Hardware and Software Innovation for 20+ Years,” https://draganfly.com/, 2022.
+Accessed: Nov. 2022.
+[43] Aerialtronics, “Aerialtronics - Commercial drones,” https://www.aerialtronics.com/en, 2022. Accessed: Nov. 2022.
+[44] Freefly Systems, “Freefly Systems – Camera Movement Systems for Filmmakers,” https://freeflysystems.com/, (accessed: Nov.
+2022).
+[45] Flyability, “Flyability — Drones for indoor inspection and confined space,” https://www.flyability.com/, 2022. Accessed: Nov.
+2022.
+[46] Teledyne, “Thermal Imaging, Night Vision and Infrared Camera Systems | Teledyne FLIR,” https://www.flir.co.uk/, 2022.
+Accessed: Nov. 2022.
+[47] AutoFlight, “AutoFlight | Next Generation eVTOL Aircrafts,” https://www.autoflight.com/en/, 2022. Accessed: Nov. 2022.
+[48] Boeing, “Boeing: The Boeing Company Official Website,” https://www.boeing.com/, 2022. Accessed: Nov. 2022.
+22
+
+
+[49] EHang, “EHang | UAM - Passenger Autonomous Aerial Vehicle (AAV),” https://www.ehang.com/ehangaav, 2022. Accessed:
+Nov. 2022.
+[50] The Vertical Flight Society, “eVTOL Aircraft Directory,” https://evtol.news/aircraft, 2022. Accessed: Nov. 2022.
+[51] Zhang, J., Campbell, J. F., Sweeney, D. C., and Hupman, A. C., “Energy consumption models for delivery drones: A
+comparison and assessment,” Transportation Research Part D: Transport and Environment, Vol. 90, 2021, p. 102668.
+https://doi.org/10.1016/j.trd.2020.102668.
+[52] Leishman, G. J., Principles of helicopter aerodynamics, 2nd ed., Cambridge Aerospace Series, Cambridge University Press,
+New York, NY, 2006.
+[53] Burt, C. M., Piao, X., Gaudi, F., Busch, B., and Taufik, N. F., “Electric Motor Efficiency under Variable Frequencies and Loads,”
+Journal of Irrigation and Drainage Engineering, Vol. 134, No. 2, 2008, pp. 129–136. https://doi.org/10.1061/(ASCE)0733
+9437(2008)134:2(129).
+[54] Gong, A., and Verstraete, D., “Experimental Testing of Electronic Speed Controllers for UAVs,” 53rd AIAA/SAE/ASEE Joint
+Propulsion Conference, American Institute of Aeronautics and Astronautics, Atlanta, GA, 2017. https://doi.org/10.2514/6.2017
+4955.
+[55] Gong, A., MacNeill, R., and Verstraete, D., “Performance Testing and Modeling of a Brushless DC Motor, Electronic Speed
+Controller and Propeller for a Small UAV Application,” 2018 Joint Propulsion Conference, American Institute of Aeronautics
+and Astronautics, Cincinnati, OH, 2018. https://doi.org/10.2514/6.2018-4584.
+[56] Bond, E., Crowther, B., and Parslew, B., “The Rise Of High-Performance Multi-Rotor Unmanned Aerial Vehicles - How
+worried should we be?” 2019 Workshop on Research, Education and Development of Unmanned Aerial Systems (RED UAS),
+2019, pp. 177–184. https://doi.org/10.1109/REDUAS47371.2019.8999723.
+[57] Green, C. R., and McDonald, R. A., “Modeling and Test of the Efficiency of Electronic Speed Controllers for Brushless DC
+Motors,” 15th AIAA Aviation Technology, Integration, and Operations Conference, American Institute of Aeronautics and
+Astronautics, Dallas, TX, 2015, pp. 22–26. https://doi.org/10.2514/6.2015-3191.
+[58] Deters, R. W., Dantsker, O. D., Kleinke, S., Norman, N., and Selig, M., “Static Performance Results of Propellers Used on Nano,
+Micro, and Mini Quadrotors,” 2018 Applied Aerodynamics Conference, American Institute of Aeronautics and Astronautics,
+Atlanta, GA, 2018. https://doi.org/10.2514/6.2018-4122.
+[59] Vegh, J. M., Botero, E., Clarke, M., Smart, J., and Alonso, J., “Current Capabilities and Challenges of NDARC and SUAVE
+for eVTOL Aircraft Design and Analysis,” AIAA Propulsion and Energy 2019 Forum, American Institute of Aeronautics and
+Astronautics, Indianapolis, IN, 2019. https://doi.org/10.2514/6.2019-4505.
+[60] Brandt, J., and Selig, M., “Propeller Performance Data at Low Reynolds Numbers,” 49th AIAA Aerospace Sciences Meeting
+including the New Horizons Forum and Aerospace Exposition, American Institute of Aeronautics and Astronautics, Orlando,
+FL, 2011. https://doi.org/10.2514/6.2011-1255.
+23
+View publication stats

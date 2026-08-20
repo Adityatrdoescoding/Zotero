@@ -1,0 +1,440 @@
+State Space Methods for Flight Vehicles
+AE 695
+Shashi Ranjan Kumar
+Associate Professor Intelligent Systems and Control (ISaC) Lab Department of Aerospace Engineering Indian Institute of Technology Bombay Powai, Mumbai- 400076
+https://www.aero.iitb.ac.in/ ̃shashi R srk@aero.iitb.ac.in
+
+
+Control Theory: Empirical vs Analytical Methods
+Goal of Control Engineering
+To design and build real physical systems to perform given tasks.
+• Example: Design and install a heat exchanger to control the temperature and humidity of a large building.
+• Empirical method: Determination of required capacity of exchanger from total volume and geographical location of the building.
+• Replacement of the exchanger if not powerful enough to control the building’s environment.
+• Relies heavily on the experience and repeated experimentation.
+• Inadequate without the experience or infeasible experimentation because of high cost or risk.
+• Examples of infeasible experimentation:
+▲ Task of sending astronauts to the moon and bringing them back safely. ▲ Design of fusion control in nuclear power plants.
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 1 / 28
+
+
+Control Theory: Empirical vs Analytical Methods
+• Analytical method: Systematic procedures for designing systems and reducing the likelihood of designing flawed or disastrous systems.
+• Modeling, setting up mathematical equations, analysis, and design.
+• Do we need repeated experimentation for analytical methods, similar to empirical ones?
+• Yes, but using numerical simulations before the actual application.
+• With the adequately chosen model, the resemblance of system performance with that predicted by analytical designs or computer simulations.
+• Improvement in performance of physical systems by fine adjustments or tunings (discrepancies due to unavoidable inaccuracy in modeling).
+• Lengthy testing before the actual operation or mass production.
+• Experimentation needed to set up models and experience needed to improve the performance.
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 2 / 28
+
+
+Control Theory: System Definition
+System
+A collection of components that interact with one another and with their environment.
+• A set of interconnected or interdependent components or parts that work together to achieve a common goal or purpose.
+• Examples
+▷ Human beings, mechanical devices, and an electrical switch.
+▷ Plants, animals, the atmosphere, the stock market, and the political system.
+▷ Aerospace systems like aircraft, helicopters, missiles, avionics, rocket engines, and so on.
+• Assumptions always needed for the design and analysis of systems.
+• Physical Model: An idealized physical system
+• A system may be modeled or viewed differently depending on scenarios.
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 3 / 28
+
+
+What is a “Systems” View?
+Example
+A satellite may be considered a point mass object, a rigid body, or a flexible body, depending on the specific study intended.
+• Building a model with reasonable accuracy requires gradual removal of idealized assumptions until a point of diminishing return is reached.
+• Gain in accuracy of representations is not commensurate with the increased complexity of the computations needed.
+• Physical model =⇒ Mathematical model
+• A mathematical representation using appropriate physical laws
+• Mathematical models may differ depending on the choice of variables, the coordinate system, etc.
+• Aim to achieve high modeling accuracy
+• A particular mathematical model that gives a greater insight into the governing dynamics and behavior of the system is typically deemed viable for a given application.
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 4 / 28
+
+
+Control System Definition and Performance
+Control system
+A control system is a collection of components designed to drive a given system plant, with a given input to a desired output.
+• Primary reasons for control ▷ Power amplification ▷ Remote control ▷ Convenience of input form ▷ Compensation for disturbances
+• Measures of system’s performance ▷ Transient response ▷ Steady-state error
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 5 / 28
+
+
+Control Theory: Performance of Control System
+▷ Transient response: Comfort and patience of passenger
+▷ Steady-state error: Safety and convenience of passenger
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 6 / 28
+
+
+Control Theory: Types of Control Systems
+Examples: Toaster, spring mass damper system with constant force, study time for an exam to get an AA grade
+Sensitivity to disturbances and inability to correct for disturbances
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 7 / 28
+
+
+Control Theory: System Components and Aspects
+• Input transducer: Conversion of the form of the input to that used by the controller. • Output transducer (sensor): Measures the output response and converts it into the form used by the controller.
+Different aspects of control problem Example Plant Aircraft Control inputs Control surface deflections Disturbance inputs Wind inputs Outputs Vehicle translation and rotation position and velocities Control goals: Speed of achieving commanded output, Performance and design criteria, Handling qualities, Control specification Stability
+• Input and output are defined w.r.t. a plant. • Output of one plant can be the input of another plant.
+• Characterization of the controller: Speed, accuracy, and stability • Why is feedback important?
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 8 / 28
+
+
+Control Theory: Room Temperature Control System
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 9 / 28
+
+
+Control Theory: Flushing Mechanism
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 10 / 28
+
+
+Control Theory: Dryer and Shuttle Landing
+Comparator Switch Dryer
+Transducer
+Desired dryness
+Sensing device
+Actual dryness
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 11 / 28
+
+
+Control Theory: Cruise Control
+• Mathematical model of vehicle on the road at an angle θ
+• Forces acting on the vehicle
+• Equation of motion
+mv ̇ = T −F −W = au−bv−mg sin θ − D
+• Known parameter: Engine gain a
+• Uncertain mass m, friction coefficient b, and disturbance W .
+• Mass m: Number of passengers and their masses
+• Friction coefficient b: Road
+condition, which may change from one segment of the road to another
+• Disturbance W : Road angle and the air drag
+• Both b and W time-varying during the motion of the vehicle
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 12 / 28
+
+
+Control Theory: Cruise Control
+• How to design the open-loop control?
+• Nominal model, with W = 0
+ˆmv ̇ = au − bˆv
+• Steady-state value, at v ̇ = 0,
+0 = au − ˆbvss =⇒ vss = au
+bˆ
+• Constant control to make
+vss = vdes
+u=
+bˆvdes a
+• With this control applied to actual system with true parameters (b, m) in presence of disturbance
+mv ̇ = bˆvdes − bv − W
+• With W constant, steady-state
+vss =
+bˆvdes − W b
+• Steady-state speed error
+vdes − vss =
+( b − bˆ b
+)
+vdes + W
+b
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 13 / 28
+
+
+Control Theory: Cruise Control
+• Closed-loop system, with speed as feedback
+u=
+bˆvdes
+a
+} {{ }
+Feedforward control
++ K (vdes − v)
+} {{ }
+Feedback control
+mv ̇ = bˆvdes +aK (vdes − v)−bv −W = − (b + aK) v +(bˆ + aK) vdes −W
+• What would be the steady-state speed error in this case?
+vdes − vss =
+( b − bˆ b + aK
+)
+vdes + W
+b + aK
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 14 / 28
+
+
+Control Theory: Success in Control Engineering
+▲ Plant (process to be controlled)
+▲ Objectives
+▲ Sensors
+▲ Actuators
+▲ Communications
+▲ Computing
+▲ Architectures and interfacing
+▲ Algorithms
+▲ Accounting for disturbances and uncertainty
+▲ Homogeneity
+• Plant: Physical layout of a plant, physical models
+• Knowledge of the basic energy balance, mass balance, and material flows in the system
+• Objectives of control design:
+▷ What does one want to achieve? ▷ What variables need to be controlled to achieve these objectives? ▷ What level of performance is necessary?
+• Sensors: Eye of the controller
+• “If you can measure it, you can control it”
+• Actuators: Ability to affect or actuate the system to move the process from the current state to a desired state
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 15 / 28
+
+
+Control Theory: Success in Control Engineering
+• Communication systems: Interconnecting sensors to actuators
+• Communication delay in transmission: failure of control
+• Computational delays, numerical precision, ease of design and implementation
+• Architectures and interfacing: what to connect to what?
+• Centralized control: Complexity, cost, time constraints in computation, maintainability, reliability
+• Partition of control problem into manageable sub-systems
+• Algorithms: Connect the sensors to the actuators (Heart of control engineering)
+• Example: Eye-hand coordination for tennis player
+• Disturbances and Uncertainty: Significant impact on the system performance
+• Desired level of performance by using relatively simple models
+• Homogeneity: Interconnected systems are only as good as their weakest element.
+• Focus on the weakest component to get the best return for a given level of investment.
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 16 / 28
+
+
+Control Theory: Requirements
+▷ What are the features of a well-designed control system?
+▷ System must be stable.
+▷ Stability: Think of it as a requirement mandating that the output of a system should be well-behaved when its input is well-behaved.
+▷ Output must track the desired output (reference or command) with zero or small steady-state error.
+▷ Transient response of the system must be acceptable.
+▷ Effect of disturbance and measurement noise on the system’s response should be made as small as possible.
+▷ Design should be robust to model uncertainties.
+▷ Design should meet any constraints associated with the control input.
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 17 / 28
+
+
+Control Systems: Design Aspects
+• Analytical study of the physical system ▶ Modelling ▶ Development of mathematical equation description ▶ Analysis: quantitative/qualitative ▶ Design
+• Different models depending on requirements and operating ranges
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 18 / 28
+
+
+Laplace and Inverse Laplace Transforms
+Laplace transform
+Bilateral Laplace transform of a general signal f (t), where s = σ + jω
+L[f (t)] = F(s) ≜
+∫∞
+−∞ f (t)e−stdt
+Unilateral Laplace transform
+L[f (t)] = F(s) ≜
+∫∞
+0− f (t)e−stdt
+Inverse Laplace transform
+f (t) = L−1[F (s)] ≜ 1
+2πj
+∫ σ+j∞
+σ−j∞ F (s)estds
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 19 / 28
+
+
+Laplace Transform of Signals
+Signal Transform ROC δ(t) 1 All s
+u(t) [−u(−t)] 1
+s R{s} > 0 [R{s} < 0]
+tn
+(n − 1)! u(t)
+[
+− tn
+(n − 1)! u(−t)
+]1
+sn R{s} > 0 [R{s} < 0]
+e−atu(t) [−e−atu(−t)] 1
+s + a R{s} > −a [R{s} < −a]
+tn
+(n − 1)! e−atu(t)
+[
+− tn
+(n − 1)! e−atu(−t)
+]1
+(s + a)n R{s} > −a [R{s} < −a]
+δ(t − T ) e−sT All s
+cos(ω0t)u(t) s
+s2 + ω2
+0
+R{s} > 0
+sin(ω0t)u(t) ω0
+s2 + ω2
+0
+R{s} > 0
+e−at cos(ω0t)u(t) s + a
+(s + a)2 + ω2
+0
+R{s} > 0
+e−at sin(ω0t)u(t) ω0
+(s + a)2 + ω2
+0
+R{s} > 0
+un(t) sn All s
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 20 / 28
+
+
+Laplace Transforms Properties
+Convolution sum (integral)
+y(t) = x(t) ⊛ h(t) =
+∫∞
+−∞
+x(τ )h(t − τ )dτ
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 21 / 28
+
+
+Control System: Transfer Function
+• Development of a mathematical model of the system
+=⇒ Frequency domain approach: Transfer functions
+=⇒ Time domain approach: State equations
+• Fundamental physical laws of science and engineering
+• Ohm’s law and Kirchhoff’s laws, Newton’s laws
+• Differential equations relating input, output, and system parameters
+• Input, output, and system are distinct and separate parts.
+• Interconnection of several sub-systems
+• Reference input and controlled variable
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 22 / 28
+
+
+Control System: Transfer Function
+• Consider a system governed by nth-order LTI differential equation
+an
+dnc(t)
+dtn +an−1
+dn−1c(t)
+dtn−1 +· · ·+a0c(t) = bm
+dmr(t)
+dtm +bm−1
+dm−1r(t)
+dtm−1 +· · ·+b0r(t)
+• Taking Laplace transform on both sides
+ansnC(s) + an−1sn−1C(s) + · · · + a0C(s) + I.C. terms involving c(t)
+= bmsmR(s) + bm−1sm−1R(s) + · · · + b0R(s) + I.C. terms involving r(t)
+• Assuming all I.C. to be zero, the transfer function is given by
+G(s) = C(s)
+R(s) = bmsm + bm−1sm−1 + · · · + b0
+ansn + an−1sn−1 + · · · + a0
+=⇒ C(s) = R(s)G(s)
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 23 / 28
+
+
+Why State-Space based Methods?
+• Transfer function-based approaches
+• Various control designs using root-locus or frequency domain techniques
+• Why should one go for the state-space-based approach?
+• Consider a system and compensator given by
+Gp(s) = 1
+s − 1 , Gc(s) = s − 1
+s + 1 , G(s) = Gp(s)Gc(s) = 1
+s+1
+s−1
+s+1
+1 s−1
+s−1
+s+1
+1 s−1
+v u yv y
+• What are the possible difficulties with the above situations?
+• Pole-zero cancellation
+• Loss of controllability or observability of system
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 24 / 28
+
+
+Why State-Space Methods?
++ −
+++
++
+R Ry
+v x ̇ 1 x1 x2
+x ̇ 2
+u
+−2
++
+[x ̇ 1 x ̇ 2
+]
+=
+[−1 0 11
+] [x1
+x2
+]
++
+[−2 1
+]
+v,
+[x1(0) x2(0)
+]
+=
+[x10
+x20
+]
+, y = [0 1]
+[x1
+x2
+]
+x ̇ 1 = −x1 − 2v, x1(0) = x10 =⇒ x1(t) = e−tx10 − 2e−t ⊛ v
+Y (s) = X2(s) = x20
+s − 1 + x10
+(s − 1)(s + 1) + V (s)
+s+1
+y(t) = x2(t) = etx20 + 1
+2
+(et − e−t) x10 + e−t ⊛ v
+• For nonzero initial conditions, y(t) → ∞, except, x10 = −2x20 . • Is it because of issues of exact pole-zero cancellation? No
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 25 / 28
+
+
+Why State-Space Methods?
++ +
+R x1
+x ̇ 1
+−
+++
++
+R
+x ̇ 2 x2
+−2 y
+u
+v
+[x ̇ 1 x ̇ 2
+]
+=
+[1 0 −2 −1
+] [x1
+x2
+]
++
+[1
+0
+]
+v,
+[x1(0) x2(0)
+]
+=
+[x10
+x20
+]
+, y = [1 1]
+[x1
+x2
+]
+y(t) = (x10 + x20) e−t + e−t ⊛ v
+• For nonzero initial conditions, y(t) → 0
+• Internally unstable system, with states growing unbounded
+• Internal behavior is different and more complicated than external behavior
+• Not all modes appear in the output of the system
+• Transfer function defined under zero initial condition and may not display all modes of the system
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 26 / 28
+
+
+Why State-Space Methods? – Demonstration
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 27 / 28
+
+
+References
+References
+▷ Nise, Norman S. “Control Systems Engineering”, 7th Ed, 2014.
+▷ Kailath, Thomas, “Linear Systems”, Pearson Publication, 2016.
+▷ Goodwin, Graham C.; Graebe, Stefan F.; Salgado, Mario E.; “Control System Design”, Prentice Hall, 2000.
+Shashi Ranjan Kumar (IITB) AE 695 : State Space Methods for Flight Vehicles Motivation for Feedback Control Lecture 1 28 / 28

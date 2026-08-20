@@ -1,0 +1,267 @@
+See discussions, stats, and author profiles for this publication at: https://www.researchgate.net/publication/386336316
+A brief overview of Physics-Informed Neural Networks and some critical
+remarks
+Presentation · December 2024
+DOI: 10.13140/RG.2.2.20276.16002
+CITATIONS
+0
+READS
+2,504
+1 author:
+Chennakesava Kadapa Edinburgh Napier University
+74 PUBLICATIONS 823 CITATIONS
+SEE PROFILE
+All content following this page was uploaded by Chennakesava Kadapa on 02 December 2024.
+The user has requested enhancement of the downloaded file.
+
+
+A brief overview of Physics-Informed Neural Networks and some
+critical remarks
+Dr Chennakesava Kadapa
+School of Computing, Engineering and the Built Environment Edinburgh Napier University, Edinburgh, UK. Email: c.kadapa@napier.ac.uk
+02-Dec-2024
+
+
+Neural Networks
+■ A NN model is basically a functional relationship between the input (x) and output (y), i.e.,
+y = σ(3)(w(3)(i) + b(3))
+i = σ(2)(w(2)(h) + b(2))
+h = σ(1)(w(1)(x) + b(1))
+■ Once the weights (w) and biases (b) of the chosen NN model are determined, neural networks can predict the output (y) for the given input (x).
+■ The key step in Machine Learning is finding the values of these weights and biases, which is known popularly as training of the Neural Network.
+Input layer Output layer
+Hidden layers
+Figure: A Multi-input multi-output NN model.
+
+
+Training of Neural Networks
+■ During the training phase of NNs, weights and biases are determined by minimising the loss function,
+L= 1
+2 ∥ y − yˆ ∥2= eT e. (1)
+■ The error is defined as the difference between the predicted output (y) and the actual output (yˆ),
+e = y − yˆ
+■ Starting from an initial guess, the parameters are calculated using the backpropagation algorithm [1] in which the parameters are updated iteratively until the chosen convergence criterion is satisfied.
+
+
+PINNs
+■ In PINNs, in addition to the loss function (1), loss functions based on the residual of the governing differential equation(s) as well as the residuals of initial and boundary conditions are considered [2].
+■ For example, for the Poisson equation for which the governing equation is,
+∂2u
+∂x2 = f,
+the total loss function for is
+L = wdata Ldata + wPDE LPDE (2)
+where wdata and wPDE are the weights, and Ldata and LPDE are the loss functions.
+Ldata = 1
+2
+Nu
+X
+i=1
+∥u(xi) − u ̄(xi)∥2, LPDE = 1
+2
+Nc
+X
+j=1
+∂2u
+∂x2 (xj) − f (xj)
+2
+(3)
+where Nu and Nc are the number of data and collocation points.
+
+
+PINNs - Examples with DeepXDE library
+(a) (b)
+Figure: Predicted solutions for the Poisson equation with PINNs using the DeepXDE library [3]. (a)
+y = sin(π x) and (b) y = x + sin(x) + sin(2x)/2 + sin(3x)/3 + sin(4x)/4 + sin(8x)/8 with hard BCs.
+
+
+PINNs - Spring-mass-damper example [4]
+■ PINNs yield better results outside the domain of training data when compared with the naive NN model.
+(a) Naive NN model (b) PINNs model
+Figure: PINNs example from Ben Moseley’s blog [4].
+■ But, look at the training steps needed for the PINN model.
+
+
+PINNs - weights
+■ If only boundary points are selected for the data points, the weights should be one. wdata = wPDE = 1. This follow froms the point collocation method, see slide XYZ.
+■ If the data points include points inside the domain as well, then the value of weights should be adjusted. For Nu ≪ Nc,
+wdata ≈ wPDE
+.
+For Nu < Nc,
+wdata ≫ wPDE
+.
+For Nu ≈ Nc,
+wdata ≫ wPDE
+■ If Nu ≈ Nc, there is no benefit of LPDE. In fact, LPDE degrades the performance. We need a deeper NN (excessive number of neurons).
+
+
+PINNs versus pure data-driven models - Example 1
+(a) 2 neurons (b) 3 neurons (c) 4 neurons (d) 5 neurons (e) 6 neurons
+(f) 2 neurons (g) 3 neurons (h) 4 neurons (i) 5 neurons (j) 6 neurons
+Figure: (Top row) With PINNs using the DeepXDE library and (Bottom row) With naive NN models using the Levenberg-Marquardt method.
+
+
+PINNs versus pure data-driven models - Example 2
+(a) 1 layer, 10 neurons
+(b) 1 layer, 20 neurons
+(c) 2 layers, 10 neurons
+(d) 2 layers, 20 neurons
+(e) 1 layer, 10 neurons
+(f) 1 layer, 20 neurons
+(g) 1 layer, 30 neurons
+(h) 1 layer, 40 neurons
+Figure: (Top row) With PINNs using the DeepXDE library and (Bottom row) With naive NN models using the Levenberg-Marquardt method.
+
+
+PINNs versus pure data-driven models - Observations
+■ Adding PDE residuals as constraints seem to lower the accuracy.
+■ Pure data-driven NN models are better at capturing the input-output relations, as seen with the two examples.
+■ PINNs seem to struggle with increased nonlinearity. With PINNs, we need at least two layers and 20 neurons in each layer for example 2, while a naive NN model with 10 neurons accurately captures the response.
+■ Almost all the examples in the DeepXDE library, also many papers on PINNs, use excessive number of layers and neurons in each layer. Comprehensive studies on the performance with different neurons and layers are rare in the literature. So, this poor performance behaviour of PINNs is rarely discussed.
+
+
+Collocation methods
+■ To understand PINNs, it is worth revisiting the point collocation method or collocation least-squares method [5, 6].
+■ Using the point collocation method, we can see why wdata = wPDE = 1.
+For the PDE
+F (x, u, ux, uxx, . . .) = 0, (4)
+with the boundary conditions u = u ̄, we approximate the solution u(x), e.g., u(x) = c0 + c1 x + . . . + cn xn, and find the coefficients by ensuring to satisfy
+− the boundary conditions at the specified points i = 1, 2, . . . , Nb, and
+− the governing differential equation at the chosen collocation points, xj = 1, 2, 3, . . . , Nc.
+
+
+Point collocation method - Example
+∂2u
+∂x2 = 2 x (5)
+u(x = 0) = 0 (6)
+u(x = 1) = 1 (7)
+uexact(x) = 2
+3x+ 1
+3 x3 (8)
+Approximate function:
+u(x) = c0 + c1 x + c2 x2 + c3 x3 (9)
+At BCs:
+u(x = 0) = 0, → c0 = 0 (10)
+u(x = 1) = 1, → c0 + c1 + c2 + c3 = 1 (11)
+Second derivatie: ∂2u
+∂x2 = 2 c2 + 6 c3 x
+At collocation points, x = 0.2, 0.4, 0.6, 0.8:
+2 c2 + 1.2 c3 = 0.4 (12)
+2 c2 + 2.4 c3 = 0.8 (13)
+2 c2 + 3.6 c3 = 1.2 (14)
+2 c2 + 4.8 c3 = 1.6 (15)
+
+      
+100 0 111 1 0 0 2 1.2 0 0 2 2.4 0 0 2 3.6 0 0 2 4.8
+
+      
+
+  
+  
+c0 c1 c2 c3
+
+  
+  
+=
+
+      
+      
+0.0 1.0 0.4 0.8 1.2 1.6
+
+      
+      
+Solution: c0, c1 = 2/3, c2 = 0, c3 = 1/3.
+
+
+Point collocation method - Example (cont’d)
+In the example problem for the point collocation method,
+Ldata = 1
+2
+Nu =2
+X
+i=1
+∥u(xi) − u ̄xi ∥2, LPDE = 1
+2
+Nc =4
+X
+j=1
+∂2u
+∂x2 (xi) − fxi
+2
+(16)
+Which can be solved for the coefficients c as
+wdata JT
+1 J1 + wPDE JT
+2 J2 c = wdata JT
+1 f1 + wPDE JT
+2 f2 (17)
+J1 = 1 0 0 0
+1 1 1 1 , J2 =
+
+  
+0 0 2 1.2 0 0 2 2.4 0 0 2 3.6 0 0 2 4.8
+
+  
+, f1 = 0
+1 , f2 =
+
+  
+  
+0.4 0.8 1.2 1.6
+
+  
+  
+(18)
+It is apparent that wdata = wPDE = 1. This will change if we add data points in the domain.
+
+
+Some observations
+■ For the linear PDEs, the solution using the point collocation method with polynomials can be calculated in a single step. However, since NN models are inherently nonlinear, we need iterative methods even for linear PDEs.
+■ Point collocation method results in least-square problems with poorly conditioned matrix systems when compared with conventional numerical methods (FEM, FDM, FVM). They also need higher-order derivatives.
+■ This is why point collocation methods didnot become popular when compared with FEM, FDM and FVM. This is not going to change with PINNs now.
+■ Due to the memory issues in storing the matrices, PINNs are solved without the matrices using the same backporpagation algorithms in Machine Learning libraries. Such iterative algorithms, e.g., steepest descent or gradient descent, are quite poor for solving the resulting problems due to PINNs. They are also highly sensitive to initial guesses.
+■ It is not a surprise that PINNs know physics, because PINNs actually solve the governing PDEs/ODEs, just like any other numerical method.
+
+
+PINNs - Advantages
+■ The NN model can be trained with only boundary data and collocation points in the domain.
+■ No need for the simulation data, if we don’t include data points within the domain.
+■ Adaptation of the existing framework for NN models.
+■ PINNs are applicable for any problem.
+
+
+PINNs - Disadvantages
+■ Since NN models are inherently nonlinear - weights and biases from one layer depend on those from the other layers - we must use iterative methods to solve even linear PDEs/ODEs. Becomes more challenging for nonlinear problems.
+■ Need to create a different NN model for different PDE. Also, need to create a different NN model for different BCs and material properties. Exactly the same as solving using any other numerical method.
+■ If we want to include data points inside the domain as well, then we need to get it either from experiments or by running simulations using conventional solvers based on FDM, FEM, FVM etc. Then, there is no point adding additional loss functions of PDE residuals.
+■ If we have the simulation data within the domain, then there is no need for PINNs. Pure data-driven NN models (use only Ldata) are better, as shown with the examples. Remember, wdata ≫ wPDE for Nu ≈ Nc.
+
+
+What about PINNs as surrogate models?
+■ Surrogate models with PINNs make zero sense since we actually solve the PDE using the collocation methods in PINNs.
+■ Since PINNs solve the PDE solution, using PINNs as surrogate models is the same as using the solution obtained with any other numerical method as surrogates. In this case, this is just like probing the solution in the post-processing step.
+■ If you are after surrogate models for 1D problems and 2D problems on rectangular domains, then spline or RBF fitting serves the purpose.
+■ For 2D problems with complex geometries or for 3D problems, pure data-driven NN methods could be better than PINNs if you have, or can get, the simulation data. It is easier to fit the model than solve the PDE using point collocation method.
+■ For parametrised PDEs, we still have to solve the PDEs for all different parameters. This is not better than solving PDEs using other numerical methods. It is just that we have the solution in one place, but getting to that solution would be quite difficult and resource intensive.
+
+
+What about PINNs for inverse problems?
+■ For the inverse problems, we need the physics (the governing PDEs) anyway. So, PINNs are no special when compared to the standard methods used for inverse problems.
+■ For the ODEs, system identification methods perform much better [7].
+■ The advantages of PINNs for inverse problems will be apparent only if proper comparisons against conventional methods for inverse problems are made.
+■ Like, how are PINNs better in terms of cost? What inverse problems do PINNs solve that cannot be solved by the conventional methods? We need such comparative studies, but all we see are the methods applied to some problems without comparisons.
+
+
+References I
+M. T. Hagan, H. B. Demuth, M. H. Beale, and O. De Jes ́us. Neural Network Design. Second edition, 2014.
+M. Raissi, P. Perdikaris, and G. E. Karniadakis. Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations. Journal of Computational Physics, 378:686–707, 2019.
+L. Lu, X. Meng, Z. Mao, and G. E. Karniadakis. DeepXDE: A deep learning library for solving differential equations. SIAM Review, 63(1):208–228, 2021.
+B. Moseley. So, what is a physics-informed neural network? Website, August 2021.
+
+
+References II
+X. Zhang, X. Liu, K. Song, and M. Lu. Least-squares collocation meshless method.
+International Journal of Numerical Methods in Engineering, 51:1089–1100, 2001.
+P. Bochev and M. D. Gunzburger.
+Least-Squares Finite Element Methods. Springer, New York, USA, 2009.
+C. Kadapa. Identification of nonlinear dynamical systems from time-series data. 2021.
+View publication stats

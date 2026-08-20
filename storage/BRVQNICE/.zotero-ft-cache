@@ -1,0 +1,627 @@
+76 J. AIRCRAFT VOL. 23, NO. 1
+Airfoil Aerodynamics in Icing Conditions
+M.B. Bragg,* G.M. Gregorek,t and J.D. Lee|
+Ohio State University, Columbus, Ohio
+Methods of analyzing and experimentally measuring the effect of ice accretion on airfoil sections are
+presented. Empirical and analytical methods for predicting airfoil performance degradation due to ice are
+discussed. Ice simulation techniques for aerodynamic testing are presented and compared to data with actual ice
+accretions. The results show that simulation techniques to imitate the effect of ice on airfoil performance work
+well in most cases. Comparisons between predicted and measured airfoil performance with ice accretions are
+presented. For rime ice cases, the predictions compare well with experiment; but for glaze ice, a need for im
+proved methods are seen.
+Nomenclature
+c = airfoil chord length
+Cd = airfoil drag coefficient
+C( = airfoil lift coefficient
+Cm = airfoil moment coefficient
+Cp = pressure coefficient
+k = roughness height
+M = Mach number
+Re = Reynolds number
+t[CQ = icing time
+Tt = total temperature
+a = airfoil geometric angle of attack
+oiLO = zero lift angle of attack
+df = flap deflection
+6 = boundary layer momentum thickness
+Introduction
+T
+HE accretion of structural ice on aircraft in flight causes a
+loss in operational efficiency and, more importantly, a
+reduced safety margin. While deicing and anti-icing systems are available and work well in many applications, they have a
+high initial cost, add weight to the aircraft, and are expensive
+to maintain. Therefore, many airfoil surfaces on aircraft are
+unprotected and designers would like to protect as few sur
+faces as possible. Therefore, it is important to understand the
+accretion of ice on unprotected airfoils and the resultant
+aerodynamic effects.
+Early airfoil performance tests were conducted by the
+NACA in the Lewis Icing Research Tunnel (IRT) in the 1950s.
+The most complete of these tests was reported by Gray1 and
+Gray and von Glahn.2 Here, well-documented ice accretion
+and airfoil performance data are presented for an NACA
+65A004 airfoil. Lift, drag, and pitching moment changes due
+to ice accretion were measured with a tunnel balance system.
+Gray later combined these data and other NACA data as the
+basis for an empirical equation to predict drag rise due to ice
+accretion.3 After this work, little icing research was conducted
+Received July 22, 1985; revision received Sept. 17, 1985. Copyright
+© American Institute of Aeronautics and Astronautics, Inc., 1985.
+All rights reserved.
+'Assistant Professor, Department of Aeronautical and Astro
+nautical Engineering. Member AIAA.
+tProfessor, Department of Aeronautical and Astronautical
+Engineering. Member AIAA.
+or published until the current NASA program began in the late
+1970s.
+The work reported here has been conducted by the authors
+under NASA sponsorship over the past few years. The pur
+pose of the analysis was to explore the use of currently
+available airfoil analysis codes to predict airfoil performance
+due to ice accretion. In many cases, the comparisons were
+good and, in other cases, areas for further code development
+were identified. Experimental techniques were developed to
+test simulated ice shapes on airfoils. These data provide some
+insight into the effect of ice on airfoil performance and pro
+vide data for the analysis. The results presented here are a
+summary of this work; more detailed descriptions can be
+found in Refs. 4-10.
+Experimental Techniques and Results
+While the effect of the weight of ice accreted is usually
+negligible for fixed wing aircraft, the aerodynamic perfor
+mance penalty may be severe. Ice accretion changes the gross
+shape of the airfoil section and adds surface roughness. In
+most cases, these changes lead to increased drag and decreased
+lift at constant angles of attack. As a result, the airfoil perfor
+mance is degraded, as is the efficiency of the total aircraft,
+propeller, or rotor system. Safety problems may also arise due
+to the reduced Qmax and therefore increased stalling speed. A
+drastic drag rise may also prevent the aircraft from maintain
+ing level flight.
+Experimental testing of airfoils with ice accretions to obtain
+aerodynamic data is very difficult. In flight, icing conditions
+are hard to measure and fluctuate greatly as the aircraft passes
+in and out of the clouds. After ice has been collected, shedding
+or sublimation often occurs before the shape can be
+documented and the testing completed. Even if no shedding
+takes place, instrumenting an airfoil for detailed aerodynamic
+data acquisition in an icing environment is extremely difficult,
+especially in flight. In an icing wind tunnel such as NASA's
+IRT, icing conditions can be well controlled, but again
+operating instrumentation for detailed measurements is dif
+ficult. To avoid these problems, tests with simulated ice shapes
+are conducted. To simulate the ice, the ice shape is usually taken from an ic
+ing wind tunnel or flight test. Care must be taken to duplicate
+both the gross shape of the accretion and the character of the
+surface roughness. For a two-dimensional airfoil test, a two
+dimensional ice simulation is usually used, where the cross sec
+tion of the ice is constant along the span. In this section,
+simulation techniques are discussed and aerodynamic data are presented.
+Downloaded by Indian Institute of Technology, Bombay on October 26, 2025 | http://arc.aiaa.org | DOI: 10.2514/3.45269
+
+
+JANUARY 1986 ICING CONDITIONS 77
+Low-Speed Tests
+A section of a general aviation wing was used for this test in
+the NASA Lewis Icing Research Tunnel.8 The model was a
+1.36 m chord and 2 m span of an NACA 63A415 airfoil sec
+tion. The ice accretion was conducted at a freestream velocity
+of 51 m/s, angle of attack of 2.6 deg, liquid water content of
+1.5 g/m3, and a volume median diameter water droplet of 15
+jLtm.3 The ice shapes and resulting drag rise are shown in Fig.
+1. Both the glaze and rime cases are shown, with the only dif
+ference being the airstream total temperature, —4 and
+- 26°C, respectively. The drag rise ACd is the increase in drag
+coefficient above the clean model value. These measurements
+were taken in the NASA IRT using a wake survey probe. The
+glaze ice case develops the classical double-horned shape in 15
+min and has a much larger drag penalty compared to the more
+streamlined rime ice.
+No lift or pitching moment data are available from the IRT
+icing tests; these data must come from simulations based on
+tracings of the ice. Tracings were made by removing a section
+of the ice accretion using a steam-heated scraper. An airfoil
+template was then fit over the leading edge and the ice shape
+traced. From these tracings, simple two-dimensional replicas
+of the ice shapes could be made. The ice shapes depicted in
+Fig. 1 are from these tracings.
+From these tracings, smooth two-dimensional models of the
+ice shapes were constructed of mahogany and attached to the
+airfoil leading edge. Figure 2 shows the simulated rime ice
+shape on the model in the IRT test section. To simulate the
+surface roughness of the rime and glaze ice, grit is applied to
+the surface using a spray adhesive. The model was fitted with
+external pressure belts for measuring the airfoil surface static
+pressures. Each ice shape was tapped internally to measure 10
+surface pressures. A traversing wake survey probe was also at
+tached to the model in addition to the IRT probe. Data ac
+quisition of the surface pressures and wake data as well as
+reduction were performed by the Ohio State University (OSU)
+digital data acquisition and reduction system.11 In Fig. 3, the measured drag rise for the simulated rime ice is
+compared to that of the actual ice. Also shown is the drag rise
+for the simulated shape without the added surface roughness.
+The ice simulation appears to be quite good based on the drag
+values. Note that without roughness the drag rise is greatly
+reduced, emphasizing the role that the surface roughness plays
+in the drag of rime ice shapes. For glaze ice shapes, the effect
+of surface roughness on the drag was found to be small. Here
+the drag increase is due primarily to flow separation aft of the
+ice horns and is not significantly affected in most cases by the
+roughness. For the four cases (two rime and two glaze) tested
+in this experiment, the simple ice simulation method worked
+quite well.
+For each of the ice simulations, surface pressure and wake
+data were taken over a range of angles of attack and flap
+deflections.9 Thus, for each case, airfoil pressure distributions
+and integrated lift, drag, and pitching moment data are
+GLAZE ICING RIME ICING Ti =-26°C
+available. An interesting effect on the airfoil lift due to a rime
+ice shape accreted at 6.6 deg angle of attack and with no flap
+deflection is shown in Fig. 4. While in all other cases the ice ac
+cretion reduced Qmax, here with no flap deflection the max
+imum lift is increased slightly. The small streamline ice shape,
+accreted at high angle of attack, is acting essentially as a
+leading-edge flap. This had been seen before by NACA re
+searchers. Here, the configuration does have reduced Qmax for
+all nonzero flap deflections and has a large drag rise at cruise
+due to lower surface separation from the ice shape lower horn.
+The model was also equipped with a 25% chord, single
+slotted fowler flap. Data were taken at flap deflections of 0,
+10, 20, and 30 deg on the clean model and with the rime and
+glaze ice accretions shown in Fig. 1. In Table 1 the lift perfor
+mance of the airfoil with flap deflection is shown. In some
+Fig. 2 Instrumented model in IRT with simulated cruise rime ice.
+O TUNNEL ICE
+0.020 
+0.015 
+D SIMULATED SHAPE (SMOOTH)
+SIMULATED SHAPE (ROUGH)
+ACH
+15 min
+J
+0 5 10 15 ANGLE OF ATTACK (DEGREES)
+Fig. 1 Comparison of glaze and rime icing for cruise conditions. Fig. 3 Effect of natural and simulated cruise rime ice on airfoil drag.
+Downloaded by Indian Institute of Technology, Bombay on October 26, 2025 | http://arc.aiaa.org | DOI: 10.2514/3.45269
+
+
+78 BRAGG, GREGOREK, AND LEE J. AIRCRAFT
+cases aLO is not available, since only data near Qmax were
+taken. The two major effects of ice on lift are: a reduction in
+Qmax due to premature leading-edge stall and a shift in aLO due
+to the increased upper surface boundary-layer thickness from
+the leading-edge roughness. Note that, for this airfoil with
+these ice accretions, the Qmax penalty due to the ice is small at
+zero flap deflection, but is a fairly significant value of approx
+imately 0.3 at flap deflections between 10 and 30 deg.
+High-Speed Icing Tests
+As part of a helicopter icing flight-test program, ice accre
+tions were documented using several different methods. The
+purpose of the test was to document ice accretions on rotor
+blades, which could then be simulated for an aerodynamic
+wind tunnel test.10 The helicopter hovered in the icing cloud the desired time
+and, immediately after landing, one of the blades was enclosed
+in a controlled environment for ice shape documentation. The
+ice shapes were documented at 10 spanwise stations using
+three different techniques: ice tracings, stereophotography,
+and silicone molding. The ice tracing technique was similar to
+that described earlier and the stereophotography method can
+be found in Ref. 10. The silicone rubber molding technique
+was based upon work done at NASA Lewis Research
+Center.12 A Dow-Corning silicone rubber compound with a
+hardening catalyst suitable for use at subfreezing temperatures
+was used. This compound sets up in 2-4 h and, since it was at
+subzero temperatures, damage to the ice and loss of detail
+were minimized. After degassing the mixture, it was poured
+into mold boxes that fit around the ice shape and airfoil
+leading edge. After about 2 h, the temperature was increased,
+the mold boxes removed, and the ice still in the molds allowed
+to melt as the rubber continued to harden. One of the silicone
+ice molds is shown in Fig. 5. Studying the most forward end,
+the cross section of the airfoil can be seen along with the im
+pression of the glaze ice shape. Note the excellent detail in the
+impression of the ice surface roughness in the mold.
+The ice shapes from the helicopter were then used to con
+duct a wind tunnel evaluation of the rotor section aero
+dynamics. The ice shapes were simulated in two ways. The
+first method involves casting, from the rubber mold, the ice
+shape onto a full-scale portion of the blade. This was ac
+complished using epoxy with a parting compound to minimize
+damage to the mold. The first casting was made at the model
+midspan, then others alternately on either side until the 6 in.
+l.5r
+1.0
+0.5
+e
+o CLEAN D RIME 7
+o
+D
+-4° 0 4 8 12
+ANGLE OF ATTACK (DEGREES)
+16
+span mold was cast on the entire blade section. This casting
+method produced excellent detail in the ice shape.
+These shapes were internally tapped as was the airfoil. The
+second ice simulation involved two-dimensional wooden ice
+shapes with grit applied to simulate roughness, similar to the
+method described earlier. Data were taken from the surface
+pressures and a wake survey probe to determine lift, drag, and
+moment coefficients.
+Full-scale tests of the rotor blade section were conducted in
+the 65 in. transonic facility of Fluidyne Engineering Corp. us
+ing both simulation methods. Scaled simulation was also con
+ducted using the second method in the OSU 6x 12 in. tran
+sonic airfoil tunnel. In Fig. 6, the drags from the different
+methods in the Fluidyne tunnel are compared. The two
+dimensional wood shape with roughness duplicated the drag
+rise due to the cast ice shape very well. Unfortunately, no drag
+data with the actual ice shape is available for comparison.
+Based on these and other ice accretion tests, the two
+dimensional simulation, even in small scale, duplicates the
+aerodynamic effects of the ice reasonably well.
+Airfoil Aerodynamic Analysis
+An empirical equation to predict the drag rise due to ice ac
+cretion was first formulated by Gray.3 This equation is based
+on the data collected by the NACA primarily in the 1950s. Us
+ing correlations for ice horn angle and height, the equation is
+best suited for glaze conditions. While Gray's equation does
+provide some guidance, the error in predicted drag rise is often
+quite large.13 Gray provided no correlation for lift or pitching
+moment effects.
+Brumby14 has correlated changes in Qmax due to various
+types of airfoil surface roughness or protuberances. While not
+primarily for ice accretions, this work provides some
+preliminary estimate of Qmax changes. However, it is very
+limited in that it contains no Reynolds number effects and lit
+tle detail of the actual roughness or protuberance shape or
+density. Certainly, it fails to predict the measured cases of in
+creased Qmax due to ice accretions. Better methods with less
+empiricism are needed to accurately predict the aerodynamic
+effect of ice on airfoils.
+Rime Ice
+Rime forms at low temperatures where the droplets freeze
+on impact. These accretions are generally streamlined in shape
+with a significant portion of the drag rise due to surface
+roughness and early boundary-layer transition. Bragg6 for
+mulated a method to analyze airfoils with rime ice based on
+Fig. 4 Lift performance of an airfoil with rime ice accreted at an
+angle of attack of 6.6 deg. Fig. 5 Typical silicon mold of an ice formation.
+Downloaded by Indian Institute of Technology, Bombay on October 26, 2025 | http://arc.aiaa.org | DOI: 10.2514/3.45269
+
+
+JANUARY 1986 ICING CONDITIONS 79
+existing airfoil analysis computer codes and a simple drag cor
+relation. The method assumes that changes in Q and Cm can
+be found by analyzing the airfoil with a smooth ice shape and
+that Cd can be predicted using an empirical ACd relation.
+The airfoil with and without the smooth ice shape is first
+analyzed using the code of Eppler and Somers.15 Their simple
+Qmax scheme provides a reasonable estimate for Qmax if the ice
+shape causes a leading-edge stall., The airfoil analysis code of
+Smetana et al.16 includes the boundary-layer displacement ef
+fects by iterating on the airfoil plus displacement thickness. By
+forcing an early transition due to the rime ice roughness, the
+thickening boundary layer causes a reduction in lift by reduc
+ing the angle of attack for zero lift. This also improves the
+calculation of the pitching moment. Therefore, by combining
+the results of the two airfoil analysis codes, the lift and pitching
+moment performance of the airfoil with rime ice can be
+estimated.
+In Fig. 7, a prediction by this method is compared to the
+measured lift performance of an NACA 65A413 airfoil with
+simulated rime ice. The compa'rison is quite good, although
+the Qmax with ice was somewhat underpredicted. The shift in
+the angle of attack for zero lift is accurately predicted. A
+typical drag prediction is shown in Fig. 8 for the same NACA
+65A413 airfoil with simulated rime ice. The current drag cor
+relation includes the effect of surface roughness, rime ice
+cross-sectional area, and airfoil type only.4 Comparisons be
+tween this method and the measured drag values are accep
+table, but the iced airfoil drag is overpredicted. The prediction
+using Gray's equation3 compares well at the iced Q, approx
+imately 0.4, but greatly overpredicts the drag at all other
+conditions.
+To attempt to remove some of the empiricism, a computer
+program has been developed to model surface roughness, and
+trailing-edge separation. The code is a modified version of the
+CLMAX program by Dvorak.17 In this program, the wake
+region resulting from turbulent boundary-layer separation is
+modeled using a free vortex sheet of constant strength. A sheet
+of equal but opposite strength is shed into the wake from the
+lower surface. An iterative procedure is used to converge on a
+flowfield solution. An inner iteration loop calculates the wake
+shape, while the outer iteration recalculates the boundary
+layer characteristics and separation point. The potential flow
+solution is obtained using a panel method with vortex panels.
+0.200 I——i——r
+0.100 - - - D - - 2-D WOOD STRIP /
+0.020
+0.010
+0.004
+— o — CLEAN MODEL —A— CAST ICE REPLICA
+10
+'02468
+ATTACK ANGLE (DEGREES)
+Fig. 6 NACA 0012 rotor airfoil drag—clean and with simulated ice.
+Separation and other boundary-layer characteristics are
+calculated using a momentum integral method.
+Since surface roughness is present for airfoils with ice, the
+program was modified to activate the rough turbulent
+boundary-layer method of Dvorak.18 This is a momentum in
+tegral method that includes the effect of roughness in the tran
+sitional or fully rough regime with or without a pressure gra
+dient. Since much of the roughness occurs in the laminar
+boundary layer near the leading edge, a simple modification
+was made in the laminar boundary-layer routine.6 After deter
+mining the boundary-layer velocity distribution, integration
+over the roughness height k/c yields the element form drag. A
+drag coefficient of 0.5 was assumed. Using the known
+roughness density, the total increment in drag over a
+boundary-layer step d(5/c) can be determined. This value of
+AC,/ was then included into the boundary-layer calculation by
+incrementing the momentum thickness 8 using the Squire
+Young law.
+1.6 r
+THEORY CLEAN ---- THEORY ICED
+o EXPERIMENT CLEAN
+D EXPERIMENT SIMULATED
+RIME ICE
+I
+4 8 12 16 20
+AMGLE OF ATTACK (DEGREES)
+Fig. 7 Measured and predicted lift of an NACA 65A413 airfoil clean
+and with rime ice.
+• PRESENT METHOD oCLEAN
+n SIMULATED ICE SHAPE
+0,8 
+0.4 
+0.01 0.02 0.03
+Fig. 8 Measured and predicted drag polars for an NACA 65A413
+airfoil clean and with rime ice.
+Downloaded by Indian Institute of Technology, Bombay on October 26, 2025 | http://arc.aiaa.org | DOI: 10.2514/3.45269
+
+
+80 BRAGG, GREGOREK, AND LEE J. AIRCRAFT
+Table 1 Airfoil performance degradation with simulated ice
+Parameter
+Cftnax "stall «LO
+Clean
+121..54
+-3.4
+fi^Odeg Rime
+121..54
+-2.6
+5/-=1.0deg ( Glaze
+110..33
+-3.0
+Clean
+141..80
+-6.4
+Rime
+101..55
+-5.8
+Glaze
+101..54
+-5.9
+Clean
+122..50
+-10.0
+5/--20deg Rime
+1.75
+8.5 
+Glaze
+1.7 9.5 
+Clean
+2.2 11.5
+-13.2
+6r=30deg Rime
+61..955
+-10.0
+Glaze
+72..50
+-12.0
+i.so r
+1.25
+1.00
+C, 0.75 
+0.50 
+0.25
+NACA 65A2I5 Re=2.6X|06
+0.0
+FFA EXPERIMENT
+O SMOOTH D K/C = 0.000154 A K/C = 0.0003077 0 K/C = O.OOI23
+_L _L _L _L J
+0 4 8 12 16 2 0
+ANGLE OF ATTACK (DEGREES)
+Fig. 9 Comparison of theory to experiment for the lift performance of the NACA 65A215 airfoil with various roughness levels.
+l.25r
+1.00
+0.75
+0.50
+0.25
+0.0
+NACA 65A2I5 = 2.6x|Q6 Ma,* 0.182
+_L J
+FFA EXPERIMENT
+O SMOOTH D K/C = 0.000154 A K/C = 0.0003077 0 K/C = O.OOI23
+I_____| 0.0 0.01 0.02 0.03 Cd
+0.04 0.05
+Fig. 10 Theory compared to experiment for the drag of an NACA 65A215 airfoil with various roughness levels.
+Implementing this method requires that the roughness
+height, density, and area covered be input to the computer
+code. The rough turbulent method was written based on two
+dimensional roughness data, but with some information on its
+use with sand grain roughness. Actual surface roughness is,
+however, three-dimensional, so to correct for this, the
+equivalent sand grain roughness is used.
+This computer program is compared to experiment for an
+airfoil with distributed surface roughness in Figs. 9 and 10. In
+Fig. 9, the lift performance of an NACA 65A215 airfoil for
+three heights of distributed surface roughness is shown. In the
+experiment19 as well as the theory, the roughness covers the
+entire upper surface and the lower surface from the leading
+= 0.15. While Qmax is overpredicted in most cases,
+edge o x = .. max
+the reduction in Qmax with roughness is predicted quite well
+for all but the largest roughness size. The stall angles are also
+determined. Although the theory overpredicts Qmax on the
+clean airfoil compared to these data, it compares quite well to
+that measured by the NACA on a similar airfoil.20
+The theoretical and experimental drag polars for the same
+airfoil and roughness levels are shown in Fig. 10. The general
+trend and magnitude of the drag increments are quite good.
+The clean airfoil drag and that with the largest roughness
+match experiment very well. The code is an excellent tool to
+determine drag rise due to roughness, but does have some
+limitations. In cases where the roughness is three-dimensional,
+but not sand grain, determining the proper equivalent sand
+grain roughness is very difficult. Using the correct roughness
+height is critical if the performance degradation is to be ac
+curately determined. Also, the iterative method sometimes
+fails to converge. This happens if the airfoil has a trailing-edge
+separation, then stalls from near the leading edge. The
+CALCULATED SEPARATION ZONE FROM MEASURED Cp's USING BRISTOW CODE
+MEASURED SEPARATION ZONE FROM IRT FLOW VISUALIZATION a =5.6° Re =4.6x|Q6
+63A4I5
+0.30
+Fig. 11 Predicted bubble geometry using measured surface pressures for the cruise glaze ice shape.
+iterative scheme oscillates from a leading-edge to trailing-edge
+stall. When these difficulties can be avoided, the program yields good results.
+Glaze Ice
+Glaze ice accretions occur at temperatures near freezing,
+where the water droplets run back on the surface before freez
+ing. While rime ice shapes are fairly streamlined, glaze ice ac
+cretions usually present a drastic change in the airfoil shape.
+This results in sometimes large regions of flow separation aft
+of the ice horns. As a result of the separation, the airfoil ex
+periences a severe drag rise, reduction in Qmax, and some
+change in pitching moment. At the present time, no analytical
+Downloaded by Indian Institute of Technology, Bombay on October 26, 2025 | http://arc.aiaa.org | DOI: 10.2514/3.45269
+
+
+JANUARY 1986 ICING CONDITIONS 81
+methods are available to predict this separation and its effect
+on the airfoil. Before such a method can be developed, ex
+perimental data must be gathered on which to validate and test
+these new methods.
+Oil flow experiments have been conducted to determine the
+size of the separated zone aft of a glaze ice horn. A splitter
+plate carefully aligned with the flow was used to help visualize
+the time-averaged velocities.7 The size of the separation zone
+can be estimated by following a streamline back from the
+separation at the tip of the horn to the reattachment point,
+behind which the oil moves back parallel to the surface. Oil
+flow photographic studies have been conducted for two dif
+ferent glaze ice shapes on the NACA 63A415 airfoil using
+simulated ice shapes and tested in the NASA Lewis Research
+Center's IRT.
+While no viscous modeling of the flowfield about an airfoil
+with glaze ice has been done by the authors, some initial
+potential flow studies have.7 Here many of the popular airfoil
+analysis and potential flow codes were evaluated as to their
+performance on an airfoil with glaze ice. One of the most
+promising was the potential flow code of Bristow.21 In addi
+tion to operating in the usual analysis mode, this code has a
+design or mixed boundary condition option in which velocities
+are input over a region of the airfoil and the corresponding
+geometry is predicted.
+Using the design mode and measured surface pressures in
+the separated zone, the separation bubble geometry can be
+estimated. In Fig. 11, such a prediction is shown compared to
+the measured separation zone from oil flow studies. Shown is
+the upper surface leading edge of an NACA 63A415 airfoil
+with a simulated ice shape. The measured and predicted bub
+bles are very similar for the first 5% chord. Then, however,
+the oil flow showed reattachment, while the predicted bubble
+extends back to almost 20% chord. This is not unexpected,
+since surface velocities defining the design region were input
+back to 20% chord and the theory should predict the airfoil
+plus displacement thickness in unseparated regions. Several
+comparisons have been completed and the results are
+encouraging.
+Comparisons have also been made by calculating the poten
+tial flow about the airfoil with glaze ice and adding to the air
+foil geometry the geometry of the measured separation
+streamline. Using this equivalent body, the potential flow
+codes predict pressures very similar to the measured values in
+the separated zone. While these potential flow methods can
+not, of course, predict the separation bubble a priori, they do
+provide some insight into the problem.
+Summary
+The experimental measurement of the aerodynamic effect
+of ice on airfoils is very difficult due to the icing environment.
+Therefore, it is usually advantageous to test airfoils with
+simulated ice shapes. Two ice simulation methods have been
+discussed. Simple two-dimensional shapes with simulated sur
+face roughness seem to accurately simulate the aerodynamic
+penalties due to ice in most cases. These results are compared
+to actual iced airfoil data and to a more'sophisticated simula
+tion method. Aerodynamic penalties have been obtained for
+several cases and are discussed.
+Airfoils usually suffer increased drag, reduced lift, and
+pitching moment change due to ice accretion. Methods for
+predicting these changes, which include various degrees of em
+piricism, were discussed. For rime ice accretions, these
+methods have been fairly successful where the predictions are
+based on existing airfoil analysis codes with some empirical
+correction. A single computer code to analyze rime-iced air
+foils is presented. Glaze ice accretions are more difficult to
+analyze due to the large regions of separated flow. Oil flow
+visualization has been used to view the separated zones.
+Results from inviscid models based on the measured separa
+tion streamlines and surface pressures have been encouraging.
+Acknowledgments
+This work was supported in part by the NASA Lewis
+Research Center. The authors would like to thank Dr. R. J.
+Shaw of NASA Lewis for his many contributions to this
+research.
+References
+!Gray, V.H., "Correlations Among Ice Measurements, Impinge
+ment Rates, Icing Conditions, and Drag Coefficients for Unswept
+NACA 65A004 Airfoil," NACA TN 4151, Feb. 1958.
+2Gray, V.H. and von Glahn, U.H., "Aerodynamic Effects Caused
+by Icing of an Unswept NACA 65A004 Airfoil," NACA TN 4155,
+1957. 3Gray, V.H., "Prediction of Aerodynamic Penalties Caused by Ice
+Formations on Various Airfoils," NASA TN D-2166, 1964.
+4Bragg, M.B., "Rime Ice Accretion and Its Effect on Airfoil Per
+formance," Ph.D. Dissertation, Ohio State University, Columbus,
+1981 (also NASA CR 165599, 1982). 5Bragg, M.B. and Gregorek, G.M., "Aerodynamic Characteristics
+of Airfoils with Ice Accretions," AIAA Paper 82-0282, Jan. 1982.
+6Bragg, M.B. "Predicting Airfoil Performance with Rime and
+Glaze Ice Accretions," AIAA Paper 84-0106, Jan. 1984. 7Zaguli, R.J., "Potential Flow Analysis of Glaze Ice Accretions on
+an Airfoil," M.S. Thesis, Ohio State University, Columbus, 1983.
+8Bragg, M.B., Gregorek, G.M., and Shaw, R.J., "Wind Tunnel In
+vestigation of Airfoil Performance Degradation Due to Icing," AIAA
+Paper 82-0582, March 1982.
+9Zaguli, R.J., Bragg, M.B., and Gregorek, G.M., "Results of an Experimental Program Investigating the Effects of Simulated Ice on
+the Performance of the NACA 63A415 Airfoil with Flap," NASA CR
+168288, Jan. 1984.
+10Lee, J.D., "Aerodynamic Evaluation of a Helicopter Rotor
+Blade with Ice Accretion in Hover," AIAA Paper 84-0608, March
+1984.
+HFreuler, R.J. and Hoffmann, M.J., "Experiences with an Air
+borne Digital Computer System for General Aviation Flight Testing,"
+AIAA Paper 79-1834, Aug. 1979.
+12Richter, G.P., Private communication, NASA Lewis Research Center, Cleveland, OH, 1984.
+13Shaw, R.J., Sotos, R.G., and Solano, F.R., "An Experimental
+Study of Airfoil Icing Characteristics," NASA TM 82790, Jan. 1982.
+14Brumby, R.E., "Wing Surface Roughness, Cause and Effect,"
+DC Flight Approach, Douglas Aircraft Co., Long Beach, CA, Jan. 1979. p. 207.
+15Eppler, R. and Somers, D.M., "A Computer Program for the
+Design and Analysis of Low-Speed Airfoils," NASA TM 80210, Aug.
+1980.
+16Smetana, F.O., Summey, D.C., Smith, N.S., and Garden, R.K.,
+"Light Aircraft Lift, Drag, and Moment Prediction—A Review and
+Analysis," NASA CR-2523, May 1975.
+17Dvorak, F., "CLMAX Program Description," AMI Rept. 7905,
+Contract NASI-15729, NASA Langley Research Center, 1979.
+18Dvorak, F.A., "Calculation of Turbulent Boundary Layers on
+Rough Surfaces in Pressure Gradient," AIAA Journal, Vol. 7, Sept. 1969, pp. 1752-1759.
+19Ljungstrom, B., "Wind Tunnel Investigations of Simulated Hoar
+Frost on a 2-Dimensional Wing Section with and without High Lift
+Devices," Aeronautical Research Institute of Sweden, FFA, Rept.
+AU-902, 1972.
+20Abbott, I.H. and von Doenhoff, A.S., Theory of Wing Sections,
+Dover Publications, New York, 1959.
+21 Bristow, D.R., "Multi-Element Airfoil Inviscid Analysis and
+Design Program (Version 1): User Instructions," McDonnell Aircraft Co., St. Louis, MO, Dec. 1980.
+Downloaded by Indian Institute of Technology, Bombay on October 26, 2025 | http://arc.aiaa.org | DOI: 10.2514/3.45269

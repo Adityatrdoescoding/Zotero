@@ -1,0 +1,341 @@
+INDIAN INSTITUTE OF ENGINEERING SCIENCE & TECHNOLOGY, SHIBPUR
+Summer Research Internship Project Report
+_______________________________________
+Topic: Study of Aerodynamic Performance & Aeroacoustics of Tandem Configuration Rotors using DUST Simulations and Experimental Techniques.
+Name: Gunjan Nileshkumar Charola
+Enrollment No: 2022AMB002
+Duration of Internship: 20th May, 2025 to 20th July, 2025
+Place of Internship: Indian Institute of Technology, Bombay
+Date of Submission: 25th July, 2025
+Remarks/Signature:
+________________________________________________________
+Department of Aerospace Engineering & Applied Mechanics, IIESTShibpur, West Bengal.
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+2
+Table of Contents:
+ACKNOWLEDGEMENT ........................................................................................................................................................... 4
+ABSTRACT .................................................................................................................................................................................. 5
+1. INTRODUCTION .............................................................................................................................................................. 6
+• OVERVIEW OF HELICOPTER AERODYNAMICS: ................................ ................................ ................................ ..................... 6 • BRIEF GEOMETRIC DESCRIPTION OF MODEL: ................................ ................................ ................................ ...................... 6 • OVERVIEW OF THE METHOD AND SOFTWARE: ................................ ................................ ................................ ..................... 6 • OVERVIEW OF EXPERIMENTAL METHODS:................................ ................................ ................................ ........................... 7
+2. FUNDAMENTALS OF HELICOPTER AERODYNAMICS........................................................................................ 8
+3. DETAILED GEOMETRIC DESCRIPTION OF THE MODEL ................................................................................ 10
+4. THE BET, BEMT MODELS AND VORTEX PARTICLE NUMERICAL METHODS.......................................... 13
+• BLADE ELEMENT THEORY: ................................ ................................ ................................ ................................ ................ 13 • BLADE ELEMENT MOMENTUM THEORY: ................................ ................................ ................................ ........................... 15 • VORTEX PARTICLE METHOD (NUMERICAL APPROACH): ................................ ................................ ................................ ... 17 • FAST-MULTIPOLE METHOD (FMM):................................ ................................ ................................ ................................ .. 19 • AERODYNAMIC PERFORMANCE OF TANDEM ROTORS:................................ ................................ ................................ ....... 20 • ACOUSTICS PERFORMANCE OF TANDEM ROTORS:................................ ................................ ................................ ............. 20 • NON-IDEAL EFFECTS OF ROTORS: ................................ ................................ ................................ ................................ ...... 20
+5. DUST USER INTERFACE AND METHODOLOGY.................................................................................................. 21
+• DUST USER INTERFACE: ................................ ................................ ................................ ................................ ................... 21 • DUST PRE-PROCESSOR:................................ ................................ ................................ ................................ ..................... 21 • DUST SOLVER:................................ ................................ ................................ ................................ ................................ .. 22 • DUST POST-PROCESSOR:................................ ................................ ................................ ................................ ................... 25
+6. EXPERIMENTAL SETUP AND METHODOLOGY .................................................................................................. 27
+• THRUST AND TORQUE MEASUREMENTS: ................................ ................................ ................................ ........................... 27 • INDUCED VELOCITY AND AOA MEASUREMENTS:................................ ................................ ................................ .............. 28 • VORTICITY AND VELOCITY FIELD VISUALIZATION:................................ ................................ ................................ ........... 28 • SOUND PRESSURE LEVEL AND INTENSITY MEASUREMENT:................................ ................................ ............................... 28
+7. RESULTS AND DISCUSSIONS..................................................................................................................................... 29
+• GRID AND PARTICLE INDEPENDENCE STUDY: ................................ ................................ ................................ .................... 30 • TRANSIENT STATE CONVERGENCE STUDY: ................................ ................................ ................................ ....................... 30 • VALIDATION OF THE CFD RESULTS:................................ ................................ ................................ ................................ .. 30 • THRUST AND TORQUE RESULTS:................................ ................................ ................................ ................................ ........ 30 • INDUCED VELOCITY AND AOA RESULTS: ................................ ................................ ................................ .......................... 30 • VORTICITY AND VELOCITY FIELD RESULTS:................................ ................................ ................................ ...................... 30 • SOUND PRESSURE LEVEL AND INTENSITY RESULTS: ................................ ................................ ................................ ......... 30
+8. APPLICATIONS AND INFERENCES.......................................................................................................................... 33
+BIBLIOGRAPHY/REFERENCES .......................................................................................................................................... 34
+ANNEXURE ............................................................................................................................................................................... 35
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+3
+List of Figures:
+FIGURE 1. SCHEMATIC DIAGRAM OF A HELICOPTER WITH VARIOUS AERODYNAMICS FORCES AND INTERACTIONS ........................ 8
+FIGURE 2. SCHEMATIC DIAGRAM OF THE GEOMETRIC CONFIGURATION FOR TANDEM ROTORS..................................................... 10
+FIGURE 3. SCHEMATIC DIAGRAM OF RELATIVE VELOCITY FOR HOVER AND RADIALLY FREE STREAM VELOCITY ......................... 11
+FIGURE 4. TOP AND SIDE VIEWS OF THE ROTOR DISK PLANE SHOWING THE EFFECTIVE AREA AND SLIPSTREAM ........................... 11
+FIGURE 5.VECTOR DIAGRAM WITH THE ELEMENTAL FORCES COMPONENTS AS PER THE BLADE ELEMENT THEORY .................... 13
+FIGURE 6. ANNULUS RING DESCRIBED BY THE BLADE ELEMENT MOMENTUM THEORY............................................................... 15
+FIGURE 7. TABULATION SHOWING THE LOADS AND MOMENTS FOR TANDEM HS = 1.3 AT ZERO PHASE ANGLE........................... 29
+FIGURE 8. TABULATION SHOWING THE LOADS AND MOMENTS FOR TANDEM HS = 1.5 AT ZERO PHASE ANGLE........................... 29
+FIGURE 9. TABULATION SHOWING THE LOADS AND MOMENTS FOR TANDEM HS = 1.75 AT ZERO PHASE ANGLE......................... 30
+FIGURE 10. TABULATION SHOWING THE LOADS AND MOMENTS FOR TANDEM HS = 2.0 AT ZERO PHASE ANGLE......................... 30
+FIGURE 11. TABULATION SHOWING THE LOADS AND MOMENTS FOR TANDEM HS = 2.25 AT ZERO PHASE ANGLE....................... 31
+FIGURE 12. TABULATION SHOWING THE LOADS AND MOMENTS FOR TANDEM HS = 2.8 AT ZERO PHASE ANGLE......................... 31
+FIGURE 13. COMPARATIVE THRUST PLOT FOR SIMULATION AND EXPERIMENTAL DATA.............................................................. 32 FIGURE 14. COMPARATIVE TORQUE PLOTS FOR SIMULATION AND EXPERIMENTAL DATA ........................................................... 32
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+4
+Acknowledgement
+I express my sincere gratitude to IIT Bombay for providing me with the opportunity to access such unique facilities and engage in enriching experiences in the field of aerospace engineering. My sincere thanks extend to Dr. Dhwanil Shukla, assistant professor, Aerospace Engineering, IIT Bombay, for imparting invaluable knowledge that enriched my understanding in the field of “Helicopter Dynamics and Rotorcrafts”.
+His wisdom and guidance have been a source of inspiration throughout my internship. I extend our heartfelt appreciation to Mr. Rahul Viswam, PhD Research Scholar, IIT Bombay for his unwavering guidance and constant supervision. His invaluable support and provision of necessary information were instrumental in the successful execution of my experimental simulations and findings.
+Lastly, my sincere thanks to Dr. Lawrence Prince Raj, assistant professor, Aerospace Engineering and Applied Mechanics, IIEST Shibpur as well as my guide/evaluator. A note of thanks to the lab support staff at IIT Bombay for their unwavering help and support. Their contributions and support have made the whole internship flawless.
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+5
+Abstract
+Helicopters, Choppers, VTOL Vehicles, Drones and UAVs commonly employ multi-rotor systems for propulsion and control, making it essential to understand their aerodynamic performance - particularly in tandem rotor configurations. Prior studies have established that the separation between rotors significantly affects wake interactions, thereby influencing thrust generation, power consumption, and the overall aerodynamic performance of tandem rotor systems. A specific case of interest within tandem rotor systems is that of phase-locked rotors, where the rotors maintain a constant relative angular position, which offer further insights into how rotor wake interactions influence overall performance.
+For tandem rotors in a phase-locked configuration, the rotor-rotor phase angle plays an important role in determining aerodynamic performance. This angle becomes especially significant in configurations with higher rotor overlap, where the effects of wake interaction are more pronounced. In such cases, certain phase angles may offer performance advantages over others, making phase control a key design parameter in multi-rotor systems. The framework developed in this study enables detailed evaluation of performance characteristics like thrust, torque and figure of merit along with flow characteristics such as induced velocity, induced angle of attack, vorticity, helicity and circulation, providing deeper insight into how phase angle directly influences rotor performance.
+Beyond aerodynamic analysis, the methodology can be extended to investigate aeroacoustic behavior, providing a basis for noise reduction strategies. Rotor wake interactions and phase relationships play a critical role in acoustic signature, making them key factors in such studies. These insights are directly applicable to a wide range of rotorcraft platforms, including helicopters, VTOL, e-VTOL systems, drones, and UAVs, with the potential to enhance range, endurance, and operational efficiency.
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+6
+1. Introduction
+• Overview of Helicopter Aerodynamics:
+A helicopter is a very complex flying machine which unlike conventional fixed wing aircraft does not relay of fixed geometry to generate lift and turbomachine to generate propulsive force but rather a single rotor arrangement to fulfill all purposes of propulsion, lift force and maneuvering capabilities with precise control over the configuration of the rotor. This induces many aerodynamic non-linearities in the system in terms of instability, adverse torsional forces, gyroscopic effects and wake interactions causing turbulence and vibration impacting the noise and thus the acoustics study for enhanced efficiency also plays a vital role. Generally, two broad phases of flight in rotorcrafts include the hovering condition and foreword flight condition. The main purpose of development of rotorcrafts of any kind in the history of mankind was the need for stationary aerial vehicle in the air which does not need foreword flight motion to produce lift force i.e., hovering condition corresponds to the major performance criteria for efficiency in rotorcrafts and thus a deeper understanding of this state of the rotor’s aerodynamics is essential in the progress for better aerial systems and performance study.
+• Brief Geometric Description of Model:
+Broadly speaking the need for tandem type configuration is the impact on counter torque management and reduce adverse impacts of vertical/horizontal rotor blade interactions like in a classical helicopter or chopper layout. Tandem rotor systems, consists of two rotors in parallel planes of rotation separated by some horizontal separation (HS) i.e., perpendicular to the axis of rotation and vertical separation (VS) i.e., parallel to the axis of rotation. They also possess a phase angle (j) i.e., which is defined as the angle made between the lines joining the rotor hub and the rotor tip of both. For the purpose of this study, the geometric configurations are varied in the ranges of HS = 1.3R to 2.8R, VS = 0.2R to 0.4R and j = 0° to 150°, to have a comparative study of the performance and flow character giving rise to potential explanations for the variation due to near vicinity aerodynamic phenomenon. For the sake of clarity and detail, the rotors are a combination of NACA 23024 at the root section and NACA 23012 at the tip section with a collective pitch of +18° in the clockwise direction and -18° in the counter clockwise direction for the upstream side and downstream side rotors respectively.
+• Overview of the Method and Software:
+To explore these effects, a study has been undertaken to investigate the aerodynamic performance parameters of the tandem rotors in hover conditions (zero advance ratio) at 5000 RPM using an open-source, meshless solver based on the Vortex Particle Method: DUST (DAER Unsteady Simulation Technique), developed by Airbus and Politecnico di Milano which are validated against experimental findings.
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+7
+DUST is a mid-fidelity, flexible software used to simulate the aerodynamics of complex, nonconventional aircraft configuration. It uses a “Lagrangian” based approach where the vortex particles are traced, once shed from the vortex lattice or the surface panels on the geometry throughout the void space of the fluid domain to compute the flow field i.e., the velocity and pressure field employing specifically the vortex particle method implemented via the Blade Element Theory (BET) and the Blade Element Momentum Theory (BEMT) models encapsulating the “Lifting Line” to accurately model a rotor blade with specific airfoil cross section using the lifting line data such as the coefficient of lift and drag to compute the required data without having to actually model the complete geometry of the blade of rotors saving on the computational time but yet delivering consistent results.
+• Overview of Experimental Methods:
+To experimentally obtain the performance and acoustics data, many different tools and methods were employed and the results of which provide a key validation to the results shown by the simulations which includes thrust and torque measurements done using load and torque cells, induced velocity and angle of attacks measurements done using pressure transducers and pitot probes, vorticity and flow velocity field measurements done using particle induced velocimetry techniques (PIV), sounds level intensity and pressure fluctuation measurements done using microphones and sound level meters in an anechoic chamber.
+The load and torque cells consist of strain gauges placed strategically in a configuration to capture the change in length caused due to the force or moment, resistance changes from which can then be calibrated to show the loads or torque values when mounted on a rigid structure to dampen the ambient disturbances. The pressure transducer consists of sensing elements to produce a potential difference converted to digital impulse based on the difference in pressure which is then calibrated to show the flow induced velocity and pressure in the vicinity of the rotor.
+The PIV setup consists of a light source (class-4 laser), high speed camera, synchronizer and seeding particles generator arrangement to capture instantaneous and time averaged images of the flow field by tracing the particles in spatially locked frames to corelate them thus determining the flow field velocity in the plane of interest. The acoustic measurement includes microphones and sound level meters to capture the intensity and pressure fluctuations in near and far fields of the rotor at different azimuth and radial distances.
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+8
+2. Fundamentals of Helicopter Aerodynamics
+A helicopter is a very complex flying machine which unlike conventional fixed wing aircraft does not relay of fixed geometry to generate lift and turbomachine to generate propulsive force but rather a single rotor arrangement to fulfill all purpose of propulsion, lift force and maneuvering capabilities with precise control over the position of the rotor blades achieved using a rotor slip disc arrangement for variable pitch, lag and yaw controls both collectively and individually. To meet these demands, one needs a deeper knowledge on the aerodynamic environment of the rotor and the aerodynamic loading effects on the dynamic response on rotor. The lifting capability of the rotating blade is related to its local angle of attack (AoA) and the dynamic pressure associated to that section. For hovering flight conditions, the velocity profile along the blade span is considered linear radially and azimuthally axisymmetric with zero flow velocity at the rotational axis to maximum velocity Vtip at the blade tip.
+The local dynamic pressure at any blade element is proportional to the square of the distance from rotational axis. Thus, for a constant pitch/AoA of the blade, it experiences a thrust force proportional to the Vtip2 and power proportional to the Vtip3. For foreword flight conditions, the velocity experienced by the blade elements will stay linear but will no longer stay axisymmetric as different azimuth positions of the blade will experience a relative velocity that will increase or decrease the net local velocity and as a result also vary the net lift force distribution, thrust force and the power consumption.
+Figure 1. Schematic diagram of a helicopter with various aerodynamics forces and interactions
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+9
+The aerodynamic complexity can be noted in the tandem configuration as the two rotor blades in near field vicinity cause a great extent of flow interaction causing complex vortex wake structures to form and interact with the rotating blade causing a abrupt change in local AoA experienced by the section of blade and impact the net thrust output which again varies with rotational speed of the rotors. The synchrony of the rotors hence become an important aspect of study as the periodic motion and the downstream velocity field can interact constructively or destructively producing variable effects of the performance of the rotors. Also, the time varying cyclic loading and dynamic pressure fluctuations are the sources for increased noise and vibrations. The interactions of the tip vortex and core vortex structures with the downstream rotor blade produce a varied thrust output for the upstream and downstream rotor causing a disbalance of the aerial vehicle in hover conditions which can be a potential cause for instabilities.
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+10
+3. Detailed Geometric Description of the Model
+In the tandem rotor system used here, consists of two rotors in parallel planes of rotation separated by some horizontal separation (HS) i.e., perpendicular to the axis of rotation and vertical separation (VS) i.e., parallel to the axis of rotation. They also possess a phase angle (j) i.e., which is defined as the angle made between the lines joining the rotor hub and the rotor tip of both from both rotors. The entire geometric layout is developed with the global center (origin) at the rotor hub as the center with x-axis in the chordwise direction, y-axis in the spanwise direction & z-axis as the rotational axis perpendicular to the plane of rotation (x-y plane). For the purpose of this study, the geometric configurations are varied in HS = 1.3R, 1.5R, 1.75R, 2.0R, 2.25R & 2.8R, VS = 0.2R & 0.4R and j = 0°, 30°, 60°, 90°, 120° & 150°.
+Figure 2. Schematic diagram of the geometric configuration for tandem rotors
+The rotor blade is a combination of two airfoil sections of chord length (c) 0.025m and a span (b) of 0.1123m consisting of NACA23024 from (y/b) = 0 to (y/b) = 0.1 and NACA23012 from (y/b) = 0.1 to (y/b) = 1.0, with zero dihedral angle, zero twist and taper ratio of unity. The hub is circular with the outer diameter of 0.02m and inner diameter of 0.01m making the effective blade span to be 0.1023m from root to tip. A collection positive pitch angle of +18° is provided uniformly across span to the upstream rotor which is programed to rotate in the clockwise direction and a negative pitch angle of -18° is provided uniformly across span to the downstream rotor which is programmed to rotate in the counter clockwise direction. For the purpose of simulation and literature, the upstream rotor is fixed for its initial azimuth angle and the downstream rotor is initialized for the different phase study. The HS is varied by an equal positive and negative shift given to the center of rotation in the y direction from the global origin and similar is the case for VS variation by an equal positive and negative shift given to the center of rotation in the x direction from the global origin to achieve the desired separations.
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+11
+Figure 3. Schematic diagram of relative velocity for hover and radially free stream velocity
+The lifting line data for the used NACA series airfoils is provided as a .c81 file input to the DUST preprocessor and solver to utilize the same for the lifting line data computation. In the analysis, to keep the geometry simple, the hub section is ignored for sake of simplicity and simulation. This is provided individually for both different airfoil sections as well as for both positive angle of attack and negative angle of attack to mirror the geometry in term of the thrust production which should be downstream for both.
+Figure 4. Top and side views of the rotor disk plane showing the effective area and slipstream
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+12
+The reference system defined in the DUST environment includes 2 coordinate systems defined from the global origin for precise force and moment measurements both locally at the sections and globally at the rotor hub. One coordinate axes system originates from global origin housing the rotor hub and second coordinate axes system originates from the blade root. Further, the blade is divided into 40 elements of 10 equal spanned sections in the 10% of blade span other equal 30 equal spanned sections in the remaining 90% of blade span starting from the blade root. Hence, the required configuration for tandem rotor study was achieved which is then simulated in the required case setup files to allow for different configurations and a comparative study was performed after validation.
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+13
+4. The BET, BEMT Models and Vortex Particle Numerical Methods
+• Blade Element Theory:
+It is the basis for the more complex developed models of a helicopter rotor (or propellor) which provides a quantitative and adequate results of the forces and moment distribution along the span of the blade and thus the averaged or integrated loads over the rotor disk as a whole can be computed. It assumes each blade section as a quasi-2D airfoil section which individually produce the force and moment which is used to compute rotor performance as a whole and serves as a primary design consideration in terms of the blade twist or dihedral and the planform area for maximized rotor performance.
+It does not directly account for the induced velocity and the induced AoA on each section but can be assumed to follow a distribution which can be imposed in the solution obtained from BET to get the induced effects and also the 3-D effects at the tips. These difference in the distribution of induced velocity arises due to the complex phenomenon of the vortical wake interacting with the rotating rotor blade in the disk plane. The Biot-Savart law is also used to calculated the influence of vortical wake structures and the induced AoA.
+Figure 5.Vector diagram with the elemental forces components as per the Blade Element Theory
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+14
+The above figure represents the flow environment and the aerodynamic forces at a blade section arbitrarily chosen. The forces are a result of solely the induced velocity and AoA normal to the leading edge of the blade section. The measured 2D aerodynamic characteristics of the airfoil as a function of AoA can be assumed for the purpose of calculating the resultant lift and pitching moment on each blade element. The inflow AoA arises because of the velocity induced by the rotor and its wake. Further, analyzing the same for the hover condition, the resultant local flow velocity at any blade element at a radial distance y from the rotational axis has an out of plane component Up = Vc + nI normal to the rotor and a in plane component UT = W y parallel to rotor because of the blade rotation relative to the assumed actuator disk. The resultant velocity (U) and the inflow angle (or induced AoA j) is thus given as:
+The effective angle of attack is hereby reduced by the same amount and each section experiences a different angle of attack. Hence, the incremental lift and drag seen by consecutive cross sections are given by:
+Now, the components of lift and drag in reference to the induced angle of attack diverting the resultant forces in the components of x and y are resolved to give the thrust and torque respectively, also used to compute the power parameter. The Thrust, Torque and the Power are given in terms of the induced angle of attack as:
+where, the Nb is the number of blades of the rotor,
+By definition, the thrust and the power coefficient can be described as an elemental increase or decrease, by the following formulations:
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+15
+This computed over the entire blade span in terms of the rotor solidity (s) results in the fundamental performance parameters for the rotor using the Blade element theory.
+• Blade Element Momentum Theory:
+It takes the BET further by imposing the “Actuator Disk Momentum Theory” into the blade element analysis and there by computing the lift forces and drag forces by mean the circulation theory and the momentum theory which help compute the inflow velocity to the rotor. It is theorized by annular consideration on the actuator disk of the rotor and applying the conservation laws to an elemental circular area.
+It allows the inflow distribution along the blade to be estimated. Considering the laws of conservation applied to the annulus of the rotor disk as shown in the figure below, which is the essence of the Froude’s original differential theory. This annulus is at a distance y from the rotational axis having a width dy on which the momentum theory is impose to compute the thrust value to be given by the equation:
+Figure 6. Annulus ring described by the Blade Element Momentum Theory
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+16
+This runs currently on the assumption that there is not 3D effects of the adjacent annuli and treats it as a 2D problem which requires more complex treatment if the tip losses are to be taken into account (can be obtained by the Prandtl’s tip loss function). The thrust coefficient in no dimensional terms can be written as the following:
+Hence, computing the parameters for the total rotor integrates the differential values to obtain a total thrust coefficient and induced power coefficient as:
+Next, the idea is extended to assumed a radial inflow function of the velocity as defined earlier to approximate a closer value to the real thrust and torques as:
+For the radial inflow equation, we equate the thrust coefficients from the momentum and bade element theories to give rise to a quadratic equation whose solution is also portrayed below as the following:
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+17
+In the Numerical approach for the BEMT, we discretize the rotor and use the sectional radial inflow equation described below, which for hover condition excludes the lc term.
+The incremental thrust at each segment is calculated using the equation,
+This is the numerical frame work used by the vortex method and the lifting line method to compute the discretized particle vortex and the lifting flow parameters on the blade geometry, fused together in the lagrangian approach of simulation deployed to numerically calculate the flow field and parameters using the fast multipole method (fmm).
+• Vortex Particle Method (Numerical Approach):
+The vortex particle method (VPM) is a numerical technique used in computational fluid dynamics (CFD) to simulate the behavior of fluids, particularly those with swirling or vortical motion. It's a mesh-free approach that discretizes the fluid domain into a set of Lagrangian particles, each carrying a measure of vorticity, and tracks their movement and interaction to approximate the fluid flow. Vortex sheets are modelled as particles with invariant strength which are transported downstream by convection and diffusion due to the induced velocity field and the free stream velocity. The vorticity field can be computed as superposition of the local vorticity created by each particle. Based on the Bio-Savart law the induced velocity field is computed and accordingly the particles are convected through a suitable time integration scheme. The following shows the incompressible, vorticity form of the Navier-Stokes equation used as the fundamental framework for the vortex particle method.
+This can also be simplified in the 2D by ignoring the vortex stretching and advection terms and initialized by the flow continuity, vorticity-velocity relation, initial and boundary conditions. In the particle form, it is discretized into mollified particles by segregating the vorticity field and representing by the summation operator over the N particles of the domain as the following:
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+18
+where, the gp and sp represents the circulation (strength) and the core size of the vortex p, the kernel function satisfied the following conditions representing the discrete particles:
+It can also be encapsulated with the advection and the diffusion terms by the governing equation as shown:
+Its core formulation includes the following:
+- Instead of solving the Navier-Stokes equations on a fixed grid (Eulerian approach), VPM relies on the vorticity formulation of the Navier-Stokes equations. - The vorticity, which represents the local swirling motion of the fluid, is discretized into a collection of particles (vortices). - These particles move and interact with each other, their movement governed by the velocity field they induce and the free-stream velocity. - The velocity field is reconstructed from the vorticity distribution using mathematical relationships, like the Biot-Savart law for incompressible flows.
+It holds an advantage over the classical Eulerian approach in terms of the less complexity dues to meshless based solving, low numerical dissipation and capturing or core vortex features without loss in accuracy, efficient in dealing with high vorticity and unsteady problems and ease in tracking the flow field features i.e., greater adaptability to change in flow features and interactions. This formulation can be solved using the fast multipole method (fmm) for the flow domain as defined by the particle box limits, the framework for which is discussed in the subsequent sections.
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+19
+• Fast-Multipole Method (FMM):
+The Fast Multipole Method (FMM) is an algorithm that efficiently calculates long-range interactions between many particles, reducing the computational complexity from quadratic to nearlinear time (O (N) or O (N log N)). It achieves this by grouping nearby particles into cells and approximating their combined effect on distant particles using multipole expansions.
+This drastically speeds up calculations, especially for large systems, by avoiding direct pairwise computations for all particles. By efficiently combining near and far field calculations using multipole and local expansions, FMM significantly reduces the computational cost of simulating systems with long-range interactions.
+In its simplest form, the fast multipole method seeks to evaluate the following function:
+If expressed in the form of the spherical coordinates due to geometrical requirements, then it is expressed as the following equation or polynomial function describing the multipole expansion in individual directions.
+The necessary observation in this method is that if the distance between y and x is large enough the (y-x)-1 is well approximated by the polynomial. Thus, the interpolating polynomial shown below converges quickly with the order of the constant term provided that the pole is far away from the region of interpolation which is also known as the “local expansion”. This gives a computational advantage to solve using the lagrangian approach which cuts down the computational cost, if the nodes of the actual particles are evaluated at a cost of N and the flow field interpolated nodes are evaluated at a cost of M then the actual cost of the fmm is reduced not by the sum but by the amount (M + N) log (1/e), where the e is the numerical tolerance fed in the program.
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+20
+This is the concept of influence or expansion of a group of particles on a distinct particle in a single direction of the coordinate system, which can easily be deployed to work in the 3 directions as requirement of the simulation for computing the effects of induced and free stream velocity in each direction.
+• Aerodynamic Performance of Tandem Rotors:
+• Acoustics Performance of Tandem Rotors:
+• Non-ideal Effects of Rotors:
+The following are the possible causes of deviation of the simulation setup from the experimental values but when ignored as a whole, should result in a match of trends over various configuration of setup as discussed further in the report:
+a) Tip loss and vortex interactions due to swirling effects downstream. b) Kinematic viscosity effects on the shear layer near the blade surface. c) Hover convergence function deployed in the simulation to avoid computational error. d) Interpolating degree and fmm degree limited by computational costs.
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+21
+5. DUST User Interface and Methodology
+• DUST User Interface:
+It uses a command prompt based FORTAN written source code to call functions and change parameters from pre-defined functions using the terminal window to initiate the input files for geometry, solver algorithm, and the references defined. It creates the output files in the form of data (.dat) and plot (.plt) formats which can be loaded in software like Excel and Tecplot for further post processing and computation.
+• DUST Pre-processor:
+It is called in the terminal window with the command “dust_pre.in” which is the input file tag given to the preprocessor which runs the sequence of commands as defined using the following files to fulfill the purpose of geometry file (.h5) generation:
+Input File: This is the main root file of the pre-processor with the name “dust_pre.in” which calls the required geometry definition, mesh generation, referencing system and the airfoil table files within it to pass on the read data to the directory file of the DUST which generates the geometry (.h5) file in the same parent path as the input file for the solver to then deploy its solver and compute the necessary solution data files. It has the following syntax of commands:
+- comp_name: defines the name given to the component used in referencing in solver - geo_file: calls the files path of the file discussed in (b) subpart - ref_tag: gives a reference tag name to component - file_name: saves the generated file with the extension .h5 for solver to refer to
+(In case of the single rotor configuration, only 1 component is defined i.e., 2 blades of the rotor and no hub is considered for simplicity as it does not contribute to the thrust or torque significantly. In case of the tandem rotor configuration, only 2 components are defined i.e., 2 blades of the upstream rotor and 2 blades of the downstream rotor)
+a) Geometry Definition Files: These are the input (.in) format files that the DUST preprocessor reads when requested for via the input file (.in) called through the terminal. It includes the data of the different blade sections which will be implemented in the geometry and their definition on the basis of root, tip and other sectional chord lengths, spans, angle of twists, dihedral angles, and other relevant parameters.
+b) References Files: These are the input (.in) format files that the DUST preprocessor reads when requested for via the input file (.in) called through the terminal. This defines the reference frames which can be of the type moving or stationary with subtypes of rotating and translating based on
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+22
+the geometric configuration requirements. This is essential for the local to global transformation matrix to generate properly which is useful in the computation at two different locations for more finer analysis.
+- reference_tag: names the coordinate system for calling in the post processor - parent_tag: defines the global coordinate in reference to which the new coordinate system - origin: states the origin of the new coordinate system in reference to the parent tag - orientation: the rotation matrix vectors defining the angular position in space - multiple: it states if the coordinate system is singular or multiple - moving: states if the system will move with the transient of the simulation
+- multiplicity = {n_blades} defines the number of blades of each rotor - multiplicity = {rot_axis} defines the rotational axis of the rotor - multiplicity = {rot_rate} defines the angular speed of rotation - multiplicity = {psi_0} defines the initial phase of start - multiplicity = {hub_offset} defines the hub offset i.e., the center of rotation in the local coordinate frame - multiplicity = {n_dofs} defines the degree of freedom of the blade in the pitch, lag and flap axis along the hinge of the hub
+(In both the cases of simulation, except the number of rotor components from 1 in single case and 2 in tandem case there are no changes in the reference coordinate system used. It defines a “Hub” coordinate system from the origin of the global origin and defines a “
+c) Airfoil Data Tables Files: These are the data (.c81) format files that the DUST preprocessor reads when requested for via the input file (.in) called through the terminal. This holds the lifting lines data like the lift and drag coefficients, coefficient of moments and the Cl/Cd ratio for various angle of attacks of the particular airfoil cross section used in the blade geometry, for the lifting line solver to implement on the geometry for computation. This data is generated using reliable opensource airfoil data at the required Reynolds number scaled for the geometry and fluid domain.
+• DUST Solver:
+It is called in the terminal window with the command “dust.in” which is the input file tag given to the solver which runs the sequence of commands as defined to fulfill the purpose of result file (.h5) generation.
+Input File: This is the main root file of the pre-processor with the name “dust.in” which calls the required geo_input.h5, referencing system and the airfoil table files within it to pass on the read data to the directory file of the DUST which generates the solution (.h5) file in the
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+23
+“Raw_Output_Data” folder parent path as the input file for the post-processor to then deploy and compute the necessary data files. It has the following syntax of commands:
+- basename: specifies the file name format in which the result solution files will be saved in the raw data folder
+- u_inf: defines the 3-component velocity vector of the free stream - p_inf: defines the far field ambient pressure of fluid domain - rho_inf: defines the ambient density of fluid domain - a_inf: defines the sound velocity of fluid domain - mu_inf: defines the dynamic viscosity of fluid domain
+(In case of the single rotor configuration and tandem rotor configuration, the far field infinity conditions were setup up as the ambient hover conditions as: u = [0.0, 0.0, 0.0000001], p = 101325 Pa, rho = 1.225kg/m3, a = 340 m/s, mu = 0.00001813)
+- tstart: initiates the start time step of the simulation - tend: terminates the simulation at this time step - dt: defines the time step - dt_out: defines the time step at which the outputs will be saved - output_start: defines the state as “True” to record the result files
+(In case of the single rotor configuration and tandem configuration, the parameters were set for zero start of the simulation time up to 11 rotations with an angular time step of 10 degree which corresponds for 500 rpm to the following values: tend = {5000/60} = 83.333 rotations/sec, {1/83.333} = 0.0120 sec/rotation, {0.0120*11} = 0.132sec / 11 rotation, {0.0120/360} = 0.00003333 sec/deg, {0.00003333*10} = 0.000333 sec / 10 deg)
+- geometry_file: defines the file path for the geometery.h5 file generated by pre processor - reference_file: defines the file path of the coordinate system
+- vortex_rad: defines the radius of the vortex core of each particle released - fmm: set the fast multipole method to “True” to use it for flow field calculation - vortexstrech: sets the stretching equation in the solver to compute the stretching factor - diffusion: sets the diffusion equation in the solver to compute for the diffusion over time - penetration_avoidance: set the environment to avoid particles to penetrated any solid geometry
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+24
+(In case of the single rotor configuration and tandem configuration, the parameters were set with vortex radius of 0.03, using the fmm method and to replicate the real condition of experiments, include the effects from vortex stretching, and diffusion)
+- n_wake_panels: defines the number of wake panels on the trailing edge of the blade from where the particles will be shed - n_wake_particles: defines the maximum upper threshold of the particles - particles_box_min: defines the lower coordinate location of the fluid domain box - particles_box_max: defines the upper coordinate location of the fluid domain box
+(In case of single rotor configuration and tandem configuration, the number of particles were set to 5 to include the accurate effects of the vorticity on the blade forces and flow physics, which does not compensate much for the computational time since it uses a lower degree for multipole expansions with degree 2 and a single wake panel was set for the simulation as increase in the wake panels drastically doubles the time of computation without much change in the results. Particle box length of 20 in each coordinate direction were set with {-10, -10, -10} to {10, 10, 10} to make the fluid domain such that beyond the 11 rotations, the particles are eliminated to steady the time taken beyond that as the convergence study well defines the settling of the results beyond 11 rotations, but parameter set to obtain a smoother flow physics in the 3D octree grid)
+- box_length: defines the length of the sampling box called octree generated by the fmm - n_box: defines the vector for number of boxes in each direction while computation - octree_origin: defines the fluid domain origin for the generation of the octree box - n_octree_levels: level of division of each sampling box to fine tune the resolution - min_octree_part: defines the minimum level of expansion - multipole_degree: the degree of polynomial used in the fmm
+(In case of both the simulations, box length was set to 4 as further increase did not change result but increase the overall computation time. It can be further increased to higher values to finely study the flow field structures and the induced effects of the vortex cores and sheets. n_box was setup to {2,1,2} which initialized in each coordinate direction for the computation using the fmm with the purpose that particles are available in the y direction after release but their effects in the other coordinal direction was to be studied more finely so a larger value in the x and z directions. The Octree levels define the division of each sampling box during the local mathematical expansion framework is deployed as discussed in the fast multipole method description. Multipole degree was set to 2 and does not require to be increased as the dealt geometry is not that complex or turbulent)
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+25
+- ll_solver: (GammaMethod) defines the method used by the lifting line solver to compute the flow around the blade geometry i.e., here the circulation based kutta theorem - ll_reynolds_corrections: set the correction for high Reynold flow causing friction factor changes in the surface flow and the force computation based on the Prandtl theory - ll_reynolds_correction_nfact: sets the correction factor value
+- ll_max_iter: terminates the iterative process once exceeding the set value to avoid infinity - ll_tol: set the tolerance value for the solver to resolve the residuals - ll_damp: defines the damping coefficient value for the consecutive iterative step
+- vl_tol: set the tolerance value for the vortex lattice solver of the particles - vl_dynstall: set the dynamic stall based on the vorticity computed on each particle on the trailing edge of the blade when shed and the computation progresses - vl_start_step: defines the time step from when the vortex lattice solver will start
+- kutta_correction: considers the blade geometry based on the coordinates provided and ensures flow does not separate from the trailing edge when initiating the solver due to open boundedness of the system of equation solver - kutta_startstep: defines the time step from which the kutta correction is applied - kutta_maxiter: terminates the iterative process for the correction factor beyond the set value - kutta_tol: set the tolerance value for the kutta condition to achieve i.e., closed line integral of velocity namely the circulation is zero at the trailing boundary edge of the blade
+(In case of both the simulation types, the lifting line solver is used to compute the flow parameters on the wing geometry surface and the wake field associated with it using the circulation theory i.e., Gamma Method with the corrections for the high Reynold with a factor of 0.2 as used by maximum of the literatures in the rotor domain. The maximum iteration is set to 100 to not overshoot the computational time with tolerance limit set 10-6 and damping of 5 again as per literature demand)
+(The kutta correction is set to avoid the effects of flow separation at the tip of the blade and maintain the geometry as the airfoil in the lifting line solver as it computes on the lifiting line grid point of the line mesh of blade at c/4. The vortex lattice method employed for the vortex strength computation of the particles along with its respective parameters for the precision required to get the within tolerance values)
+• DUST Post-processor:
+It is called in the terminal window with the command “dust_post.in” which is the input file tag given to the postprocessor which runs the sequence of commands as defined using the following files to fulfill the purpose of result data file (.dat, .vtk & .plt) generation:
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+26
+Input File: This is the main root file of the pre-processor with the name “dust_post.in” which calls the required result files within it to pass on the read data to the directory file of the DUST which generates the data (.dat) and visualization (.vtk) file in the Post_Processed_Data folder parent path as the input file for further post processing. It has the following syntax of commands:
+- data_basename: specifies the file path of the raw data files from the simulation result - basename: specifies the file path of the result post processed files stored in the “Post_Processed_Data” folder in the parent folder
+- Analysis = {type} defines the type of analysis performed on the result files i.e., visualization (of the particles and wake field), flowfield (of the fluid domain whole), sectional loads and moments, integral loads, probe data, aeroacoustics data - Analysis = {variables} defines the variable we require to compute for the different analysis - Analysis = {format} defines the format of the output files generated - Analysis = {average} defines the variable computed is over the total simulation average or just for the particular time step data
+(In case of both simulation result analysis, the sectional and integral loads were set with the necessary reference frame settings as shown to analyze the aerodynamic performance and the particle visualization along with the flow field visualization is stored in tecplot processing files. The aeroacoustics data is also computed for the desired time step rotations at the steady state condition after 11 rotations which will give the modal acoustics on the surface of the blade geometry)
+a) Visualization Files: These are the visualization (.vtk or .plt) format files that the DUST postprocessor generates when requested for via the input file (.in) called through the terminal. During the computation of the velocity and pressure data on the vortex particles, it the computes the spacial position and trajectory of each particle in reference to the position of release in the global coordinate system and maps it into the above file formats which can be then viewed and processed using appropriate software like Paraview or Tecplot. It holds the pressure and velocity data of the particles along with the velocity vectors and coefficient of pressure.
+b) Flow Field Files: These are the flow field (.vtk or .plt) format files that the DUST postprocessor generates when requested for via the input file (.in) called through the terminal. From the particle data computed above, the DUST uses the “Fast Multipole Method” (fmm, a mathematical tool to create sampling boxes around the particles to compute the velocity and pressure field by either interpolation or averaging the vicinity particles) to calculate the velocity and pressure field in the fluid domain, technically termed as the “Octree Box” in the software. These boxes are customized for their length and growth in the respective directions based on the resolution requirements and accuracy along with the degree of the fmm used to generate them which directly corelates to the computational cost and time complexity of the program.
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+27
+c) Sectional Loads and Moments Files: These are the data (.dat) format files that the DUST postprocessor generates when requested for via the input file (.in) called through the terminal. As the software inculcates a provision for specified airfoil section rotor or propellor defined by the section along its span, it also delivers the sectional loads and moments along the requested axis with respect to the progressing time step for each blade component. This is in the local rotating frame of reference which can be corelated to the global loads and moments using the appropriate rotation matrix for that section based on its definition and orientation in the global frame.
+d) Integral Loads and Moments Files: These are the data (.dat) format files that the DUST postprocessor generates when requested for via the input file (.in) called through the terminal. It also provides the integral values of the net load and moment acting on the components with reference to the position in global coordinate system defined in the References.in file read by the pre-processor. It also acts as a check for the consistency in data captured by the sectional loads which on numerical integration (by appropriate method) should yield in the approximate values as the integral loads.
+e) Aeroacoustics Files: These are the data (.dat) format files that the DUST postprocessor generates when requested for via the input file (.in) called through the terminal. The pressure and velocity fluctuations caused on the solid body surface studied as “Modal Acoustics” are the data computed by the software as a sectional fluctuation with each time step of both pressure and velocity. These surface data can then be fed into appropriate static or harmonic acoustic analysis software to impose the FWH model to compute the far-field or near field acoustic data at a distinct receiver location.
+6. Experimental Setup and Methodology
+For the below discussed parameter measurements experimentally, the BLDC motor rated with KV was used in addition to 30 Amp Electronic Speed Controller (ESC) to control the rotational speed of the motor which is measured using an infrared RPM sensor. These electronics are integrated via the “Arduino” microcontroller for ease of code implementation and control. The code algorithm for motor speed control and RPM measurement are attached in the annexure.
+• Thrust and Torque Measurements:
+Thrust and Torque measurements were achieved using an in lab built load and torque cell fabricated using aluminum sheets to form a S-type structure such that the thrust and torque transfer from the motor to base mount happens via the cells which houses strain gauges connected to a signal amplifier board and a Wheatstone bridge to measure the change in resistance caused due to the strain over the differently strain gauges strategically placed over the cell to get an average reading which is calibrated using standard weights to give a thrust and torque value.
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+28
+• Induced Velocity and AoA Measurements:
+Induced Velocity and AoA measurements were achieved using an in lab developed 8 channel differential pressure sensors connected using polyvinyl flexible silicone tubing to pitot tubes mounted on a frame construction just downstream of the rotor to measure the stagnation pressure and thus compute the dynamic pressure and the velocity along the blade span at different rotational speed.
+• Vorticity and Velocity Field Visualization:
+Vorticity and Velocity Field were achieved using a PIV setup assembled in lab with its complex systems of Laser, High speed camera and the synchronizer for accurate timing. The post processing of the captured images was done through PIVLab (standalone software from MATLAB) to obtain vector velocity field after a cross-correlation is achieved between the 2 frames of capture to estimate the velocity of the flow field.
+• Sound Pressure Level and Intensity Measurement:
+Acoustic measurements were achieved using sound level meters to find the near and far field regions for the rotor and then microphones were used to capture the sound intensity and pressure fluctuation in the anechoic chamber as a series of time function which is post processed to get the frequency domain data using Fast Fourier Transforms.
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+29
+7. Results and Discussions
+Figure 7. Tabulation showing the loads and moments for Tandem HS = 1.3 at Zero Phase angle
+Figure 8. Tabulation showing the loads and moments for Tandem HS = 1.5 at Zero Phase angle
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+30
+• Grid and Particle Independence Study:
+• Transient State Convergence Study: • Validation of the CFD Results:
+• Thrust and Torque Results:
+• Induced Velocity and AoA Results: • Vorticity and Velocity Field Results:
+• Sound Pressure Level and Intensity Results:
+Figure 9. Tabulation showing the loads and moments for Tandem HS = 1.75 at Zero Phase angle
+Figure 10. Tabulation showing the loads and moments for Tandem HS = 2.0 at Zero Phase angle
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+31
+Figure 11. Tabulation showing the loads and moments for Tandem HS = 2.25 at Zero Phase angle
+Figure 12. Tabulation showing the loads and moments for Tandem HS = 2.8 at Zero Phase angle
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+32
+Figure 13. Comparative Thrust plot for Simulation and Experimental data
+Figure 14. Comparative Torque Plots for Simulation and Experimental data
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+33
+8. Applications and Inferences
+For tandem rotors in a phase-locked configuration, the rotor-rotor phase angle plays an important role in determining aerodynamic performance. This angle becomes especially significant in configurations with higher rotor overlap, where the effects of wake interaction are more pronounced. In such cases, certain phase angles may offer performance advantages over others, making phase control a key design parameter in multi-rotor UAVs and drones. The framework developed in this study enables detailed evaluation of flow characteristics such as induced velocity, induced angle of attack, and circulation, providing deeper insight into how phase angle directly influences rotor performance. Beyond aerodynamic analysis, the methodology can be extended to investigate aero-acoustic behavior, providing a basis for noise reduction strategies. Rotor wake interactions and phase relationships play a critical role in acoustic footprint, making them key factors in such studies. These insights are directly applicable to a wide range of rotorcraft platforms, including helicopters, VTOL, e-VTOL systems, drones, and UAVs, with the potential to enhance range, endurance, and operational efficiency.
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+34
+Bibliography/References
+• h"ps://www.dust.polimi.it/
+• h"ps://www.sciencedirect.com/science/ar6cle/pii/S1270963824008691
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+35
+Annexure
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+36
+
+
+_____________________Aerodynamic and Aeroacoustics Performance of Tandem Rotors
+37

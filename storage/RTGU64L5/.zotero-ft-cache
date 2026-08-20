@@ -1,0 +1,306 @@
+Aerospace Science and Technology 8 (2004) 11–25 www.elsevier.com/locate/aescte
+Numerical simulations of unsteady aerodynamics of helicopter rotor in manoeuvring flight conditions
+G. Le Bouar a,1, M. Costes a,∗, A. Leroy-Chesneau b, P. Devinant b
+a Applied Aerodynamics Department, ONERA, Châtillon, France b Laboratoire de Mécanique et d’Energétique, Polytech’ Orléans, France
+Received 12 October 2002; received in revised form 24 February 2003; accepted 18 August 2003
+Abstract
+This article presents a new time-marching fully unsteady method for simulating helicopter rotors in manoeuvring flight conditions. The unsteady wake model is based on Mudry’s theory which rigorously derives the evolution equation for the wake considered as a vortex sheet from the fluid dynamic equations. The numerical treatment of the sheet with a high-order panel representation allows an accurate simulation of the wake without using numerical regularisation techniques. An unsteady lifting line model, based on Matched Asymptotic Expansion, is used to represent the blade and to extend the concept of induced velocities to unsteady configurations. A first application to the Bo 105 rotor in manoeuvring flight shows that the method is capable to handle such kind of complex configuration.  2003 Elsevier SAS. All rights reserved.
+1. Introduction
+Among existing aircraft, helicopters are particularly complex due to their specific capabilities: hover and vertical flight. These difficult flight conditions are provided by means of the main rotor which ensures both the lift and the propulsion of rotorcraft. In forward flight, the main rotor blades have a combination of translation and rotation motions which render the flow-field around the rotor extremely complex, because of the various aerodynamic phenomena encountered during the blades revolution, such as three-dimensionality, unsteadiness, non-linear transonic conditions, strong viscous effects, vorticity in the wakes . . . The unsteadiness in forward flight is first introduced by the relative free-stream velocity varying azimuth-wise, which induces a lateral dissymmetry in the loads distribution between the advancing blade and the retreating blade. At high-speed forward flight, transonic conditions are present at the blades tip, including shock waves, while the retreating side exhibits low-speed high angle-of-attack conditions which may lead to dynamic stall. In order to trim the rotor, complex dynamic blade motion is thus introduced, either di
+* Corresponding author. E-mail address: michel.costes@onera.fr (M. Costes). 1 Presently at SNECMA Vernon.
+rectly by the pilot (pitch) or indirectly by the mechanical response at the hub (flap, lead-lag). In manoeuvre, the timevarying helicopter speed adds to the flow-field unsteadiness and the trim process is subject to transient phenomena in the aerodynamic or dynamic response of the blades. Rotational effects are particularly important in hover or descent flight, when the wake shed from the blades remains very close to the rotor disk, thus creating interactions and noise. In particular, blade vortex interactions (BVI) cause sudden changes in blade loading which contribute to the characteristic blade noise emitted during approach and landing. This impulsive noise is especially penalising for the use of helicopters in civil applications, and it allows the detectability of military helicopters as well. The main rotor wake can also interact with the fuselage, more especially during transition between hover and forward flight when the wake is convected towards the tail surfaces of the rotorcraft, creating large changes in the control inputs necessary to stabilise the helicopter. The computation of the complete helicopter aerodynamics accounting for this large number of phenomena is still a challenge, because of their complexity and their variety, and present computer resources are not sufficient for dealing with the whole problem. A large effort is being put in order to develop the capability of computing the complete helicopter for simple stabilised flight conditions [1]. However, there is little hope to solve the small details of the configu
+1270-9638/$ – see front matter  2003 Elsevier SAS. All rights reserved. doi:10.1016/j.ast.2003.08.004
+
+
+12 G. Le Bouar et al. / Aerospace Science and Technology 8 (2004) 11–25
+ration or deal with severe flight conditions at moderate cost in the near future with such an approach. As a result, the effort is also put on the simulation of isolated components of the helicopter, of which the main rotor has the leading role. Different numerical techniques can be used to predict rotor aerodynamics and wakes evolution with time. First of all, CFD methods solving the Navier–Stokes equations describe both the viscous and rotational phenomena which constitute the wake. However, the grid fineness needed to obtain a good discrete solution for the wake is still not practicable because the wake has a significant influence during quite a long period of time after emission (typically 2 rotor revolutions). A large level of effort is being spent in improving the vortical flows simulation in CFD [2–6], but they are still not mature enough for solving the problem. Another class of methods can be efficiently used to tackle the rotor wake simulation problem when considering that the flow compressibility effects can generally be neglected due to the low forward speed of rotorcraft, although the flow around the blade itself is indeed compressible. When the flow is supposed to be inviscid incompressible and irrotational, singularity methods are obviously efficient for simulating wake distortions in terms of flexibility and computing costs compared to CFD. The wake itself is described by a set of vortex lattices or vortex particles which are convected with time, either freely or following a prescribed wake geometry, and generally periodicity conditions are applied to account for the steady flight of the helicopter. Most of the codes are also based on a steady lifting-line method following the quarter chord line of each blade. Aerodynamic loads and moments are then directly read in experimental 2D airfoils tables, thus allowing to account for compressibility and viscosity effects which are significant for the blade sections. The magnitude of the vorticity in the wake is then related to the quasi-steady lift on the blade by Joukovski’s theorem. In this article, a new method for computing the unsteady aerodynamics of a helicopter rotor undergoing any type of motion, in particular manoeuvre, is described. It constitutes new developments to the MESIR code [7] currently used at ONERA which is capable to deal with steady forward flight conditions only. Most of this work stems from a thesis work achieved at ONERA [8]. For doing so, two features have to be considered. First a time-marching algorithm has been implemented for the prediction of wake deformation. The MESIR code, developed at ONERA, which is valid for quasi-steady forward flight conditions, considers the flow-field to be periodic in time and iteratively computes the free wake geometry by a relaxation method. The velocity induced by the wake is computed for all points on the blades and the wake nodes, using the Biot–Savart law, which, together with the rotor motion, allows to distort the wake. The computation is converged once a stable wake geometry consistent with the blades circulation is obtained. In order to consider unsteady conditions such as those encountered during manoeuvre, a time march
+ing algorithm is necessary to give up the periodicity assumption and to allow accounting for unsteady wake effects which become more significant for these time-dependent flight conditions. Furthermore, it is necessary that the timemarching algorithm converges with azimuthal steps of a few degrees only. Indeed, numerical tests [8] have been achieved to analyse the MESIR capabilities in terms of convergence with respect to the wake discretisation. In particular, they have shown limitations in the convergence of MESIR for azimuthal steps lower than 10◦. Such computations cannot simulate the wake geometry during BVI (Blade Vortex Interaction) as long as the discretisation step is larger than the duration of the BVI phenomena, estimated at about 3◦ azimuth for some cases presented in [9]. Secondly, in order to account for the unsteady effects which occur on the blades, an unsteady lifting-line model must be introduced to replace the quasi-steady approach of MESIR. Indeed, it is important to keep the use of the experimental 2D airfoil data to estimate the blade loads and thus easily account for first order compressibility and viscous effects, mainly in the advancing blades sector. Nevertheless, in order to provide a better description of the blade unsteady aerodynamics, loads prediction can be improved by introducing an unsteady formulation of the lifting-line model. These two points will be considered successively, including a theoretical description and simplified validation cases for the developments completed. The method will then be applied to a rotor in manoeuvring flight conditions in order to demonstrate its capability for such kind of configuration.
+2. Simulation of unsteady rotor wake
+As explained above, a new theoretical model of wakes in unsteady flows has to be established in order to simulate any general flight condition of the main rotor, resulting in a time-marching algorithm. Most of the following approach actually stems from the general theory of vortex sheets in unsteady flows developed by Mudry [10]. This offers a rigorous and complete theoretical formulation of the problem, from which a discretisation scheme and a numerical method of solution are derived.
+2.1. Thin wakes and the concept of vortex particles
+In the general framework of potential flows, Mudry [10] developed a general theory for unsteady wakes, considered as vortex sheets (discontinuity surface for the tangential velocity) represented by classic double layers. Mudry founded his theory on the median layer concept, which was first introduced by Helmholtz in terms of median velocity. The vortex sheet Σ representing the wake is characterised by the nonunique pair of functions:
+
+
+G. Le Bouar et al. / Aerospace Science and Technology 8 (2004) 11–25 13
+Fig. 1. Correspondence between vortex sheet and parameterisation.
+– , the “median parameterisation”, shown in Fig. 1, which determines the geometrical shape of the vortex sheet and its deformation:
+{ (q1, q2) ∈ Ω ⊂ R2 x = (x1, x2, x3) ∈ R3
+t ∈ I ⊂ R → x = (q1, q2, t) ∈ Σt ; (1)
+– γ , the associated “median vortex density” that describes the vortex sheet strength. It is a function of the local velocity jump and of the geometrical description of the wake carried out by the median parameterisation:
+γ (q1, q2, t) = N ∧ [U ] =
+(∂
+∂q1 ∧ ∂
+∂q2
+)
+∧ [U ]
+=γ1∂
+∂q1 + γ2 ∂
+∂q2 . (2)
+The wake convection is described by the following evolution equation that verifies:
+∂ (q1, q2, t)
+∂t = U+ + U−
+2 = U ∗( (q1, q2, t)) (3)
+where U ∗ is the median velocity field due to the flow, i.e., the half-sum of the two fluid surfaces velocities. The position of a vortex particle being defined by the
+point N : t → −O−−N→ = (q1, q2, t), ( , γ ) clearly states the concept of continuous vortex particles to represent the wake. From the choice of the parameterisation together with the pressure continuity condition across the wake, Mudry demonstrated the fundamental time-conservation property for the two contravariant components γ α (α = 1, 2) of the median vortex density. The wake shedding is taken into account by specifying that q1 is the shedding edge parameter linked to a shedding edge representation, q, and q2 the shedding time, τ . It can be deduced that the two contravariant components of the vortex density are determined once for all when the particle is shed with a determined shedding relative velocity. The velocity induced by the vortex sheet Σ takes the form:
+U (x, t) = 1
+4π
+∫∫
+Ω
+γ (q, τ, t) ∧ (x − (q, τ, t))
+‖x − (q, τ, t)‖3 dq dτ
++1
+4π
+∫
+SE
+[Φ](q, τ, t) (x − (q, τ, t)) ∧ d (q, τ, t)
+‖x − (q, τ, t)‖3 (4)
+where Φ is the velocity potential and SE means shedding edge. The integration domain is a known range defined by the definition plane (q, τ ) of the parameterisation . It does not explicitly depend on time. The problem of computing the wake, which consists in determining the position and density of the vortex particles once shed, reduces in solving the integral–differential equation that governs the new position of the vortex particles at every moment.
+2.2. Wake and induced velocity discretisation
+Discretisation of the wake consists in approximating on Σ and deriving a discrete procedure for calculating the velocity induced by Σ. A discretisation model was first implemented by Leroy [11] in a general approach for computing unsteady thin lifting systems. A discrete vortex particle concept was thus applied and it was shown that it is well suited when computing the unsteady wake deformation. The discretisation of the doublet distribution was based on a constant distribution of [φ] by panel. In the present scheme a higher order linear distribution coupled with a numerical Gauss integration method is retained. As shown in [8], after considering different possibilities, this was the most efficient one in terms of cost-accuracy ratio. The main features of this discretisation scheme are described below. Discretisation of the geometrical surface Σ is performed in the definition plane Ω of the parameterisation . The definition plane is approximated by the union of quadrilateral panels (as shown in Fig. 1) of constant subdivision increments (h1, h2). Discretisation of γ over the panels and related to the definition plane Ω is obtained by applying the StokesAmpere law for the potential jump:
+γ = N ∧ ∇[Φ] = N ∧ g−−r−a→d[Φ] =
+∫
+∂ Ωj
+[Φ] dl. (5)
+This is applied for the shedding process when the contravariant components of γ are not yet known. The approximation of [Φ] being supposed linear on each panel, the velocity induced by a panel is calculated by a numerical Gauss integration method with four points. Hence the integrals appearing in Eq. (5) are replaced by finite sums. Using n integration points, the error, in two dimensions, is of O( r)2n. When using one single integration point only, the discrete model would be equivalent to vortex particle methods [11].
+
+
+14 G. Le Bouar et al. / Aerospace Science and Technology 8 (2004) 11–25
+2.3. Description of the numerical procedure
+In order to validate this new approach for wake deformation prediction, the lifting line method used in MESIR [7] is kept to represent the blades, the motion of which is given by a R85 computation, the rotor dynamics code of EUROCOPTER and widely used at ONERA [12]. The numerical scheme is based on a time-stepping procedure. At each time step, corresponding to an azimuthal position, blades are moved along their flight path and wakes can be predicted from the corresponding set of discrete equations of Sections 2.1 and 2.2. The computation of circulation on the blade is the result of an iterative process. From a first approximation of the spanwise distribution of circulation, the method computes velocities induced by the blades and their wakes at each quarter-chord point of the blade. This allows estimating the local induced angle of attack. The knowledge of blade motion then allows to calculate the aerodynamic incidence. By using the airfoils tables to determine the local lift in function of incidence, a new distribution of circulation is calculated from Joukowski’s theorem relating bound circulation to local lift. Therefore, the process has to be repeated until an unique couple (Γ, U ) is found. Once a median vortex density has been assigned to the new row of vortex panels, the wake is convected using the calculated induced velocities from the resolution of the evolution equation for . This is done by a RungeKutta algorithm. The resolution order of the Runge–Kutta algorithm depends on the requirements both on computation time and accuracy. The higher the order, the better the wake rollup is simulated. After several numerical tests, first or second-order algorithms have been selected. The blades are next rotated by an angle equal to the azimuthal discretisation step. Only three blades revolutions are stored in the wake and older panels are not taken into account because their influence is negligible.
+2.4. Validation of numerical wake model
+Validation tests of the method were run in steady forward and descent flight in order to investigate the capability of the method to capture the rotor wake properly, studying more particularly the influence of discretisation parameters [8]. Convergence of the method can be achieved even for azimuthal steps of the order of BVI phenomena, as shown in Fig. 2 for the Bo 105 rotor of the HART experiment (Minimum Vibration case at 6◦ descent flight) [9]: computations with 10◦, 5◦ and 2◦ azimuthal steps were run. The smaller the time step, the more oscillations appear on the lift evolution versus azimuth. However, when the results for 5◦ and 2◦ azimuthal steps are compared more in details, it can be seen that, except for the rear blade part where the wake accumulation produces spurious oscillations in the computed lift, the computation tends to converge in particular as far as load fluctuations due to BVI are concerned, namely between 50◦
+Fig. 2. Convergence of sectional loads with azimuthal discretisation.
+Fig. 3. Comparison with Bo105 experiment in descent flight.
+and 90◦ on the advancing blade side and between 290◦ and 320◦ on the retreating side. This suggests that the method is capable to capture the occurrence of the Blade Vortex Interactions, although the details of the interactions cannot be simulated by such kind of methodology. Indeed, the computed interactions correlate well with experiment as shown in Fig. 3, with 6 interactions on the advancing blade side and 2 interactions on the retreating side. As shown in reference [13], when considering the behaviour of the two integrals of (4) in the vicinity of the vortex sheet, a logarithm behaviour related to the derivatives of the potential jump across the sheet derives from the surface integral and a behaviour in 1/r related to the potential jump from the curvilinear integral. Because of using a first order discretisation of the potential jump (constant by panel), most wakes models need a numerical regularisation to avoid infinite velocities. Applying the Gauss integration method coupled with a higher order discretisation allows decreasing the degree of singularity of the method from 1/r to log(r) and almost no regularisation is required in this method as shown in [8]. For simple cases, such as the one considered in Fig. 4 for which a constant gradient of potential jump is imposed on plane wake surface, the method behaves correctly without any regularisation of the velocity field, the velocity jump
+
+
+G. Le Bouar et al. / Aerospace Science and Technology 8 (2004) 11–25 15
+Fig. 4. Comparison between analytical solution and numerical solution in the close vicinity of a panel.
+computed numerically being in conformity with the theoretical one even in the very vicinity of the panel. However, numerical experience has shown that a small amount of regularisation is nevertheless necessary when considering complex wake sheets such as those encountered around a helicopter rotor. It was also checked that the converged solution is independent on the initialisation because of the time marching algorithm implementation. To start the computation, either an impulsive start from rest can be used or the wake can be initialised by any given geometry and circulation distribution. Finally, this new method allows a significant computing time reduction compared to the MESIR code, of the order of 70% when an impulsive initial start is used [14].
+3. Unsteady lifting-line model
+In order to deal with general flight conditions such as manoeuvre flight, but also to improve the computation of the unsteady response of the blade in steady forward flight, the quasi-steady assumption made to compute the blade loads has to be replaced by an unsteady one. This section deals with the implementation of an unsteady lifting-line approach based on theoretical works of Sellier and Guermond [15] and a numerical model implemented by Devinant [16].
+Furthermore, the unsteady airfoil theory used is that of Theodorsen [17]. Practically, approaches such as MESIR deal with the time evolution of the spanwise circulation distribution and are more or less empirical extensions of Prandtl’s lifting-line model, as it accounts for the unsteady three-dimensional wake issued from the trailing-edge by a steady type induced incidence and uses steady airfoil models. The new approach consists in searching the solution of a first-order unsteady outer problem, i.e., the time evolution of the spanwise circulation distribution along the lifting-line, through the resolution for each span section of a 2D unsteady problem. This 2D problem takes the three-dimensional aspect into account through an unsteady induced velocity on the liftingline. Devinant has justified this approach, which is actually an improvement of the quasi-steady one, using theoretical results based on the matched asymptotic expansion technique exposed in [15].
+3.1. First-order complete induced velocity
+The lifting line model is based on an asymptotic approach for large-aspect-ratio lifting systems (aspect ratio AR = B/c 1, where B is the span and c the chord length scale) assuming incompressible flows. The span length B characterises the outer problem, i.e., the lifting line, whereas the chord length c characterises the inner problem, i.e., the two-dimensional problem. Considering periodic unsteady flows, the motion wavelength λ is another length scale. For high AR, five frequency ranges can be identified by comparing λ to B and c: very low frequencies (λ B c),
+low frequencies (λ ∼= B c), intermediate frequencies
+(B λ c), high frequencies (B λ ∼= c), very high frequencies (B c λ). The inner and outer expansions are performed relative to the small parameter 1/AR. The influence of the vorticity distribution on a blade and its wake may be decomposed into that of the vortices located at distances of order c and that of the vortices located at distances of order B or larger. Then in the plane (O, x, y) two domains (Fig. 5) can be identified [16], an inner domain noted I in which the problem is a two dimensional unsteady one, and the outer domain for the lifting line approach. This outer domain is decomposed into the two following domains: Owi, constituted of the points located in the wake of the inner domain at distances of order c or larger, and O composed of the points outside Owi. The velocity field induced by the vorticity distribution is then the sum of the contributions of the three domains. Finally on the basis of the MAE technique the velocity field induced by the inner and outer vortex systems can be written to the first order approximation as
+w = wint + wext = wi2nDst + wO∪Owi − wOwi + o(1/AR)
+≈ wi2nDst + wi (6)
+with wi = wO∪Owi − wOwi and where, according to Prandtl’s approach, w2D corresponds to the normal perturbation ve
+
+
+16 G. Le Bouar et al. / Aerospace Science and Technology 8 (2004) 11–25
+Fig. 5. Schematic of the unsteady lifting line domains.
+locity in the two-dimensional case (when AR tends to infinity) and wi is the induced velocity, which represents the finite aspect-ratio correction. To first order, wi is the difference between the velocities induced by two vortex systems relating respectively to O ∪ Owi and Owi with:
+wO∪Owi = 1
+4π U∞
+FP
+∫
+Σ
+γ ∧r
+r3 dS, (7)
+wOwi = 1
+2π U∞
+FP
+∫∞
+0
+γy
+ξ dξ. (8)
+This is why an unsteady lifting-line model which considers only wO∪Owi and does not take wOwi into account fails as soon as unsteadiness becomes significant. To first-order approximation and for low and very low frequencies, the chord sinusoidal modulation is neglected and wi considered as constant along the chord. It is then possible to convert this induced velocity into an induced velocity on the lifting line.
+3.2. Two-dimensional problem
+Lifting line theory requires an analysis of the unsteady aerodynamics of a two-dimensional airfoil. For helicopter applications, two main classes of methods are used to tackle this problem, Theodorsen’s theory [17] and the indicial method as developed by Beddoes [18]. Both have the advantage to allow to use the experimental 2D airfoil data in order to include compressibility and viscosity effects. However, the latter method, based on the decomposition of the unsteady time-varying motion of the airfoil into elementary step functions, computes the corresponding airfoil load by linear superposition of the elementary indicial responses using Duhamel’s principle. This makes it necessary to model the 2D airfoil polar instead of directly using experimental data, and the unsteady response is parameterised too by adjusting the loads to experimental or CFD data, thus allow
+Fig. 6. Description of wing section motion.
+ing to extend the method to semi-empirical modelling of dynamic stall phenomena. On the contrary, Theodorsen’s theory solves for the incompressible Laplace’s equation in the frequency domain. The objective of the present work being to solve for the unsteady response of the blade in manoeuvre and to avoid as much as possible any kind of parametric modelling, an extension of the Theodorsen airfoil model in the time domain has been retained. The main results of this theory are described below. A two-dimensional airfoil undergoing unsteady motion in uniform free stream is considered. Linear, incompressible aerodynamic theory represents the airfoil and its wake by thin surfaces of vorticity (2D vortex sheets) lying in a straight line parallel to the free stream velocity. For such a linear problem, the solution for the thickness and camber loads can be separated from the loads due to angle of attack and to unsteady motion. Only the latter solution is retained here. An airfoil of chord c = 2b is in a uniform free stream with velocity U∞. Since the bound circulation of the section varies with time, there is shed vorticity in the wake downstream of the airfoil. The vorticity strength on the airfoil is γ b, and in the wake, γw. The blade motion will be described by a heaving motion h (positive downward) and a pitch angle α about an axis x = ab (Fig. 6). The aerodynamic pitching moment will also be evaluated about the axis at x = ab. The airfoil motion produces an upwash velocity relative to the blade equal to
+Q = h ̇ + U∞α + b
+(1
+2 −a
+)
+α ̇ . (9)
+Theodorsen divides his solution into two parts to satisfy the equations of the problem:
+– an appropriate distribution of sources and sinks just above and below the line z = 0 gives the non circulatory vorticity, which satisfies the boundary conditions for the unsteady airfoil motion but gives Γ = 0; – a pattern of vortices is then put on this line, with countervortices along the wake to infinity, moving away from
+
+
+G. Le Bouar et al. / Aerospace Science and Technology 8 (2004) 11–25 17
+the airfoil at the free-stream velocity, in such a way that Kutta’s hypothesis is fulfilled without disturbing the boundary conditions at the airfoil surface. It derives the circulatory vorticity γw, which gives Γ and has no effect on the boundary conditions.
+Each part of the flow solution is most conveniently obtained by using Joukowski’s conformal transformation to map a circle of radius c/2 onto the airfoil’s projection. The time variation of the circulation is described by the following equation:
+Γ (t) = 2πbQ +
+∫+∞
+b
+(√
+ξ +b
+ξ −b −1
+)
+γw(ξ, t) dξ. (10)
+Then, by integrating the pressure distribution along the airfoil, the resultant aerodynamic loads, lift and moment, are given by the following decomposition: L = LNC + LC and M = MNC + MC, where NC is the non-circulatory part and C the circulatory part, which contains airfoil motion and wake effects respectively. The circulatory part can again be split into a pure quasi-steady part and a pure unsteady part:
+L = LNC + LC with LC = LQ + LW (11)
+with
+LNC = πρ∞b2 ∂
+∂t
+(
+Q− 1
+2 bα ̇
+)
+. (12)
+LQ is the quasi-static lift, which is the lift due to the angle of attack at the three-quarter chord point:
+LQ = 2πρ∞U∞bQ. (13)
+LW is the lift due to the shed-wake induced velocity:
+LW = ρ∞U∞
+∫+∞
+b
+b
+√ξ 2 − b2 γw(ξ, t) dξ
+= [C(k) − 1]LQ (14)
+where C(k) is the Theodorsen lift deficiency function for an oscillating airfoil [17], which shows that the effect of the shed wake is to reduce the circulatory lift LC below its quasi-static value. A similar decomposition into a circulatory part and a non circulatory part can also be made for the aerodynamic moment M.
+3.3. General equation for circulation computing
+In each blade section the two-dimensional problem deals with the unknown circulation Γ (y, t) at considered span location y and time t and the finite aspect ratio correction is taken into account via an induced velocity as shown in Section 3.1. Finally the general equation for circulation is:
+y∈
+[
+−B
+2,B
+2
+]
+, t ∈ [0, T ],
+Γ (y, t) = 2πbQ(y, t) +
+∫+∞
+b
+(√
+ξ +b
+ξ −b −1
+)
+γw(ξ, y, t) dξ
++ 2π bU∞wO∪Owi(y, t) − 2π bU∞wOwi(y, t). (15)
+By defining a near and a far wake respectively for x ∈ [b, X′] (X′ b) and x ∈ [X′, +∞[, it can be shown that far wake effects of the 2D unsteady inner problem and the negative contribution of wOwi cancel each other. Then the circulation can be written as:
+Γ (y, t) = 2πbQ(y, t) +
+∫X′
+b
+(√
+ξ +b
+ξ −b −1
+)
+γw(ξ, y, t) dξ
++ 2π bU∞wO∪Owi(y, t) − b
+X′−b
+∫
+0
+γy(ν, y, t)
+ν dν. (16)
+In the lifting-line theory, this equation is coupled with the equation obtained from Kelvin’s theorem, which expresses the circulation conservation.
+3.4. Aerodynamics loads
+To evaluate the three-dimensional unsteady loads, a 3D correction term is added to the expression of the Theodorsen 2D lift exposed in Section 3.2:
+L(y, t) = LNC(y, t) + LC(y, t) + L3D(y, t) with
+L3D(y, t) = 2πρU 2∞bwi(y, t). (17)
+By taking account of Eqs. (7) and (8), as for the 2D unsteady lift, it is possible to decompose the 3D unsteady lift in the following way:
+L(y, t) = LNC(y, t) + L3D
+Q (y, t) + L3D
+W (y, t) (18)
+with
+L3D
+Q (y, t) = 2πρ∞U∞b(Q(y, t) + U∞wO∪Owi(y, t)),
+L3D
+W (y, t) = ρ∞U∞b
+×
+( ∫X′
+b
+γw(ξ, y, t)
+√
+ξ 2 − b2 dξ −
+X′ −b
+∫
+0
+γy(ν, y, t)
+ν dν
+)
+.
+(19)
+This lift is expressed at the quarter chord point. L3D
+Q is a quasi-steady lift whereas L3D
+W includes unsteady effects
+through the contribution of the wake vortex density γw. The resulting expression for the aerodynamic moment at the quarter chord point is:
+M(y, t) = Mpol(y, t)
++ πρ∞b2
+(
+−b
+2 h ̈ + 3
+8 b2α ̈ − U∞bα ̇
+)
+(20)
+where Mpol is a correction term corresponding to the moment at the aerodynamic center of an airfoil with camber calculated from airfoils tables.
+
+
+18 G. Le Bouar et al. / Aerospace Science and Technology 8 (2004) 11–25
+3.5. Numerical implementation
+To evaluate Γ (y, t) the following decomposition has been retained:
+Γ = Γquart + Γ + Γ2Dinst + Γ2d3d (21)
+with
+Γquart(y, t) = 2π b(Q − bα ̇ + U∞wO∪Owi),
+Γ (y, t) = 2πb ∗ bα ̇ ,
+Γ2Dinst(y, t) =
+∫X′
+b
+√
+ξ +b
+ξ − b γw(ξ, y, t) dξ,
+Γ2d3d(y, t) = b
+X′ −b
+∫
+0
+γy(ν, y, t)
+ν dν. (22)
+Γquart is the resulting circulation of a 2D airfoil at a relative incidence of Q−bα ̇
+U∞ + wO∪Owi measured at the quarter chord
+point. It corresponds to the quasi-steady circulation in MESIR. In order to include viscous and compressibility effects, Γquart is obtained from experimental 2D airfoil tables. The following terms of the decomposition represent correction terms corresponding to unsteady effects. The Γ term describes the rotation of the profile (rotation velocity at the three-quarter chord point). Γ2Dinst is the contribution of the unsteady 2D wake. It is calculated by assuming a linear approximation of γw for the time step in progress. In that case, the integral is regular and is calculated by a classical numerical integration scheme. Finally, Γ2d3d is the contribution of the near wake of the three-dimensional domain Owi. The integral is irregular and has to be calculated with an Hadamard finite part approach. In practice, it is calculated with a numerical integration scheme by assuming a linear approximation of γy for the time step in progress.
+3.6. Numerical application and validation
+A first application of the method consisted in simulating a rectangular wing of aspect ratio 10, undergoing an angle of attack ramp motion from 0◦ to 5◦. The motion inside the fluctuation interval follows an harmonic evolution, the duration of the ramp motion defining the reduced frequency of the problem. The solution is compared to a computation obtained with an unsteady lifting surface method, for which the panels discretisation is very similar to that used for the wake of the present method since it is based on the same theory, although a lower-order representation was chosen in this case [11]. In the lifting line application, a first-order time integration was used together with a very small time step ( t = 10−3c/U∞). The first computation (Fig. 7) corresponds to a low frequency case, while the second one (Fig. 8) is a high frequency case. Although
+Fig. 7. Evolution of lift for a 5◦ pitch ramp in c/U∞ = 10 (k = 0.157).
+Fig. 8. Evolution of lift for a 5◦ pitch ramp in c/U∞ = 1 (k = 1.571).
+the lifting line and lifting surface results differ (the lift computed by the lifting line approach is always smaller than that obtained with the lifting surface, especially during the transient phase), they qualitatively give the same tendency, showing an increase of the maximum lift with frequency, as well as the occurrence of an overshoot during the transient phase. A deeper analysis of the results shows that most of the overshoot is due to the quasi-steady part of the loads (noncirculatory part of the Theodorsen theory). The wake shed during the ramp motion is presented for a high-frequency case at the end of the computation (Fig. 9). As indicated above, the computation is performed without any regularisation of the wake induced velocities. The rolling-up of the tip vortex is clearly demonstrated on this figure, with positive vorticity being shed during the first part of the motion and negative vorticity later on. Again, the smooth evolution of the wake with time, especially for the tip vortex, proves the efficiency of the wake simulation. In order to better assess the unsteady capability of the present method, an “equivalent Theodorsen function” was computed from the results obtained for the case of the wing undergoing harmonic oscillations, for a set of reduced frequencies. This “equivalent Theodorsen function” was
+
+
+G. Le Bouar et al. / Aerospace Science and Technology 8 (2004) 11–25 19
+Fig. 9. View of the tip vortex roll-up for impulsive ramp motion (k = 0.817).
+Fig. 10. Evolution of equivalent Theodorsen function.
+obtained in the following way: the lift in the mid-section of the wing was Fourier analysed in order to compute its real and its imaginary parts, and by subtracting the non-circulatory component of the lift (known analytically from the wing motion) and by non-dimensionalizing the result, the real and the imaginary part of the “equivalent Theodorsen function” can be identified. Compared to the Theodorsen function (Fig. 10), this 3D function shows a lower modulus at quasi-steady conditions: this is a wellknown effect of the 3D flows due to the quasi-steady induced velocity field, as for steady cases. When the reduced frequency increases, this 3D function evolves very similarly to the 2D one, with a negative imaginary part and a decrease of the real part of the function. In particular, it
+can be seen that the maximum phase shift introduced by the unsteady effects is of the same order of magnitude in 2D and in 3D. However, at the higher reduced frequencies, the 3D function is not correct, since it should converge asymptotically towards the 2D one, indicating that unsteady effects are preponderant in the high-frequency regime [15]. In fact, there may be several reasons for this failure at highfrequency. First of all, the non-circulatory part of the lift is much larger than the circulatory part in this case, and thus the identification process described above may not be accurate enough. Second, the numerical treatment of the finite-part integral may be too crude for the high frequencies. Third, the lifting line theory inherently makes a simplification by concentrating the induced velocities at the quarter-chord line, which is not accurate at very high frequency. Additional work is necessary in order to clarify these points, but the method was nevertheless considered as satisfactory since the helicopter rotor problem exhibits low to moderate reduced frequencies where the present approach behaves correctly.
+4. Application to unsteady rotor aerodynamics simulation
+In order to demonstrate the applicability of the method to a helicopter flying in unsteady conditions, a first computation of the Bo 105 rotor in manoeuvring flight conditions was made. Such kind of applications are not frequent in the literature due to their complexity and the computer resources necessary to deal with them [19,20]. In our case, the
+
+
+20 G. Le Bouar et al. / Aerospace Science and Technology 8 (2004) 11–25
+Fig. 11. Evolution of cyclic pitch during manoeuvre.
+helicopter trim was preliminary computed using the HOST method, which is the helicopter flight mechanics and dynamics simulation tool developed by EUROCOPTER, and which is currently being improved in cooperation between EUROCOPTER, ONERA and DLR [21]. This simulation includes the complete helicopter using simplified aerodynamic models, and it gives the rotor head motion as well as control and flapping angles for the rotor which were used as input data in the present simulation. The manoeuvre considered consists in impulsive inputs imposed on the longitudinal cyclic pitch angle (Fig. 11). The evolution of horizontal and vertical velocity components in the rotor frame as well as that of the rotor shaft angle are shown in Fig. 12. During the manoeuvre, 66 rotor revolutions are completed, so that only coarse wake discretisations can be used in order to limit the resources requested for such a simulation. Indeed, only 10 span-wise points are used to represent each blade. Various aerodynamic rotor computations were carried out with the present method: fully unsteady computations and quasisteady computations, for different time discretisations (time step equal to 30◦ azimuth, 15◦ azimuth and 10◦azimuth). In the quasi-steady computations, the wake integrals involved in the unsteady lifting line formulation are neglected, leading not to take into account the Γ, Γ2Dinst and Γ2d3d terms in (22), corresponding to what is generally implemented in lifting line methods for helicopter rotor blades. On the contrary, the unsteady computations account for the complete set of terms in the calculation of the circulation. The only restriction is that, as usually done in rotor wake models, the part of the wake older than three rotor revolutions is neglected in order to save memory as well as CPU time in the simulation. As indicated in Section 3.3, this approximation may be justified by the cancellation of the unsteady 2D contribution of the far wake in the wake integrals. The various computations presented (Fig. 13) show a qualitatively similar evolution of rotor non-dimensional lift. The low-frequency component of the lift force does not show significant variations with the time step or by accounting for the unsteady integrals of the circulation.
+Fig. 12. Evolution of inflow conditions in rotor shaft axis during manoeuvre.
+This component is also clearly correlated with the rotor shaft angle. Considering the high-frequency component, its amplitude variation increases when the time step is reduced, thus showing the filtering effect of the time discretisation. Furthermore, the difference between the computations with 24 and 36 azimuths per rotor revolution is quite small, tending to show that a finer time discretisation would not involve any more significant difference as far as the rotor loads are concerned. The unsteady computations also show systematically a larger amplitude for this high-frequency component than the quasi-steady one, which may seem surprising: in general, the unsteadiness tends to introduce a stabilising effect with respect to the quasi-steady assumption
+
+
+G. Le Bouar et al. / Aerospace Science and Technology 8 (2004) 11–25 21
+Fig. 13. Evolution of normal force on rotor during manoeuvre.
+because of the time lag as well as the response reduction brought in by the wake integral. In fact, this so-called “quasi-steady” assumption is not really quasi-steady since, as pointed out before, the influence of the unsteady 3D wake is taken into account by the induced velocities of
+the steady lifting line approach. Furthermore, the helicopter configuration is particular in that the rotor wake is present not only downstream of the blade but also upstream of it. Fig. 14 shows a close comparison between the quasisteady and the unsteady solution for a given short period
+
+
+22 G. Le Bouar et al. / Aerospace Science and Technology 8 (2004) 11–25
+Fig. 14. Comparison between unsteady and quasi-steady computation.
+of time of the manoeuvre, using the finer discretisation of 36 azimuths per rotor revolution. Since a rotor revolution lasts about 0.1432 seconds, the 4 per rev. oscillation in rotor loads due to the number of blades is clearly noticeable on both solutions, thus explaining the high-frequency response of the rotor mentioned earlier. A small phase shift between the quasi-steady and the unsteady solutions can also be seen. In order to separate the influence of the various terms in (21), additional load computations were done for this finer discretisation. One of them includes the full unsteady wake effects but neglects the pitch rotation velocity at the three-quarter-chord point. In practice, this means that
+Fig. 15. Effect of three-quarter-chord velocity.
+the Γ term is not considered in (21). Fig. 15 shows a close comparison of this simplified computation with respect to the complete one. Indeed, the difference between both computations is hardly noticeable, indicating that the blades pitch velocity has a minor effect. The second load computation was performed neglecting the non circulatory part of the unsteady lift, i.e., the LNC(y, t) term in Eq. (18). It was found that the influence of this non circulatory unsteady lift term is quite negligible, which is mainly due to the low frequency motion of the rotor blades. All these verifications show that the difference between the unsteady and the “quasi-steady” computations are indeed essentially
+Fig. 16. View of the full rotor wake geometry at time = 9.4500.
+
+
+G. Le Bouar et al. / Aerospace Science and Technology 8 (2004) 11–25 23
+Fig. 17. View of wake geometry for one blade during manoeuvre.
+due to the unsteady wake integrals. Furthermore, this last difference is consistent for all the time discretisations used, thus showing the importance of taking the flow unsteadiness into account for this kind of flight configuration.
+Fig. 16 shows the complete rotor wake geometry at a fixed time of the manoeuvre for the medium discretisation used (24 azimuths per revolution). The complexity of the wake sheets emitted by the various blades and which interact
+
+
+24 G. Le Bouar et al. / Aerospace Science and Technology 8 (2004) 11–25
+between themselves is apparent. In order to better see the wake evolution during the manoeuvre, only the wake sheet emitted by a given blade for various times during the manoeuvre is shown in Fig. 17. Although fairly small at the scale of the picture, the variation of wake geometry with time is quite noticeable during the manoeuvre, the change in rotor axis attitude and in velocity providing different convection patterns for the wake sheet with time. For example, at time 3.1500 where the rotor shaft angle is minimal in magnitude, the wake remains very close to the plane of the rotor disk, resulting in a highly distorted geometry, while, on the contrary, at time 6.3000 where the magnitude of the shaft angle is maximum, the rotor wake is convected below the rotor disk quite fast, giving a helical-like geometry. The larger magnitude in shaft angle at the end than at the beginning of the manoeuvre can also be recognised in terms of direction of wake convection when comparing the sheet geometry at time 0.7875 and time 9.4500. Finally, it can be noticed that the larger variations in the high-frequency component of the rotor lift occurs when the wake sheet convection speed below the rotor is minimal (around time 3.1500), i.e., when the rotor shaft angle is minimal: indeed, one can expect that the wake integrals influence will be maximum at this time of the manoeuvre, whatever the flow unsteadiness may be.
+5. Conclusions
+An extension of the free-wake methodology currently used at ONERA and EUROCOPTER to time-marching resolution for dealing with the general unsteady motion of the rotor has been described. The theoretical basis for representing the wake was revisited, based on the work of Mudry, in order to remove any empiricism which can be related to the formerly used Vortex Lattice approach applied to unsteady flows, thus providing a complete and rigorous formulation of the problem. A discrete model was derived from this theory which considers the wake as a continuous vortex sheet and represents it as a set of panels, but which can also be directly related to the concept of vortex particles. Application of numerical integration techniques allows to use a high-order panel discretisation, thus lowering the degree of singularity of the wake representation. As a result, the discrete method behaves correctly in the vicinity of the vortex sheet without any numerical regularisation, although in practice a very small amount of regularisation may be necessary for the complex configuration of rotor wakes where several vortex sheets emitted by the various blades are in close interaction. The new method allows to converge the computation of the rotor for stabilised flight conditions for very small time steps (typically 2◦ azimuthal step) and to capture the occurrence of Blade Vortex Interactions which happen in descent flight. In order to compute unsteady flight conditions for the helicopter, an unsteady lifting line method is applied to the
+blade aerodynamics simulation. This methodology, derived from Matched Asymptotic Expansion techniques performed by Guermond and Sellier, extends the concept of induced velocity to unsteady conditions, the actual unsteady problem being essentially 2D. The numerical implementation of the theory is an adaptation of the one used by Devinant in order to use the blade airfoil polars to account for viscosity and compressibility effects for the quasi-steady loads. The unsteady model for the blade section relies on Theodorsen’s theory, using numerical integration to compute the wake influence. Application of the method to simple cases shows its good properties at low and moderate reduced frequencies, the simulation being less accurate in the high frequency domain. A first computation of a rotor in manoeuvre flight conditions also shows the capability of the method to simulate this complex flight characteristics. A next step would be to couple this unsteady rotor model with the helicopter trim and to include the effect of the fuselage in the computation, although the inviscid approach adopted is more questionable when the flow field around a helicopter fuselage is considered. Finally, the introduction of a semiempirical dynamic stall model might also be envisaged in order to improve the blade loads simulation during manoeuvring flight conditions at high load factors.
+References
+[1] J. Sidès, K. Pahlke, Progress towards the CFD computation of the complete helicopter: Recent results obtained by Research Centers in the framework of the Franco–German CHANCE project, in: CEAS Aerospace Aerodynamics Research Conference, Cambridge, 2002. [2] R.L. Meakin, A.M. Wissink, Unsteady aerodynamic simulation of static moving bodies using scalable computers, AIAA paper 99-3302. [3] J.U. Ahmad, R.C. Strawn, Hovering rotor and wake calculations with an overset-grid Navier–Stokes solver, in: AHS 55th Annual Forum, Montréal, 1999. [4] A. Ochi, T. Aoyama, S. Saito, E. Shima, E. Yamakawa, BVI noise predictions by moving overlapped grid method, in: AHS 55th Annual Forum, Montréal, 1999. [5] E. Cannone, C. Benoit, G. Jeanfaivre, Cylindrical mesh adaptation for isolated rotors in hover, in: AHS 58th Annual Forum, Montréal, 2002. [6] Y. Wenren, M. Fan, W. Dietz, G. Hu, C. Braun, J. Steinhoff, G. Grossman, Efficient Eulerian computation on realistic rotorcraft flows using vorticity confinement—A survey of recent results, in: 39th AIAA Aerospace Sciences Meeting and Exhibit, Reno, 2001. [7] B. Michéa, A. Desopper, M. Costes, Aerodynamic rotor loads prediction method with free wake for low speed descent flight, in: 18th European Rotorcraft Forum, Avignon, 1992. [8] G. Lebouar-Coppens, Méthode pas à pas dans le temps pour l’aérodynamique instationnaire des rotors d’hélicoptère, Thèse de Doctorat de l’Univ. d’Orléans, octobre 1999. [9] R. Kube, et al., HHC Aeroacoustics rotor tests in the German Dutch wind tunnel: improving physical understanding and prediction codes, in: American Helicopter Society 52nd Annual Forum Proceedings, Washington DC, 1996. [10] M. Mudry, La théorie générale des nappes tourbillonnaires et ses applications à l’aérodynamique instationnaire, Thèse de Doctorat d’Etat, Univ. de Paris VI, juillet 1982. [11] A. Leroy, P. Devinant, A general approach for computing 3D unsteady lifting and/or propulsive systems derived from a complete theory, Internat. J. Numer. Methods in Fluids 29 (1999).
+
+
+G. Le Bouar et al. / Aerospace Science and Technology 8 (2004) 11–25 25
+[12] G. Arnaud, P. Beaumier, Validation of R85/METAR on the Puma RAE flight tests, in: 18th European Rotorcraft Forum, Avignon, 1994. [13] P. Devinant, A. Leroy, M. Mudry, Unsteady 3D non linear KuttaJoukovsky condition for thin lifting surfaces, Comput. Mech. 24 (1999). [14] G. Coppens, M. Costes, A. Leroy, P. Devinant, Computation of helicopter rotor wake using a high order panel method, in: 24th European Rotorcraft Forum, Marseille, 1998. [15] J.L. Guermond, A. Sellier, A unified unsteady lifting-line theory, J. Fluid Mech. 229 (1991). [16] P. Devinant, An approach for an unsteady lifting-line time-marching numerical computation, Internat. J. Numer. Methods in Fluids 26 (1998).
+[17] R.L. Bigsplinghoff, H. Ashley, R.L. Halfman, Aeroelasticity, Addison–Wesley, Reading, MA, 1955. [18] T.S. Beddoes, Practical computation of unsteady lift, in: 8th European Rotorcraft Forum, Aix-en-Provence, 1982. [19] A. Bagai, J.G. Leishman, J. Park, Aerodynamic analysis of a helicopter in steady manoeuvring flight using a free-vortex rotor wake model, J. Amer. Helicopter Soc. 44 (2) (1999). [20] C. Theodore, R. Celi, Helicopter flight dynamics simulation with refined aerodynamics and flexible blade modeling, J. Aircraft 39 (4) (2002). [21] B. Benoit, A.-M. Dequin, K. Kampa, W. Grünhagen, P.M. Basset, B. Gimonet, HOST, a general helicopter simulation tool for Germany and France, in: AHS 56th Annual Forum, Virginia Beach, 2000.

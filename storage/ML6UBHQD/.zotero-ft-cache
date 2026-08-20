@@ -1,0 +1,3437 @@
+BBrriigghhaamm YYoouunngg UUnniivveerrssiittyy
+BBYYUU SScchhoollaarrssAArrcchhiivvee
+Theses and Dissertations
+2022-06-16
+RReeffoorrmmuullaatteedd VVoorrtteexx PPaarrttiiccllee MMeetthhoodd aanndd MMeesshhlleessss LLaarrggee EEddddyy
+SSiimmuullaattiioonn ooff MMuullttiirroottoorr AAiirrccrraafftt
+Eduardo J. Alvarez BrighamYoungUniversity
+Follow this and additional works at: https://scholarsarchive.byu.edu/etd
+Part of the Engineering Commons
+BBYYUU SScchhoollaarrssAArrcchhiivvee CCiittaattiioonn Alvarez, Eduardo J., "Reformulated Vortex Particle Method and Meshless Large Eddy Simulation of Multirotor Aircraft" (2022). ThesesandDissertations. 9589. https://scholarsarchive.byu.edu/etd/9589
+This Dissertation is brought to you for free and open access by BYU ScholarsArchive. It has been accepted for inclusion in Theses and Dissertations by an authorized administrator of BYU ScholarsArchive. For more information, please contact ellen_amatangelo@byu.edu.
+
+
+Reformulated Vortex Particle Method and
+Meshless Large Eddy Simulation
+of Multirotor Aircraft
+Eduardo J. Alvarez
+A dissertation submitted to the faculty of Brigham Young University in partial fulfillment of the requirements for the degree of
+Doctor of Philosophy
+Andrew Ning, Chair Scott Thomson Tim McLain R. Daniel Maynes
+Department of Mechanical Engineering
+Brigham Young University
+Copyright © 2022 Eduardo J. Alvarez
+All Rights Reserved
+
+
+Reformulated Vortex Particle Method
+and Meshless Large Eddy Simulation
+of Multirotor Aircraft
+Eduardo J. Alvarez
+Mechanical Engineering
+Doctor of Philosophy
+
+
+Abstract
+The vortex particle method (VPM) is a mesh-free approach to computational fluid dynamics (CFD) solving the Navier-Stokes equations in their velocity-vorticity form. The VPM uses a Lagrangian scheme, which not only avoids the hurdles of mesh generation, but it also conserves vortical structures over long distances with minimal numerical dissipation while being orders of magnitude faster than conventional mesh-based CFD. However, VPM is known to be numerically unstable when vortical structures break down close to the turbulent regime. In this study, we reformulate the VPM as a large eddy simulation (LES) in a scheme that is numerically stable, without increasing its computational cost. A new set of VPM governing equations are derived from the LES-filtered NavierStokes equations. The new equations reinforce conservation of mass and angular momentum by reshaping the vortex elements subject to vortex stretching. In addition to the VPM reformulation, a new anisotropic dynamic model of subfilter-scale (SFS) vortex stretching is developed. This SFS model is well suited for turbulent flows with coherent vortical structures where the predominant cascade mechanism is vortex stretching. Extensive validation is presented, asserting the scheme comprised of the reformulated VPM and SFS model as a meshless LES that accurately resolves large-scale features of turbulent flow. Advection, viscous diffusion, and vortex stretching are validated through simulation of isolated and leapfrogging vortex rings. Mean and fluctuating components of turbulent flow are validated through simulation of a turbulent round jet, in which Reynolds stresses are resolved directly and compared to experimental measurements. Finally, the computational efficiency of the scheme is showcased in the simulation of an aircraft rotor in hover, showing our meshless LES to be 100x faster than a mesh-based LES with similar fidelity.
+The ability to accurately and rapidly assess unsteady interactional aerodynamics is a shortcoming and bottleneck in the design of various next-generation aerospace systems: from electric vertical takeoff and landing (eVTOL) aircraft to airborne wind energy and wind farms. For instance, current models used in preliminary design fail to predict and assess configurations that may lead to the wake of a rotor impinging on another rotor or a wing during an eVTOL transition maneuver. In the second part of this dissertation, we address this shortcoming as we present a variable-fidelity CFD framework based on the reformulated
+
+
+VPM for simulating complex interactional aerodynamics. We further develop our meshless LES scheme to include rotors and wings in the computational domain through actuator models. A novel, vorticitybased, actuator surface model (ASM) is developed for wings, which is suitable for rotor-wing interactions when a wake impinges on the surface of a wing. This ASM imposes the no-flow-through condition at the airfoil centerline by calculating the circulation that meets this condition and by immersing the associated vorticity following a pressure-like distribution. Extensive validation of rotor-rotor and rotor-wing interactions predicted with our LES is presented, simulating two side-by-side rotors in hover, a tailplane with tip-mounted propellers, and a wing with propellers mounted mid-span. To conclude, the capabilities of the framework are showcased through the simulation of a multirotor tiltwing vehicle. The vehicle is simulated mid maneuver as it transitions from powered lift to wing-borne flight, featuring rotors with variable RPM and variable pitch, tilting of wings and rotors, and significant rotor-rotor and rotorwing interactions from hover to cruise. Thus, the reformulated VPM provides aircraft designers with a high-fidelity LES tool that is orders of magnitude faster than mesh-based CFD, while also featuring variablefidelity capabilities.
+Keywords: vortex particle, interactional aerodynamics, multirotor, eVTOL, aircraft, large eddy simulation, meshless, mesh-free, CFD, LES
+
+
+Acknowledgments
+“And it came to pass that the Lord commanded them that they should go forth into the wilderness, yea, into that quarter where there never had man been. And it came to pass that the Lord did go before them, and did talk with them as he stood in a cloud, and gave directions whither they should travel.”
+– Ether 2:5, The Book of Mormon
+I have been blessed throughout my life with extraordinary mentors: from loving parents and enlightened professors, to God himself, who has frequently opened my mind to the workings of both the natural world and the spirit. This work has been enabled by all these mentors.
+I was fortunate to have Professor Andrew Ning as my PhD advisor. The intellectual freedom that he constantly entrusted me with was a key enabler, allowing me to pursue the ideas that lead to the discoveries of this doctoral work. It is remarkable that a man as productive as him would consistently make himself available to meet when I was in need of advise, and would invariably reply to messages within the hour. While being a prolific researcher, it is clear that his priority is to build and lift up his students. I am grateful for his guidance, mentorship, and friendship.
+I am also immensely grateful for Professor Scott Thomson. His passion for fluid dynamics, teaching, and research ended up converting me into a “fluids guy.” His mentorship during my undergrad gave me confidence to pursue a career as a scientist and researcher. Few people have shaped the course of my profession as he has.
+The fellowship that Brigham Young University granted me through the High Impact Doctoral Research Award funded the first three years of my doctorate, which allowed me to start research in a topic that few other institutions were researching at the time. This work was then continued with the support of National Science Foundation under Grant No. 2006219 and Department of Defense through AFWERX contract FA8649-21-P-0095, the latter in collaboration with Whisper Aero. I am grateful to Mark Moore, Ian Villa, and the Whisper team for their association, mentorship, and friendship as we have worked together to bring forth the future of electric aviation.
+
+
+I am thankful for the good company and engaging conversations with my colleagues of the Flight, Optimization, and Wind Laboratory (FLOW Lab). The need of reformulating the vortex particle method became clear to me as I was answering a question from my colleague Ryan Anderson. Thanks, Ryan, for asking just the right question. I am also grateful for the association, collaboration, and conversations with colleagues in other institutions, especially Racheal Erhard at Stanford University and Professor Adrin Gharakhani at Claremont Graduate University.
+I am grateful for my parents who provided a solid foundation at home of love and peace, which allowed me to appreciate the beauty of the natural and spiritual world. Any achievement in my life is a product of my parents’ characters and teachings. Also, thanks to my parents-inlaw for their continuous support, love, and encouragement, and for the countless Sunday dinners together.
+Foremost, I am grateful for my wife, best friend, and eternal companion. This dissertation was enabled by her support through the countless nights that I was up working. Your divine character gives me the strength to be my best self.
+Ed Alvarez Provo, June 2022
+
+
+Table of Contents
+List of Figuresx
+List of Tablesxiii
+Nomenclaturexiv
+Preamble and Outline1
+PART I: VPM Reformulation for Meshless LES 8
+Introduction9
+1 Fundamentals of the Vortex Particle Method12 1.1 Vorticity Form of the Navier-Stokes Equations . . .12 1.2 Large Eddy Simulation Equation . . . . . . . . . . .12 1.3 Viscous Diffusion . . . . . . . . . . . . . . . . . . . .14 1.4 Lagrangian Discretization: The Vortex Particle . . .15 1.5 General VPM Governing Equations . . . . . . . . .16 1.6 Classic VPM Governing Equations . . . . . . . . . .19
+2 Reformulated Vortex Particle Method22 2.1 Physical Implications of the Vorticity Equation . . .22 2.2 Candidate Formulations . . . . . . . . . . . . . . . .25 2.3 Generalized Formulation . . . . . . . . . . . . . . . .28 2.4 Formulation Analysis . . . . . . . . . . . . . . . . . .30 2.5 Reformulated Governing Equations . . . . . . . . .32
+3 Anisotropic Dynamic SFS Model33 3.1 Existing Models . . . . . . . . . . . . . . . . . . . . .34 3.2 SFS Vortex Stretching Model . . . . . . . . . . . . . .34 3.3 Dynamic Procedure . . . . . . . . . . . . . . . . . . .35 3.4 Backscatter Control . . . . . . . . . . . . . . . . . . .39 3.5 Usage in Conventional Mesh-Based CFD . . . . . .39 3.6 Summary . . . . . . . . . . . . . . . . . . . . . . . . .40
+4 Numerical Schemes42 4.1 Velocity Field Evaluation . . . . . . . . . . . . . . . .42
+vii
+
+
+4.2 Fast Multipole Method . . . . . . . . . . . . . . . . .45 4.3 Vortex Stretching Through CSDA . . . . . . . . . . .49 4.4 Relaxation of ω Divergence . . . . . . . . . . . . . .52 4.5 Transposed Stretching . . . . . . . . . . . . . . . . .54 4.6 Viscous Diffusion . . . . . . . . . . . . . . . . . . . .55 4.7 Implementation of the Dynamic Procedure . . . . .57 4.8 Implementation of the Governing Equations . . . .60 4.9 Time Integration . . . . . . . . . . . . . . . . . . . . .61
+5 Validation of Meshless LES Scheme63 5.1 Isolated Vortex Ring . . . . . . . . . . . . . . . . . .63 5.2 Leapfrogging Vortex Rings . . . . . . . . . . . . . . .65 5.3 Turbulent Round Jet . . . . . . . . . . . . . . . . . .68 5.4 Aircraft Rotor in Hover . . . . . . . . . . . . . . . . .75
+Conclusions80
+PART II: Meshless LES of Multirotor Aircraft 82
+Introduction83
+6 Interactional Aerodynamics Solver90 6.1 Meshless LES with Immersed Vorticity . . . . . . . .92 6.2 Rotor Model (Actuator Line Model) . . . . . . . . .93 6.3 Wing Model (Actuator Surface Model) . . . . . . . .95 6.4 Aeroacoustic Solver: FW-H Analogy . . . . . . . . .104
+7 Validation of Rotor-Rotor Interactions107 7.1 Rotor Geometries . . . . . . . . . . . . . . . . . . . .107 7.2 Convergence Study . . . . . . . . . . . . . . . . . . .108 7.3 Propeller in Forward Flight . . . . . . . . . . . . . .113 7.4 Propeller at an Incidence Angle . . . . . . . . . . . .114 7.5 Aeroacoustic Noise of Rotor in Hover . . . . . . . .114 7.6 Side-by-Side Rotors in Hover . . . . . . . . . . . . .115
+8 Validation of Rotor-Wing Interactions117 8.1 Isolated Wing . . . . . . . . . . . . . . . . . . . . . .117 8.2 Propeller Wake . . . . . . . . . . . . . . . . . . . . .119 8.3 Tip-Mounted Propeller . . . . . . . . . . . . . . . . .129 8.4 Blown Wing . . . . . . . . . . . . . . . . . . . . . . .135
+9 Maneuvering eVTOL Aircraft138 9.1 Aircraft Geometry . . . . . . . . . . . . . . . . . . . .139 9.2 Controls and Prescribed Kinematics . . . . . . . . .139 9.3 Results . . . . . . . . . . . . . . . . . . . . . . . . . .140
+Conclusions144
+
+
+References146
+Appendices 158
+A Derivations158 A.1 Derivation of d
+dt
+(
+ζσp (x − xp))
+. . . . . . . . . . . . .158
+A.2 Derivation of dΓˆ
+dt . . . . . . . . . . . . . . . . . . . . .159
+B Vortex Tube Method160 B.1 Singular Tube Discretization . . . . . . . . . . . . . .160 B.2 Regularized Tube Discretization . . . . . . . . . . . .161
+B.3 Derivation of ∂ζ∗
+σ
+∂t . . . . . . . . . . . . . . . . . . . .162 B.4 Governing Equation . . . . . . . . . . . . . . . . . .163 B.5 Proof that 1
+`
+d`
+dt = 1
+‖Γ‖
+dΓ
+dt · Γˆ . . . . . . . . . . . . . . .163
+C Induced Vorticity Field ∇ × u 165 C.1 Derivation of ∇ × u . . . . . . . . . . . . . . . . . . .165 C.2 Comparing ∑p
+Γpζσp (x − xp) and ∇ × u . . . . . . . .167
+D Analytical Dynamics of Vortex Rings170
+
+
+List of Figures
+I.1 Meshless LES of eVTOL aircraft using rVPM. . . . . . .10
+1.1 Vortex particle with unit size and strength. . . . . . . .16
+2.1 Stretching of a spherical fluid element. . . . . . . . . . .23 2.2 Vortex tube formed by vortex lines. . . . . . . . . . . . .24 2.3 Space of all possible f -g formulations. . . . . . . . . . .31
+4.1 Characteristic functions of common VPM kernels. . . .44 4.2 Direct evaluation of P2P. . . . . . . . . . . . . . . . . . .45 4.3 Treecode approximation of P2P. . . . . . . . . . . . . . .46 4.4 Fast multipole method approximation of P2P. . . . . . .47 4.5 Wall-clock time of FMM computation. . . . . . . . . . .48 4.6 Parameters for θ and φ-criterion. . . . . . . . . . . . . .48 4.7 Singular FMM kernel vs regularized P2P kernel. . . . .49 4.8 Error of vortex stretching through FD versus CSDA. . .52 4.9 Enstrophy spectrum with large-scale and SFS stretching.58
+5.1 Vortex ring discretized through particles. . . . . . . . .64 5.2 Spatial convergence of vortex ring. . . . . . . . . . . . .65 5.3 Vortex ring with classic VPM and reformulated VPM. .65 5.4 Leapfrog with classic VPM and reformulated VPM. . .66 5.5 Leapfrog with and without SFS model. . . . . . . . . . .67 5.6 Vorticity as leapfrogging rings merge. . . . . . . . . . .67 5.7 Boundary condition of round jet defined with particles.68 5.8 Streamwise and radial velocity close to nozzle exit. . .69 5.9 Enstrophy of round jet in VPM simulations. . . . . . . .70 5.10 Fields close to jet nozzle at t = 48 ms. . . . . . . . . . . .70 5.11 Vorticity field of turbulent jet at t = 48 ms. . . . . . . . .71 5.12 Evolution of turbulent jet simulation. . . . . . . . . . . .71 5.13 History SFS model coefficient in turbulent jet. . . . . . .73 5.14 Profiles along turbulent round jet. . . . . . . . . . . . .74 5.15 Actuator line model in rotor simulation. . . . . . . . . .75 5.16 Global enstrophy in VPM rotor simulations. . . . . . .76 5.17 Thrust history in rotor simulations. . . . . . . . . . . . .76 5.18 Time-average blade loading in rotor simulations. . . . .77 5.19 Visualization of rotor with meshless LES. . . . . . . . .78 5.20 Vis. of rotor with mesh-based LES by Delorme et al. . .78
+x
+
+
+II.1 Example of eVTOL aircraft. . . . . . . . . . . . . . . . .83 II.2 Multirotor systems affected by aerodynamic interactions. 84 II.3 Evolution of a propeller wake with low-fidelity VPM. .87 II.4 Interactions between propellers with mid-fidelity VPM.87
+6.1 Actuator line model in rotor simulation. . . . . . . . . .94 6.2 Wing element used in circulation solver. . . . . . . . . .95 6.3 Volume rendering of wing simulation with ALM. . . .97 6.4 Slice of flow field in wing simulation with ALM. . . . .97 6.5 Vorticity distributions for actuator surface model. . . .98 6.6 Experimental chordwise pressure distribution. . . . . .99 6.7 Pressure-like chordwise vorticity distribution in ASM. .99 6.8 Volume rendering of wing simulation with ASM. . . . .100 6.9 Slice of flow field in wing simulation with ASM. . . . .100
+7.1 Twist of each rotor. . . . . . . . . . . . . . . . . . . . . .107 7.2 Chord and leading edge of each rotor. . . . . . . . . . .108 7.3 Wake shedding with different Nsteps and Nsheds values.109 7.4 Number of particles shed along blade as a function of m.109 7.5 Spatial convergence of VPM in vortex ring simulation.110 7.6 Spatial discretization of rotor simulation. . . . . . . . .111 7.7 Temporal and spatial convergence of rotor simulation. .112 7.8 Spatial convergence with blade discretization. . . . . .112 7.9 Effects of particle smoothing on CT. . . . . . . . . . . .112 7.10 Beaver propeller in forward flight. . . . . . . . . . . . .113 7.11 Beaver propeller at an incidence angle. . . . . . . . . . .114 7.12 Tonal and OASPL directivity of DJI 9443 rotor in hover.114 7.13 Rotor-on-rotor interactions as separation is decreased. .115
+8.1 Volume rendering of swept-back wing simulation. . . .118 8.3 c` and cd distribution of wing with spatial refinement. .118
+8.2 Spatial convergence of wing simulation at α = 4.2◦. . .119 8.4 History of CL in wing simulation. . . . . . . . . . . . . .119 8.5 Lift, drag, and spanwise distributions in wing. . . . . .119 8.6 Computational elements as spatial resolution is increased.120 8.7 cT and cP distribution of propeller with spatial refinement.121 8.8 Flow field with spatial refinement. . . . . . . . . . . . .122 8.9 Axial velocity across tip vortices with spatial refinement.123 8.10 Time-average velocity profile with spatial refinement. .123 8.11 Volume rendering of Beaver propeller simulation. . . .124 8.12 Flow field in Beaver propeller simulation. . . . . . . . .125 8.13 Thrust history of Beaver propeller. . . . . . . . . . . . .126 8.14 Thrust and torque distribution of Beaver propeller. . . .126 8.15 Predicted flow field compared to experiment. . . . . . .127 8.16 Predicted flow field compared to experiment and URANS.128 8.17 Axial velocity across tip vortices compared to experiment.128 8.18 Time-average velocity profile compared to experiment.129 8.19 Tailplane with tip-mounted propeller case description.130
+
+
+8.20 Load distribution in tip-mounted case on flat wing. . .130 8.21 History of CL with and without propeller. . . . . . . . .131 8.22 Axial vorticity in tip-mounted case. . . . . . . . . . . . .131 8.23 Vorticity across elevator and tip vortices. . . . . . . . .132 8.24 Lift distribution with δe = ±10◦ and α = 0◦. . . . . . . .132 8.25 Lift distribution as thrust is increased. . . . . . . . . . .133 8.26 Effects of σTBV when system is at α = 10◦. . . . . . . . .133
+8.27 Lift distribution in tip-mounted case at α = 10◦. . . . .134 8.28 Blown wing case description. . . . . . . . . . . . . . . .135 8.29 Normal force distribution at multiple AOAs. . . . . . .137 8.30 Tangential force in blown-wing case at α = 10◦. . . . . .137 9.1 Modified Vahana vehicle. . . . . . . . . . . . . . . . . .138
+9.2 Diagram of Vahana vehicle. . . . . . . . . . . . . . . . .139 9.3 Tilting and rotors systems associated with control inputs.139 9.4 Control inputs and kinematics of eVTOL transition. . .140 9.5 eVTOL transition maneuver mid-fidelity simulation. .140 9.6 Performance of the right tip-mounted tilt rotor. . . . . .141 9.7 Visualization of eVTOL simulation at t ≈ 1 s. . . . . . .141 9.8 Misalignment between moment M and rotation axis. .141 9.9 Off-axis moment rotor during hover. . . . . . . . . . . .142 9.10 Load distribution of main and tandem wings. . . . . . .143 9.11 Wake of front rotors impinging on back wing. . . . . . .143
+C.1 Vorticity fields generated by a particle of unitary strength.167 C.2 Distribution of induced vorticity. . . . . . . . . . . . . .168 C.3 Volume rendering of vorticity fields. . . . . . . . . . . .168 C.4 Slice of RBF-approximated and induced vorticity fields.169
+
+
+List of Tables
+A Gap in tools for multirotor aircraft design. . . . . . . . .1 B Variable fidelity with reformulated VPM. . . . . . . . .3
+2.1 f –g form of formulations derived in Section 2.2. . . . .30
+4.1 Tunning parameter ατ in pseudo-three-level procedure.60
+5.1 Computational time of leapfrog VPM simulations. . .68 5.2 Description of CFD solvers for rotor simulations. . . . .79 5.3 Computational cost of rotor simulations. . . . . . . . . .79 II.1 Analysis tools for multirotor aircraft design. . . . . . .85 II.2 Variable fidelity with reformulated VPM. . . . . . . . .89
+8.1 CT and CQ of propeller with spatial refinement. . . . . .121 8.2 CFD solvers compared in Beaver propeller validation. .126
+xiii
+
+
+Nomenclature
+Vector fields are represented with bold variables, while scalar fields and values are represented with non-bold variables. Tensor notation is indicated with subscripted variables.
+Physical Variables and Properties
+α, θ Angle of attack deg
+ω Vorticity field, ω(x, t) 1/s
+ω∗ Non-dimensional vorticity, ω∗ ≡ ωb/U∞ or ω∗ ≡ ωD/Vdisk
+δe Elevator deflection deg
+η Propulsive efficiency, η = TU∞
+2πnQ
+Γ Circulation m2/s
+u Velocity field, u(x, t) m/s
+u∞ Freestream velocity m/s
+x Position m
+ReReynolds number
+ν Kinematic viscosity m2/s
+ρ Density kg/m3
+ξ Local or global enstrophy 1/s2
+a Ring cross-sectional radius m
+b Wing span m
+c Chord length m
+c` Sectional lift coefficient, c` = `
+1
+2 ρU2∞c
+CD drag coefficient, CD = D
+1
+2 ρU2∞bc
+cd Sectional drag coefficient, cd = d
+1
+2 ρU2∞c
+CL lift coefficient, CL = L
+1
+2 ρU2∞bc
+cn Normal force coefficient, cn = n
+1
+2 ρU2∞c
+CQ Torque coefficient, CQ = Q
+ρn2d5
+CT Thrust coefficient, CT = T
+ρn2d4
+ct Tangential force coefficient, ct = t
+1
+2 ρU2∞c
+d, D Distance or diameter m
+xiv
+
+
+I Moment of inertia kg m2
+J Advance ratio, U∞/nD
+m Mass kg
+n Revolutions per second 1/s
+p Pressure field, p(x, t) Pa
+Q Torque N m
+R Radius m
+r Radial position m
+T Thrust N
+t Time s
+tref Reference time s u′
+z, u′
+r Streamwise and radial fluctuating components m/s
+U∞, V∞ Magnitude of freestream velocity m/s
+Uc Centerline velocity m/s
+x, y, z Coordinates m
+Z Position of ring centroid m
+Mathematical Variables and Functions
+α Relaxation parameter
+ατ Tunning parameter associated to scaling factor 3ατ − 2
+Γp Vortex strength of p-th particle, Γp(t) m3/s
+ωσ RBF-approximated vorticity field, ωσ(x) ≡ ∑p
+Γpζσp (x − xp)
+ψ Vector potential of velocity, u = ∇ × ψ
+∆t Time step size s
+∆x Discretization length (distance between particles) m
+δ Dirac delta
+δij Kronecker delta
+f , g Formulation parameters
+λ Particle overlap λ ≡ σ/∆x
+Eadv SFS vorticity advection, (Eadv)i ≡ ∂T′
+ij
+∂xj 1/s2
+Estr SFS vortex stretching, (Estr)i ≡ − ∂Tij
+∂xj 1/s2
+K Newtonian kernel, K(x) ≡ − x
+4π‖x‖3
+Kσ Regularized Newtonian kernel, Kσ ≡ gσK
+xp Position of p-th particle, xp(t) m
+σ Filter width (smoothing radius or core size) m
+σp Filter width at position of p-th particle, σp(t) ≡ σ(xp, t) m
+ ̃ω Divergence-free vorticity field, ω ̃ ≡ ∇ × u
+ζ Radial basis function
+ζσ Filter kernel, ζσ(x) ≡ 1
+σ3 ζ( ‖x‖
+σ ) 1/m3
+Cd SFS model coefficient, Cd(x, t)
+
+
+fσ Particle smoothing factor, fσ ≡ σ/R
+Gσ Green’s function
+gσ Regularizing function, gσ(x) ≡ 4π
+‖x‖/σ
+∫
+0
+ζ(t)t2 dt
+m Common multiple between Nsteps and Nsheds
+nblade Number of blade elements per blade
+Nsheds Number of particle sheds per revolution
+Nsteps Number of time steps per revolution
+nwing Number of wing elements
+Tij SFS vorticity stress tensor, Tij ≡ uiωj − ui ωj m/s2
+Symbols and Operators
+〈〉 Average operator
+() Filter operator, or primary filter
+D
+Dt Total or material derivative, D
+Dt () ≡ ∂
+∂t () + (u · ∇)()
+d
+dt Linearized filtered material derivative, d
+dt () ≡ ∂
+∂t () + (u · ∇)()
+C Complex set
+R Real set
+∇ Del operator
+∇2 Laplace operator
+ImImaginary part
+(̂), (ˇ), (ˇˇ) Test filters
+‖‖ Euclidean norm
+(̂) Unit vector, for instance ω̂ ≡ ω/‖ω‖
+Acronyms
+ALMActuator line model
+AOAAngle of attack
+ASMActuator surface model
+CFDComputational fluid dynamics
+cVPMClassic VPM
+DESDetached eddy simulation
+DNSDirect numerical simulation
+FMMFast multipole method
+LBMLattice Boltzmann method
+LESLarge eddy simulation
+PIVParticle image velocimetry
+RBFRadial basis function
+rVPMReformulated VPM
+SFSSubfilter-scale
+URANSUnsteady Reynolds-average Navier-Stokes
+VPMVortex particle method
+
+
+Preamble and Outline
+The ability to accurately and rapidly assess unsteady interactional aerodynamics is a shortcoming and bottleneck in the design of various nextgeneration aerospace systems: from electric vertical takeoff and landing (eVTOL) aircraft to airborne wind energy (AWE) and wind farms. For instance, current models used in preliminary design fail to predict and assess eVTOL or AWE multirotor configurations that may lead to the wake of a rotor impinging on another rotor or a wing during a given maneuver. These unsteady interactions can be analyzed with computational fluid dynamics (CFD) methods. However, resolving wake dynamics in conventional CFD tools requires high-order numerical schemes and mesh resolutions with associated computational costs that make them prohibitive for design space exploration. In the year 2017, when this doctoral work commenced, it became evident that there was a gap in the range of analysis tools that were available to aircraft designers, shown in Table A. Since then, academia
+Low fidelity Low computation
+High fidelity High computation
+Unsteady
+interactions? ✘ ✓ ✓
+Wake mixing? ✘ ✘ ✓
+Fast enough
+for design? conceptual conceptual / preliminary detailed
+[1] Sheridan et al. (2021). Evaluation of VSPAERO Analysis Capabilities for Conceptual Design of Aircraft with Propeller-Blown Wings. AIAA AVIATION Forum. [2] Droandi et al. (2018). Tiltwing Multi-Rotor Aerodynamic Modeling in Hover, Transition and Cruise Flight Conditions. AHS International 74th Annual Forum. [3] Ventura Diaz, P., & Yoon, S. (2018). High-Fidelity Computational Aerodynamics of Multi-Rotor Unmanned Aerial Vehicles. AIAA Aerospace Sciences Meeting.
+Free-wake
+Methods Mesh-Based CFD
+BEMT lifting line VLM
+panel methods UVLM
+filament wake URANS LES
+DES LBM
+[1]
+[2]
+[3]
+Steady-State Methods
+Table A: Gap between low and high-fidelity analysis tools for multirotor aircraft design.
+1
+
+
+List of Tables 2
+and industry have turned their attention to a promising candidate that could fill the gap: the vortex particle method (VPM). In spite of its growing popularity, VPM is known to be numerically unstable when vortical structures break down close to the turbulent regime. This has limited its range of applications to mostly benign cases with well-behaved numerics (e.g., coarse simulations of rotors with an axial inflow). Furthermore, little validation has been provided, since the lack of numerical stability typically embroils the efforts to show that simulations are convergent. In short, the classic VPM suffers from the following shortcomings due to its poor numerical stability:
+Issue 1 Applicable to only low and mid-fidelity simulations (simulations become numerically unstable as spatial resolution is increased).
+Issue 2 Applicable to only numerically well-behaved cases (e.g., propellers in forward flight and wakes before breakdown/mixing).
+Issue 3 Lack of numerical convergence.
+Issue 4 Scarcity of validation studies in the literature.
+In this doctoral work, the VPM is overhauled by reformulating the method, and each of the aforementioned issues are respectively addressed through the following outcomes:
+Outcome 1 The method is reformulated as a large eddy simulation (LES) that is meshless and capable of resolving turbulent phenomena in a high-fidelity manner.
+Outcome 2 The reformulated VPM is applied in a variety of turbulent scenarios showing remarkable numerical stability: from a turbulent round jet to the complex aerodynamic interactions of a propeller blowing on a wing.
+Outcome 3 Numerical convergence is characterized through studies on spatial and temporal discretization of vortex ring, rotor, and wing simulations.
+Outcome 4 Extensive validation is presented by comparison to experimental and numerical results reported in the literature on the following cases: Isolated and leapfrogging vortex rings, turbulent round jet, rotor in hover, propeller in forward flight, two side-by-side rotors, isolated wing, propeller wake, and rotor-wing interactions.
+Furthermore, the LES obtained with the reformulated VPM is compared to other state-of-art conventional CFD approaches, showing this approach to be 100x faster than conventional LES with comparable fidelity. The overall outcome of this doctoral research is a novel CFD method capable of resolving mean and fluctuating large-scale features of turbulent
+
+
+List of Tables 3
+Low fidelity Low computation
+High fidelity High computation
+Variable fidelity with reformulated VPM
+Low Fidelity Mid Fidelity High Fidelity
+Resolution coarse
+(10k – 100k particles)
+mid (100k – 1M particles)
+fine (1M – 10M particles) Wall-clock time
+(on laptop computer) 3 minutes – 30 minutes 1 hour – 12 hours 1 day – 4 days
+Design stage conceptual preliminary detailed
+Table B: Variable fidelity achieved with the reformulated VPM, filling the gap in analysis tools.
+flow with minimal computational effort, providing aircraft designers with a robust variable-fidelity tool that fills the gap in analysis tools, as shown in Table B.
+Outline of Part I
+The first part of this dissertation presents the reformulated VPM, deriving its governing equations from the LES-filtered Navier-Stokes equations and developing a meshless LES scheme for the simulation of turbulent flow with coherent vortical structures. The content and novel contributions of each chapter in Part I are summarized as follows.
+Chapter 1 – Fundamentals of the Vortex Particle Method
+Summary: The vorticity-velocity form of the Navier-Stokes (NS) equations is introduced, along with all the fundamental concepts necessary to bring the reader up to speed with LES and vortex methods. The vorticity NS equation is discretized in a Lagrangian scheme and used to derive governing equations.
+Contributions: A new set of VPM governing equations are derived from the LES-filtered Navier-Stokes equations. The classic VPM is shown to be only one out of several possible formulations that arise from these governing equations.
+Chapter 2 – Reformulated Vortex Particle Method
+Summary: Multiple formulations of the governing equations are considered using different element shapes and conserva
+
+
+List of Tables 4
+tion laws. One formulation is selected, referred to as the reformulated VPM, which uses the particle size to reinforce local conservation of both mass and angular momentum.
+Contributions: The classic VPM formulation is shown to locally violate conservation of mass and angular momentum under vortex stretching, explaining why the classic VPM tends to be numerically unstable. The reformulated VPM is proposed, reinforcing local conservation of both mass and angular momentum. The proposed rVPM equations do not require more computation than the classic VPM.
+Chapter 3 – Anisotropic Dynamic SFS Model
+Summary: Existing subfilter scale (SFS) models for LES based on the vorticity-velocity NS equations are briefly reviewed. A novel low-dissipation anisotropic SFS model that uses vortex stretching as the physical mechanism for turbulence is proposed. This low-dissipation SFS model is well suited for turbulent flows with coherent vortical structures where the predominant cascade mechanism is vortex stretching.
+Contributions: An anisotropic structural model of SFS vortex stretching is developed. A dynamic procedure for computing the model coefficient is proposed, which is based on a simultaneous balance of enstrophy-production and derivatives between true and modeled SFS contributions. It is described how the model can be implemented in conventional mesh-based CFD with a pressure-velocity solver.
+Chapter 4 – Numerical Schemes
+Summary: All numerical schemes that are implemented along the reformulated VPM are described. This includes the fast multipole method (FMM), relaxation of ω divergence, viscous diffusion, time integration, etc.
+Contributions: A novel approach to computing vortex stretching and derivatives of u through a complex-step derivative approximation implemented in the FMM is proposed. A correction to a popular relaxation scheme is proposed.
+Chapter 5 – Validation of Meshless LES Scheme
+Summary: The scheme comprised of the reformulated VPM and SFS model is extensively tested, validating the scheme as an LES method. Simulations of vortex rings, a turbulent round jet, and a rotor in hover are compared to experimental and numerical results reported in the literature.
+
+
+List of Tables 5
+Contributions: Extensive validation is presented, incrementally testing advection, viscous diffusion, and vortex stretching. Mean and fluctuating components of a turbulent jet are validated, resolving Reynolds stresses directly. Initial and boundary conditions for a meshless scheme are demonstrated in vortex ring, turbulent jet, and rotor cases. Using the rotor case, it is shown that the meshless LES is 100x faster than a mesh-based LES with similar fidelity, while being 10x faster than a low-fidelity URANS simulation and 1000x faster than a high-fidelity DES.
+In the spirit of reproducibility and scientific cooperation, the meshless LES used in this study is implemented and hereby released as an opensource software called FLOWVPM.
+Outline of Part II
+The second part of this dissertation further develops the meshless LES scheme to include rotors and wings in the computational domain through actuator models. Extensive validation is presented on the rotor-rotor and rotor-wing interactions predicted by the meshless LES, culminating with the simulation of a full multirotor vehicle. The content and novel contributions of each chapter in Part II are summarized as follows.
+Chapter 6 – Interactional Aerodynamics Solver
+Summary: Actuator models for wings and rotating blades are formulated, immersing their vorticity in the Navier-Stokes equations. An aeroacoustics solver is coupled to the meshless LES to predict aeroacoustic noise radiated by rotors.
+Contributions: A novel, vorticity-based, actuator surface model (ASM) is developed for wings, which is suitable for rotor-wing interactions when a wake impinges on the surface of a wing.
+Chapter 7 – Validation of Rotor-Rotor Interactions
+Summary: Validation of rotor-rotor interactions is presented, comparing the meshless LES simulation to experimental results reported in the literature.
+Contributions: A detailed convergence study of the rotor simulation is presented. Simulations of isolated propellers and two side-by-side rotors in hover are validated.
+
+
+List of Tables 6
+Chapter 8 – Validation of Rotor-Wing Interactions
+Summary: Validation of rotor-wing interactions is presented, comparing the meshless LES simulation to experimental and numerical results reported in the literature.
+Contributions: A detailed convergence study of the propeller wake is presented. The ASM and predicted rotor-wing interactions are validated through the simulation of a sweptback wing, a tailplane with tip-mounted propellers, and a wing with propellers mounted mid-span.
+Chapter 9 – Maneuvering eVTOL Aircraft
+Summary: The capabilities of the meshless LES are showcased through the simulation of a multirotor tiltwing vehicle. The vehicle is simulated mid maneuver as it transitions from powered lift to wing-borne flight.
+Contributions: This simulation features rotors with variable RPM and variable blade pitch, tilting of wings and rotors, and significant rotor-rotor and rotor-wing interactions from hover to cruise. Thrust, powered lift, and wing-borne lift are characterized throughout the maneuver.
+In the spirit of reproducibility and scientific cooperation, the framework developed for this study is hereby released as an open-source software called FLOWUnsteady. This dissertation assumes that the reader is familiar with multivariate calculus, tensor notation, numerical methods, fundamental fluid dynamics, and notions of aerodynamic principles. This pre-requisite knowledge is commonly attained through undergraduate studies of aerospace/mechanical engineering.
+Publications
+This dissertation reproduces partial or total content of the following peer-reviewed journal publications led by the author:
+• E. J. Alvarez & A. Ning, “Meshless Large Eddy Simulation of Rotor-Wing Interactions Through the Reformulated Vortex Particle Method,” 2022, (in preparation).
+• E. J. Alvarez & A. Ning, “Reviving the Vortex Particle Method: A Stable Formulation for Meshless Large Eddy Simulation,” 2022, (in review).
+• E. J. Alvarez & A. Ning, “High-Fidelity Modeling of Multirotor Aerodynamic Interactions for Aircraft Design,” 2020, AIAA Journal.
+
+
+List of Tables 7
+and the following publications in conference proceedings:
+•E. J. Alvarez & A. Ning, “FLOWUnsteady: An Interactional Aerodynamics Solver for Multirotor Aircraft and Wind Energy,” 2022, AIAA AVIATION Forum (in progress).
+• E. J. Alvarez, A. Schenk, T. Critchfield, & A. Ning, “Rotor-on-Rotor Aeroacoustic Interactions of Multirotor in Hover,” 2020, VFS 76th Forum.
+• E. J. Alvarez & A. Ning, “Modeling Multirotor Aerodynamic Interactions Through the Vortex Particle Method,” 2019, AIAA AVIATION Forum.
+• E. J. Alvarez & A. Ning, “Development of a Vortex Particle Code for the Modeling of Wake Interaction in Distributed Propulsion,” 2018, AIAA AVIATION Forum.
+The author hereby confirms that the use of these articles is compliant with all publishing agreements. The codes developed in this doctoral work are publicly available in the following repositories:
+•github.com/byuflowlab/FLOWVPM.jl
+•github.com/byuflowlab/FLOWUnsteady
+
+
+Part I
+Vortex Particle
+Method Reformulation
+for
+Meshless
+Large Eddy Simulation
+
+
+1M. F. Hardwick et al. (2005). DART System analysis.
+2G. S. Winckelmans (2004). “Vortex methods”; C. Mimeau and I. Mortazavi (2021). “A Review of Vortex Methods and Their Applications: From Creation to Recent Advances”.
+3G. S. Winckelmans et al. (1993). “Contributions to Vortex Particle Methods for the Computation of Three-Dimensional Incompressible Unsteady Flows”.
+4E. J. Alvarez, A. Schenk, et al. (2020). “Rotor-on-Rotor Aeroacoustic Interactions of Multirotor in Hover”.
+5R. Yokota and L. A. Barba (2013). “FMM-based vortex method for simulation of isotropic turbulence on GPUs , compared with a spectral method”.
+6L. A. Barba et al. (2005b). “Vortex method with meshless spatial adaption for accurate simulation of viscous, unsteady vortical flows”; M. J. Stock and A. Gharakhani (2021). “SolutionResponsive Particle Size Adaptivity in Lagrangian Vortex Particle Methods”.
+7R. Yokota, L. A. Barba, et al. (2013). “Petascale turbulence simulation using a highly parallel fast multipole method on GPUs”; Q. Hu et al. (2014). “Scalable Fast Multipole Accelerated Vortex Methods”.
+8C. Silva, W. R. Johnson, et al. (2018). “VTOL Urban Air Mobility Concept Vehicles for Technology Development”; A. Kasliwal et al. (2019). “Role of flying cars in sustainable mobility”; R. A. McDonald et al. (2021). “Future aircraft concepts and design methods”.
+9M. Stock, A. Gharakhani, and C. Stone (2010). “Modeling Rotor Wakes with a Hybrid OVERFLOW-Vortex Method on a GPU Cluster”.
+10E. J. Alvarez and A. Ning (2020). “High-Fidelity Modeling of Multirotor Aerodynamic Interactions for Aircraft Design”; Alvarez, Schenk, et al., “Rotoron-Rotor Aeroacoustic Interactions of Multirotor in Hover”.
+11J. F. Tan, J. G. Cai, et al. (2020). “Computational Study on the Aerodynamic Interference Between Tandem Rotors and Nearby Obstacles”; J. F. Tan, J. er Gao, et al. (2021). “Novel approach to helicopter brownout based on vortex and discrete element methods”.
+Introduction
+Large eddy simulation (LES) is a class of computational fluid dynamics (CFD) that filters the Navier-Stokes equations to decompose smallscale fluctuations of the flow from large ones. The large scales are then resolved directly, while the effects of the smaller scales are modeled. The most common LES methods use a mesh or grid to discretize the space and calculate fluxes and derivatives, classified as finite volume/element/difference methods. Significant user effort is spent in the generation and manipulation of the mesh, with studies showing that about 67% of engineering time in mesh-based CFD is spent in these efforts.1 Vortex methods2 are a class of meshless CFD solving the NavierStokes equations in their velocity-vorticity form. This form is solved in a Lagrangian scheme, which not only avoids the hurdles of mesh generation, but also conserves vortical structures over long distances with minimal numerical dissipation. The vortex particle method3 (VPM) is a vortex method that uses particles to discretize the Navier-Stokes equations, with the particles representing radial basis functions that construct a continuous vorticity field. This meshless CFD has several advantages over conventional mesh-based CFD. In the absence of a mesh, the VPM (1) does not suffer from the conventional Courant–Friedrichs–Lewy (CFL) condition, (2) does not suffer from the numerical dissipation introduced by a mesh, (3) derivatives are calculated exactly rather than approximated through a stencil, and (4) it has been shown to be 100x to 1000x faster than meshbased CFD with comparable fidelity.4 Furthermore, the VPM is spatially second-order accurate,5 it is highly efficient since elements are placed only where vorticity exists, the spatial discretization can be automatically adapted6 in the fashion of an adaptive mesh refinement, and simulations are highly-parallelizable in heterogeneous CPU and GPU architectures.7 VPM has gained popularity in recent years due to a growing need to predict complex aerodynamic interactions in modern electric aircraft at a computational cost fit for conceptual design.8 For example, VPM has been used for high-fidelity simulation of rotorcraft forward flight9 and multirotor interactions,10 and as a mid and low-fidelity tool for ground effect,11 distributed electric propulsion,12 aeromechanics of unconventional rotorcraft,13 rotor-rotor interactions,14 and wind energy.15 Furthermore, a couple of open-source VPM codes have been recently
+9
+
+
+List of Tables 10
+12P. C. Teixeira et al. (2019). “Propeller Effects on the Response of High-Altitude Long-Endurance Aircraft”.
+13P. Singh et al. (2021). “Aeromechanics and Aeroelastic Stability of Coaxial Rotors”; G. Jacobellis et al. (2021). “Experimental and computational investigation of stacked rotor performance in hover”; E. Corle et al. (2021). “On the Influence of Inflow Model Selection for Time-Domain Tiltrotor Aeroelastic Analysis”.
+14H. Lee and D. J. Lee (2020). “Rotor interactional effects on aerodynamic and noise characteristics of a small multirotor unmanned aerial vehicle”.
+15H. Lee and D.-J. Lee (2019). “Effects of platform motions on aerodynamic performance and unsteady wake evolution of a floating offshore wind turbine”.
+16K. S. Kuzmina et al. (2019). “The VM2D Open Source Code for Incompressible Flow Simulation by Using Meshless Lagrangian Vortex Methods on CPU and GPU”; M. J. Stock and A. Gharakhani (2020). “Open-Source Accelerated Vortex Particle Methods For Unsteady Flow Simulation”; M. Tugnoli et al. (2021). “Mid-fidelity approach to aerodynamic simulations of unconventional VTOL aircraft configurations”.
+released.16 Fig. I.1 shows the simulation of an eVTOL aircraft using VPM. In spite of its growing popularity, VPM is known to be numerically unstable when vortical structures break down close to the turbulent regime. This has limited its range of applications in the aforementioned studies to mostly benign cases with well-behaved numerics (e.g., coarse simulations of rotors with axial inflow). The instability is triggered when vortex stretching gives raise to a rapid increase of local vorticity, which the low numerical dissipation of the method fails to damp out. Such numerical instability is believed to be caused by a combination of Lagrangian distortion, a vorticity field that is not divergence-free, and the absence of subfilter-scale (SFS) turbulent diffusion, among other reasons. Multiple meshless schemes have been developed over the years to address Lagrangian distortion,17 divergence of the vorticity field,18 and SFS effects.19 While some of these schemes are effective in two-dimensional cases, they have not succeeded at making the three-dimensional VPM numerically stable. The need to circumvent this challenge motivated further development of the vortex-in-cell (VIC) method,20 also known as vortex particle-mesh method. In this method, the particles are projected onto a background mesh at every time step, and vortex stretching, viscous diffusion, and the Biot-Savart law are computed in a mesh-based scheme. This approach has shown to be numerically stable, recently enabling the study of wake dynamics with unprecedented fidelity.21However, the introduction of this mesh also forfeits a few of the aforementioned benefits of a purely Lagrangian (meshless) scheme. In this study, we propose an LES formulation of the VPM that is both numerically stable and meshless. A new set of VPM governing equations
+Figure I.1: Meshless LES of eVTOL aircraft using reformulated VPM: (left) computational elements (vortex particles and strength), and (right) volume rendering of vorticity field.
+
+
+List of Tables 11
+17L. A. Barba et al. (2005a). “Advances in viscous vortex methods - Meshless spatial adaption based on radial basis function interpolation”; I. Lakkis et al. (2009). “A high resolution spatially adaptive vortex method for separating flows. Part I: Two-dimensional domains”; M. Kirchhart et al. (2021). “Discrete Projections: A Step Towards Particle Methods on Bounded Domains without Remeshing”.
+18G. Pedrizzetti (1992). “Insight into singular vortex flows”; A. Gharakhani (1997). A Survey of Grid-Free Methods for the Simulation of 3-D Incompressible Flows in Bounded Domains.
+19A. Gharakhani (2002). “A Grid-Free Method for LES of Incompressible Flow”; A. Gharakhani (2005). “A Lagrangian Vortex Method for Grid-Free Dynamic LES”.
+20J. Christiansen (1997). “Numerical Simulation of Hydrodynamics by the Method of Point Vortices”; G.-H. Cottet and P. Poncet (2004). “Advances in direct numerical simulations of 3D wallbounded flows by Vortex-in-Cell methods”; P. Koumoutsakos (2005). “Multiscale flow simulations using particles”.
+21P. Chatelain, A. Curioni, et al. (2008). “Billion vortex particle direct numerical simulations of aircraft wakes”; P. Chatelain, M. Duponcheel, et al. (2017). “Vortex particle-mesh simulations of vertical axis wind turbine flows: from the airfoil performance to the very far wake”; D.-G. Caprace, P. Chatelain, et al. (2020). “Wakes of rotorcraft in advancing flight: A large-eddy simulation study”.
+22The code is available at github.com/byuflowlab/FLOWVPM.jl
+are derived from the LES-filtered Navier-Stokes equations in Chapter 1. In Section 1.6, the classic VPM is shown to be only one out of multiple possible formulations of these governing equations. Such formulation is shown to locally violate conservation of mass and angular momentum under vortex stretching, explaining why the classic VPM tends to be numerically unstable. In Chapter 2, we consider multiple possible formulations using different element shapes and conservation laws. One formulation is selected, which uses the particle size to reinforce local conservation of both mass and angular momentum. This formulation, referred to as the reformulated VPM, is implemented and hereby released as the open-source software FLOWVPM.22 In addition to the reformulated VPM, a novel anisotropic structural model of subfilter-scale (SFS) vortex stretching is developed in Chapter 3. The means for backscatter control are also provided, along with a dynamic procedure for the automatic computation of the model coefficient. This SFS model is apt for both meshless and mesh-based CFD, and is well suited for turbulent flows with coherent vortical structures where the predominant cascade mechanism is vortex stretching. The scheme comprised of the reformulated VPM and SFS model is extensively tested in Chapter 5, validating the scheme as an LES method. Advection, viscous diffusion, and vortex stretching are validated through simulation of isolated and leapfrogging vortex rings. Large-scale turbulent dynamics are validated through simulation of a turbulent round jet, where predicted fluctuations and Reynolds stress are compared to experimental measurements. Finally, the computational efficiency of our meshless LES is showcased in an engineering application through the simulation of an aircraft rotor in hover.
+
+
+1
+23P. C. Chatwin (1973). “The vorticity equation as an angular momentum equation”.
+Fundamentals of the Vortex Particle Method
+A new set of VPM governing equations are hereby derived from the LESfiltered Navier-Stokes equations in their vorticity form. Along the way, the derivation here presented introduces all the fundamental concepts necessary to bring the reader up to speed with LES and vortex methods.
+1.1 Vorticity Form of the Navier-Stokes Equations
+In a Newtonian, incompressible fluid with constant viscosity, the linear momentum of a differential fluid element is governed by the NavierStokes equation
+∂u
+∂t + (u · ∇)u = − 1
+ρ
+∇p + ν∇2u, (1.1)
+where u(x, t) is the velocity field, p(x, t) is the pressure field, and ρ and ν are the density and kinematic viscosity of the fluid, respectively. Taking the curl over Eq. (1.1), the pressure dependence disappears obtaining
+D
+Dt ω = (ω · ∇)u + ν∇2ω, (1.2)
+where D
+Dt denotes the material derivative operator, D
+Dt () ≡ ∂
+∂t () + (u · ∇)(),
+and ω(x, t) = ∇ × u(x, t) is the vorticity field. Eq. (1.2) is the vorticity form of the Navier-Stokes linear-momentum equation. This equation depends on ω alone since u can be calculated from ω through the Biot-Savart law. While Eq. (1.1) stems from conservation of linear momentum, Eq. (1.2) can be interpreted as some form of conservation of angular momentum,23 which is further discussed in Section 2.1. From the right-hand side, we see that the evolution of the vorticity field is governed by vortex stretching (first term) and viscous diffusion (second term).
+1.2 Large Eddy Simulation Equation
+Large eddy simulation (LES) is a class of computational fluid dynamics that filters the Navier-Stokes equations to decompose small-scale fluctuations of the flow from large ones. The large scales are then resolved directly, while the smaller scales (called subfilter scales, or SFS) remain
+12
+
+
+Fundamentals of the Vortex Particle Method 13
+unresolved. In the turbulent cascade, however, all eddies break into progressively smaller eddies, transferring the kinetic energy of large eddies down to the molecular level. At the same time, small eddies can locally coalesce to transfer energy to the large scales. This poses the problem of determining the energy that is constantly transferred between both resolved and unresolved domains. We now derive the filtered vorticity Navier-Stokes equation—here referred to as large-eddy simulation equation—and define the stress tensor that transfers energy between resolved scales and subfilter scales. Let φ be a field and ζσ a filter kernel, the filtered field is denoted by a bar and defined as
+φ (x) ≡
+∞
+∫
+−∞
+φ(y)ζσ(x − y) dy,
+where the filter ζσ is associated to a certain cutoff length scale σ. In this
+study, ζσ is defined as ζσ(x) ≡ 1
+σ3 ζ( ‖x‖
+σ ) where ζ is a radial basis function,
+and is required to have a volume integral of unity,
+∞
+∫
+−∞
+ζσ(y) dy = 1.
+In order to derive the LES version of the vorticity equation, Eq. (1.2) is written in tensor notation and filtered as
+∂ωi
+∂t + uj
+∂ωi
+∂xj
+= ωj
+∂ui
+∂xj
++ ν∇2ωi. (1.3)
+In this equation, uj
+∂ωi
+∂xj and ωj
+∂ui
+∂xj are non-linear terms that cannot be
+calculated from resolved quantities, but are rather approximated through a tensor Tij that encapsulates the error between uiωj and ui ωj as
+uiωj = ui ωj + Tij.
+The gradient of Tij and its transpose result in
+∂T′
+ij
+∂xj
+= uj
+∂ωi
+∂xj
+− uj
+∂ωi
+∂xj
+∂Tij
+∂xj
+= ωj
+∂ui
+∂xj
+− ωj
+∂ui
+∂xj
+Replacing this into Eq. (1.3) and using the derivative-filter commutation property, we obtain the LES vorticity equation:
+∂ωi
+∂t + uj
+∂ωi
+∂xj
+= ωj
+∂ui
+∂xj
++ ν∇2ωi −
+∂T′
+ij
+∂xj
++ ∂Tij
+∂xj
+. (1.4)
+The term ∂T′
+ij
+∂xj represents the subfilter-scale (SFS) contributions arising
+from the advective term (vorticity advection), while ∂Tij
+∂xj represents the
+contributions arising from vortex stretching. Tij is associated to the
+
+
+Fundamentals of the Vortex Particle Method 14
+24S. Shankar et al. (1996). “A New Diffusion Procedure for Vortex Methods”; A. Gharakhani (2001). “Grid-free simulation of 3-D vorticity diffusion by a highorder vorticity redistribution method”.
+25P. Degond et al. (1989). “The Weighted Particle Method for Convection-Diffusion Equations. Part 1: The Case of an Isotropic Viscosity”.
+26L. F. Rossi (1996). “Resurrecting Core Spreading Vortex Methods: A New Scheme that is Both Deterministic and Convergent”.
+27Barba et al., “Advances in viscous vortex methods - Meshless spatial adaption based on radial basis function interpolation”; L. A. Barba (2004). “Vortex Method for computing high-Reynolds number Flows: Increased accuracy with a fully mesh-less formulation”; C. E. Torres et al. (2009). “Fast radial basis function interpolation with Gaussians by localization and iteration”.
+28Rossi, “Resurrecting Core Spreading Vortex Methods: A New Scheme that is Both Deterministic and Convergent”.
+SFS vorticity stress that encapsulates the interactions between large scale dynamics and SFS dynamics and has to be modeled in terms of resolved quantities. The accuracy of LES hinges on the modeling of this tensor. Its divergence represents the rate at which enstrophy—a measure of rotational kinetic energy—is transferred from resolved scales to subfilter scales (diffusion) and from subfilter scales to resolved scales (backscatter). In Chapter 3 we will develop a model that approximates the vortex-stretching component of this tensor, and provide the means for backscatter control. For convenience, we write Eq. (1.4) in vector notation as
+d
+dt ω = (ω · ∇) u + ν∇2ω − Eadv − Estr, (1.5)
+where (Eadv)i ≡ ∂T′
+ij
+∂xj is the SFS vorticity advection, (Estr)i ≡ − ∂Tij
+∂xj is the
+SFS vortex stretching, and the d
+dt operator is a linearized version of the
+filtered material derivative, d
+dt () ≡ ∂
+∂t () + (u · ∇)().
+1.3 Viscous Diffusion
+One common practice for solving non-linear partial differential equations (PDE), like Eq. (1.5), is that of splitting the PDE operator into a linear sum of its non-linear pieces. This permits discretizing and solving each non-linear piece in a separate numerical scheme. In this study we will split the PDE in Eq. (1.5) into inviscid and viscous pieces as
+d
+dt ω =
+(d
+dt ω
+)
+inviscid
++
+(d
+dt ω
+)
+viscous
+,
+where
+(d
+dt ω
+)
+inviscid
+= (ω · ∇) u − Eadv − Estr
+(d
+dt ω
+)
+viscous
+= ν∇2ω.
+Over the years, multiple Lagrangian schemes have been developed that accurately resolve the viscous component, like the vortex redistribution method,24 particle strength exchange,25 and core spreading,26 to name a few. In this study, viscous diffusion will be solved through the core spreading method coupled with the radial basis function interpolation approach for spatial adaptation developed by Barba,27 discussed in more detail in Section 4.6. This viscous scheme diffuses the vorticity by thickening each particle’s core size σ over time, while using an RBF interpolation to reset core sizes when they have overgrown. As shown by Rossi,28 the core spreading method has second-order spatial convergence, while showing linear convergence when coupled with spatial adaptation. In the following sections we will focus on the inviscid part of the PDE, developing a scheme for its numerical solution.
+
+
+Fundamentals of the Vortex Particle Method 15
+1.4 Lagrangian Discretization: The Vortex Particle
+The material derivative in Eq. (1.2) and the material-conservative nature of the vorticity makes the ω field especially well fit for a Lagrangian description. We now discretize the vorticity equation with Lagrangian elements, termed vortex particles. Each particle represents a volume of fluid that is convected by the velocity field carrying an integral quantity of vorticity. The unfiltered ω field is discretized with singular vortex particles of positions xp and coefficients Γp, approximating ω as
+ω(x, t) ≈ ∑p
+Γp(t)δ(x − xp(t)), (1.6)
+where δ is the Dirac delta. Each particle travels with the local velocity as
+d
+dt xp = u(xp),
+where xp is the position of the p-th particle. Thus, each coefficient Γp (termed vortex strength) represents the average vorticity that is carried in the volume of each particle since
+∞
+∫
+−∞
+ω(x, t) dx ≈ ∑p
+Γp(t).
+Using the singular particle approximation in the filtered vorticity ω,
+ω (x) =
+∞
+∫
+−∞
+ω (y) ζσ(x − y) dy
+≈
+∞
+∫
+−∞
+(
+∑
+p
+Γpδ(y − xp)
+)
+ζσ(x − y) dy,
+we obtain an approximation of the filtered vorticity field,
+ω (x) ≈ ∑p
+Γpζσ(x − xp). (1.7)
+As seen in Eq. (1.7), the filter operator has the effect of spreading the vortex strength Γp in space, regularizing the singularity originally introduced by the Dirac delta in Eq. (1.6). Thus, the filter kernel takes the role of a basis function that is used to discretize and approximate the filtered vorticity field through particles. We let the filter width σ change in time and space according to the evolution of each individual particle. Here on, the filter width is referred to as smoothing radius or core size, denoted σp, and defined as σp(t) ≡ σ(xp, t). We approximate the filtered vorticity as ω ≈ ωσ, with
+ωσ (x, t) ≡ ∑p
+Γp(t)ζσp (x − xp(t))
+
+
+Fundamentals of the Vortex Particle Method 16
+29S. Ghosal et al. (1995). “The Basic Equations for the Large Eddy Simulation of Turbulent Flows in Complex Geometry”.
+30G.-H. Cottet and P. D. Koumoutsakos (2000a). Vortex Methods Theory and Practice.
+31Pedrizzetti, “Insight into singular vortex flows”.
+Figure 1.1: Vortex particle with unit size and strength: (top) core size σ and vortex strength Γ, (middle) vorticity field, and (bottom) contours of velocity field and streamlines (represented as curved arrows).
+and
+ζσp (x − xp(t)) = 1
+σp3(t) ζ
+( ‖x − xp(t)‖
+σp(t)
+)
+.
+Replacing the original filter ζσ with the variable-width filter ζσp introduces an error from commuting filter and differentiation operators in the LES equations. However, this error is second order in the filter width,29 hence it is assumed to be negligible or part of the discretization error of the VPM. Also, Eq. (1.7) introduces numerical issues by approximating ω through a field that is in general not divergence-free. Cottet30 suggested that the divergence of ω arises from unphysical small scales produced by the computation, which could be properly addressed with subfilter-scale diffusion. The divergence of ω will be treated using a modified version of the relaxation proposed by Pedrizzetti31 developed in Section 4.4, which, as shown in Chapter 5, will be sufficient to attain both numerical stability and physical accuracy with the LES formulation and subfilter-scale model developed in this study. The rotational part of the velocity field is calculated from the particles using the Helmholtz decomposition u = ∇ × ψ where ψ is some vector potential. This is done by analytically solving the Poisson equation ∇2ψ = −ω, which solution is a regularized Biot-Savart law, as discussed in Section 4.1. Fig. 1.1 shows a vortex particle with unit size and strength, the spreading of the vortex strength by the filter kernel, and the resulting velocity field.
+1.5 General VPM Governing Equations
+We will now use vortex particles to discretize the LES vorticity equation, Eq. (1.5), and derive the equations governing the evolution of the Lagrangian elements. For ease of notation, here on we denote the filtered velocity field u simply u and use D
+Dt and d
+dt interchangeably. Also,
+time dependence is no longer explicitly indicated, but xp, Γp, and σp are time-dependent variables. Starting from the inviscid part of the LES-filtered vorticity equation,
+d
+dt ω = (ω · ∇) u − Eadv − Estr,
+we write the filter operator explicitly,
+d dt
+
+
+∞
+∫
+−∞
+ω (y) ζσ(x − y) dy
+
+=
+
+
+
+
+∞
+∫
+−∞
+ω (y) ζσ(x − y) dy
+
+·∇
+
+ u (x) − Eadv (x) − Estr (x) .
+Using the singular particle approximation,
+ω(y) ≈ ∑q
+Γqδ(y − xq),
+
+
+Fundamentals of the Vortex Particle Method 17
+both integrals collapse resulting in
+d dt
+(
+∑
+q
+Γqζσq (x − xq)
+)
+= (1.8)
+[(
+∑
+q
+Γqζσq (x − xq)
+)
+·∇
+]
+u(x) − Eadv(x) − Estr(x).
+With the help of Appendix A.1, the left-hand side unfolds as
+d dt
+(
+∑
+q
+Γqζσq (x − xq)
+)
+= ∑q
+[ dΓq
+dt ζσq (x − xq) + Γq
+d dt
+(
+ζσq (x − xq))
+]
+= ∑q
+{ dΓq
+dt ζσq (x − xq) + Γq
+∂ζσq
+∂t (x − xq)
++ Γq
+[(
+u(x) − u(xq)) · ∇]
+ζσq (x − xq)}
+while vortex stretching is rearranged as
+[(
+∑
+q
+Γqζσq (x − xq)
+)
+·∇
+]
+u(x) = ∑q
+ζσq (x − xq) (
+Γq · ∇)
+u(x).
+Evaluating at the position of the p-th particle, x = xp, and pulling the p-th term out of each sum,
+d dt
+(
+∑
+q
+Γqζσq (xp − xq)
+)
+=
+dΓp
+dt ζσp (0) + Γp
+∂ζσp
+∂t (0)
++∑
+q6=p
+{ dΓq
+dt ζσq (xp − xq) + Γq
+∂ζσq
+∂t (xp − xq)
++ Γq
+[(
+u(xp) − u(xq)) · ∇]
+ζσq (xp − xq)}
+and
+[(
+∑
+q
+Γqζσq (xp − xq)
+)
+·∇
+]
+u(xp) =
+ζσp (0) (
+Γp · ∇)
+u(xp) + ∑
+q6=p
+ζσq (xp − xq) (
+Γq · ∇)
+u(xp).
+Thus, Eq. (1.8) evaluated at x = xp becomes
+dΓp
+dt ζσp (0) + Γp
+∂ζσp
+∂t (0) + M0
+p = (1.9)
+ζσp (0) (
+Γp · ∇)
+u(xp) + (M1
+p + M2
+p) − (
+Eadv(xp) + Estr(xp))
+,
+
+
+Fundamentals of the Vortex Particle Method 18
+where
+• M0
+p≡ ∑
+q6=p
+( dΓq
+dt ζσq (xp − xq) + Γq
+∂ζσq
+∂t (xp − xq)
+)
+(1.10)
+• M1
+p≡−∑
+q6=p
+Γq
+(
+u(xp) − u(xq)) · ∇ζσq (xp − xq) (1.11)
+• M2
+p≡ ∑
+q6=p
+ζσq (xp − xq) (
+Γq · ∇)
+u(xp) (1.12)
+These M-terms pose an interdependence between the p-th particle and neighboring particles, which arises from filtering the vorticity equation. In this study we will neglect this interdependence as explained in Section 1.6. However, we will see in Chapter 3 that M1
+p and M2
+p are closely related to advection and vortex stretching at the subfilter scale.
+Recalling that ζσ is defined as ζσ(x) = 1
+σ3 ζ( ‖x‖
+σ ), its time derivative is calculated as
+∂ζσ
+∂t (x) = −3 1
+σ4
+∂σ
+∂t ζ
+( ‖x‖
+σ
+)
++1
+σ3
+∂
+∂t
+(
+ζ
+( ‖x‖
+σ
+))
+= −3 1
+σ
+∂σ
+∂t ζσ(x) − 1
+σ3
+∂ζ
+∂r
+( ‖x‖
+σ
+) ‖x‖
+σ2
+∂σ
+∂t .
+Assuming that ζ(r) reaches a maximum at r = 0 (i.e., ∂ζ
+∂r (0) = 0) and
+evaluating at x = 0, we get
+∂ζσ
+∂t (0) = −3 1
+σ
+∂σ
+∂t ζσ(0). (1.13)
+Since viscous effects have been set aside through operator splitting, ∂σ
+∂t
+in this derivation only accounts for inviscid effects. For clarity, this means that core spreading due to viscous diffusion must not be included in Eq. (1.13). Finally, substituting Eq. (1.13) into Eq. (1.9) and assuming ζσp (0) 6= 0, we arrive to the equation governing the evolution of vortex strength,
+dΓp
+dt = (
+Γp · ∇)
+u(xp) + 3Γp
+1
+σp
+∂σp
+∂t (1.14)
++1
+ζσp (0) (−M0
+p + M1
+p + M2
+p)
+−1
+ζσp (0)
+(
+Eadv(xp) + Estr(xp))
+.
+Thus, particle convection as in
+d
+dt xp = u(xp), (1.15)
+strength evolution as in Eq. (1.14), some expression for ∂σp
+∂t , and the viscous diffusion equation make up the general governing equations
+
+
+Fundamentals of the Vortex Particle Method 19
+32The only instance that the classic VPM uses ∂σ
+∂t 6= 0 is in solving the vis
+cous diffusion equation through the core spreading scheme, but even in this case the effects of ∂σ
+∂t on vortex strength are ne
+glected.
+33Gharakhani, A Survey of Grid-Free Methods for the Simulation of 3-D Incompressible Flows in Bounded Domains.
+34Winckelmans et al., “Contributions to Vortex Particle Methods for the Computation of Three-Dimensional Incompressible Unsteady Flows”.
+35J. R. Mansfield et al. (1998). “A Dynamic LES Scheme for the Vorticity Transport Equation: Formulation and a Priori Tests”; J. R. Mansfield et al. (1999). “Dynamic LES of Colliding Vortex Rings Using a 3D Vortex Method”.
+36G.-H. Cottet (1996). “Artificial Viscosity Models for Vortex and Particle Methods”.
+of the vortex particle method that solve the LES-filtered Navier-Stokes vorticity equation. We see in Eq. (1.14) that the evolution of the vortex strength is dictated by vortex stretching (first term), inviscid expansion/contraction of the particle size σp (second term), a dependence on other particles through the M terms, and SFS contributions through the E terms. One obtains different formulations of the VPM depending on how ∂σ
+∂t , the M terms, and the SFS E terms are handled. In particular, we will see in Section 1.6 that the classic VPM is equivalent to assuming32 ∂σ
+∂t = 0 while neglecting all M terms. In Chapter 2 we propose a new formulation that uses ∂σ
+∂t 6= 0 to reinforce conservations laws in spherical elements. In Chapter 3 we discuss existing SFS models for meshless schemes and develop a new anisotropic dynamic model of SFS vortex stretching, Estr.
+1.6 Classic VPM Governing Equations
+Before further exploring the general equation governing vortex stretching, Eq. (1.14), we pause to analyze the equation that has been used extensively in the literature throughout the years:
+dΓp
+dt = (
+Γp · ∇)
+u(xp). (1.16)
+We denote this equation as the Classic VPM. Multiple variations of Eq. (1.16) have been used over the years. For instance, Gharakhani33 introduced a new term accounting for the divergence of the approximated vorticity field, Winckelmans and Leonard34 replaced the differential operator in vortex stretching with its transpose, and Mansfield et al.35 and Cottet36 reintroduced the SFS contributions. However, all these variations and the classic equation have in common
+that they all neglect ∂σp
+∂t and are free of the interdependence posed by the M-terms in Eq. (1.14). We now delineate the assumption underlying the classic VPM that will justify neglecting the M-terms, termed localized-vorticity assumption, as follows. Given a vorticity field ω that is compact in a small volume Vol, the average vorticity 〈ω〉 is calculated as
+〈ω〉 =
+∫
+Vol
+ω(y) dy
+Vol .
+The field can be approximated through a radially-symmetric field ω ̃ defined as
+ ̃ω(x) ≡ 〈ω〉 Volζσ(x − x0),
+where ζσ is a radial basis function of spread σ and center x0 approximating the vorticity distribution of the original field ω. If ζσ is normalized
+
+
+Fundamentals of the Vortex Particle Method 20
+37The interactions neglected here are only the ones pertaining to the evolution of vortex strength, while other interactions are still accounted for in the convection and viscous diffusion of the particles.
+38Winckelmans et al., “Contributions to Vortex Particle Methods for the Computation of Three-Dimensional Incompressible Unsteady Flows”.
+39G.-H. Cottet and P. D. Koumoutsakos (2000b). Vortex Methods Theory and Practice.
+such as to have a volume integral of unity,  ̃ω approximates ω in an average sense since
+∞
+∫
+−∞
+ ̃ω(y) dy =
+∫
+Vol
+ω(y) dy.
+Defining Γ = 〈ω〉 Vol, the localized-vorticity field ω can be approximated with a single particle as
+ω (x) ≈ Γζσ(x − x0).
+Replacing this in the inviscid part of the vorticity equation,
+d
+dt ω = (ω · ∇)u,
+evaluating at x = x0, and following similar steps as in Section 1.5, we get
+dΓ
+dt = (Γ · ∇) u(x0) + 3Γ 1
+σ
+∂σ
+∂t . (1.17)
+This is the evolution equation of the vortex strength approximating the field of localized vorticity, discretized with only one particle. In contrast, in Section 1.5 we showed that a more general vorticity field that is discretized using multiple particles leads to a governing equation that is slightly different:
+dΓp
+dt = (
+Γp · ∇)
+u(xp) + 3Γp
+1
+σp
+∂σp
+∂t (1.18)
++1
+ζσp (0) (−M0
+p + M1
+p + M2
+p),
+after ignoring the SFS contributions. Here, the M-terms, as defined in Eqs. (1.10) to (1.12), pose a dependence on neighboring particles that arises from having filtered the vorticity equation. Discarding these M-terms is equivalent to assuming that the vorticity field can be approximated by the superposition of blobs of fluid with compact vorticity that evolve somewhat independently from each other. 37 This assumption, which we call localized-vorticity assumption, reduces Eq. (1.18) into Eq. (1.17) and is valid as long as there is no significant particle overlap. In both derivations of the classic VPM by Winckelmans and Leonard38 and Cottet and Koumutsakos,39 these Mterms are not present due to the construction of the method: In the classic derivation, the unfiltered vorticity equation (Eq. (1.2)) is discretized with singular particles and only the velocity field is filtered to obtain a regularized field, while in our derivation we discretized the LES-filtered vorticity equation (Eq. (1.5)) which leads to Eq. (1.18). In order to bring both approaches into agreement, in Chapter 2 we will use the localized-vorticity assumption in the derivation of our reformulated VPM to neglect these M-terms.
+
+
+Fundamentals of the Vortex Particle Method 21
+41A. Leonard (1980). “Vortex methods for flow simulation”.
+42Y. Nakanishi et al. (1993). “Numerical Simulation of Flow around a Sphere with Vortex Blobs”; A. Ojima et al. (2000). “Numerical Simulation of Unsteady Flow around Three Dimensional Bluff Bodies by an Advanced Vortex Method.”
+43N. Kornev et al. (2020). “Theoretical Background of the Hybrid VpiLES Method for Flows with Variable Transport Properties”.
+Interestingly, discarding the M-terms resembles the LES decomposition approach of truncated basis functions.40 In such an approach, the flow field is expanded using orthonormal basis functions. The summation of bases is then truncated to define the large-scale field, and the discarded modes represent the range of subfilter scales. In the localizedvorticity assumption, the sum over all the particles is truncated after the leading term, p, while neglecting the contributions of neighboring particles. Hence, the localized-vorticity assumption can be regarded as a secondary LES filter with the neglected M-terms becoming part of the subfilter-scale contributions. While it is justifiable to neglect the M-terms through the localizedvorticity assumption, it is unclear to us what the basis is for the classic
+VPM to assume ∂σp
+∂t = 0. In fact, we hypothesize that this last assumption is the cause of the numerical instabilities that pervade the classic VPM. The classic VPM simply regards σ as a numerical parameter with no physical significance. However, Leonard41 suggested that σ should change according to conservation of mass, and Nakanishi, Ojima, and Maremoto42 suggested that σ should change according to Kelvin’s theorem, which was more recently implemented by Kornev et al.43 Even though these authors let σ evolve in time, they did not include these
+effects back in the equation that governs Γ, effectively assuming ∂σp
+∂t = 0
+in the evolution of Γ. In the following chapter we propose a formulation
+that uses ∂σp
+∂t 6= 0 in the governing equation of Γ, while letting σ change as to reinforce conservation of both mass and angular momentum, which will be shown to lead to remarkable numerical stability.
+
+
+2
+44It only depends on vorticity since the velocity field can be calculated from the vorticity field by inverting the relation ω = ∇ × u as shown in Section 4.1.
+45P. A. Davidson (2001). An Introduction to Magnetohydrodynamics; P. A. Davidson (2019). An Introduction to Electrodynamics.
+46G. K. Batchelor (1967). An Introduction to Fluid Dynamics, p. 82.
+Reformulated Vortex Particle Method
+The general governing equations derived in Section 1.5 call for an ex
+pression for ∂σp
+∂t . While the classic VPM simply assumes ∂σp
+∂t = 0, we will now go back to first principles to find some plausible expressions for
+∂σp
+∂t . As a preamble, in Section 2.1 we put forth two physical implications that distill from the vorticity equation, which will then guide our search
+for possible candidate formulations of ∂σp
+∂t in Section 2.2. The process for constructing candidate formulation is then generalized in Section 2.3, and the entire space of possible formulation is analyzed in Section 2.4. This will then lead us to one formulation, termed reformulated VPM and summarized in Section 2.5, which reinforces conservation of both mass and angular momentum by reshaping the vortex elements as they are subject to vortex stretching.
+2.1 Physical Implications of the Vorticity Equation
+In Section 1.1 we showed that the linear-momentum Navier-Stokes equation can be transformed into an expression that only depends on vorticity44, namely Eq. (1.2), here repeated:
+d
+dt ω = (ω · ∇)u + ν∇2ω. (1.2)
+We now point our attention to two laws that follow from Eq. (1.2): conservation of mass and angular momentum. The discussion that follows is inspired by the writing of P. A. Davidson.45
+2.1.1 Conservation of Angular Momentum
+Consider a spherical differential fluid element carrying a mean vorticity ω with moment of inertia I. Due to ω, the element is then rotating at an angular velocity of ω/2 and its angular momentum L is calculated as46
+L = Iω
+2 . (2.1)
+Given that the element is spherical (and before strain distorts the element), the pressure field exerts no torque on the element and the only torque-producing forces are due to viscous effects, namely τviscous. The change of angular momentum is then calculated as
+d
+dt L = τviscous. (2.2)
+22
+
+
+Reformulated Vortex Particle Method 23
+47More generally, this equation should be expressed with an inertia tensor, but for a spherical body this tensor reduces to a scalar due to the symmetry of the body.
+48Chatwin, “The vorticity equation as an angular momentum equation”.
+Replacing Eq. (2.1) in Eq. (2.2), we arrive to the following expression of the total derivative of vorticity47,
+d
+dt ω = − ω
+I
+d
+dt I + τ∗
+viscous, (2.3)
+where τ∗
+viscous = 2τviscous/I. When viscous effects are ignored, Eq. (2.3) implies that, in order to conserve angular momentum, the angular velocity (or vorticity) must decrease whenever the moment of inertia increases, and vice versa. Eqs. (1.2) and (2.3) suggest that the vorticity Navier-Stokes equation is simply an expression of the conservation of angular momentum in a spherical fluid element.48 Furthermore, the first term in the right hand side of Eq. (1.2) accounts for the change of moment of inertia as
+(ω · ∇)u = − ω
+I
+d
+dt I, (2.4)
+which leads to an increase/decrease of vorticity to conserve momentum as the moment of inertia decreases/increases. Hence, (ω · ∇)u is referred to as vortex stretching as it accounts for the deformation exerted by the velocity field on the fluid element, intensifying the vorticity in the direction that the element is stretched, as illustrated in Fig. 2.1.
+Figure 2.1: Stretching of a spherical fluid element and increase in vorticity (or angular velocity).
+2.1.2 Conservation of Mass
+Another physical implication of Eq. (1.2) is the existence of vortex lines and vortex tubes, described as follows. We define a short material line ` that moves with the fluid, with start and end points x and x + `, respectively. If ` is infinitesimally small, the evolution of ` is given by
+d
+dt ` = u (x + `) − u (x) = (` · ∇) u (x) . (2.5)
+Defining ` as being tangent to the local vorticity, and comparing Eq. (2.5) to the inviscid part of Eq. (1.2), we see that vorticity evolves as the material line, being identically stretched and reoriented by the velocity field. This led Helmholtz to conclude the existence of lines of vorticity, termed vortex lines, that move with the fluid. We then define a vortex tube
+
+
+Reformulated Vortex Particle Method 24
+as the surface formed by all the vortex lines passing through a closed curve, depicted in Fig. 2.2. The fact that vortex lines move with the fluid implies that the volume of a vortex tube segment must be conserved in incompressible flow. For instance, let us discretize and approximate a vortex tube through Lagrangian cylindrical elements of length ` and cross section r. As the length of the element is stretched, the cross section r must shrink to conserve the same volume Vol = πr2`. This is,
+d
+dt Vol = 0,
+leading to
+d
+dt r = − r
+2`
+d
+dt `. (2.6)
+Figure 2.2: Vortex tube formed by the vortex lines passing through a closed curve.
+2.1.3 Implications for the VPM
+The aforementioned laws of conservation point our attention to two major pitfalls of the classic VPM, if particles are considered as material elements. First, Eq. (2.4) establishes that vortex stretching must lead to a change in the shape of the fluid element. Otherwise, if the vorticity (angular velocity) has changed due to vortex stretching while the shape of the element (moment of inertia) is kept constant, the conservation of angular momentum has been locally violated. This is exactly the case when the classic VPM assumes a constant core size, d
+dt σ = 0. Second, in an incompressible tube of vorticity, Eqs. (1.2) and (2.5) establish that an increase in vorticity due to vortex stretching is associated to a lengthening of the tube, which must cause the cross section of the tube to shrink according to Eq. (2.6). Otherwise, the tube has kept a constant cross section while being stretched, thus locally violating conservation of mass. Again, this is exactly the case when the classic VPM assumes d
+dt σ = 0. In summary, we believe that the classic VPM violates conservation of both angular momentum and mass when it assumes d
+dt σ = 0. We also hypothesize that this is the reason for its poor numerical stability. In the
+following sections we will consider some possible formulations that use
+d
+dt σ as a degree of freedom to locally reinforce these conservation laws.
+
+
+Reformulated Vortex Particle Method 25
+49This is especially true when using Pedrizzetti’s relaxation scheme, described in Section 4.4.
+2.2 Candidate Formulations
+Starting from the general equation governing vortex strength (Eq. (1.14)), neglecting SFS terms, and using the localized-vorticity assumption, we obtain
+d
+dt Γp = (
+Γp · ∇)
+u(xp) + 3Γp
+1
+σp
+∂σp
+∂t . (2.7)
+We will now explore multiple combinations of element shapes and con
+servation laws to derive possible expressions for ∂σp
+∂t .
+2.2.1 Sphere with Conservation of Momentum
+Let us consider a spherical fluid element with angular velocity ω/2. Given that the moment of inertia of a solid sphere is I = 2
+5 mr2, where
+m= 4
+3 ρπr3 is the mass of the sphere and r its radius, the inertial term in Eq. (2.4) becomes
+1 I
+d
+dt I = 1
+r5
+d dt
+(
+r5) = 5
+r
+d
+dt r.
+Replacing this into Eq. (2.4) and taking the dot product with ω,
+− (ω · ω) 5
+r
+d
+dt r = [(ω · ∇)u] · ω,
+results in
+1 r
+d
+dt r = − 1
+5
+1
+‖ω‖2 [(ω · ∇)u] · ω
+= −1
+5 [( ˆω · ∇)u] · ˆω.
+When ω is filtered and discretized with vortex particles, and the localized-vorticity assumption is applied, the spherical element becomes the vortex particle itself. Vortex strengths are roughly aligned with the vorticity field49, meaning Γˆ p ≈ ˆω
+(
+xp
+)
+, and the size of the particle can be expressed as σp = αr with α some scaling factor, obtaining
+1
+σp
+d
+dt σp = − 1
+5
+[( ˆΓp · ∇)u
+(
+xp
+)] · ˆΓp,
+or, equivalently
+d
+dt σp = − 1
+5
+σp
+‖Γp‖
+[(Γp · ∇)u
+(
+xp
+)] · Γˆ p. (2.8)
+Noticing that, in a Lagrangian scheme, σp is only a function of time
+(i.e., d
+dt σp = ∂σp
+∂t ), we replace Eq. (2.8) into Eq. (2.7) to obtain the equation
+governing Γp:
+d
+dt Γp = (
+Γp · ∇)
+u(xp) − 3
+5
+{[(Γp · ∇)u
+(
+xp
+)] · ˆΓp
+} Γˆ p. (2.9)
+Thus, Eqs. (2.8) and (2.9) are the governing equations required for the particles to preserve angular momentum.
+
+
+Reformulated Vortex Particle Method 26
+50With the caveat that this is so only because we have neglected the SFS term. For this reason, in Section 2.3 we will revert back to Eq. (2.11).
+2.2.2 Tube with Conservation of Mass
+Assuming that the field ω encompasses a tube of vorticity of radius r, we now use conservation of mass to derive an expression for d
+dt σ. When ω is filtered and discretized through a vortex tube method, as described in Appendix B, the tubular segments become vortex tube elements of length ` and radius σt = αtr with αt some scaling factor. Then, Eq. (2.6) becomes
+1
+σt
+d
+dt σt = − 1
+2`
+d
+dt `. (2.10)
+The vortex particle method and the vortex tube method are closely related, where the latter can be thought of as a line integral of the former. In Appendix B.5, we show that d`
+dt in the vortex tube scheme relates to
+dΓ
+dt in the vortex particle scheme through
+1 `
+d
+dt ` = 1
+‖Γ‖
+dΓ
+dt · ˆΓ.
+Hence, the analogous to Eq. (2.10) in the vortex particle scheme is
+1
+σp
+d
+dt σp = − 1
+2‖Γp‖
+dΓp
+dt · Γˆ p. (2.11)
+Using Eq. (2.11) in the vortex strength equation, Eq. (2.7), we obtain
+d
+dt Γp = (
+Γp · ∇)
+u(xp) − 3
+2
+( dΓp
+dt · Γˆ p
+)
+Γˆ p, (2.12)
+and from its dot product with ˆΓp we get
+dΓp
+dt · Γˆ p = 2
+5
+[(
+Γp · ∇)
+u(xp)] · Γˆ p.
+Finally, substituting this back into Eqs. (2.11) and (2.12), we obtain the governing equations required for the particles to preserve mass in a tube of vorticity:
+d
+dt σp = − 1
+5
+σp
+‖Γp‖
+[(
+Γp · ∇)
+u(xp)] · Γˆ p
+d
+dt Γp = (
+Γp · ∇)
+u(xp) − 3
+5
+{[(
+Γp · ∇)
+u(xp)] · ˆΓp
+} Γˆ p
+Surprisingly, we have arrived to the same governing equations of the momentum-conserving sphere formulation50, Eqs. (2.8) and (2.9). This stems from the fact that both conservation laws are physical consequences of the same equation: the vorticity Navier-Stokes equation. These new governing equations, Eqs. (2.8) and (2.9), ensure local conservation of both angular momentum and mass, thus overcoming the pitfalls of the classic VPM.
+
+
+Reformulated Vortex Particle Method 27
+2.2.3 Other Formulations
+Combining the two conservations laws with the two element shapes, one can devise up to six different formulations: Each permutation between sphere/tube elements, momentum/mass conservation, and the assumption that mass conservation has or has not been already ensured by the convection of the elements. Two of them have already been discussed and turn out to be the same. For completeness, we now derive and briefly discuss the four remaining formulations.
+Mass-Conserving Sphere
+The mass of a spherical fluid element is conserved in incompressible flow as long as its volume remains constant. This translates into vortex particles of constant radii,
+d
+dt σp = 0, (2.13)
+which reduces the vortex strength equation to
+d
+dt Γp = (
+Γp · ∇)
+u(xp).
+Notice that these are the equations of the classic VPM. Even though this formulation preserves mass of spherical chunks of the flow, it is deemed unphysical as it violates local conservation of mass when the vorticity field encompasses a tube of vorticity that is being stretched, as discussed in Section 2.1.
+Momentum-Conserving Tube
+Consider a cylindrical element that rotates with angular velocity Ω = ω/2. Let I denote its inertia tensor and Iz the moment of inertia about the centerline axis. If we assume that Ω is always aligned with its centerline axis, the inertia tensor product IΩ becomes IΩ = IzΩ since Ω is an eigenvector of I, with Iz the corresponding eigenvalue. In order to conserve angular momentum, neglecting pressure torque and following the discussion in Section 2.1.1, the moment of inertia must change according to
+−ω
+Iz
+d
+dt Iz = (ω · ∇)u. (2.14)
+Using Iz = 1
+2 mr2 and without assuming that the mass m = ρπr2` is automatically conserved, the dot product of Eq. (2.14) with ω leads to
+d
+dt r = − r
+4`
+d
+dt ` − r
+4‖ω‖2 [(ω · ∇)u] · ω.
+In the vortex particle scheme this becomes
+d
+dt σp = − 1
+4
+σp
+‖Γp‖
+dΓp
+dt · Γˆ p − 1
+4
+σp
+‖Γp‖
+[(Γp · ∇)u
+] · ˆΓp, (2.15)
+
+
+Reformulated Vortex Particle Method 28
+which in conjunction to the vortex strength equation, Eq. (2.7), we obtain the following governing equations:
+d
+dt σp = − 2
+7
+σp
+‖Γp‖
+[(Γp · ∇)u
+] · ˆΓp
+d
+dt Γp = (
+Γp · ∇)
+u(xp) − 6
+7
+{[(Γp · ∇)u
+] · ˆΓp
+} Γˆ p.
+Assumed Mass Conservation
+Vortex methods typically assume that the continuity equation is implicitly solved by convecting the elements with the velocity field, automatically satisfying mass conservation. Repeating the momentumconserving tube derivation, but this time assuming that the convection of the particles automatically ensures d
+dt m = 0, we get the following governing equations:
+d
+dt σp = − 1
+2
+σp
+‖Γp‖
+[(Γp · ∇)u
+] · ˆΓp (2.16)
+d
+dt Γp = (
+Γp · ∇)
+u(xp) − 3
+2
+{[(Γp · ∇)u
+] · ˆΓp
+} Γˆ p.
+Taking the dot product of ˆΓp over the vortex strength equation, we get
+dΓp
+dt · ˆΓp = − 1
+2
+[(Γp · ∇)u
+] · ˆΓp.
+In this last equation, notice that the derivative of the strength projected on its own direction is negative when vortex stretching is positive. This means that the magnitude of vortex strength (and associated vorticity) decreases when the particle is stretched, which is an unphysical result. Along the same lines, we can repeat the momentum-conserving sphere derivation from Section 2.2.1, but this time assuming automatic mass conservation, d
+dt m = 0. This turns out to lead to the same governing equations in Eq. (2.16). Hence, we conclude that it is not possible to impose momentum conservation with either tube or sphere elements while assuming automatic mass conservation.
+2.3 Generalized Formulation
+In the preceding section, the conservation laws were imposed in six different ways to derive various expressions of d
+dt σp, namely Eqs. (2.8),
+(2.11), (2.13), (2.15) and (2.16). In turn, each version of d
+dt σp was used with the vortex strength equation, Eq. (2.7), to obtain a distinct VPM formulation. We can generalize this formulation procedure noticing that all versions of d
+dt σp take the functional form
+d
+dt σp = − f σp
+1 ‖Γp‖
+dΓp
+dt · ˆΓp − gσp
+1 ‖Γp‖
+[(
+Γp · ∇)
+u(xp)] · ˆΓp, (2.17)
+
+
+Reformulated Vortex Particle Method 29
+where the parameters f , g ∈ R are derived applying the conservation laws. We will now use the f –g form of d
+dt σp, Eq. (2.17), to derive a new set
+of governing equation of the VPM, also in the f –g form. We start from the general equation governing vortex strength, Eq. (1.14), here repeated
+dΓp
+dt = (
+Γp · ∇)
+u(xp) + 3Γp
+1
+σp
+∂σp
+∂t + Mp, (1.14)
+where
+Mp ≡ 1
+ζσp (0) (−M0
+p + M1
+p + M2
+p)
+−1
+ζσp (0)
+(
+Eadv(xp) + Estr(xp))
+.
+Recalling that dσp
+dt = ∂σp
+∂t since σp is a Lagrangian quantity, we substi
+tute Eq. (2.17) into Eq. (1.14) and take its dot product with Γˆ p to get
+dΓp
+dt · ˆΓp = 1 − 3g
+1+3f
+[(
+Γp · ∇)
+u(xp)] · ˆΓp + 1
+1 + 3 f Mp · Γˆ p. (2.18)
+Substituting Eq. (2.18) into Eq. (2.17), we arrive to the equation governing the evolution of particle size,
+d
+dt σp = −
+( g+ f 1+3f
+) σp ‖Γp‖
+[(
+Γp · ∇)
+u(xp)] · ˆΓp (2.19)
+−
+(f
+1+3f
+) σp
+‖Γp‖ Mp · ˆΓp,
+and we substitute this into Eq. (1.14) to get the equation governing the evolution of vortex strength,
+d
+dt Γp = (
+Γp · ∇)
+u(xp) − g + f
+1/3 + f
+{[(
+Γp · ∇)
+u(xp)] · ˆΓp
+} Γˆ p
++Mp − f
+1/3 + f
+(
+Mp · Γˆ p
+) Γˆ p.
+(2.20)
+Eqs. (2.19) and (2.20) constitute the governing equations of the reformulated VPM, where the parameters f , g are derived from a specific implementation of the conservations laws. In particular when f = g = 0, Eqs. (2.19) and (2.20) collapse back to the classic VPM equations, making the reformulated VPM a generalization of the classic method. Furthermore, notice that the reformulated equations do not require more computation than the classic method: When SFS and non-localized vorticity effects
+are neglected (Mp = 0), both dσp
+dt and dΓp
+dt are calculated directly from vortex stretching,
+(
+Γp · ∇)
+u(xp).
+
+
+Reformulated Vortex Particle Method 30
+2.4 Formulation Analysis
+In Section 2.2 we have shown several plausible formulations that can be derived from the conservation laws. We now cast each formulation into its f –g form, as summarized in Table 2.1, and contrast the physical implications of each formulation to help us choose one formulation to further explore. We wish to determine how each formulation may hinder or augment the effects of vortex stretching on both vortex strength and vortex reorientation. First, we focus on vortex re-orientation. The rate of vortex
+re-orientation, denoted dΓˆ p
+dt , is constructed as
+d ˆΓp
+dt = 1
+‖Γp‖
+dΓp
+dt − 1
+‖Γp‖
+( dΓp
+dt · ˆΓp
+)
+ˆΓp,
+which is the change in direction of vortex strength over time, as shown in Appendix A.2. Using Eq. (2.18) and Eq. (2.20) and neglecting M, this becomes
+d ˆΓp
+dt = ( ˆΓp · ∇)
+u(xp) − {[(Γˆ p · ∇)
+u(xp)] · Γˆ p
+} ˆΓp,
+which is independent of f and g. Hence, vortex re-orientation is not affected by the formulation, staying the same between the classic VPM and any f –g formulation. Now, we shift our attention to the effects of vortex stretching on vortex strength. Neglecting SFS and non-localized vorticity effects (Mp = 0), from Eq. (2.18) we have
+dΓp
+dt · ˆΓp = 1 − 3g
+1+3f
+[(
+Γp · ∇)
+u(xp)] · Γˆ p, (2.21)
+Formulation fgh Γ = 1−3g
+1+3 f hσ = g+ f
+1+3 f
+Mass-conserving sphere
+(Classic VPM) 001 0
+Mass-conserving tube 1/2 00.4 0.2
+Momentum-conserving sphere
+(Reformulated VPM) 0 1/5 0.4 0.2
+Momentum-conserving tube 1/4 1/4 0.143 0.286
+Momentum-conservation
+w/ assumed mass conservation 0 1/2 -0.5 0.5
+Table 2.1: f –g form of formulations derived in Section 2.2.
+
+
+Reformulated Vortex Particle Method 31
+-0.2 0.0 0.2 0.6 0.8 1.0
+f
+0.4
+0.2
+0.0
+0.2
+0.4
+0.6
+g
+Mass sphere Mass tube
+Momentum sphere
+Momentum tube
+Momentum w/ assumed mass
+ANTI-STRETCHING
+OVERSTRETCHING
+Reformulated
+VPM
+ClassicVPM
+1
+3
+1
+3
+1.0
+0.9
+0.8
+0.7
+0.6
+0.5
+0.4
+0.3
+0.2
+0.1
+0.0
+Figure 2.3: Space of all possible f -g formulations, with contour levels of hΓ = 1−3g
+1+3 f that are solutions to the vorticity Navier-Stokes equation. Markers show each formulation in Table 2.1.
+where dΓp
+dt · Γˆ p is the change in the magnitude of vortex strength. We introduce the parameters
+hΓ ≡ 1 − 3g
+1 + 3 f , hσ ≡ g + f
+1+3f
+and rewrite this as
+dΓp
+dt · ˆΓp = hΓ
+[(
+Γp · ∇)
+u(xp)] · ˆΓp,
+while Eq. (2.19) becomes
+‖Γp‖
+σp
+d
+dt σp = −hσ
+[(
+Γp · ∇)
+u(xp)] · ˆΓp.
+It can be shown that hΓ and hσ must satisfy hΓ + 3hσ = 1 in order for a formulation to be a solution to the vorticity Navier-Stokes equation. Hence, any f –g formulation simply differs in how vortex stretching is distributed between the lengthening of vortex strength Γp, and shrinking of particle size σp. The classic VPM results in hΓ = 1 and hσ = 0, meaning that vortex strength takes the full amount of vortex stretching. The space of all possible f –g formulations is shown in Fig. 2.3, along with the contours of hΓ that satisfy hΓ + 3hσ = 1. Any formulation with hΓ > 1 will result in a negative hσ, meaning that the lengthening of vortex strength under stretching is so aggressive that σp has to expand instead of shrink, which is unphysical. This is referred to as overstretching. On the other extreme, hσ > 1/3 results in a negative hΓ, meaning that the shrinking of the particle is so aggressive that Γ has to compensate
+
+
+Reformulated Vortex Particle Method 32
+51This is only true after neglecting M. When SFS and non-localized vorticity effects are re-incorporated, the Mterm ends up being multiplied by a factor hM ≡ 1
+1+3 f as shown in Eq. (2.18). Hence, SFS and non-localized vorticity effects are stronger in the momentumconserving sphere formulation (hM = 1) than the mass-conserving tube formulation (hM = 0.4).
+by shrinking when it ought to have lengthened with vortex stretching, which is also unphysical. This is referred to as anti-stretching. The region between overstretching and anti-stretching is the space of VPM formulations that are physically plausible. There are four formulations that lay in the space of physically plausible formulations, shown in Fig. 2.3. First, notice that the classic VPM (mass-conserving sphere) lies at the threshold of overstretching, which explains its tendency to be numerically unstable. We are then left with three possible formulations, two of which lay on the same hΓ contour line: the momentum-conserving sphere and the mass-conserving tube. Even though these two formulations stem from different physical principles resulting in different f –g values, they share the same hΓ and hσ values, leading to the same governing equations51, as mentioned in Section 2.2.2. Thus, by choosing either set of f –g values, we end up in a formulation that preserves angular momentum in spherical chunks of the flow, while at the same time conserving mass in tubes of vorticity. Here on, the momentum-conserving sphere formulation is referred to as the reformulated vortex particle method, or rVPM.
+2.5 Reformulated Governing Equations
+Summarizing the chapter, the governing equations of the reformulated VPM are
+d
+dt xp = u(xp) (2.22)
+d
+dt σp = −
+( g+ f 1+3f
+) σp ‖Γp‖
+[(
+Γp · ∇)
+u(xp)] · ˆΓp (2.23)
+d
+dt Γp = (
+Γp · ∇)
+u(xp) − g + f
+1/3 + f
+{[(
+Γp · ∇)
+u(xp)] · ˆΓp
+} Γˆ p (2.24)
+(d
+dt ω
+)
+viscous
+= ν∇2ω, (2.25)
+where Eq. (2.22) resolves vorticity advection by convecting the particles, Eq. (2.23) governs the evolution of particle size, and Eq. (2.24) governs the evolution of vortex strength. Eq. (2.24) in conjunction with Eqs. (2.22) and (2.23) resolve the inviscid part of the LES-filtered vorticity Navier-Stokes equation, while the viscous part in Eq. (2.25) is resolved by one of the schemes mentioned in Section 1.3. For simplicity, Eqs. (2.23) and (2.24) omit the SFS contributions, but they are readily re-incorporated as shown in Eqs. (2.19) and (2.20). The formulation used for the rest of this study implements f = 0 and g = 1/5, which ensures conservation of angular momentum in spherical chunks of the flow, while at the same time conserving mass in tubes of vorticity. As previously mentioned, the rVPM equations do not require
+more computation than the classic VPM since dσp
+dt and dΓp
+dt are calculated directly and solely from vortex stretching,
+(
+Γp · ∇)
+u(xp).
+
+
+Anisotropic Dynamic SFS Model 3
+In the preceding chapters we have formulated a numerical scheme for solving the large scales of the LES-filtered vorticity equation,
+d
+dt ω = (ω · ∇) u + ν∇2ω − Eadv − Estr. (1.5)
+We will now focus on the subfilter-scale (SFS) stresses associated with advection and vortex stretching, Eadv and Estr, respectively. Eadv and Estr arise from the SFS vorticity stress tensor, Tij ≡ uiωj − ui ωj, introduced in Section 1.2. Tij encapsulates the interactions between large scale dynamics and SFS dynamics, which have to be modeled in terms of resolved quantities. Its divergence represents the rate at which enstrophy—a measure of rotational kinetic energy—is transferred from resolved scales to subfilter scales (turbulent diffusion) and from subfilter scales to resolved scales (backscatter). The accuracy of LES hinges on the modeling of this enstrophy transfer. As previously discussed in Section 1.2, Eadv is defined as
+Eadv
+i≡
+∂T′
+ij
+∂xj
+= uj
+∂ωi
+∂xj
+− uj
+∂ωi
+∂xj
+(3.1)
+and it represents the enstrophy transfer arising from SFS vorticity advection, while Estr is defined as
+Estr
+i ≡ − ∂Tij
+∂xj
+=−
+(
+ωj
+∂ui
+∂xj
+− ωj
+∂ui
+∂xj
+)
+, (3.2)
+and it represents the enstrophy transfer arising from SFS vortex stretching. In Section 3.1 we briefly discuss existing SFS models relevant to meshless vortex methods. In Section 3.2 we introduce a novel anisotropic structural model of SFS vortex stretching that is suitable for turbulent flows where the predominant cascade mechanism is vortex stretching. In Sections 3.3 and 3.4 we develop a dynamic procedure for computing the model coefficient while also providing the means for backscatter control. Finally, in Section 3.5 we show how our model can be implemented in conventional mesh-based CFD with a pressure-velocity solver.
+33
+
+
+Anisotropic Dynamic SFS Model 34
+52G. S. Winckelmans (1995). “Some progress in large-eddy simulation using the 3D vortex particle method”; Mansfield et al., “A Dynamic LES Scheme for the Vorticity Transport Equation: Formulation and a Priori Tests”; J. R. Mansfield et al. (1996). “Towards lagrangian large vortex simulation”. Ed. by Y. Gagnon et al.; Mansfield et al., “Dynamic LES of Colliding Vortex Rings Using a 3D Vortex Method”.
+53D.-G. Caprace et al. (2020). “An immersed lifting and dragging line model for the vortex particle-mesh method”; D.-G. Caprace et al. (2021). “Assessment of the Vortex Particle-Mesh Method for Efficient LES of Hovering Rotors and their Wakes”.
+54T. J. Hughes et al. (2000). “Large Eddy Simulation and the variational multiscale method”; A. W. Vreman (2003). “The filtering analog of the variational multiscale method in large-eddy simulation”; H. Jeanmart et al. (2007). “Investigation of eddy-viscosity models modified using discrete filters: A simplified "regularized variational multiscale model" and an "enhanced field model"”; R. Cocle et al. (2009). “Scale dependence and asymptotic very high Reynolds number spectral behavior of multiscale subgrid models”.
+55Cottet, “Artificial Viscosity Models for Vortex and Particle Methods”; G.-H. Cottet (1998). Anisotropic sub-grid scale numerical schemes for Large Eddy Simulations of turbulent flows; G.-H. Cottet, D. Jiroveanu, et al. (2003). “Vorticity dynamics and turbulence models for LargeEddy Simulations”.
+56C. Mimeau et al. (2019). “A Hybrid Vortex Method for the Simulation of 3D Incompressible Flows”.
+57Stock, Gharakhani, and Stone, “Modeling Rotor Wakes with a Hybrid OVERFLOW-Vortex Method on a GPU Cluster”; C. Mimeau et al. (2018). “An artificial viscosity model for 3D simulations with Vortex Methods”.
+3.1 Existing Models
+Over the years, only a few models have been proposed that are suitable for meshless vortex methods. The most popular one is a variant of the Smagorinsky eddy-viscosity model formulated for the vorticity stress,52
+E = −∇ × (νSFS∇ × ω) ,
+where E ≡ Eadv + Estr, νSFS = C2
+dσ2√2SmnSmn, Smn is the strain-rate tensor, σ is the filter width, and Cd is a model coefficient which is either prescribed or computed dynamically. This functional model and others alike were developed on the basis of homogeneous isotropic turbulence, which makes them overly diffusive in simulations with coherent vortical structures. In the latest developments of the vortex particle-mesh scheme,53 this drawback has been avoided with the variational multiscale method,54 however its applicability to a meshless scheme is not clear. In a different approach, Cottet55 developed an anisotropic structural model of the advective SFS term Eadv as
+Eadv(xp) = Cd ∑q
+Volq
+(
+ωp − ωq
+) [(
+u(xp) − u(xq)) · ∇ζσq (xp − xq)]
+,
+where the model coefficient Cd is usually prescribed with ad hoc calibration.56 This model is reportedly57 less dissipative than Smagorinsky-type models, however, it was developed on the basis of 2D flow which is absent of vortex stretching. Thus, this model neglects Estr even though vortex stretching is known to be one of the main mechanisms for enstrophy production in the energy cascade in three dimensions. To address the need for a low-dissipation SFS model that captures vortex stretching as the physical mechanism for turbulence, in the following sections we develop an anisotropic structural model of SFS vortex stretching with a dynamic model coefficient.
+3.2 SFS Vortex Stretching Model
+Starting from the definition of SFS vortex stretching, here repeated
+Estr
+i =−
+(
+ωj
+∂ui
+∂xj
+− ωj
+∂ui
+∂xj
+)
+, (3.2)
+we expand the filter operator
+Estr
+i (x) = −
+(∫
+ωj (y) ∂ui
+∂xj
+(y)ζσ(x − y) dy
+− ∂ui
+∂xj
+(x)
+∫
+ωj (y) ζσ(x − y) dy
+)
+,
+and group terms as
+Estr
+i (x) = −
+∫
+ωj (y)
+(
+∂ui
+∂xj
+(y) − ∂ui
+∂xj
+(x)
+)
+ζσ(x − y) dy.
+
+
+Anisotropic Dynamic SFS Model 35
+Using the singular particle approximation, ω(x) ≈ q∑
+Γqδ(x − xq), the
+integral collapses to
+Estr
+i (x) ≈ − ∑q
+Γq
+j
+(
+∂ui
+∂xj
+(
+xq
+) − ∂ui
+∂xj
+(x)
+)
+ζσ(x − xq).
+Assuming ∂ui
+∂xj ≈ ∂ui
+∂xj and writing in vector notation, the model then
+becomes
+Estr (x) ≈ ∑q
+ζσ(x − xq) (
+Γq · ∇) (
+u (x) − u
+(
+xq
+))
+.
+Interestingly, both Cottet’s model and our model are strikingly similar to the non-localized vorticity terms M1
+p and M2
+p, respectively, defined in Section 1.5 as
+• M1
+p≡−∑
+q6=p
+Γq
+(
+u(xp) − u(xq)) · ∇ζσq (xp − xq) (1.11)
+• M2
+p≡ ∑
+q6=p
+ζσq (xp − xq) (
+Γq · ∇)
+u(xp), (1.12)
+which are neglected (or filtered out) by the localized-vorticity assumption. Thus, these models can be thought of as soft deconvolutions of the localized-vorticity assumption. Furthermore, introducing a model coefficient, Cd, they can approximate full deconvolutions encompassing the entire spectrum of subfilter scales. This model coefficient is computed dynamically as follows.
+3.3 Dynamic Procedure
+Since SFS vortex stretching needs to be modeled from resolved quantities, the initial equality given in Eq. (3.2), written here in vector notation
+Estr = −
+[
+(ω · ∇)u − (ω · ∇)u
+]
+,
+becomes only an approximation,
+Estr ≈ −
+[
+(ω · ∇)u − (ω · ∇)u
+]
+once the Estr model is introduced. To recover the equality (or at least improve the approximation), we introduce a dynamic model coefficient Cd(x, t) satisfying
+CdEstr = −
+[
+(ω · ∇)u − (ω · ∇)u
+]
+. (3.3)
+We now propose a procedure for calculating the model coefficient Cd based on a simultaneous balance of enstrophy-production and derivatives between true and modeled SFS vortex stretching.
+
+
+Anisotropic Dynamic SFS Model 36
+3.3.1 Derivative Balance
+The relation given in Eq. (3.3) is not useful per se since, in order to determine Cd, Eq. (3.3) requires knowing the SFS quantity (ω · ∇)u − (ω · ∇)u, which is exactly what we are trying to model with Estr. However, assuming scale similarity (meaning that Cd is independent of the filter width), we differentiate this equation with respect to the filter width σ to obtain a more useful relation:
+Cd
+∂Estr
+∂σ
+=− ∂ ∂σ
+[
+(ω · ∇)u − (ω · ∇)u
+]
+. (3.4)
+Using the singular particle approximation, the right-hand side of Eq. (3.4) before differentiation becomes
+[
+(ω · ∇)u − (ω · ∇)u
+]∣ ∣
+∣x ≈ ∑q
+ζσ(x − xq) (
+Γq · ∇) (
+u
+(
+xq
+) − u (x))
+,
+and after differentiation,
+∂
+∂σ
+[
+(ω · ∇)u − (ω · ∇)u
+]∣ ∣
+∣x ≈
+∑
+q
+∂ζσ
+∂σ
+(x − xq) (
+Γq · ∇) (
+u
+(
+xq
+) − u (x)) − ∑q
+ζσ(x − xq) (
+Γq · ∇) ∂u
+∂σ (x) .
+Recalling that ζσ is defined as ζσ(x) = 1
+σ3 ζ
+( ‖x‖ σ
+)
+, its width-derivative is
+∂ζσ
+∂σ
+(x) = − 3
+σ ζσ (x) − ‖x‖
+σ5
+∂ζ
+∂r
+( ‖x‖
+σ
+)
+,
+and assuming that ζσ(x) reaches a maximum at x = 0 (meaning, ∂ζ
+∂r (0) = 0),
+∂ζσ
+∂σ
+(0) = − 3
+σ ζσ (0) .
+Then, evaluating at x = xp, assuming ζσ (0) 6= 0, and using the localizedvorticity assumption to neglect all terms q 6= p, Eq. (3.4) becomes
+Cd(xp) 1
+ζσ (0)
+∂Estr
+∂σ
+(xp) = 3
+σ
+(
+Γp · ∇) (
+u(xp) − u(xp)) + (
+Γp · ∇) ∂u
+∂σ
+(xp),
+or
+Cdm = L, (3.5)
+with
+m ≡ σ3
+ζ(0)
+∂Estr
+∂σ
+(xp)
+L≡ 3
+σ
+(
+Γp · ∇) (
+u(xp) − u(xp)) + (
+Γp · ∇) ∂u
+∂σ
+(xp).
+The relation in Eq. (3.5) will be the basis for our dynamic procedure. This procedure differs from the classic dynamic procedure developed by Germano et al.58 in that the former is motivated by the balance of derivatives between true and modeled SFS contributions given in Eq. (3.4), while the latter is based on the Germano identity.
+
+
+Anisotropic Dynamic SFS Model 37
+3.3.2 Enstrophy-Production Balance
+The procedure aims at calculating Cd such as to impose the relation given in Eq. (3.5), however, this is an overdetermined system as there are three equations (one for each spatial dimension) and only one unknown, Cd. Thus, the relation is now contracted by also imposing a balance of enstrophy production between true and modeled SFS contributions as follows. Enstrophy, a measure of the rotational kinetic energy of the flow, is defined locally as ξ ≡ 1
+2 ω · ω. The rate of local enstrophy production is then calculated as
+d
+dt ξ = ω ·
+(d
+dt ω
+)
+,
+which can be decomposed between resolved and unresolved domains as
+d
+dt ξ = ω ·
+(d
+dt ω
+)
++ω·
+[d
+dt (ω − ω)
+]
+,
+The local enstrophy production in the resolved domain is then defined as
+d
+dt ξr ≡ ω ·
+(d
+dt ω
+)
+,
+and the global enstrophy production in the resolved domain is then calculated by integration,
+∞
+∫
+−∞
+d
+dt ξr dy =
+∞
+∫
+−∞
+ω·
+(d
+dt ω
+)
+dy.
+The SFS contribution to the rate of enstrophy production is isolated through operator splitting as
+
+
+∞
+∫
+−∞
+d
+dt ξr dy
+
+
+SFS
+≡
+∞
+∫
+−∞
+ω·
+(d
+dt ω
+)
+SFS
+dy.
+Now, we constrain the SFS model to match the enstrophy production of the true SFS contribution,
+∞
+∫
+−∞
+ω·
+(d
+dt ω
+)
+SFS model
+dy =
+∞
+∫
+−∞
+ω·
+(d
+dt ω
+)
+true SFS
+dy.
+Using the singular particle approximation, ω(x) ≈ ∑p
+Γpδ(x − xp), the
+integrals collapse into
+∑
+p
+Γp ·
+(d
+dt ω
+)SFS model
+(xp)
+= ∑p
+Γp ·
+(d
+dt ω
+)true SFS
+(xp)
+.
+
+
+Anisotropic Dynamic SFS Model 38
+59Germano et al., “A dynamic subgridscale eddy viscosity model”.
+60C. Meneveau, T. S. Lund, et al. (1996). “A Lagrangian dynamic subgrid-scale model of turbulence”.
+One instance that this equality is satisfied is when each term in the sum satisfies
+Γp ·
+(d
+dt ω
+)SFS model
+(xp)
+= Γp ·
+(d
+dt ω
+)true SFS
+(xp)
+.
+Differentiating with respect to the filter width, we arrive to
+Γp · ∂
+∂σ
+(d
+dt ω
+)SFS model
+(xp)
+= Γp · ∂
+∂σ
+(d
+dt ω
+)true SFS
+(xp)
+. (3.6)
+When SFS advection is neglected, the SFS model and the true SFS become
+(d
+dt ω
+)SFS model
+= −CdEstr
+(d
+dt ω
+)true SFS
+= (ω · ∇)u − (ω · ∇)u,
+thus Eq. (3.6) is simply the dot-product of Eq. (3.4) with Γp,
+CdΓ · ∂Estr
+∂σ
+= −Γ · ∂
+∂σ
+[
+(ω · ∇)u − (ω · ∇)u
+]
+.
+Finally, following the same steps that led from Eq. (3.4) to Eq. (3.5), the enstrophy balance in Eq. (3.6) becomes
+CdΓp · m = Γp · L,
+and Cd is then calculated dynamically as
+Cd = Γp · L
+Γp · m . (3.7)
+Thus, this Cd calculated at the position of every particle is the coefficient that approximates the derivative balance while satisfying a local balance of enstrophy production between the model and the true SFS contribution.
+3.3.3 Lagrangian Average
+Similar to the classic procedure based on the Germano identity,59 Eq. (3.7) poses numerical issues when the denominator is close to zero, leading to large fluctuations. In the classic procedure, Meneveau et al.60 addressed this issue by integrating both numerator and denominator along Lagrangian trajectories (pathlines), effectively building ensemble averages. Applying this technique, our dynamic procedure becomes
+Cd =
+〈
+Γp · L
+〉
+〈
+Γp · m
+〉 , (3.8)
+where 〈·〉 denotes the Lagrangian integration. As suggested by Meneveau et al., the integration is performed as a relaxation process at every time step of the form
+〈φ〉new = (1 − α) 〈φ〉old + αφ,
+where α is calculated as α = ∆t/T ≤ 1, ∆t is the time step of the simulation, and T is the time length of the ensemble average.
+
+
+Anisotropic Dynamic SFS Model 39
+3.4 Backscatter Control
+For stability reasons, it is common in LES to control the amount of energy being backscattered from the unresolved scales into the resolved scales. The SFS term is purely-dissipative if its contributions to the enstrophy budget decrease the total enstrophy. This is,
+
+
+∞
+∫
+−∞
+d
+dt ξr dy
+
+
+SFS
+≤ 0.
+Following the derivation in Section 3.3.2, this condition is satisfied if
+Γp ·
+(d
+dt ω
+)SFS model
+(xp)
+≤0
+for each particle, or equivalently,
+CdΓp · Estr(xp) ≥ 0
+Therefore, enstrophy backscatter can be filtered out at each particle by clipping the model coefficient as Cd = 0 whenever the condition shown above is not satisfied.
+3.5 Usage in Conventional Mesh-Based CFD
+Even though our SFS model is tailored for vortex methods as it only uses the primitive variables of the VPM, the model can also be readily applied to conventional mesh-based CFD as follows. The vortex strength is expressed from mesh quantities as Γq = 〈ω〉q Volq, where 〈ω〉q and Volq are the average vorticity and volume associated to each element in the grid (i.e., cells in a finite volume method or nodes in a finite difference method). The model in the vorticity transport equation then becomes
+∂Tij
+∂xj
+(x) = Cd∆−3 ∑q
+〈ω〉q
+j Volq
+(
+∂ui
+∂xj
+(
+xq
+) − ∂ui
+∂xj
+(x)
+)
+ζ
+( ‖x − xq‖
+∆
+)
+,
+where the index q iterates over each element in the grid, ∆ is the width of the grid filter, and ζ is the filter kernel. Furthermore, the model can be used in the pressure-velocity form of the momentum equation noticing that the SFS terms in the vorticity transport equation are simply the curl
+of the SFS term in the pressure-velocity equation, ∂τij
+∂xj , as
+eijk
+∂
+∂xj
+∂τkl
+∂xl
+=
+∂T′
+ij
+∂xj
+− ∂Tij
+∂xj
+,
+where eijk is the Levi-Civita tensor. Hence, the SFS models of the vorticity
+transport equation can be used to model ∂τij
+∂xj by “un-curling” the equation
+above.
+
+
+Anisotropic Dynamic SFS Model 40
+3.6 Summary
+Recapitulating Chapters 2 and 3, the LES-filtered vorticity equation
+d
+dt ω = (ω · ∇) u + ν∇2ω − Eadv − Estr (1.5)
+is discretized and numerically solved in the reformulated VPM through the following governing equations
+d
+dt xp = u(xp)
+d
+dt Γp = (
+Γp · ∇)
+u(xp) − g + f
+1/3 + f
+{[(
+Γp · ∇)
+u(xp)] · ˆΓp
+} ˆΓp
+− Cd
+ζσp (0)
+[
+E(xp) − f
+1/3 + f
+(
+E(xp) · ˆΓp
+) ˆΓp
+]
+d
+dt σp = −
+( g+ f 1+3f
+) σp ‖Γp‖
+[(
+Γp · ∇)
+u(xp)] · Γˆ p
++
+(f
+1+3f
+) σp ‖Γp‖
+Cd
+ζσp (0) E(xp) · ˆΓp
+(d
+dt ω
+)
+viscous
+= ν∇2ω,
+where E = Eadv + Estr. In the derivation of the governing equations we have introduced only two assumptions: incompressible flow and localized vorticity. From here on, we also assume Eadv = 0 since our interest is in testing and validating our SFS vortex-stretching model, but Eadv can be readily reincorporated using, for instance, Cottet’s model. As discussed in Chapters 2 and 3, f = 0 and g = 1/5 reinforce conservation of both mass and angular momentum, and the governing equations then become
+d
+dt xp = u(xp)
+d
+dt Γp = (
+Γp · ∇)
+u(xp) − 3
+5
+{[(
+Γp · ∇)
+u(xp)] · ˆΓp
+} Γˆ p − Cd
+ζσp (0) Estr(xp)
+d
+dt σp = − 1
+5
+σp
+‖Γp‖
+[(
+Γp · ∇)
+u(xp)] · ˆΓp
+(d
+dt ω
+)
+viscous
+= ν∇2ω.
+Subfilter-scale vortex stretching is then modeled as
+Estr (x) = ∑q
+ζσ(x − xq) (
+Γq · ∇) (
+u (x) − u
+(
+xq
+))
+,
+and the model coefficient Cd is calculated dynamically at the position of every particle as
+Cd =
+〈
+Γp · L
+〉
+〈
+Γp · m
+〉 , (3.9)
+
+
+Anisotropic Dynamic SFS Model 41
+where 〈·〉 denotes an integration along Lagrangian trajectories, and
+m = σ3
+ζ(0)
+∂Estr
+∂σ
+(xp)
+L= 3
+σ
+(
+Γp · ∇) (
+u(xp) − u(xp)) + (
+Γp · ∇) ∂u
+∂σ
+(xp).
+Backscatter is controlled by clipping the model coefficient to Cd = 0 whenever the condition CdΓp · Estr(xp) ≥ 0 is not satisfied. In the next chapter we will describe the various numerical schemes needed to evaluate and integrate the governing equations. In particular, we will show how the filtered velocity field u is calculated by inverting the relation ω = ∇ × u, how particle interactions are efficiently computed with complexity O(N) through the fast multipole method, and how to compute the filter derivatives ∂
+∂σ needed to calculate m and L.
+
+
+4
+61Barba et al., “Advances in viscous vortex methods - Meshless spatial adaption based on radial basis function interpolation”; Lakkis et al., “A high resolution spatially adaptive vortex method for separating flows. Part I: Two-dimensional domains”.
+62Kirchhart et al., “Discrete Projections: A Step Towards Particle Methods on Bounded Domains without Remeshing”.
+63S. Salloum and I. Lakkis (2020). “Proper evaluation of spherical harmonics-based expressions for the velocity and vortex stretching vectors in three-dimensional grid-free vortex methods”.
+64Winckelmans et al., “Contributions to Vortex Particle Methods for the Computation of Three-Dimensional Incompressible Unsteady Flows”.
+Numerical Schemes
+In the preceding chapters, we introduced the LES-filtered vorticity equation and discretized it with vortex particles to derive the governing equations that solve the LES equation numerically. While the particle discretization is the main numerical tool of the VPM, there are other minor numerical schemes at play. In this chapter, we describe each numerical scheme that is implemented along with the reformulated VPM. We do not intend this chapter to be a literature review on the numerics of VPM, rather we limit our comments to only what is relevant to our meshless LES scheme. For instance, a few numerical schemes have been developed over the years to address Lagrangian distortion,61 and the reader may benefit from recent work on this topic by Kirchhart et al.62 and Salloum and Lakkis.63 However, unlike the classic VPM, Lagrangian distortion does not significantly affect the wide range of cases studied in this doctoral work with our novel meshless LES scheme, hence we make no further comments on that topic. In Section 4.1, we show how the filtered velocity field u is calculated by inverting the relation ω = ∇ × u. In Section 4.2, we review how the computation of u can be efficiently performed with complexity O(N) through the fast multipole method (FMM). In Section 4.3, we introduce a novel approach to computing vortex stretching and derivatives of u through a complex-step derivative approximation implemented in the FMM. In Section 4.4, we address the divergence of the ω field and develop a correction to a popular relaxation scheme. In Sections 4.5 and 4.6, we review the transposed vortex stretching and viscous diffusion schemes. Finally, in Sections 4.7 to 4.9, we describe the numerical implementation of the dynamic procedure, the governing equations, and the time integration scheme.
+4.1 Velocity Field Evaluation
+The vorticity equation is solved in the vortex particle method as particles are convected and stretched by the velocity field. The velocity field is not known a priori; however, we will now show that u can be computed directly from the vorticity field by inverting the relationship ω = ∇ × u. The derivations that follow come from the work of Winckelmans et al.64 By the Helmholtz decomposition theorem, u can be decomposed into a uniform component, an irrotational component, and a solenoidal
+42
+
+
+Numerical Schemes 43
+65E. M. Purcell et al. (2013). Electricity and Magnetism, Sec. 6.3.
+66In the third line we use the relationship
+∂G
+∂r (r) = − 1
+r2
+r
+∫
+0
+ζ(t)t2 dt,
+which is derived as follows:
+r
+∫
+0
+ζ(t)t2 dt = −
+r
+∫
+0
+[
+∇2 G(t)
+]
+t2 dt
+=−
+r
+∫
+0
+[1
+t2
+∂ ∂t
+(
+t2 ∂G
+∂t (t)
+)]
+t2 dt
+=−
+r
+∫
+0
+∂ ∂t
+(
+t2 ∂G
+∂t (t)
+)
+dt
+= −r2 ∂G
+∂r (r).
+component as
+u = u∞
+}{{}
+uniform
++ ∇φ
+}{{}
+irrotational
++ ∇×ψ
+} {{ }
+solenoidal
+,
+where u∞(t) is the freestream, φ(x, t) is a scalar-potential field, and ψ(x, t) is a vector-potential field. From the definition of the vorticity field, ω = ∇ × u, we have
+ω = ∇ × (∇ × ψ) (4.1)
+= ∇(∇ · ψ) − ∇2ψ. (4.2)
+The first term in the right side is nullified after applying a gauge transform,65 leading to a three-dimensional unbounded Poisson equation,
+∇2ψ = −ω.
+Filtering the Poisson equation,
+∇2ψ(x) = −
+∫
+ω(y)ζσ(x − y) dy,
+and using the singular particle approximation ω(y) ≈ ∑p
+Γpδ(y − xp),
+the Poisson equation then becomes
+∇2ψ(x) ≈ − ∑p
+Γpζσp (x − xp).
+Recalling that ζσ is defined as ζσ(x) = 1
+σ3 ζ
+( ‖x‖ σ
+)
+, the Poisson equa
+tion can solved defining a Green’s function Gσ (x) = 1
+σG
+( ‖x‖ σ
+)
+such that
+∇2G (r) = −ζ (r), resulting in
+ψ (x) ≈ ∑p
+Γ p Gσp
+(
+x − xp
+)
+.
+The velocity field u is then derived from the vector-potential field as66
+u (x) = ∇ × ψ (x)
+= ∑p
+∇×(
+Γ p Gσp
+(
+x − xp
+))
+= ∑p
+∇
+(
+Gσp
+(
+x − xp
+)) × Γp
+= ∑p
+1
+σp2
+∂G
+∂r
+( ‖x − xp‖
+σp
+) x − xp
+‖x − xp‖ × Γp
+= ∑p
+1
+σp2
+
+  
+−
+σ2
+p
+‖x − xp‖2
+‖x−x p ‖ σp
+∫
+0
+ζ(t)t2 dt
+
+  
+x − xp
+‖x − xp‖ × Γp
+= − ∑p
+
+  
+‖x−x p ‖ σp
+∫
+0
+ζ(t)t2 dt
+
+  
+x − xp
+‖x − xp‖3 × Γp.
+
+
+Numerical Schemes 44
+012345 x
+0.0
+0.2
+0.4
+0.6
+3 (x)
+Singular, (r) = (r)
+(r) = 1
+4
+15/2
+(r2 + 1)7/2
+(r) = 3
+4 exp( r3)
+(r) = 1
+(2 )3/2 exp(
+r2
+2)
+012345 x
+0.0
+0.5
+1.0
+g (x)
+012345 x
+0.00
+0.04
+0.08
+0.12
+2 K (x)
+Figure 4.1: Characteristic functions of common VPM kernels: (top) filter or radial basis function, (middle) regularizing function, and (bottom) velocity function.
+Thus, the velocity induced by the field of vortex particles is calculated analytically as
+u (x) = ∑p
+gσp
+(
+x − xp
+)
+K
+(
+x − xp
+) × Γp, (4.3)
+where gσ is a normalized regularizing function calculated from the chosen basis function ζ as
+gσ (x) ≡ 4π
+‖x‖ ∫σ
+0
+ζ(t)t2 dt,
+and
+K (x) ≡ − x
+4π‖x‖3
+is the singular Newtonian kernel resulting from the three-dimensional Green’s function of the singular unbounded Poisson’s equation. The resulting velocity field is a regularized version of the Newtonian kernel, Kσ ≡ gσK, and is dependent on the chosen radial basis function ζ (or filter). To illustrate this, Fig. 4.1 compares ζσ, gσ, and Kσ obtained from three radial basis functions commonly used in VPM. Following the same derivation that led to Eq. (4.15), it can be shown that the unfiltered velocity field u is calculated as
+u (x) = ∑p
+K
+(
+x − xp
+) × Γp, (4.4)
+which poses a singularity close to the center of each particle. In order to evaluate the governing equations, not only we need to compute u, but, due to vortex stretching, we also need the spatial derivatives of u. These derivatives are calculated as
+∂u
+∂xj
+(x) = ∑p
+[ ∂gσp
+∂xj
+(
+x − xp
+)
+K
+(
+x − xp
+) × Γp (4.5)
++ gσp
+(
+x − xp
+) ∂K
+∂xj
+(
+x − xp
+) × Γp
+]
+,
+(4.6)
+with ∂Ki
+∂xj (x) = 3xixj
+4π‖x‖5 − 1
+4π‖x‖3 δij, where δij is the Kronecker delta.
+All simulations presented in this study implement the Gaussian basis
+function ζ (r) = 1
+(2π)3/2 exp
+(
+− r2
+2
+)
+, which leads to
+gσ (x) = erf
+(√
+‖x‖2
+2σ2
+)
+−
+√
+4
+π
+√
+‖x‖2
+2σ2 exp
+(
+− ‖x‖2
+2σ2
+)
+,
+and
+∂gσ
+∂xj
+(x) = xj
+σ2
+√
+4
+π
+√
+‖x‖2
+2σ2 exp
+(
+− ‖x‖2
+2σ2
+)
+.
+
+
+Numerical Schemes 45
+67J. Barnes et al. (1986). “A hierarchical O(N log N) force-calculation algorithm”.
+68L. Greengard et al. (1987). “A fast algorithm for particle simulations”; L. F. Greengard (1987). “The Rapid Evaluation Of Potential Fields In Particle Systems”.
+4.2 Fast Multipole Method
+The governing equations require evaluating the velocity u and its derivatives ∂u/∂xj at the position of each particle. Eqs. (4.5) and (4.15) iterate over all particles to compute u and its derivatives, which poses an Nbody problem with computational complexity O(N2), where N is the number of particles. This problem illustrated in Fig. 4.2 as all particlesto-particle (P2P) interactions are computed directly. The resulting complexity is prohibitively expensive as simulations typically use millions of particles.
+Figure 4.2: Direct evaluation of particle-to-particle (P2P) interactions in complexity O(N2).
+As an alternative to directly computing all P2P interactions, particles can be lumped into clusters and direct P2P interactions between wellseparated particles are approximated with their interactions with the clusters. Each cluster is represented as a multipole expansion. This process is illustrated in Fig. 4.3. First, cluster multipoles are computed (particle-to-multipole step, or P2M), and clusters are recursively lumped into clusters of clusters (multipole-to-multipole step, or M2M). Then, the influence of each cluster on far particles is computed (multipole-to-particle step, or M2P), and P2P is performed only among nearby particles. This algorithm, known as the Barnes-Hut treecode method,67 reduces the computational effort from O(N2) to O(N log(N)). Additional speedup can be achieved by translating and rotating the multipoles to the center of target clusters (called local expansion), then the local expansions are recursively passed inside the clusters down to the particles. This process is illustrated in Fig. 4.4. After P2M and M2M are performed, multipole expansions are converted to local expansions (multipole-to-local step, M2L) and local expansions are recursively converted to local expansions inside clusters (local-to-local step, or L2L). Then, local expansions are converted to particle interactions (local-to-particle step, or L2P), and P2P among nearby particles are the only interactions that are computed directly. This algorithm, known as the fast multipole method (FMM), was introduced by Greengard and Rokhlin68 in 1987.
+
+
+Numerical Schemes 46
+Step 1: Particle to multipole (P2M) Step 2: Multipole to multipole (M2M)
+Step 3: Multipole to particle (M2P) Step 4: Particle to particle (P2P)
+Figure 4.3: Barnes-Hut treecode approximation of particle-to-particle interactions in complexity O(N log N).
+
+
+Numerical Schemes 47
+Step 1: Particle to multipole (P2M) Step 2: Multipole to multipole (M2M)
+Step 3: Multipole to local (M2L) Step 4: Local to local (L2L)
+Step 5: Local to particle (L2P) Step 6: Particle to particle (P2P)
+Figure 4.4: Fast multipole method (FMM) approximation of particle-to-particle interactions in complexity O(N).
+
+
+Numerical Schemes 48
+0.0 0.5 1.0 1.5 2.0 Particles N (millions)
+0
+2
+4
+6
+8
+10
+Wall-clock time (s)
+Figure 4.5: Wall-clock time of velocity and vortex stretching computation, showing linear scaling achieved through the FMM.
+69H. Cheng, L. Greengard, et al. (1999). “A Fast Adaptive Multipole Algorithm in Three Dimensions”.
+70R. Yokota and L. A. Barba (2011a). “Treecode and fast multipole method for N-body simulation with CUDA”; Hu et al., “Scalable Fast Multipole Accelerated Vortex Methods”; T. Wang et al. (2021). “ExaFMM: a high-performance fast multipole method library with C++ and Python interfaces”.
+Figure 4.6: Parameters used in neighborgood criterion (Ri+Rj)/d ≥ θ and regularizing criterion σc
+∆x ≥ φ.
+Selected as one of the top ten algorithms of the 20th century, FMM reduces the original O(N2) N-body problem to a linear problem O(N), while controlling the error of the approximation down to any arbitrary precision. While the concept behind the FMM algorithm is elegant and simple, its mathematical development is intricate and an FMM implementation usually takes thousands of lines of code. We have here described only a rough idea of the FMM algorithm, and the reader is referred to the work of Cheng, Greengard, and Rokhlin69 for the mathematical details of the method. In this study, FMM is applied to the computation of velocity and vortex stretching using a modified version of the open source, parallelized code ExaFMM.70 Fig. 4.5 shows the wall-clock time of velocity and vortex stretching computed through the FMM, evidencing linear scaling from thousands to millions of particles. The FMM approximation as implemented in our modified version of ExaFMM uses the following parameters prescribed by the user.
+• Expansion Order P: Number of terms used in multipole and local expansions. This is analogous to the number of terms used in a Taylor expansion approximation. The FMM approximation has a computational cost O(P4). We recommend using P ≥ 4 in low and mid-fidelity simulations, and P ≥ 12 in high-fidelity simulations.
+• Critical Cluster Size ncrit: Maximum number of particles per cluster. A cluster splits up after reaching this many particles. This criterion can be used to balance the computational load across cores. All simulations in this study used either ncrit = 50 or ncrit = 200.
+• Neighborhood Criterion θ: This criterion defines the distance where the near field (which is directly computed by P2P) ends. The interactions between two clusters i and j are resolved through direct P2P if (Ri+Rj)/d ≥ θ, where Ri and Rj are the radii of the clusters, and d is the distance between their centroids, shown in Fig. 4.6. Hence, with θ = 1, P2P is done only between clusters that overlap; with θ = 0.5, P2P is done between clusters when their distance is less than two times Ri + Rj; with θ = 0.25, P2P is done between clusters when their distance is less than four times Ri + Rj; and with θ = 0, P2P is done between all clusters. All simulations in this study used θ = 0.4.
+• Regularizing Criterion φ: The FMM approximates the singular Newtonian kernel (dashed line in Fig. 4.7), while P2P is implemented as a regularized kernel (Gaussian kernel, or solid line in Fig. 4.7). We introduce a criterion to avoid approximating interactions with the singular-FMM when particles across clusters are sufficiently close to each other, calculating them through the regularized P2P instead. P2P is performed between two clusters if
+σc
+∆x ≥ φ, where σc is the average smoothing radius of the particles
+
+
+Numerical Schemes 49
+012345 x
+0.00
+0.01
+0.02
+0.03
+0.04
+2 K (x)
+Singular
+Regularized
+Figure 4.7: Singular kernel approximated by the FMM vs regularized kernel used in P2P.
+71Cheng, Greengard, et al., “A Fast Adaptive Multipole Algorithm in Three Dimensions”.
+72C. He et al. (2009). “Modeling Rotor Wake Dynamics with Viscous Vortex Particle Method”; Yokota and Barba, “FMMbased vortex method for simulation of isotropic turbulence on GPUs , compared with a spectral method”; Salloum and Lakkis, “Proper evaluation of spherical harmonics-based expressions for the velocity and vortex stretching vectors in three-dimensional grid-free vortex methods”.
+73T. J. Berdowski (2015). “3D Lagrangian VPM-FMM for Modelling the Near-Wake of a HAWT”.
+in both clusters, and ∆x is the distance between cluster boundaries defined as ∆x = d − (Ri + Rj), shown in Fig. 4.6. Hence, 1
+φ
+roughly corresponds to the x-axis of Fig. 4.7. With φ = 1, P2P
+is done only between clusters with boundaries closer than σc, or
+∆x
+σc ≤ 1; with φ = 0.5, P2P is done between clusters up to ∆x
+σc = 2;
+with φ = 0.25, P2P is done between clusters up to ∆x
+σc = 4; and
+with φ = 0, P2P is done between all clusters. As seen in Fig. 4.7, there is a large discrepancy between the singular and regularized kernel for ‖x‖/σ < 2, which can create a discontinuity as particles are convected and move between clusters. All simulations in this study used either φ = 0.3 or φ = 0.5, depending on the desired level of accuracy. φ = 0.5 was used in low and mid-fidelity simulations, leading to a worst-case-scenario discontinuity of 26% in velocity jump, while φ = 0.3 was used in high-fidelity simulations, corresponding to a worst-case scenario jump of less than 1%.
+The computation of derivates needed for vortex stretching is performed in our FMM through an efficient complex-step derivative approximation, as explained in the next section.
+4.3 Vortex Stretching Through CSDA
+The original FMM71 was derived to calculate interactions of the form 1/r, as in the case of the vector-potential ψ. However, rather than ψ, we are interested in the velocity u and vortex stretching (Γ · ∇)u. These fields can be obtained from the derivatives of ψ as
+u = ∇×ψ
+and
+(Γ · ∇)u =
+
+  
+∂2 ψ3
+∂x1∂x2 − ∂2ψ2
+∂x1∂x3
+∂2 ψ3
+∂x22 − ∂2ψ2
+∂x2∂x3
+∂2 ψ3
+∂x3∂x2 − ∂2ψ2
+∂x32
+∂2 ψ1
+∂x1∂x3 − ∂2ψ3
+∂x12
+∂2 ψ1
+∂x2∂x3 − ∂2ψ3
+∂x2∂x1
+∂2 ψ1
+∂x32 − ∂2ψ3
+∂x3∂x1
+∂2 ψ2
+∂x12 − ∂2ψ1
+∂x1∂x2
+∂2 ψ2
+∂x2∂x1 − ∂2ψ1
+∂x22
+∂2 ψ2
+∂x3∂x1 − ∂2ψ1
+∂x3∂x2
+
+  
+
+
+Γ1 Γ2 Γ3
+
+.
+Hence, our FMM implementation must perform the computation of first and second derivatives of ψ. For first-order derivatives, most authors implement an analytical form derived from local and multipole expansions. However, for secondorder derivatives, authors have differed between implementing an analytical form,72 or computing the derivates through finite difference.73 The former approach is carried out with exact precision, with the drawback of further complicating the FMM implementation. On the other hand, the latter approach offers simplicity while forfeiting numerical accuracy. In this study we introduce a new approach: the calculation of vortex stretching through a complex-step derivative approximation. This approach is conceptually simple and easy to implement, while achieving machine precision and without increasing the computational cost.
+
+
+Numerical Schemes 50
+74W. Squire et al. (1998). “Using complex variables to estimate derivatives of real functions”; J. R. R. a. Martins et al. (2003). “The complex-step derivative approximation”.
+Let a real-variable analytic function f : R → R be generalized to its complex-variable form f ∗ : C → C. Let x0 ∈ R be an arbitrary point
+where we desire to evaluate the first derivative of f . The function f ∗ can be Taylor-expanded around x0 with an arbitrarily small step h ∈ R to obtain the derivative of f as
+df
+dx (x0) = Im( f ∗(x0 + ih))
+h + O(h2).
+Let us now choose an h sufficiently small—say h = 10−30 for double floating point precision—and we have obtained a numerical approximation of the derivative of f that is as accurate as machine precision. This simple numerical method for calculating machine-precision derivatives is called complex-step derivative approximation,74 or CSDA.
+CSDA can be directly applied to any real-variable real-valued function f : R → R by generalizing the function to the complex plane f ∗ : C → C and using this plane for carrying out the numerical differentiation. However, multipole and local expansions of the FMM are computed through complex-valued functions Y : R → C already using the complex plane, requiring the formulation of CSDA in a multicomplex space. Hence, we will now define the multicomplex arithmetic needed for implementing CSDA in the FMM. Given the complex set C1 with imaginary unit i1 defined as C1 = {x + i1y / x, y ∈ R}, we define the multicomplex set C2 with imaginary unit i2 as C2 = {z + i2w / z, w ∈ C1}. Any complex-valued analytical function Y : R → C will then be generalized into the multicomplex space C2 as Y∗ : C1 → C2. In this generalization we transform the set R into C1, and C into C2; meaning that a variable x originally in R now becomes x∗ = x + i10, and a variable z = a + ib originally in C
+now becomes z∗ = a∗ + i2b∗ = (a + i10) + i2(b + i10) = a + i2b. With this definition, the axis i1 will carry the CSDA computation and is not intended to interact with the axis i2—hence, the products i1i2 and i2i1 will purposefully remain undefined as to avoid any unintended arithmetic. The derivative of Y is then computed as
+dY
+dx (x) ≈ Im1(Y∗(x + i1h))
+h.
+Since multipole and local expansions are computed through spherical harmonic functions Ym
+n : R2 → C of the form
+Ym
+n (θ, φ) =
+√
+(n − |m|)!
+(n + |m|)! · P|m|
+n (cos θ)eimφ, (4.7)
+where P|m|
+n are the associated Legendre functions, we now show how this multicomplex transformation applies to the complex exponential and the complex product in Eq. (4.7). Let the complex-valued function Y : R → C be defined as Y(x) = eix, the derivative is determined analytically
+
+
+Numerical Schemes 51
+as dY
+dx (x) = ieix. On the other hand, its multicomplex generalization
+Y∗ : C1 → C2 is defined as
+Y∗(z) = ei2z,
+and the derivative dY
+dx (x) is computed through CSDA as
+dY
+dx (x) ≈ Im1 (Y∗(x + i1h))
+h =1
+h Im1
+(
+ei2 (x+i1 h) )
+=1
+h Im1
+(
+ei2 x ei1 (i2 h) )
+=1
+h Im1
+(
+ei2x (cos i2h + i1 sin i2h)
+)
+=1
+h ei2x sin i2h
+= i2ei2x sinh h
+h , where lhi→m0
+sinh h
+h =1
+h=→0 i2ei2x,
+obtaining the same result as the analytical derivative in the limit h → 0. Now we show how CSDA is carried on the scalar-complex product. Let Y : R → C be defined as Y(x) = cx = (c1 + ic2)x with c1, c2 ∈ R,
+the derivative is trivially dY
+dx (x) = c. Defining its multicomplex general
+ization Y∗ : C1 → C2 as
+Y∗(z) = c∗z,
+with c∗ ∈ C2 / c∗ = c∗
+1 + i2c∗
+2 = (c1 + i10) + i2(c2 + i10), the derivative
+dY
+dx (x) is then computed through CSDA as
+dY
+dx (x) ≈ Im1 (Y∗(x + i1h))
+h =1
+h Im1 (c∗(x + i1h))
+=1
+h Im1 ((c1 + i2c2)(x + i1h))
+=1
+h (c1 + i2c2)h
+= c1 + i2c2
+= c∗.
+The complex exponential and the complex product are not only good example cases of multicomplex arithmetic, but they are also the only multicomplex operations needed for carrying the CSDA through multipole and local expansions of the FMM. In order to compare accuracy between finite difference and CSDA, vortex stretching was computed through direct calculation, FMM with
+
+
+Numerical Schemes 52
+75R. Yokota and L. A. Barba (2011b). Treecode and fast multipole method for Nbody simulation with CUDA.
+0 500 1000 Particle index
+10 16
+10 12
+10 8
+10 4
+100
+( )u error
+Finite difference
+CSDA
+Figure 4.8: Vortex stretching computed through finite difference versus complex-step derivative approximation (CSDA). Error relative to analytic calculation.
+76Cottet and Koumoutsakos, Vortex Methods Theory and Practice.
+77S. O. Salloum (2021). “Towards Resurrecting Grid-Free Three Dimensional Vortex Methods”.
+78Pedrizzetti, “Insight into singular vortex flows”.
+finite difference, and FMM with CSDA in 1000 randomly-generated particles. The error relative to the direct calculation at each particle is shown in Fig. 4.8, evidencing the subtractive and round-off error introduced by the finite difference, meanwhile CSDA approaches floating-point precision (the remaining error is due to the FMM approximation). Furthermore, the CSDA is applied only in the L2P step of the FMM, which takes less than 2% of the computational time of the overall FMM algorithm.75 Thus, vortex stretching calculated through CSDA has a negligible computational cost, while offering a much simpler implementation than carrying out the calculation analytically.
+4.4 Relaxation of ω Divergence
+Approximating the filtered vorticity field ω as in Eq. (1.7), here repeated
+ω (x) ≈ ∑p
+Γpζσ(x − xp), (1.7)
+introduces numerical instabilities by using and evolving a vorticity field that is, in general, not divergence-free. Cottet and Koumoutsakos76 suggested that the divergence of ω arises from unphysical small scales produced by the computation, which could be properly addressed with subfilter-scale (SFS) diffusion. Our LES formulation and SFS model remarkably increases the numerical stability of the VPM (as will be shown in Chapter 5); however, our experience is that the divergence of ω still needs to be addressed directly to achieve complete numerical stability. A few methods have been proposed over the years for treating the divergence of ω in a meshless approach. Although we will limit our discussion to Pedrizzetti’s relaxation method, the reader is referred to Salloum’s doctoral work77 for a broader review. Noticing that the velocity field u induced by the particles constructs a divergence-free field by taking its curl, ∇ × u, Pedrizzetti78 proposed a divergence filtering procedure that aligns the vortex strengths Γp with this field. The divergence filter is formulated as
+d
+dt Γp = −η
+(
+Γp − ‖Γp‖  ̃ω(xp)
+‖  ̃ω(xp)‖
+)
+,
+where  ̃ω is the divergence-free vorticity field ω ̃ ≡ ∇ × u, and η is the characteristic frequency of the filter with time scale Tf = 1/η. This filtering procedure is implemented without adding computational cost since the derivatives of u needed to compute  ̃ω = ∇ × u are already computed in the vortex stretching calculation. Pedrizzetti suggested casting the filter equation as a relaxation process, updating the vortex strength at each time step as
+Γnew = (1 − α)Γ + α‖Γ‖  ̃ω
+‖ω ̃ ‖ ,
+which we refer to as Pedrizzetti’s relaxation, where α is the relaxation factor α = η∆t and ∆t is the time step.
+
+
+Numerical Schemes 53
+79P. Sagaut (2001). Large Eddy Simulation for Incompressible Flows, Sec. 5.3, page 154.
+Even though Pedrizzetti’s relaxation intends to only reorient the vortex strength, it also has the effect of decreasing its magnitude. Defining ˆω ≡ ω ̃/‖ω ̃ ‖, ˆΓ ≡ Γ/‖Γ‖, and Γ ≡ ‖Γ‖, it is readily shown that the magnitude of the vortex strength is not preserved:
+Γnew · Γnew = [(1 − α)Γ + αΓ ˆω] · [(1 − α)Γ + αΓ ˆω]
+= (1 − α)2Γ2 + 2(1 − α)αΓ2 ˆΓ · ˆω + α2Γ2
+= Γ2 [
+1 − 2(1 − α)α(1 − ˆΓ · ˆω)]
+.
+Here we see that ‖Γnew‖ = ‖Γ‖ only if Γ is already aligned with ω ̃
+(i.e., Γˆ · ˆω = 1). In any other case, Pedrizzetti’s relaxation decreases the strength magnitude by
+‖Γ‖2 − ‖Γnew‖2
+‖Γ‖2 = 2(1 − α)α(1 − ˆΓ · ωˆ ),
+being the largest when Γ and  ̃ω are orthogonal to each other (i.e., Γˆ · ˆω = 0) and with α = 1/2, leading to
+( ‖Γ‖2 − ‖Γnew‖2 ‖Γ‖2
+)
+max
+=1
+2.
+Thus, Pedrizzetti’s relaxation unintentionally decreases the local enstrophy anywhere that vortex strength and vorticity vectors are misaligned, resembling a selective/sensor SFS model.79 This explains its efficacy in stabilizing some simulations. Even though the SFS-diffusion-like behavior of Pedrizzetti’s relaxation is a desirable property to increase numerical stability, it is not always effective nor physically accurate. Furthermore, in some cases the user may want to minimize all extraneous sources of numerical diffusion, like in the development and testing of a new SFS model. For this reason, we now propose a correction to Pedrizzetti’s relaxation that aligns the strength with the divergence-free field while preserving its magnitude. We rewrite the relaxation using only the direction vectors and introduce a correction factor b as
+ˆΓnew = 1
+b
+[(1 − α) ˆΓ + α ˆω
+]
+.
+Imposing Γˆ new · ˆΓnew = 1 we obtain b as
+1 = ˆΓnew · ˆΓnew
+=1
+b2
+[(1 − α)2 + 2(1 − α)αΓˆ · ˆω + α2]
+=1
+b2
+[
+1 − 2α + 2α2 + 2(1 − α)α ˆΓ · ωˆ
+]
+=1
+b2
+[
+1 − 2(1 − α)α + 2(1 − α)αΓˆ · ˆω
+]
+⇒ b2 = 1 − 2(1 − α)α
+(
+1 − Γˆ · ˆω
+)
+.
+
+
+Numerical Schemes 54
+80C. Rehbach (1978). “Numerical calculation of three-dimensional unsteady flows with vortex sheets”.
+81G. Winckelmans et al. (1988). “Weak solutions of the three-dimensional vorticity equation with vortex singularities”.
+Then, the vortex strength is updated as
+Γnew = ‖Γ‖ ˆΓnew,
+or
+Γnew = ‖Γ‖ (1 − α)Γˆ + αωˆ
+√
+1 − 2(1 − α)α
+(
+1 − ˆΓ · ˆω
+)
+.
+Throughout Part I, the divergence of ω will be treated using the corrected relaxation, which, as shown in Chapter 5, will be sufficient to attain both numerical stability and physical accuracy with the LES formulation and SFS model developed in this study. However, we have observed that the actuator line and surface models used to introduce the vorticity of blades and wings in Part II can cause a numerical instability that is not damped by our corrected relaxation. This instability is triggered when the rotating blades chop through a wake, but we have observed that the original Pedrizzetti’s relaxation succeeds at stabilizing it. For this reason, the rotor simulation in Section 5.4 and all simulations in Part II will use the original Pedrizzetti’s relaxation. All simulation in this study will use a relaxation factor α of 0.3.
+4.5 Transposed Stretching
+As noticed by Rehbach,80 the inviscid part of the unfiltered vorticity equation,
+d
+dt ω = (ω · ∇) u
+can be written as
+d
+dt ω =
+(
+ω · ∇T)
+u, (4.8)
+where ∇T denotes the transpose of the stretching operator. Both forms are equivalent since
+[
+ω·
+(
+∇ − ∇T)]
+u = (∇ × u) × ω = ω × ω = 0.
+The evolution equations obtained by discretizing both forms would also be equivalent if the particle-approximated vorticity field were equal to the curl of the velocity field induced by the particles, ∇ × u. Unfortunately, this is not the case, which is a consequence of the vorticity field not being divergence-free, as shown in Appendix C. The transposed form offers two numerical advantages over the original form when they are both discretized with singular vortex particles: the resulting evolution equations, first, guarantee conservation of the total vorticity and, second, constitute a weak solution to the inviscid vorticity equation.81 Thus, the reformulated VPM is able to achieve
+
+
+Numerical Schemes 55
+82C. Greengard (1985). “The core spreading vortex method approximates the wrong equation”.
+83Rossi, “Resurrecting Core Spreading Vortex Methods: A New Scheme that is Both Deterministic and Convergent”.
+numerical stability with the transposed scheme, which we believe is a consequence of having used singular vortex particles to discretize the LES-filtered vorticity equation and derive its governing equations (Sections 1.4 and 1.5). Filtering the transposed vorticity equation given in Eq. (4.8) and discretizing it with singular particles, the evolution equations of strength and core size in the reformulated VPM, previously summarized in Section 3.6, now become
+d
+dt Γp =
+(
+Γp · ∇T)
+u(xp) − 3
+5
+{[(
+Γp · ∇T)
+u(xp)
+]
+· ˆΓp
+}
+ˆΓp − Cd
+ζσp (0) Estr(xp)
+d
+dt σp = − 1
+5
+σp
+‖Γp‖
+[(
+Γp · ∇T)
+u(xp)
+]
+· ˆΓp.
+It also follows that the SFS vortex stretching model becomes
+Estr (x) = ∑q
+ζσ(x − xq)
+(
+Γq · ∇T)
+(
+u (x) − u
+(
+xq
+))
+,
+and all stretching operators used in the dynamic procedure become transposed. All simulations presented in this study will use the transposed stretching scheme.
+4.6 Viscous Diffusion
+The viscous part of the LES-filtered vorticity equation is
+(d
+dt ω
+)
+viscous
+= ν∇2ω, (4.9)
+which is solved separate from the inviscid part through operator splitting. Core spreading (CS) is a numerical scheme that solves the diffusion equation by widening the core size σ (or filter width) over time, effectively diffusing the vorticity as follows. Given a Gaussian vorticity distribution of the form
+ω (x) = Γ
+(2πσ2)3/2 exp
+(
+− ‖x − x0‖2
+2σ2
+)
+,
+the exact solution to Eq. (4.9) is
+dσ2
+dt = 2ν. (4.10)
+In a VPM with a Gaussian kernel, viscous diffusion can be accounted for by spreading the particle size according to Eq. (4.10). Greengard showed that this approach was inconsistent with the Navier-Stokes equations,82 however, Rossi83 later proved its correct convergence to the Navier-Stokes equations provided that core sizes are controlled and kept small through spatial adaptation. As shown by Rossi, the core spreading
+
+
+Numerical Schemes 56
+84Barba et al., “Advances in viscous vortex methods - Meshless spatial adaption based on radial basis function interpolation”; Barba, “Vortex Method for computing high-Reynolds number Flows: Increased accuracy with a fully mesh-less formulation”.
+85Torres et al., “Fast radial basis function interpolation with Gaussians by localization and iteration”.
+method has second-order spatial convergence, while showing linear convergence when coupled with spatial adaptation. One approach to control core sizes is to introduce a splitting algorithm that divides overgrown particles into smaller particles. This poses the difficulty of implementing a merging algorithm that will merge particles in regions of high concentration, otherwise the number of particles will grow unboundedly. Barba et al.84 developed an alternative approach for spatial adaptation exploiting the numerical machinery of radial basis function (RBF) interpolations.85 The method consists of resetting the spatial discretization (after particles are determined to have overgrown) with a new field of vortex particles, determining the strengths of the new particles with an RBF interpolation procedure so as to preserve the same vorticity field. The RBF interpolation can be performed through either a direct matrix inversion or an iterative method. A direct inversion readily becomes computationally infeasible with only a modest number of particles. Hence, iterative methods are usually preferred, like conjugate gradient or generalized minimal residual (GMRES). Conjugate gradient works on a system matrix that is symmetric and positive definite, which is the case when the all particles are reset to the same core size, however, this precludes the use of preconditioners. GMRES is a general method with fast convergence when the problem is correctly preconditioned, at the cost of a laborious and lengthy implementation. Both of these iterative methods are well suited to have the matrix-vector product evaluated through the FMM in complexity O(N). In this study, viscous diffusion is resolved through the core spreading scheme, Eq. (4.10), coupled with Barba’s spatial adaptation approach by RBF interpolation, denoted as CS-RBF. Our spatial adaptation consists of resetting all core sizes σ to a prescribed value σ0 after a critical time tcrit. For simplicity, the RBF interpolation is implemented through the conjugate gradient method, with the matrix-vector product evaluated through the FMM. In order to determine the frequency of core resetting tcrit, we define a growth parameter β as
+β(t) ≡ σ
+σ0
+,
+which, according to Eq. (4.10), becomes
+β(t) =
+√
+σ2
+0 + 2νt
+σ2
+0
+.
+Then, to avoid the particles from growing beyond a critical threshold βcrit, the frequency of core resetting is calculated as
+tcrit = (β2
+crit − 1) σ2
+0
+2ν .
+
+
+Numerical Schemes 57
+86Sagaut, Large Eddy Simulation for Incompressible Flows, Sec. 7.7.7.
+87The primary-filter width is also the particle core size or the RBF smoothing radius. Thus, they are all denoted as σ.
+4.7 Implementation of the Dynamic Procedure
+In Chapter 3, we developed a model of subfilter-scale vortex stretching,
+Estr (x) = ∑q
+ζσ(x − xq) (
+Γq · ∇) (
+u (x) − u
+(
+xq
+))
+,
+with a model coefficient Cd that is calculated dynamically at the position of every particle as
+Cd =
+〈
+Γp · L
+〉
+〈
+Γp · m
+〉 , (4.11)
+where 〈·〉 denotes an integration along Lagrangian trajectories, and
+m ≡ σ3
+ζ(0)
+∂Estr
+∂σ
+(xp)
+L≡ 3
+σ
+(
+Γp · ∇) (
+u(xp) − u(xp)) + (
+Γp · ∇) ∂u
+∂σ
+(xp).
+Since m and L require the derivatives of both SFS model Estr and velocity field u with respect to the filter width σ, we now show how these derivatives can be approximated numerically applying various filtering levels. In our proposed approach, the numerical implementation of Cd will end up resembling a multilevel approach86 where the desired quantities are computed from variational scales obtained by applying multiple filtering levels.
+4.7.1 Two-Level Procedure
+First, assume that the primary-filter width 87 σ is small enough such that u ≈ u. The numerator term L then becomes
+L≈(
+Γp · ∇) ∂u
+∂σ
+(xp).
+We define a test filter with width σt = αtσ and αt > 1, denoted as (̂·) while the primary filter is denoted as (·). The derivatives with respect to the filter width are then approximated as
+∂Estr
+∂σ
+(xp) ≈ Estr(xp, σt) − Estr(xp, σ)
+σt − σ
+∂u
+∂σ
+(xp) ≈ û(xp) − u(xp)
+σt − σ ,
+where the test-filtered fields Estr(xp, σt) and û are computed expanding each particle core by αt. This can also be written as
+∂Estr
+∂σ
+(xp) ≈ Estr(xp, αtσ) − Estr(xp, σ)
+σ(αt − 1)
+∂u
+∂σ
+(xp) ≈ û(xp) − u(xp)
+σ(αt − 1)
+
+
+Numerical Schemes 58
+Wavenumber k
+Enstrophy (k )
+Primary filter
+Test filter
+S
+S
+t
+E
+E
+t
+Figure 4.9: Enstrophy spectrum showing ranges of enstrophy production by large-scale vortex stretching S and SFS vortex stretching Estr with primary and test filters.
+Substituting this into the definition of m and L, the dynamic procedure Cd = 〈Γp·L〉/〈Γp·m〉 is then implemented as
+Cd =
+〈
+Γp · [(
+Γp · ∇) (
+û(xp) − u(xp))]〉
+〈
+σ3
+ζ(0) Γp · (
+Estr(xp, σt) − Estr(xp, σ))
+〉 . (4.12)
+This numerical scheme elucidates the variational principle underlying our dynamic procedure, which shown as follows. Using the numerical derivatives in the definition of m and L, the derivative balance introduced in Section 3.3.1, here repeated
+Cdm = L,
+becomes
+Cd
+σ3
+ζ(0)
+(
+Estr(xp, σt) − Estr(xp, σ)) = (
+Γp · ∇)
+û(xp)
+} {{ }
+Sσt
+−
+(
+Γp · ∇)
+u(xp)
+} {{ }
+Sσ
+.
+For simplicity, we rewrite this as
+−Cd (Eσt − Eσ) = Sσ − Sσt , (4.13)
+where, Eσt and Eσ denote the subfilter-scale vortex stretching at test and primary filter levels, respectively. The two terms in the right-hand side, Sσt and Sσ, represent the large-scale vortex stretching at test and primary levels. Following the derivation given in Section 3.3.2, the dot-product of ω with each E and S term in Eq. (4.13) corresponds to a contributor to enstrophy production. Fig. 4.9 depicts the range of enstrophy production that each large-scale term provides to the enstrophy spectrum, with the red hatched region corresponding to Sσ − Sσt. The range of each subfilter-scale term is also shown, with the blue region corresponding to Eσt − Eσ. The negative sign in Eq. (4.13) indicates that the enstrophy that is gained/lost in the subfilter scales must be lost/gained in the large scales, while Cd is there to enforce the equality once the SFS model is introduced. In short, Cd is the ratio of how sensitive the resolved enstrophy production is to the filter width, over the sensitivity of the unresolved enstrophy production: Cd increases or decreases every time and everywhere that the sensitivity of the resolved scales to σ does not match the sensitivity of the modeled scales. This comes back to the fact that the Estr model is not fully accurate, hence Cd attempts to correct its error.
+4.7.2 Pseudo-Three-Level Procedure
+We now repeat the same derivation but without assuming that σ is sufficiently small to justify u ≈ u. We define a test filter with width στ = ατσ and ατ < 1, denoted as (ˇ·). In the same manner as the two-level
+
+
+Numerical Schemes 59
+procedure, the filter derivatives are approximated as
+∂Estr
+∂σ
+(xp) ≈ Estr(xp, ατσ) − Estr(xp, σ)
+σ(ατ − 1)
+∂u
+∂σ
+(xp) ≈ ˇu(xp) − u(xp)
+σ(ατ − 1) .
+Now, instead of assuming that the primary filter σ is small enough to satisfy u ≈ u, we introduce a second test filter with width στ∗ = ατ∗ σ
+and ατ∗ 1, denoted as (ˇˇ·). Assuming that στ∗ is small enough such that u ≈ ˇˇu, and using the numerical derivative shown above, the numerator term L then becomes
+L≈ 3
+σ
+(
+Γp · ∇) (uˇˇ (xp) − u(xp)) + (
+Γp · ∇) ˇu(xp) − u(xp)
+σ(ατ − 1) .
+This expression calls for the velocity at three different filtering levels: u at the primary filter level, and ˇu and uˇˇ at the two test-filter levels, leading to a three-level procedure. One filtering level can be avoided if we assume that the two test-filter levels are close to each other, i.e., στ ≈ στ∗ and ˇu ≈ uˇˇ leading to ˇu ≈ u. The numerator term then simplifies to
+L ≈ 3ατ − 2
+σ(ατ − 1)
+(
+Γp · ∇) (
+ˇu(xp) − u(xp))
+,
+and the dynamic procedure Cd = 〈Γp·L〉/〈Γp·m〉 becomes
+Cd =
+〈
+Γp ·
+[ 3ατ−2 σ(ατ −1)
+(
+Γp · ∇) (
+uˇ (xp) − u(xp))
+]〉
+〈
+Γp ·
+(
+σ3 ζ(0)
+Estr(xp, στ )−Estr(xp, σ) σ(ατ −1)
+)〉 ,
+which is implemented as
+Cd = (3ατ − 2)
+〈
+Γp · [(
+Γp · ∇) (
+uˇ (xp) − u(xp))]〉
+〈
+σ3
+ζ(0) Γp · (
+Estr(xp, στ) − Estr(xp, σ))
+〉 . (4.14)
+Since this was derived from a three-level procedure, but then implemented using only two levels, we call it a pseudo-three-level procedure. Comparing Eq. (4.12) and Eq. (4.14), it becomes evident that the pseudo-three-level procedure is simply the two-level procedure scaled by the factor 3ατ − 2. Although the two-level procedure correlates directly to a balance of spectral energy transfer, the pseudo-three-level procedure lacks formalism since the scaling factor is a numerical artifact without physical significance. However, in some contexts it may be advantageous to use this procedure since it provides the user with a tunable parameter, ατ, while converging to the two-level procedure when ατ → 1. For instance, noticing that the scaling factor 3ατ − 2 tends to zero when ατ → 2/3, the pseudo-three-level procedure can be used
+
+
+Numerical Schemes 60
+Table 4.1: Tunning parameter ατ and scaling factor 3ατ − 2 in pseudothree-level procedure, categorized by the effect on SFS contributions.
+ατ 3ατ − 2 410
+
+
+
+amplify
+1.3332 1.0011.003 11 ←undefined 0.9990.997
+
+      
+      
+attenuate
+0.8330.5 0.7500.25 0.7000.1 0.6700.01 0.6670.001 < 2/3 < 0 ←unphysical
+to either arbitrarily attenuate the SFS contributions with ατ → 2/3, or let it be a trully self-regulated dynamic procedure with ατ → 1. As a reference, Table 4.1 lists the scaling factor as a function of ατ and the resulting effect on the SFS contributions. Since the pseudo-three-level procedure converges to the two-level procedure when ατ → 1, only the former was implemented in this study. All simulations reported in this study used ατ = 0.999. Since our SFS vortex stretching model, Estr, involves the radially-decaying function ζσ, the influence of far-away particles decays to zero. Hence, Estr is computed only over the P2P step of the FMM, rather than including interactions over the entire particle field. In this manner, both the SFS model and its dynamic procedure are computed in the same linear complexity O(N) of the FMM.
+4.8 Implementation of the Governing Equations
+As given in Section 3.6, the generalized reformulated VPM equations are
+d
+dt Γp = (
+Γp · ∇)
+u(xp) − g + f
+1/3 + f
+{[(
+Γp · ∇)
+u(xp)] · ˆΓp
+} ˆΓp
+− Cd
+ζσp (0)
+[
+E(xp) − f
+1/3 + f
+(
+E(xp) · ˆΓp
+) ˆΓp
+]
+and
+d
+dt σp = −
+( g+ f 1+3f
+) σp ‖Γp‖
+[(
+Γp · ∇)
+u(xp)] · ˆΓp
++
+(f
+1+3f
+) σp ‖Γp‖
+Cd
+ζσp (0) E(xp) · ˆΓp,
+where E = Eadv + Estr. In order to ease the implementation and reduce both storage and computation, we define the following auxiliary variables:
+Sp = (
+Γp · ∇)
+u(xp)
+Zp =
+( g+ f 1+3f
+) Sp · Γp
+‖Γp‖2 −
+(f
+1+3f
+) Cdep · Γp ‖Γp‖2
+ep = 1
+ζσp (0)
+(
+Eadv(xp) + Estr(xp))
+.
+The generalized reformulated VPM equations are then implemented as
+d
+dt Γp = Sp − 3ZpΓp − Cdep
+d
+dt σp = −σpZp.
+The transposed stretching scheme is turned on by simply calculating Sp with the transposed operator.
+
+
+Numerical Schemes 61
+88J. H. Williamson (1980). “Low-storage Runge-Kutta schemes”.
+Since the generalized reformulated VPM collapses back to the classic VPM when f = g = 0, a simulation using f = g = 0 is referred to as a classic-VPM simulation, or cVPM. A simulation using f = 0 and g = 1/5 is referred to as a reformulated-VPM simulation, or rVPM. The equations above solve only the inviscid part of the vorticity equation, and must be modified according to the viscous scheme of preference to solve the viscous part. In the case of the core spreading scheme, the core-size equation becomes
+d
+dt σp = −σpZp + ν
+σp
+,
+where ν is the kinematic viscosity. The only state variables of our meshless LES are the position of the particles xp, the vortex strengths Γp, and the filter widths σp (also referred to as smoothing radius or core size). In the reformulated VPM these are all time-dependent variables. The particle field constructs a continuous vorticity field computed through radial basis functions as
+ω(x) = ∑p
+Γ p ζ σp
+(
+x − xp
+)
+and a continuous velocity field by inverting ω = ∇ × u as explained in Section 4.1, resulting in
+u (x) = − 1
+4π ∑p
+gσp
+(
+x − xp
+) x − xp
+‖x − xp‖3 × Γp. (4.15)
+Hence, all fluid properties—like u and any of its spatial derivatives—can be computed analytically from the state variables. When the dynamic procedure is used, both the numerator and denominator of Cd = 〈Γp·L〉/〈Γp·m〉 also become state variables in order to perform the Lagrangian integration.
+4.9 Time Integration
+VPM simulations typically grow to the order of millions of particles, which poses a problem for common high-order integration schemes that require storing the value of each state variable at each subiteration step. Williamson88 formulated alternative low-storage high-order schemes requiring only two storage locations per variable, independent of the scheme order, which we summarize as follows. Given the vector of state variables y ∈ RN and a set of differential equations describing the evolution of y as
+dy
+dt = f(y),
+Williamson’s method integrates the equation through the algorithm
+zi = aizi−1 + ∆tf(yi−1)
+yi = yi−1 + bizi.
+
+
+Numerical Schemes 62
+Here, z ∈ RN is an auxiliary storage space, ai and bi are constants of the integration scheme, ∆t is the time step, and i is the index of the subiteration step. The values of z and y are updated in place, so only 2N storage locations are required, where N is the number of state variables. In this study, the governing equations are integrated implementing Williamson’s third-order low-storage integration scheme with the following three subiterations steps:
+i=1
+z1 = ∆tf(y0)
+y1 = y0 + 1
+3 z1
+i=2
+z2 = − 5
+9 z1 + ∆tf(y1)
+y2 = y1 + 15
+16 z2
+i=3
+z3 = − 153
+128 z2 + ∆tf(y2)
+y3 = y2 + 8
+15 z3
+
+
+Validation of Meshless LES Scheme 5
+In the preceding chapters we have developed a scheme for numerically solving the LES-filtered Navier-Stokes equations in their vorticity form. The proposed scheme uses a reformulation of the VPM and a novel model of SFS vortex stretching to achieve a meshless large eddy simulation. We now proceed to test and validate both the VPM reformulation and the vortex-stretching SFS model that comprise our meshless LES. Simulations are compared to results reported in the literature from experimental work, direct numerical simulation (DNS), the lattice Boltzmann method (LBM), and unsteady Reynolds-average Navier-Stokes (URANS) simulation. These validation cases also serve as examples on how to impose initial and boundary conditions in our meshless scheme. In Section 5.1, advection and viscous diffusion is validated on an isolated vortex ring, which is also used to test convergence of the reformulated VPM. In Section 5.2, vortex stretching is validated through the simulation of two leapfrogging vortex rings. Results with classic and reformulated VPM are first compared without SFS effects. The SFS model is then introduced to capture the subfilter energy cascade that leads the rings into turbulent breakdown. In Section 5.3, a turbulent round jet is simulated to test the accuracy and numerical stability of the LES scheme. The evolution of the jet and predicted Reynolds stress are compared to experimental measurements, validating the scheme as an LES method accurately resolving large-scale features of turbulent flow. Finally, in Section 5.4, our meshless LES is compared to conventional mesh-based CFD in a real-world engineering problem: an aircraft rotor and its wake.
+5.1 Isolated Vortex Ring
+A vortex ring travels with a self-induced velocity that slowly decelerates as its vorticity spreads due to viscous diffusion. This poses a good validation case for both vorticity advection and viscous diffusion. The initial vorticity inside the ring core is assumed to follow a Gaussian distribution of the form ωθ(r) = Γ0
+πa2 e−r2/a2, where Γ0 and a are the ring’s initial circu
+lation and core size, respectively. The initial Reynolds number is defined as Re = Γ0/ν. In all the following simulations, the rings were initially discretized by placing particles (evenly spaced by ∆x) everywhere that the local vorticity was larger than 5% of the peak vorticity ωθ(0), and
+63
+
+
+Validation of Meshless LES Scheme 64
+Figure 5.1: Vortex ring as discretized through particles with ∆x = 0.13a.
+89P. J. Archer et al. (2008). “Direct numerical simulation of vortex ring evolution from the laminar to the early turbulent regime”.
+90Barba et al., “Advances in viscous vortex methods - Meshless spatial adaption based on radial basis function interpolation”.
+91Archer et al., “Direct numerical simulation of vortex ring evolution from the laminar to the early turbulent regime”.
+then performing a radial-basis function (RBF) fit to the target vorticity ωθ to determine the initial vortex strength of the particles. The initial particle size σ was set as to provide a particle overlap λ = σ
+∆x of 2.4. Fig. 5.1 shows a discretized vortex ring along with a depiction of the ring’s geometric parameters. A vortex ring at Re = 7500 and thickness a
+R = 0.2 was simulated and compared to direct-numerical simulation (DNS) reported by Archer et al.89 The DNS is a finite-difference method with second-order spatial accuracy solving the incompressible pressure-velocity form of the Navier Stokes equations, using over 100 million grid cells. Convergence of the reformulated VPM was tested without the SFS model by increasing the spatial resolution from ∆x = 0.17a (resulting in 60k particles) to ∆x = 0.08a (resulting in 500k particles), shown in Fig. 5.2. To minimize numerical noise, we suppressed the core-resetting step of the viscous diffusion scheme,90 which leads the VPM simulation to become increasingly coarser as time goes by. For this reason, and without the SFS model, the VPM simulation is under-resolved and inaccurate in the turbulent regime This is observed in Fig. 5.2 as an abrupt turbulent breakdown after transition. In the laminar regime (nondimensional time between 0 and 50), the velocity shows little sensitivity to a spatial discretization finer than ∆x = 0.13a, being between 4% of the DNS velocity at time 0, as shown in the zoom-in box of Fig. 5.2. The DNS shows a slow transition from laminar to turbulent starting at nondimensional time 75, while the VPM also transitions around time 75 for ∆x ≤ 0.13a, quickly leading the ring into turbulent breakdown. Hence, ∆x = 0.13a was used in all the simulations that follow, which results in 150k particles. These 150k vortex elements, contrasted with the 100 million grid elements used in the DNS, highlight the computational efficiency of our meshless LES, which enabled us to run our simulations in only a matter of hours on a desktop workstation. Fig. 5.3 compares the DNS to classic and reformulated VPM simulations, along with the analytic velocity of a viscous Gaussian vortex ring (derived in Appendix D). Archer et al.91 identified that the initial Gaussian distribution goes through a transient phase until achieving a
+
+
+Validation of Meshless LES Scheme 65
+0 25 50 75 100 125
+Time t 0
+R2
+0
+0.00
+0.05
+0.10
+0.15
+0.20
+0.25
+0.30
+Velocity UR0
+0
+DNS
+x=0.17a
+x=0.13a
+x=0.10a
+x=0.08a
+0 12.5
+0.21
+0.24
+Figure 5.2: Spatial convergence of vortex ring simulated with reformulated VPM, compared to direct numerical simulation (DNS).
+25 0 25 50 75 100
+Time t 0
+R2
+0 t*
+0.15
+0.20
+0.25
+0.30
+Velocity UR0
+0
+DNS
+Analytic
+Classic
+VPM Reformulated
+VPM
+Figure 5.3: Vortex ring simulated with classic VPM (t∗ = 25) and reformulated VPM (t∗ = 0), compared to direct numerical simulation (DNS, t∗ = 25) and analytic solution (t∗ = 25).
+steady skewed distribution. They denoted the time that the simulation takes to achieve this steady distribution as t∗, reporting t∗ = 25 for their DNS. Similarly, the VPM simulations were also observed to have a phase of transient vorticity distribution. In Fig. 5.3 both the classic VPM simulation and the analytic solution were shifted by t∗ = 25, showing good agreement with the DNS velocity at time 0. However, the classic VPM slowly drifts away from both the analytic and DNS velocity after time 0. In contrast, the reformulated VPM starts off with a velocity between 4% of the DNS velocity at time 0 and maintains good agreement up to turbulent breakdown. This confirms that the reformulated VPM accurately resolves vorticity advection and viscous diffusion in the laminar regime.
+5.2 Leapfrogging Vortex Rings
+Two vortex rings that travel in the same direction can repeatedly leapfrog, stretching and contracting as they pass one another. This poses a good
+
+
+Validation of Meshless LES Scheme 66
+012345678
+Ring centroid Z
+R0
+0.6
+0.8
+1.0
+1.2
+1.4
+Ring radius R
+R0
+Ring1
+Ring2
+LBM
+rVPM
+Analytic
+cVPM
+Figure 5.4: Leapfrogging vortex rings simulated with classic VPM (cVPM) and reformulated VPM (rVPM) without SFS model, compared to lattice Boltzmann method (LBM) and analytic solution.
+92M. Cheng, J. Lou, and T. T. Lim (2015). “Leapfrogging of multiple coaxial viscous vortex rings”.
+93M. Cheng, J. Lou, and L.-S. Luo (2010). “Numerical study of a vortex ring impacting a flat wall”.
+validation case for vortex stretching. Two identical vortex rings with initial radii R0 = 1, thickness a
+R0 = 0.1, and separation ∆Z = R0 were
+simulated at Re = 3000 and compared to the simulation through lattice Boltzmann method (LBM) reported by Cheng et al.92 The LBM simulation is a finite-difference DNS with second order spatial accuracy solving the generalized lattice-Boltzmann equation, reportedly using 15 billion cells.93 In contrast, the VPM simulations used only 600k particles, which again highlights the computational efficiency of our meshless LES. First, the simulation was performed on both classic and reformulated VPM without the SFS model, shown in Fig. 5.4. Reformulated VPM and LBM show good agreement in the first leapfrog (Z/R0 ≤ 3), but they deviate in subsequent cycles (Z/R0 > 3) once turbulence starts to arise in the LBM causing the rings to slow down and run into each other. This is not captured in the reformulated VPM as the simulation is under-resolved (it does not resolve all the scales of turbulent motion) and leads to a laminar behavior, which indicates the need for an SFS model. Before incorporating the SFS model, however, we conclude that the reformulated VPM accurately resolves vortex stretching in the laminar regime. Fig. 5.4 also shows the classic VPM simulation and compares it to an analytic solution derived in Appendix D. The classic VPM leads to dynamics that are substantially different from both reformulated VPM and LBM, but it matches the analytic solution. As described in Appendix D, the analytic solution assumes that (1) the core size a is not affected by the stretching of the ring and that (2) the core size does not affect the interactions between rings. The former clearly violates conservation of mass, while the latter is suspected to violate conservation of angular momentum. Such good agreement between the classic VPM and this unphysical analytic solution supports our previous claim in Section 2.1.3 that the classic VPM may lead to unphysical results, which may also cause the method to be numerically unstable. Finally, the leapfrog simulation was repeated with the SFS model
+
+
+Validation of Meshless LES Scheme 67
+Figure 5.5: Leapfrogging of vortex rings using reformulated VPM with and without SFS model, compared to lattice Boltzmann method (LBM). Visualization of rVPM+SFS simulation overlaid on top.
+Figure 5.6: Volume rendering of vorticity field as the leapfrogging rings merge. Particles shown as black points.
+added to the reformulated VPM, shown in Fig. 5.5. Notice that the SFS model only affects the dynamics after the first leapfrog (Z/R0 > 3) once turbulence starts to develop. This confirms that the dynamic procedure succeeds at auto-regulating the SFS model, suppressing it in the laminar regime while activating it in the turbulent regime. The diffusivity of the SFS model slows the rings down, eventually running into each other and mixing after three leapfrogs at Z/R0 > 6 (shown in more detail in Fig. 5.6). As seen in Fig. 5.5, the process of slowing down and running into each other happens at a different pace between the rVPM+SFS simulation and the LBM. It is unclear whether this discrepancy is due to our vortex-stretching SFS model lacking the full range of turbulent diffusion (requiring the addition of a vorticity-advection SFS model), or due to excessive numerical dissipation in the LBM. However, they are both consistent in that the rings mix after three leapfrog cycles, showing the ability of the SFS model to capture diffusion associated with vortex stretching in the turbulent regime. In order to estimate the computational cost of the VPM reformulation and the SFS model, Table 5.1 compares the computational time of
+
+
+Validation of Meshless LES Scheme 68
+Formulation SFS Model CPU Time Overhead Classic None tref Reformulated None 1.01 tref <1% Reformulated Constant Cd 1.08 tref +8% Reformulated Dynamic Cd 1.43 tref +43%
+Table 5.1: Computational time of leapfrog VPM simulations.
+94J.-B. Chapelier et al. (2018). “A Coherent vorticity preserving eddy-viscosity correction for Large-Eddy Simulation”.
+95W. R. Quinn et al. (1989). “Effects of nonparallel exit flow on round turbulent free jets”.
+each simulation to the classic VPM. The VPM reformulation runs as fast as the classic VPM, adding no significant overhead. The SFS model adds a computational overhead of 8% when a constant model coefficient is prescribed and 43% with the dynamic procedure. Comparing this to a benchmark study by Chapelier et al.,94 we conclude that the overhead of our SFS model is comparable to a Smagorinsky eddy-viscosity model, while the dynamic procedure adds an overhead comparable to a Germano-identity dynamic model. The work of Chapelier et al. suggests that further speedup could be achieved by implementing a sensor function, but this is left for future work.
+5.3 Turbulent Round Jet
+A jet discharging into a quiescent environment poses a canonical case for the study of turbulence, encompassing a laminar region near the nozzle that breaks down into turbulence away from the nozzle. Experimental measurements on a round jet were used to test that the reformulated VPM is able to resolve the mean and fluctuating components of turbulent flow, while resolving Reynolds stress directly. The simulation replicated the experiment by Quinn and Militzer95 which used a contoured nozzle with an exit diameter d of 45.4 mm, discharging air into stagnant ambient air with a centerline velocity Uc of 60 m/s. This corresponds to a Mach number of 0.18 and a diameter-based Reynolds number Re = Ucd/ν of 2 × 105.
+Figure 5.7: Boundary condition of round jet simulation defined with particles.
+
+
+Validation of Meshless LES Scheme 69
+0.0
+0.5
+1.0
+uz/Uc
+1.0 0.5 0.0 0.5 1.0 Radial position r/R
+0.1
+0.0
+0.1
+ur/Uc
+Figure 5.8: Streamwise (top) and radial (bottom) velocity close to nozzle exit in experiment by Quinn and Militzer (markers), compared to boundary condition of simulation (solid line) probed at z/d = 0.1.
+The simulation assumed a top-hat velocity profile with smooth edges at the nozzle exit given by
+ue(r) = Uc tanh
+(d
+2 −r
+θ
+)
+,
+where θ is the momentum thickness of the shear layer, assumed to be θ = 0.025d. As depicted in Fig. 5.7, this velocity profile was imposed as a boundary condition at z = 0 by defining a volumetric cylinder of length h with particles spanning from z = −h/2 to z = h/2 and performing an RBF fit to the vorticity profile ωθ = due
+dr . This computes the vortex
+strengths that induce the velocity profile ue inside the cylinder. The +z half of the cylinder was then removed, the −z half was kept in the computational domain as static particles throughout the simulation, while the set of particles computed at z = 0 were injected at each time step as free particles. The resulting boundary condition showed sensitivity to the cylinder length h, leading to a straight jet when h ≥ 2d, a contracting jet when h < 2d, and an actuator disk when h → 0. Since Quinn and Militzer reported a jet that was slightly contracting, the length of the boundary-condition cylinder was tailored to match the streamwise and radial velocity that they measured at the nozzle exit plane shown in Fig. 5.8, finding sufficient agreement when h = 1.7d. The simulation was first attempted with the classic VPM, but it quickly ended in numerical blow up at the initial stage of the jet. This is shown in Fig. 5.9 through an abrupt jump in global enstrophy. The reformulated VPM proved to be numerically stable in the initial and transition stages of the jet, however, the simulation becomes unstable in the fully-developed turbulent regime as enstrophy builds up in the absence of SFS turbulent diffusion. Introducing the SFS model, the enstrophy production of the inlet balances out with the forward-scatter of the fullydeveloped region and the rVPM simulation becomes indefinitely stable, as shown in Fig. 5.9. Interestingly, the SFS model did not stabilize the
+
+
+Validation of Meshless LES Scheme 70
+classic VPM simulation, which indicates that both the reformulated VPM and the SFS model are needed to achieve numerical stability. Once proven stable, the simulation was run for 50 ms with time step ∆t = 0.02 ms until achieving a fully-developed region that was statistically stationary. This was run on a single node with 128 CPU cores (dual 64-core AMD EPYC 7702, 2.0 GHz) resulting on a wall-clock time of two and a half days using up to 3 × 106 particles. Fig. 5.10 shows the particle field, vortex strengths, and the SFS model coefficient Cd close to the nozzle at t = 48 ms, while Fig. 5.11 shows the vorticity of the entire field. As seen in Fig. 5.11, coherent vortical structures form in the initial region (z < 1d), which leapfrog and mix transitioning to fully-developed turbulent flow by z > 3d. Notice in Fig. 5.10 that the model coefficient is negligibly small in the initial region and increases to 0.1 < Cd < 1 in the fully-developed regime. This shows that the dynamic procedure succeeds at automatically calibrating Cd, hindering SFS turbulent diffusion in the laminar regime while facilitating it in turbulent regions.
+0 5 10 15 20 25 Time t (ms)
+0
+10
+20
+30
+40
+Enstrophy (m3/s2)
+×103
+cVPM
+cVPM + SFS
+rVPM
+rVPM + SFS
+Figure 5.9: Global enstrophy of turbulent round jet with classic VPM (cVPM) and reformulated VPM (rVPM).
+Figure 5.10: Vortex particles (top), vortex strength (middle), and SFS model coefficient (bottom) close to jet nozzle at t = 48 ms.
+
+
+Validation of Meshless LES Scheme 71
+Figure 5.11: Volume rendering of vorticity field in turbulent jet at t = 48 ms showing distinct flow features: Coherent structures form in the initial region (z < 1d) that mix and break down by z > 3d.
+t = 2 ms
+t = 4 ms
+t = 8 ms
+Figure 5.12: Evolution of turbulent jet simulation: (left) volume rendering and (right) slice of vorticity field. Continues in next page.
+
+
+Validation of Meshless LES Scheme 72
+t = 10 ms
+t = 22 ms
+t = 45 ms
+t = 50 ms
+Figure 5.12: Evolution of turbulent jet simulation (continued).
+The formation and time evolution of the jet are shown in Fig. 5.12. Initially, a vortex ring forms at the head of the jet. As the ring travels downstream, a vortex sheet is deployed forming the shear layer, seen at t = 2 ms. The vortex sheet is stretched as the flow develops, eventually rolling up and forming filaments, seen at t = 4 ms. The filaments pair up, leapfrog, merge, and breakdown (seen at t = 8 ms) eventually forming the fully-developed turbulent region at t > 20 ms. Fig. 5.13 shows the history of Cd throughout this process, calculated at each time step as the average |Cd| over all the particles where Cd 6= 0. Here we see that the average Cd is negligibly small in the initial development of the jet, but it ramps up and converges to a value of 0.43 as the flow becomes fully developed, again confirming the ability of the dynamic procedure to automatically calibrate the SFS model at each flow regime. To validate the dynamics predicted by the simulation, the velocity was probed at five stations along the jet and statistical properties were
+
+
+Validation of Meshless LES Scheme 73
+0 10 20 30 40 50 Time t (ms)
+10 3
+10 2
+10 1
+100
+Model coefficient Cd
+Cd = 0.43
+Figure 5.13: Average SFS model coefficient in turbulent jet simulation as computed through the dynamic procedure.
+96Quinn et al., “Effects of nonparallel exit flow on round turbulent free jets”.
+97C. G. Ball et al. (2012). “The flow field in turbulent round free jets”.
+compared to the experimental measurements reported by Quinn and Militzer.96 The data was also supplemented with other experiments of similar round jets compiled by Ball et al.97 Statistical properties were calculated through temporal and spatial ensemble averages after the flow became statistically stationary in the region 0 ≤ z ≤ 5d. Averaging was performed over the time interval 40 ms ≤ t < 50 ms. Fig. 5.14(a) shows the mean component of the streamwise velocity profile, uz, normalized by the centerline velocity at each station. The mean component shows excellent agreement with the experiments in the initial and transition regions (0 ≤ z ≤ 3d) and reasonable agreement in the fully-developed turbulent region (z ≥ 4d) though slightly overexpanded. Fig. 5.14(b) shows the fluctuating component of the streamwise velocity, u′
+z, or standard deviation, while Fig. 5.14(c) shows the Reynolds stress between streamwise and radial velocity, defined as the square root of the covariance,
+√
+u′zu′r. At z = 0, the simulation shows only a small fluctuation and Reynolds stress as the flow is dominated by the boundary condition. Away from the nozzle exit plane (z > 0), fluctuations and Reynolds stress concentrate at the shear layer (r/R = 1) in the laminar region (z ≈ 1d), and gradually spread as the jet breaks down in the turbulent regime (z ≥ 4d). Fluctuations are overpredicted (and, as a consequence, also the Reynolds stress), however this is in within reasonable agreement with the experiments. These predictions can be further improved in future work with the addition of an SFS model of vorticity advection increasing the turbulent diffusion (and damping out fluctuations), or implementing a spatial adaptation strategy to better resolve small scales. However, the current agreement with the experiments suffices to confirm that our scheme is an LES able to resolve mean and fluctuating large-scale features of the flow. Also, its ability to directly resolve Reynolds stress renders the reformulated VPM a higher fidelity approach than Reynolds-average approaches like RANS and URANS (where Reynolds stresses are rather modeled), while being completely meshless.
+
+
+Validation of Meshless LES Scheme 74
+1.25
+uz/Uc
+3
+2
+1
+0
+1
+2
+3
+Radial position r/R
+z=0
+1.25
+uz/Uc
+z = 1d
+1.25
+uz/Uc
+z = 2d
+1.25
+uz/Uc
+z = 3d
+1.25
+uz/Uc
+z = 4d
+1.25
+uz/Uc
+z = 5d
+(a) Mean streamwise velocity.
+0.3
+u z/Uc
+4
+3
+2
+1
+0
+1
+2
+3
+4
+Radial position r/R
+z=0
+0.3
+u z/Uc
+z = 1d
+0.3
+u z/Uc
+z = 2d
+0.3
+u z/Uc
+z = 3d
+0.3
+u z/Uc
+z = 4d
+0.3
+u z/Uc
+z = 5d
+(b) Fluctuating component of the streamwise velocity.
+0.3
+u zu r Uc
+4
+3
+2
+1
+0
+1
+2
+3
+4
+Radial position r/R
+z=0
+0.3
+u zu r Uc
+z = 1d
+0.3
+u zu r Uc
+z = 2d
+0.3
+u zu r Uc
+z = 3d
+0.3
+u zu r Uc
+z = 4d
+0.3
+u zu r Uc
+z = 5d
+(c) Reynolds stress between streamwise and radial fluctuating components.
+Figure 5.14: Profiles along turbulent round jet. Simulation: - rVPM. Experimental: ? Quinn and Militzer;a ⊕
+Fellouah and Pollard;b . Mi et al., contraction nozzle;c ∗ Iqbal and Thomas;d Romano;e Xu and Antonia, contraction nozzlef .
+a W. R. Quinn et al. (1989). “Effects of nonparallel exit flow on round turbulent free jets”. b H. Fellouah et al. (2009). “The velocity spectra and turbulence length scale distributions in the near to intermediate regions of a round free turbulent jet”. c J. Mi et al. (2001). “Influence of jet exit conditions on the passive scalar field of an axisymmetric free jet”.
+d M. O. Iqbal et al. (2007). Coherent structure in a turbulent jet via a vector implementation of the proper orthogonal decomposition.
+e G. Romano (2002). “The effect of boundary conditions by the side of the nozzle of a low Reynolds number jet”. f G. Xu et al. (2002). “Effect of different initial conditions on a turbulent round free jet”.
+
+
+Validation of Meshless LES Scheme 75
+98N. S. Zawodny et al. (2016). “Acoustic Characterization and Prediction of Representative, Small-scale Rotary-wing Unmanned Aircraft System Components”.
+99A. R. Schenk (2020). “Computational Investigation of the Effects of Rotor-onRotor Interactions on Thrust and Noise”.
+100M. J. Churchfield et al. (2017). “An Advanced Actuator Line Method for Wind Energy Applications and Beyond”.
+5.4 Aircraft Rotor in Hover
+The rotation of blades in static air drives a strong axial flow caused by the shedding of tip vortices. This is a challenging case to simulate since, in the absence of a freestream, the wake quickly becomes fully turbulent as tip vortices leapfrog and mix close to the rotor. Thus, a rotor in hover is a good engineering application to showcase the accuracy, numerical stability, and computational efficiency of the reformulated VPM. In this test case, we simulated the experiment by Zawodny et al.98 consisting of a DJI 9443 rotor in hover at 5400 RPM. This two-bladed rotor is 9.4 inches in diameter, resulting in a tip Mach number of 0.20 and chord and diameter-based Reynolds numbers at 70% of the blade span of 6 × 104 and 7 × 105, respectively. Our simulations were also compared to unsteady Reynolds-average Navier-Stokes (URANS) results reported by Schenk,99 obtained with the commercial software STAR-CCM+. The URANS is an unsteady compressible solver with an SST k–ω turbulence model, resolving the blades with an all-y+ wall treatment on a rotating mesh surrounding the rotor. It used an unstructured mesh with 14 million cells, mesh refinement down to a y+ of only 30, and time steps equivalent to 3◦ of rotation on a first-order time integration scheme, which is a rather coarse simulation, but requiring very low computational resources. The rotating blades are computed in our VPM through an actuator line model (ALM), which is a common practice in LES.100 Our ALM discretizes the geometry into blade elements, using a two-dimensional viscous panel method to compute forces and circulation along each blade cross section as the blades move. More details on the ALM are given in Section 6.2. The vorticity of each blade is introduced in the fluid domain by embedding static particles along the surface that capture the blade’s circulation distribution, while shedding free particles at the trailing edge associated with unsteady loading and trailing circulation, as shown in Fig. 5.15. The frequency of particle shedding per revolution determines the initial spacing ∆x in between particles, which, along with the core size σ, determines the spatial resolution at which the wake is being resolved. The initial particle size σ was set as to provide a particle
+Figure 5.15: Actuator line model in rotor simulation. Particles colored by their source of vorticity; arrows indicate direction of vortex strength.
+
+
+Validation of Meshless LES Scheme 76
+101Zawodny et al., “Acoustic Characterization and Prediction of Representative, Small-scale Rotary-wing Unmanned Aircraft System Components”.
+102The experiment reported the thrust coefficient defined as CT = T
+ρπ R2 (ΩR)2 which is typical in the rotorcraft community, while here we have converted their measurement to CT as defined in the propeller convention.
+overlap λ = σ
+∆x of 2.125 at the blade tip. The VPM simulations used a
+time step equivalent to a rotation of 1◦ while shedding particles every 0.5◦ with 50 blade elements. First, the simulation was attempted on the classic VPM without the SFS model, which quickly ended in numerical blow up after one revolution, shown in Fig. 5.16. Introducing the SFS model made the classic VPM noticeably more stable, however, the simulation still blew up before the wake became fully developed. Introducing the reformulated VPM made the simulation completely stable, using up to 1 × 106 particles after 16 revolutions. As shown in Fig. 5.16, the rate of enstrophy produced by the rotor eventually balances out with the forward scatter of the SFS model. This further asserts the numerical stability gained with the reformulated VPM and SFS model. Next, the thrust coefficient CT predicted with rVPM was compared to the experimental coefficient reported by Zawodny et al.101 We define CT in the propeller convention as CT = T
+ρn2d4 , where T is the dimensional
+thrust, ρ is air density, and n is rotations per seconds. The experiment reported102 a mean CT of 0.072. In our simulation, the thrust is calculated integrating the force computed by the ALM at each blade element that is immersed in the fluid domain. As shown in Fig. 5.17, the VPM simulation shows excellent agreement with the experiment, predicting a mean value within 2% of the experimental mean value. This illustrates the capacity of our method to provide accurate predictions in a real engineering application.
+0 2 4 6 8 10 12 14 16 Number of revolutions
+0
+2
+4
+6
+8
+Enstrophy (m3/s2)
+×103
+cVPM
+cVPM+SFS
+rVPM + SFS
+Figure 5.16: Global enstrophy in VPM rotor simulations.
+0 2 4 6 8 10 Number of revolutions
+0.05
+0.07
+0.09
+0.11
+0.13
+Thrust coefficient CT
+rVPM
+URANS
+Experimental
+Figure 5.17: Thrust history in rotor simulations compared to experimental mean CT. Shaded region encompasses the 95%-confidence interval of the experiment.
+
+
+Validation of Meshless LES Scheme 77
+0.0 0.2 0.4 0.6 0.8 1.0 Radial position r/R
+0
+5
+10
+15
+20
+25
+Loading (N/m)
+rVPM
+URANS
+Figure 5.18: Time-average blade loading distribution in rotor simulations.
+103Zawodny et al., “Acoustic Characterization and Prediction of Representative, Small-scale Rotary-wing Unmanned Aircraft System Components”.
+In order to illustrate the low computational cost of our meshless LES, we now compare our simulation to the URANS simulation by Schenk. As previously pointed out, for the sake of minimizing computational effort, the URANS simulation is both spatially and temporally coarse (using only 14 million cells down to a y+ of only 30, with time steps of 3◦), while using a first-order time integration. Thus, this URANS simulation represents the minimum computational effort that is plausible for a simulation of this kind while still being accurate (the CT predicted by URANS is still within 2% of the experimental mean value, as shown in Fig. 5.17). Fig. 5.18 compares the time-average loading distribution along the blade as predicted with rVPM and URANS, showing that both methods can resolve the blade loading with similar accuracy. However, the rVPM has the advantage of being able to accurately preserve the vortical structure of the wake, shown in Fig. 5.19, with minimal computational effort. The URANS simulation reportedly took about 10 wall-clock hours to resolve 10 revolutions, using 192 CPU cores across 12 nodes on the BYU Fulton supercomputer. This is equivalent to about 1800 core-hours. On the other hand, the rVPM simulation took about 4 wallclock hours to resolve 10 revolutions on a single node of the BYU Fulton supercomputer with 32 CPU cores, equivalent to about 140 core-hours. Hence, rVPM is 13 times faster (or one order of magnitude faster) than this coarse URANS simulation, while providing LES accuracy. While Schenk’s URANS simulation represents the low-fidelity end of mesh-based CFD, Zawodny et al.103 reported a high-fidelity mesh-based simulation using OVERFLOW2. OVERFLOW2 is a dettached-eddy simulation (DES) code using a URANS solver with the Spalart-Allmaras turbulence model near solid surfaces, while switching to a subgrid scale formulation in regions fine enough for large eddy simulation. Their simulation of the DJI 9443 rotor used 260 million grid cells with time steps corresponding to 0.25◦ on a second-order time integration scheme, reportedly predicting a mean CT within 2.5% of the experimental value. One rotor revolution reportedly took approximately 30 wall-clock hours using 1008 CPU cores on the NAS Pleiades supercomputer. Extrapolating this to 10 revolutions, the DES takes 300 wall-clock hours and 300k core-hours. Thus, recalling that rVPM took only 140 core-hours, the rVPM is 2200x faster (or three orders of magnitude faster) than this DES
+
+
+Validation of Meshless LES Scheme 78
+Figure 5.19: Meshless LES of rotor in hover after 15 revolutions using rVPM: (left) computational elements (vortex particles and strength), and (right) volume rendering of vorticity field.
+Figure 5.20: Mesh-based LES of rotor in hover reported by Delorme et al.: (left) computational elements, and (right) iso-surface of Q-criterion colored by velocity magnitude. Reprinted from Aerospace Science and Technology, Vol 108, Delorme et al, Application of Actuator Line Model for Large Eddy Simulation of Rotor Noise Control, Copyright 2020 Elsevier Masson SAS, with permission from Elsevier.
+104Y. Delorme et al. (2021). “Application of Actuator Line Model for Large Eddy Simulation of Rotor Noise Control”.
+simulation. While Schenk’s URANS and Zawodny’s DES represent the low and high end of fidelity in mesh-based CFD, respectively, Delorme et al.104 reported two LES that lay somewhere in between both ends. One LES used an actuator line model (ALM) similar to our meshless LES, while the
+
+
+Validation of Meshless LES Scheme 79
+other used an immersed boundary method (IBM). All solvers previously mentioned are summarized in Table 5.2 and their computational costs are compared to our meshless LES in Table 5.3. The LES by Delorme et al., shown in Fig. 5.20, is an implicit LES that relies on numerical dissipation to approximate subgrid-scale turbulent diffusion, reportedly predicting a mean CT within 2% of the experimental value. Out of the aforementioned mesh-based simulations, their LES-ALM simulation is the most akin to our meshless LES since both use an ALM while resolving vortical structures with comparable fidelity, as shown in Fig. 5.19 (right) and Fig. 5.20 (right). The main computational advantage of our meshless LES lays in that computational elements are only placed where vorticity is originated and are automatically convected by the flow field, as shown in Fig. 5.19 (left), while mesh-based LES requires meshing the entire space, as shown in Fig. 5.20 (left). Their LES-ALM simulation of a modified DJI 9443 rotor reportedly took a wall-clock time of 24 hours per every 10 rotor revolutions using 845 CPUs, equivalent to 20k core-hours. Compared to the 140 core-hours of the rVPM, our meshless LES is 145x faster (or two orders of magnitude faster) than this mesh-based LES. In summary, as shown in Table 5.3, our meshless LES appears to be two orders of magnitude faster than a mesh-based LES with similar fidelity, while being one order of magnitude faster than a low-fidelity URANS simulation and three orders of magnitude than high-fidelity DES. It is difficult to justify an exact comparison between the computational cost of each simulation since each solver used different order-ofconvergence schemes, spatial and temporal resolution, and computing hardware. However, the comparison is still qualitatively insightful: our meshless LES can be 10x to 1000x faster than conventional mesh-based CFD approaches.
+Table 5.2: Description of CFD solvers in rotor benchmark.
+Simulation Software Blade Scheme Turbulence Model Computational Elements
+rVPM
+(meshless LES) FLOWVPM Actuator line model Anisotropic dynamic SFS 1M vortex elements
+URANS STAR-CCM+ Blade-resolved SST k–ω 14M grid cells
+LES-ALM MIRACLES Actuator line model None
+(numerical dissipation) 50M grid points
+LES-IBM MIRACLES Immersed boundary
+method
+None
+(numerical dissipation) 216M grid points
+DES OVERFLOW2 Blade resolved Spalart-Allmaras DES 260M grid points
+Simulation CPU Cores Wall-Clock Core-Hours rVPM Speedup rVPM 32 4.3 hours 140 URANS 192 9.6 hours 1.8k ~10x faster LES-ALM 845 24 hours 20k ~100x faster LES-IBM 1000 96 hours 96k ~500x faster DES 1008 300 hours 300k ~1000x faster
+Table 5.3: Rotor benchmark resolving 10 rotor revolutions. Computational cost of rVPM compared to mesh-based simulations.
+
+
+Conclusions
+In this study we have developed a meshless scheme for large eddy simulation that is accurate, stable, and computationally efficient. We started off by deriving a general set of VPM governing equations that solve the LES-filtered Navier-Stokes equations. The classic VPM turns out to be one of the formulations arising from these general equations, which seems to locally violate both conservation of mass and angular momentum, thus explaining its tendency to be numerically unstable. We then derived a new VPM formulation that uses the particle shape to reinforce local conservation of mass and angular momentum. In addition to the reformulated VPM, we developed a low-dissipation anisotropic SFS model that uses vortex stretching as the physical mechanism for turbulence. We proposed a novel dynamic procedure for calculating the model coefficient and a strategy for backscatter control. The dynamic procedure is based on a simultaneous balance of enstrophyproduction and derivatives between true and modeled SFS contributions. This SFS model is apt for both meshless and conventional mesh-based CFD, and is well suited for flows with coherent vortical structures where the predominant cascade mechanism is vortex stretching. Extensive validation was presented, asserting the scheme comprised of the reformulated VPM and SFS model as a meshless LES accurately resolving large-scale turbulent dynamics. Advection, viscous diffusion, and vortex stretching were validated through the simulation of vortex rings, showing good agreement with DNS and LBM. It was shown that the reformulated VPM runs as fast as the classic VPM, adding no significant overhead, while the SFS model adds a computational overhead of 8% when a constant model coefficient is prescribed and 43% with the dynamic procedure. In the simulation of a turbulent round jet, a favorable agreement with experiments showed that our scheme is able to resolve the mean and fluctuating components of turbulent flow, while also resolving Reynolds stress directly. Finally, computational efficiency was demonstrated in an engineering application through the simulation of an aircraft rotor in hover. Our meshless LES showed to be two orders of magnitude faster than a meshbased LES with similar fidelity, while being one order of magnitude faster than a low-fidelity URANS simulation and three orders of magnitude than a high-fidelity DES. Along with highlighting the strengths of the method, it is also impor
+80
+
+
+Validation of Meshless LES Scheme 81
+105Yokota, Barba, et al., “Petascale turbulence simulation using a highly parallel fast multipole method on GPUs”; Hu et al., “Scalable Fast Multipole Accelerated Vortex Methods”.
+tant to recognize its limitations. The scheme proposed in this study is especially well suited for the modeling of unbounded incompressible flow with coherent vortical structures, as in the case of a wake. However, the modeling of wall-bounded flow was not explored as this poses the challenge of defining appropriate boundary conditions for the vorticity equation. The different cases simulated in this study showed good scaling and accuracy of our LES approach for a wide range of Reynolds numbers on unbounded flow. However, none of the simulations attempted to resolve boundary layers nor flow separation. This study limited its computation to a conventional CPU paradigm, but previous work105 shows a strong potential for massive parallelization and speed up in heterogenous GPU architectures. This study validates the reformulated VPM as an LES that is both numerically stable and meshless, while able to accurately resolve mean and fluctuating large-scale features of turbulent flow with minimal computational effort. In future work, a wider variety of boundary conditions can be explored, especially aiming at introducing solid boundaries without a mesh. Part II will explore the introduction of boundary conditions using an actuator surface model for aerodynamic applications.
+
+
+Part II
+Meshless
+Large Eddy Simulation
+of
+Multirotor Aircraft
+
+
+106 Flying Cars: Investment Implications of Autonomous Urban Air Mobility (2018).
+107M. Moore (2010). “NASA Puffin Electric Tailsitter VTOL Concept”.
+2https://evtol.news/aircraft, accessed January 26th, 2022.
+108B. J. Brelje et al. (2018). “Electric, hybrid, and turboelectric fixed-wing aircraft: A review of concepts, models, and design approaches”.
+109K. Pascioni et al. (2018). “Tonal Noise Prediction of a Distributed Propulsion Unmanned Aerial Vehicle”.
+110L. Persson et al. (2017). Design and Control of an Experimental Tiltwing Aircraft; G. Droandi et al. (2018). “Tiltwing MultiRotor Aerodynamic Modeling in Hover, Transition and Cruise Flight Conditions”.
+111C. Silva and W. Johnson (2021). “Practical Conceptual Design of Quieter Urban VTOL Aircraft”.
+112P. F. Pelz et al. (2021). “Sustainable aircraft design – A review on optimization methods for electric propulsion with derived optimal number of propulsors”.
+Introduction
+A New Design Space
+Electric vertical takeoff and landing (eVTOL) aircraft is a flourishing technology that is projected to grow into a $1.5 trillion industry of urban air mobility by the year 2040.106 Since the first foresight107 of this nascent technology in 2010, the list of known eVTOL aircraft concepts has grown from a handful to more than 450 today2. This list includes aerospace giants like Airbus and Boeing, established car makers like Toyota and Hyundai, and tech eminence like Uber and Alphabet. An example of an eVTOL vehicle is shown in Fig. II.1. The excitement around eVTOL arises from a new design space enabled by recent and ongoing advancements in electric battery technology. An electric powertrain allows the designer to distribute the propulsion system into multiple rotors to takeoff and land vertically for intracity travel, capitalizing on the dream of a “flying car". However, these novel aircraft configurations pose technical challenges that still remain to be solved.108 A strong noise signature109 and a complicated transition maneuver110 are examples of the challenges encountered in eVTOL aircraft, which are both dominated by aerodynamic interactions between the multiple rotors and lifting surfaces.111 The complicated aerodynamic interactions encountered in eVTOL are not well understood, are not captured through conventional design tools, and need to be addressed in the early stages of design.112 For instance, current models used in preliminary design fail to predict and assess configurations that may lead to the wake of a rotor impinging on another rotor or a wing during the transition maneuver. These unsteady
+Figure II.1: Example of an eVTOL aircraft. This is a modified version of the A3 Vahana demonstrator, which is a tandem tiltwing aircraft. Modeled in FLOWUnsteady.
+83

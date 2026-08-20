@@ -1,0 +1,505 @@
+Tuning MPC for Desired Closed-Loop Performance for MIMO Systems
+Gaurang Shah and Sebastian Engell
+Abstract— Model Predictive Control (MPC) is widely used in the process industries. It is an optimization-based approach, where several tuning parameters such as the penalty matrices in the cost function and the prediction and control horizons must be chosen. Tuning such parameters can be challenging as they are related to the closed-loop performance in a complex manner. This problem becomes even more complicated when tuning MPC controllers for MIMO systems. This paper addresses this problem and presents a systematic approach to determine MPC tuning parameters for MIMO systems based on a specification of the desired behaviour of the loop for small changes where the MPC controller acts as a linear controller. In this manner, the robustness of the closed loop to model mismatch can be taken into account systematically using results from robust linear control theory. The approach involves solving sequentially two semidefinite programming problems (convex optimization problems), one of which is formulated in the frequency-domain. A key feature of our approach is that the tuning parameters are determined such that in the unconstrained case they guarantee a nominal robust closed-loop performance. The approach is tested on two process control examples.
+I. INTRODUCTION
+Model Predictive Control (MPC) is one of the most popular advanced process control method and used frequently in the process industries. It is a model-based control technique in which a (usually quadratic) cost function that is computed from the predicted future plant outputs and the future control moves is minimized at every time step. From the vector of control movements obtained as a solution to the abovementioned optimization problem, only the first control input is applied to the plant and the optimization process is repeated at the next time instant. In addition to its optimizing nature, what makes MPC attractive is that:
+(i) it can be easily applied to multivariable (MIMO) processes, and (ii) input/output constraints as well as other external constraints can be easily incorporated into the overall optimization problem.
+Hence, in comparison to the classical linear controllers (P, PI or PID), MPC has found wide acceptance in varying applications. Since MPC is an optimization-based approach, in order to successfully implement an MPC several tuning parameters must be appropriately set. These include the prediction horizon, the control horizon and the penalty matrices used in the cost function. These tuning parameters are related to the process behaviour in a very complex manner and it is not
+G. Shah and S. Engell are with the Dept. of Bio- and Chemical Engineering, Process Dynamics and Operations Group, Technische Universita ̈t Dortmund, Germany. Tel.: +49-(0)231-755 5142, Email: {Gaurang.Shah,Sebastian.Engell}@bci.tu-dortmund.de
+straightforward to determine them. This poses a challenge and experience is needed to solve real-world problems successfully [1], [2]. Several papers have been published which discuss MPC tuning for closed-loop stability and robustness to uncertainties, however usually in a qualitative manner. With reference to the MIMO systems, the problem of MPC tuning becomes even more complicated as a compromise between speed of response, decoupling of the loops and robustness must be found. A commonly followed procedure is to fix all the MPC tuning parameters except one, for example one could fix the prediction and the control horizons as well as the penalty matrix for the setpoint error at the beginning, leaving the penalty matrix for the change in the control movements as the only available degree of freedom. Then by varying this degree of freedom, an analysis can be performed which relates the closed-loop performance to this degree of freedom. From this analysis, tuning guidelines can be derived, see [3]-[8]. Alternatively, optimization can be applied to determine this degree of freedom, see [9]-[15]. The difficulty of determining an appropriate set of tuning parameters can be partly resolved by considering a linear quadratic regulator (LQR) design problem [16] which is equivalent to an infinitehorizon MPC. For the constrained case, Scokaert et al. [17] discuss a constrained LQR problem which leads to a finitehorizon MPC. Another approach to the tuning of multivariable MPC controllers is to decouple the MIMO system using an external decoupler [18] and then design MPC’s for the resulting individual SISO loops [19], [20] or to use the sequential loop closure method [21]. A more rigorous approach to the decoupling design using an MPC would be to modify the standard quadratic cost function. See papers by Middleton et al. [22] and Chai et al. [23]. Despite some progress made so far, there is still a need for a more systematic approach to perform MPC tuning. MPC tuning is usually performed ad-hoc based on some experience. Most of the time, several simulation runs are performed to check if the chosen tuning parameters are suitable. Linear control theory is well-established and mature. Many important results on the robust stability and performance of linear control loops have been derived. For linear plants, MPC control algorithms are linear controllers as long as the constraints are not active. This implies that in the unconstrained case MPC tuning parameters can be chosen such that a specified desired closed-loop transfer function with guaranteed performance and robustness properties is achieved. None of the above-mentioned references related MPC tuning to the closed-loop transfer function or frequency
+2011 American Control Conference on O'Farrell Street, San Francisco, CA, USA June 29 - July 01, 2011
+978-1-4577-0081-1/11/$26.00 ©2011 AACC 4404
+Authorized licensed use limited to: INDIAN INSTITUTE OF TECHNOLOGY BOMBAY. Downloaded on August 18,2025 at 06:40:43 UTC from IEEE Xplore. Restrictions apply.
+
+
+response. To our knowledge, only Trierweiler et al. [24] provide a formal relationship between the tuning parameters and the desired closed-loop performance, but it is mainly based on the robust performance number (RPN) which is a qualitative indicator of the ease of achieving a desired performance robustly. In [25], we proposed a new MPC tuning approach for unconstrained SISO systems. The novelty of our approach is that we develop a formal relationship between the tuning parameters and the desired closed-loop performance. As a result of this, it is possible to choose the prediction horizon, the control horizon and the penalty weights simultaneously by solving optimization problems. The desired closed-loop performance may result from the desired step-responses or e.g. from an H∞−optimal design which guarantees robustness properties. In this paper, we extend the above approach to the case of unconstrained MIMO systems. First, we develop a closedloop formulation of MIMO MPC the properties of which then become easy to analyze. We equate the closed-loop representation with the desired closed-loop transfer function. After some algebraic postprocessing, two optimization problems result, one of which is solved in the frequency-domain. Solving these optimization problems sequentially directly provides the values of the penalty weights in the cost function which is the main contribution of this paper. The approach is systematic and easy to implement. To our knowledge, there exists so far no such approach that systematically determines the tuning parameters for a desired closed-loop performance and robustness of an MPC controller. The optimization problems are semidefinite programming (SDP) problems which can be solved using convex optimization. This paper is organized as follows. We start with a preliminary discussion of MPC and discuss its closed-loop formulation in section II. In section III, we present our tuning approach and derive optimization problems for determining the weights of the quadratic performance criterion. We test our approach on some challenging examples in section IV. Finally, we conclude with some outlook on future work in section V.
+II. PRELIMINARIES
+A. Notations
+We distinguish between a scalar variable and a vector (or a matrix) by using an underlined variable representing the latter. Let Sn denote a set of symmetric matrices of size n × n. An underlined 0 indicates positive semidefiniteness of a matrix. N is a set of natural numbers excluding zero. R and C denote real and complex vector spaces respectively. A discrete polynomial P (z−1) is defined as a map f : C → C and denoted as P (z−1) = p0 + p1z−1 + . . .+ pnz−n, pi ∈ R,
+z ∈ C, n ∈ N. z−1 is a backward shift operator such that (1 − z−1)y(k) = ∆(z−1)y(k) = y(k) − y(k − 1) where ∆ is the difference operator and 1/∆ is a summation operator. dim(M ) represents the size of a matrix M . The symbols os and tr denote the overshoot and the risetime of a step-response.
+B. Closed-Loop Formulation
+A linear discrete-time plant is represented as:
+y(t + 1) = A−1(z−1)B(z−1)u(t) = B ̄(z−1)A ̄−1(z−1)u(t), (1)
+where A and A ̄ are diagonal matrices of polynomials obtained using the least common multiple of the denominators of the corresponding row (or column) of the overall MIMO plant transfer function. Here, dim(A) = n × n, dim(B) =
+dim(B ̄) = n × m, dim(A ̄) = m × m where n, m ∈ R are the no. of outputs and inputs respectively. Generalized Predictive Control (GPC) [26] is a popular form of MPC. It uses a CARIMA (Controlled AutoRegressive and Integrated Moving Average) prediction model:
+A(z−1)y(t + k) = B(z−1)u(t + k − 1) + T (z−1)
+∆(z−1) e(t + k),
+k = 1 . . . Np,
+(2)
+where T (z−1) is a matrix of noise filter polynomials, e(t) is a vector of white noise, Np is the prediction horizon and dim(T ) = n × n. For the sake of simplicity, we shall denote a matrix M (z−1) by only M henceforth. Multiplying Eq. (2)
+with E ̄k∆, it can be written as [2]:
+T ̄ky(t + k) = E ̄kB∆u(t + k − 1) + F ̄ky(t) + T ̄kEke(t + k), (3)
+where T ̄k, E ̄k, Ek, F ̄k are obtained from the Diophantine equations:
+T = EkA∆ + z−kF k, T ̄k = E ̄kA∆ + z−kF ̄k,
+where T E−1
+k = E ̄−1
+k T ̄k. Assuming the future noise to be zero, that is e(t + k) = 0, the prediction of y(t + k) at time step t + k − 1 is given by
+yˆ(t + k) = JkE ̄kB∆u(t + k − 1) + (JkF ̄k + Lk)y(t), (4)
+where
+I = J kT ̄k + z−kLk.
+Using the Diophantine equation:
+J kE ̄kB = GkI + z−kHk,
+Eq. (4) can be written as:
+yˆ(t + k) = Gk∆u(t + k − 1)
+} {{ } free response
++
+Hk∆u(t − 1) + (J kF ̄k + Lk)y(t)
+} {{ } forced response
+. (5)
+Cost Function: For the unconstrained case, the quadratic cost function:
+J=
+k=N2
+∑
+k=N1
+[
+[yˆ(t + k) − w(t + k)]Q1/2]2 +
+k=Nu
+∑
+k=1
+[
+∆u(t + k − 1)Λ1/2]2 ,
+Q ∈ Sn(N2−N1+1) ≻ 0, Λ ∈ SmNu 0,
+(6)
+4405
+Authorized licensed use limited to: INDIAN INSTITUTE OF TECHNOLOGY BOMBAY. Downloaded on August 18,2025 at 06:40:43 UTC from IEEE Xplore. Restrictions apply.
+
+
+Fig. 1. MPC analysis as a closed-loop control scheme.
+is minimized where N1, N2 denote the lower and upper prediction horizons, Nu is the control horizon, w(t + k) is a vector of future setpoints, Q and Λ are the penalty matrices which must be tuned. Minimizing the above cost function gives the optimal control input as:
+∆u(t + k − 1) = (GT QG + Λ)−1GT Q
+} {{ } K
+·
+[w(t + k) − Hk∆u(t − 1) − (JkF ̄k + Lk)y(t)] ,
+(7)
+where G is a matrix containing the coefficients of the elements of Gk, k = N1 . . . N2 and G ∈ Rn(N2−N1+1)×m. For a more transparent representation, let’s consider a 2 × 2 MIMO system. Assuming w(t + k) = w(t) = w, the first optimal control input is given by
+[ ∆u1(t) ∆u2(t)
+]
+=
+[ ks,11 ks,12 ks,21 ks,22
+]
+} {{ } ks
+[ w1 w2
+]
+−
+[ k11 · · · k1(2N′p)
+k21 · · · k2(2N′p)
+]
+} {{ } k
+0
+
+   
+H1
+H... 2
+H N ′p
+
+   
+} {{ } R
+1 (z−1 )
+[ ∆u1(t − 1) ∆u2(t − 1)
+]
+−
+[ k11 · · · k1(2N′p)
+k21 · · · k2(2N′p)
+]
+
+   
+J 1F ̄1 + L1
+J 2F ̄2 + L2
+...
+J N ′p
+F ̄N ′p + LN ′p
+
+   
+} {{ } S (z−1 )
+[ y1(t) y2(t)
+]
+,
+(8)
+where N ′
+p = N2 − N1 + 1, k0 ∈ K(1 . . . 2, 1 . . . 2N ′
+p),
+ks,11 = k11 + k13 + · · · + k1(2N′p−1),
+and similarly the other elements of ks can be determined as linear combinations of elements of k0. It is straightforward to generalize Eq. (8) to a n×n MIMO system. After rearranging the terms, a closed-loop form of MPC results as shown below and represented by Fig. (1):
+R(z−1)∆u(t) = ks w − S(z−1)y(t), R = I + R1. (9)
+C. Stability Analysis
+From Eqns. (1) and (9),
+R∆u(t) = ks w − z−1SB ̄A ̄−1u(t)
+⇔ (RA ̄∆ + z−1SB ̄)A ̄−1u(t) = ks w.
+This implies
+u(t) = A ̄(RA ̄∆ + z−1SB ̄)−1ks w, (10)
+and y(t) = z−1 B ̄(RA ̄∆ + z−1SB ̄)−1ks
+} {{ }
+Gcl,true (z−1 )
+w, (11)
+where Gcl,true(z−1) is the true resulting closed-loop trans
+fer function. From the above equation, the term (RA ̄∆ + z
+−1SB ̄)−1 determines the closed-loop stability. Substituting for R and S gives
+(RA ̄∆ + z−1SB ̄)
+=
+
+   
+I + z−1
+[ k11 · · · k1(2N′p)
+k21 · · · k2(2N′p)
+]
+
+   
+H1
+H... 2
+H N ′p
+
+   
+
+   
+A ̄∆+
+z
+−1
+[ k11 · · · k1(2N′p)
+k21 · · · k2(2N′p)
+]
+
+   
+J 1F ̄1 + L1
+J 2F ̄2 + L2
+...
+J N ′p
+F ̄N ′p + LN ′p
+
+   
+B ̄.
+After subsituting for H1...N′p , F ̄1...N′p and L1...N′p , this finally leads to
+(RA ̄∆ + z−1SB ̄) = A ̄∆+
+z
+−1
+[ k11 · · · k1(2N′p)
+k21 · · · k2(2N′p)
+]
+} {{ } degrees of freedom (k0)
+
+   
+zB ̄ − zG1A ̄∆
+z2B ̄ − z2G2A ̄∆
+...
+zN′
+p B ̄ − zN′
+p GN ′p
+A ̄∆
+
+   
+.
+(12)
+A properly chosen gain matrix k0 leads to a stable matrix
+(RA ̄∆+z−1SB ̄)−1. As a simple approach one could assume
+a diagonal matrix (RA ̄∆ + z−1SB ̄) and use the method in [25] to determine k0 in the above equation in order to obtain a stable closed-loop system. This however does not provide the desired closed-loop performance due to the presence of the coupled terms in Eq. (11).
+III. TUNING APPROACH
+The tuning problem is tackled in two steps: (i) determine the required k0 values in Eq. (12) for obtaining the desired closed-loop performance, (ii) determine the MPC tuning parameters (i.e. Q, Λ) which correspond to these k0 values.
+A. Determining the k0 Values
+Let Gcl,desired(z−1) be the desired closed-loop transfer function. Its diagonal elements define the desired tracking performance of the main loops while the off-diagonal elements can be specified such that they have small gains at all frequencies. It is desired to have Gcl,true ≈ Gcl,desired.
+Let Gcl,desired2 = (RA ̄∆ + z−1SB ̄)−1ks. Substituting in Eq. (11) and comparing the resulting equation with
+Gcl,desired, we obtain
+Gcl,desired2 = B ̄−1Gcl,desired. (13)
+4406
+Authorized licensed use limited to: INDIAN INSTITUTE OF TECHNOLOGY BOMBAY. Downloaded on August 18,2025 at 06:40:43 UTC from IEEE Xplore. Restrictions apply.
+
+
+Since Gcl,desired2 = (RA ̄∆ + z−1SB ̄)−1ks, we have
+(RA ̄∆ + z−1SB ̄) · Gcl,desired2 = ks. (14)
+This implies that we have in the frequency-domain
+[ R(ω)A ̄(ω)∆(ω)+ e
+−jωTs S(ω)B ̄(ω)
+]
+· Gcl,des.2(ω) − ks = 0, (15)
+where R(ω) = R(e−jωTs ) and Ts is the sampling time of the discrete system. Equivalently, Eq. (15) can be formulated as
+∣ ∣ ∣ ∣
+[ R(ω)A ̄(ω)∆(ω)+ e
+−jωTs S(ω)B ̄(ω)
+]
+· Gcl,des.2(ω) − ks
+∣ ∣ ∣
+∣ = 0. (16)
+Eq. (16) is relaxed into an inequality constraint as below:
+∣ ∣ ∣ ∣
+[ R(ω)A ̄(ω)∆(ω)+ e
+−jωTs S(ω)B ̄(ω)
+]
+· Gcl,des.2(ω) − ks
+∣ ∣ ∣
+∣≤ǫ
+1 2
+k , (17)
+where our goal is to minimize ‖ǫk‖2. Discretizing the frequency range and comparing the elements on both sides of Eq. (17), we have
+[Reijω ]2 + [Imijω ]2 ≤ ǫijω , ǫijω ≥ 0, ǫijω ∈ ǫk,
+where Reijω refers to the real part of an element (i, j) of the left-hand side of Eq. (15) at the frequency ω rad/s while Imijω refers to the imaginary part of the same. The above inequality can be transformed into a linear matrix inequality (LMI) as follows:
+
+
+1 Reijω 0
+Reijω ǫijω Imijω
+0 Imijω 1
+
+ 0. (18)
+So the optimization problem for determining k0 results as:
+min k0, ǫk ǫkT ǫk subject to:
+Ineq. (18)|ω=ωl , ∀ ωl ∈ [0, ω1], ω1 < π
+Ts
+. (19)
+Eq. (19) is a SDP problem and hence can be solved using a convex optimization method. A solution to the optimization problem with small ǫk values implies that the obtained k0 values achieve Gcl,desired. This values can then be used to determine the penalty matrices Q, Λ in the cost function.
+Analysis of the optimization problem: Eq. (17) can be written as a minimization problem as follows:
+mink0
+∥ ∥ ∥ ∥
+[ R(ω)A ̄(ω)∆(ω)+ e
+−jωTs S(ω)B ̄(ω)
+]
+· Gcl,des.2(ω) − ks
+∥ ∥ ∥ ∥2
+.
+Substituting Eq. (13), we get
+mink0
+∥ ∥ ∥ ∥
+[ R(ω)A ̄(ω)∆(ω)+ e
+−jωTs S(ω)B ̄(ω)
+]
+B ̄−1(ω)Gcl,des.(ω) − ks
+∥ ∥ ∥ ∥2
+.
+Using Eq. (11), we get
+mink0
+∥ ∥
+∥ksG−1
+cl,true(ω)Gcl,desired(ω) − ks
+∥ ∥
+∥2 .
+Simplifying further, we have
+mink0
+∥ ∥
+∥ksG−1
+cl,true(ω) [Gcl,desired(ω) − Gcl,true(ω)]
+∥ ∥ ∥2
+⇔ mink0 ||ksG−1
+cl,true
+[Gcl,desired − Gcl,true
+]
+} {{ } error term
+||2. (20)
+If Gcl,true ≈ Gcl,desired, in solving the minimization prob
+lem (19), the error term is minimized weighted by ksG−1
+cl,true.
+So if the frequency range is ω1 ≈ 3ωB, where ωB is the largest bandwidth of all the diagonal elements of Gcl,desired, this weighting emphasizes the region around the open-loop gain crossover frequency.
+B. Determining the Penalty Matrices Q, Λ
+This step is identical to that described in [25]. For simplicity, we assume Nu = 1. For a given k0 ∈ K, we have
+(GT QG + Λ)−1GT Q = k0
+⇒ GT Q = (GT QG + Λ)k0
+⇒ GT Q − (GT QG + Λ)k0 = 0.
+(21)
+The above equation results in a set of linear equality constraints in the coefficients of Q and Λ:
+fi(qxy, λvw) = 0, i = 1 . . . (m · n · (N2 − N1 + 1)),
+qxy ∈ Q, λvw ∈ Λ,
+which can be relaxed into inequality constraints:
+−ǫi ≤ fi(qxy, λvw) ≤ ǫi. (22)
+We formulate the optimization problem for determining Q, Λ as:
+minQ, Λ, ǫk0 ǫkT0ǫk0 subject to:
+− ǫi ≤ fi(qxy, λvw) ≤ ǫi,
+∀ i = 1 . . . m · n · (N2 − N1 + 1), Q ≻ 0, Λ 0,
+qxy ∈ Q, λvw ∈ Λ, ǫi ∈ ǫk0.
+(23)
+Eq. (23) is a SDP problem and hence is a convex optimization problem. A solution with small ǫk0 values implies that the obtained matrices Q, Λ satisfy Eq. (21) which in turn results in achieving Gcl,desired. If small ǫk0 values do not result, we can increase the number of degrees of freedom by increasing the term N2 − N1 + 1 and repeat the optimization. It is possible to obtain diagonal or semi-diagonal Q, Λ by augmenting Eq. (23) with additional linear constraints.
+IV. EXAMPLES
+We formulate our optimization problems in YALMIP [27], a MATLAB-based toolbox and we use the SeDuMi solver 1, which can be accessed from YALMIP, to solve the convex optimization problems. In some cases, the discrete-time plant models were obtained from their continuous transfer functions using the MATLAB-based System Identification Toolbox (V7.3). The optimization problems were solved on an Intel Core2 Duo CPU with 1.96 GB RAM. We would like to point out that different feasible solutions may result on different machines and with different optimization solvers.
+1freely available at http://sedumi.ie.lehigh.edu/
+4407
+Authorized licensed use limited to: INDIAN INSTITUTE OF TECHNOLOGY BOMBAY. Downloaded on August 18,2025 at 06:40:43 UTC from IEEE Xplore. Restrictions apply.
+
+
+A. A Simplified Distillation Column
+We consider a simplified distillation column model [28, p. 100] which is a good example of an ill-conditioned statically coupled plant. The example has been proposed as a case study in linear robust control in [29]. The continuous plant is discretized with a sampling time of Ts = 1 s and the discrete-time plant is obtained as below:
+(1 − 0.9868z−1)I y(t) = z−1
+[ 1.1629 −1.1444 1.4331 −1.4516
+]
+u(t).
+The following closed-loop behaviour, (tr, os), is specified:
+w1 → y1 : (10 s, 10%), w2 → y2 : (10 s, 20%).
+In order to achieve minimal coupling between different loops, the behaviour of channels w1 → y2 and w2 → y1 can be specified considering a high-pass filter having relatively low gain in the low-frequency region. These correspond to the following closed-loop transfer matrix (Gcl,desired):
+[ 0.0334(1+0.8978z−1) 1−1.661z−1 +0.724z−2
+0.001(1−0.98z−1) 1−0.3333z−1
+0.001(1−0.98z−1) 1−0.3333z−1
+0.0245(1+0.9325z−1 ) 1−1.764z−1 +0.811z−2
+]
+.
+We choose the prediction and the control horizons as N1 = 1, N2 = 6 and Nu = 1 respectively. The frequency range ω = [0, 0.4] rad/s with 30 grid-points spaced at 0.0138 rad/s was chosen for solving the optimization problem (19). Solving the optimzation problem (19), we obtained:
+k0 =
+[ 0.0782 −0.1178 0.2114 −0.1993 0.2529 −0.1739 · · · 0.0765 −0.1204 0.2095 −0.2016 0.2497 −0.1766 · · ·
+0.3272 −0.1910 0.3827 −0.1809 0.4374 −0.1704 0.3232 −0.1941 0.3778 −0.1839 0.4316 −0.1732
+] .
+Solving the optimization problem (23) gives the required values of Q, Λ. Since, dim(Q) = 12 × 12, it is not possible to present it here. Λ results as:
+Λ=
+[ 323.8076 −319.2207 −319.2207 314.7139
+]
+.
+In Fig. (2) the desired closed-loop performance and the obtained closed-loop performance after solving the optimization problem (23) are compared. Observe that only the magnitude plots are shown for the off-diagonal elements. Fig. (3) shows the closed-loop responses with the MPC controller to step changes in w1 and w2. We have decoupled plant responses meeting the desired closed-loop specifications.
+B. A Glass-Tube Manufacturing Process
+We consider a glass-tube manufacturing process discussed in [30]. The model is discretized with a sampling time of Ts = 10 s. The discrete-time plant matrices are given as below:
+A(1, 1) =1 − 2.426z−1 + 2.11z−2
+− 0.7784z−3+
+0.1035z−4 + 0.001929z−5
+− 0.0008307z−6 ,
+A(2, 2) =1 − 2.522z−1 + 2.118z−2
+− 0.5919z−3,
+B(1, 1) = − 0.0279 + 0.0034z−1 + 0.02124z−2
+− 0.002867z−3 ,
+B(1, 2) =0.0044 − 0.004874z−1 + 0.0005004z−2 +
+0.0005999z−3
+− 9.312 · 10−5z−4
+− 9.94 · 10−6z−5,
+B(2, 1) = − 0.0239 + 0.03974z−1
+− 0.01646z−2,
+B(2, 2) = − 0.0031 + 0.002665z−1.
+−60
+−40
+−20
+0
+Magnitude (dB)
+10−2 10−1 100 101
+−135
+−90
+−45
+0
+Phase (deg)
+(rad/sec)
+Gcl,desired Gcl,obtained
+10−3 10−2 10−1 100 101
+−110
+−100
+−90
+−80
+−70
+−60
+−50
+Magnitude (dB)
+(rad/sec)
+Gcl,desired Gcl,obtained
+w1 → y1 w2 → y1
+10−3 10−2 10−1 100 101
+−110
+−100
+−90
+−80
+−70
+−60
+−50
+Magnitude (dB)
+(rad/sec)
+Gcl,desired Gcl,obtained
+−80
+−60
+−40
+−20
+0
+20
+Magnitude (dB)
+10−2 10−1 100 101
+−180
+−135
+−90
+−45
+0
+Phase (deg)
+(rad/sec)
+Gcl,desired Gcl,obtained
+w1 → y2 w2 → y2
+Fig. 2. Ex. (IV-A) - Bode plot of desired vs. obtained performances.
+0 20 40 60 80 100
+−1
+0
+1
+2
+Plot of y(k)
+y(k)
+0 20 40 60 80 100
+−5
+0
+5
+Plot of u(k)
+Time (sec.)
+u(k)
+u1 u2
+y1 y2
+0 20 40 60 80 100
+−1
+0
+1
+2
+Plot of y(k)
+y(k)
+0 20 40 60 80 100
+−4
+−2
+0
+2
+Plot of u(k)
+Time (sec.)
+u(k)
+u1 u2
+y1 y2
+responses for a step in w1 responses for a step in w2
+Fig. 3. Ex. (IV-A) - Plant responses to a step change in w1 & w2.
+Owing to technical reasons, y2 is measured with a time delay of 214 s. As a result of this and considering additional robustness margins, the second-loop is made relatively slower compared to the first loop. Hence, the following closed-loop behaviour, (tr, os), is desired:
+w1 → y1 : (90 s, 5%), w2 → y2 : (560 s, 10%).
+The requirement for the minimal coupling between different loops can be specified similarly as in the previous example. These correspond to the following closed-loop transfer matrix (Gcl,desired):
+[ 0.054178(1+0.8478z−1) (1−1.51z−1 +0.61z−2 )
+0.01(1−0.98z−1) 1−0.3333z−1
+0.01(1−0.98z−1) 1−0.3333z−1
+z−21 0.002953(1+0.9697z−1 ) (1−1.906z−1 +0.9119z−2 )
+]
+.
+Note the additional time delay in the loop w2 → y2 whose desired transfer function has a rise time of 350 s. We choose the prediction and the control horizons as N1 = 1, N2 = 10 and Nu = 1. We choose the frequency range ω = [0, 0.03] rad/s with 30 grid-points spaced at 0.0010 rad/s for solving the optimization problem (19). Since, dim(Q) = 20 × 20, it is not possible to present it here. Λ results as:
+Λ=
+[ 0.0789 −0.0048 −0.0048 0.0008
+]
+.
+4408
+Authorized licensed use limited to: INDIAN INSTITUTE OF TECHNOLOGY BOMBAY. Downloaded on August 18,2025 at 06:40:43 UTC from IEEE Xplore. Restrictions apply.
+
+
+0 500 1000 1500 2000 2500 3000
+−1
+0
+1
+2
+Plot of y(k)
+y(k)
+0 500 1000 1500 2000 2500 3000
+−5
+0
+5
+10
+Plot of u(k)
+Time (sec.)
+u(k)
+u1 u2
+y1 y2
+0 500 1000 1500 2000 2500 3000
+−1
+0
+1
+2
+Plot of y(k)
+y(k)
+0 500 1000 1500 2000 2500 3000
+−10
+−5
+0
+Plot of u(k)
+Time (sec.)
+u(k)
+u1 u2
+y1 y2
+responses for a step in w1 responses for a step in w2
+Fig. 4. Ex. (IV-B) - Plant responses to a step change in w1 & w2.
+Fig. (4) shows the closed-loop responses to step changes in w1 and w2. The desired closed-loop specifications are almost met. The Bode plots showing the comparison of the desired and the obtained closed-loop performances are not shown owing to the lack of space.
+V. CONCLUSIONS AND FUTURE WORK
+We have presented a new systematic approach to determine MPC tuning parameters for unconstrained MIMO systems. The tuning approach is based upon the specification of the closed-loop performance in the frequency-domain. Then, two optimization problems are solved. First, the degrees of freedom, that is the feedback gain matrix k0, is determined using frequency response approximation. In the next step, we solve an another optimization problem to determine the penalty matrices Q, Λ which correspond to the obtained matrix k0. Both the optimization problems are SDP problems which can be solved using convex optimization solvers. So far, we have performed the tuning with Nu = 1. If we set Nu > 1, Eq. (23) becomes bilinear in the unknown coefficients of Q, Λ and K and hence is no longer a SDP problem. The resulting bilinear problem can be solved using global optimization approaches which is currently under investigation. We intend to extend the approach to larger MIMO systems with some additional robust performance criteria, in particular bounds on the closed-loop transfer matrices that result from the necessary robustness to plantmodel mismatch, an issue for which no systematic approach so far is available in the MPC literature.
+REFERENCES
+[1] M. Morari, Advances in Model-Based Predictive Control, 1994, ch. Model Predictive Control: Multivariable Control Technique of Choice in the 1990s? [2] E. F. Camacho and C. Bordons, Model Predictive Control, Second ed. Springer-Verlag, 2004. [3] A. R. McIntosh, S. L. Shah, and D. G. Fisher, “Analysis and Tuning of Adaptive Generalized Predictive Control,” The Canadian Journal of Chemical Engineering, vol. 69, no. 1, pp. 97–110, February 1991. [4] J. Ou and R. R. Rhinehart, “CV Damping Versus MV Suppression For MPC Tuning,” in Proceedings of the American Control Conference, 2002, pp. 2695–2700. [5] J. Zhang and X. Yu-Geng, “Some GPC stability results,” International Journal of Control, vol. 70, no. 5, pp. 831–840, 1998. [6] J. L. Garriga and M. Soroush, “Model Predictive Controller Tuning via Eigenvalue Placement,” in Proceedings of the ACC 2008, June 2008, pp. 429–434. [7] B. Kouvaritakis and J. A. Rossiter, “Multivariable Nyquist self-tuning: a general approach,” IEE Proceedings - Pt. D, vol. 136, no. 5, pp. 189–202, 1989.
+[8] C. Mohtadi, S. L. Shah, and D. G. Fisher, “Frequency response characteristics of MIMO GPC,” International Journal of Control, vol. 55, no. 4, pp. 877–900, 1992. [9] R. Shridhar and D. J. Cooper, “A Tuning Strategy for Unconstrained SISO Model Predictive Control,” Industrial and Engineering Chemistry Research, vol. 36, pp. 729–746, 1997. [10] D. W. Clarke and R. Scattolini, “Constrained Receding-Horizon Predictive Control,” in IEE Proceedings-D, vol. 138, no. 4, 1991, pp. 347–354. [11] H.-W. Chiou and E. Zafiriou, “Frequency Domain Design of Robustly Stable Constrained Model Predictive Controllers,” in American Control Conference, vol. 3, 1994, pp. 2852– 2856. [12] C. Rowe and J. Maciejowski, “Tuning MPC using H∞ Loop Shaping,” in Proceedings of the American Control Conference, June 2000, pp. 1332–1336. [13] J. Fan, G. E. Stewart, and G. A. Dumont, “Two-dimensional frequency response analysis and insights for weight selection in cross-directional model predictive control,” in 42nd IEEE Conference on Decision and Control, December 2003, pp. 3717–3723. [14] P. Vega, M. Francisco, and F. Tadeo, “Multiobjective optimization for automatic tuning of robust model based predictive controllers,” in Proceedings of the 17th IFAC WC, Seoul, South Korea, July 2008, pp. 6980–6985. [15] X. Yu-Geng and Z. Qun-Liang, “New Approach to Designing Constrained Predictive Controllers,” ACTA AUTOMATICA SINICA, vol. 31, no. 5, pp. 655–661, 2005. [16] S. Boyd, V. Balakrishnan, E. Feron, and L. ElGhaoui, “Control System Analysis and Synthesis via Linear Matrix Inequalities,” in Proceedings of the ACC, 1993, pp. 2147–2154. [17] P. Scokaert and J. B. Rawlings, “Constrained linear quadratic regulation,” IEEE Transactions on Automatic Control, vol. 43, no. 8, pp. 1163–1169, 1998. [18] B. Wittenmark, R. H. Middleton, and G. C. Goodwin, “Adaptive decoupling of multivariable systems,” International Journal of Control, vol. 46, no. 6, pp. 1993–2009, 1990. [19] F. Y. Lin, J. C. Jeng, and H. P. Huang, “Multivariable Control with Generalized Decoupling for Disturbance Rejection,” Ind. Eng. Chem. Res., vol. 48, pp. 9175–9185, 2009. [20] W. Zenghui, C. Zengqiang, S. Qinglin, and Y. Zhuzhi, “Multivariable Decoupling Predictive Control Based on QFT Theory and Application in CSTR Chemical Process,” Chinese Journal of Chemical Eng., vol. 14, no. 6, pp. 765–769, 2006. [21] D. Q. Mayne, “Sequential design of linear multivariable system,” IEE Proceedings, vol. 126, no. 6, 1979. [22] R. H. Middleton and G. J. Adams, “Modification of Model Predictive Control to Reduce Cross-Coupling,” in Proceedings of the 17th IFAC WC, 2008. [23] T. Chai, K. Mao, and X. Qin, “Decoupling design of multivariable generalized predictive control,” IEE Proc.-Control Theory Appl., vol. 141, no. 3, pp. 197–201, 1994. [24] J. O. Trierweiler and L. A. Farina, “RPN tuning strategy for model predictive control,” Journal of Process Control, vol. 13, pp. 591–598, 2003. [25] G. Shah and S. Engell, “Tuning MPC for Desired Closed-Loop Performance for SISO Systems,” in Proc. 18th Mediterranean Conference on Control and Automation, 2010, pp. 628–633.
+[26] D. W. Clarke, C. Mohtadi, and P. S. Tuffs, “Generalized Predictive Control - Part I. The Basic Algorithm,” Automatica, vol. 23, no. 2, pp. 137–148, 1987. [27] J. Lo ̈fberg, “Yalmip : A toolbox for modeling and optimization in MATLAB,” in Proceedings of the CACSD Conference, 2004. [Online]. Available: http://control.ee.ethz.ch/∼joloef/yalmip.php [28] S. Skogestad and I. Postlethwaite, Multivariable Feedback Control Analysis and Design, 2nd ed. John Wiley & Sons, Ltd., 2005. [29] D. J. N. Limebeer, “The Specification and Purpose of a Controller Design Case Study,” in Proceedings of the 30th Conference on Decision and Control, Brighton, England, 1991, pp. 1579–1580. [30] S. Ochs, S. Engell, and A. Drager, “Decentralized vs. Model Predictive Control of an Industrial Glass Tube Manufacturing Process,” in IEEE Conference on Control Applications, 1998.
+4409
+Authorized licensed use limited to: INDIAN INSTITUTE OF TECHNOLOGY BOMBAY. Downloaded on August 18,2025 at 06:40:43 UTC from IEEE Xplore. Restrictions apply.

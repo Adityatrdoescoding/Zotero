@@ -1,0 +1,209 @@
+Rotary Wing Aerodynamics
+(AE 667)
+
+
+Vertical Descent of Rotors
+
+
+Using Momentum Theory
+o Expression for power was:
+P=T V
+2+ V
+2
+2
++T
+2ρA
+o P never goes to 0 or negative, irrespective of descent rate
+So what??
+V/vh
+(V+v)/vh
+1
+
+
+Using Momentum Theory
+V
+V+v
+V + 2v
+Climb
+V + 2v
+V+v
+V
+Descent
+
+
+Using Momentum Theory
+o Recall:
+v = −V
+2+ V
+2
+2+ T
+2ρA (for positive climb)
+o But here in descent:
+v = −V
+2− V
+2
+2− T
+2ρA (for descent, hence V < 0)
+o v = −V
+2+ V
+2
+2− T
+2ρA is discarded..
+Why?
+
+
+Using Momentum Theory
+v = −V
+2+ V
+2
+2− T
+2ρA
+V
+V+v
+V + 2v
+Climb
+V + 2v
+V+v
+V
+Descent
+
+
+Rewriting the same differently:
+ov
+vh = − V
+2vh + V
+2vh
+2 + 1 for climb (V ≥ 0)
+ov
+vh = − V
+2vh − V
+2vh
+2 − 1 for descent (V < 0)
+[Good only for V < -2vh]
+v
+vh = − V
+2vh + V
+2vh
+2−1
+[Not possible as it will result in v/vh > 1, which will cause flow above
+the rotor (V+2v) to be in the downward direction]
+
+
+States of Vertical Descent
+V=0
+Momentum Theorem (Derived for positive climb)
+V = -2vh
+Momentum Theorem (Derived for negative climb)
+V = -v
+Vortex Ring State
+Turbulent Wake State
+Windmill Brake State
+Hover and Climb
+
+
+States of Vertical Descent
+Momentum Theory not valid for:
+oVortex Ring State
+oTurbulent Wake State
+Because definite slip stream ceases to exist
+Because the flow inside the slip stream changes direction
+
+
+States of Vertical Descent
+Vortex Ring State V V+v V+2v
+Turbulent Wake State V V+v V+2v
+Wind Mill Brake State V V+v V+2v
+
+
+Vortex Ring State
+oVortices pile up on each other and form a
+torus shaped ring due to air from bottom
+oRing grows and bursts periodically
+oCauses loss of thrust on rotor
+(sometimes leading to accidents)
+oUnsteady flow
+oAnalytical analysis difficult. Rely on
+empirical predictions
+
+
+Turbulent Wake State
+oRotor behaves like a bluff body
+oFlow unsteady, rely on empirical means
+
+
+Vortex Ring State
+
+
+Wind Mill Brake State
+oPower extracted from the flow
+oSteady, hence momentum theory can be used
+oT = - 2rAv(V+v)
+[notice the ‘-’ sign]
+from the flow, like a wind mill.
+In this case, P 0 means power is extracted,
+; ( v)
+2 22
+V
+v
+2
+
+− =+
+
+
+
+
+ =− − P T V
+A
+VT
+r
+
+
+Wind Mill Brake State
+dL
+dD
+dFx
+dT
+UT = Ωr
+UP = V+v
+Forward directed dFx (induced thrust?) rotates the blade against drag. Blade still generates some thrust dT
+
+
+Helicopter Autorotative Landing
+Steady Autorotative Descent
+Cyclic Flare:
+Rotor tilted backward to reduce forward speed and descent rate
+Collective Flare:
+Collective pitch increased to reduce descent rate. Rotor speed decreases
+Engine Failure
+Rotor disengaged from the engine by a clutch
+
+
+Helicopter Autorotative Landing
+Video Link:
+ohttps://www.youtube.com/watch?v=oa
+80FADAmUI
+ohttps://www.youtube.com/watch?v=N
+-B-I_oGXCc
+
+
+For Steady Autorotative Vertical Descent
+o Shaft power = climb power + induced power + profile power
+P = TV + Tv + σCd0
+8 ρπR2(ΩR)3
+o But the engine is off, so....
+oP=0
+TV = −Tv − σCd0
+8 ρπR2(ΩR)3
+
+
+All states in a plot
+V/vh
+DESCEND (V+v)/vh CLIMB
+Vortex Ring State
+Turbulent Wake State
+Wind Mill Brake State
+-2
+1
+
+
+All states in a plot

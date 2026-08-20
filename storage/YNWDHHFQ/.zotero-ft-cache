@@ -1,0 +1,88 @@
+Rotary Wing Aerodynamics
+(AE 667)
+
+
+Trim Conditions
+for helicopter steady level
+forward flight
+2
+
+
+Meaning of Trim
+o State of the vehicle and the control inputs necessary for a given flight condition
+o Coupled and non-linear system: Iterative approach.
+3
+
+
+Fuselage Forces
+V ∞ LF
+W
+HM
+DF
+HT
+Drag Forces = Fuselage drag (DF) + Main rotor H-force (HM) + Tail rotor H-force (HT)
+Vertical Forces = Weight (W) – Fuselage Lift (LF)
+4
+
+
+TPP Angle
+V∞
+αTPP
+o T cosαTPP = GW − LF
+o T sinαTPP = DF + HM + HT
+o αTPP = tan−1 DF+HM+HT
+GW−LF
+5
+
+
+Angle of Attack of TPP, Shaft, Fuselage
+V∞
+β1c
+αs
+αTPP
+αTPP = αs + β1c ; αF = αs - is + v/V ∞
+αF = αTPP - β1c - is + v/V ∞
+Fuselage Reference Axis
+is
+is = Shaft Inclination Angle
+v (rotor downwash)
+6
+
+
+Iteration Loop
+1. Assume initial αF = 0
+2. Find LF and DF from wind tunnel tables of the fuselage
+3. Compute T and αTPP using drag, weight, fuselage
+forces, HM, and HT. Neglect HM and HT in first iteration
+4. Use information on c.g of fuselage to find αF
+5. Iterate step 2 to 4 until quantities converge.
+7
+
+
+Autorotation in forward flight
+V∞
+W
+HM
+DF
+HT
+χ
+V∞
+Descent
+velocity χ = tan−1 descent velocity
+V∞
+• T cosαTPP = W cos χ − LF
+• T sinαTPP = DF + HM + HT − W sin χ
+• αTPP = tan−1 DF+HM+HT−W sin χ
+W cos χ−LF
+8
+
+
+Iteration Loop
+1. Assume an initial descent velocity
+2. Use the iterative procedure to get αF , forces, etc. as
+described earlier
+3. Compute required power: Main rotor power + Tail rotor power + Transmission losses
+4. Compute available power = W * Descent velocity
+5. Equate available power and required power by adjusting the descent velocity
+6. Iterate step 2 to 5 until power needed = power available.
+9

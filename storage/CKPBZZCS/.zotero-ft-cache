@@ -1,0 +1,1559 @@
+Helicopter Wake Encounter Study
+Version 1.0
+University of Liverpool
+Authors: Dr Yaxing Wang Address: School of Engineering Dr Mark White University of Liverpool Prof George Barakos Harrison Hughes Building Liverpool L69 3GH United Kingdom Date: March 17, 2015
+
+
+Abstract
+Different methods of modelling helicopter wakes, namely, a hybrid wake model, a freewake model and a CFD actuator disk model are presented and compared with available wind tunnel and flight test data. The free wake model was then used to generate the wake vortices of a helicopter in hover-taxiing over an airport runway. A hybrid wake model, with a wake decay law, was also used to generate the far wake of a helicopter in level flight. The wake induced velocity fields were integrated into an aircraft flight dynamics model and piloted flight simulations were carried out to study a light aircraft encountering a helicopter wake during landing and level flight. It was found that for the current landing wake encounter scenario, the existing wake encounter criteria and severity metrics for the determination of the hazardous distance might not be appropriate if the wake encounter occurs close to the ground. The landing simulation results suggest that for a helicopter in low-speed hover-taxiing (less than 40 kt airspeed), the wake encounter detectable horizontal distance is about three times the diameter of the rotor, which coincides with the current safety guidelines of the Civil Aviation Authority of the UK. The level flight simulations revealed the effects of the vertical separation distance and of the wake decay on the encounter severity.
+
+
+Contents
+1 Introduction and Motivation 1
+2 Literature Survey 3 2.1 Wake Encounter . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3 2.2 Literature Survey . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5 2.2.1 Rotor Wake Models . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6 2.2.2 Vortex and Wake Decay . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16 2.2.3 Flight Simulations and Flight Testing . . . . . . . . . . . . . . . . . . . . . . . 16 2.3 Objectives of this Project . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+3 Helicopter Rotor Wake Modelling 26 3.1 Prescribed Wake Models . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 26 3.2 Free Wake Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28 3.3 CFD Actuator Disk Models . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28 3.4 Validation of Wake Models . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+4 Wake Encounter Simulation Setup and Parameters 37 4.1 Outline of Method for Piloted Trials . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37 4.2 Simulation Scenario . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37 4.3 Description of Simulator . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42 4.4 Pilot Wake Vortex Severity Rating Scale . . . . . . . . . . . . . . . . . . . . . . . . . . 43 4.5 Test Procedure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 45 4.6 Summary of Wake Encounter Simulation Trials . . . . . . . . . . . . . . . . . . . . . . 45
+5 Helicopter Wake Encounter During Landing 46 5.1 Test Conditions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47 5.2 Wake Induced Flow Fields . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47 5.3 Simulation Results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47 5.4 Discussion of Simulation Results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 54 5.4.1 Vortex Upset Hazard . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 55 5.4.2 Effect of Helicopter Advance Ratio . . . . . . . . . . . . . . . . . . . . . . . . . 55 5.4.3 Effect of Wake Encountering Angle . . . . . . . . . . . . . . . . . . . . . . . . . 58 5.4.4 Effect of Helicopter Offset . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 60 5.4.5 Effect of Helicopter Height . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 62
+6 Helicopter Wake Encounter During Level Flight 64 6.1 Helicopter Wake Encounter Simulation . . . . . . . . . . . . . . . . . . . . . . . . . . . 64 6.2 Simulation Results for Level Flight Wake Encounter . . . . . . . . . . . . . . . . . . . 65 6.2.1 Vortex Upset Hazard . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 65 6.2.2 Helicopter Height and Aircraft Altitude . . . . . . . . . . . . . . . . . . . . . . 67 6.2.3 Helicopter Wake Decay . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 69
+7 Wake Encounter Simulation Conclusions and Future Work 72
+1
+
+
+8 CFD Study of EC145 Helicopter Rotor Wake in Hover-taxiing 73 8.1 Parameters for the CFD Hover-taxiing Wake Study . . . . . . . . . . . . . . . . . . . . 73 8.2 CFD Results of the Hover-taxiing Wake . . . . . . . . . . . . . . . . . . . . . . . . . . 74
+9 Conclusions and Future Work 82
+10 Appendix: Piloted Flight Simulation Results 88 10.1 Results of Wake Encounter During Landing . . . . . . . . . . . . . . . . . . . . . . . . 88 10.2 Results of Wake Encounter During Level Flight . . . . . . . . . . . . . . . . . . . . . . 157
+2
+
+
+List of Figures
+2.1 (A) RECAT Separation Distances for Departure and Approach (B) RECAT Separation Times for Departure (C) RECAT Separation Times for Approach. . . . . . . . . . . . 3 2.2 Percentage of aircraft using airports under RECAT and ICAO Standards [69] . . . . . 4 2.3 Tip vortex coordinates from model and full-scale rotor tests ([46]) . . . . . . . . . . . 8 2.4 Schematic of wake geometry and notation (Beddoes [9]) . . . . . . . . . . . . . . . . . 8 2.5 Example geometry created using the Beddoes wake model (Beddoes [9]) . . . . . . . . 9 2.6 Predicted top (top) and side (bottom) views of the rotor tip vortex trajectories compared with flow visualisation measurements ( Leishman etal. [49]) . . . . . . . . . . . 11 2.7 Example of a predicted wake geometry using the method of images to simulate ground effect, four bladed rotor CT = 0.008 and forward shaft tilt αs = 10o Leishman [49] . . 12 2.8 Effects of pitch rate on rotor wake geometry, Ct = 0.008, μ = 0.1, αs = −2o. Rotor wake viewed from retreating side. ψ = 0 (a) q ̄ = 0.006 (nose up). (b) q ̄ = −0.006 (nose down) (Bagai [8]) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12 2.9 Rear views of the predicted wake geometries for a rotor undergoing a SPS roll reversal, μ = 0.093 (Ananthan [3]) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13 2.10 (left) Comparison of Vortex positions to measurements taken by Kocurek and Tangler [41], Y = 0, Ct = 0.0040 (Right) Comparison of induced downwash with measurements taken by Boatwright [15] z = −0.1R (top plot) and z = −0.5R (bottom plot) with Ct = 0.0040 (Zhao and He [73]) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14 2.11 (top left) measurement locations (bottom left) snapshot of vorticity magnitude isosurfaces (left) Velocity profile comparison for a height of 0.94R and Ct = 0.0112 for radial stations 1.0R (top) and 1.5R (bottom) (Zhao and He [73]) . . . . . . . . . . . . . . . 15 2.12 Comparison of wake geometry with Caradonna and Tung and Kocurek and Tangler [41] measurements (Brown and Line [18]) . . . . . . . . . . . . . . . . . . . . . . . . . . . 15 2.13 Flight track of a manually controlled flight along the lower hazard area boundary: cross sectional view, side view and top view (full flight simulator, RCRnom = 20%) ( Schwarz [60]) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17 2.14 (top) Pilot ratings for different RCRnom (bottom) Simulation parameters for different RCRnom (Schwarz [60]) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17 2.15 Bank angle GA criterion: encounter height versus maximum bank angle for roll-dominant cases (GA cases in bold): Cessna Citation (142 cases) and Do228 (133 Cases) (Luckner [50]) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19 2.16 Evolution of normalised vertical and lateral positions and circulations in a case with crosswind shear. Measurements by LIDAR (symbols) and Predictions with P2P wakevortex models (lines). Solid lines denote deterministic behaviour, dotted and dashed lines envelopes for probabilities of 95.4% and 99.7% respectively (Holzapfel [33]) . . . 19 2.17 Wake morphology during a parallel interaction at μ = 0.05 (left) and μ = 0.35 (right) (a) in trimmed flight. (b) Frozen vortex (c) free vortex. The interacting vortex has a positive sense of rotation (Whitehouse [66]) . . . . . . . . . . . . . . . . . . . . . . . . 21 2.18 Wake morphology at μ = 0.05 (left) and μ = 0.35 (right) (a) before (b) during (c) after a perpendicular interaction. The interacting vortex has a positive sense of rotation (Whitehouse [66]) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22 2.19 (A) Pitch attitude response (B) Pitch rate response (Padfield [53]) . . . . . . . . . . . 22
+3
+
+
+2.20 (A) Height response (B) Height rate response (Padfield [53]) . . . . . . . . . . . . . . 23 2.21 Rotor model trends for fidelity and computational cost. . . . . . . . . . . . . . . . . . 24 2.22 Testing of wake models . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+3.1 Iso-surfaces of vorticity magnitude generated by Beddoes wake model. Four-bladed rotor, Ct=0.013; μ=0.1. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 27 3.2 Dauphin tip vortex geometries predicted using the free wake model at μ =0.15 (red lines) and μ =0.05 (black lines). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28 3.3 ISO-surface plot of wake vorticity of a free wake model. Four-bladed rotor, Ct=0.013; μ=0.1. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29 3.4 Comparison of the free wake and the Beddoes prescribed wake models. . . . . . . . . . 30 3.5 ISO-surface plot of wake vorticity of CFD actuator disk model. Four-bladed rotor, Ct=0.013; μ=0.1. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31 3.6 Heyson’s wind tunnel rotor wake test set-up and the positions of velocity measurement planes [30]. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32 3.7 Comparison of three wake models against Heyson’s experiments [30] at (a) x/R=2 and (b) x/R = 3 planes. Ct=0.0064 and μ=0.095. . . . . . . . . . . . . . . . . . . . . . . . 33 3.8 Measured velocity versus vortex age [43]. Puma helicopter at speeds of 65 kt and 70 kt. The vertical dashed-line indicates where the induced velocity profile is available for comparison. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34 3.9 Velocity profiles predicted by the CFD actuator disk, the free wake model and the hybrid wake model. Puma helicopter at a speed of 65 kt. . . . . . . . . . . . . . . . . 35 3.10 (a) Downwash velocity measurements and (b) comparison of velocities with free wake model. Four-bladed MuPAL-ǫ helicopter with a mass of 4500 kg, hovering at 60-80 ft above ground. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36
+4.1 Orientation of the wake with respect to to the runway. . . . . . . . . . . . . . . . . . . 38 4.2 Encounter positions with the wake with respect to the rotor disk plane. . . . . . . . . 38 4.3 GA aircraft is approaching runway. The Dauphin helicopter is flying 45 degree to the runway. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39 4.4 Dauphin helicopter in 0.5D offset to the runway centreline. . . . . . . . . . . . . . . . 39 4.5 Flight path of GA aircraft aircraft on approach to runway. . . . . . . . . . . . . . . . . 40 4.6 Dauphin helicopter. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 41 4.7 GA aircraft aircraft. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 41 4.8 External view of the simulator. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42 4.9 Internal view of the HELIFLIGHT simulator. . . . . . . . . . . . . . . . . . . . . . . . 42 4.10 Wake Vortex Severity Rating Scale [53]. . . . . . . . . . . . . . . . . . . . . . . . . . . 44 4.11 Summary of simulation trials. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 45
+5.1 Wake encounter simulation scene. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 46 5.2 Wake geometry (blue curves), velocity vectors (red arrows) and downwash contour plots on the x planes at x = 0, 1D, and 3D, Dauphin helicopter height 50 ft, CT =0.13, angle 0, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 48 5.3 Wake geometry (blue curves), velocity vectors (red arrows) and downwash contour plots on the x planes at x = 0, 1D, and 3D, helicopter height 50 ft, CT =0.13, μ=0.1, offset 2D. 48 5.4 Wake geometry (blue curves), velocity vectors (red arrows) and downwash contour plots on the x planes at x = 0, 1D, and 3D, helicopter height 20 ft, CT =0.13, μ=0.1, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49 5.5 Time history of the dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0.0, offset 0. . . . . . . . . . . . . . . . . . 52 5.6 Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0.0, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . 53 5.7 Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 0 kts, angle 0o, offset 0, GA aircraft flight height 30 ft, 50 ft, 70 ft at runway threshold. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 57
+4
+
+
+5.8 Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 0, 20 kts, 40 kts, angle 0o, offset 0, GA aircraft, flight height 50 ft at runway threshold. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 59 5.9 Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, 45o, 90o. offset 0, GA aircraft, flight height 50 ft at runway threshold. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 61 5.10 Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0, 1D, 2D. GA aircraft, flight height 50 ft at runway threshold. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 63
+6.1 Induced velocity fields generated by the Beddoes wake model for a Dauphin rotor at height of 200 ft, CT =0.013, μ=0.15, baseline (no decay) and 50% wake decay. . . . . 65 6.2 Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, h=200 ft, μ=0.15. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 68 6.3 Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, h= 200 ft, μ=0.15, GA aircraft altitude h = 200 ft, 180 ft, 150 ft and 120 ft. . . . . . . . . . . 70 6.4 Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, h=200 ft, μ=0.15, wake decay 100%, 90%, 75% and 50%. . . . . . . . . . . . . . . . . . . . . 71
+8.1 EC145 fuselage with main rotor and tail rotor actuator disks. . . . . . . . . . . . . . . 74 8.2 CFD domain for study of an approximate EC145 helicopter in In-Ground Effect case (rotor hub height 0.75R). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 75 8.3 Cp distributions on an isolated EC145 fuselage surface in (a)IGE and (b)OGE cases, V=20 kt. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 76 8.4 Downwash velocity contours and flow streamtraces around an approximate EC145 helicopter in IGE (0.75R), and the u velocity profiles at nine positions between x=-5R to 3R in the central plane (y=0), hover-taxiing speed 20 kt. . . . . . . . . . . . . . . . . . 77 8.5 Downwash velocity contours around an approximate EC145 helicopter in IGE (0.75R) and OGE, hover-taxiing speed 20 kt. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 77 8.6 Flow streamtrace plots around an approximate EC145 helicopter in IGE (0.75R) and OGE, the downwash velocity contour plane is at 0.65R (0.1R above the ground), hovertaxiing speed 20 kt. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 78 8.7 Downwash velocity contours and flow streamtraces around an approximate EC145 helicopter in IGE (0.75R), and the u velocity profiles at seven positions between x=-3R to 3R in the central plane (y=0), hover-taxiing speed 10 kt. . . . . . . . . . . . . . . . 78 8.8 Downwash velocity contours and flow streamtraces around an approximate EC145 helicopter in IGE (0.75R), and the u velocity profiles at seven positions between x=-3R to 3R in the central plane (y=0), hover-taxiing speed 40 kt. . . . . . . . . . . . . . . . 79 8.9 Streamtrace plots around an approximate EC145 helicopter in IGE (0.75R) and OGE, hover-taxiing speed 10 kt. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 80 8.10 Streamtrace plots around an approximate EC145 helicopter in IGE (0.75R) and OGE, hover-taxiing speed 40 kt. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 81
+10.1 Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0.0, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . 89 10.2 Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0.0, offset 1D. . . . . . . . . . . . . . . . . . . . . . . . . . . 90 10.3 Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0.0, offset 2D. . . . . . . . . . . . . . . . . . . . . . . . . . . 91 10.4 Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 45o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . 92 10.5 Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 45o, offset 1D. . . . . . . . . . . . . . . . . . . . . . . . . . . 93 10.6 Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 45o, offset 2D. . . . . . . . . . . . . . . . . . . . . . . . . . . 94
+5
+
+
+10.7 Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 90o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . 95 10.8 Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 90o, offset 1D. . . . . . . . . . . . . . . . . . . . . . . . . . . 96 10.9 Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 0 kts (Hover), angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . 97 10.10Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 0 kts (Hover), angle 0o, offset 0.5D. . . . . . . . . . . . . . . . . . . . . . . 98 10.11Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 0 kts (Hover), angle 0o, offset 1D. . . . . . . . . . . . . . . . . . . . . . . . 99 10.12Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 80 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 100 10.13Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 80 kts, angle 0o, offset 1D. . . . . . . . . . . . . . . . . . . . . . . . . . . . 101 10.14Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 20 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 102 10.15Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 20 kts, angle 0o, offset 1D. . . . . . . . . . . . . . . . . . . . . . . . . . . . 103 10.16Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 20 kts, angle 0o, offset 2D. . . . . . . . . . . . . . . . . . . . . . . . . . . . 104 10.17Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 20 ft, speed 40 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 105 10.18Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 20 ft, speed 40 kts, angle 45o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . 106 10.19Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 20 ft, speed 40 kts, angle 90o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . 107 10.20Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 20 ft, speed 20 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 108 10.21Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0, GA aircraft flight height 30 ft at runway threshold109 10.22Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0, GA aircraft flight height 50 ft at runway threshold110 10.23Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0, GA aircraft flight height 70 ft at runway threshold111 10.24Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0, GA aircraft flight height at 150 ft at runway threshold . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 112 10.25Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 113 10.26Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 45o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . 114 10.27Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 2R. . . . . . . . . . . . . . . . . . . . . . . . . . . . 115 10.28Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 2R. . . . . . . . . . . . . . . . . . . . . . . . . . . . 116 10.29Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 90o, offset 2R. . . . . . . . . . . . . . . . . . . . . . . . . . . 117 10.30Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 90o, offset 2R. . . . . . . . . . . . . . . . . . . . . . . . . . . 118 10.31Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 90o, offset 2R. . . . . . . . . . . . . . . . . . . . . . . . . . . 119 10.32Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 2R. . . . . . . . . . . . . . . . . . . . . . . . . . . . 120
+6
+
+
+10.33Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 2R. . . . . . . . . . . . . . . . . . . . . . . . . . . . 121 10.34Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 45o, offset 2R. . . . . . . . . . . . . . . . . . . . . . . . . . . 122 10.35Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 45o, offset 4R. . . . . . . . . . . . . . . . . . . . . . . . . . . 123 10.36Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 45o, offset 6R. . . . . . . . . . . . . . . . . . . . . . . . . . . 124 10.37Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 45o, offset 6R. . . . . . . . . . . . . . . . . . . . . . . . . . . 125 10.38Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 90o, offset 4R. . . . . . . . . . . . . . . . . . . . . . . . . . . 126 10.39Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 90o, offset 4R. . . . . . . . . . . . . . . . . . . . . . . . . . . 127 10.40Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 90o, offset 6R. . . . . . . . . . . . . . . . . . . . . . . . . . . 128 10.41Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 20 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 129 10.42Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 20 ft, speed 40 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 130 10.43Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 20 ft, speed 40 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 131 10.44Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 132 10.45Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 133 10.46Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0, hands-off. . . . . . . . . . . . . . . . . . . . . . . 134 10.47Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 2R. . . . . . . . . . . . . . . . . . . . . . . . . . . . 135 10.48Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 20 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 136 10.49Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 20 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 137 10.50Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 20 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 138 10.51Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 20 kts, angle 0o, offset 0, hands-off . . . . . . . . . . . . . . . . . . . . . . 139 10.52Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 140 10.53Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 141 10.54Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 142 10.55Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 2R. . . . . . . . . . . . . . . . . . . . . . . . . . . . 143 10.56Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 144 10.57Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 145 10.58Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 146 10.59Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 147
+7
+
+
+10.60Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 148 10.61Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 45o, offset 2R. . . . . . . . . . . . . . . . . . . . . . . . . . . 149 10.62Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 45o, offset 2R. . . . . . . . . . . . . . . . . . . . . . . . . . . 150 10.63Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 151 10.64Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 152 10.65Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 153 10.66Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 0o, offset 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 154 10.67Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 45o, offset 2R. . . . . . . . . . . . . . . . . . . . . . . . . . . 155 10.68Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 45o, offset 2R. . . . . . . . . . . . . . . . . . . . . . . . . . . 156 10.69Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40 kts, angle 45o, offset 2R. . . . . . . . . . . . . . . . . . . . . . . . . . . 158 10.70Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, baseline, no decay. . . . . . . . . . . . . . . . . . . . 159 10.71Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, baseline, no decay, hands-off. . . . . . . . . . . . . . 160 10.72Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, baseline, no decay, hands-off. . . . . . . . . . . . . . 161 10.73Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, baseline, no decay. . . . . . . . . . . . . . . . . . . . 162 10.74Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, baseline, no decay. . . . . . . . . . . . . . . . . . . . 163 10.75Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, baseline, no decay. . . . . . . . . . . . . . . . . . . . 164 10.76Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, 90% decay. . . . . . . . . . . . . . . . . . . . . . . . 165 10.77Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, 90% decay, hands-off. . . . . . . . . . . . . . . . . . 166 10.78Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, 50% decay. . . . . . . . . . . . . . . . . . . . . . . . 167 10.79Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, 75% decay. . . . . . . . . . . . . . . . . . . . . . . . 168 10.80Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, 75% decay, hands-off. . . . . . . . . . . . . . . . . . 169 10.81Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, baseline, no decay. . . . . . . . . . . . . . . . . . . . 170 10.82Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, baseline, no decay. . . . . . . . . . . . . . . . . . . . 171 10.83Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 180 ft, speed 65 kts, baseline, no decay. . . . . . . . . . . . . . . . . . . . 172 10.84Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 180 ft, speed 65 kts, baseline, no decay, hands-off. . . . . . . . . . . . . . 173 10.85Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 150 ft, speed 65 kts, baseline, no decay. . . . . . . . . . . . . . . . . . . . 174 10.86Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 150 ft, speed 65 kts, baseline, no decay. . . . . . . . . . . . . . . . . . . . 175
+8
+
+
+10.87Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 120 ft, speed 65 kts, baseline, no decay. . . . . . . . . . . . . . . . . . . . 176 10.88Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 120 ft, speed 65 kts, baseline, no decay. . . . . . . . . . . . . . . . . . . . 177 10.89Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, 90% decay. . . . . . . . . . . . . . . . . . . . . . . . 178 10.90Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, 90% decay. . . . . . . . . . . . . . . . . . . . . . . . 179 10.91Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 150 ft, speed 65 kts, 90% decay. . . . . . . . . . . . . . . . . . . . . . . . 180 10.92Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, 50% decay. . . . . . . . . . . . . . . . . . . . . . . . 181 10.93Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, 50% decay. . . . . . . . . . . . . . . . . . . . . . . . 182 10.94Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 150 ft, speed 65 kts, 50% decay. . . . . . . . . . . . . . . . . . . . . . . . 183 10.95Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, 75% decay. . . . . . . . . . . . . . . . . . . . . . . . 184 10.96Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, 75% decay. . . . . . . . . . . . . . . . . . . . . . . . 185 10.97Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 150 ft, speed 65 kts, 75% decay. . . . . . . . . . . . . . . . . . . . . . . . 186 10.98Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, baseline, no decay. . . . . . . . . . . . . . . . . . . . 187 10.99Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, baseline, no decay. . . . . . . . . . . . . . . . . . . . 188 10.100Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, 50% decay. . . . . . . . . . . . . . . . . . . . . . . . 189 10.101Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, 50% decay. . . . . . . . . . . . . . . . . . . . . . . . 190 10.102Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, baseline, no decay. . . . . . . . . . . . . . . . . . . . 191 10.103Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, baseline, no decay. . . . . . . . . . . . . . . . . . . . 192 10.104Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200 ft, speed 65 kts, baseline, no decay. . . . . . . . . . . . . . . . . . . . 193
+9
+
+
+List of Tables
+2.1 Keyword Search (First number = Number of Hits, Second number in bracket = Number of papers collected) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5 2.2 Summary of dynamic inflow model papers . . . . . . . . . . . . . . . . . . . . . . . . . 6 2.3 Summary of prescribed wake model papers . . . . . . . . . . . . . . . . . . . . . . . . 7 2.4 Summary of rotor free wake model papers . . . . . . . . . . . . . . . . . . . . . . . . . 10 2.5 Summary of Vortex Particle Wake papers . . . . . . . . . . . . . . . . . . . . . . . . . 13 2.6 Summary of vortex and wake decay papers . . . . . . . . . . . . . . . . . . . . . . . . 16 2.7 Summary of fixed wing wake interaction papers . . . . . . . . . . . . . . . . . . . . . . 18 2.8 Summary of papers analysing interaction between fixed-wing wakes and rotorcraft . . 20 2.9 Physics included in the wake models. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+3.1 Heyson rotor parameters . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+4.1 Wake encounter simulation matrix. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 40 4.2 Baseline properties of the Dauphin helicopter. . . . . . . . . . . . . . . . . . . . . . . . 40 4.3 Properties of the Grob Tutor. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 40
+5.1 Helicopter wake encounter simulation matrix, Landing scenario. . . . . . . . . . . . . . 47 5.2 Test matrix for simulation trial 1, test pilot: 1; Date: 03-12-2012 . . . . . . . . . . . . 50 5.3 Test matrix for simulation trial 2, test pilot: 1; Date: 25-06-2013 . . . . . . . . . . . . 50 5.4 Test matrix for simulation trial 3, test pilot: 2; Date: 28-06-2013 . . . . . . . . . . . . 51 5.5 Test matrix for simulation trial 4, test pilot: Student pilot 1; Date: 29-09-2013 . . . . 51 5.6 Test matrix for simulation trial 5, test pilot: Student pilot 2; Date: 15-10-2013 . . . . 51
+6.1 Helicopter wake encounter simulation matrix, normal flight scenario . . . . . . . . . . 65 6.2 Test matrix for simulation trial 1, test pilot: 1; Date: 25-06-2013 . . . . . . . . . . . . 66 6.3 Test matrix for simulation trial 2, test pilot: 2; Date: 28-06-2013 . . . . . . . . . . . . 66 6.4 Test matrix for simulation trial 3, test pilot: Student pilot 1; Date: 29-09-2013 . . . . 66 6.5 Test matrix for simulation trial 4, test pilot: Student pilot 2; Date: 15-10-2013 . . . . 66
+8.1 EC145 helicopter parameters for CFD wake study . . . . . . . . . . . . . . . . . . . . 73 8.2 Speeds and heights used in CFD wake study . . . . . . . . . . . . . . . . . . . . . . . . 74
+10
+
+
+Nomenclature
+α Disk tilt angle
+λI Induced velocity ratio
+μx Advance ratio
+Ω Rotor rotational speed
+ψv azimuth angle
+ρ Density
+A Disk area
+CT Thrust coefficient
+D Rotor diameter (ft)
+D Rotor diameter
+E Wake skew angle
+R Rotor radius
+rv Radial position
+VT Tip speed
+Vz Local induced velocity
+W Weight
+zv Vertical displacement
+11
+
+
+Chapter 1
+Introduction and Motivation
+Wakes of fixed-wing aircraft and helicopters are often studied in aviation to investigate the separation distance or separation time criteria used for wake encounter avoidance. Wakes are also studied in wind energy applications for developing and planning wind farms to avoid wake blockages. There are clear definitions of the separation time or distance for the wake encounter between fixed-wing aircraft [21, 67]. However, for the wake encounter between helicopter wake and an encountering light aircraft, the separation distance is not clearly defined and lacks of details. There is, however, some guidance for helicopter wake encounters, for example, the three-rotor-diameter separation distance described the CAP 493, Manual of Traffic Services [21]. Serious and fatal accidents have happened in the UK [20, 68] when a light aircraft has been caught in a helicopter wake and the pilots have subsequently lost control. The wake generated by a helicopter is different to that of a fixed-wing aircraft. The helicopter wake vortices maybe more intense with different wake structure, duration and decay. The wake vortices are also dependant on the type of the helicopter (weight, size, configuration) and its operating conditions (altitude, speed). Helicopter wake encounter accidents have often happened around airports where helicopters are in hover or hover taxiing and the light aircraft is either landing or departing. Both the helicopter and aircraft are at low altitudes and low speeds and hence this type of wake encounter scenario has its own distinct features. When a helicopter is flying at low altitude, ground effect can distort its wake vortices, while the low forward speed causes a large wake skew angle. All these features are perhaps more complex to that of the available helicopter fly-by LIDAR measurement wake data [63, 43], where the helicopter was flying in high altitude and high forward speed. For the landing aircraft, due to its proximity to ground, even a small wake upset could cause a severe hazard. In this circumstance, the current wake encounter criteria might not be suitable to prevent an accident. Flight probe tests and and fly-by measurement data for a landing aircraft encountering a helicopter wake are rare and these tests are very difficult to conduct. Flight simulation can play an important role in the prediction and severity evaluation of wake encounters by offering a safe, low cost and controllable environment. However, wake encounter simulation has its own challenges. An accurate wake model is essential for the generation of wake velocity data. A representative or validated aircraft flight dynamic model is necessary and the wake velocity data has to be carefully integrated into the simulation system to account for the interference of the wake on the aircraft flight dynamics when a wake encounter occurs. Piloted simulation trials are needed to assess the severity of wake encounter. In addition, high fidelity visual cues are also very important to reflect the real wake encounter scene. The objectives of this project are: (1) To study and validate different numerical models for generation of helicopter and wind turbine wakes, from the relatively simple prescribed wake models to free wake models, and more complex CFD wake modelling. (2) To use the selected wake model to calculate the wake induced velocity field and integrate it into an aircraft flight dynamics model in order to carry out piloted wake encounter simulation trials in a flight simulator.
+1
+
+
+The flight simulation tests aim to answer the following questions: What kind of disturbances can the helicopter wake cause on the approaching light aircraft? and What is the effect of the helicopter parameters, i.e. helicopter weight and height, speed (advance ratio μx) and encounter angle on the hazard of an encounter? In addition, How does the manner in which the wake is encountered i.e. above/below, to the left/right of the rotor disk, influence the aircraft hazard upset and hence the safety? The thrust coefficient and advance ratio are the two helicopter parameters that need to be simulated.
+CT = W
+1
+2 ρV 2
+T A (1.1)
+μx = V∞ cos(α)
+VT
+(1.2)
+where W is the helicopter weight, ρ is the density of air, VT the tip speed of the rotor, A the rotor disk area, V∞ the forward speed of the helicopter and α the rotor disk tilt. CT can be varied by changing the helicopter weight, while the μ is varied by changing the helicopter speed. In this work, the advance ratios were varied from 0.0 (hover) 0.005, 0.010 to 0.020 and these values represent typical hover or hover taxi speeds of a helicopter operating around the runway. The maximum take-off weight (9480 lb) of a Dauphin helicopter was used to consider the worst wake scenario. To investigate the type of encounter, the angles of the wakes from the runway were changed from 0, 45o to 90o. The offsets were set to be 0, 0.5D, 1D and 2D respectively, where D is the helicopter rotor diameter. The angle values allow the full range of encounter angles to be investigated, moving from when the wake is parallel to the following aircraft’s flight path at 0o and up to the wake being perpendicular to the following aircraft’s flight path at 90o. The offsets are matched up to the current standard of three rotor diameters as the minimum separation distance between a helicopter and a following aircraft. Also during the simulation trials, the pilot was asked to fly into the wake in different ways, such as below/above or off to one side with only one wing entering the wake. In the simulations, the pilot was flying a GA fixed-wing simulation model based on a Grob Tutor like light aircraft. The wake for generating the velocity fields in this round of tests was of the free wake type. Prescribed wake model was also proposed as a test case, however, for helicopters in low level hover or low speed flight, ground effect is significant. As the prescribed wake models lack the capability to simulate the ground effect and hence it was unlikely such models would produce accurate results. The free wake model developed at University of Liverpool includes ground effect. It was used for generating the Dauphin rotors wakes and vortex downwash velocity fields at different test conditions. In this report, the helicopter rotor wake models of Beddoes (prescribed wake) and the free wake model are both described. The Dauphin helicopter rotor wake was modelled using a free wake model and the induced velocity field data were calculated and integrated into the GA aircraft FlightLab flight dynamic model. Piloted wake encounter simulation trials were conducted in the simulator of the University of Liverpool. The set-up, parameters and procedures of the simulation trial are documented in chapter 4. The simulation results and discussions are presented in chapter 5.
+2
+
+
+Chapter 2
+Literature Survey
+2.1 Wake Encounter
+There are standards in place for separation distances between fixed-wing aircraft for some time from the ICAO, FAA and CAA [22, 25], and recent international efforts aim to refine and improve these, while maintaining safety, to glean capacity benefits from busy airports around the world [71, 72, 69, 68, 70]. An example of such standards can be seen in Figure 2.1. These separation distances and times are those proposed by the RECAT project. It can be seen that there is no mention of helicopter or wind turbines separations, even though this is the most recent document on separation distances. There is a current rule that an aircraft should stay four or more rotor diameters away from either turbines or helicopters. This rule is based on experience rather than analysis, and therefore may not be applicable to all aircraft types. Therefore, there is a lack of concrete standards on the operations of aircraft around helicopters and wind turbines.
+Figure 2.1: (A) RECAT Separation Distances for Departure and Approach (B) RECAT Separation Times for Departure (C) RECAT Separation Times for Approach.
+In Figure 2.2 it can be seen that the light aircraft categories make up only a small percentage of the aircraft in use at airports. However, there is a trend in the increase in the use of light aircraft. From the ICAO Aircraft Type Designators [37] it is evident that light aircraft make up the majority of aircraft types currently in use. As a result, there is a need for accurate separations for the large
+3
+
+
+Figure 2.2: Percentage of aircraft using airports under RECAT and ICAO Standards [69]
+number of different light aircraft types so they can be safely operated at large airports. There is a lack of research for light aircraft encounters with wakes, and efforts have been concentrated on large commercial aircraft. This is mainly due to their prolific use at airports, and to the available funding for such research from large airline corporations. Critical to the development of separation standards is the understanding of the physics of wake interactions and methods for wake analysis. A wake is influenced by the wake-generating aircraft weight, geometry, free-stream velocity, free-stream turbulence, wind direction, temperature stratification, ground proximity, and the presence of the encountering aircraft. The interaction of aircraft wakes is also non linear. In other words, the calculated wakes of two aircraft can not be simply superimposed together to create the combination of the two. As will be shown in the following literature survey, extensive work has gone into the simulation of fixed wing to fixed wing encounters. The encounter of a helicopter with a fixed wing wake has also been touched on. Rotor wake experiments and simulations have been carried out for both helicopters and wind turbines, although with emphasis in the near wake regions. Wake models, in the form of free and prescribed wakes, have been developed also over the last few decades to a high level of accuracy. CFD methods have also been used to predict the wake of aircraft, but suffer from large grid requirements and numerical dissipation when resolving wakes far downstream of the aircraft. What is evident, however, is that there has been little work done on linking two wakes. Two reports related to the hazard of helicopter wakes to light aircraft have been published by Teager et al. [63] and Kist and Garry [40]. Teager at al. used Laser Doppler Velocimetry, LDV, to measure the wake of a helicopter flying over a van containing the equipment and then related the circulation calculated from these measurements to the induced roll it would cause to a following aircraft. They then carried out flight tests where a light aircraft was flown into the wake of helicopter at different speeds and distances and the roll moment experienced by the following aircraft were then measured. Kist and Garry carried out a purely analytical analysis, where they used approximations to the properties of a helicopters wake, such as velocity profile, decay and position. They then, like Teager et al., related the circulation of the vortices to the roll moment it would induce on a light aircraft. Both of these reports suffer in that they only really consider the case of when an aircraft is directly behind the helicopter; in other words, how the following aircraft meets the wake of the helicopter was not considered. In addition, they did not investigate the full range of helicopter and light aircraft combinations. This means that although these reports did examine at the helicopter wake hazards, they did not describe the full picture of the interaction. The encounter between aircraft and helicopter wakes can happen in many different ways, such as orientation, speed and height. This means that a large number of calculations need to be carried out for a single wake/aircraft combination. Consequently, an efficient engineering model would be desirable that captures wake interactions for reasonable computational cost. This may take the form of a reduced order model (ROM) or a modification of an existing free/prescribed wake model. From a research point of view, the wake types can be broken down in the following way: fixed-wing
+4
+
+
+aircraft, rotorcraft, and wind turbines. Some of these combinations have been areas of research in the past, and are being investigated in the present. Fixed-wing to fixed-wing interactions are important with regards to airport safety. Wind turbine to wind turbine interactions play an important role in wind farm design. Some combinations have only be sparsely been touched on or not at all. Helicopter interactions have been only briefly investigated. Wind turbine wake interactions with anything but other wind turbines have not been looked at, as well as the combination of helicopter wakes with fixed wing wakes. This is mostly due to the complexity of rotor wakes, both for helicopters and wind turbines.
+2.2 Literature Survey
+In this section, the results of the literature survey are presented. The Literature Survey was carried out by developing a set of keywords and then inputting them into four online databases, as shown in Table 2.1. The titles and abstracts of the resulting papers were then studied, a total of 3951, this number is not representative of the number of unique papers as copies are not removed. Any papers deemed as not relevant or found to be duplicates were deleted from the list, which resulted in 122 papers remaining. These papers were then collected and studied. After thorough reading some more papers were removed as they were deemed irrelevant. The remaining papers were then organised into five groups, which are discussed in separate sections below. The Rotor Wake Analysis section consists of papers where the wake has either been simulated or experiments carried out to resolve the flow structure and to better understand the physics of the wakes. In the Rotor Wake Models section, the current methods of modelling the wake by either free-wake or prescribed wake models are presented. The Fixed-wing to Fixed-wing Wake Encounters section provides an outline of the research undertaken in this field, as it is not strictly relevant to the current project. Another outline in the Fixed-wing to Rotorcraft Wake Encounters section is given, as again it is not strictly relevant to the current work. Finally, in the Wind Turbine Wake Analysis section, the most recent work being carried out on the analysis of wind turbines wakes are discussed.
+Keyword WoK Science Direct Compendex Scopus Aircraft and Wake Encounter 50(18) 10(1) 102(17) 90(12) Aircraft and Wake Encounter and Simulation 27(7) 8(1) 48(0) 38(0) Aircraft and Wake Encounter and Experiment 1(0) 0(0) 15(0) 36(0) Aircraft and Vortex Encounter 90(3) 10(0) 117(4) 106(3) Aircraft and Vortex Encounter and Simulation 36(0) 8(0) 60(0) 45(3) Aircraft and Vortex Encounter and Experiment 9(0) 0(0) 17(0) 5(3) Aircraft and Separation Distances 100(3) 13(0) 303(5) 228(0) Aircraft and Wake Hazards 50(3) 15(3) 88(0) 110(0) Aircraft and Wake Safety 41(3) 12(2) 102(0) 131(0) Helicopter and wake Encounter 23(0) 0(0) 56(1) 37(2) Helicopter and wake Hazard 1(0) 1(0) 6(2) 7(0) Helicopter and Aircraft wake encounter 6(1) 0(0) 13(0) 10(1) Wind Turbine Wake Simulations 88(8) 23(0) 214(1) 209(18) Wind Turbine wake Experiments 62(4) 14(0) 122(4) 150(6) Rotor Prescribed Wake Models 31(4) 2(0) 68(6) 77(6) Rotor Free Wake Models 138(16) 24(1) 344(37) 374(18)
+Table 2.1: Keyword Search (First number = Number of Hits, Second number in bracket = Number of papers collected)
+5
+
+
+2.2.1 Rotor Wake Models
+Rotor wake models for rotorcraft and wind turbines will be discussed in this section, and this will provide the options available in predicting the wake geometry, their limitations and applications. Rotor wake models can be roughly split into two groups: prescribed wake models and free wake models. Prescribed wake models consist of empirical and analytical approximations based on experimental results for circulation, size and position of the vortical structures of the wakes. Then the Biot-Savart law is used to calculate the induced velocity field of the flow. Free wake models still use empirical relations for the strength and size of the vortices, but use a model for the position of the vortices based on a vorticity transport equation derived from the Navier-Stokes equations. Prescribed wake models produce results for less computing power, but are restricted to a set wake geometry, i.e. they do not adapt to the environment they are in. Free wake models require greater computing power to solve, but are much more flexible in their application. However, even the most advanced and computationally expensive free wake models are less time consuming to compute than full CFD simulations. This is the prime reason why rotor wake models are still in common use.
+Dynamic Inflow models
+Dynamic inflow models are methods of predicting the response of the helicopter, or used in the calculation of the Thrust Coefficient (Ct), Moment Coefficient (Cm) and Rolling Coefficient (Cr). They are mostly used for real time flight simulations and control and stability analyses due to their computational efficiency. The key papers on dynamic inflow models are summarised in Table 2.2.
+Author Year Topic Methods Used Peters [55] 2009 A review paper n/a Zhao [74] 2004 Wake distortion Biot-Savart law and inflow model Peters [56] 1988 Dynamic response of Helicopter
+Momentum Theory
+Table 2.2: Summary of dynamic inflow model papers
+A recent paper by Peters [55] provides a good review of the development of the dynamic inflow and wake models. He started by describing the inclusion of tip effects and then the generalisation to include non uniform inflow distribution and wake skew. Then the following equations were used.
+[M ]
+
+
+
+V ̇0
+VV ̇ ̇sc
+
+
+
++ V [L]−1
+
+
+
+V0 Vs Vc
+
+
+
+=
+
+
+
+CT −CL −CM
+
+
+
+(2.1)
+where
+V = μ2 + (λ + v)(λ + 2v)
+√μ2 + (λ + v)2 (2.2)
+[M ] =
+
+
+8
+3π 0 0
+0 16
+45π 0
+0 0 16
+45π
+
+ (2.3)
+[L] =
+
+
+1
+2 0 − 15π
+64 X
+0 2(1 + X2) 0
+15π
+64 X 0 2(1 − X2)
+
+ (2.4)
+v = V0 + Vsrsinψ + Vcrcosψ (2.5)
+where X is the wake skew angle, which is defined as X = arctan( μ
+λ0+Vv ) and V0, Vs and Vc are
+the uniform, lateral and longitudinal variations in rotor inflow respectively. This model predicts the
+6
+
+
+response of the rotor based in wake skew, inflow angle and magnitude and inflow distribution over rotor disc. A full derivation of this model is given by Peters and HaQuang [56]. The model was further developed to account for the deformation of the wake during transient flight manoeuvres as was proposed by Zhao [74], where the wake skew, curvature and spacing were accounted for and the resulting model were validated against flight data.
+Prescribed Wake Models
+Papers on prescribed wake models are summarised in Table 2.3.
+Author Year Topic Methods Used Beddoes [10] 1987 Wake induced velocities
+Exponential approximations Beddoes [9] 1985 Rotor wake geometry in forward flight
+Distorted helical sweep
+Egolf and Landgrebe [24] 1983 Wake Geometry Fourier series shape functions Kocurek and Tangler [41] 1977 Rotor wake geometry
+Wide field shadowgraph Landgrebe [46] 1972 Rotor wake geometry
+Smoke flow visualisation Landgrebe [45] 1971 Rotor wake geometry
+Smoke visualisation
+Landgrebe [44] 1969 Rotor wake geometry
+Biot-Savart law
+Jenney [38] 1967 Rotor wake geometry
+Smoke visualisation
+Table 2.3: Summary of prescribed wake model papers
+Early work on the geometry of the a rotor wake was carried out by Jenney [38] and Landgrebe [44]. Jenney discussed the problems of predicting rotor performance, and cited the interaction of the blade with its wake as the cause. He also pointed out that the assumption of a vortex tube to describe the wake geometry was inaccurate and suggests that better prediction of the wake will provide better performance predictions. Smoke visualisations were conducted to determine the geometry and equations proposed to re-create it. Landgrebe [44] outlined the basic method behind the free-wake model, but due to low computing power of the time, only the low resolution results were obtained. It did however highlight the large difference in the wake geometries from a classical undistorted wake and the distorted free-wake. One of the first prescribed wake models was by Landgrebe [46, 45], where smoke visualisation was used to measure the positions of tip vortices in a rotor wake during hover. Measurements were taken for various blade numbers, aspect ratios, collective pitch, tip speeds and blade twist. This was to determine the dependence of the model upon the parameters of the rotor, and to make the model more general. The wake was broken down into two parts, the tip vortex and the vortex sheet. In Figure 2.3 his equations were used to predict the wake of a rotor and compared to experimental results of a different rotor than from which they were derived. It can be seen that good agreement is found when using the relatively simple equations proposed. Landgrebe’s model was improved upon by Kocurek and Tangler [41] by using wide field shadowgraph to take flow visualisation measurements of the wake geometry. They found that the vortex sheet equation showed good agreement, but the tip vortex equation did not. They showed that this is because the blade aspect ratio influence on the wake was not properly accounted for by Landgrebe. They therefore proposed changes to the coefficients used in the equations. In a later paper by Egolf and Landgrebe [24] a prescribed wake model was developed where Fourier series shape functions were used to determine the axial displacements of a wake from an undistorted
+7
+
+
+Figure 2.3: Tip vortex coordinates from model and full-scale rotor tests ([46])
+helical sweep. A basic free-wake model was then used to evaluate the sensitivity of the model to the rotor parameters and to determine the coefficients of the shape function. Both Landgrebe’s and Kocurek and Tangler’s models are for rotors in hovering flight. For forward flight a model proposed by Beddoes [9] is common and shows good accuracy. The basic premise behind this model is that the lateral and longitudinal distortions from a helical sweep in an actual rotor are small in comparison to the vertical distortions. These distortions can then be related to the velocity distribution on the rotor blade that is modelled by and actuator disc. A schematic of the problem can be seen in Figure 2.4.
+Figure 2.4: Schematic of wake geometry and notation (Beddoes [9])
+The resulting wake geometry can be seen in Figure 2.5 A further paper by Beddoes [10] proposed a method for calculating the induced velocities using exponential approximations. Beddoes used the idea that the induced velocity can be calculated by using the Biot-Savart law on only the first vortex element shed from the blade and used an exponential function to approximate the rest of the wake.
+Free Wake Models
+Free-wake models can be further broken down into potential methods, where a potential vortex is placed on filaments, and is used to create the wake geometry and velocity field, and particle methods, where the incompressible Navier-Stokes equations are solved as discrete points within the wake and hybrid methods where a wake model is used along with full Navier-Stokes solvers to achieve a better solution than either alone. These papers are summarised in Table 2.4. Clark and Leiper [23], Landgrebe [44] and Scully [61] were some of the first researchers to use free wake models to predict the geometry of the wake and then to calculate the induced velocity on the blades with the Biot-Savart law. Clark used the free wake model to investigate BVIs and Landgrebe
+8
+
+
+Figure 2.5: Example geometry created using the Beddoes wake model (Beddoes [9])
+used it to highlight the differences between a free-wake and a helical sweep representation of the wake. Later, Rosen and Graber [59] included lifting surface theory and curved vortex elements in their model. Adaptions to the basic free wake method were also proposed by Bliss [14] and Quackenbush [57]. Bliss proposed the use of curved vortex elements instead of straight ones and showed that both an increase in accuracy and speed (due to a decrease in the needed number of elements) of the program. Quackenbush also addressed the problem of solution stability in hover solutions. A free-wake model algorithm is described by Bagai and Leishman [5, 6] and Leishman et al. [49] where a pseudo-implicit algorithm for calculating the position vector and induced velocities in a vorticity transport equation were used to predict the rotorcraft wake geometry and flow fields. A thorough convergence analysis was conducted in which the level of discretisation in both the spatial and time domains was assessed. The model results were then compared to smoke and shadowgraph flow visualisation predictions of the locations of the vortices. The model was then applied to different situations to assess its ability to predict rotor wakes. The equation for the convection of the vortices through the wake is given as
+∂r(ψ, ζ)
+∂ψ + ∂r(ψ, ζ)
+∂ζ = 1
+Ω V [r(ψ, ζ)] (2.6)
+where ψ is the azimuthal position, ζ the wake age and Ω the rotational velocity of the rotor. This model was then used to simulate different situations. The wakes for a rotor in forward flight are shown in Figure 2.6. It can be seen that the vortex trajectories predicted by the model match the experimental data well, with better agreement being shown in the top view over the side view. The model was then applied to model a rotor in ground effect. The method of images was used to simulate the presence of the ground. Figure 2.7 shows the vortex trajectories for the ground effect simulation. It can be seen that the rebound and span wise spreading of the wake are both captured by the model. Papers by Bagai et al.[8] and Bhagwat and Leishman [13] present work that looks at the affect that pitch and rolling manoeuvres have on the wake geometry. A free wake model similar to that described by Leishman et al. [49] was used. Both nose up/down and roll left/right manoeuvres were simulated. As an example, the pitch manoeuvres for forward flight can be seen in Figure 2.8, where the wake geometry without any pitch is presented as the baseline. It can be clearly seen that nose up manoeuvres stretch the wake in the negatives Z-axis at the forward part of the wake and in the
+9
+
+
+Author Year Topic Methods Used Anathan [3] 2006 Rotorcraft wakes during large amplitude manoeuvres
+Free-wake model
+Horn [36] 2006 Real-time wake model Free-wake model Griffiths [28] 2005 Rotor wake in ground effect
+Free-wake model
+Ananthan [2] 2004 vortex stretching Free-wake model Bhagwat [13] 2003 Affects of manoeuvres on rotor wakes
+Free-wake model
+Bhagwat [12] 2002 Efficiency of free-wake models
+Richardson’s extrapolation Leishman [49] 2002 Rotorcraft Wakes Free-wake model Griffiths [27] 2002 Rotor wake in ground effect
+Free-wake model
+Bhagwat [52] 2001 Free-wake accuracy and stability
+grid independence study and linear stability Bhagwat [11] 2000 Wake instability and vortex pairing
+Free-wake model and eigenvalue analysis Bagai [8] 1999 Affects of Manoeuvres on rotor wakes
+Free-wake model
+Bagai [7] 1998 Free-wake model efficiency Linear interpolation and adaptive grids Bagai [5] 1995 Rotorcraft wakes Pseudo-Implicit relaxation algorithm Quackenbush [57] 1989 Model Stability Influence coefficients Rosen and Graber [59] 1988 Rotor wake geometry Free-wake model and lifting surface theory Bliss [14] 1987 Model efficiency and accuracy
+Curved vortex elements Landgrebe [44] 1969 rotor wake and airloads Free wake model Clark and Leiper [23] 1969 BVI and Performance of high number of blades rotors
+Free wake model
+Scully [61] 1967 Rotor wake geometry Free-wake model and lifting line theory
+Table 2.4: Summary of rotor free wake model papers
+positive at the rear of the wake. The results imply that manoeuvres have a significant affect on the geometry of the wake and that a free-wake model is capable of predicting the affects. The evolution of the wake during large amplitude manoeuvres was looked at by Ananthan and Leishman [3]. The free-wake model outlined by Leishman et al. [49] was used to generate the wake and then the manoeuvre velocity vector in the equations described above was changed to produce a particular motion. Single roll movements to both starboard and port, roll reversals, both starboardport-starboard and port-starboard-port, and quick stops were simulated. Figure 2.9 shows the vortex filament positions of the wake at different times during a roll reversal manoeuvre. The first starboard
+10
+
+
+Figure 2.6: Predicted top (top) and side (bottom) views of the rotor tip vortex trajectories compared with flow visualisation measurements ( Leishman etal. [49])
+roll is shown in (a) to (d), the port roll in (e) to (g) and the second starboard roll in (h) and (i). The skew and change in vortex roll up can clearly be seen during this manoeuvre. The same free-wake model was used again by Griffiths [27, 28] in application of a rotor in ground effect. Two methods for simulating the ground: the method of images and vortex panels, were used. The method of images assures that the wake is mirrored about the ground plane and then the induced velocities from this wake are included in the Biot-Savart calculations. The vortex panel is similar, but instead of a mirror image, flow circulations are applied to finite panels and the induced velocities from these vortices are included in the Biot-Savart calculations. The vortex panels have the advantage of flexibility, or in other words can be used to create more complex objects, but at the expense of numerical cost. Both hover and forward flight conditions were investigated in ground effect. They showed that there is a vast difference in the flow structure between the forward and hover wakes. The effects of vortex filament stretching and how it is accounted for in the free-wake models are discussed by Ananthan and Leishman [2]. Vortex stretching is when the filament is stretched due to induced velocities or the presence of a surface e.g. the ground. This stretching of the filament causes an increase in the circulation to satisfy the conservation of angular momentum. The model was validated for hovering flight conditions where the axial and radial displacement of the vortex cores were compared. Free wake methods such as those described above may be too computationally expensive to run in real time, particularly when calculating large wake ages and in ground effect. The time to generate the wake geometry is dependant on the number of revolutions of the rotor that need to be calculated. For high speed forward flight, the wake is convected downstream quickly, but for low speed forward flight, such as landing operations, the wake stays relatively close to the rotor. Since this project is concerned with encounters during landing and takeoff operations, which means that the rotorcraft will be in low speed forward flight, it may not be possible to predict the wake for large enough downstream distances in real time. In a paper by Bagai and Leishman [7] the computational speed was also assessed and methods of increasing it were investigated. Linear interpolation was used, where a coarser grid was used and
+11
+
+
+Figure 2.7: Example of a predicted wake geometry using the method of images to simulate ground effect, four bladed rotor CT = 0.008 and forward shaft tilt αs = 10o Leishman [49]
+Figure 2.8: Effects of pitch rate on rotor wake geometry, Ct = 0.008, μ = 0.1, αs = −2o. Rotor wake viewed from retreating side. ψ = 0 (a) q ̄ = 0.006 (nose up). (b) q ̄ = −0.006 (nose down) (Bagai [8])
+the points in-between were interpolated to provide a finer grid without the expense of evaluating the Biot-Savart integral. Adaptive grid sequencing was used, where a coarse grid was used at the start of the simulation and refined at each iteration until at the end a fine grid was used. Both methods increased the computational speed of the algorithm with acceptable accuracy losses. Bhagwat and Leishman [11, 52] assessed the instability of the wake in hovering flight, with focus on vortex pairing phenomena. Vortex pairing is when the balance of induced velocity is shifted and radial and axial motions are created between two vortices. They then start to rotate about a common axis, which make them appear to switch places with the wake, while moving downstream the rotor. The free-wake model was used to predict the wake geometry and velocity field, and a mistracked rotor is then simulated. A mistracked rotor has the blades pitch set at different levels, which results in different strength of the tip vortices. This then forces a pairing of vortices further downstream in the wake. However, a discretisation analysis was carried out to determine whether the instability is due to physics or numerical dissipation. They found that for decreasing grid refinement there was greater instability. They also found that depending on the total number of rotor revolutions modelled, the vortex pairing would happen at different times. This implies that the agreement between predictions and measurements may be coincidental. A real-time wake model was coupled with a flight simulator by Horn [36] where the wake was continually updated during flight. A parametric study was conducted to find the combination of settings that would result in a fast and accurate solution to the wake. The result was then compared to a baseline solution (where the highest fidelity settings where used) and a dynamic inflow model developed by Peters-He. They found that the free-wake model shows some difference to the baseline response. However, it has much better accuracy when compared to the finite-state inflow model, while still running in real-time. This implies that the free-wake can predict the wake in real time, with reasonable accuracy. If this could be combined with a method to include the following aircraft in
+12
+
+
+Figure 2.9: Rear views of the predicted wake geometries for a rotor undergoing a SPS roll reversal, μ = 0.093 (Ananthan [3])
+a wake encounter, such as vortex panel methods, then the separation distances could be investigated during real-time piloted flight simulations.
+Vortex Particle Methods
+Vortex Particle Methods (VPM) are in contrast to Vortex Filament Methods (VFM) in a fundamental way. Vortex particle methods are where the viscosity of the fluid is accounted for in the equations, while vortex filament methods are potential flow methods. This means that the decay and diffusion of the vorticity is modelled without the need to use empirical modifications, as is the case with VFM. It does, however, mean that the model is more complicated and computationally expensive. It also does not consider the boundary layer of a flow near a wall without extra modelling, and requires vortex/source panels to prevent the flow of the vortex particles from penetrating a surface. Research using Vortex particle methods are summarised in Table 2.5. A similar method to the VPM is the Vorticity Transport Model (VTM). It has been included in this section because it has a similar underling logic and use. The VTM is similar to a grid based method in that the domain is discretised and the equations solved for each cell. However, the VTM uses a vorticity-velocity formulation of the Navier-Stokes equations. Recent work using VPM were carried out by Zhao and He [73, 29]. They described the model in detail, and validated it against measurements taken for a rotor at different conditions. In Figure 2.10 the model was used to predict the wake structure and induced downwash of a rotor and then the results were compared to measurements taken by Kocurek and Tangler [41] and Boatwright [15]. It can be clearly seen that good agreement was found. Although the agreement with Kocurek and Tangler is poor downstream of the rotor, this is argued to be because the Kocurek and Tangler model does not extended to far downstream distances. The model was also applied to a rotor IGE and again validated against measurements. Figure 2.11 shows the positions of the measurements taken by Ferguson and a snapshot of the vorticity magnitude isosurface predicted by the model. The plots on the left show comparisons to peak and mean velocities
+13
+
+
+Author Year Topic Methods Used
+Zhao and He [73] 2011 Rotor wake interference Vortex blob methods He and Zhao [29] 2009 Rotor wake prediction Vortex blob methods Brown and Line [18] 2005 Model Efficiency VTM Brown and Whitehouse [19] 2004 Rotor IGE VTM and method of images Brown [16] 2000 Rotor wake prediction VTM Brown and Houston [17] 2000 Inflow velocity of rotor VTM and dynamic inflow
+Table 2.5: Summary of Vortex Particle Wake papers
+Figure 2.10: (left) Comparison of Vortex positions to measurements taken by Kocurek and Tangler [41], Y = 0, Ct = 0.0040 (Right) Comparison of induced downwash with measurements taken by Boatwright [15] z = −0.1R (top plot) and z = −0.5R (bottom plot) with Ct = 0.0040 (Zhao and He [73])
+for two radial positions, and show good agreements. The model was also applied to ship-helicopter interactions. Brown and Houston [16] presented a VTM. Because the VTM uses a vorticity-velocity formulation of the Navier-Stokes equations, it is tracking the vorticity over space and time rather than velocity and then calculating the vorticity afterwards, and hence it is better suited to preserving the vorticity of the flow. It differs from the VPM in that it is inviscid, like VFM, and therefore decay is modelled using empirical relations. The model was first used to predict the wakes during hover and forward flight [16] and the ground effect by using the method of images [19]. Brown and Whitehouse [19] applied it to analyse the different flow regimes of a rotor wake IGE for the transition from hover to forward flight. The efficiency of the model was then increased by Brown and Line [18]. This was done by using an adaptive grid system, where the cells are created and deleted based on the presence of vorticity within a cell or a cell was adjacent to a cell with vorticity. The model was validated against experimental results obtained by Kocurek and Tangler [41]. This can be seen in Figure 2.12 where axial and radial displacements of the tip vortices are compared.
+14
+
+
+Figure 2.11: (top left) measurement locations (bottom left) snapshot of vorticity magnitude isosurfaces (left) Velocity profile comparison for a height of 0.94R and Ct = 0.0112 for radial stations 1.0R (top) and 1.5R (bottom) (Zhao and He [73])
+Figure 2.12: Comparison of wake geometry with Caradonna and Tung and Kocurek and Tangler [41] measurements (Brown and Line [18])
+15
+
+
+2.2.2 Vortex and Wake Decay
+Author Year Topic Methods Used Robins and Delisi [58] 1993 Vortex Decay and rebound
+2D unsteady, incompressible N-S solver
+Table 2.6: Summary of vortex and wake decay papers
+In a paper by Robins and Delisi [58] the evolution of the vortices shed by a fixed wing aircraft were predicted by a 2D, unsteady and incompressible Navier-Stokes solver. The rebound and decay of the vortices when in ground effect and crosswinds were investigated. The vortices of a fixed wing aircraft were generated, but no hazard prediction or limits were derived.
+2.2.3 Flight Simulations and Flight Testing
+The flight testing of wake encounters has been split into two groups: (A) Flight testing with fixed wing aircraft generating wakes and other fixed wing aircraft flying into them and (B) rotorcraft flying into fixed wing generated wakes. Flight testing methods are also split into two main groups: offline and piloted simulations. Offline simulations usually consist of a pre-defined flight path which takes the aircraft through the wakes. The aircraft is then trimmed at each time step and the required control inputs to maintain straight and level flight are recorded to assess the encounter. For the pilot in the loop simulations, the pilot is given a simple task to complete, such as land the plane, Whilst they are carrying out the task the aircraft encounters wakes. These types of simulations examine the effect of the pilot’s response to the wake and assess the hazard level of the wake encounter.
+Fixed-Wing Simulations
+Research into the interaction and hazard of fixed wing aircraft wakes with a following fixed wing aircraft has been ongoing for nearly two decades now. There is a plethora of research that has been carried out on this subject, mostly due to the large number of commercial flights that wake encounters could potentially affect. Since this project consists pilot-in-the-loop simulations using the FLIGHTLAB flight simulation package, the following papers will provide a useful guide to the methods of carrying out piloted simulations. These papers are outlined in Table 2.7. Some of the most recent research has been conducted by DLR in Germany. A paper by Gerz [26] reviews the work and methods used at DLR prior to 2002. Gerz discusses a broad field of topics from how to characterise and model the wake, to modelling the response of the encountering aircraft and the hazard this causes to the aircraft. The most useful part of this paper, within the context of the work being carried out, is the description of the parameters used to describe and present wake data. Another useful part is the comparison and description of the most commonly used vortex models, showing the relative accuracy of each method. Schwarz and Hahn [60] first looked at the hazard that an encounter would cause by using piloted and auto-piloted flight simulations to determine the conditions of the wake encounter that would be deemed unsafe. This was done by monitoring the induced banks angle during the auto-piloted encounter and having the pilots rate an encounter on a 1-4 scale. The response of the auto-piloted and piloted tests then indicated the induced displacement of the aircraft when it encounters a wake, and an example is shown in Figure 2.13. RCR is the Roll Control Ratio, which is the ratio between the roll response of the aircraft and the maximum roll moment that the ailerons can create. In Figure 2.14 (top) the averages for all parameters for all approaches within the bounds of different levels of maximum RCR caused in an encounter are displayed with the maximum and minimum pilot ratings of the hazard of a particular wake encounter. It can clearly be seen that the smaller the RCRnom the smaller the averages for the parameters and that the trend is in agreement with the pilot ratings. From Figure 2.14 (bottom) it can be seen that the standard deviation, maximum bank angle and maximum pitch rate for different levels of max RCR encounters decrease with the RCR. This shows that the RCR is a good metric for the risk analysis of wake encounters.
+16
+
+
+Figure 2.13: Flight track of a manually controlled flight along the lower hazard area boundary: cross sectional view, side view and top view (full flight simulator, RCRnom = 20%) ( Schwarz [60])
+Figure 2.14: (top) Pilot ratings for different RCRnom (bottom) Simulation parameters for different RCRnom (Schwarz [60])
+17
+
+
+Author Year Topic Methods Used Holzapfel [34] 2011 Likelihood of Wake Encounter
+Auto-piloted Flight Simulator Holzapfel [33] 2009 Likelihood of Wake Encounter
+Auto-piloted Flight simulator with a vortex model with decay Schwarz [60] 2006 Interaction Between Fixed wing wakes
+Piloted and Auto-piloted flight simulations with Burnham-Hallock vortex model Holzapfel [32] 2006 Vortex Decay Vortex model and Lidar measurements Luckner [50] 2004 Interaction Between Fixed Wing Wakes
+Piloted Flight Simulator and Winklemans’s Vortex Model Frech and Zinner [1] 2004 Vortex dependence on atmospheric conditions
+Statistical analysis of a weather database Hohne [31] 2004 Wake vortex encounters Pilot model and optimization algorithm Karkehabadi [39] 2004 Wake vortex interactions Vortex lattice method Gerz [26] 2002 A review paper n/a
+Table 2.7: Summary of fixed wing wake interaction papers
+Work was also carried out at Airbus Germany by Hohne [31] and Luckner [50] where piloted and auto-piloted flight simulations were conducted to find the worst case scenarios, and the conditions under which these occur [31]. Then pilot ratings and flight control inputs were used to assess the hazard of these worst case scenarios [50]. Figure 2.15 shows a plot of Go Around (GA) and No Go Around (NOGA) encounters. A Go Around is where the pilot encounters the wake, makes a judgement call on whether the situation is hazardous or not, and manoeuvres accordingly. Also plotted is the boundary between the max bank angle and encounter height found at NASA Ames Research Centre. The figure shows that the boundary found at NASA Ames agrees well, and only small improvements to the fit could be gained by adjusting the constant of the boundary. Vortex lattice methods were used by Karkehabadi [39] to analyse the mutual interaction of a wake from a large aircraft and that of a smaller one. In the calculations carried out the two wakes of the aircraft were coupled and the changes in the forces and moments induced on the light aircraft encountering the wake were measured. This method shows some promise as the two wakes have been coupled, however, there is no mention of vortex decay and the idea has only been applied to fixed wing cases. Instead of predicting the response of the aircraft to an encounter Frech and Zinner [1] predicted the decay and response of the vortices to atmospheric conditions. They used a statistical method to predict the likelihood of the aircraft encountering a vortex of sufficient strength to pose a hazard under current ICAO separation standards. They found that under current regulations, most, but not all, hazardous vortices have decayed before the following aircraft has encountered them. In addition, they found that with a small crosswind the separation distances could be significantly reduced. Some of the most recent works included crosswind and meteorological effects in the prediction of vortex decay and it’s effects on the probability of wake encounters. Holzapfel [32] developed a vortex decay model that takes into account wind direction, wind shear, turbulence, temperature stratification and ground effect. This model was compared to LIDAR data from the Tarbes airport and showed good agreement. Holzapfel [35] discussed the development of a simulation package, WakeScene-D, that calculates the flight paths, vortex wake and encounter probabilities. In Holzapfel [33] the inclusion of the 1-year meteorological data base used by WakeScene-D was discussed and compared, with good agreement, to measurements taken over 30 years at Frankfurt airport. The evolution of the vortex
+18
+
+
+Figure 2.15: Bank angle GA criterion: encounter height versus maximum bank angle for roll-dominant cases (GA cases in bold): Cessna Citation (142 cases) and Do228 (133 Cases) (Luckner [50])
+decay was again validated against LIDAR data in Figure 2.16. This shows that a simulation package is able to predict the position of vortices with good accuracy for large downstream distances. Finally, Holzapfel and Kladetzke [34] included crosswinds into the prediction of wake encounters using Monte Carlo simulations. This meant that the probability of the encounter happening at a certain flight condition could be determined. This combined with RCRnom calculations would enable risk tables to created for different flight conditions.
+Rotorcraft Simulations
+The papers discussed in this section concern the interaction between fixed-wing wakes and rotorcraft. Although they are not strictly relevant to the scope of the work being carried out, it is the closest related work. Recent work has been carried out on the interaction between the wake generated by a fixed wing aircraft on a rotorcraft, summarised in Table 2.8. The work started with Turner et al. [64] where flight simulations were carried out to investigate
+Figure 2.16: Evolution of normalised vertical and lateral positions and circulations in a case with crosswind shear. Measurements by LIDAR (symbols) and Predictions with P2P wake-vortex models (lines). Solid lines denote deterministic behaviour, dotted and dashed lines envelopes for probabilities of 95.4% and 99.7% respectively (Holzapfel [33])
+19
+
+
+Author Year Topic Method Used Lawrence [47] 2008 Response of Helicopter to wake
+Piloted and Auto-piloted flight simulations using Burnham’s vortex model Padfield [53] 2004 Hazard caused by helicopter encounter with wake
+Piloted and Auto-piloted flight simulations using Burnham’s vortex model Whitehouse [65] [66] 2003,2004 Frozen wake Assumption
+Vortex Transport model, unsteady lifting line theory and a vortex model Turner [64] 2002 Response of Helicopter to wake
+Flight simulator and Burnhams vortex model
+Table 2.8: Summary of papers analysing interaction between fixed-wing wakes and rotorcraft
+the rotorcraft response to the wake under different conditions. Later Whitehouse and Brown [65, 66] investigated the assumption of the frozen wake. As can be seen in Figure 2.17 (b), where the vortex is aligned parallel to the motion of the rotor blade, the wake structure for low and high advance ratios is drastically different. However, a comparison between the high advance ratio plots in (b) and (c) shows that there is little difference between the frozen and free wake simulations, while there is drastic difference between the low advance ratio simulations. In Figure 2.18, where the vortex is aligned perpendicular to the rotor’s motion, the same behaviour can be seen. It is concluded that the frozen wake assumption is only valid for high advance ratio flight. The behaviour of the wake when the rotor is hovering was not considered nor the crosswind cases. Padfield et al. [53] and Lawrence and Padfield [47] then expanded on Turner’s work and quantified the hazard on rotorcraft wake encounters under different flight conditions. The FLIGHTLAB was used by Padfield et al. to calculate the response of the helicopter to a wake encounter and the use of a frozen wake was acknowledged. The pitch and height response of the helicopter during the wake encounter can be seen in Figure 2.19 and Figure 2.20. It also show that as the velocity of the encounter increases the response increases in magnitude. Lawrence’s [47] simulations were similar, piloted and auto-piloted with a frozen wake, but the lateral and vertical positions of the helicopter along a glide slope were varied. it was found that there are areas along a glide path passing through a wake that are more benign that others. This shows that the induced forces and moments are very different from a parallel and perpendicular case, as would be expected from Whitehouse’s work [66]. it was also found that during piloted simulations of the encounter the response of the pilot, through the controls, was high. This implies that the pilot is having to work very hard to maintain control of the helicopter during an encounter. This therefore means that an encounter of a helicopter with a fixed-wing wake, under the correct conditions, can be potentially very hazardous.
+20
+
+
+Figure 2.17: Wake morphology during a parallel interaction at μ = 0.05 (left) and μ = 0.35 (right) (a) in trimmed flight. (b) Frozen vortex (c) free vortex. The interacting vortex has a positive sense of rotation (Whitehouse [66])
+21
+
+
+Figure 2.18: Wake morphology at μ = 0.05 (left) and μ = 0.35 (right) (a) before (b) during (c) after a perpendicular interaction. The interacting vortex has a positive sense of rotation (Whitehouse [66])
+Figure 2.19: (A) Pitch attitude response (B) Pitch rate response (Padfield [53])
+22
+
+
+Figure 2.20: (A) Height response (B) Height rate response (Padfield [53])
+23
+
+
+2.3 Objectives of this Project
+From the preceding literature survey it can be determined that there are a range of models that can be used to predict the wake of a rotor and that a large proportion of the work is concerned with the near wake region. This highlights one very important question: Which model should be used to analyse helicopter wake encounters? The fidelity and computational cost trends for the available models are shown in Figure 2.21. The figure illustrates the essential problem; for higher fidelity there is a higher computational cost.
+Dynamic Inflow Prescribed Wakes Free Wakes Actuator Disks Full CFD Solver
+Increasing Computational Cost
+Increasing Model Fidelity
+Figure 2.21: Rotor model trends for fidelity and computational cost.
+An additional concern is the physics captured in each model. The decay of the vortices generated by the helicopter needs to be included as the strength and size of the vortex is strongly related to its effect on an encountering aircraft. The influence of the ground is an essential inclusion, as the encounters being considered are during landing and take off operations. The wakes need to evolve dynamically, or in other words respond and update during manoeuvres, for use in piloted simulations. The wakes need to adapt to the presence of the encountering aircraft, as the wakes of two aircraft and how they evolve are coupled and a simple superposition does not fully describe the physics of the interaction. On top of this the model needs to run in real time, so as to work with piloted simulations. This is better shown in Table 2.9. It can be seen from this table that the main sticking point is the need for the model to work in real time. Also, the faster models do not include all of the required physics.
+Dynamic Inflow
+Prescribed Wakes
+Free Wakes
+Actuator Disks
+Vortex Particle
+Full CFD Solver Vortex Decay Y N N Y Y Y Ground Effect Y N Y Y Y Y Dynamic Wake Y Y Y Y Y Y Wake Coupling N N N Y Y Y Real Time Y Y N N N N Cost Low Low Low High High High
+Table 2.9: Physics included in the wake models.
+To find the most appropriate model to analyse the wake encounters, each model will be used to analyse the same situation and the wakes created using these models will then be used in FLIGHTLAB to investigate the wake encounter. This will allow a direct comparison between the results and the selection of the appropriate model. This is illustrated in Figure 2.22. It should be noted at this point that only prescribed wakes, free wakes, actuator disks and full CFD solvers will be investigated. Dynamic inflow has been omitted because a way of including vortex decay and wake coupling can not be foreseen and no evidence of attempts has been found in the literature. Vortex particle models have also been omitted as they can be as expensive as CFD. An objective is therefore put forward to find the model with the appropriate balance between fidelity and computational effort. At this point a model that includes all the required physics will be chosen, but the model may not necessarily be able to work in real time. Of the models being investigated, only the prescribed
+24
+
+
+Free Wakes Actuator Disk Full CFD Solver
+Generation of Wakes
+Selection of Wake Model
+Flight Testing Using Wake Velocity Fields
+Include Vortex Decay Include Wake Coupling
+Prescribed Wakes
+Include Wake Coupling
+Include Ground Effect
+Include Vortex Decay
+Figure 2.22: Testing of wake models
+wake models can be run in real time. This means that if the prescribed wake model is not found to be suitable, and a real time formulation of a free wake model can not be created, then a reduced order model needs to be created from the data generated from the high fidelity models. An objective is therefore put forward to produce a reduced-order model that will maintain the physics of the interaction and allow rapid reconstruction of the flow field. Initial ideas suggest that proper orthogonal decomposition could be used in conjunction with a data base of CFD generated wakes and parallel computing. Prescribed wake models, free wake models and actuator disk model will be used for this project. These models will be validated with available wind tunnel data or flight test data. Then an appropriate model will be selected for the particular wake encounter scenario.
+25
+
+
+Chapter 3
+Helicopter Rotor Wake Modelling
+Accurate prediction and simulation of helicopter rotor wakes, including wake vortex geometry, wake age and wake induced velocity flow-field are vital to wake encounter simulations. There are various helicopter wake models available in the literature [48] with different levels of complexity and fidelity as described in the previous chapter. Two wake modelling methods, prescribed wake model and free wake model have been used to produce the wake induced velocity vectors for this study. A CFD actuator disk wake modelling study was also undertaken and is described here.
+3.1 Prescribed Wake Models
+Prescribed wake models have been developed to enable predictions of the inflow through the disk. These models prescribe the locations of the rotor tip vortices as functions of wake age on the basis of experimental observations. For hover flight, the Landgrebe and Kocurek & Tangler models were widely used [48]. The Beddoes generalised wake model is mainly used for forward flight [48]. Initially, Beddoes [9] wake model was used for creating the flow fields for the simulation trials. The basic premise behind it is that the lateral and longitudinal distortions from a helical sweep in an actual rotor are small in comparison to the vertical distortions. These distortions can then be related to the velocity distribution on the rotor blade that is modelled by an actuator disc. A schematic of the problem can be seen in Figure 2.4. The helical sweep is given by the following equations:
+xv = rvcosψv + μx∆ψv (3.1) yv = rvsinψv (3.2)
+zv = 1
+R
+∫t
+0
+Vzdt (3.3)
+where Vz is the local induced velocity, rv is the radial position that the vortex is shed from, ψv is the azimuth angle at which the vortex element was formed and μx is the rotor advance ratio . If the rotor is in forward flight and the velocity distribution across the disc is non-uniform then the vertical displacement zv of the wake becomes
+zv = 1
+RΩ
+∫ ψv
+ψb
+(−V sinα + v)dψ
+zv =
+∫
+(v
+RΩ − μz)dψ
+zv = −μz∆ψV +
+∫v
+RΩ dψ (3.4)
+If the velocity distribution over the disc is approximated by v = v0(1 + Ex′ − E|y′|) where E is the wake skew angle and is defined as E = |tan−1( μx
+μz+λI )|.
+26
+
+
+Now, for xv < −rvcosψv the second term becomes:
+∫v
+RΩ = −λI (1 + E(cosψv + μx
+∆ψv 2rV
++ |y′|))∆ψv (3.5)
+for cosψv > 0
+∫v
+RΩ = −2λI (1 + E|y′|)∆ψv (3.6)
+else
+∫v
+RΩ = −2λI |y′|).(∆ψv + ( rvcosψv
+μx
+)
+∫v
+RΩ = −2λI xv(1 − E|y′|)
+μx
+(3.7)
+The resulting wake geometry can be seen in Figure 2.5. The iso-surface of wake vorticity generated by the Beddoes model is shown in Figure 3.1.
+Figure 3.1: Iso-surfaces of vorticity magnitude generated by Beddoes wake model. Four-bladed rotor, Ct=0.013; μ=0.1.
+27
+
+
+3.2 Free Wake Model
+A critical shortcoming of the prescribed wake models is that the ground effect can not be easily considered in the model. The ground effect is an important factor to be considered when simulating helicopter wakes near to the ground whilst hover taxi. It is also felt that the vortex strength predicted by the Beddoes wake model is too strong to be realistic. Hence a free wake model was developed to account for ground effect and to produce a realistic vortex strength and hence the induced downwash velocity vectors. In principle the free wake model does not require experimental results for formulation. It needs, however, the blade loading and circulation. In this wake model, the rotor blade is represented by a line vortex from root to tip and root vortex effects are ignored. The total rotor lift is assumed to be equal to the weight of helicopter and the circulation of the wake vortex equals the circulation of the blade it is shed off. The self-induced flow and the local wake curvature, as well as the effect of helicopter fuselage are considered in the formulation. A number of helicopter parameters that represent a Dauphin configuration, such as the number of blades, thrust coefficient, advance ratio, tilt angle, number of revolutions etc., are input into the free wake model for the computation of the rotor wake geometry, strength and induced velocity distribution in a specified area. Figure 3.2 shows the tip vortex geometries at two different advance ratios. A typical iso-surface plot of vorticity of a free wake model is shown in Figure 3.3.
+Figure 3.2: Dauphin tip vortex geometries predicted using the free wake model at μ =0.15 (red lines) and μ =0.05 (black lines).
+Comparisons of wake vortex geometries of the free wake model and the Beddoes prescribed wake model are shown in Figure 3.4. For clarity, the wake of one blade only is plotted.
+3.3 CFD Actuator Disk Models
+In a CFD actuator disk (AD) model, the Navier-Stokes equations are solved along with turbulence models to simulate the flow field. The rotor itself is simulated by using an actuator disk, which is added into the CFD domain as a momentum source to simulate a pressure jump over the rotor. In this study the AD method is implemented by using the Helicopter-Multi-Block (HMB) flow solver [62]. The solver uses a cell-centred finite volume approach combined with an implicit dual-time method. Osher’s upwind scheme is used to resolve the convective fluxes. A central differencing spatial discretisation method is used to solve the viscous terms. A Generalised Conjugate Gradient (GCG) method is used in conjunction with a Block Incomplete Lower-Upper (BILU) factorisation as a pre-conditioner to
+28
+
+
+Figure 3.3: ISO-surface plot of wake vorticity of a free wake model. Four-bladed rotor, Ct=0.013; μ=0.1.
+solve the linearised system of equations, which is obtained from a linearisation in pseudo-time. The flow solver can be used in serial or parallel mode [62]. For the CFD actuator disk model, the mesh and blocks were generated using the ICEMCFD [4] tool. A drum was created to enclose the actuator disk, and sliding planes [62] were used to account for relative motion. The wake generated by the CFD actuator disk is shown in Figure 3.5 by the iso-surfaces of vorticity. This method is expensive to run and gives the rolled-up vortices behind the rotor.
+29
+
+
+(a) (b)
+(c) (d)
+Figure 3.4: Comparison of the free wake and the Beddoes prescribed wake models.
+30
+
+
+Figure 3.5: ISO-surface plot of wake vorticity of CFD actuator disk model. Four-bladed rotor, Ct=0.013; μ=0.1.
+31
+
+
+Radius 7.5 ft Blades 2 Tip speed 500 ft/s Solidity 0.0543 CT 0.0064 μ 0.094 Disk tilt 9.2 deg
+Table 3.1: Heyson rotor parameters .
+3.4 Validation of Wake Models
+Heyson [30] measured the induced velocity fields near a lifting rotor in the NASA Langley full-scale wind tunnel. His data include the velocity fields at several positions downstream of the rotor. The wind tunnel test set-up and the measured velocity planes are shown in Figure 3.6. The rotor parameters used in Heyson’s experiment are listed in Table 3.1.
+Figure 3.6: Heyson’s wind tunnel rotor wake test set-up and the positions of velocity measurement planes [30].
+The Beddoes prescribed model, the free wake model and the actuator disk model have been applied using Heyson’s test conditions and rotor parameters. In a wake encounter study, the main focus is on the wake in the downstream region (mid-wake and far-wake) of the rotor. Comparisons of these methods with Heyson’s wind tunnel data are shown in Figure 3.7, where the velocities at two transverse planes (yz plane) at x/R=2 and x/R=3 (downstream) are compared, where R is the rotor radius. These were the positions furthest downstream of the rotor where data were available. At x/R=2, all three models showed reasonable agreement in the vertical planes until z/R=0.5. Further away from the rotor, where the induced velocity was lower, the Beddoes and free wake models over-predicted the velocity. The AD model still predicted well in the inboard wake region but a large difference was found in the outboard area, particularly around the two shoulders. Further downstream at x/R=3, where wake is more developed, the agreement was improved. The velocity field was well predicted by the three models in the vertical planes up to z/R=0.7. Generally speaking, the CFD actuator disk model showed the best predictions among the three wake models but with the highest computational cost. Fly-by Doppler LIDAR measurements of a Puma helicopter wake were given by Kopp [43]. The
+32
+
+
+y/R
+V/V0
+-1.5 -1 -0.5 0 0.5 1 1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+2 z/R= 0.18
+y/R
+V/V0
+-1.5 -1 -0.5 0 0.5 1 1.5
+-2
+0
+2
+z/R= -0.16
+y/R
+V/V0
+-1.5 -1 -0.5 0 0.5 1 1.5
+-2
+0
+2
+z/R= -0.36
+y/R
+V/V0
+-1.5 -1 -0.5 0 0.5 1 1.5
+-2
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+2
+2.5
+3 z/R= -0.56
+y/R
+V/V0
+-1.5 -1 -0.5 0 0.5 1 1.5
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+2
+2.5
+3 z/R= -0.76
+y/R
+V/V0
+-1.5 -1 -0.5 0 0.5 1 1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+2
+2.5
+3 z/R= -1.02
+Comparison with Heyson experiments Dot : Heyson Exp Solid_line : Actuator Disk
+Dash_line : Free Wake Dash_dot_line : Beddoes
+x/R= 2.0
+(a) x/R=2.0
+y/R
+V/V0
+-1.5 -1 -0.5 0 0.5 1 1.5
+-2
+0
+2
+z/R= -0.10
+y/R
+V/V0
+-1.5 -1 -0.5 0 0.5 1 1.5
+-2
+0
+2
+4 z/R= -0.30
+y/R
+V/V0
+-1.5 -1 -0.5 0 0.5 1 1.5
+-2
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+2
+2.5 z/R= -0.50
+y/R
+V/V0
+-1.5 -1 -0.5 0 0.5 1 1.5
+-2
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+2
+2.5 z/R= -0.70
+y/R
+V/V0
+-1.5 -1 -0.5 0 0.5 1 1.5
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+2
+2.5
+z/R= -1.03
+y/R
+V/V0
+-1.5 -1 -0.5 0 0.5 1 1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+2
+2.5 z/R= 0.10
+Comparison with Heyson experiments x/R= 3.0
+Dot : Heyson Exp Solid_line : Actuator Disk
+Dash_line : Free Wake Dash_dot_line : Beddoes
+(b) x/R=3.0
+Figure 3.7: Comparison of three wake models against Heyson’s experiments [30] at (a) x/R=2 and (b) x/R = 3 planes. Ct=0.0064 and μ=0.095.
+tangential velocities on the port-side of the rotor were measured at approximately 9 seconds after their generation. The helicopter forward airspeed was 65 kts so the measurement position was about 20D, where D is the rotor diameter, downstream from the rotor center. Far wake or long age wake CFD simulation is a significant challenge because it requires high density grids and needs to overcome numerical dissipation [42]. A CFD actuator disk model and the Beddoes model were applied to the flight condition of Kopp’s test. The measured maximum velocity decay over a long wake age was also
+33
+
+
+presented and is reproduced in Figure 3.8. The wake vortex decay is indicated by the decrease of the maximum tangential velocity measured near the port vortex core over the passing-by time. During the first 10 seconds, the vortex maintains its strength, which is followed by a near linear decay after 10 seconds. From this decay, the velocity magnitudes can be deduced at different ages or downstream distances. Comparisons of the tangential velocity distributions using the AD model are shown in Figure 3.9. The grid size is 38 million cells and it produced reasonably good agreement with the fly-by test data in the far downstream region. However, it is not a viable approach to generate wake datasets for the proposed real time flight simulation.
+Time (s)
+Vmax (ms-1)
+0 5 10 15 20 25 30 35 40
+0
+5
+10
+15
+65 kt 70 kt Deduced
+Figure 3.8: Measured velocity versus vortex age [43]. Puma helicopter at speeds of 65 kt and 70 kt. The vertical dashed-line indicates where the induced velocity profile is available for comparison.
+The Beddoes model was developed mainly from the near-wake wind tunnel measurements and in itself has no wake decay. Also, the far-wake predicted by the model is not realistic. In this study, the near wake velocity profiles predicted by the Beddoes model was used in a hybrid model that takes the Beddoes near wake and adds a decay to it downstream. This way the wake generated by the hybrid model is in agreement with the available flight test data and with minimum CPU time. The tangential velocity profiles predicted by the hybrid wake are shown in Figure 3.9. At the far downstream position of 10D from the rotor, the velocity field was well predicted by the hybrid model. Overall, all three models were in qualitative agreement with the measurements and the selection was dictated by the economy of coupling the wake for the flight simulations. It has to be noted that this was not an attempt to resolve all the details of the wake but only an attempt to add to the simulation the overall shape of the wake velocity. The free wake model was also used to simulate the far field wake of the above mentioned Puma helicopter tests. The results shown in Figure 3.9 are also in good agreement with the fly-by test data. But the model is not as effective as the hybrid model for the generation of far wake. Because the current study was focused on the wake of a hovering or hover-taxiing helicopter close to ground, it was considered appropriate to compare the free wake model against any flight tests conducted near ground. Matayoshi et al. [51] presented some wake velocity measurements of a helicopter hovering close to ground. In their flight tests, the MuPAL-ǫ helicopter hovered over the anemometers at a height of 60–80ft (Figure 3.10) and the wake velocities were measured using a MELCO LIDAR [51] and ultrasonic anemometers. The free wake was applied to the MuPAL-ǫ helicopter using the same parameters as those in the flight test. The comparison of wake velocities generated by the free wake model and measured by LIDAR and anemometers are shown in Figure 3.10. Notice that the LIDAR measurements was spatially averaged over a range bin length of 30 m [51] and the existence of a difference of peak and trough velocities indicates there might be a nature wind during the measurements, which biased the velocity field. After taking these factors into consideration, the free wake model
+34
+
+
+Z (m)
+V (ms-1)
+-10 0 10
+-10
+-5
+0
+5
+10
+FlyBy-test AD_10D Freewake_10D Hybrid_10D
+Figure 3.9: Velocity profiles predicted by the CFD actuator disk, the free wake model and the hybrid wake model. Puma helicopter at a speed of 65 kt.
+results were considered to be in reasonable agreement with those from the LIDAR and anemometer measurements. Again, the objective here was to have correct magnitude of disturbance for the flight simulation.
+35
+
+
+(a) Downwash velocity measurement settings of a hovering MuPAL-ǫ helicopter[51].
+Horizontal distance (m)
+Velocity (ms-1)
+-60 -40 -20 0 20 40 60
+-15
+-10
+-5
+0
+5
+10
+15
+Free-wake LIDAR Anemometer
+(b) Comparison of wake velocities.
+Figure 3.10: (a) Downwash velocity measurements and (b) comparison of velocities with free wake model. Four-bladed MuPAL-ǫ helicopter with a mass of 4500 kg, hovering at 60-80 ft above ground.
+36
+
+
+Chapter 4
+Wake Encounter Simulation Setup
+and Parameters
+4.1 Outline of Method for Piloted Trials
+During flight simulations, the rolling, pitching and yawing moments, the aircraft altitude change, the velocities and accelerations during each encounter were recorded together with the pilot control inputs to capture a complete description of the encounter. This provided a quantitative measure of the effects of the wake is having on the aircraft. After each set of runs the pilot was asked to fill in a questionnaire on the perceived hazard during the encounter and rate the hazard using the Wake Vortex Severity Rating Scale [53] (see Figure 4.4 in Section 4.4). A typical sortie began with several practice runs of landing the GA aircraft on a generic airfield. This gave the pilot time to get used to the simulator controls, display and feel of the aircraft’s response to inputs. It also provided a baseline assessment against which the wake encounters tests were compared. The wake of the helicopter was placed at the position on the runway that caused the GA aircraft to fly through it on a standard approach profile (see Figure 4.5 in Section 4.2). The advance ratio μx was set at 0.0, 0.05 and 0.1 and the thrust coefficient CT was 0.013 using the max takeoff weight of the Dauphin helicopter. The orientation of the wake was then adjusted by varying the angle of the wake to the runway and its lateral offset from the runway’s axis. This can be seen in Figure 4.1, where the direction of flight is in the positive x axis. The different orientation angles cause the GA aircraft to encounter the wake at oblique angles while the offset causes interactions of the lifting surfaces with wakes of different ages. Finally the manner of encounter was investigated by asking the pilot to fly into the wake at different heights and offsets. This is shown in Figure 4.2, where the direction of flight is into the page. This is different from the previous offsets and angles as in this case the wake is kept aligned with the centreline of the runway and the pilot was asked to fly down the runway at different lateral and vertical offsets. This caused a parallel interaction between the wake and aircraft. In the previous case, the setup is designed to cause an oblique interaction between the wake and aircraft. This means that only one wing interacted with the rolled up vortices of the wake. The vertical offsets were used to determine whether there is any influence of an encounter above or below the rotor disk plane. The simulation trial matrix is listed in the table in section 4.
+4.2 Simulation Scenario
+The response of the aircraft to the wake and the perceived hazard of the pilot to the encounter were measured for different advance ratios, orientation angles and encounter heights at the max rotor thrust coefficient.
+37
+
+
+Figure 4.1: Orientation of the wake with respect to to the runway.
+Figure 4.2: Encounter positions with the wake with respect to the rotor disk plane.
+The typical positions of the Dauphin helicopter and the GA aircraft are shown in Figures 4.3 and 4.4, where the helicopter is positioned at 45 degree and offset to the central line of the runway near the runway threshold when the GA aircraft aircraft is approaching landing. The pilot was asked to fly the GA aircraft in a standard approach profile, which is the Visual Flight Rules (VFR) landing along a 3 degree slide slope path as shown in Figure 4.5. The pilot attempted to ensure that the aircraft is in approximately the same position when it encounters the wake for each run at the same conditions. The wake encounter simulation trial matrix is shown in Table 4.1. The Dauphin is a conventional configuration helicopter categorised as light. Its maximum takeoff weight was used for the generation of its rotor wake giving a thrust coefficient 0.13. For a helicopter hover taxing near a runway, the forward speed is normally low. So here, three different speeds of 20 kts, 40 kts and 80 kts were chosen. The highest speed of 80 kts might be too high for a hover taxing helicopter, but was included to extend the speed range to test the effect of helicopter speed on the generated wake and wake encounter. The corresponding advance ratios μx were 0 (hover), 0.05, 0.1 and 0.2. The helicopter was positioned at heights of 20 ft and 50 ft, which are the typical height range of a hovering/hovering taxing helicopter in the vicinity of runway.
+38
+
+
+Figure 4.3: GA aircraft is approaching runway. The Dauphin helicopter is flying 45 degree to the runway.
+Figure 4.4: Dauphin helicopter in 0.5D offset to the runway centreline.
+The baseline parameters of the Dauphin helicopter are shown in Table 4.2. The properties of the GA aircraft are shown in Table 4.3. Photos of Dauphin helicopter and GA aircraft are shown in figures 4.6 and 4.7.
+39
+
+
+Figure 4.5: Flight path of GA aircraft aircraft on approach to runway.
+Table 4.1: Wake encounter simulation matrix.
+parameters used in simulations Rotorcraft Dauphin Weight and Size Light to medium Thrust Coeff. (Ct) 0.13 Advance Ratio 0, 0.05, 0.1, 0.2 Height 20 ft, 50 ft Orientation Angles 0, 45o, 90o Offset 0, 0.5D, 1D, 2D Radius 19.5 ft Wake Age 8 revs
+Table 4.2: Baseline properties of the Dauphin helicopter.
+Number of Blades 4 Rotor Radius 5.95m Empty Weight 2411kg Max Takeoff Weight 4300kg Mean Chord 0.37416m Forward Speed 20m/s Disk Tilt 2o, Forward Rotor RPM 350RP M
+Table 4.3: Properties of the Grob Tutor.
+Wing span 10m Average Chord 1.242m Weight 588kg Approach Speed 70kts Decent Rate 10f t/s Flap Setting 20% Wing Aerofoil Section E696 Fuselage Length 7.54m
+40
+
+
+Figure 4.6: Dauphin helicopter.
+Figure 4.7: GA aircraft aircraft.
+41
+
+
+4.3 Description of Simulator
+The simulator used in the trials was the HELIFLIGHT simulator [54] shown in Figures 4.8 and 4.9. It is a full motion simulator with a single-seat cockpit. It uses a 3-channel collimated visual display for the Out-the-Window view and two chin-window displays. Pilot controls are provided by a fouraxis dynamic control loading system. It has a six DOF full motion platform and the pilot is able to communicate with the control room at all times via a headset.
+Figure 4.8: External view of the simulator.
+Figure 4.9: Internal view of the HELIFLIGHT simulator.
+42
+
+
+4.4 Pilot Wake Vortex Severity Rating Scale
+During the trials, the pilot was asked to give feedback on the wake encounters. This feedback took the form of a short questionnaire and used a pilot rating scale, which has been used in a previous study by Padfield [53]. The rating scale is shown in Figure 4.4. It uses a simple decision tree that enables the pilot to provide a subjective assessment of the wake encounter in terms of the level of attitude change and the pilot’s ability to recover from the upsets.
+43
+
+
+Figure 4.10: Wake Vortex Severity Rating Scale [53].
+44
+
+
+4.5 Test Procedure
+For each test condition, the pilot was asked to fly the GA aircraft along a 3 degree glide slope path aiming to land the aircraft on the indicated landing point. The wake was placed at the specific position according to the test matrix and the pilot was not informed whether the wake was there or not. For each simulation sortie, the pilot was asked to award the wake encounter severity rating if the wake was detected. In addition to the rating, other parameters related to the aircraft dynamics, positions and pilot control activities were also recorded for further analysis. Typically, several runs (2 to 5) of same test conditions were carried out to obtain consistent results.
+4.6 Summary of Wake Encounter Simulation Trials
+The wake encounter simulation trials were carried out by two test pilots and two student pilots during Dec, 2012 to Oct, 2013. These simulation trials are summarized in Table 4.11. The initial plan was to simulate helicopter wake encounters during landing. Later the simulations of wake encounters during level flight were added. The wind turbine wake encounter simulation was also included. The simulations carried out by student pilots were conducted later to test the role of the level of experience of pilots in the wake encounters. The simulated wake encounter scenarios and their results will be described in detail in the next chapters of the report.
+Figure 4.11: Summary of simulation trials.
+45
+
+
+Chapter 5
+Helicopter Wake Encounter During
+Landing
+This simulation scenario was designed for helicopter wake encounters during approach landing as shown in Figure 5.1, where the Dauphin helicopter is positioned offset the central line of the runway near the runway threshold when the GA aircraft is approaching to land. The response of the aircraft to the wake and the perceived hazard of the pilot to the encounter were measured for different advance ratios, orientation angles and encounter heights at the max rotor thrust coefficient. The wake of the helicopter was placed at the position on the runway that caused the aircraft to fly through it whilst on a standard approach profile, see Figure 4.5. The Dauphin is a conventional configuration helicopter in the light category. At its maximum takeoff weight for the generation of the rotor wake, a thrust coefficient of 0.013 was estimated. For a helicopter hover taxing around a runway, the forward speed is normally low, hence three different rotorcraft speeds of 0 (hover), 20 kts, and 40 kts were chosen. The corresponding advance ratios are 0.0 (hover), 0.05 and 0.1. The helicopter was positioned at two heights of 50 ft and 20 ft and the orientation of the wake was adjusted by varying the angle of the wake to the runway and its lateral offset from the runway axis. The different wake angles caused the aircraft to encounter the wake at oblique angles whilst the offset causes interactions of the aircraft lifting surfaces with the wake at different stages of wake evolution.
+Figure 5.1: Wake encounter simulation scene.
+46
+
+
+5.1 Test Conditions
+In the initial trial, A CAA test pilot conducted a trial using the test conditions listed in Table 5.1. The helicopter wake was put into the position over the runway threshold and in the way to the GA aircraft’s flight path. Two lower heights of 50 ft and 20 ft were selected which represent the typical hover or hover taxi height. The helicopter flight speeds were 0 (hover), 20 kt, 40 kt and 80 kt, which are the typical lower forward hover taxi speeds. Helicopter rotor wake angles were set to 0, 45o and 90o to the centre line of runway to simulate the parallel, oblique and cross wake encounters. Helicopter rotor wakes were also positioned to 0, 0.5D, 1D and 2D offset from the centre line of the runway to simulate partial wake encounters. In the last four simulation sorties in the test matrix, the pilot was asked to fly the GA aircraft at four different heights at the runway threshold to simulate the wake encounter at different vertical distances between the helicopter and the aircraft. The helicopter rotor hub was at X = 0, 50ft or 20ft above the ground. The wake induced downwash velocity field covers the range form X = -320 ft to 20 ft. The GA aircraft flew from X = -17000 ft, along a 3 degree slide slope flight path, to the landing touch down point, which is about X = 1000 ft ahead of the helicopter. Some test items in this test matrix were selected in the later simulations and are listed in the simulation results section.
+Table 5.1: Helicopter wake encounter simulation matrix, Landing scenario.
+Parameters Used in simulations Helicopter Dauphin Aircraft GA aircraft (Grob tutor) Helicopter Velocity (kt) 0, 20, 40 Helicopter Height (ft) 20, 50 Helicopter Offset 0, 1D, 2D, 3D Encountering Angle 0, 45o, 90o
+5.2 Wake Induced Flow Fields
+The free wake model was selected to generate the wake data for the wake encounter simulation after balancing the accuracy and computational cost of the three wake models. The wake induced velocity vectors were calculated from the Biot-Savart law after the wake vortex elements were determined from the free wake model. The rotor hub was set at the origin (0, 0, 0) of the coordinate system along a runway centreline over the runway threshold. The induced velocity field covers a box of x = −20 ft to 320 ft (about 8 rotor diameters), y = −50 ft to 50 ft and z = −50 ft to 30 ft as indicated in Figure 5.2. The induced velocity fields at different advance ratios for the Dauphin helicopter case can be seen in Figure 5.2, where the wake geometry, the velocity vectors at three planes, and downwash contours at 0 (the rotor hub centre), 1D and 3D in downstream are displayed. The oblique and the cross wake encounters are shown in Figure 5.3, where the helicopter orientation angles were set to 45o and 90o. The helicopter rotor hub was also offset 2 rotor diameters from the runway centreline. The wake induced velocity field of a Dauphin helicopter at a lower height (20 ft) is shown in Figure 5.4. In this case, the ground effect on the wake geometry is more pronounced.
+5.3 Simulation Results
+All landing simulation items and results are listed in Tables 5.2, 5.3, 5.4, 5.5 and 5.6. For each condition, the time histories of the aircraft attitude angles, rates and accelerations of roll, pitch and yaw, the pilot’s control activities of the lateral, longitudinal sticks and the pedal, the vertical height
+47
+
+
+(a) μ=0.0 (hover) (b) μ=0.05
+(c) μ=0.1 (d) μ=0.2
+Figure 5.2: Wake geometry (blue curves), velocity vectors (red arrows) and downwash contour plots on the x planes at x = 0, 1D, and 3D, Dauphin helicopter height 50 ft, CT =0.13, angle 0, offset 0.
+(a) 45o (b) 90o
+Figure 5.3: Wake geometry (blue curves), velocity vectors (red arrows) and downwash contour plots on the x planes at x = 0, 1D, and 3D, helicopter height 50 ft, CT =0.13, μ=0.1, offset 2D.
+of aircraft and the body accelerations in x, y and z body axes were recorded and plotted. A typical time history plots of the aircraft responses and pilot control activities are shown in Figure 5.3. The
+48
+
+
+Figure 5.4: Wake geometry (blue curves), velocity vectors (red arrows) and downwash contour plots on the x planes at x = 0, 1D, and 3D, helicopter height 20 ft, CT =0.13, μ=0.1, angle 0o, offset 0.
+corresponding distance between the GA aircraft and THE Dauphin helicopter was calculated and plotted in Figure 10.1. All the figures of the landing simulation results are given in appendix A of this report.
+49
+
+
+Table 5.2: Test matrix for simulation trial 1, test pilot: 1; Date: 03-12-2012
+Sortie Height Speed Angle Offset Pilot Rating 01 - 07 50 40 0 0 D/F 08 - 13 50 40 0 1D D/F 14 - 17 50 40 0 2D A 61 - 62 50 40 45 0 A 21 - 23 50 40 45 1D A 18 - 20 50 40 45 2D B/A 48 - 50 50 40 90 0 A 45 - 47 50 40 90 1D A 28 - 31 50 0 0 0 D 24 - 27 50 0 0 0.5D D/C 55 - 57 50 0 0 1D A 63 - 64 50 80 0 0 A 65 50 80 45 1D A 32 - 34 50 20 0 0 A 35 - 40 50 20 0 1D D 41 - 42 50 20 0 2D A 43 - 44 20 40 0 0 B 58 - 59 20 40 45 0 A 60 20 40 90 0 A 51 - 54 20 20 0 0 D 68 50 40 0 50 ft 69 50 40 0 150 ft 70 50 40 0 70 ft 71 50 40 0 30 ft
+Table 5.3: Test matrix for simulation trial 2, test pilot: 1; Date: 25-06-2013
+Sortie Height Speed Angle Offset Pilot Rating 01 - 03 50 40 0 0 C/D/F 06 - 08 50 40 0 1D C/D 04 - 05 50 40 45 0 B/C/D 37 - 38 50 40 0 0 B 39 - 40 50 40 0 1D B/C 41 - 42 50 40 45 1D A/B 43 - 44 50 40 45 2D B 45 - 47 50 40 45 3D B/D 48 - 49 50 40 90 2D A/B 50 - 51 50 40 90 3D A 52 - 53 50 40 0 2D A 54 - 55 50 20 0 0 B 56 - 57 20 40 0 0 B
+50
+
+
+Table 5.4: Test matrix for simulation trial 3, test pilot: 2; Date: 28-06-2013
+Sortie Height Speed Angle Offset Pilot Rating 113 - 115 50 40 0 0 B/D 116 - 117 50 40 0 0 Hands-off 118 - 119 50 40 0 1D A 120 - 122 50 20 0 0 B/C 123 - 124 50 20 0 0 Hands-off
+Table 5.5: Test matrix for simulation trial 4, test pilot: Student pilot 1; Date: 29-09-2013
+Sortie Height Speed Angle Offset Pilot Rating 03 - 07 50 40 0 0 B/C 08 - 10 50 40 0 1D B 11 - 16 50 40 0 0 D/E/F 17 - 18 50 40 45 1D C
+Table 5.6: Test matrix for simulation trial 5, test pilot: Student pilot 2; Date: 15-10-2013
+Sortie Height Speed Angle Offset Pilot Rating 04 - 08 50 40 0 0 B/C/D/E 09 - 11 50 40 45 1D B/C
+51
+
+
+Figure 5.5: Time history of the dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height
+50 ft, speed 40 kts, angle 0.0, offset 0.
+52
+
+
+Figure 5.6: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0.0, offset 0.
+53
+
+
+5.4 Discussion of Simulation Results
+The work reported here is the simulation trial aimed at testing the helicopter rotor wake modelling, the GA aircraft aircraft FLIGHTLAB model and the integration of the wake induced velocity field and the aircraft model. The research investigated the effect of a helicopter wake on the approaching GA aircraft. The simulation trial was designed to set the helicopter wake fixed at specific locations and orientations (same as the frozen wake vortex) and simulate the worst scenario where the wake strength and the induced velocity should be the largest in the area that covers the runway. A total of 20 different test cases were run. The pilot awarded wake encounter severity rating of A to 12 cases, rating B to 2 cases and D/F to 6 cases. The rating A cases account for more than half of the total cases. A rating A means only minimal excursion in aircraft states was felt by pilot and no corrective control action was required. The pilot commented that for the current setup, the wake encounter generally is mild and the upset or hazard caused by the wake is no more than that caused by the wind disturbance during bad weather. For the two F rating cases, the pilot explained that the reason for giving it an F rating is because the aircraft was very close to ground. The severity should be no more than a D rating if the GA aircraft was in a normal higher altitude flight. Analysis of the results revealed that in the all A/B rating cases, the GA aircraft flew above the height of Dauphin when the encountering occurred. While in the D/F rating cases, the GA aircraft flew at the same level or below the height of Dauphin. In the region above the helicopter rotor hub, the wake vortex induced velocity is much smaller than that of the region below the rotor hub. This causes a much milder upset on the aircraft than if it flies in the region above the helicopter. The results indicate that in the hover and hover taxi simulations the relative vertical distance is the paramount parameter that determines the severity of the encounter. Although the test pilot was asked to fly along the 3 degree glide slope flight path for the landing, because the helicopter is close to the ground, it is difficult to keep the aircraft exactly on the flight path during each run. A comparison of the roll dynamics, vertical acceleration and lateral control at three vertical distances is shown in Figure 5.4. In these three runs, the pilot was asked to deliberately keep the GA aircraft to three nominal heights of 50ft (same as the height of helicopter), 70ft and 30ft above the ground when approaching the location of the helicopter. Apparently, the wake encounter at the lowest height generated the largest accelerations in roll and vertical direction as well as the largest excursions in roll angle, roll rate and the lateral control displacement. The aircraft height plot indicated that for the 70 ft nominal flight height case, the actual GA aircraft height is about 60 ft in the region closer to the helicopter, while in the 50 ft nominal case, the actual height is about 70 ft. These two higher height runs generated roughly similar levels of upset in the roll dynamic response and the pilot lateral control displacement. Again this comparison reveals the importance of the vertical distance to the wake encounter severity. In future simulation trials, keeping a constant vertical distance between the aircraft and the helicopter must be guaranteed to obtain accurate and consistent results.
+54
+
+
+This simulation scenario is different to the flight reported in other tests [63]. In those flight tests, the helicopter and the approaching aircraft were flying at the same level, the helicopter was at a much higher speed, and the generated wake skew angle was smaller, which can almost guarantee the following aircraft to enter into the wake vortex core area when approaching to the helicopter. Hence the encountering upset was at the full wake vortex strength.
+5.4.1 Vortex Upset Hazard
+The helicopter wake vortex induced disturbances were probed by the GA light aircraft in the simulation to obtain a direct assessment of wake vortex hazard as a function of distance behind the helicopter. The size of GA aircraft is as same as the small general aviation aircraft most likely to be affected by rotorcraft wake vortices. A Dauphin helicopter represents a typical small helicopter. In addition to the pilot’s wake encounter severity rating and comments, the aircraft dynamic response parameters can also be used to assess the wake vortex upset hazard. In flight tests reported by Teager [63], criteria for test pilot assessments were dependent on the manner in which the assessment evolved. For fixed wing aircraft encounters, generalized criteria were used in approach and landing to determine the limits of upsets (roll, pitch, yaw and any accelerations) which would permit continuation of the approaching rather than a go-around. Criteria considered the amount of control used and the most severe aircraft excursions which the pilots would tolerate. For a more definitive criterion, a rule of thumb was evolved suggesting that the maximum acceptable bank angle at published minimums would be that obtained by dividing 1200 by the wingspan in feet [63]. For the Boeing 747 it is 6o of bank. For smaller aircraft like GA aircraft (10 meter wing span), it is approximately 35o. Normally the hazardous roll angle limit was round off to 30o. The severity of the hazard caused by the wake on the encountering aircraft depends on the height and the speed of the helicopter and the vortex age, which is reflected in terms of the distance of the encounter behind the wake generating helicopter. The hazard distance was defined [63] at which a nominal 30o bank upset is caused. In the current simulations, the GA aircraft bank angle never exceeded 30o even for the most severe upset encounter. However, the test pilot gave a F rating for some encounters, which means the safety of flight was compromised and hazard was intolerable. The reason that the pilot gave such a rating was because during landing the aircraft was close to the ground, where there was little room to manoeuvre the aircraft even if the vortex upset was small. So the 30o bank angle criterion might not be well suited to the wake encounter scenario during landing. Another criterion for the wake encounter is the vortex upset detectability distance at which the impact of the helicopter’s wake vortex can be detected by the approaching aircraft. A typical case is shown in figure 10.1, where the aircraft dynamic responses are plotted during the approach. The helicopter was positioned at the runway threshold (x=0) with a height of 50 ft. The GA aircraft was approaching to land on a 3-degree slope flight path. The roll acceleration and vertical (Z) body acceleration started to show abrupt changes at distance of about 120 ft (about 3 diameter of the rotor) from the helicopter position. At a closer distance of about 80 ft (2D) the accelerations in pitch appeared. The peak of roll attitude rate was 21 degree/sec and peak roll angle was about 14o. A similar pitch rate was appeared later and the maximum pitch angle was 16o. A smaller yaw acceleration, yaw rate and yaw angle were also obvious in the plots. The pilot applied lateral control to compensate the roll disturbance and later the longitudinal and pedal controls were also applied.
+5.4.2 Effect of Helicopter Advance Ratio
+A higher advance ratio causes a smaller wake skew angle and the wake vortex moves faster to extend longer in downstream. The wake vortex geometry is highly dependent on the advance ratio, so is the wake induced velocity distribution. Figure 5.4.2 shows the roll dynamic responses, vertical acceleration and lateral control at helicopter velocity of 0 (hover), 20 kt and 40 kt. During the simulation trial, 80 kt velocity was also tested in two runs. However, the actual aircraft flight heights (75 ft and 70 ft) in these two runs were higher than the nominal (50 ft) height. So they are not included in the figure. The 80 kt velocity is also well above the normal helicopter hover taxi speed around runway. The roll acceleration and rate plots indicated that the detectability distances were at about 120ft (3D), 70ft (1.8D) and 30ft (0.8D) for the three speeds. The hover case produced the largest roll acceleration and
+55
+
+
+rate because the encounter occurred at a closer location to the helicopter and the actual flight height was also lower (see the height plot). The highest velocity of 40 kt generated the largest roll angle, lateral control displacement and vertical body acceleration.
+56
+
+
+Figure 5.7: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 0 kts,
+angle 0o, offset 0, GA aircraft flight height 30 ft, 50 ft, 70 ft at runway threshold.
+57
+
+
+5.4.3 Effect of Wake Encountering Angle
+The wake encounter angle changes the orientation between the wake vortex and the fixed induced velocity box. It is anticipated that the wake induced velocity distribution would be altered when compared with the parallel (zero angle) encounter. The effects of the encounter angle are shown in figure 5.4.3, where the roll dynamic responses, lateral control and vertical acceleration are compared. The crossing encounter (90 degree angle) caused the least upsets in all the dynamic responses and lateral control. This was partly due to that the wake vortex was skewed away from the centre line of the induced velocity box, which increased the distance between the vortex elements and the induced velocity calculation points. This large distance reduced the induced velocity and hence generated less encounter upset. The other reason was that the actual flight height was higher than those of the other two angles. The 45 degree angle caused the largest roll acceleration. However, the detectability distance was shorter than that of the parallel encounter.
+58
+
+
+Figure 5.8: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 0, 20
+kts, 40 kts, angle 0o, offset 0, GA aircraft, flight height 50 ft at runway threshold.
+59
+
+
+5.4.4 Effect of Helicopter Offset
+When a helicopter is shifted away from the centre line of the runway, the distances between the induced velocity calculating points and the wake vortex elements are increased. Depending on the offset distance, in some region of the box, the induced velocity would be reduced. This may also cause partially encounter, which means that only portion of the GA aircraft is affected by the wake. The offset effects are shown in figure 5.4.4, where the roll dynamic responses, lateral control and vertical acceleration at three offsets are compared. The 2D offset generated the least upsets in all dynamic responses and lateral control indicating that the wake vortex was shifted away from the runway area and its effect was barely discernible. The 1D offset caused the biggest upset because in this case, the left part of the aircraft encountered larger induced downwash than the right half. The changes of the shape of the roll rate and acceleration indicated that the encounter character was different to the no offset encounter. However, in the zero offset case the actual higher height made it difficult to compare the severity of the wake upset or hazard.
+60
+
+
+Figure 5.9: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, 45o, 90o. offset 0, GA aircraft, flight height 50 ft at runway threshold.
+61
+
+
+5.4.5 Effect of Helicopter Height
+Although there were four runs of the simulation trial designed at a helicopter height of 20 ft, the actual GA aircraft flight height is well above it. Direct comparison of aircraft dynamic responses to that of 50ft height cases is not viable. For helicopter height of 20 ft (0.5D), the ground effect is expected to be more pronounced which would produced a different induced velocity field to the out ground effect cases. This will be investigated in the future trials.
+62
+
+
+Figure 5.10: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0, 1D, 2D. GA aircraft, flight height 50 ft at runway threshold.
+63
+
+
+Chapter 6
+Helicopter Wake Encounter During
+Level Flight
+6.1 Helicopter Wake Encounter Simulation
+In addition to simulation of wake encounters for a GA aircraft during landing, wake encounters during normal level flight were also considered in the second round of helicopter wake encounter simulations. While the free wake model was used for the landing scenarios, the level flight simulation trial was planned to investigate the effect of wake age on the encountering aircraft, and this requires the generation of far wake flow fields. Far wake data is difficult to obtain using either CFD or wind tunnel measurements. The Beddoes generalised wake model is commonly used for forward flight conditions [48]. It is a prescribed wake model that prescribes the locations of the rotor tip vortices as functions of wake age on the basis of experimental observations. However, it is mainly used in the near wake, and there is no wake decay in the Beddoes model. To extend the wake to the far wake, a decay law has to be found and applied in the wake model. As described in chapter 3, Kopp [43] carried out fly-by LIDAR measurements of helicopter wakes at different passing-by times. The measured wake decay is indicated in Figure 3.8. This measured decay law was combined with the Beddoes wake model to form a hybrid wake model for the generation of far wake, The above mentioned decay law was measured for the Puma helicopter. The applicability of this decay law to other helicopters is the subject of further investigations. It is assumed that because the weight of the Dauphin helicopter (Maximum weight 4300kg) is not very far to that of the tested Puma helicopter (5700kg) and their configurations are similar in general, the wake decay law of these two helicopters should not differ by very much. As there are no other resources that can currently provide the far wake decay information for a Dauphin helicopter, application of the Puma’s decay law to the Dauphin helicopter wake is the best option. In the level flight simulation trials, the Beddoes model and the decay law were used to generate far wake velocity fields for a Dauphin helicopter. The induced velocity fields generated by the Beddoes wake model for a Dauphin rotor are shown in Figure 6.1 for the no wake decay (baseline) and 50 percent wake decay. These wake velocity fields were integrated into the simulation environment to provide wake encounter upsets for an approaching GA aircraft.
+64
+
+
+Figure 6.1: Induced velocity fields generated by the Beddoes wake model for a Dauphin rotor at height of 200 ft, CT =0.013, μ=0.15, baseline (no decay) and 50% wake decay.
+Table 6.1 is the helicopter wake encounter simulation matrix for the level flight scenarios trials with piloted simulations.
+Table 6.1: Helicopter wake encounter simulation matrix, normal flight scenario
+Parameters Used in simulations Helicopter Dauphin Aircraft GA aircraft (Grob tutor) Helicopter velocity (kt) 65, 100 Helicopter Height (ft) 200 Helicopter offset 3D, 6D, 10D, 15D, 20D, 30D Encountering angle 0, 90o
+6.2 Simulation Results for Level Flight Wake Encounter
+All the level flight simulation items and results are listed in Tables 6.2, 6.3, 6.4 and 6.5. In the level flight simulation, the Dauphin helicopter was positioned at a height of 200 ft and was set at a forward speed of 65 kt (advance ratio of 0.15). The GA aircraft was flown behind the helicopter to penetrate the helicopter wake at different altitudes to investigate the effects of the vertical distance between the helicopter and the encountering aircraft. The wake induced velocities at 100% (baseline), 90%, 75% and 50% of wake strengths were used in the simulations to study the effects of the wake age or decay. In each run the pilot was asked to fly into the wake at a specific height level. All the level flight simulation results are provided with this report in appendix B. In the following sections, the general wake encounter hazard and the effects of height and decay are discussed.
+6.2.1 Vortex Upset Hazard
+The simulation results of helicopter wake encounter during level flight are shown in figure 10.2, where the time history plots of the aircraft responses and pilot control activities are presented. The GA aircraft flew into the wake at at the same level (altitude) as the helicopter. The figure indicated that the maximum disturbed roll angle of the GA aircraft reached to 45o. The pilot applied up to 97% of the lateral control to compensate the the roll upset. The wake also caused a nearly 18o yaw
+65
+
+
+Table 6.2: Test matrix for simulation trial 1, test pilot: 1; Date: 25-06-2013
+Sortie Height Speed Decay Pilot Rating 27 - 28 200 65 no C/D 26 200 65 no Hands-off 34 - 36 200 65 no D/E 58 - 59 200 65 90% C/D 60 200 65 90% Hands-off 61 - 62 200 65 50% A 63 200 65 50% Hands-off 64 - 65 200 65 75% B 66 200 65 75% Hands-off
+Table 6.3: Test matrix for simulation trial 2, test pilot: 2; Date: 28-06-2013
+Sortie Height Speed Decay Pilot Rating 88 - 89 200 65 no G 90 - 91 180 65 no D/E 92 180 65 no Hands-off 93 - 94 150 65 no C/D 95 150 65 no Hands-off 96 - 98 120 65 no C/E 99 - 100 200 65 90% F/G 101 - 102 150 65 90% C 103 - 105 200 65 50% B/C/G 106 - 107 150 65 50% B/C 108 - 110 200 65 75% D/E/F 111 - 112 150 65 75% C/D
+Table 6.4: Test matrix for simulation trial 3, test pilot: Student pilot 1; Date: 29-09-2013 Sortie Height Speed Decay Pilot Rating 19 - 20 200 65 no F 21 - 22 200 65 50% B/C/D
+Table 6.5: Test matrix for simulation trial 4, test pilot: Student pilot 2; Date: 15-10-2013 Sortie Height Speed Decay Pilot Rating 12 - 15 200 65 no C/F 16 - 17 200 65 50% A
+displacement and up to 33% pedal was applied by the pilot. The roll rate and acceleration started at about 45.7 seconds, which corresponds to a distance of about 300 ft (7.5D) from the helicopter rotor center. The pilot rated the severity of this encounter as G, which means that the excursion of aircraft states may result in marginal recovery and safe recovery cannot be assured.
+66
+
+
+6.2.2 Helicopter Height and Aircraft Altitude
+In the level fight simulation, the pilots were asked to fly the GA aircraft to penetrate the helicopter wake at different altitudes to investigate the effects of the vertical distance between the helicopter and the encountering aircraft. The wake is skewed when the helicopter is flying at a forward speed of 65 kt (μ=0.15). The wake induced velocity field is highly dependent not only on the horizontal distance but also on the vertical distance. The results are shown in Figure 6.2.2. In the baseline case (200 ft), the GA light aircraft was flying at the same height as the Dauphin helicopter and the wake caused the largest disturbances in the roll axis. The lower the altitude of the GA aircraft was, the less roll upsets were produced. The amounts of the control compensations were also reduced with the decrease of the altitude. At the altitude of 120 ft, the vertical distance between the helicopter and the GA aircraft is about 2D, the wake caused a maximum roll angle of 9o and the pilot had to apply up to 46% of the lateral control to recover the attitude. In this case the pilot awarded a C severity rating.
+67
+
+
+Figure 6.2: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, h=200 ft, μ=0.15.
+68
+
+
+6.2.3 Helicopter Wake Decay
+Four induced velocity fields of the baseline wake and the wakes at 90%, 75% and 50% of the baseline wake strength were used in the level flight simulations. The results are shown in Figure 6.2.3. The maximum roll angles caused by the wake at these four wake strengths are 45o, 26o, 15o and 2o, respectively. Compared with the baseline case, the wake at 50% strength caused a minor upset that required almost no additional control for recovery and a B rating was awarded. While at 75% wake strength, up to 66% of the lateral control was required and resulted in an E rating. The required lateral control went to 70% at the 90% wake strength, in which case the pilot awarded it an F rating.
+69
+
+
+Figure 6.3: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, h= 200 ft, μ=0.15, GA
+aircraft altitude h = 200 ft, 180 ft, 150 ft and 120 ft.
+70
+
+
+Figure 6.4: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, h=200 ft, μ=0.15, wake
+decay 100%, 90%, 75% and 50%.
+71
+
+
+Chapter 7
+Wake Encounter Simulation
+Conclusions and Future Work
+Three different methods of modelling a helicopter wake, the prescribed wake model, free wake model and the CFD actuator disk model, have been developed and validated with wind tunnel experimental measurements and fly-by test data. The free wake model was selected to generate the wake vortices of a light helicopter based on a Dauphin configuration and hover taxiing over an airport runway. The wake induced velocity fields were integrated into an aircraft flight dynamics model, which was developed in the FLIGHTLAB simulation package based on a Grob Tutor configuration, and piloted flight simulations were carried out to study the severity of helicopter wake encounter on a light GA aircraft during landing. Wake encounter parameters of helicopter height, forward speed, orientation angle and offset to the runway centerline were investigated in the simulations. In each simulation sortie, subjective pilot wake encounter severity ratings, objective aircraft dynamic responses, and pilot control activities were used to quantify the effects of helicopter wake. For this low attitude, and relatively low forward speed hover taxiing helicopter wake encounter scenario, the rotor wake was confined in the vicinity of helicopter. So in these simulation trials, the generated wake encounter upset was generally ”mild” and the roll bank angle never exceeded the 30o hazard criterion. However, in some test cases (see Tables 5.2 to 5.6), the pilot rated the wake encounter as an F rating, which meant, in his opinion, the safety of flight was compromised and hazard was intolerable. The reason that the pilot gave such a rating is because during the phase of landing the aircraft is close to the ground, where there is little room to manoeuvre the aircraft even when the vortex upset is small. So the 30 degree bank angle criterion, which was developed for the high attitude and high speed (more than 40 kts) level flights, might not be well suited for the wake encounter scenario during landing. The simulations reveal that helicopter advance ratio, height, wake encountering orientation angle and offset to the centreline of runway all influence the encountering aircraft. This study suggests that for the current landing wake encounter scenario, where the helicopter is in low speed hover-taxiing, the detectable horizontal distance is about three times the diameter of the rotor, which coincides with the current safety guideline of Civil Aviation Authority. For the helicopter wake encounter during level flight, the vertical distance between the helicopter and the aircraft is an important parameter to determine the encounter severity. It was found that at a vertical distance of 2D, the wake still caused a rating C severity on the encountering aircraft. The simulations indicate that under the current test conditions the wake upsets reduced to insignificant levels after the wake was decayed to 50% of its full strength. It is recognised that neither the number of the pilots nor the number of trials are sufficient in the current wake encounter simulation study. Future simulation trials that include more test pilots should be planned to fully cover the range of tests needed to validate wake encounter hazard criteria.
+72
+
+
+Chapter 8
+CFD Study of EC145 Helicopter
+Rotor Wake in Hover-taxiing
+The Japan Aerospace Exploration Agency (JAXA) attempted to measure the wake of a near ground hovering or hover-taxiing helicopter by LIDAR and agreed to provide the data to compare with CFD wake study. The LIDAR campaign was planned to be conducted in Sept. 2014. JAXA did a flight test evaluation of using LIDAR to measure the downwash velocities of a hovering helicopter in 2007 [?]. In this test, An all-fibre pulsed coherent Doppler LIDAR was used to measure the MuPAL helicopter downwash at hover and compared with the velocities measured by ultrasonic anemometers. The measured downwash velocities were used to validate the free wake model as described in chapter 2. CFD studies of helicopter downwash are carried out at UoL and JAXA. The aims of these studies are to provide the information of rotor wake downwash flow field for the selection of LIDAR measurement points. It was decided that the EC145 helicopter fuselage and rotors configurations were used as an approximate helicopter model for this analysis. Actuator disks were used to simulate the main and tail rotors. In the next stage, a more realistic main rotor (AD7) will be used with the EC145 fuselage. Both Out-of-Ground and In-Ground effects were considered in the CFD studies by setting helicopter heights above ground at different values for several hover-taxiing speeds.
+8.1 Parameters for the CFD Hover-taxiing Wake Study
+The main geometric parameters of the approximate EC145 helicopter are list in Table 8.1. The low forward speeds of taxiing hover and their corresponding advance ratios and Mach numbers are listed in Table 8.2 as well as the rotor hub heights used in the CFD studies. Out-of-Ground (OGE) and InGround effects were considered by set the hub heights at 4.3R and 0.75R above the ground. Because for hover-taxiing helicopter, the forward speed is low and the corresponding Mach number is very low as well. The low Mach number scheme was used in HMB solver.
+Table 8.1: EC145 helicopter parameters for CFD wake study Rotor radius 5.5 m Number of blades 4 Rotational speed 383.4 rpm Blade chord 0.3666 m Mass 3550 kg
+The approximate EC145 fuselage and the main and tail rotors actuator disks are illustrated in Figure 8.1. The CFD domain and mesh blocking are shown in Figure 8.2 for the IGE case CFD study. Multi-blocking structured meshes were generated in ICEMCFD. The total number of cells in the CFD domain is about 27 million.
+73
+
+
+Table 8.2: Speeds and heights used in CFD wake study Forward speeds 10, 20, 40 kt Advance ratios 0.023, 0.047, 0.093 Mach numbers 0.0151, 0.0303, 0.0606 Rotor hub heights 23.65, 4.1 m Ground effect 4.3R, 0.75R
+Figure 8.1: EC145 fuselage with main rotor and tail rotor actuator disks.
+8.2 CFD Results of the Hover-taxiing Wake
+The flow field and surface loading of an isolated EC145 fuselage was first studied both for OGE and IGE cases. The surface pressure coefficient distributions are presented in Figure 8.3. The stagnation locations on the fuselage are well captured. The IGE has insignificant impact on the surface pressure distributions.
+74
+
+
+Figure 8.2: CFD domain for study of an approximate EC145 helicopter in In-Ground Effect case (rotor hub height 0.75R).
+75
+
+
+(a) IGE (0.75R) (b) OGE (4.3R)
+Figure 8.3: Cp distributions on an isolated EC145 fuselage surface in (a)IGE and (b)OGE cases, V=20 kt.
+The flow field of the approximate EC145 helicopter in IGE at forward taxiing speed of 20 kt, and the velocity profiles at several up and down stream positions are shown in Figure 8.4. A re-circulation is clearly seen in front of the helicopter near to the ground. The u velocity component distributions differ significantly along the central line. The velocity profiles provide a guidance to the deployment of LIDAR measurement points and locations of the anemometers. Comparison of flow fields in the cases of IGE and OGE is shown in Figure 8.5. The streamtrace plots (Figure 8.6) clearly indicate the flow spread due to the ground constrain in the IGE case. The downwash velocity contours on the plane of 0.65R, which is just 0.1R above the ground, also show very different flow patterns in IGE and OGE cases. The flow field of an EC145 helicopter in IGE at two other forward taxiing speeds of 10 kt and 40 kt and the velocity profiles at several up and down stream positions are shown in Figures 8.7 and 8.8. Comparisons of flow fields of IGE and OGE at forward taxiing speeds of 10 kt and 40 kt are shown in Figures 8.9 and 8.10.
+76
+
+
+Figure 8.4: Downwash velocity contours and flow streamtraces around an approximate EC145 helicopter in IGE (0.75R), and the u velocity profiles at nine positions between x=-5R to 3R in the central plane (y=0), hover-taxiing speed 20 kt.
+Figure 8.5: Downwash velocity contours around an approximate EC145 helicopter in IGE (0.75R) and OGE, hover-taxiing speed 20 kt.
+77
+
+
+Figure 8.6: Flow streamtrace plots around an approximate EC145 helicopter in IGE (0.75R) and OGE, the downwash velocity contour plane is at 0.65R (0.1R above the ground), hover-taxiing speed 20 kt.
+Figure 8.7: Downwash velocity contours and flow streamtraces around an approximate EC145 helicopter in IGE (0.75R), and the u velocity profiles at seven positions between x=-3R to 3R in the central plane (y=0), hover-taxiing speed 10 kt.
+78
+
+
+Figure 8.8: Downwash velocity contours and flow streamtraces around an approximate EC145 helicopter in IGE (0.75R), and the u velocity profiles at seven positions between x=-3R to 3R in the central plane (y=0), hover-taxiing speed 40 kt.
+79
+
+
+(a) IGE (0.75R) (b) OGE (4.3R)
+Figure 8.9: Streamtrace plots around an approximate EC145 helicopter in IGE (0.75R) and OGE, hover-taxiing speed 10 kt.
+80
+
+
+(a) IGE (0.75R) (b) OGE (4.3R)
+Figure 8.10: Streamtrace plots around an approximate EC145 helicopter in IGE (0.75R) and OGE, hover-taxiing speed 40 kt.
+81
+
+
+Chapter 9
+Conclusions and Future Work
+Three different methods of modelling a helicopter wake, namely, a hybrid wake model, a free wake model and a CFD actuator disk model, have been developed and validated with wind tunnel experimental measurements and flight test data. The free wake model was used to generate the wake vortices of a light helicopter in hover-taxing over an airport runway. The wake induced velocity fields were integrated into an aircraft flight dynamics model based on a Grob Tutor configuration. Piloted flight simulations were carried out to study the severity of helicopter wake encounters. The wake encounter parameters of helicopter altitude, forward speed, orientation angle and offset to the runway centerline were investigated in the simulations. In each simulation sortie, subjective pilot wake encounter severity rating and objective aircraft dynamic responses and pilot control activities were used to quantify the effects of the helicopter’s wake. For the low altitude and relatively low forward speed hover-taxing helicopter wake encounter, the rotor wake is confined in the vicinity of helicopter. So in these simulations, the generated wake encounter upset was generally “mild” and the bank angle never exceeded the 30o hazard criterion. However, in some test cases, the pilot rated the wake encounter as an “F”, which means, in his opinion, the safety of flight was compromised. The reason is that during the landing phase when the aircraft is close to the ground, there is little room to manoeuvre and recover the aircraft from an upset even if the upset caused by a wake encounter is small. Hence the 30o bank angle criterion, which was developed for the high attitude and speed flight, might not be suited for the wake encounters during landing. The simulations revealed that helicopter advance ratio, altitude, wake encountering orientation angle and offset to the centreline of runway all had influences on the encountering aircraft. This study suggests that for the current landing wake encounter scenario, where the helicopter is in low-speed hover-taxiing, the detectable horizontal distance is about three times the diameter of the rotor, which coincides with the current safety guidelines of the Civil Aviation Authority. For the helicopter wake encounter during level flight, the vertical distance between the helicopter and the aircraft is an important parameter to determine the encounter severity. It was found that at a vertical distance of 2D, the wake still caused a rating “C” severity on the encountering aircraft. The simulations indicated that under the current test conditions, the wake upsets reduced to insignificant levels after the wake was decayed to 50% of its full strength. It is recognised that neither the number of the pilots nor the number of trials are sufficient in this wake encounter simulation study. Although the currently used separation distances appear adequate, further simulation trials that include more test pilots are needed to enhance the existing datasets and perhaps, lead to a more informed set of criteria for the separation of light fixed-wing aircraft and helicopter.
+82
+
+
+Bibliography
+[1] M. Frech an T. Zinner. Concept of Wake Vortex Behaviour Classes. Journal of Aircraft, 41(3):564 – 570, 2004.
+[2] S. Ananthan and J.G. Leishman. Role of Filament in the Free-Vortex Modeling of Rotor Wakes. Journal of the American Helicopter Society, 49(2):176–191, 2004.
+[3] S. Anathan and J.G. Leishman. Rotor Wake Aerodynamics in Large Amplitude Maneuvering FLight. Journal of the American Helicopter Society, 51(3):225–243, 2006.
+[4] ANSYS. ICEM CFD User Manual, Version V14.1, 2011.
+[5] A. Bagai and J.G. Leishman. Rotor Free-Wake Modeling using Pseudo-Implicit Technique Including Comparisons with Experimental Data. Journal of the American helicopter Society, 40(3):29–41, 1995.
+[6] A. Bagai and J.G. Leishman. Rotor Free-Wake Modeling Using Psudoimplicit Relaxation Algorithm. Journal of Aircaft, 32(6):1276–1285, 1995.
+[7] A. Bagai and J.G. Leishman. Adaptive Grid Sequencing and Interpolation Schemes for Helicopter Rotor Wake Analyses. AIAA Journal, 36(9):1593–1602, 1998.
+[8] A. Bagai, J.G. Leishman, and J. Park. Aerodynamic Analysis of a Helicopter in Steady Manueuvering Flight Using a Free-Vortex Rotor Wake Model. Journal of the American Helicopter Society, 44(2):109–120, 1999.
+[9] T.S. Beddoes. A Wake Model for High Resolution Airloads. U.S. Army/AHS Conference on Rotorcraft Basic Research, February 1985.
+[10] T.S. Beddoes. A Near Wake Dynamic Model. Aerodynamics and Aeroacoutics Ntational Specialists Meeting, 1987.
+[11] M. Bhagwat and J.G. Lesihman. Stability Analysis of Helicopter Rotor Wakes in Axial Flight. journal of the American Helicopter Soceity, 45(3):165–178, 2000.
+[12] M.J. Bhagwat and J.G Leishman. Technical Note: Numecrically Efficient Free Vortex Wake Solutions Using Higher-Order Extrapolation. Journal of the American Helicopter Society, 47(4):297302, 2002.
+[13] M.J. Bhagwat and J.G Leishman. Rotor Aerodynamics During Manuevering Flight Using a Time-accurate Free-Vortex Wake. Journal of the American Helicopter Society, 48(3):143–158, 2003.
+[14] D.B. Bliss, M.E. Teske, and T.R. Quackenbush. A new Methodology for Free Wake Analysis using Curved Vortex Elements. Technical Report NASA CR 3958, Continuum Dynamics Inc, 1987.
+[15] D.W. Boatwright. Measurements of Velocity Components in the Wake of a Full-Scale Helicopter Rotor in Hover. Technical Report USAAMRDL TR 72-33, Mississippi State University, August 1972.
+83
+
+
+[16] R.E. Brown. Rotor Wake Modeling for Flight Dynamic Simulation of Helicopters. AIAA Journal, 38(1):57–63, 2000.
+[17] R.E. Brown and S.S. Houston. Comparison of Induced Velocity Models for Helicopter Flight Mechanics. Journal of Aircraft, 37(4):623–629, 2000.
+[18] R.E. Brown and A.J. Line. Efficient High-Resolution Wake Modelling Using the Vorticity Transport Equation. AIAA Journal, 43(7):1434–1443, 2005.
+[19] R.E. Brown and G.R. Whitehouse. Modelling Rotor Wakes in Ground Effect. Journal of the american Helicopter Society, 49(3):238–249, 2004.
+[20] CAA. Aircraft accident report 1/93. Technical report, Civil Aviation Authority, 1993.
+[21] CAA. CAP 493: Manual of Air Traffic Services Part 1. Technical Report 4, Civil Aviation Authority, November 2011.
+[22] CAA. CAP 493: Manual of Air Traffic Services Part 1. Technical Report 4, Civil Aviation Authority, November 2011.
+[23] D.R. Clark and A.C. Leiper. The Free Wake Analysis: A Method for the Prediction of Helicopter Rotor Hovering Performance. In 25th Annual National Forum of the American Helicopter Society, May 1969.
+[24] T.A. Egolf and A.J. Landgrebe. Helicopter rotor Wake Geometry and its Influence in Forward Flight: Volume I Generalised Wake Geometry and Wake Effect on Rotor Airloads and Performance. Technical Report NASA CR 3726, NASA Langley Research Centre, 1983.
+[25] FAA. Air Traffic Control. Technical report, Feneral Aviation Administration, February 2010.
+[26] T. Gerz, F. Holzapfel, and D. Darraq. Comercial aircraft wake vortices. Progress in Aerospace Sciences, 38(3):181–208, 2002.
+[27] D.A. Griffiths and J.G. Leishman. A Study of Dual-Rotor Interferance and Ground Effect Using a Free-Vortex Wake Model. In 58th Annual Forum and Technology Display of the American Helicopter Society, June 2002.
+[28] D.A. Griffiths and S. Ananthan na dJ.G. Leishman. Predictions of Rotor Performance in Ground Effect Suing a Free-Vortex Wake Model. Journal of the Americam Helicopter Society, 50(4):302314, 2005.
+[29] C. He and J. Zhao. Modeling Rotor Wake Dynamics with Viscous Vortex Particle Method. AIAA Journal, 47(4):902–915, 2009.
+[30] H. H. Heyson. Analysis and comparison with theory of flow field measurements near a lifting rotor in the Langley full-scale tunnel. Technical Report NACA TN 3691, NASA, 1965.
+[31] G. Hohne, M. Fuhrmann, and R Luckner. Critical Wake Vortex Encounter Scenarios. Aerospace Science and Technology, 8(8):689–701, 2004.
+[32] F. Holzapfel. Probabilistic Two-Phase Aircraft Wake-Vortex Model: Further Developement and Assessment. Journal of Aircraft, 43(3):700–708, 2006.
+[33] F. Holzapfel, M. Frech, T. Gerz, A. Tafferner, K. Hahn, C. Schwarz, H. Joos, B. Korn, H Lenz, R. Luckner, and G. Hohne. Aircraft wake vortex scenarios simulation package - WakeScene. Aerospace Science and Technology, 13(1):1–11, 2009.
+[34] F. Holzapfel and J. Kladetzke. Assessment of Wake-Vortex Encounter Probabilites for Crosswind Departure Scenarios. Journal od Aircraft, 48(3):812–822, 2011.
+84
+
+
+[35] F. Holzapfel, J. Kladetzke, and I.D Visscher. Aircraft Wake Vortex Scenarios SImulation Package for Takeoff and Departure. Journal of Aircraft, 46(2):713–717, 2009.
+[36] J.F. Horn, D.O. Bridges, D.A. Wachspress, and S.L. Rani. Implementation of a Free-Vortex Wake Model in Real-TIme Simulation of Rotorcraft. Journal of Aerospace computing, Information and Communiation, 3(3):93–114, March 2006.
+[37] ICAO. Doc 8643, ICAO Aircraft type Designators. Technical Report 39, International Civil Aviation Authority, March 2011.
+[38] D.S. Jenney, J.R. Olsen, and A.J. Landgrebe. A Reassessment of Rotor Hovering Performance Prediction Methods. 1967.
+[39] R. Karkehabadi. Aerodymanic Interference of a Large and a Small Aircraft. Journal of Aircraft, 41(6):1424–1429, 2004.
+[40] R.A Kist and K.P Garry. Hazards due to Helicopter Wakes. Technical Report COA Report No 9311, Cranfield University, December 1993.
+[41] J.D. Kocurek and J.L. Tangler. A Prescribed Wake Lifting Surface Hover Performance Analysis. Journal of the American Helicopter Society, 22(1):24–35, January 1977.
+[42] N.M. Komerath, M.J. Smith, and C. Tung. A Review of Rotor Wake Physicsand Modeling. Journal of the American Helicopter Society, 56(2):1–19, April 2011.
+[43] F. Kopp. Wake vortex characteristics of military-type aircraft measured at airport Oberpfaffenhofen using the DLR Laser Doppler Anemometer. Aerospace Science and Technology, (4):191–199, 1999.
+[44] A.J. Landgrebe. An Analytical Method for Predicting Rotor Wake Geometry. AHS VTOL Research, Design and Operations Metting, pages 20–32, February 17-19 1969.
+[45] A.J. Landgrebe. An Analytical and Experimental Investigation of Helicopter Rotor Hover Performance and Wake Geometry Characteristics. Technical report, U.S. Army Air Mobility research and Developement Laboratory., June 1971.
+[46] A.J. Landgrebe. The Wake Geometry of a Hovering Helicopter Rotor and its Influence on Rotor Performance. Journal of the American Helicopter Society, 17(4):3–15, October 1972.
+[47] B. Lawrence and G.D. Padfield. Wake vortex encounter severity for rotorcraft in final approach. Aerospace Science and Technology, 12(5):385–397, 2008.
+[48] G. Leishman. Principles of helicopter aerodynamics. Cambridge aerospace series book, Cambridge, UK, second edition, 2007.
+[49] J.G. Leishman, M.J. Bhagwat, and A. Bagai. Free-Vortex Filament MEthods for the Analysis of Helicopter Rotor Wakes. Journal of Aircraft, 39(5):759–775, 2002.
+[50] R. Luckner, G. Hohne, and M. Fuhrmann. Hazard criteria for wake encoutners during approach. Aerospace Science and Technology, 8(8):673–687, 2004.
+[51] N. Matayoshi, K. Asaka, and Y. Okuno. Flight test evaluation of a helicopter airborne lidar. Journal of Aircraft, 44(5):1712–1720, Sept. 2007.
+[52] M.J. Bhagwat nd J.g. Leishman. Stability, Consistency and Convergence of Time-Marching FreeVortex Rotor Wake Algorithms. journal of the American Helicopter Society, 46(1):59–71, 2001.
+[53] G.D. Padfield, B. Manimala, and G.P. Turner. A Severity Analysis for Rotorcraft Encounters with Vortex Wakes. Journal of American Helicopter Society, 49(4):445–456, 2004.
+85
+
+
+[54] G.D. Padfield and M.D. White. Flight simulation in academia - heliflight in its first year of operation at the university of liverpool. The Aeronautical Journal, 107(1075):529–538, 2003.
+[55] D.A. Peters. How Dynamic Inflow Survives in the Competitive World of Rotorcraft Aerodynamics. Journal of the American Helicopter Society, 54(1):1–15, 2009.
+[56] D.A. Peters and N HaQuang. Dynamic Inflow for Pratical Applications. Journal of the American Helicoter Society, 33(4):64–68, October 1988.
+[57] T.R. Quackenbush, D.B. Bliss, and D.A. Wachspress. New Free-Wake Analysis of Rotorcraft Hover Performance using Influence Coefficients. Journal of Aircraft, 26(12):1090–1097, 1989.
+[58] R. Robins and D.P. Delisi. Potential Hazard of Aircraft Wake Vortices in Ground Effect with Crosswind. Journal of Aircraft, 30(2):201–206, 1993.
+[59] A. Rosen and A. Graber. Free Wake Model of Hovering Rotors Having Straight or Curved Blades. Journl of the American Helicopter Society, 33(3):11–19, 1988.
+[60] C.W. Schwarz and K. Hahn. Full-Flight simulator study for wake vortex hazard area investigation. Aerospace Science and Technology, 10(2):136–143, 2006.
+[61] M.P. Scully. A Method of Computing Helicopter Vortex Wake Distortion. Technical Report ASRL TR 138-1, Massachusetts Institute of Technology, 1967.
+[62] R. Steijl and G.N. Barakos. Sliding Mesh Algorithm for CFD Analysis of Helicopter RotorFuselage Aerodynamics. International Journal for Numerical Methods in Fluids, 58(5):527–549, 2008.
+[63] S. Teager, K. Biehl, L. Garodz, J. Tymczyszym, and D. Burnham. Flight test investigation of rotorcraft wake vortices in forward flight. Technical Report DOT/FAA/CT-94/117, FAA, 1996.
+[64] GP. Turner, GD Padfield, and M Harris. Encounters with Aircraft Vortex Wakes: The Impact on Helicopter Handling Qualities. Journal of Aircraft, 39(5):839–849, 2002.
+[65] G.R. Whitehouse and R.E Brown. Modeling the Mutual Distortions of Interacting Helicopter and Aircraft Wakes. Journal of Aircraft, 40(3):440–449, 2003.
+[66] G.R. Whitehouse and R.E. Brown. Modelling a helicopter rotor’s response to wake encounters. Aeronautical Journal, 108(1079):15–26, 2004.
+[67] P. Wilson and S Lang. Technical Report to Support the Safety Case for Recategorization of ICAO Wake Turbulence Standards: Proposed wake turbulence catagories for all aircraft commonly provided with air traffic service. Technical Report 0, EUROCONTROL and FAA, April 2011.
+[68] P. Wilson, C Lepadatu, S Barnes, and S Lang. Technical Report to Support the Safety Case for Recategorization of ICAO Wake Turbulence Standards: An Overview of Key Aviation Accidents Sometimes Assumed to Have Been Casued by Wake Turbulence. Technical Report 0.1, EUROCONTROL and FAA, December 2010.
+[69] P. Wilson, C Lepadatu, S Barnes, and S Lang. RECAT Phase 1 Benefits at Airports Outside FAA and EUROCONTROL Jurisdiction. Technical Report 0.1, EUROCONTROL and FAA, March 2011.
+[70] P. Wilson, C Lepadatu, S Barnes, and S Lang. Technical Report to Support the Safety Case for Recategorization of ICAO Wake Turbulence Standards: Methodology for Re-Catergorization of ICAO Wake Turbulence Standards. Technical Report 0, EUROCONTROL and FAA, May 2011.
+[71] P. Wilson, C. Lepadatu, S Barnes, S Lang, and T Fowler. Safety Case For Recategorization of ICAO Wake Turbulence Standards . Technical Report 0.1, EUROCONTROL and FAA, May 2011.
+86
+
+
+[72] P. Wilson, C. Lepadatu, S Barnes, S Lang, and T Fowler. Technical Report to Support the Safety Case for Recategorization of ICAO Wake Turbulence Standards: Safety Assessment Report. Technical Report 0, EUROCONTROL and FAA, May 2011.
+[73] J. Zhao and C. He. A viscous Vortex Particle Model for Rotor Wake and Interference Analysis. Journal of the American Helicopter Society, 55:1–14, 2010.
+[74] J. Zhao, J.V.R. Prasad, and D.A. Peters. Rotor Dynamic Wake Distortion Model for Helicopter Maneuvering Flight. Journal of the American Helicopter Society, 49(4):414–424, October 2004.
+87
+
+
+Chapter 10
+Appendix: Piloted Flight
+Simulation Results
+10.1 Results of Wake Encounter During Landing
+88
+
+
+Figure 10.1: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0.0, offset 0.
+89
+
+
+Figure 10.2: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0.0, offset 1D.
+90
+
+
+Figure 10.3: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0.0, offset 2D.
+91
+
+
+Figure 10.4: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 45o, offset 0.
+92
+
+
+Figure 10.5: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 45o, offset 1D.
+93
+
+
+Figure 10.6: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 45o, offset 2D.
+94
+
+
+Figure 10.7: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 90o, offset 0.
+95
+
+
+Figure 10.8: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 90o, offset 1D.
+96
+
+
+Figure 10.9: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 0
+kts (Hover), angle 0o, offset 0.
+97
+
+
+Figure 10.10: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 0
+kts (Hover), angle 0o, offset 0.5D.
+98
+
+
+Figure 10.11: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 0
+kts (Hover), angle 0o, offset 1D.
+99
+
+
+Figure 10.12: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 80
+kts, angle 0o, offset 0.
+100
+
+
+Figure 10.13: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 80
+kts, angle 0o, offset 1D.
+101
+
+
+Figure 10.14: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 20
+kts, angle 0o, offset 0.
+102
+
+
+Figure 10.15: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 20
+kts, angle 0o, offset 1D.
+103
+
+
+Figure 10.16: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 20
+kts, angle 0o, offset 2D.
+104
+
+
+Figure 10.17: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 20 ft, speed 40
+kts, angle 0o, offset 0.
+105
+
+
+Figure 10.18: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 20 ft, speed 40
+kts, angle 45o, offset 0.
+106
+
+
+Figure 10.19: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 20 ft, speed 40
+kts, angle 90o, offset 0.
+107
+
+
+Figure 10.20: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 20 ft, speed 20
+kts, angle 0o, offset 0.
+108
+
+
+Figure 10.21: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0, GA aircraft flight height 30 ft at runway threshold
+109
+
+
+Figure 10.22: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0, GA aircraft flight height 50 ft at runway threshold
+110
+
+
+Figure 10.23: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0, GA aircraft flight height 70 ft at runway threshold
+111
+
+
+Figure 10.24: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0, GA aircraft flight height at 150 ft at runway threshold
+112
+
+
+Figure 10.25: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0.
+113
+
+
+Figure 10.26: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 45o, offset 0.
+114
+
+
+Figure 10.27: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 2R.
+115
+
+
+Figure 10.28: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 2R.
+116
+
+
+Figure 10.29: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 90o, offset 2R.
+117
+
+
+Figure 10.30: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 90o, offset 2R.
+118
+
+
+Figure 10.31: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 90o, offset 2R.
+119
+
+
+Figure 10.32: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 2R.
+120
+
+
+Figure 10.33: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 2R.
+121
+
+
+Figure 10.34: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 45o, offset 2R.
+122
+
+
+Figure 10.35: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 45o, offset 4R.
+123
+
+
+Figure 10.36: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 45o, offset 6R.
+124
+
+
+Figure 10.37: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 45o, offset 6R.
+125
+
+
+Figure 10.38: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 90o, offset 4R.
+126
+
+
+Figure 10.39: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 90o, offset 4R.
+127
+
+
+Figure 10.40: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 90o, offset 6R.
+128
+
+
+Figure 10.41: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 20
+kts, angle 0o, offset 0.
+129
+
+
+Figure 10.42: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 20 ft, speed 40
+kts, angle 0o, offset 0.
+130
+
+
+Figure 10.43: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 20 ft, speed 40
+kts, angle 0o, offset 0.
+131
+
+
+Figure 10.44: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0.
+132
+
+
+Figure 10.45: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0.
+133
+
+
+Figure 10.46: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0, hands-off.
+134
+
+
+Figure 10.47: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 2R.
+135
+
+
+Figure 10.48: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 20
+kts, angle 0o, offset 0.
+136
+
+
+Figure 10.49: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 20
+kts, angle 0o, offset 0.
+137
+
+
+Figure 10.50: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 20
+kts, angle 0o, offset 0.
+138
+
+
+Figure 10.51: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 20
+kts, angle 0o, offset 0, hands-off
+139
+
+
+Figure 10.52: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0.
+140
+
+
+Figure 10.53: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0.
+141
+
+
+Figure 10.54: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0.
+142
+
+
+Figure 10.55: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 2R.
+143
+
+
+Figure 10.56: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0.
+144
+
+
+Figure 10.57: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0.
+145
+
+
+Figure 10.58: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0.
+146
+
+
+Figure 10.59: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0.
+147
+
+
+Figure 10.60: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0.
+148
+
+
+Figure 10.61: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 45o, offset 2R.
+149
+
+
+Figure 10.62: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 45o, offset 2R.
+150
+
+
+Figure 10.63: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0.
+151
+
+
+Figure 10.64: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0.
+152
+
+
+Figure 10.65: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0.
+153
+
+
+Figure 10.66: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 0o, offset 0.
+154
+
+
+Figure 10.67: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 45o, offset 2R.
+155
+
+
+Figure 10.68: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 45o, offset 2R.
+156
+
+
+10.2 Results of Wake Encounter During Level Flight
+157
+
+
+Figure 10.69: Dynamics of GA aircraft and pilot’s controls during wake encounter, helicopter height 50 ft, speed 40
+kts, angle 45o, offset 2R.
+158
+
+
+Figure 10.70: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, baseline, no decay.
+159
+
+
+Figure 10.71: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, baseline, no decay, hands-off.
+160
+
+
+Figure 10.72: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, baseline, no decay, hands-off.
+161
+
+
+Figure 10.73: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, baseline, no decay.
+162
+
+
+Figure 10.74: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, baseline, no decay.
+163
+
+
+Figure 10.75: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, baseline, no decay.
+164
+
+
+Figure 10.76: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, 90% decay.
+165
+
+
+Figure 10.77: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, 90% decay, hands-off.
+166
+
+
+Figure 10.78: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, 50% decay.
+167
+
+
+Figure 10.79: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, 75% decay.
+168
+
+
+Figure 10.80: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, 75% decay, hands-off.
+169
+
+
+Figure 10.81: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, baseline, no decay.
+170
+
+
+Figure 10.82: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, baseline, no decay.
+171
+
+
+Figure 10.83: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 180
+ft, speed 65 kts, baseline, no decay.
+172
+
+
+Figure 10.84: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 180
+ft, speed 65 kts, baseline, no decay, hands-off.
+173
+
+
+Figure 10.85: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 150
+ft, speed 65 kts, baseline, no decay.
+174
+
+
+Figure 10.86: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 150
+ft, speed 65 kts, baseline, no decay.
+175
+
+
+Figure 10.87: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 120
+ft, speed 65 kts, baseline, no decay.
+176
+
+
+Figure 10.88: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 120
+ft, speed 65 kts, baseline, no decay.
+177
+
+
+Figure 10.89: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, 90% decay.
+178
+
+
+Figure 10.90: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, 90% decay.
+179
+
+
+Figure 10.91: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 150
+ft, speed 65 kts, 90% decay.
+180
+
+
+Figure 10.92: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, 50% decay.
+181
+
+
+Figure 10.93: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, 50% decay.
+182
+
+
+Figure 10.94: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 150
+ft, speed 65 kts, 50% decay.
+183
+
+
+Figure 10.95: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, 75% decay.
+184
+
+
+Figure 10.96: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, 75% decay.
+185
+
+
+Figure 10.97: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 150
+ft, speed 65 kts, 75% decay.
+186
+
+
+Figure 10.98: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, baseline, no decay.
+187
+
+
+Figure 10.99: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, baseline, no decay.
+188
+
+
+Figure 10.100: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, 50% decay.
+189
+
+
+Figure 10.101: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, 50% decay.
+190
+
+
+Figure 10.102: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, baseline, no decay.
+191
+
+
+Figure 10.103: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, baseline, no decay.
+192
+
+
+Figure 10.104: Dynamics of GA aircraft and pilot’s controls during level flight wake encounter, helicopter height 200
+ft, speed 65 kts, baseline, no decay.
+193

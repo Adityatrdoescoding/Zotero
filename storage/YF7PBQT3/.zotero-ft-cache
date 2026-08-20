@@ -1,0 +1,208 @@
+Design Methodology for Small-Scale Unmanned Quadrotors
+Justin Winslow,∗ Vikram Hrishikeshavan,† and Inderjit Chopra‡ University of Maryland, College Park, Maryland 20742
+DOI: 10.2514/1.C034483
+The increasing usage of low-Reynolds-number (10,000–100,000 tip Reynolds number) scale quadrotors for civilian and military applications provides the impetus for the development of reliable design methodologies. At present, there is limited understanding of how to accurately size quadrotor components for a specific mission. These components include the rotors, motors, speed controllers, batteries, and airframe. However, empirical relationships may be derived for these components based on manufacturer data. The present research identifies the key factors driving vehicle weight and provides a framework for implementing these factors in a micro air vehicle design tool. Starting from basic rotor parameters (such as radius, solidity, and airfoil section) and an initial gross takeoff weight estimate, a blade element momentum theory framework coupled with computational-fluid-dynamics-generated sectional airfoil tables provides an acceptable estimate of low-Reynolds-number rotor power and torque for required thrust. The aerodynamic power and torque along with desired flight time and speed drive the weights of the quadrotor components. The proposed sizing tool has been validated against a series of existing quadrotors with 30–1000 g gross takeoff weights. Current results show that individual weight groups can be predicted generally within a 10% deviation and the gross takeoff weight of each vehicle is predicted within a 4% variation.
+Nomenclature
+C = battery capacity dBL = brushless motor diameter dDC = brushed direct-current motor diameter I = electric current Icont = maximum sustainable current Imax = maximum burst current Kv = motor speed constant lBL = brushless motor length lDC = brushed direct-current motor length mA = airframe mass mB = battery mass mBL = brushless motor mass mDC = brushed direct-current motor mass mR = rotor mass Nb = number of blades P = rotational power Qmax = maximum motor torque R = rotor radius S = battery cells in series σ = solidity; Nbc∕πR
+I. Introduction
+R
+OTARY-WING micro air vehicles (MAVs) are envisioned to have a large impact in civilian and military scenarios, primarily due to their hovering capability. The small size and hovering ability of rotary-wing MAVs make them particularly attractive for reconnaissance in confined, indoor environments and hazardous areas. Multirotor MAVs, such as quadrotors, are a subset of rotary-wing MAVs that forgo tail rotor and swashplate control for multiple coplanar rotors. The quadrotor configuration is preferred over other small-scale
+rotary-wing vehicles because it is mechanically simple in design and flight control. Given the recent emergence of quadrotor MAVs, the guidelines for quadrotor design have been mostly ad hoc and are not based on rigorous weight models, as is the case for full-scale rotorcraft. Limited attempts have been made by research institutions to develop sizing methods for MAVs. The ETH Zurich method uses an active database lookup function for components for each sizing iteration [1]. The National Technical University of Athens developed a parameterization method similar to the present study [2]. However, this method was limited because it primarily depended on only the physical lengths of each component. More recently, the Georgia Institute of Technology also developed a parameterization-based method [3]. Unlike the present research, this method was limited to brushless motors and did not characterize brushed motors or speed controllers commonly used on smaller [less than 100 g gross takeoff weight (GTOW)] quadrotors. Furthermore, a method for obtaining and validating edgewise flight performance characteristics, which are important for sizing quadrotors for different mission requirements, was not addressed. A popular online tool for MAV design is eCalc [4]. However, this design program is based on manual user selection of specific vehicle components to estimate performance. Contrary to eCalc, the proposed methodology determines vehicle component requirements based on mission parameters such as endurance, flight speed, and payload capacity. Conventional sizing methods for large-scale rotary-wing vehicles have been well described by Tishchenko, Boeing–Vertol, and the Research and Technology Laboratories of the U.S. Army Aviation Research and Development Command [5–7]. These methods are intended to be used for vehicles with fuel-based engines. As such, the required fuel weight fraction is iteratively factored into the total vehicle weight based on the required power and mission segments. Modern design methods pertaining to electric propulsion for largescale vertical takeoff and landing concepts have also been studies [8–10]. However, conventional sizing trends may not be completely applicable to MAVs due to their scale and different propulsion requirements. Furthermore, weight groups accounted for in conventional helicopter sizing include the main rotor hub and tail rotor, which are not present in a quadrotor. However, the general methodology used to derive sizing relations is applicable at MAV scales. Specifically, multivariable linear regression is used by the Research and Technology Laboratories to derive empirical sizing equations. This method has been shown to consistently yield accurate weight predictions for a range of large-scale helicopters [5]. Therefore, the aim of the present research is to derive a similar sizing methodology that is now applicable to small-scale multirotor vehicles. This paper describes the development and application of a design methodology for small-scale rotary-wing MAVs. First, the primary quadrotor components are introduced; and the empirical trends,
+Presented as Paper 2017-0014 at the 55th AIAA Aerospace Sciences Meeting, Grapevine, TX, 09–13 January 2017; received 22 March 2017; revision received 31 August 2017; accepted for publication 13 September 2017; published online 21 November 2017. Copyright © 2017 by the American Institute of Aeronautics and Astronautics, Inc. All rights reserved. All requests for copying and permission to reprint should be submitted to CCC at www.copyright.com; employ the ISSN 0021-8669 (print) or 1533-3868 (online) to initiate your request. See also AIAA Rights and Permissions www.aiaa.org/randp. *Graduate Research Assistant, Department of Aerospace Engineering, Alfred Gessow Rotorcraft Center. Student Member AIAA. †Assistant Research Scientist, Department of Aerospace Engineering, Alfred Gessow Rotorcraft Center. Senior Member AIAA. ‡Distinguished University Professor and Director, Department of Aerospace Engineering, Alfred Gessow Rotorcraft Center. Fellow AIAA.
+Article in Advance / 1
+JOURNAL OF AIRCRAFT
+Downloaded by UNIVERSITY OF ADELAIDE -INTERNET on December 5, 2017 | http://arc.aiaa.org | DOI: 10.2514/1.C034483
+
+
+which drive their weights, are presented. These trends have been quantified and organized in multivariable regression equations. The means of calculating and validating rotor power in hover and forward flight are also included. Finally, the schematic of the complete sizing algorithm and the validation of its results is presented.
+II. Quadrotor Components and Weight Trends
+The following section describes the general quadrotor component groups in order of sizing consideration: rotors, motors, electronic
+speed controllers (ESCs), batteries, and the airframe. The general layout of these components is shown in Fig. 1. Additionally, data are presented from measurements and manufacturer specifications, which show evidence of correlation between the component weight and key design parameters (e.g., rotor radius, power output, and energy storage). Figure 2 provides the general range of quadrotor gross takeoff weights and disk loadings (GTOW/total rotor area) that are considered in the present study. The points in Fig. 2 represent quadrotors that have been disassembled and weighed for the current study. The scatter of data shows the current adoption of an ad hoc design methodology in the development of small-scale quadrotors.
+A. Rotors
+An aerodynamic analysis of rotors will yield the approximate rotor design parameters for a required disk loading, range, and endurance objective. Because these design parameters (such as rotor radius, blade chord, and number of blades) influence the rotor weight, they can be correlated to the rotor mass as shown in Fig. 3. Figure 3 represents a sampling of polystyrene and carbon-fiber rotors with various radii, solidities, and numbers of blades. These trends show that, for a variety of microrotors, the radius and blade solidity are key sizing parameters.
+B. Motors
+There are two types of electric dc motors commonly used in quadrotor MAVs: brushless dc (BLDC) motors and brushed motors. For the majority of larger quadrotors (greater than 100 g GTOW), brushless motors tend to be the more popular choice. This is mainly because their operating principle keeps internal friction low and efficiency high. In BLDC motors, the stator is composed of wire coils to induce magnetic fields, whereas the rotor holds permanent magnets. Because the polarity of the stator coils is phased electronically, metal brushes are not needed to mechanically phase the current, thereby reducing friction [11]. A defining parameter of BLDC motors is the Kv value, which is the no-load speed constant of the motor in units of revolutions per minute per volt. Kv describes how fast the motor will spin without external torque when a certain voltage is supplied. For example, a 1000 Kv motor will spin at 1000 rpm when 1 V is applied and 2000 rpm when 2 V are applied. An optimum propulsion design will use a motor with a Kv just large enough to achieve the maximum required revolutions per minute [3]. Figure 4 shows how the BLDC motor weight is affected by Kv as well as the motor’s maximum rated power, outer diameter, and casing length.
+Fig. 1 General quadrotor schematic.
+Fig. 2 Typical small-scale commercial quadrotor disk loading vs GTOW.
+a) b)
+Fig. 3 Plots of rotor data (log scale) showing correlation between rotor mass, radius, and blade area.
+2 Article in Advance / WINSLOW, HRISHIKESHAVAN, AND CHOPRA
+Downloaded by UNIVERSITY OF ADELAIDE -INTERNET on December 5, 2017 | http://arc.aiaa.org | DOI: 10.2514/1.C034483
+
+
+Data published online§ for these motors have been collected from established motor manufacturers such as Turnigy, ProTronik, NeuMotors, and Portescap. The second type of electric motor is the brushed motor, which is typically used for quadrotors less than 100 g GTOW. At this scale, previous studies have shown that brushed motors yield higher efficiencies than BLDC counterparts [11]. Also, the simple construction of brushed motors allows them to be lighter. The electronic speed controller, to be described in the next section, also tends to be lighter for brushed motor systems. Figure 5 shows that, for a brushed motor, its mass is largely related to its maximum rated power and output torque, casing diameter, and casing length. However, the motor diameter and length are not typically design choices for a MAV propulsion system. Therefore, an additional relationship must be used, which relates the diameter and length to required performance variables. Figure 5 indicates that maximum rated motor torque can be used to size the motor length and diameter, and therefore weight.
+C. Electronic Speed Controllers
+The electronic speed controller is the interface between a motor and the onboard autopilot. The ESC receives a digital signal from the autopilot and then determines how much power to supply to a motor. BLDC and brushed ESCs operate slightly different. Brushed ESCs are simple, in that they only need to switch the voltage to the motor on and off in a duty cycle, effectively changing the average voltage supplied. BLDC ESCs, however, require additional circuits to supply three separate phased signals to the motor and measure back electromotive force [12]. Despite these differences, compiled data for each type of ESC show that both are most directly sized by the maximum electric current rating. The maximum current is the
+amount of electrical amperage tolerated by the ESCs above which thermal degradation occurs. Figure 6 shows the increase in weight as the maximum allowable current increases for BLDC ESCs. For brushed ESCs, in the which continuous rated current is also provided, Fig. 6 shows a similar trend between the weight increase with maximum current and with continuous current. The maximum current is the amount of amperage the ESC can sustain for a short time without damage. Continuous current is the amount of amperes the ESC can sustain for an extended period of time.
+D. Battery
+Lithium–polymer (LiPo) batteries are currently the preferred choice for energy storage on small-scale aerial vehicles.
+a) b) c) d)
+Fig. 4 Plots of brushless dc motor data (log scale) showing existing correlation between BLDC mass, Kv, maximum rated power, casing diameter, and casing length.
+a) b) c) d)
+Fig. 5 Plots of brushed motor data (log scale) showing correlation between motor mass, power, maximum continuous torque, casing diameter, and casing length.
+Fig. 6 Log-scale plot of ESC (BLDC) data showing correlation between mass and maximum current rating.
+§Data available online at https://hobbyking.com.
+Article in Advance / WINSLOW, HRISHIKESHAVAN, AND CHOPRA 3
+Downloaded by UNIVERSITY OF ADELAIDE -INTERNET on December 5, 2017 | http://arc.aiaa.org | DOI: 10.2514/1.C034483
+
+
+This preference is due to their relatively high-energy density as compared to other battery types, allowing greater energy storage for less weight. The key characteristics of a LiPo battery are the rated capacity, voltage level, and number of cells S. The capacity of a battery is given in milliampere hours (abbreviated as mAh). The rated capacity represents the amount of current draw the battery can sustain for 1 h before being completely discharged. The nominal voltage for a LiPo battery is approximately 3.7 V. To increase voltage for larger vehicles, battery cells can be connected in series. Each LiPo cell connected in series will increase the overall voltage of the power supply by 3.7 V. The first plot in Fig. 7 shows how battery weight increases with rated capacity. The second plot in Fig. 7 shows how energy density effectively decreases as more cells are added. This may be due to loss in efficient battery construction as additional cells are added in series. It is therefore pertinent to include this effect within the model.
+E. Airframe
+The airframe of the quadrotor is the structure on which the payload and all the previously described components are mounted. For most commercially available quadrotors, the airframes are composed of high-density plastic, but some may use carbon fiber. Despite the fact that these airframes can vary significantly based on manufacturer preference. Figure 8 indicates that, for a range of quadrotors, the airframe weight is largely dependent on rotor diameter and battery mass. These relations appear acceptable because the rotor diameter will dictate minimum airframe dimensions, and the battery comprises a large portion of the GTOW that must be carried by the airframe. The only components labeled in Fig. 1, which are not sized, are the payload and the autopilot. The payload is part of the mission requirements and set by the designer. The autopilot is a digital
+interface for maintaining quadrotor stability and is not dependent on the gross takeoff weight of the vehicle. A small autopilot used on a 50 g quad can provide equivalent stability and control for a 1000 g quad.
+III. Power Requirement Calculation
+A key aspect of the sizing methodology is calculating accurate power, torque, and revolution-per-minute levels based on rotor geometry and required thrust. As shown in Figs. 4 and 5, the power and torque requirements are strongly correlated to the motor mass. Motor power will dictate current in the ESC, which will determine its weight according to Figs. 6 and 8. Additionally, operational power coupled with desired flight time will yield a required energy capacity, which will drive the battery sizing as shown in Fig. 7. Battery weight, in turn, is a strong factor in determining airframe weight, as shown in Fig. 8. Therefore, the rotor power, torque, and revolution-per-minute requirements ultimately size the rest of the quadrotor subcomponents.
+A. Hover Performance
+Determining the thrust and power is even more pertinent at low Reynolds numbers where aerodynamic forces are less understood. In this design tool, the blade element momentum theory (BEMT) in conjunction with computational fluid dynamics (CFD)-generated two-dimensional (2-D) airfoil tables is implemented. This scheme uses the simplicity of the BEMT for rapid calculations and the high accuracy of CFD for low-Reynolds-number sectional aerodynamics. Specifically, the CFD program used was TURNS2-D, which was developed in house, which has been proven to yield reliable lift and drag results at low Reynolds numbers [13,14]. Figure 9 shows the dimensional thrust, power, and torque quantities generated by the BEMT-CFD validated against experimental measurements for a rotor on a commercially available Syma X5 quadrotor. This rotor is
+a) b)
+Fig. 7 Plot of LiPo battery data showing existing correlation of mass with rated capacity and energy density with the number of cells in the series.
+a) b)
+Fig. 8 Log-scale plot of airframe data showing correlation of mass with rotor diameter and battery mass.
+4 Article in Advance / WINSLOW, HRISHIKESHAVAN, AND CHOPRA
+Downloaded by UNIVERSITY OF ADELAIDE -INTERNET on December 5, 2017 | http://arc.aiaa.org | DOI: 10.2514/1.C034483
+
+
+characterized by a 135-mm-diam 0.58-linear-chord taper ratio, with a 13 deg collective (at 75%R), a −5 deg twist rate, and a NACA6504 airfoil section, which is shown in Fig. 11b. Figure 10 shows the close prediction of the BEMT-CFD-generated hover efficiency (figure of merit) with experimental measurements for an optimized microrotor designed in a previous study [11]. This rotor is characterized by an 82-mm-diam 0.5-chord-taper ratio (root chord/tip chord) −11.4 deg twist rate, and a cambered plate airfoil section with a 2.2% thickness and 6.1% camber. Both the nondimensional and dimensional results indicate that the BEMT can reliably predict low–Reynolds-number rotor performance when coupled with sectional CFD tables. Due to rotor stall effects at high CT values, there can be some discrepancy observed in BEMT correlation. This can be improved in the future through better stall prediction models for low-Reynoldsnumber airfoils.
+B. Forward-Flight Performance
+To quickly obtain power, torque, and revolution-per-minute requirements for forward (edgewise) flight, a momentum theory analysis [15] was used. In this theory, the power required for steady level forward flight can be separated into three components: induced
+Fig. 9 Comparison of BEMT with CFD airfoil lookup tables to experimentally tested Syma X5 rotor (tip Reynolds number of ∼50;000 at 5000 rpm).
+Fig. 10 Figure of merit vs CT∕σ validation for a microrotor with
+an 82-mm-diam 0.5-chord-taper ratio, with a −11.4 deg twist rate and cambered plate airfoil.
+V∞
+αs
+T
+Fx
+L
+D
+αs Q
+a) Test stand schematic (rotor shaft tilted into wind) b) Actual test stand (no shaft tilt shown) Fig. 11 Experimental setup used for wind-tunnel testing.
+Article in Advance / WINSLOW, HRISHIKESHAVAN, AND CHOPRA 5
+Downloaded by UNIVERSITY OF ADELAIDE -INTERNET on December 5, 2017 | http://arc.aiaa.org | DOI: 10.2514/1.C034483
+
+
+Pi, profile Po, and parasitic Pp power [15]. However, the equations for these terms contain empirical factors such as the induced power factor κ, the profile power factor K, and the equivalent flat-plate area f for parasitic drag estimation. Due to the difference in Reynolds number, rotor design, rotor configuration, and airframe geometry between large-scale helicopters and small-scale quadrotors, typical values assumed for these factors are not applicable for MAVs. Currently, experimental data for rotary-wing MAV performance in forward flight are lacking, making it difficult to obtain realistic values for the power factors. From a recent study at the NASA Ames Research Center, the test data from the wind-tunnel setup provide force and moment measurements for five commercial multicopters at various flow speeds and body-pitch angles [16]. Although the results of this study are useful for the vehicle lift and drag data, these do not provide much insight into the induced and profile power contributions from a typical MAV-scale rotor at multiple flight speeds. Furthermore, the vehicles tested were mostly larger (GTOW > 1.27 kg) than the vehicles of interest in the present research. To obtain a set of validation data for rotor power in forward flight, wind-tunnel tests were conducted on a typical MAV rotor that is used on the Syma X5 quadrotor. A depiction of the experimental setup used for wind-tunnel testing is shown in Fig. 11. Force and moment measurements were taken with a six-axis load cell (Nano17). The revolutions per minute were measured by fixing magnets to the motor and recording the frequency at which they passed a Hall effect sensor. The shaft tilt αs (or body pitch for the fuselage) was precisely changed with a digital servo coupled with a pitching axis below the Nano17. In addition to the isolated rotor configuration shown in Fig. 11, the Syma X5 airframe without rotors was placed on the test stand to acquire an equivalent flat-plate area drag measurement. Wind-tunnel speeds examined were V∞ 2, 4, and 6 m∕s. For each wind speed,
+the shaft tilts examined were αs 0, 2, 5, 10, 15, 20, 30, and 40 deg. The nominal rotor speed for hover was determined to be 4200 rpm. Therefore, speeds of 3200, 3500, 4200, 4700, and 5200 rpm were examined at each shaft tilt angle. Additionally, measurements were repeated at each wind speed and shaft tilt with the rotor removed to obtain aerodynamic tares to correct the data in postprocessing. The trim condition for steady level forward flight was met when the thrust from the rotor at required shaft tilt was able to balance both the lift with 1/4 the GTOW (for a quadrotor) and the propulsive force with the drag at a given airspeed. The required thrust T, revolutions per minute, torque Q, and shaft tilt αs were interpolated from the windtunnel data where the trim condition was met for each wind speed. By multiplying the torque and revolutions per minute, the required mechanical power from the rotor could be determined and used for validation for the calculated power. The validation for the isolated rotor power is shown in Fig. 12. These results show that the momentum theory analysis can be valid by assuming larger power factors than would be used for full-scale helicopters. Whereas the
+induced power factor would be typically be assumed as κ 1.15, the present analysis shows that κ 1.5 is more realistic for a MAV-scale rotor. It should also be noted that the profile power increases with flight speed much more than usual. This is likely due to the increased effect of viscous drag forces in the low-Reynolds-number regime (20,000–40,000 tip Reynolds numbers) at which these rotors operate. Using the momentum theory analysis, power estimates can be obtained at different desired air speeds. By multiplying the rotor power by the number of rotors and accounting for the drag of the fuselage at its required body pitch angle, a power estimate for cruise can be calculated. Given that the power required varies as a function of flight speed, mission segments for hover or forward flight will drain stored energy at different rates. Additionally, the primary mission requirement (such as long endurance or high speed) will determine the maximum power required, which will drive different choices of quadrotor subcomponents: particularly the motors.
+IV. Component Weight Regression Analysis
+A parameterization technique similar to the previous sizing methods [5] was used to develop empirical equations for sizing quadrotor components. In this method, the dependent variable data (component weight) and the independent parameters (e.g., rotor radius, power requirements, and energy capacity) are first transformed into the log10 domain. Then, a multivariable linear regression algorithm is used to solve for the unknown coefficients, which yield the best fit for the given data. The resulting equation is then transformed back to the original domain and the coefficients become the exponents of the independent variables. This section provides examples of the predicted component weights generated by the regression analysis. Sizing equations for each quadrotor component are provided. Though validation for each sizing equation has been attempted, only two examples for the rotor and battery are shown. The subsequent figures represent how the predicted weight compares to the actual weight of each component. Two measures of accuracy for the predicted weight are provided in each figure: R2 value and linear-fit slope.
+A. Rotors
+Using the weight trends observed in the rotor data, a regression analysis was performed on the rotor weight with the radius, solidity, and number of blades as the dependent variables. Figure 13 shows the agreement between the predicted rotor weight and the measured weight: particularly for lighter rotors. The resulting equation used to generate predicted rotor mass mR in grams is as follows:
+mR 0.0195 R2.0859σ−0.2038N0.5344
+b (1)
+Fig. 13 Validation of regression-derived rotor weight with measured Fig. 12 Calculated isolated rotor power compared to wind-tunnel data. rotor weight.
+6 Article in Advance / WINSLOW, HRISHIKESHAVAN, AND CHOPRA
+Downloaded by UNIVERSITY OF ADELAIDE -INTERNET on December 5, 2017 | http://arc.aiaa.org | DOI: 10.2514/1.C034483
+
+
+where R is the rotor radius in centimeters, σ is the solidity, and Nb is the number of blades.
+B. Battery
+Using the battery weight trends with the energy capacity and number of cells, a predicted weight equation was generated. Figure 14 shows the agreement between the predicted battery weight and the measured battery weight. The regression equation used to generate predicted battery mass mB in grams is as follows:
+mB 0.0418 C0.9327S1.0725 (2)
+where C is the battery capacity in milliamperes per hour, and S is the number of cells in the series.
+C. Brushless Motors
+The regression equation to generate the predicted BLDC motor mass mBL in grams is as follows:
+mBL 0.0109 K0.5122
+v P−0.1902 log lBL 2.5582 log dBL 12.8502 (3)
+where Kv is the motor speed constant in revolutions per minute per volt, P is the maximum rated output power in watts, lBL is the motor casing length in millimeters, and dBL is the outer motor diameter in millimeters. The equation to generate the predicted BLDC motor casing length lBL in millimeters is as follows:
+lBL 4.8910 I0.1751P0.2476 (4)
+where I is the maximum required current for the motor in amperes, and P is the maximum rated output power in watts. The equation to generate the predicted BLDC motor diameter dBL in millimeters is as follows:
+dBL 41.45 K−0.1919
+v P0.1935 (5)
+where Kv is the motor speed constant in evolutions per minute per volt, and P is the maximum rated output power in watts.
+D. Brushed DC Motors
+The equation to generate the predicted brushed Dc motor mass mDC in grams is as follows:
+mDC 10−84 P−0.2979Q−20.5615
+max log lDC 746 log dDC −212 (6)
+where P is the maximum rated output power in watts, Qmax is the maximum output torque in millinewtons per meter, lDC is the motor casing length in millimeters, and dDC is the outer motor diameter in millimeters. Figure 15 shows a comparison between the actual and the predicted weights from the regression analysis. The equation to generate the predicted brushed dc motor casing length lDC in millimeters is as follows:
+lDC 20.83 Q0.1924
+max (7)
+and the equation to generate predicted the brushed dc motor casing diameter dDC in millimeters is as follows:
+dDC 11.13 Q0.2895
+max (8)
+where Qmax is the maximum output torque in millinewtons per meter.
+E. ESC for Brushless Motors
+The equation to generate the predicted ESC mass for BLDC motors mEBL in grams is as follows:
+mEBL 0.8013 I0.9727
+max (9)
+where Imax is the maximum sustainable current through the ESC in amperes.
+F. ESC for Brushed DC Motors
+The equation to generate the predicted ESC mass for brushed motors mEDC in grams is as follows:
+mEDC 0.977 I0.8483
+max (10)
+where Imax is the maximum burst current through the ESC in amperes. A second equation to generate the predicted ESC mass for brushed motors mEDC in grams is as follows:
+mEDC 1.9 I0.7415
+cont (11)
+where Icont is the maximum continuous operation current through the ESC in amperes.
+G. Airframe
+The equation to generate the predicted airframe mass mA in grams is as follows:
+mA 1.3119 R1.2767m0.4587
+B (12)
+Fig. 14 Validation of regression-derived battery weight with measured weight.
+0 20 40 60 80
+0
+10
+20
+30
+40
+50
+60
+70
+80
+Actual Weight (g)
+Predicted Weight (g)
+R2: 0.80511 Slope: 0.92651
+Fig. 15 Validation of regression-derived brushed dc motor weight with measured weight.
+Article in Advance / WINSLOW, HRISHIKESHAVAN, AND CHOPRA 7
+Downloaded by UNIVERSITY OF ADELAIDE -INTERNET on December 5, 2017 | http://arc.aiaa.org | DOI: 10.2514/1.C034483
+
+
+where R is the rotor radius in centimeters, and mB is the mass of the battery in grams.
+V. Complete Sizing Algorithm A. Description
+The sizing equations and BEMT functions have been integrated into a complete parametric sizing tool. A high-level schematic depicting the sizing algorithm and component interaction is shown in Fig. 16. It is noted that the following section discusses the case for hover but can be extended to forward speed as well. The required inputs are the desired flight time, the number of battery cells S, the rotor radius R, the solidity σ, the number of blades Nb, the payload weight, and an initial guess for the GTOW. The initial guess for the GTOW is taken as a certain multiplier of the desired payload weight (three in this case). The rotor mass can be determined directly from the R, σ, and Nb inputs, as shown in Eq. (1). A BEMT subroutine uses the input parameters to generate rotor thrust, power, torque, and revolutions per minute. These performance parameters dictate the motor requirements and weight. The GTOW also dictates the type of motor to be used: typically, BLDC motors for GTOW > 100 g and brushed DC motors for GTOW < 100 g. The power is also multiplied by the flight time and divided by the battery voltage to determine the required battery capacity (Coulombs in milliamperes per hour), which is a strong driver of the battery weight, as seen in Eq. (2). The battery weight then factors into the airframe weight with the rotor radius via Eq. (12). When all subcomponent weights have been
+calculated, they are summed into a new GTOW. The code checks that the new GTOW is less than the previous GTOW. If false, the GTOW is incrementally increased and the sizing loop begins again. If true, then the calculated propulsion system is sufficient to carry out the desired hover mission and the algorithm stops. Typically, the initial guess for the GTOW is chosen conservatively low such that it approaches the final solution from below. The update is done in a fixed-point manner, and it is easier to converge from a lower value because the sizing equations are generally monotonically increasing.
+B. Validation
+To prove the utility of the proposed quadrotor MAV sizing code, a weight measurement breakdown was conducted on a variety of existing quadrotors. The major weight groups (rotors, motors, ESCs, battery, and airframe) were isolated and weighed individually, in addition to the GTOW of each vehicle. A sample of the calculated sizing results compared to the measured values for each weight group is provided in Table 1. Both brushed- and brushless-motor-based vehicles are presented. The reported flight time and basic rotor information (R, σ, Nb, and assumed airfoil) for each vehicle were the primary sizing inputs. The payload weight contained items such as the autopilot board, light-emitting diodes, and cameras; and they were not calculated by the sizing algorithm. As seen in Table 1, the majority of the percent error between measured and calculated weights falls within 10%. Furthermore, the GTOW of each vehicle is predicted well, with a percent error within 4%.
+Inputs
+Flight Time No. of Cells
+GTOWi Payload
+T, P, Q, RPM
+Motor
+Type mDC
+P, Q
+mBL
+P, RPM
+mb
+mR
+V
+mESC
+Imax
+P
+S
+FT mA
+BEMT
+Σm
+GTOWi+1 < GTOWi
+Yes
+Exit
+No
+Increase GTOWi
+Fig. 16 Sizing algorithm and interactions.
+Table 1 Comparison of various quadrotor weight groups to sizing code outputs
+Quadrotor/motor type Holy Stone DFD/brushed UDIRC U816A/brushed Syma X5/brushed Syma X8G/brushless DJI Phantom 1/brushless
+Rotor Measured, g 1.44 1.48 7.72 34.3 28.4 Calculated, g 1.35 1.35 9.02 28.6 23.4 Error, % −6.47 −9 16.9 −16.5 −17.8 Motor Measured, g 13.9 13.6 15 122 203 Calculated, g 14.7 15.3 14.4 126 198 Error, % 5.63 12.7 −3.91 4.01 −2.73 ESC Measured, g 0.294 0.383 0.493 21.2 40.4 Calculated, g 0.304 0.327 0.5 24 27 Error, % 3.42 −14.6 1.36 13.1 −33.3 Battery Measured, g 8.44 8.3 14.7 110 170 Calculated, g 7.37 8.08 15.8 84.8 186 Error, % −12.7 −2.69 7.27 −22.6 9.46 Airframe Measured, g 11.3 13.1 51.4 198 268 Calculated, g 11.9 12.4 53.3 227 283 Error, % 6.03 −4.79 3.58 14.9 5.58 GTOW Measured, g 37.9 40.6 108 608 808 Calculated, g 38.3 40.9 111 615 808 Error, % 0.964 0.784 3.36 1.09 −0.011
+8 Article in Advance / WINSLOW, HRISHIKESHAVAN, AND CHOPRA
+Downloaded by UNIVERSITY OF ADELAIDE -INTERNET on December 5, 2017 | http://arc.aiaa.org | DOI: 10.2514/1.C034483
+
+
+VI. Conclusions
+A design tool for low-Reynolds-number (10,000–100,000 Reynolds numbers)-scale quadrotor aircraft is proposed. Provided with general mission requirements (endurance, speed, and payload) and basic rotor parameters, the design tool outputs require subcomponent weights and total vehicle size and weight. In hover scenarios, the blade element momentum theory in conjunction with computational fluid dynamicsgenerated low–Reynolds-number airfoil tables is a fast and reliable method to calculate the required torque and power. Forward-flight performance data for a low-Reynolds-number rotor is collected, which indicates relatively high-power requirements as the forward-flight speed increases. These data are required to build more accurate semiempirical models to size quadrotors for different flight speeds, depending on mission requirements. However, due to the lack of low-Reynoldsnumber forward-flight rotor data, more experiments should be conducted to further validate the model. Data on each quadrotor component are compiled and analyzed to determine key weight-driving factors. Sizing equations are derived using a log–log multivariable linear regression technique. The sizing equations are validated against the survey of available data for each component. The sizing model is also compared to existing quadrotor micro air vehicles in terms of individual component weights and gross takeoff weight (GTOW). Individual weight groups can be predicted generally within a 10% error, and the GTOW of each vehicle is predicted within a 4% error.
+Acknowledgments
+The authors would like to extend special thanks to the members of Vertical lift research center of excellence, Alex Moodie, and the other members of the NASA Langley Research Center U.S. Army Concept Design and Assessment for their support of this project. The authors would also like to thank Ehiremen Ebiwele for assistance with windtunnel tests.
+References
+[1] Bouabdallah, S., and Siegwart, R., “Design and Control of a Miniature Quadrotor,” Advances in Unmanned Aerial Vehicles, Springer, Dordrecht, The Netherlands, 2007, pp. 171–210. [2] Ampatis, C., and Papadopoulos, E., “Parametric Design and Optimization of Multi-Rotor Aerial Vehicles,” Applications of Mathematics and Informatics in Science and Engineering, Springer International, New York, 2014, pp. 1–25. [3] Bershadsky, D., Haviland, S., and Johnson, E. N., “Electric Multirotor Propulsion System Sizing for Performance Prediction and Design Optimization,” AIAA SciTech 2016, AIAA Paper 2016-0581,
+2016. doi:10.2514/6.2016-0581
+[4] eCalc: xcopterCalc—Multicopter Calculator (online database), http:// www.ecalc.ch/xcoptercalc.php [retrieved Nov. 2016]. [5] McMasters, J. H., and Cummings, R. M., “Rethinking the Airplane Design Process—An Early 21st Century Perspective,” 42nd Aerospace Sciences Meeting, AIAA Paper 2004-0693, Jan. 2004. doi:10.2514/6.2004-693 [6] Johnson, W., “NDARC—NASA Design and Analysis of Rotorcraft. Theoretical Basis and Architecture,” American Helicopter Society Aeromechanics Specialist’s Conference Proceedings, American Helicopter Soc., San Francisco, CA, Jan. 2010. [7] Sinsay, J. D., and Nunez, G. F., “Toward Right-Fidelity Rotorcraft Conceptual Design,” 51st AIAA/ASME/ASCE/AHS/ASC Structures, Structural Dynamics, and Materials Conference, AIAA Paper 20102756, April 2010. doi:10.2514/6.2010-2756 [8] Johnson, W., “Propulsion System Models for Rotorcraft Conceptual Design,” American Helicopter Society 5th Decennial Aeromechanics Specialists’ Conference, American Helicopter Soc., San Francisco, CA. [9] Datta, A., and Johnson, W., “Powerplant Design and Performance Analysis of a Manned All-Electric Helicopter,” Journal of Propulsion and Power, Vol. 30, No. 2, 2014, pp. 490–505. doi:10.2514/1.B34843 [10] Sinsay, J., Alonso, J., Kontinos, D., Melton, J., and Grabbe, S., “Air Vehicle Design and Technology Considerations for an Electric VTOL Metro-Regional Public Transportation System,” 12th AIAA Aviation Technology, Integration, and Operations Conference, AIAA Paper 20125404, Sept. 2012. doi:10.2514/6.2012-5404 [11] Winslow, J., Benedict, M., Hrishikehavan, V., and Chopra, I, “Design, Development, and Flight Testing of a High Endurance Micro Quadrotor Helicopter,” American Helicopter Society International Specialists’ Meeting on Unmanned Rotorcraft Systems, Chandler, AZ, 2015.
+[12] Harrington, A., and Kroninger, C., “Characterization of Small DC Brushed and Brushless Motors,” U.S. Army Research Lab. Rept. ARL-TR-6389, March 2013. [13] Yang, K., “Aerodynamic Analysis of an MAV-Scale Cycloidal Rotor System Using a Structured Overset RANS Solver,” M.S. Thesis, Dept. of Aerospace Engineering, Univ. of Maryland, College Park, MD, 2010. [14] Shivaji, M., “Correlation-Based Transition Modeling for External Aerodynamic Flows,” Ph.D. Dissertation, Dept. of Aerospace Engineering, Univ. of Maryland, College Park, MD, 2014.
+[15] Leishman, J.G., Principles of Helicopter Aerodynamics, Cambridge Univ. Press, New York, 2006, pp. 37–52. [16] Russell, C., Jung, J., Willink, G., and Glasner, B., “Wind Tunnel and Hover Performance Test Results for Multicopter UAS Vehicles,” American Helicopter Society 72nd Annual Forum, American Helicopter Soc., West Palm Beach, FL, May 2016.
+Article in Advance / WINSLOW, HRISHIKESHAVAN, AND CHOPRA 9
+Downloaded by UNIVERSITY OF ADELAIDE -INTERNET on December 5, 2017 | http://arc.aiaa.org | DOI: 10.2514/1.C034483

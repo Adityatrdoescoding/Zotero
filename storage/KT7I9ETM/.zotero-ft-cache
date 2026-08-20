@@ -1,0 +1,249 @@
+
+View Online
+
+Export Citation
+RESEARCH ARTICLE | MAY 09 2023
+Deep learning predictions of unsteady aerodynamic loads on an airfoil model pitched over the entire operating range
+
+Ayman Mohamed  ; David Wood
+Physics of Fluids 35, 053113 (2023) https://doi.org/10.1063/5.0139907
+Articles You May Be Interested In
+Quasi-three-dimensional loss prediction model of subsonic compressor cascade based on bidirectional
+long short-term memory networks and multi-head self-attention
+Physics of Fluids (August 2023)
+Remaining useful life prediction for equipment based on RF-BiLSTM
+AIP Advances (November 2022)
+Deep learning for state of health estimation in EV batteries: A CNN-BiLSTM approach
+AIP Advances (July 2025)
+20 August 2025 18:33:56
+
+
+Deep learning predictions of unsteady aerodynamic loads on an airfoil model pitched over the entire operating range
+Cite as: Phys. Fluids 35, 053113 (2023); doi: 10.1063/5.0139907 Submitted: 24 December 2022 . Accepted: 24 April 2023 . Published Online: 9 May 2023
+Ayman Mohamed1,a) and David Wood2
+AFFILIATIONS
+1Mechanical Design and Production Department, Faculty of Engineering, Cairo University, Giza, Egypt 2Department of Mechanical and Manufacturing Engineering, University of Calgary, Calgary, Alberta T2N 1N4, Canada
+a)Author to whom correspondence should be addressed: ashry.ayman@eng.cu.edu.eg
+ABSTRACT
+For the design and certification of wind turbines, it is essential to provide fast and accurate unsteady aerodynamic load prediction models for the whole operational range of angle of attack, up to 180 for vertical-axis and 90 for horizontal-axis wind turbines. This work describes a computationally efficient unsteady forces prediction model based on a deep learning approach, namely the bidirectional long short-term memory (BiLSTM) algorithm, for an airfoil pitched over the full operational range of angles of attack up to 180 . No model has been developed to capture the unsteady forces at high angles of attack. Novel features based on operating conditions and the steady polars of the airfoil are used as inputs for the BiLSTM model. Direct measurements of steady and unsteady forces on a NACA 0021 airfoil model were conducted at reduced frequencies up to 0.075 and a Reynolds number of 120 000 in an open-jet wind tunnel for model learning and testing. The unsteady forces vary significantly from the steady values at high pitching amplitudes and post-stall angles, which, if not accounted for when simulating wind turbine performance, would result in inaccurate predictions. Furthermore, measurements revealed the effect of unsteady vorticity development and shedding on aerodynamic forces under forward and reverse flow conditions. The BiLSTM model is capable of capturing the underlying physics of unsteady aerodynamic forces under extreme operating conditions.
+Published under an exclusive license by AIP Publishing. https://doi.org/10.1063/5.0139907
+I. INTRODUCTION
+Wind turbines encounter unsteady conditions in the form of flow separation, dynamic stall, flow reattachment, and unsteady attached flow during most of their lifespan, resulting in substantial nonlinearity and hysteresis in the aerodynamic forces. Flow unsteadiness is the consequence of a variety of causes, such as tower shadow effects, yaw misalignment and wind shear, atmospheric turbulence, and the cyclic nature of vertical-axis wind turbine (VAWT) operation.1,2 These result in unsteady variations in the effective angles of attack, leading to nonlinear, time-dependent aerodynamic forces and fatigue loads on turbine blades. It is common to quantify the flow unsteadiness for an oscillating airfoil by the reduced frequency, k 1⁄4 xc/(2V1), where x is the pitching frequency, c is the airfoil chord,
+and V1 is the wind speed.3 The angles of attack can reach 90 for
+horizontal-axis wind turbines (HAWTs) and up to 180 for VAWTs.4 Nevertheless, the literature lacks unsteady airfoil data and prediction models over the whole operating range of wind turbine blades.5
+Experimental unsteady airfoil data and high-fidelity models for high angles of attack are needed to develop accurate unsteady load predictions that can extend the life of wind turbines and improve the economics of harvesting wind energy. Unsteady aerodynamic forces can be modeled using computational fluid dynamics (CFD), empirical modeling, and data-driven models. CFD relies on physics modeling and requires significant computational resources, which hinders its utilization in iterative design or load-certification. Furthermore, the computed unsteady aerodynamic forces are often in disagreement with experimental data during flow separation and reattachment.6,7 Empirical models are the common approach adopted in academia and industry to reproduce dynamic stall loads for wind turbine design and aeroelastic simulations, in which unsteady aerodynamic forces are modeled based on physical intuition and engineering assumptions. However, no such empirical model has been developed to predict unsteady aerodynamic loads on airfoils or wind turbine blades for the entire operating range of angles
+Phys. Fluids 35, 053113 (2023); doi: 10.1063/5.0139907 35, 053113-1
+Published under an exclusive license by AIP Publishing
+Physics of Fluids ARTICLE pubs.aip.org/aip/phf
+20 August 2025 18:33:56
+
+
+of attack from 0 to 180 . For instance, OpenFAST, a wind turbine analysis code developed by the U.S. National Renewable Energy Laboratory, deactivates the unsteady forces computed by the unsteady aerodynamic empirical models when the estimated effective angle of attack exceeds 45 .8 A modified version of the ONERA (Office National d’etudes et de Recherches Aerospatiales) dynamic stall model for several airfoils was recently developed by Mohamed and Wood,2 with the goal of modeling the load variations associated with the shedding of multiple dynamic stall vortices (DSVs) up to angles of attack of 30 only. DSVs are the main unsteady flow feature associated with dynamic stall. They form and detach from near the leading edge as the load changes, and their passage over the airfoil further influences the lift and drag. At elevated angles of attack, it is difficult to tune empirical models over wide operating conditions, as the flow response is highly nonlinear.9 It was the difficulty in tuning the model of Ref. 2 for the present data that motivated us to investigate machine learning alternatives. Data-driven models have been demonstrated to be highly effective in a broad range of applications, including regression and classification problems, in which it is difficult to find the underlying physics.10–14 Recent advances in data science and machine learning have opened up new avenues for addressing otherwise intractable
+aerodynamics and fluid mechanics challenges. Applications in aerodynamics include airfoil shape design and optimization,15,16 flow estimation and reconstruction,17,18 turbulence modeling for the Reynolds averaged Navier–Stokes equations,19 aeroelasticity,20 and load estimation for smart airfoils.21,22 To overcome unsteady aerodynamic modeling challenges, many machine learning techniques have been developed, including support vector machine (SVM),23 neural network (NN),24,25 recurrent neural network (RNN) with gated recurrent unit (GRU),26 long short-term memory (LSTM),27,28 and adaptive network-based Fuzzy inference system (ANFIS).29 Machine learning algorithms may be trained using both force measurements in wind tunnels1,9 and from CFD simulations.24,26,30 All these models were trained to predict unsteady forces on airfoil models at angles of attack lower than 45 . Unsteady aerodynamic forces are time series data that exhibit an aerodynamic lag in the flow separation and reattachment on a pitched airfoil, causing hysteresis in the unsteady forces.2 An accurate deep learning algorithm must reproduce the time histories of the circulatory and noncirculatory components generated by variations in effective angles of attack caused by varying inflow conditions and blade structural response.31 The time dependencies in the unsteady forces can be learnt by a RNN
+FIG. 1. The wind tunnel experimental setup and co-ordinate system used for evaluating airfoil forces. The top and bottom acrylic plates were aligned to the exit of the wind tun
+nel contraction. The contraction outlet was 1 1 m2, and the airfoil quarter-chord was 0.45 m from the contraction exit.
+Physics of Fluids ARTICLE pubs.aip.org/aip/phf
+Phys. Fluids 35, 053113 (2023); doi: 10.1063/5.0139907 35, 053113-2
+Published under an exclusive license by AIP Publishing
+20 August 2025 18:33:56
+
+
+algorithm without increasing model complexity due to weight sharing.32 Because the RNN algorithm is trained through backpropagation through time, gradients have a tendency to vanish or explode, which deteriorates the algorithm performance.33 Consequently, the RNN algorithm may not capture long-term dependencies. To tackle this problem, the LSTM algorithm, a variant of RNN, has been developed by including an explicit memory cell that utilizes nonlinear gate units to regulate the flow of information and learn the long-term dependencies.34,35 As a unique variant of the LSTM algorithm, the bidirectional long short-term memory or BiLSTM algorithm has been introduced to increase the learning capability of the long-term dependencies in time-history data.36 The fundamental component of BiLSTM is the LSTM, which consists of forward-direction LSTM and backwarddirection LSTM, so it can track both the past and future status for every sequence sample by internally modeling the global dependencies using recurrent connections.34 Representative features can be constructed in terms of the operating conditions and the airfoil geometry. Operating conditions include the angle of attack (a), the pitching rate (a_ 1⁄4 da/dt), and the pitching acceleration (€a 1⁄4d2a/dt2).9 The airfoil geometry can be parameterized with a universal parametric geometric representation or geometry variables, such as model thickness and camber line co-ordinates.9,27 However, these geometric representation techniques lack critical
+information about the steady load curves, such as the static stall angle (ass) and load hysteresis that have strong relationships to the dynamic stall forces. Not representing these characteristics in the constructed features set requires the machine learning algorithm to differentiate between attached and separated flow regimes and to generate the unsteady force hysteresis. Extending the application of the machine learning framework to include fluid dynamics at high angles of attack exacerbates the problem’s complexity and makes it extremely nonlinear. This necessitates the extraction of novel discriminative features to capture the wide range of operating conditions and airfoil performance in a way that is not achievable with either conventional unsteady modeling approaches or previous data-driven models. The purpose of this work is to provide one of the first applications of deep learning algorithms, specifically the BiLSTM algorithm, for predicting the unsteady aerodynamic forces on an oscillating airfoil model for the entire operating range. The BiLSTM was chosen because, in comparison to the LSTM, it offers extra training by traveling both forward and backward through time-history data.37 The proposed BiLSTM algorithm is trained using a subset of experimental data measured in a wind tunnel for a NACA 0021 airfoil model and then validated against the remaining data set. We believe that the present experiments provide a significant challenge for machine learning given the complex aerodynamic processes involved with the large
+FIG. 2. Validation of the steady measurements using work of Holst et al.4: (a) Cl and (b) Cd.
+Physics of Fluids ARTICLE pubs.aip.org/aip/phf
+Phys. Fluids 35, 053113 (2023); doi: 10.1063/5.0139907 35, 053113-3
+Published under an exclusive license by AIP Publishing
+20 August 2025 18:33:56
+
+
+range of angles and frequencies. Our approach is to make the model as general as possible; in other words, one model is used for all cases, and it will be shown that this approach works well in general. There are some features at high angles that the model does not accurately reproduce, but these cases are limited. This work is structured as follows: Sec. II describes the experimental setup utilized to actuate the airfoil model and measure the unsteady aerodynamic forces directly in the wind tunnel. Section III outlines the key physics of the airfoil aerodynamic behavior at high angles of attack. The details of the proposed BiLSTM model, including the designed set of features, are discussed in Sec. IV, while the results are presented in Sec. V. In Sec. VI, the conclusions and suggestions for future research are outlined.
+II. EXPERIMENT OVERVIEW
+The wind tunnel experiment was carried out in a 1 1 m2 wind tunnel at the University of Calgary. A NACA 0021 airfoil model was used, with a chord length of c 1⁄4 0.185 m, an aspect ratio of 4.5 and a blockage ratio of 18.5% at a 1⁄4 90 . The airfoil model consisted of five 3D-printed sections glued together on a 16 mm steel shaft. The final assembly was sanded and coated with epoxy for a smooth surface finish. The experiment was conducted at V1 1⁄4 10 m/s, corresponding to Reynolds number, Re 1⁄4 120 000, with a turbulence intensity level of
+0.3%. A timing-belt system, driven by a stepper motor, was used to pitch the airfoil model about the quarter-chord location, as illustrated in Fig. 1. The stepper motor was equipped with an optical encoder to measure a with a resolution of 0.0625 . The model was mounted vertically at the center of the wind tunnel test section, between two ATI (Industrial Automation) multi-axis force sensors, as illustrated in Fig. 1. The capacity of the lower force sensor was 32 N in the x- and ydirections, with a force resolution of 0.006 25 N, while the upper force transducer had a capacity of 20 N in the x- and y-directions, with a resolution of 0.005 N. The upper force transducer was mounted on a spherical rod end to rotate freely with the airfoil model. A National Instruments data acquisition card with a 16-bit resolution, NI-DAQ 6212, was connected to each force sensor. The two cards were synchronized to commence acquisition at the same time using an external trigger. Two horizontals 0.9 0.9 m2 acrylic end plates were used to alleviate the free-end effects. The end plates were equipped with a 3Dprinted superelliptic leading edge to reduce the probability of flow separation at the leading edge.38 No vertical end plates were used. The force transducers measured the total loads acting on the airfoils, including the inertial, frictional, and aerodynamic forces. For every test run, the true aerodynamic responses were found by subtracting the force measurements when the wind tunnel was on and off. The normal force, Cn, and chord-axis force, Ca, were measured and
+FIG. 3. Conditions for defining the steady curves as input for the BiLSTM dynamic stall model: (a) Cl and (b) Cd. The subscript indicates the number of the static stall.
+Physics of Fluids ARTICLE pubs.aip.org/aip/phf
+Phys. Fluids 35, 053113 (2023); doi: 10.1063/5.0139907 35, 053113-4
+Published under an exclusive license by AIP Publishing
+20 August 2025 18:33:56
+
+
+computed by summing the force readings from the two force transducers according to
+Cn 1⁄4 Fn1þFn2
+0:5qV21c (1)
+and
+Ca 1⁄4 Fa1 þFa2
+0:5qV21c ; (2)
+where the subscripts 1 and 2 represent the lower and the upper force transducer readings. Subsequently, lift and drag were computed as
+Cl 1⁄4 Cn cos aþ Ca sin a (3)
+and
+Cd 1⁄4 Cn sin a Ca cos a: (4)
+Because the flow was not constrained in the direction of the lift, and no effective blockage corrections for dynamic testing exist, the results are presented without adjustment. Furthermore, dynamic stall measurements are minimally affected by blockage effects and are qualitatively comparable after any correction.39,40 Finally, the primary goal is to explore the application of deep learning algorithms for predicting
+unsteady forces at high angles of attack. The airfoil was pitched sinusoidally according to a 1⁄4 am þ aa sin (ks p/2) at four reduced frequencies, namely k 1⁄4 0.0125, 0.025, 0.05, and 0.075, where the nondimensional time s is computed as s 1⁄4 2V1t/c and time t in seconds. The measurements were conducted at mean angles of attack of am 1⁄4 0 , 15 , 30 , 50 , 90 , and 130 , with a pitching amplitude range of aa 1⁄4 10 –60 , to cover the full rotation of the airfoil and to investigate unsteady aerodynamic loads around load hysteresis regimes of the steady polars. The unsteady aerodynamic forces were phase averaged over a total of 20 cycles and presented along with the standard deviation indicated by shading on the subsequent figures.
+III. STEADY AND UNSTEADY AERODYNAMIC LOADING
+Steady measurements were made prior to the unsteady measurements. It is rare to find experimental data acquired under the same experimental conditions as the presented work for the NACA 0021 airfoil model pitched over the entire operating range up to 180 . Therefore, steady measurements were made for comparison with the data of Holst et al.4 at Re 1⁄4 140 000, as shown in Fig. 2. It is noted that4 determined the lift and drag by measuring only the airfoil surface pressure. This is likely to under-estimate the drag especially at low absolute angles of attack which led to discrepancies with the present data. The present steady and unsteady
+FIG. 4. Impact of dynamic stall vortex development and shedding on aerodynamic unsteady loads at mean angle of attack of am 1⁄4 15 (red lines), 90 (green), and 130 (blue) and pitching amplitude of aa 1⁄4 60 : (a) Cl and (b) Cd. The shading indicates the standard deviation over the 20 measurement cycles.
+Physics of Fluids ARTICLE pubs.aip.org/aip/phf
+Phys. Fluids 35, 053113 (2023); doi: 10.1063/5.0139907 35, 053113-5
+Published under an exclusive license by AIP Publishing
+20 August 2025 18:33:56
+
+
+measurements were done at Re 1⁄4 120 000, lower than in, Ref. 4 to achieve load cases with a high reduced frequency without impacting the experimental setup dynamics under deep dynamic stall conditions, where load overshoots occur due to the shedding of multiple dynamic stall vortices. In Fig. 2(a), steady Cl measurements agree with Holst et al.4 in the attached flow regime below a 1⁄4 18 in having a very similar slope but slightly lower maximum Cl at ass for the present measurements which can be attributed, inter alia, to different experimental setups, measuring the loads directly on the entire span of the airfoil model, and not using pressure transducers. When the angle of attack is greater than 150 , the steady Cl shows good agreement with prior measurements, as shown in Fig. 2(a). The steady Cd measurement shows higher drag at low a compared to the pressure measurements of Holst et al.,4 as shown in Fig. 2(b), due to the inclusion of the viscous drag in the present work, as the aerodynamic forces were measured directly using force transducers. The NACA 0021 airfoil model experiences three static stalls over the entire range of angle of attack, namely, the first, second, and third or reverse flow stalls, as shown in Fig. 3, due to different mechanism of the separation point progression in these regimes as the airfoil model is pitched.41–43 There is a clear discrepancy between measurements and literature for both steady Cl and Cd during the three stalls, particularly the strength of the second and reverse stall, as shown in Fig. 2, which depends on the configuration of the wind tunnel and experimental setup.42,44 When steady load hysteresis is used as an input, dynamic stall models become more accurate, particularly during the pitch-down motion.45,46 For the three hysteresis regimes indicated in Fig. 3, the angles a1, a2, and a3 determine when to use the pitch-down curves. If the airfoil model was pitched
+FIG. 5. Flow diagram of the proposed dynamic stall model based on the BiLSTM algorithm. The subscript q can be n or a to represent Cn or Ca, respectively.
+TABLE I. Wind tunnel measurement schedule for the NACA 0021 airfoil. Every data set consists of six measurements at different mean angles of attack except data set 19 used for testing has one corrupted measurement that was not used in testing. Re 1⁄4 12 000 for all measurements.
+Purpose Set k aao aom
+Training 1 0.0125 20 0, 15, 30, 50, 90, and 130 2 0.075 20 0, 15, 30, 50, 90, and 130 3 0.025 30 0, 15, 30, 50, 90, and 130 4 0.05 40 0, 15, 30, 50, 90, and 130 5 0.0125 60 0, 15, 30, 50, 90, and 130 6 0.075 60 0, 15, 30, 50, 90, and 130 Validation 7 0.05 30 0, 15, 30, 50, 90, and 130 8 0.025 40 0, 15, 30, 50, 90, and 130 Testing 9 0.0125 10 0, 15, 30, 50, 90, and 130 10 0.025 10 0, 15, 30, 50, 90, and 130 11 0.05 10 0, 15, 30, 50, 90, and 130 12 0.075 10 0, 15, 30, 50, 90, and 130 13 0.025 20 0, 15, 30, 50, 90, and 130 14 0.05 20 0, 15, 30, 50, 90, and 130 15 0.0125 30 0, 15, 30, 50, 90, and 130 16 0.075 30 0, 15, 30, 50, 90, and 130 17 0.0125 40 0, 15, 30, 50, 90, and 130 18 0.075 40 0, 15, 30, 50, 90, and 130 19 0.025 60 0, 15, 30, 50, and 90 20 0.05 60 0, 15, 30, 50, 90, and 130
+Physics of Fluids ARTICLE pubs.aip.org/aip/phf
+Phys. Fluids 35, 053113 (2023); doi: 10.1063/5.0139907 35, 053113-6
+Published under an exclusive license by AIP Publishing
+20 August 2025 18:33:56
+
+
+down from an angle greater than these specific angles, the pitch-down load curves should be used. An example for three unsteady load measurements at am 1⁄4 15 , 90 , and 130 , high pitching amplitude of aa 1⁄4 60 , and k 1⁄4 0.05 is shown in Fig. 4 for Cl and Cd. The unsteady Cl deviates significantly from the steady curves around the first and reverse flow stalls, as shown in Fig. 4(a), when DSVs develop to generate load fluctuations for am 1⁄4 15 and 130 , respectively.47,48 The maximum deviation of the unsteady Cd occurs at 90 , as shown in Fig. 4(b). The literature commonly defines unsteady aerodynamic loads at k 1⁄4 0.05 as a quasisteady loads.4,6,31 However, under this quasi-steady condition, unsteady dynamic stall vortices might develop and cause large increases in the aerodynamic loads, as shown in Fig. 4, which emphasizes the importance of modeling the unsteady loads. For instance, the unsteady Cl deviated from the steady curve by 180% at a 1⁄4 26 for the am 1⁄4 15 , while the unsteady Cd is increased by 80% at a 1⁄4 98 for am 1⁄4 130 .
+IV. DYNAMIC STALL MODEL
+A BiLSTM algorithm was developed to reproduce the variations in the unsteady forces. The BiLSTM is an advanced variant of the LSTM algorithm with two LSTMs, as shown in Fig. 5; the first is fed by the time-history data and the second by its reverse form, with the
+aim of improved learning of the long-term dependencies. This should increase the prediction accuracy when the amplitude of the angle variation is large.49 The algorithm is implemented in MATLAB using the deep learning toolbox without any auxiliary coding apart from input data handling and results processing. The BiLSTM consists of three stacked layers, each with 100 neurons; and each layer is followed by a 0.5 dropout layer to prevent overfitting as much as possible. Overfitting occurs when the model is too closely aligned with the training data that it cannot respond to the validation cases. With an initial learning rate of 0.01, the Adam optimizer was used to optimize the weight parameters of the network based on the loss function of the mean squared error. The experimental data were split into training (30%), validation (10%), and testing data (60%), Table I. This relatively small amount of training data for a regression problem, was chosen to examine the model generalization and robustness over a wide range of operating conditions. The training data were chosen to cover as much as possible of the operating conditions, particularly for the reduced frequency, to cover various degrees of flow unsteadiness. The model was trained on a workstation with an Intel Core i7–10850 CPU @ 2.7 GHz, Intel UHD graphics, and 32 GB of RAM. The main computational cost for training the proposed BiLSTM was the offline computation, which is very low in comparison to typical CFD computational cost.
+FIG. 6. Impact of vortex development and shedding on the unsteady Cn and Ca around ass and during the reverse flow: (a) Cn around ass, (b) Cn during the reverse flow and (a) Ca around ass, and (b) Ca during the reverse flow.
+Physics of Fluids ARTICLE pubs.aip.org/aip/phf
+Phys. Fluids 35, 053113 (2023); doi: 10.1063/5.0139907 35, 053113-7
+Published under an exclusive license by AIP Publishing
+20 August 2025 18:33:56
+
+
+After preprocessing the wind tunnel measurements, representative features were extracted that include three features related to the airfoil operating conditions and six features related to airfoil characteristics. The operating conditions features include a, reduced pitch rate (_ac/2V1), and reduced pitch acceleration [€a(c/2V1)2]. Airfoil characteristic features were extracted from the aerodynamic force coefficients in the normal- and chord-axis directions, Cn and Ca, respectively, instead of the conventional and more common Cl and Cd. Under deep dynamic stall conditions, the development and shedding of multiple DSVs can cause severe fluctuations in the unsteady Cn, Cl, and Cd,
+when the airfoil is pitched beyond ass.50 Shedding of DSVs generates only a steep decrease in the unsteady Ca compared to other aerody
+namic loads when the flow becomes fully separated,2 as shown in Fig. 6. Therefore, the current model uses Cn and Ca instead of Cl and Cd to reduce the prediction effort of the BiLSTM algorithm, which can improve the overall prediction accuracy. Airfoil characteristic features are based on the extrapolated linear regime Cq,lin and the steady load loss DCq, where the subscript q can be n or a to represent Cn and Ca, respectively. Figures 7 and 8 show the evolution of Cq,lin and DCq for Cn and Ca, respectively, for the steady pitching-up (_a > 0) and -down (a_ < 0) motions of the NACA 0021 airfoil model. The pitching-down steady curves were included during the feature extraction stage for every load case to improve the
+prediction accuracy, as discussed in Sec. III. This extraction and use of airfoil characteristic features was inspired by our previous work on modeling dynamic stall forces using the ONERA dynamic stall model.2 The inclusion of DCq as an input for the BiLSTM algorithm provides implicit information about the fully separated flow regime (DCq >0) and the attached flow regime (DCq 1⁄4 0), as shown in Figs. 7(b) and 8(b). For small a, i.e., a < ass, Cl for steady flow is linear in a, and Cd is approximately constant. To extrapolate to steady flow at
+higher a, we use the equations for a flat plate in a deep stall51,52 and continue to use the subscript “lin” even though the relations become nonlinear:
+Cd;lin 1⁄4 2 sin2 aþCd a 1⁄4 0
+ð Þ; (5)
+Cl;lin 1⁄4 2 sin 2aþ;
+ð Þ; (6)
+; 1⁄4 tan 2Cl a1⁄40
+ð Þ dCl
+da attached
+regime
+0
+@
+1
+A: (7)
+This is followed by axes-transformation according to
+Cn;lin 1⁄4 Cl;lin cos aþ Cd;lin sin a; (8)
+Ca;lin 1⁄4 Cl;lin sin a Cd;lin cos a: (9)
+FIG. 7. Evolution of the extrapolated linear regime and the steady load loss of Cn over the entire operational range of angles of attack for the NACA 0021 at Re 1⁄4 120 000: (a) Cn,lin and (b) DCn.
+Physics of Fluids ARTICLE pubs.aip.org/aip/phf
+Phys. Fluids 35, 053113 (2023); doi: 10.1063/5.0139907 35, 053113-8
+Published under an exclusive license by AIP Publishing
+20 August 2025 18:33:56
+
+
+The steady load losses DCn and DCa are computed according to
+DCn 1⁄4 Cn;lin – Cn; (10)
+DCa 1⁄4 Ca;lin – Ca: (11)
+For every load case in Table I, Cn,lin, Ca,lin, DCn, and DCa were calculated, as well as their derivatives with respect to time ( /dt) and a ( /da). All features are normalized to have a mean of zero and a standard deviation of unity. The BiLSTM algorithm was trained against the dynamic load loss in the normal and chord-wise directions, dCn and dCa, respectively, for every load case, as shown in Fig. 5. After prediction, dCn and dCa were subtracted from Cn,lin, Ca,lin to compute Cn and Ca, respectively, and the axes transformation was applied to compute Cl and Cd using Eqs. (3) and (4).
+V. MODELING RESULTS
+The accuracy of the BiLSTM dynamic stall model is assessed in this section by comparison to the training and testing data at several
+FIG. 8. Evolution of the extrapolated linear regime and the steady load loss of Cn over the entire operational range of angles of attack for the NACA 0021 at Re 1⁄4 120 000: (a) Ca,lin and (b) DCa.
+TABLE II. Summary of data plotted in Figs. 9–20. The parts of the figures show the results for am in the order shown in Table I.
+Figure No.
+Training or testing
+Lift (Cl) or drag (Cd) Set aa k
+9 Training Cl 1 20 0.012 5 10 Cd 11 Cl 4 40 0.005 12 Cd 13 Cl 6 60 0.075 14 Cd 15 Testing Cl 11 10 0.05 16 Cd 17 Cl 17 40 0.0125 18 Cd 19 Cl 20 60 0.05 20 Cd
+Physics of Fluids ARTICLE pubs.aip.org/aip/phf
+Phys. Fluids 35, 053113 (2023); doi: 10.1063/5.0139907 35, 053113-9
+Published under an exclusive license by AIP Publishing
+20 August 2025 18:33:56
+
+
+operation conditions of am, aa, and k, as shown in Figs. 9–20. To help navigate through the large number of results, Table II provides the key parameters for the figures. Comparison to Table I shows we are presenting half the training data, none of the validation data, and one
+third of the testing data. The remaining results are provided in the supplementary material because of the large number of load cases used in the present study. Over the measured 20 oscillation cycles, the predictions of the phase averaged cycles of Cl and Cd were computed
+FIG. 9. Comparison between the measured and modeled Cl for training data set 1 at a 1⁄4 am þ 20 sin (0.0125s p/2): (a) am 1⁄4 0 , (b) am 1⁄4 15 , (c) am 1⁄4 30 , (d) am 1⁄4 50 , (e) am 1⁄4 90 , and (f) am 1⁄4 130 .
+FIG. 10. Comparison between the measured and modeled Cd for training data set 1 at a 1⁄4 am þ 20 sin (0.0125s p/ 2): (a) am 1⁄4 0 , (b) am 1⁄4 15 , (c) am 1⁄4 30 , (d) am 1⁄4 50 , (e) am 1⁄4 90 , and (f) am 1⁄4 130 .
+Physics of Fluids ARTICLE pubs.aip.org/aip/phf
+Phys. Fluids 35, 053113 (2023); doi: 10.1063/5.0139907 35, 053113-10
+Published under an exclusive license by AIP Publishing
+20 August 2025 18:33:56
+
+
+FIG. 11. Comparison between the measured and modeled Cl for training data set 4 at a 1⁄4 am þ 40 sin (0.05s p/2): (a) am 1⁄4 0 , (b) am 1⁄4 15 , (c) am 1⁄4 30 , (d) am 1⁄4 50 , (e) am 1⁄4 90 , and (f) am 1⁄4 130 .
+FIG. 12. Comparison between the measured and modeled Cd for training data set 4 at a 1⁄4 am þ 40 sin (0.05s p/2): (a) am 1⁄4 0 , (b) am 1⁄4 15 , (c) am 1⁄4 30 , (d) am 1⁄4 50 , (e) am 1⁄4 90 , and (f) am 1⁄4 130 .
+Physics of Fluids ARTICLE pubs.aip.org/aip/phf
+Phys. Fluids 35, 053113 (2023); doi: 10.1063/5.0139907 35, 053113-11
+Published under an exclusive license by AIP Publishing
+20 August 2025 18:33:56
+
+
+FIG. 14. A comparison between the measured and modeled Cd for training data set 6 at a 1⁄4 am þ 60 sin (0.075s p/2): (a) am 1⁄4 0 , (b) am 1⁄4 15 , (c) am 1⁄4 30 , (d) am 1⁄4 50 , (e) am 1⁄4 90 , and (f) am 1⁄4 130 .
+FIG. 13. Comparison between the measured and modeled Cl for training data set 6 at a 1⁄4 am þ 60 sin (0.075s p/2): (a) am 1⁄4 0 , (b) am 1⁄4 15 , (c) am 1⁄4 30 , (d) am 1⁄4 50 , (e) am 1⁄4 90 , and (f) am 1⁄4 130 .
+Physics of Fluids ARTICLE pubs.aip.org/aip/phf
+Phys. Fluids 35, 053113 (2023); doi: 10.1063/5.0139907 35, 053113-12
+Published under an exclusive license by AIP Publishing
+20 August 2025 18:33:56
+
+
+FIG. 16. A comparison between the measured and modeled Cd for testing data set 11 at a 1⁄4 am þ 10 sin (0.05s p/2): (a) am 1⁄4 0 , (b) am 1⁄4 15 , (c) am 1⁄4 30 , (d) am 1⁄4 50 , (e) am 1⁄4 90 , and (f) am 1⁄4 130 .
+FIG. 15. A comparison between the measured and modeled Cl for testing data set 11 at a 1⁄4 am þ 10 sin (0.05s p/2): (a) am 1⁄4 0 , (b) am 1⁄4 15 , (c) am 1⁄4 30 , (d) am 1⁄4 50 , (e) am 1⁄4 90 , and (f) am 1⁄4 130 .
+Physics of Fluids ARTICLE pubs.aip.org/aip/phf
+Phys. Fluids 35, 053113 (2023); doi: 10.1063/5.0139907 35, 053113-13
+Published under an exclusive license by AIP Publishing
+20 August 2025 18:33:56
+
+
+FIG. 18. A comparison between the measured and modeled Cd for testing data set 17 at a 1⁄4 am þ 40 sin (0.0125s p/2): (a) am 1⁄4 0 , (b) am 1⁄4 15 , (c) am 1⁄4 30 , (d) am 1⁄4 50 , (e) am 1⁄4 90 , and (f) am 1⁄4 130 .
+FIG. 17. A comparison between the measured and modeled Cl for testing data set 17 at a 1⁄4 am þ 40 sin (0.0125s p/2): (a) am 1⁄4 0 , (b) am 1⁄4 15 , (c) am 1⁄4 30 , (d) am 1⁄4 50 , (e) am 1⁄4 90 , and (f) am 1⁄4 130 .
+Physics of Fluids ARTICLE pubs.aip.org/aip/phf
+Phys. Fluids 35, 053113 (2023); doi: 10.1063/5.0139907 35, 053113-14
+Published under an exclusive license by AIP Publishing
+20 August 2025 18:33:56
+
+
+FIG. 20. A comparison between the measured and modeled Cd for testing data set 20 at a 1⁄4 am þ 60 sin (0.05s p/2): (a) am 1⁄4 0 , (b) am 1⁄4 15 , (c) am 1⁄4 30 , (d) am 1⁄4 50 , (e) am 1⁄4 90 , and (f) am 1⁄4 130 .
+FIG. 19. A comparison between the measured and modeled Cl for testing data set 20 at a 1⁄4 am þ 60 sin (0.05s p/2): (a) am 1⁄4 0 , (b) am 1⁄4 15 , (c) am 1⁄4 30 , (d) am 1⁄4 50 , (e) am 1⁄4 90 , and (f) am 1⁄4 130 .
+Physics of Fluids ARTICLE pubs.aip.org/aip/phf
+Phys. Fluids 35, 053113 (2023); doi: 10.1063/5.0139907 35, 053113-15
+Published under an exclusive license by AIP Publishing
+20 August 2025 18:33:56
+
+
+along with one standard deviation of the mean measurement by transforming the axes from Cn and Ca. The training and validation results are ordered in terms of increasing k and aa. Generally, we expect the unsteady forces to increase in complexity with an increase in both. For the lowest values in Fig. 9, the model for Cl was trained to accurately follow the measurements for all am. In particular, the hysteresis seen in the responses in parts (a)–(d) was well reproduced as was the response in part (e) which, like experiments confined to the linear range of a when it is close to zero, shows no hysteresis. Figure 10(a) shows that hysteresis in Cl does not necessarily carry over to drag. We note that the cyclic response associated with the second [part (d)] and third stalls [part (e)] are well captured. Increasing k and aa in Figs. 11 and 12 increases the difference between the pitch-up and pitch-down results, which the model has been trained to capture except for the largest am in part (f) of both figures. The problem is associated with the high frequency oscillations in the forces that are well-captured at low am for the drag in Fig. 12(a), apparently cause the model to also produce them at the highest am. Figures 13 and 14 show the largest amplitude training results. There is significant hysteresis displayed in all parts of both figures and the model again has incorrect higher frequency oscillations at the largest am. This occurs in the range of a where Cl is smaller than Cd, so the problem is not the relative magnitude of the two forces. The overshoot in Cl as a increases is associated with the shedding of the primary DSV, whose significance clearly increases with increasing am. We now consider the validation data presented in the same order, but, of course with different values of k and am. Figures 15(a) and 16(a) demonstrate that the model reproduces the lack of hysteresis when a is confined to the linear range that was noted above. The model predicts the cyclic lift well for all but the highest a, and similarly for the drag for all but the two highest a. For am 1⁄4 130 , both the modeled lift and drag follow the steady trajectory for decreasing a whereas the measurements follow the increasing a trend. It is possible that the model could not be improved until we have a better understanding of the differences between the steady forces for increasing and decreasing a. The model is more accurate at high a when aa increases, Figs. 17 and 18, suggesting that the errors in the model just referred to, are due to restriction of the cycle to a-range where the steady hysteresis is important. Generally, the model is accurate at the highest am, Figs. 19 and 20, except that the high frequency oscillations noted above have reappeared in the drag in all parts of Fig. 20. It is also noted that the unsteadiness in the response of the lift and drag increases with am which may complicate the modeling of the response. Given that the basic structure of the model was not altered during the training over a wide range of k and am, its general ability to match the measured lift and drag for the sinusoidally pitched NACA 0021 section has been demonstrated to be good. The lift has been modeled more accurately than the drag, where the high-frequency oscillations needed at low a are amplified at high a and reduce the model accuracy.
+VI. CONCLUSION
+The key contribution of the present research is to explore the potential of a deep learning framework to predict the nonlinear unsteady forces on oscillating airfoils over the entire range of operation for wind turbine applications. Training, validation, and testing data were obtained from wind tunnel measurements for an oscillating
+NACA 0021 airfoil model at a Reynolds number of 120 000 with oscillation amplitude up to 60 and reduced frequency up to 0.075. By training the model using 30% of the unsteady force measurements, the deep learning BiLSTM algorithm is capable of reproducing variations in unsteady forces at angles of attack ranging from 60 to 190 . A novel set of features, inspired by empirical models, was constructed to represent the operating conditions and airfoil characteristics. Accurate predictions were achieved in all regimes except when reproducing the load overshoots generated by the shedding of multiple dynamic stall vortices. The model can be easily incorporated in wind turbine design codes; however, further research should be done to expand and corroborate these preliminary findings by reproducing the impact of the shedding of multiple dynamic stall vortices on the unsteady loads around the static stall angle and in the reverse flow regime. The future research should also include an investigation of the accuracy and generality of the model to reproduce unsteady loading for other airfoil shapes at high angles of attack.
+SUPPLEMENTARY MATERIAL
+Remaining load cases listed in Table I and the associated BiLSTM predictions are provided in the supplementary material.
+ACKNOWLEDGMENTS
+This work was supported by NSERC Discovery Grant No. RGPIN/04886–2017 and the Schulich bequest to the Faculty of Engineering at the University of Calgary.
+AUTHOR DECLARATIONS Conflict of Interest
+The authors have no conflicts to disclose.
+Author Contributions
+Conceptualization, A.M., and D.W.; methodology, A.M; software, A.M.; validation, A.M. and D.W.; formal analysis, A.M.; investigation, A.M.; resources, D.W.; data curation, A.M.; writing—original draft preparation, A.M.; writing—review and editing, A.M. and D.W.; visualization, A.M.; supervision, D.W.; project administration, A.M. and D.W.; funding acquisition, D.W. All authors have read and agreed to the published version of the manuscript.
+Ayman Salah Ashry Mohamed: Conceptualization (equal); Data curation (lead); Formal analysis (lead); Investigation (lead); Methodology (lead); Project administration (equal); Software (lead); Validation (equal); Visualization (lead); Writing – original draft (lead); Writing – review & editing (equal). David Wood: Conceptualization (equal); Funding acquisition (lead); Project administration (equal); Resources (lead); Supervision (lead); Validation (equal); Writing – review & editing (equal).
+DATA AVAILABILITY
+The data that support the findings of this study are available from the corresponding author upon reasonable request.
+Physics of Fluids ARTICLE pubs.aip.org/aip/phf
+Phys. Fluids 35, 053113 (2023); doi: 10.1063/5.0139907 35, 053113-16
+Published under an exclusive license by AIP Publishing
+20 August 2025 18:33:56
+
+
+REFERENCES
+1J. P. Ku€ppers and T. Reinicke, “A WaveNet-based fully stochastic dynamic stall model,” Wind Energy Sci. Discuss. 7, 1889–1903 (2022). 2A. Mohamed and D. H. Wood, “Modeling dynamic loads on oscillating airfoils with emphasis on dynamic stall vortices,” Wind Energy 24(11), 1225–1248 (2021). 3T. Theodorsen, “General theory of aerodynamic instability and the mechanism of flutter,” Technical Report, NACA-TR-496 (1949). 4D. Holst et al., “Experimental analysis of a NACA 0021 airfoil section through 180-degree angle of attack at low Reynolds numbers for use in wind turbine analysis,”, paper presented at the Turbo Expo: Power for Land, Sea, and Air, Charlotte, North Carolina, 2017. 5D. Holst, B. Church, F. Wegner, G. Pechlivanoglou, C. N. Nayeri, and C. O. Paschereit, “Experimental analysis of a NACA 0021 airfoil under dynamic angle of attack variation and low Reynolds numbers,” paper presented at the Turbo Expo: Power for Land, Sea, and Air, Oslo, Norway, 2018.
+6T. C. Corke and F. O. Thomas, “Dynamic stall in pitching airfoils: Aerodynamic damping and compressibility effects,” Annu. Rev. Fluid Mech. 47(1), 479–505 (2015). 7J. A. Ekaterinaris and M. F. Platzer, “Computational prediction of airfoil dynamic stall,” Prog. Aerosp. Sci. 33(11), 759–846 (1998). 8P. J. Moriarty and A. C. Hansen, AeroDyn Theory Manual (National Renewable Energy Laboratory, 2005). 9G. Vijayakumar, S. Yellapantula, E. Branlard, and S. Ananthan, “Enhancement of unsteady and 3D aerodynamics models using machine learning,” J. Phys. 1452(1), 012065 (2020). 10A. Mohamed, M. Hassan, R. M’Saoubi, and H. Attia, “Tool condition monitoring for high-performance machining systems: A review,” Sensors 22(6), 2206 (2022). 11B. M. Henrique, V. A. Sobreiro, and H. Kimura, “Literature review: Machine learning techniques applied to financial market prediction,” Expert Syst. Appl. 124, 226–251 (2019). 12J. Padmanabhan and M. J. Johnson Premkumar, “Machine learning in automatic speech recognition: A survey,” IETE Tech. Rev. 32(4), 240–251 (2015). 13J. Wa€ldchen and P. Ma€der, “Machine learning for image based species identification,” Methods Ecol. Evol. 9(11), 2216–2225 (2018). 14K. Kourou, T. P. Exarchos, K. P. Exarchos, M. V. Karamouzis, and D. I. Fotiadis, “Machine learning applications in cancer prognosis and prediction,” Comput. Struct. Biotechnol. J. 13, 8–17 (2015). 15G. Achour, W. J. Sung, O. J. Pinon-Fischer, and D. N. Mavris, “Development of a conditional generative adversarial network for airfoil shape optimization,” paper presented at the AIAA Scitech 2020 Forum, Orlando, FL, 2020. 16A. Hacioglu, “Fast evolutionary algorithm for airfoil design via neural network,” AIAA J. 45(9), 2196–2203 (2007). 17H. Eivazi, H. Veisi, M. H. Naderi, and V. Esfahanian, “Deep neural networks for nonlinear model order reduction of unsteady flows,” Phys. Fluids 32(10), 105104 (2020). 18K. Fukami, K. Fukagata, and K. Taira, “Assessment of supervised machine learning methods for fluid flows,” Theor. Comput. Fluid Dyn. 34(4), 497–519 (2020). 19K. Duraisamy, G. Iaccarino, and H. Xiao, “Turbulence modeling in the age of data,” Annu. Rev. Fluid Mech. 51(1), 357–377 (2019). 20E. H. Dowell and K. C. Hall, “Modeling of fluid-structure interaction,” Annu. Rev. Fluid Mech. 33(1), 445–490 (2001). 21D. F. Kurtulus, “Ability to forecast unsteady aerodynamic forces of flapping airfoils by artificial neural network,” Neural Comput. Appl. 18(4), 359–368 (2009). 22A. Lampton, A. Niksch, and J. Valasek, “Reinforcement learning of a morphing airfoil-policy and discrete learning analysis,” J. Aerosp. Comput., Inf., Commun. 7(8), 241–260 (2010). 23V. Guibert, M. Brunot, M. Bronz, and J.-P. Condomines, “Semi-parametric regression based on machine learning methods for UAS stall identification,” IFAC-PapersOnLine 54(7), 180–185 (2021). 24J. Kou and W. Zhang, “Multi-fidelity modeling framework for nonlinear unsteady aerodynamics of airfoils,” Appl. Math. Modell. 76, 832–855 (2019).
+25X. Wang, J. Kou, and W. Zhang, “A new dynamic stall prediction framework based on symbiosis of experimental and simulation data,” Phys. Fluids 33(12), 127119 (2021). 26Y. Wu, Y. Dai, C. Yang, and G. Huang, “Unsteady and nonlinear aerodynamic prediction of airfoil undergoing large-amplitude pitching oscillation based on gated recurrent unit network,” Proc. Inst. Mech. Eng., Part G 237, 270 (2023). 27K. Li, J. Kou, and W. Zhang, “Unsteady aerodynamic reduced-order modeling based on machine learning across multiple airfoils,” Aerosp. Sci. Technol. 119, 107173 (2021). 28S.-L. Xing and H.-Y. Xu, “Airfoil dynamic stall model suitable for large angle deflection of a trailing edge flap,” Fluid Dyn. 57(3), 341–350 (2022). 29M. Tatar and M. H. Sabour, “Reduced-order modeling of dynamic stall using neuro-fuzzy inference system and orthogonal functions,” Phys. Fluids 32(4), 045101 (2020). 30R. Halder, M. Damodaran, and B. C. Khoo, “Deep learning based reduced order model for airfoil-gust and aeroelastic interaction,” AIAA J. 58(10), 4304–4321 (2020).
+31G. J. Leishman, Principles of Helicopter Aerodynamics (Cambridge University Press, 2006). 32J. L. Elman, “Finding structure in time,” Cognit. Sci. 14(2), 179–211 (1990). 33Y. Bengio, P. Simard, and P. Frasconi, “Learning long-term dependencies with gradient descent is difficult,” IEEE Trans. Neural Networks 5(2), 157–166 (1994). 34A. Graves and J. Schmidhuber, “Framewise phoneme classification with bidirectional LSTM and other neural network architectures,” Neural Networks 18(5), 602–610 (2005). 35S. Hochreiter and J. Schmidhuber, “Long short-term memory,” Neural Comput. 9(8), 1735–1780 (1997). 36M. Schuster and K. K. Paliwal, “Bidirectional recurrent neural networks,” IEEE Trans. Signal Process. 45(11), 2673–2681 (1997). 37S. Siami-Namini, N. Tavakoli, and A. S. Namin, “The performance of LSTM and BiLSTM in forecasting time series,” in IEEE International Conference on Big Data (Big Data), 9–12 December 2019 (2019), pp. 3285–3292.
+38R. Narasimha and S. N. Prasad, “Leading edge shape for flat plate boundary layer studies,” Exp. Fluids 17(5), 358–360 (1994).
+39NATO, Extensions of Fundamental Flow Physics to Practical MAV Aerodynamics (Nato Science And Technology Organization Neuilly-Sur-Seine, 2016). 40K. Granlund, M. Ol, D. Garmann, M. Visbal, and L. Bernal, “Experiments and computations on abstractions of Perching,” paper presented at the 28th AIAA Applied Aerodynamics Conference, Chicago, Illinois, 2010.
+41Z. Yang, H. Igarashi, M. Martin, and H. Hu, “An experimental investigation on aerodynamic hysteresis of a low-Reynolds number airfoil,” paper presented at the 46th AIAA Aerospace Sciences Meeting and Exhibit, Reno, Nevada, 2008. 42L. Du, A. Berson, and R. G. Dominy, “Aerofoil behaviour at high angles of attack and at Reynolds numbers appropriate for small wind turbines,” Proc. Inst. Mech. Eng., Part C 229(11), 2007–2022 (2015). 43A. H. Lind, L. R. Smith, J. I. Milluzzo, and A. R. Jones, “Reynolds number effects on rotor blade sections in reverse flow,” J. Aircr. 53(5), 1248–1260 (2016). 44D. Holst, F. Balduzzi, A. Bianchini, C. N. Nayeri, C. O. Paschereit, and G. Ferrara, “Static and dynamic analysis of a NACA 0021 airfoil section at low Reynolds numbers: Drag and moment coefficients,” in Presented at the Turbo Expo: Power for Land, Sea, and Air, Phoenix, Arizona (2019). 45D. R. Williams, F. Reißner, D. Greenblatt, H. M€uller-Vahl, and C. Strangfeld, “Modeling lift hysteresis on pitching airfoils with a modified Goman–Khrabrov model,” AIAA J. 55(2), 403–409 (2017). 46R. Modarres, D. A. Peters, and J. Gaskill, “Dynamic stall model with circulation pulse and static hysteresis for NACA 0012 and VR-12 airfoils,” J. Am. Helicopter Soc. 61(3), 1–10 (2016). 47K. V. Truong, “Modeling aerodynamics, including dynamic stall, for comprehensive analysis of helicopter rotors,” Aerospace 4(2), 21 (2017).
+Physics of Fluids ARTICLE pubs.aip.org/aip/phf
+Phys. Fluids 35, 053113 (2023); doi: 10.1063/5.0139907 35, 053113-17
+Published under an exclusive license by AIP Publishing
+20 August 2025 18:33:56
+
+
+48A. H. Lind, L. N. Trollinger, F. H. Manar, I. Chopra, and A. R. Jones, “Flowfield measurements of reverse flow on a high advance ratio rotor,” Exp. Fluids 59(12), 185 (2018). 49P. Baldi, S. Brunak, P. Frasconi, G. Soda, and G. Pollastri, “Exploiting the past and the future in protein secondary structure prediction,” Bioinformatics 15(11), 937–946 (1999). 50L. W. Carr, “Progress in analysis and prediction of dynamic stall,” J. Aircr. 25(1), 6–17 (1988).
+51M. Duquette, “Development and application of SimpleFlight, a variablefidelity flight dynamics model,” in Presented at the AIAA Modeling and Simulation Technologies Conference and Exhibit, Hilton Head, South Carolina (2007). 52W. A. Timmer, “Aerodynamic characteristics of wind turbine blade airfoils at high angles-of-attack,” paper presented at the Torque: The Science of Making Torque from Wind, Heraklion, Crete, Greece, 2010.
+Physics of Fluids ARTICLE pubs.aip.org/aip/phf
+Phys. Fluids 35, 053113 (2023); doi: 10.1063/5.0139907 35, 053113-18
+Published under an exclusive license by AIP Publishing
+20 August 2025 18:33:56

@@ -1,0 +1,109 @@
+11th Asian Australian Rotorcraft Forum
+COMPUTATIONAL STUDY OF COAXIAL ROTOR-FUSELAGE INTERACTIONS IN GROUND EFFECT
+Aerospace Discipline: Aerodynamics Jonnadhula Sarika1, Dhwanil Shukla2 Indian Institute of Technology Bombay
+Presenter Bio
+Sarika Jonnadhula is a Master’s student in the Department of Aerospace Engineering at IIT Bombay, specializing in Aerodynamics. She received her Bachelor’s degree in Aerospace Engineering from Lakireddy Bali Reddy College of Engineering.Her current research focuses on rotor–fuselage interactions and ground effect phenomena in coaxial rotor systems.
+Abstract
+T
+HIS study examines the aerodynamic performance of contra-rotating coaxial rotor helicopter operating in ground effect, with particular focus on rotor–fuselage–ground interactions. Simulations are conducted using DUST[8], a mid-fidelity vortex particle method solver with a Lagrangian framework. The geometric setup in DUST is illustrated in Figure 1, with coaxial rotors vertically separated by h = 0.25R, and the lower rotor positioned 0.1R above the ROBIN fuselage-a streamlined geometry. The test matrix (Figure 2) covers cases with and without fuselage, at ground proximities of Z/R = 1, 2, 3, and an isolated configuration without ground. Single rotor cases are also analyzed under identical conditions for comparison. Results reveal that fuselage presence enhances thrust—up to 12 N for coaxial and 9 N for single rotor setups at low Z/R—due to intensified rotor–fuselage interaction. Ground proximity also reduces downward force on the fuselage, highlighting the shielding effect of rotor wake near the ground.
+Introduction
+Coaxial rotor helicopters, characterized by two counter-rotating rotors mounted on the same axis, have gained considerable attention as an alternative to conventional single-rotor configurations. Originally developed to eliminate the need for a tail rotor, the coaxial system provides inherent torque balance, improved yaw control, and higher lifting efficiency within a compact footprint. This makes the design particularly attractive for applications requiring enhanced maneuverability, hovering efficiency, and reduced acoustic signature, such as urban air mobility and naval operations. Over the decades, both experimental studies and operational platforms—ranging from early Kamov designs to modern highperformance vehicles like the Sikorsky X2 and Raider—have demonstrated the potential of coaxial rotorcraft to achieve higher speeds and payload capacities compared to traditional counterparts. Despite these advantages, the aerodynamics of coaxial configurations are significantly more complex due to strong inter-rotor wake interactions, blade–vortex interactions, and their coupling with the fuselage flow field. These challenges are further exacerbated in ground effect, where the rotor wake interacts with the ground plane and fuselage, altering lift, induced power, and stability characteristics. Historically, rotorcraft aerodynamics has often been studied in isolation—focusing individually on rotor–fuselage interaction, coaxial rotor behavior, or ground effect. In the context of rotor–fuselage interaction, studies such as Berry and Bettschart [1] highlighted the importance of capturing unsteady pressure variations caused by rotor downwash, which is critical for accurate fuselage load predictions. Similarly, Steijl and Barakos [7] emphasized the azimuthal loading and upwash/downwash effects using CFD, showing how rotor wake alters fuselage flow field—a key phenomenon also present in coaxial systems.
+1Masters Student at the Department of Aerospace Engineering, Indian Institute of Technology Bombay 2Assistant Professor at the Department of Aerospace Engineering, Indian Institute of Technology Bombay
+1|Page 24–25 Nov 25, Chennai, India
+
+
+11th Asian Australian Rotorcraft Forum
+For coaxial rotor configurations, Cameron et al. [2] and Uehara et al. [9] investigated performance asymmetries and spacing effects, which directly influence wake interactions. Kim and Brown [4], using Vorticity Transport Models, demonstrated that optimal rotor spacing can minimize induced power losses, a crucial insight when studying the confined wakes of coaxial systems operating near fuselages and ground. In terms of ground effect, single rotor studies have been more comprehensive, with consistent findings that proximity to the ground increases lift and reduces power consumption. However, in coaxial rotors, the flow becomes more intricate. Silwal et al. [6] and Gibertini et al. [3] showed that ground effect benefits are primarily seen in the lower rotor, which then modifies the inflow to the upper rotor, often leading to unbalanced thrust. Despite these advancements, a significant research gap remains in analyzing coaxial rotor–fuselage interactions in ground effect within a unified computational framework. While rotor–fuselage, rotor–rotor, and rotor–ground interactions have each been explored individually, very few studies attempt to capture all three concurrently. A detailed literature review revealed that most prior work on coaxial systems in ground effect excludes the fuselage. Additionally, studies incorporating fuselage effects tend to investigate single rotors or quad-rotor UAVs, not coaxial helicopter configurations. As a result, this work represents one of the first comprehensive attempts to investigate integrated aerodynamic interactions of coaxial rotor systems with a fuselage near the ground : a scenario that closely reflects real-world low-altitude rotorcraft operations. To address this gap, the present study investigates the coupled aerodynamic effects of coaxial rotor–fuselage configurations operating in ground effect using DUST, a mid-fidelity, vortex particle method (VPM) solver [8]. Unlike prior studies, this work uniquely captures the combined influence in a single simulation framework. The rotors are modeled using lifting line theory, while the fuselage and ground are treated using a source-based panel method. As a representative real-world configuration, a fourbladed coaxial rotor system interacting with the streamlined ROBIN fuselage is simulated. This offers a more integrated depiction of rotorcraft behavior near the ground.
+Numerical Approach
+The present study utilizes the DUST software, which implements a mid-fidelity computational framework based on the Vortex Particle Method (VPM) for simulating rotorcraft aerodynamics. The fuselage is modeled using a source-based Panel Method, while the rotors are represented through the Lifting Line Method (LLM). The Vortex Particle Method is a mesh-free, Lagrangian approach particularly suited for modeling incompressible, high Reynolds number flows dominated by vorticity dynamics. It solves the Navier–Stokes equations in velocity–vorticity form:
+Dω
+Dt = (ω · ∇)u + ν∇2ω
+where the vorticity field ω is defined as the curl of the velocity field u:
+ω = ∇ × u.
+Within this formulation, the flow is discretized into particles carrying vorticity, which are convected with the local velocity field. The mutual interactions among these particles govern the evolution of the velocity field, from which pressure gradients and aerodynamic forces can subsequently be determined. The Panel Method incorporated in DUST accounts for the inviscid influence of the fuselage by enforcing boundary conditions on the surface, while the Lifting Line Method captures the spanwise circulation distribution and induced velocities along the rotor blades. This provides an efficient framework to estimate aerodynamic loads and capture rotor–fuselage–ground interactions in coaxial rotorcraft.
+Research Methodology
+A coaxial rotor system with four blades per rotor was defined using the lifting line method, while the ROBIN fuselage and ground plane were modeled using a source-based panel method. The coaxial setup
+2|Page 24–25 Nov 25, Chennai, India
+
+
+11th Asian Australian Rotorcraft Forum
+consists of two counter-rotating rotors, each with a radius(R) of 0.854m, linear twist of 6deg with zero pitch angle and NACA 0012 as airfoil section. The upper and lower rotors are vertically separated by 0.25R, and the lower rotor is located 0.1R above the fuselage centerline to simulate a realistic integrated configuration. A total of 10000 vortex particles were used per rotor based on a sensitivity study to ensure adequate resolution of the wake structures and also as a practical trade-off between computational cost and wake fidelity. The flat ground plane was defined as a rectangular surface with dimensions 6R×6R, large enough to avoid edge effects. The fuselage was positioned centrally and symmetrically aligned with the rotor hub. The hover condition was simulated by assigning a small positive vertical freestream velocity of 0.00001m/s for solver stability. The solver was advanced in time steps corresponding to 2.5deg of rotor rotation per step. Simulations were run for 20 rotor revolutions, which was determined from preliminary analysis as the point where wake structures stabilized and thrust variation became negligible. In postprocessing, wake topology is visualized using ParaView. Thrust and torque were extracted using Sectional load data which helps to compute the spanwise load distribution along blades or lifting surfaces.
+Results and Discussions
+As observed from Figure 3, thrust values converge in 15 rotations. Therefore, 20 rotations are selected for all cases. With these solver settings, the computed thrust shows a deviation of only 2.5% from the experimental results reported in [5], thereby validating the accuracy of the chosen settings. Simulations are performed for both the Single Rotor (SR) and Coaxial Counter-Rotating Rotor (CR) configurations. The wake structures in each case are visualized using ParaView (Figure 4). It is observed that the wake stabilizes within approximately 20 rotor revolutions. The SR configuration, consisting of a single main rotor and fuselage, produces an asymmetric and more diffused wake. A strong downward jet with pronounced swirl components is evident, primarily influenced by the unidirectional rotor rotation. In contrast, the CR configuration balances torque through counter-rotation of the blades, which mitigates wake asymmetry and leads to a more uniform flow structure. In the presence of the fuselage, the velocity contours(Figure 5) for the single rotor show a relatively more symmetric and streamlined wake. However, proximity to ground still causes the flow to spread radially along the fuselage surface, particularly at lower Z/R, resulting in noticeable wake distortion and enhanced local velocities near the nose. In the coaxial rotor configuration, the interaction between the upper and lower rotors again produces a more vertically aligned and intensified downwash with better flow integration over the fuselage. The reduced frontal area of the fuselage results in less wake separation and lower pressure buildup around the structure, allowing for a cleaner interaction with the coaxial-induced wake. Overall, the fuselage supports a more efficient wake development.
+Performance analysis on Rotors:
+Figure 6 illustrates the variation of rotor thrust (in N) and rotor torque (in N·mm) with respect to the non-dimensional height parameter Z/R, where Z is the distance from the ground and R is the rotor radius. It compares simulation results across different configurations: single rotor (with and without fuselage) and coaxial upper and lower rotors (with and without fuselage). For the coaxial configuration with fuselage, at Z/R = 1 the upper rotor produces approximately 58 N of thrust and 410 N·mm torque, while the lower rotor generates 55 N and 402 N·mm, respectively. Without fuselage, thrust drops to about 56 N (upper) and 53 N (lower), showing a fuselage-induced increase of 3.9% and 4.1%, respectively. At Z/R = 3, thrust differences between with- and withoutfuselage cases reduce to less than 1%. For the single rotor at Z/R = 1, thrust is 60 N with fuselage and 58 N without, an increase of 3.1%. The torque values are 417 N·mm and 404 N·mm, respectively, corresponding to a 3.2% increase. Across all configurations, most thrust reduction occurs between Z/R = 1 and Z/R = 2, beyond which values stabilize, confirming diminishing ground effect. Torque remains nearly constant with Z/R, indicating
+3|Page 24–25 Nov 25, Chennai, India
+
+
+11th Asian Australian Rotorcraft Forum
+minimal ground-effect influence on torque.
+Performance analysis on Fuselage:
+The pressure distribution over the upper and lower surfaces of the fuselage is illustrated in Figure 7. The fuselage, being symmetric about the XZ-plane, shows similar pressure behavior across both panels, with variations influenced by rotor configuration and ground proximity.The fuselage exhibits an initial increase in pressure near the nose region due to flow stagnation, which is clearly visible in both the CR and SR curves. The pressure then decreases smoothly toward the rotor hub location at X = 0.69 m, where the wake impinges on the surface, followed by relatively flat trends downstream. On the upper surface, pressure levels are more sensitive to the ground effect. On the lower surface, pressures remain consistently higher and less variable beyond the hub, with the CR configuration showing stronger ground-induced effects, especially at lower Z/R values. Overall, pressure differences between IGE and OGE are most pronounced in CR at Z/R = 1, highlighting enhanced rotor-fuselage-ground interactions in that regime. The graph (Figure 8) depicting the downward force on the fuselage as a function of Z/R shows a clear increase in force with increasing Z/R for both Coaxial Rotor (CR) and Single Rotor (SR) configurations. The CR consistently produces higher downward forces than the SR, following a similar trend as seen in other fuselage types. The force tends to plateau around Z/R = 3 to 4, indicating a stabilization of rotor-induced effects at larger distances.
+Conclusion
+Rotor–fuselage interactions in ground effect play a crucial role in rotorcraft performance, particularly at low altitudes (Z/R ≤ 2). The presence of the fuselage enhances rotor thrust by modifying the wake structure and increasing flow blockage, inducing ground effect-like conditions locally under the rotor. In coaxial rotor systems, especially over streamlined fuselages such as the ROBIN, the wake tends to remain more stable and vertically aligned compared to that of single-rotor configurations. Coaxial rotors consistently induce stronger downward forces on the fuselage due to intensified downwash, with these effects becoming less significant beyond (Z/R ≥ 3). Within coaxial systems, the lower rotor typically generates reduced thrust as a result of ground-induced velocities; however, this thrust asymmetry diminishes with increasing height.
+Future Research Plans
+The current work focuses on simulating the wake structure by explicitly modeling the ground plane in the computational domain. To capture the complete rotor-fuselage-ground interaction, future simulations involving forward flight should also be considered to extend the analysis beyond hover. This introduces additional complexities such as asymmetric inflow, advancing and retreating blade effects, and unsteady wake-fuselage interactions. These conditions will require refinement in both spatial and temporal discretization. Adding crosswind, terrain irregularities, or nearby obstacles (e.g., buildings, ship decks) in the simulation domain could enhance realism and applicability of the results to real-world rotorcraft operations. Future studies can incorporate blade-resolved CFD simulations to capture detailed blade-vortex and blade-fuselage interactions, especially near complex geometries. This would allow validation of wake models such as VPM against high-fidelity data.
+4|Page 24–25 Nov 25, Chennai, India
+
+
+11th Asian Australian Rotorcraft Forum
+References
+[1] John D Berry and Nicolas Bettschart. Rotor-fuselage interaction: Analysis and validation with experiment. In American Helicopter Society Annual Forum, number ATCOM-TR-97-A-007, 1997.
+[2] Christopher G Cameron, Anand Karpatne, and Jayant Sirohi. Performance of a mach-scale coaxial counter-rotating rotor in hover. Journal of Aircraft, 53(3):746–755, 2016.
+[3] G. Gibertini et al. Experimental investigation on the aerodynamic interaction between a helicopter and ground obstacles. Journal of Aerospace Engineering, 2014.
+[4] Hyo Won Kim and Richard E Brown. A comparison of coaxial and conventional rotor performance. Journal of the American Helicopter Society, 55(1):12004–12004, 2010.
+[5] Raymond E Mineck. Steady and periodic pressure measurements on a generic helicopter fuselage model in the presence of a rotor. NASA, 2000.
+[6] L. Silwal and V. Raghav. Aerodynamic interactions of counter-rotating coaxial rotors hovering in ground effect. AIAA Journal, 2022.
+[7] R. Steijl and G. N. Barakos. Computational study of helicopter rotor–fuselage aerodynamic interactions. AIAA Journal, 47(9):2143–2157, 2009.
+[8] Matteo Tugnoli, Davide Montagnani, Mayank Syal, Giovanni Droandi, and Alessandro Zanotti. Mid-fidelity approach to aerodynamic simulations of unconventional vtol aircraft configurations. Aerospace Science and Technology, 115:106804, 2021.
+[9] Daiju Uehara, Jayant Sirohi, and Mahendra J Bhagwat. Hover performance of corotating and counterrotating coaxial rotors. Journal of the American Helicopter Society, 65(1):1–8, 2020.
+5|Page 24–25 Nov 25, Chennai, India
+
+
+11th Asian Australian Rotorcraft Forum
+Annexures
+Figure 1: Setup of Geometric components in DUST
+Figure 2: Schematic of Test Matrix
+6|Page 24–25 Nov 25, Chennai, India
+
+
+11th Asian Australian Rotorcraft Forum
+Figure 3: Thrust Vs Rotation
+Parameter General Rotor Chord (c) 0.0686 m Radius (R) 0.854 m No. of Blades 4 Linear Twist 6◦ Pitch Angle 0◦ Airfoil shape NACA 0012 RPM 2000 rotor to rotor distance 0.25 Fuselage Type ROBIN Length of ground plane 6R Width of ground plane 6R
+Table 1: Rotor geometry for experimental and general configurations
+7|Page 24–25 Nov 25, Chennai, India
+
+
+11th Asian Australian Rotorcraft Forum
+(a) Single rotor Configuration
+(b) Coaxial rotor Configuration
+Figure 4: Wake structure of different Configurations
+8|Page 24–25 Nov 25, Chennai, India
+
+
+11th Asian Australian Rotorcraft Forum
+(a) Z/R=1 (a) Z/R=1
+(b) Z/R=2 (b) Z/R=2
+(c) Z/R=3 (c) Z/R=3
+9|Page 24–25 Nov 25, Chennai, India
+
+
+11th Asian Australian Rotorcraft Forum
+(d) OGE (d) OGE
+Figure 5: Velocity Contours of Coaxial rotor(left side) and Single rotor(right side) at various Z/R
+10|Page 24–25 Nov 25, Chennai, India
+
+
+11th Asian Australian Rotorcraft Forum
+Figure 6: Variation of Performance parameters with Z/R position
+11|Page 24–25 Nov 25, Chennai, India
+
+
+11th Asian Australian Rotorcraft Forum
+Figure 7: Pressure distribution on Fuselage in Pa over lower and upper surface
+12|Page 24–25 Nov 25, Chennai, India
+
+
+11th Asian Australian Rotorcraft Forum
+Figure 8: Downward Force on Fuselage
+13|Page 24–25 Nov 25, Chennai, India

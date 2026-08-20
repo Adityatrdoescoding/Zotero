@@ -1,0 +1,1140 @@
+A Physics-Based Spatial Wake Interactional Model of
+Fixed-Wing Aircraft and Rotorcraft for Urban Air Mobility
+Nhan Nguyen*
+NASA Ames Research Center, Moffett Field, CA 94035
+This paper presents a study of a physics-based spatial wake interactional model for urban air mobility. A modeling method for spatial wake interaction of fixed-wing aircraft and rotorcraft is presented. The method validates an existing wake vortex model with flight data from the existing literature. The model is then adopted for both fixed-wing aircraft and rotorcraft. A lift circulation model is developed for rotorcraft to account for unsteady aerodynamics and the compressibility effect. This lift circulation model provides more realistic estimate of lift circulation for rotorcraft for used in wake vortex modeling. A vehicle-building wake interaction is studied using the method of image. The effects of wake vortex encounters on aerodynamic loads, stability, and control are examined. A flight control simulation is performed to demonstrate recovery during a simulated wake vortex encounter.
+I. Introduction
+Urban air mobility (UAM) represents a new aviation system being currently developed by many players in this field. The premise of having air mobility to transport passengers anywhere in an urban environment represents a new mode of transportation that could potentially revolutionize the aircraft industry and the aviation system. Managing a large collection of UAM vehicles flying in an urban area can be daunting. Autonomous capabilities are being researched to develop methods for air traffic management of UAM. These autonomous capabilities could improve the throughput and safety of future operation of these UAM vehicles in the national air space (NAS). Research is being conducted to develop autonomous formation flight and decentralized operations in the vertiport terminal area for UAM. One major factor which presents a tall pole in the research is the separation criterion for UAM vehicles. There is no consensus on what is considered to be an acceptable safe separation distance since there is a plethora of UAM vehicles being proposed and developed. There is no history of operation with the class of proposed UAM vehicles. Safe separation criteria developed for large transport-class aircraft may not be appropriate for UAM since most of these UAM vehicles are envisioned to carry a lot fewer passengers and therefore are much smaller. To make matters worse, these UAM vehicles are supposed to operate in urban environments at low altitudes. Aerodynamic interactions with buildings can create safety issues to these vehicles. Interactions with other vehicles can create equally dangerous situations as these vehicles are generally much more susceptible to wake and gust encounters due to their low gross weights. To date, research on autonomy of UAM traffic management does not always use physics-based models to develop autonomous capabilities and coordinated control technologies that account for the spatial interactions of the multivehicle system among themselves and with the pilots and air traffic controllers. Separation criteria are usually assumed based on the well-established operational history of passenger transport-class aircraft operation. The present study presents an approach to address this need by proposing a spatial wake interactional model for UAM aircraft comprising both fixed-wing aircraft and rotorcraft. The physics-based model could potentially provide information on how to safely manage and to develop autonomous capabilities for this new class of aircraft toward the goal of increasing the throughput of the UAM traffic management.
+*Senior Research Scientist and Technical Group Lead of Advanced Control and Evolvable Systems Group, Intelligent Systems Division, nhan.t.nguyen@nasa.gov
+1 of 29
+American Institute of Aeronautics and Astronautics
+
+
+II. Wake Interaction Modeling
+An UAM system comprises multiple agents which include UAM vehicles, pilots, operators, and air traffic controllers. Each of these agents could have different behaviors, response time, and goals. Some agents are modeled as continuous-time systems such as vehicles while other agents are high-level decision makers who only command high-level goals and objectives to be executed by the pilots interacting with the vehicles. The system operates over an airspace defined by a three-dimensional volume (x, y, z) as shown in Figure 1. The airspace volume is discretized into a finite set of grid points. The UAM vehicles flying in this airspace will have spatial interactions with other vehicles and adjacent building structures due to the wake formation. The wake formation at a point in this airspace is time-varying due to the multiple wakes shed by the UAM vehicles.
+Figure 1. UAM Airspace
+Figure 2 illustrates a spatial interaction scenario involving three UAM vehicles operating in close proximity. The two vehicles on the left and the right create two wing tip vortices that interact with each other. These wake vortices generate rolling moments on the two vehicles, thereby potentially causing these vehicles to depart from the intended trajectories. Automatic wing level controls are assumed to be available and are modeled, but these control authorities could be exceeded as the separation becomes too small. The vehicle in the middle begins to enter at some time later the location where the wake vortices are created by the two vehicles that now move away. Depending on the dissipation of this velocity disturbance, this vehicle could experience an increase in the angle of attack and could potentially encounter stall which could lead to safety issues to nearby vehicles.
+2 of 29
+American Institute of Aeronautics and Astronautics
+
+
+Figure 2. UAM Vehicle Interactions
+A. Performance Models of UAM Vehicles
+The UAM vehicles will include both types of fixed-wing aircraft and rotorcraft. A simplified performance model of an UAM fixed-wing aircraft can be abstracted as a rectangular lifting surface as shown in Figure 3. Similarly, an UAM rotorcraft can be abstracted as a rotor as shown in Figure 4.
+Figure 3. Simplified Performance Model of UAM Fixed-Wing Aircraft
+Figure 4. Simplified Performance Model of UAM Rotorcraft
+3 of 29
+American Institute of Aeronautics and Astronautics
+
+
+Each UAM vehicle is defined by a set of performance and geometry parameters which include
+• Wing span or rotor diameter b for lifting surface
+• Lifting surface area S which is assumed to be equal to bc ̄ for a wing with an average chord c ̄.
+• Aircraft gross weight W
+• Rotor speed Ω
+• Span efficiency factor ε
+• Aircraft maximum thrust Tmax
+• Positive stall angle of attack αmax
+• Other pertinent parameters
+This simplified performance model is agnostic to the detail aircraft configuration. Thus, it does not require a detail aerodynamic model of the UAM vehicle.
+B. Wake Vortex Models of Fixed-Wing Aircraft
+Wake vortices are shed by all aircraft as a consequence of lift creation. The wake vortices are formed as a consequence of a three-dimensional flow that results in a high pressure distribution on the lower wing surface and a low pressure distribution on the upper wing surface. A spanwise flow thus exists that generates a flow circulation from the lower surface to the upper surface at the wing tip. This flow circulation creates a pair of counter-rotating wake vortices that are shed downstream of the wing as illustrated in Figure 5.
+Figure 5. Wake Vortices of Aircraft
+The circulation creates a flow field around the wing tips that extends into the fluid well beyond the aircraft. The flow field induced by a wing tip vortex could be understood by a simple potential flow two-dimensional vortex model1 described by
+vθ = Γ0
+2πr (1)
+where vθ is the wake-induced tangential velocity at a radial position r and Γ0 is the circulation strength of the vortex. This simple model generally describes the far-field flow at some distance away from the region near the center of the vortex. This region is called a vortex core. The potential wake vortex model breaks down at r = 0 where it predicts infinite wake-induced velocity. The flow at the wing tip is three-dimensional which cannot be captured by a simple potential wake vortex model. The lift distribution on an aircraft wing typically goes to zero at the wing tip as illustrated in Fig. 6. This zero lift condition at the wing tip requires that the wake-induced tangential velocity at the center of the wing tip be zero.
+4 of 29
+American Institute of Aeronautics and Astronautics
+
+
+Figure 6. Downwash Distribution
+The Lamb-Oseen wake vortex model is frequently used in wake vortex modeling to describe the behavior of a wake vortex shed by an aircraft in the vortex core region as well as in the far-field region. The model is described by2
+vθ = Γ0
+2π r
+[
+1 − e−αL( r
+rc )2 ]
+(2)
+where rc is the vortex core radius and αL = 1.25643. This model prescribes a zero tangential velocity at r = 0 and asymptotically tends to the potential wake vortex model as r → ∞. The Lamb-Oseen model also describes the growth of the wake vortex core with time3,4 by
+rc (t) = √
+4αLνt (3)
+where rc (t) is the wake vortex core starting from a zero core radius at t = 0, ν is the kinematic viscosity coefficient. The wake vortex growth is due to the viscous dissipation in the atmosphere which accounts for the effect of wake vortex aging. The Lamb-Oseen wake vortex growth model starts with a zero core radius at t = 0. If the initial core radius rc is given at t = 0, then the model is adjusted to account for the starting wake vortex core at rc as
+rc (t) =
+√
+rc2 (0) + 4αLνt (4)
+The Lamb-Oseen model is developed through fluid dynamics theory and does not necessarily model wake vortices for aircraft accurately. A wake vortex model has been proposed by Proctor5 based on flight measurements of fixedwing aircraft. The model adds an amplitude correction term to the Lamb-Oseen model as shown below:
+ww =
+
+    
+    
+Γ0 2π r
+[
+1 − e−10( 1.4brc )0.75 ]
+[
+1−e−αP( rrc )2
+1−e−αP (1.4)2
+]
+r ≤ 1.4rc
+Γ0 2π r
+[
+1 − e−10
+( |r| b
+)0.75 ]
+r > 1.4rc
+(5)
+where αP = 1.2527, ww is the wake-induced normal velocity component or downwash in the aircraft body-fixed reference frame as shown in Figure 6 and b is the wing span. The wake-induced velocity is effectively the tangential velocity component normal to the aircraft plane. So it can be resolved into the three components at a point in the (x, y, z) inertial reference frame where the x-axis points north, y-axis points east, and z-axis points toward the earth’s center. The correction term accounts for the effect of the aircraft wing span which is not present in the Lamb-Oseen model. The author should note that Proctor uses r instead |r| in his formula for r > 1.4rc. If r is interpreted as a wing station measured from the wing tip, r can be negative, hence |r| is used instead.
+5 of 29
+American Institute of Aeronautics and Astronautics
+
+
+The Lamb-Oseen and Proctor wake vortex models prescribe a wake-induced downwash distribution at the initial time. The effect of aging of a wake vortex is due to the viscous dissipation. The Lamb model provides the following wake vortex aging effect:2,6
+vθ (t) = vθ (0)
+(
+1 − e− r2
+4νt
+)
+(6)
+As t → ∞, the wake-induced velocity goes to zero. The Lamb-Oseen and Proctor models can be combined with Lamb wake age model to give a spatio-temperal distribution of the wake-induced downwash as
+vθ = Γ0
+2π r
+[
+1 − e−αL( r
+rc )2 ] (
+1 − e− r2
+4νt
+)
+(7)
+ww =
+
+    
+    
+Γ0 2π r
+[
+1 − e−10( rbc )0.75 ]
+[
+1−e−αL( rrc )2
+1−e−αL (1.4)2
+] (
+1 − e− r2
+4νt
+)
+r ≤ 1.4rc
+Γ0 2π r
+[
+1 − e−10
+( |r| b
+)0.75 ]
+(
+1 − e− r2
+4νt
+)
+r > 1.4rc
+(8)
+The core radius depends on the type of aircraft. A study which involves flight measurements of the wake vortex core size behind a B757 aircraft indicates that the core size is about 1.4% of the wing span with a maximum downwash of 35 m/sec.7 This study also indicates that many numerical wake vortex simulations tend to use a much larger core radius of up to 14%. As the core size reduces, the wake vortex intensity becomes greater. It is of interest to compare the downwash computed by the Lamb-Oseen and Proctor wake vortex models to the measurements. A typical operating weight of a B757 aircraft is 200,000 lbs. During landing, a typical approach speed is about 137 knots or 231 ft/sec. Based on this, the lift coefficient CL at landing is obtained by
+CL = W
+q ̄S (9)
+where W is the aircraft gross weight, q ̄ is the dynamic pressure, and S is the reference wing surface area which is 1951 ft2 for B757. The lift coefficient at approach is computed to be 1.6128 which is a large value as the aircraft is in a high-lift configuration with the flaps and slats fully deployed. The lift circulation strength Γ0 for an elliptical lift distribution can be estimated by
+Γ0 = 2CLV S
+πb = 4L
+πρV b (10)
+where V is the airspeed and ρ is the air density. The lift distribution during an approach is most likely not an elliptical distribution. This may result in a higher lift circulation strength, but the effect might be assumed negligible. The lift circulation strength Γ0 is computed to be 3720.4 ft2/sec2. Figure 7 is a plot that compares the Lamb-Oseen and Proctor wake vortex models to the flight measurement data extracted from Ref.7 As can be seen, the Lamb-Oseen wake vortex model over-predicts the maximum downwash substantially. This is not surprising since it does not account for the wing span as in the Proctor wake vortex model. The Lamb-Oseen wake vortex model, on the other hand, estimates the far-field downwash with reasonable accuracy. The Proctor wake vortex model does a very good job of predicting the downwash. For aircraft flying in the wake, the lift distribution is not necessarily symmetric between the left wing and right wing. To account for the lift asymmetry, the total lift circulation is split into the lift circulations of the individual wings. Thus, the individual lift circulations are expressed as
+Γ0L,R = 2LL,R
+πρV b (11)
+where the subscripts L and R denote the left wing and right wing. An UAM fixed-wing aircraft is modeled to simulate a wake vortex interaction. The aircraft, denoted as aircraft A, has a gross weight of 5,000 lbs, a wing span of 30 ft, and a wing area of 180 ft2 flying wing-level at an altitude of 1,000 ft and an airspeed of 200 ft/sec. The operating lift coefficient at this flight condition is 0.6 which is typical. The aircraft center of gravity (CG) is initially at a position of (0, 0, 1000) ft in the inertial reference frame. The aircraft is flying due north. The wake vortex shed by aircraft A computed by the Proctor wake vortex model is shown in Fig. 8.
+6 of 29
+American Institute of Aeronautics and Astronautics
+
+
+The maximum downwash is predicted to be about 28 ft/sec. This represents an equivalent angle of attack of 8◦ based on the aircraft airspeed of 200 ft/sec. This is a large wake-induced angle of attack for an aircraft that flies at or below this airspeed.
+-20 -10 0 10 20 30 40 50 Cross Range (ft)
+-300
+-200
+-100
+0
+100
+200
+300
+Downwash (ft/sec)
+B757 Data Ref. 7 Lambda-Oseen Model Proctor Model
+Figure 7. Wake Induced Downwash of Fixed Wing Aircraft A
+-50 -40 -30 -20 -10 0 10 20 30 40 50 y Position (ft)
+-30
+-20
+-10
+0
+10
+20
+30
+Downwash w w (ft/sec)
+Left Wing Downwash Right Wing Downwash Aircraft A Downwash
+Figure 8. Wake Induced Downwash of Fixed Wing Aircraft A
+The effect of wake age is examined next. The wake age affects both the wake vortex core and the viscous dissipation simultaneously. Figure 9 plots the maximum amplitude of the wake-induced downwash as a function of time with only the wake vortex core growth and with the atmospheric dissipation in addition. As can be seen, the wake vortex decay is very slow and appears to be physically unrealistic. In reality, there are many conditions that affect wake vortex decay. Advection by winds is one effect on the wake vortex decay. In practice, wake vortices dissipate on timescales of seconds to minutes. The Lamb-Olsen wake vortex growth and viscous dissipation models are based on a simple diffusion model which predicts the wake vortex decay over a much longer timescale. The diffusion of
+7 of 29
+American Institute of Aeronautics and Astronautics
+
+
+wake vortices is almost never observed in practice.8 A more realistic wake vortex decay model is thus needed for this investigation.
+0 10 20 30 40 50 60 t (min)
+4
+6
+8
+10
+12
+14
+16
+18
+20
+22
+24
+Maximum Amplitude of Downwash w w (ft/sec)
+w/ Core Growth Only w/ Core Growth & Dissipation
+Figure 9. Wake Vortex Aging Effect on Downwash of Fixed Wing Aircraft A
+C. Wake Vortex Models of Rotorcraft
+Wake vortices shed by rotorcraft are much more complex due to the rotor wake interaction. The literature on wake vortices for rotorcraft gives a less clear picture of wake vortex models for rotorcraft than for fixed-wing aircraft. The rotor acts as a aircraft wing in forward flight. Thus, rolled-up vortices are also shed by the rotor at the rotor tip. Unlike fixed-wing aircraft, the lift circulation strength of a rotorcraft varies circumferentially. This implies that the downwash varies as a function of the azimuth angle of the rotor. The airspeed that the rotor blades see varies circumferentially as a function of the azimuth angle Ψ. The tangential airspeed on the rotor blades is
+VR = rΩ +V sin Ψ (12)
+where rh ≤ r ≤ R where rh is the hub radius.
+Figure 10. Rotor Velocities of Rotorcraft in Forward Flight
+If the rotor blades are designed to have an elliptical lift distribution, then the lift circulation is given by
+Γ= 1
+2VRccl = Γ0
+√
+1−
+(r
+R
+)2
+(13)
+8 of 29
+American Institute of Aeronautics and Astronautics
+
+
+where c is the rotor chord and cl is the sectional lift coefficient. The lift produced by the rotor blades is computed as
+L=N
+∫R
+0
+1
+2ρV 2
+R ccldr = NρΓ0
+∫R
+0
+(rΩ +V sin Ψ)
+√
+1−
+(r
+R
+)2
+dr
+= NρΓ0R2Ω
+(1
+3+π
+4 μ sin Ψ
+)
+(14)
+where N is the number of blades and μ = V
+RΩ is the advanced ratio. The lift circulation strength of a rotor blade is obtained as
+Γ0 = 3L
+N ρ R2 Ω
+(1 + 3π
+4 μ sin Ψ
+) (15)
+The mean lift circulation strength can be obtained by integrating the lift L over the entire revolution resulting in
+Γ ̄ 0 = 3L ̄
+NρR2Ω (16)
+A different expression of the lift circulation strength with an elliptical lift distribution is given by9
+Γ0 = 16L
+NπρR2Ω (1 + μ sin Ψ)2 (17)
+The discrepancy is unexplained and could be due to a different assumption used in obtaining this expression. The mean circulation length for this lift circulation strength is
+Γ ̄ 0 = 16L ̄
+N π ρ R2 Ω
+(1 + 1
+2 μ2) (18)
+Thus, this mean circulation strength is greater than the expression derived in Eq. (16) which indicates a larger downwash. An analytical model of a wake vortex core size for helicopters shows that that the core size varies with the blade azimuth angle Ψ and ranges from 4% of the rotor radius at Ψ = 270◦ corresponding to the minimum velocity at the retreating blade tip to 7.5% of the rotor radius at Ψ = 90◦ corresponding to the maximum velocity at the advancing blade tip.9 The study suggests an average wake vortex core radius of 5%. The Proctor wake vortex model is used for wake vortex modeling of rotorcraft, but it is not clear that it is applicable to rotorcraft. A fixed-wing aircraft in steady flight sheds a pair of wing tip vortices that are more or less steady. On the other hand, the lift circulation shed by a rotor is unsteady as the lift circulation is continually varying. It is well-known that the lift circulation in unsteady flow is less than the steady lift circulation. In fact, Theodorsen’s theory of unsteady aerodynamics10 could be used to improve the lift circulation model of a rotor. Consider an oscillating airfoil with a sinusoidal angle of attack α ̃ = α0 sin ωt subject to an incoming airspeed V∞. The airfoil oscillates about a pitch center xe measured from the leading edge. The Theodorsen’s theory shows that the unsteady lift of the oscillating airfoil is comprised of two components: a circulatory lift and a non-circulatory. The circulatory lift coefficient is given by
+clc = C (k)
+(
+c ̃l + 2 ec
+c
+c  ̃ ̇cl
+2V∞
+)
+(19)
+where c ̃l = 2πα ̃ , ec = 3c
+4 − xe and C (k) is the complex-valued Theodorsen’s function given by
+C (k) = F (k) + iG (k) (20)
+The functions F (k) and G (k) represent the amplitude and phase corrections of the steady lift, respectively. They are shown in Fig. 11. The reduced frequency k is defined as
+k = ωc
+2V∞
+(21)
+9 of 29
+American Institute of Aeronautics and Astronautics
+
+
+where c is the airfoil chord. The value of the function F (k) is always less than 1 which represents the lift reduction in unsteady flow and tends to 1
+2 as k → ∞. When k = 0, the flow is steady. This corresponds to F (0) = 1 and G (0) = 0. The value of the function G (k) is always negative which represents a phase lag as the lift circulation cannot be established instantaneously in response to the sinusoidal angle of attack.
+0 0.5 1 1.5 2 k
+0.4
+0.6
+0.8
+1
+F
+0 0.5 1 1.5 2 k
+-0.2
+-0.15
+-0.1
+-0.05
+0
+G
+Figure 11. Theodorsen’s Function
+The non-circulatory lift is due to the inertial force acting on the airfoil, also known as the apparent mass effect. It is given by
+clnc = 1
+2
+cc ̇ ̃l
+2V∞
++ em
+c
+c2c ̈ ̃l
+4V 2
+∞
+(22)
+where em = c
+2 − xe.
+The total unsteady lift coefficient is the sum of the circulatory lift coefficient and non-circulatory lift coefficient. For a rotor in forward flight, the lift is sinusoidal time varying. If the lift circulation strength in Eq. (17) is used, the unsteady lift expression can be written as
+L = NπρΓ0R2Ω
+(
+1+ 1
+2 μ2 + 2μ sin Ψ − 1
+2 μ2 cos 2Ψ
+)
+= L ̄ + L ̃ (23)
+where L ̃ is the unsteady sinusoidal lift
+L ̃ = L0
+(
+2μ sin Ωt − 1
+2 μ2 cos 2Ωt
+)
+(24)
+and L0 = NπρΓ0R2Ω. The incoming airspeed that a rotor sees is V∞ = RΩ. Then, the reduced frequency is k = Ωc
+2RΩ = c
+2R . The circulatory lift is computed as
+Lc = L0
+[
+2μC (k)
+(
+sin Ωt + 2k ec
+c cos Ωt
+)
+−1
+2 μ2C (2k)
+(
+cos 2Ωt − 2k ec
+c sin 2Ωt
+)
+]
+(25)
+For a harmonic motion with θ = eiΩt , we have θ ̇ = iΩθ and θ ̈ = −ωθ . Using this relationship, we obtain the circulatory lift as
+Lc = L0
+[
+2μ (F1 sin Ωt + F2 cos Ωt) − 1
+2 μ2 (F3 sin 2Ωt + F4 cos 2Ωt)
+]
+(26)
+10 of 29
+American Institute of Aeronautics and Astronautics
+
+
+where
+F1 = F (k) − 2k ec
+c G (k) (27)
+F2 = G (k) + 2k ec
+c F (k) (28)
+F3 = −2G (2k) − 2k ec
+c F (2k) (29)
+F4 = F (2k) − 4k ec
+c G (2k) (30)
+The non-circulatory lift is evaluated as
+Lnc = L0
+[
+2μ
+(1
+2 k cos Ωt − k2 em
+c sin Ωt
+)
+−1
+2 μ2 (
+−k sin 2Ωt − 4k2 em
+c cos 2Ωt
+)
+]
+(31)
+Thus, the total unsteady lift of a rotor can be established as
+L = L ̄ + Lc + Lnc (32)
+The lift circulation strength is now obtained
+Γ0 = 16L
+NπρR2Ω f (Ψ) (33)
+where
+f (Ψ) =1 + 1
+2 μ2 + 2μ
+[ (
+F1 − k2 em
+c
+)
+sin Ψ +
+(
+F2 + 1
+2k
+)
+cos Ψ
+]
+−1
+2 μ2 [
+(F3 − k) sin 2Ψ +
+(
+F4 − 4k2 em
+c
+)
+cos 2Ψ
+]
+(34)
+Comparing Eq. (29) to Eq. (17), The former expression is without the unsteady aerodynamic effect of the sinusoidal motion, also known as quasi-steady aerodynamics. The latter accounts for the unsteady wake circulation acting on the rotor blades. The amplitude of the unsteady lift is less than the quasi-steady lift. Thus, the downwash computed by using the unsteady lift circulation strength is smaller than the quasi-steady lift circulation strength. The Theodorsen’s theory applies to incompressible flow. A flow through a typical rotor in a rotorcraft is compressible as the airspeed on a rotor section can be high subsonic or transonic when shocks would develop on a rotor blade surface. An additional correction can be applied to account for the compressibility effect. The correction is applied to the unsteady lift component as11
+∆L =2μ [U (k, M) + iW (k, M)]
+[ (
+F1 − k2 em
+c
+)
+sin Ψ +
+(
+F2 + 1
+2k
+)
+cos Ψ
+]
+−1
+2 μ2 [U (k, M) + iW (k, M)]
+[
+(F3 − k) sin 2Ψ +
+(
+F4 − 4k2 em
+c
+)
+cos 2Ψ
+]
+(35)
+where U (k, M)and W (k, M) are functions of the reduced frequency and the Mach number M at the blade tip
+M = r ̄Ω +V sin Ψ
+a (h) (36)
+where a (h) is the speed of sound as a function of the altitude h. The function U (k) represents the additional amplitude reduction and the function W (k) represents the additional phase lag due to the compressibility effect. They can be obtained from high-fidelity computational fluid dynamics (CFD) simulations or other analytical or experimental methods. Figure 12 shows the functions U (k, M)and W (k, M) for an airfoil obtained from high-fidelity CFD simulations for Mach 0.6 to Mach 0.8. Figure 13 is a more useful plot showing the functions U (k, M) and W (k, M) as functions of the reduced frequency for Mach 0.6 and 0.7. For incompressible flow corresponding to Mach 0, U (k, 0) = 1 and W (k, 0) = 0. Thus, with the values of U (k, M) and W (k, M) for three Mach 0, 0.6, and 0.7, an interpolation can be performed to estimate the values of U (k, M)and W (k, M) for any Mach number. A word of caution should be noted
+11 of 29
+American Institute of Aeronautics and Astronautics
+
+
+that extrapolation to greater Mach 0.7 is not recommended since the flow could become transonic with shocks and the unsteady behavior could be drastically different from the trend indicated by Fig. 13. Another word of caution is that the data shown in Fig. 13 is for one specific type of transonic airfoil. The applicability of Fig. 13 for rotorcraft-type airfoil may not be valid. Even though the numerical values might be different for other types of airfoil, the trend should be similar in that the compressibility effect reduces the amplitude of the unsteady lift and introduces a phase shift.
+0.5 0.6 0.3
+0.6
+0.7
+0.65 0.2
+U
+0.8
+Mk
+0.7
+0.9
+0.1
+1
+0.75 0.8 0
+-0.35 0.6 0.3
+-0.3
+-0.25
+0.65
+-0.2
+0.2
+W
+-0.15
+k
+M
+0.7
+-0.1
+0.1
+-0.05
+0.75 0.8 0
+(a) (b)
+Figure 12. Compressibility Correction Functions U (k, M) and W (k, M) for Unsteady Lift versus Reduced Frequency
+0 0.05 0.1 0.15 0.2 0.25 0.3 k
+0.55
+0.6
+0.65
+0.7
+0.75
+0.8
+0.85
+0.9
+0.95
+1
+U
+M=0.6 M=0.7
+0 0.05 0.1 0.15 0.2 0.25 0.3 k
+-0.22
+-0.2
+-0.18
+-0.16
+-0.14
+-0.12
+-0.1
+-0.08
+-0.06
+W
+M=0.6 M=0.7
+(a) (b)
+Figure 13. Compressibility Correction Functions U (k, M) and W (k, M) for Unsteady Lift versus Reduced Frequency for Mach 0.6 and 0.7
+The corrected unsteady lift can be expressed as
+Γ0 = 16L
+N π ρ R2 Ω
+[1 + 1
+2 μ2 + 2μ (F1c sin Ψ + F2c cos Ψ) − 1
+2 μ2 (F3c sin 2Ψ + F4c cos 2Ψ)] (37)
+where
+F1c = U (k, M)
+(
+F1 − k2 em
+c
+)
+−W (k, M)
+(
+F2 + 1
+2k
+)
+(38)
+F2c = W (k, M)
+(
+F1 − k2 em
+c
+)
++U (k, M)
+(
+F2 + 1
+2k
+)
+(39)
+12 of 29
+American Institute of Aeronautics and Astronautics
+
+
+F3c = U (2k, M) (F3 − k) − 2W (2k, M)
+(
+F4 − 4k2 em
+c
+)
+(40)
+F4c = 2W (2k, M) (F3 − k) +U (2k, M)
+(
+F4 − 4k2 em
+c
+)
+(41)
+Alternatively, if we use the lift circulation strength for the elliptical lift distribution in Eq. (15), the resulting expression is much simpler since the lift circulation strength has only a single harmonic as opposed to that of Eq. (17) which contains the second harmonic. The lift circulation strength with the unsteady aerodynamics and the compressibility effect correction can be established as
+Γ0 = 3L
+N ρ R2 Ω
+[1 + 3π
+4 μ (F1c sin Ψ + F2c cos Ψ)] (42)
+To illustrate the wake vortex modeling, an UAM rotorcraft is modeled for wake vortex simulations. The rotorcraft, denoted as aircraft B, has a gross weight of 1000 lbs, a two-bladed rotor with a diameter of 15 ft flying due north at an altitude of 1,000 ft, an airspeed of 150 ft/sec, and a rotor speed of 800 rpm. Aircraft B is laterally separated from aircraft A by a distance of 50 ft at a position of (0, 50, 1000) ft. The advanced ratio of the rotor is μ = 0.2387. The rotor is designed with a chord c = 1 ft and a pitch axis at the quarter chord. Then, em = c
+4 = 0.25 ft and ec = c
+2 = 0.5
+ft. The reduced frequency is k = c
+2R = 1
+15 = 0.06667. Then, F (k) = 0.8812, G (k) = −0.1493, F (2k) = 0.7907, and G (2k) = −0.1836. The blade tip Mach number varies from 0.43 to 0.7. Figure 14 shows the four lift circulation strengths as a function of the azimuth angle for the fully corrected lift for unsteady aerodynamics and the compressibility effect from Eqs. (42) and (37) and uncorrected lift from Eqs. (15) and (17). As can be seen the uncorrected lift circulation strengths are greater than the corrected lift circulation strengths at Ψ = 270◦ on the retreating blade due to the increased lift. The lift circulation derived from an elliptical lift distribution shown in Eq. (42) gives the lowest amplitude. The lift circulation strength from Ref.9 is substantially larger by about 57%. The elliptical lift distribution should result in a minimum lift circulation as shown in Fig. 14.
+0 45 90 135 180 225 270 315 360 Azimuth (deg)
+50
+100
+150
+200
+250
+300
+350
+400
+450
+Lift Circulation Strength 0 (ft2/sec2)
+Eq. (42) Eq. (15) Eq. (36) Eq. (16)
+Figure 14. Lift Circulation Strength of Aircraft B
+Figure 15 shows the wake-induced downwash of aircraft B based on the lift circulation strength from Eq. (42) which gives the lowest downwash. As can be seen, the downwash is larger on the retreating side of the rotor where Ψ = 270◦ since the lift is greater than the lift on the advancing side where Ψ = 90◦. The maximum amplitude of the downwash is 42 ft/sec which is greater than the downwash of fixed-wing aircraft A. The wake vortex of rotorcraft can be more intense than wake vortex of fixed-wing aircraft. Figure 16 is the plot of the downwash in the x-direction when Ψ = 0◦ and Ψ = 180◦. The amplitude of the downwash at Ψ = 180◦ is 25 ft/sec and is slightly larger than the downwash at Ψ = 0◦.
+13 of 29
+American Institute of Aeronautics and Astronautics
+
+
+0 10 20 30 40 50 60 70 80 90 100 y Position (ft)
+-50
+-40
+-30
+-20
+-10
+0
+10
+20
+30
+40
+50
+Dowanwash w w (ft/sec)
+Downwash @ =270o
+Downwash @ =90o Aircraft B Downwash
+Figure 15. Lift Circulation Strength of Aircraft B @ Ψ = 90◦ and Ψ = 270◦ Computed from Eq. (42)
+-50 -40 -30 -20 -10 0 10 20 30 40 50 x Position (ft)
+-30
+-20
+-10
+0
+10
+20
+30
+Downwash w w (ft/sec)
+Downwash @ =180o
+Downwash @ =0o Aircraft B Downwash
+Figure 16. Lift Circulation Strength of Aircraft B @ Ψ = 0◦ and Ψ = 180◦ Computed from Eq. (42)
+For comparison, Fig. 17 shows the wake-induced downwash based on the lift circulation strength from Eq. (37). The maximum downwash is 61 ft/sec which is excessive.
+14 of 29
+American Institute of Aeronautics and Astronautics
+
+
+0 10 20 30 40 50 60 70 80 90 100 y Position (ft)
+-80
+-60
+-40
+-20
+0
+20
+40
+60
+80
+Downwash w w (ft/sec)
+Downwash @ =270o
+Downwash @ =90o Aircraft B Downwash
+Figure 17. Lift Circulation Strength of Aircraft B @ Ψ = 90◦ and Ψ = 270◦ Computed from Eq. (42)
+D. Wake Vortex Interaction
+A wake vortex creates a tangential velocity. This tangential velocity creates a wake turbulent wind field in the atmosphere. As an aircraft enters this wind field, a wake vortex encounter is experienced and sometimes can be severe. Consider a wake vortex shed at a rotor tip. Let (ib, jb, kb) be a set of unit vectors in the (xb, yb, zb) aircraft body-fixed reference frame. The reference frame is shown in Fig. 18. The tangential velocity vector is given by
+vθ = −vθ sin Θer − vθ cos Θkb
+= vθ sin Θ cos Ψib − vθ sin Θ sin Ψjb − vθ cos Θkb (43)
+Figure 18. Rotor Wake Vortex Reference Frame
+Let (i, j, k) be a set of orthogonal unit vectors in the (x, y, z) inertial reference frame for navigation with the xdirection due north, y-axis due east, and z-axis points toward the earth’s center according to the NED (north-east-down) convention. The two reference frames are related by the coordinate transformation
+
+ 
+ib
+jb
+kb
+
+
+=
+
+ 
+cos θ cos ψ cos θ sin ψ − sin θ
+− cos φ sin ψ + sin φ sin θ cos ψ cos φ cos ψ + sin φ sin θ sin ψ sin φ cos θ
+sin φ sin ψ + cos φ sin θ cos ψ − sin φ cos ψ + cos φ sin θ sin ψ cos φ cos θ
+
+ 
+
+ 
+i j k
+
+
+ (44)
+where θ is the pitch angle, φ is the roll angle, and ψ is the heading angle.
+15 of 29
+American Institute of Aeronautics and Astronautics
+
+
+The-wake induced tangential velocity is expressed in the three components in the inertial reference frame as
+uw =vθ sin Θ cos Ψ cos θ cos ψ − vθ sin Θ sin Ψ (− cos φ sin ψ + sin φ sin θ cos ψ)
+− vθ cos Θ (sin φ sin ψ + cos φ sin θ cos ψ) (45)
+vw =vθ sin Θ cos Ψ cos θ sin ψ − vθ sin Θ sin Ψ (cos φ cos ψ + sin φ sin θ sin ψ) (46)
+− vθ cos Θ (− sin φ cos ψ + cos φ sin θ sin ψ)
+ww = −vθ sin Θ cos Ψ sin θ − vθ sin Θ sin Ψ sin φ cos θ − vθ cos Θ cos φ cos θ (47)
+The position of the wake-induced tangential velocity is given by the vector
+rθ = r + (R + r cos Θ) er − r sin Θkb
+= r + (R + r cos Θ) (− cos Ψib + sin Ψjb) − r sin Θkb (48)
+where r = xi + yj + hk is the position vector of the aircraft in the inertial reference frame. The position vector of the wake-induced velocity is expressed in the coordinate system in inertial reference frame as
+xw =xa + (R + r cos Θ) [− cos Ψ cos θ cos ψ + sin Ψ (− cos φ sin ψ + sin φ sin θ cos ψ cos φ cos ψ)]
+− r sin Θ (sin φ sin ψ + cos φ sin θ cos ψ) (49)
+yw =ya + (R + r cos Θ) [− cos Ψ cos θ sin ψ + sin Ψ (cos φ cos ψ + sin φ sin θ sin ψ)]
+− r sin Θ (− sin φ cos ψ + cos φ sin θ sin ψ) (50)
+zw = za + (R + r cos Θ) (cos Ψ sin θ + sin Ψ sin φ cos θ ) − r cos φ cos θ (51)
+The wake turbulent velocity at the position (x, y, z) is defined by v = uwi + vwj + wwk. The wake turbulent velocity affects the position of an aircraft since it changes the aerodynamic forces acting on the aircraft. This wake turbulent velocity is a function of the airspace and time as illustrated in Figure 19. The turbulent velocity is contributed by not only the wake-induced tangential velocity but also by atmospheric gust. The wake interaction is computed as the sum of all the contributions of the wake-induced velocities of all aircraft at a given position (x, y, z). This is expressed as
+uw (x, y, z,t) =
+Na
+i=∑1
+uw,i (x, y, z,t) (52)
+vw (x, y, z,t) =
+Na
+i=∑1
+vw,i (x, y, z,t) (53)
+ww (x, y, z,t) =
+Na
+i=∑1
+ww,i (x, y, z,t) (54)
+where Na is the number of aircraft.
+Figure 19. Spatial Distribution of Wake Vertical Velocity
+16 of 29
+American Institute of Aeronautics and Astronautics
+
+
+Consider aircraft A and B discussed previously. Since both aircraft are at the same altitude and the y position, the wake vortex interaction between the two aircraft results in the downwash as shown in Fig. 20. The lateral separation is 50 ft between two aircraft. The wake vortex interaction does not alter the maximum amplitudes of the downwash. The downwash in the spacing between the two aircraft is doubled but the amplitude is small. The effect is more pronounced, however, for aircraft flying behind these two aircraft into their wakes.
+-50 -40 -30 -20 -10 0 10 20 30 40 50 60 70 80 90 100 y Position (ft)
+-50
+-40
+-30
+-20
+-10
+0
+10
+20
+30
+40
+50
+Downwash w w (ft/sec)
+Aircraft A Downwash Aircraft B Downwash Total Downwash
+Figure 20. Wake Interaction Between Two UAM Vehicles
+E. Vehicle-Building Wake Vortex Interaction
+Figure 21. UAM Wake Vortex Interaction with Building Structures
+For aircraft flying close to building structures, the method of image1 could be used to estimate the wake vortex interaction with a solid boundary. Figure 21 illustrates the method of image. The two wing tip vortices are mirrored about the solid boundaries of two building structures as the aircraft flies through an ’urban canyon’. The reflected vortices by the two buildings contribute to the total vertical velocity component of the aircraft. The vortex interaction
+17 of 29
+American Institute of Aeronautics and Astronautics
+
+
+with the building that the aircraft flies closer to is stronger than that with the other building. This creates a higher incremental lift on one wing than on the other wing, thus resulting in a rolling moment experienced by the aircraft. Suppose aircraft B flies between two buildings. Let a = 20 ft and c = 30 ft. Figure 22 shows the wake interaction of aircraft B with the two buildings. Building A contributes a greater downwash than building B for obvious reasons. One can sees a small downwash distribution across the rotor between x = 42.5 ft and x = 57.5 ft. The amplitude is about 1 ft/sec which is small, but the retreating side of the rotor operates in high lift at a larger angle of attack than the advancing side. So a small amplitude could cause the retreating blade to stall. If the rotorcraft flies closer to a building, the downwash increases and could cause a wake-induced rolling moment as well as the additional lift.
+-20 0 20 40 60 80 100 120 140 y Position (ft)
+-50
+-40
+-30
+-20
+-10
+0
+10
+20
+30
+40
+50
+Downwash w w (ft/sec)
+Aircraft B Downwash Building A Downwash Building B Downwash Total Downwash
+Figure 22. Wake Vortex Interaction Between UAM Aircraft and Buildings
+III. Wake Interactional Flight Dynamics
+Aircraft motion is governed by set of flight dynamic equations and the aerodynamic forces and moments acting on it. During a wake vortex encounter, wake-induced rolling moment and lift can cause issues with flight dynamic stability and control. In addition to wake-induced aerodynamic forces and moments, the control effectiveness of flight control surfaces could decrease if the control surfaces experience local stall due to the increase in the local angle of attack induced by a wake vortex encounter. To determine the aerodynamic forces and moments, the turbulent velocity in the inertial reference is transformed into the turbulent velocity vb = ubib + vbjb + wbkb in the aircraft body-fixed reference frame using the coordinate rotation in Eq. (44). For navigation, the turbulent velocity in the aircraft stability reference frame is also required. The coordinate rotation from the inertial reference frame to the aircraft stability reference frame is
+
+ 
+i j k
+
+
+=
+
+ 
+cos γ cos ψ − sin ψ sin γ cos ψ
+cos γ sin ψ cos ψ sin γ sin ψ
+− sin γ 0 cos γ
+
+ 
+
+ 
+is
+js
+ks
+
+
+ (55)
+where γ is the flight path angle. Thus, the wake turbulent velocity components in the aircraft stability reference frame are
+us = uw cos γ cos ψ − vw sin ψ + ww sin γ cos ψ (56)
+vs = uw cos γ sin ψ + vw cos ψ (57)
+ws = −uw sin γ + ww cos γ (58)
+18 of 29
+American Institute of Aeronautics and Astronautics
+
+
+Note that the wake turbulent velocity is a distribution over an airspace. The equations of motion of an aircraft in a wind field for navigation are
+V ̇ = T − D −W sin γ
+m − u ̇w cos γ cos ψ + v ̇w sin ψ − w ̇w sin γ cos ψ (59)
+γ ̇ = L cos φ −W cos γ
+mV + u ̇w sin γ − w ̇w cos γ
+V (60)
+ψ ̇ = L sin φ
+mV − u ̇ cos γ sin ψ + v ̇cos ψ
+V (61)
+where T is the thrust force and D is the drag force. In addition, the flight dynamics equations for an aircraft in a wind field are
+u ̇ + qw − rv = X + T
+m − g sin θ − u ̇b (62)
+v ̇ + ru − pw = Y
+m + g cos θ sin φ − v ̇b (63)
+w ̇ + pv − qu = Z
+m + g cos θ cos φ − w ̇b (64)
+Ixx p ̇ − Ixzr ̇ − Ixz pq + (Izz − Iyy) qr = l (65)
+Iyyq ̇ + (Ixx − Izz) pr + Ixz
+(p2 − r2) = m + T ze (66)
+−Ixz p ̇ + Izzr ̇ + Ixzqr + (Iyy − Ixx) pq = n (67)
+where (u, v, w) are the axial, lateral, and normal velocity components, (ub, vb, wb) are the wake turbulent velocity components in the aircraft body-fixed reference frame, (p, q, r) are the roll, pitch, and yaw rates, (X,Y, Z) are the axial, side, and normal forces, (l, m, n) are the rolling, pitching, and yawing moments, (Ixx, Iyy,Izz, Ixz) are the aircraft inertias, and ze is the distance between the thrust line and the aircraft CG.
+A. Wake-Induced Aerodynamic Effects on Loads and Stability and Control
+The normal wake turbulent velocity has a larger effect of the aerodynamic forces and moments since it directly adds to the angle of attack. It is computed by
+wb = uw (sin φ sin ψ + cos φ sin θ cos ψ) + vw (− sin φ cos ψ + cos φ sin θ sin ψ) + ww cos φ cos θ (68)
+If the aircraft is wing level and at zero pitch angle, the downwash in the aircraft body-fixed reference frame is simply the vertical turbulent velocity in the inertial reference frame. Both the aircraft lift and rolling moment are generally most affected by wake vortices. The wake-induced downwash creates unequal pressure distribution over the aircraft wing, thus creating an incremental lift and an incremental pitching moment as shown in Fig. 23.
+Figure 23. Lift Forces and Rolling Moment due to Wake Interaction and Turbulent Velocity
+Typically, in a rotorcraft the retreating blade sees a larger angle of attack than the advancing blade. The wakeinduced downwash further contributes to the increase in the angle of attack that could potentially cause the blade to stall. A typical lift curve of an airfoil may be idealized as shown in Fig. 24.
+19 of 29
+American Institute of Aeronautics and Astronautics
+
+
+Figure 24. Lift Curve
+The maximum lift capability of an airfoil is called clmax . Typically, clmax is about 1 for a clean airfoil without a flap. The lift curve slope is an important quantity which strongly influences stability and control of an aircraft. A typical operating range of an airfoil is in the linear range when the flow has not separated. When flow separation occurs, the airfoil stalls and can no longer produce lift. A section lift coefficient cl may be modeled as a nonlinear function of the angle of attack α as
+cl (α) =
+
+  
+  
+cl0 + clα α αmin ≤ α ≤ αmax
+cl+stall (α ) α > αmax
+Cl−stall (α ) α < αmin
+(69)
+where cl0 is the lift coefficient at zero angle of attack and clα is the linear lift curve slope which is a positive value. The nonlinear functions cl+stall (α) and cl−stall (α) model the positive stall and negative stall, respectively. The positive stall may be modeled by a quadratic function
+cl+stall (α) = aα2 + bα + c (70)
+Stall occurs when dcl+stall (α)
+dα = 2aα+stall + b = 0 (71)
+which yields
+b = −2aα+stall (72)
+where α+stall > αmax is given. The maximum lift occurs at stall so that
+cl+stall (α ) = −aα 2
++stall + c = clmax (73)
+which yields
+c = clmax + aα2
++stall (74)
+The lift and lift slope are to be matched at αmax where the lift curve becomes nonlinear so that
+cl+stall (αmax) = aα 2
+max − 2aα+stall αmax + clmax + aα 2
++stall = cl0 + clα αmax (75)
+dcl+stall (αmax)
+dα = 2aαmax − 2aα+stall = clα (76)
+Equation (76) yields
+a = clα
+2 (αmax − α+stall) (77)
+20 of 29
+American Institute of Aeronautics and Astronautics
+
+
+Note that a < 0 for αmax < αstall. Substituting Eq. (77) into Eq. (75) yields
+clα (αmax − α+stall )2
+2 (αmax − α+stall ) + clmax = cl0 + clα αmax (78)
+Solving for α+stall, we have
+clmax = cl0 + clα αmax + clα (α+stall − αmax)
+2 (79)
+α+stall = αmax + 2 (clmax − cl0 − clα αmax
+)
+clα
+(80)
+We obtain b and c as
+b = clα α+stall
+(α+stall − αmax) (81)
+c = cl0 + clα αm2ax
+2 (αmax − α+stall) (82)
+Thus, a simple model could be constructed if clmax and αmax are given. Negative stall is generally not a problem in normal operation. For α > α+stall, the lift curve slope is negative since
+dcl+stall (α )
+dα , clαs = − clα (α − α+stall )
+(α+stall − αmax) < 0 (83)
+A stable short period mode requires the aircraft lift curve slope CLα to be positive. If the downwash is excessive, potentially the aircraft could stall when CLα . 0. This could cause instability. The aileron effectiveness also depends on a positive lift curve slope of the wing. If the wing tip stalls when the local angle of attack exceeds the stall angle of attack, then the aileron effectiveness ceases. This is one of the reasons why aircraft wings are usually twisted nosedown at the wing tip. This twist is called a wash-out twist to improve aerodynamic performance and to alleviate the potential wing tip stall. Ignoring any blade twist, the local angle of attack αc of a rotor section in the presence of a wake-induced downwash is expressed as
+αc = w + wb
+rΩ + (V + ub) sin Ψ + vb cos Ψ (84)
+where w is the vertical airspeed corresponding to the rotorcraft angle of attack α. The lift coefficient cl in the presence of the wake-induced downwash is obtained as
+cl = c ̄l + ∆cl (85)
+where c ̄l is the nominal lift coefficient and ∆cl is due to the wake-induced downwash which can be expressed as
+∆cl = cl (αc) − c ̄l (86)
+If ub and vb are small, then the local angle of attack can be approximated as
+αc ≈ w + wb
+rΩ +V sin Ψ
+(
+1 − ub sin Ψ + vb cos Ψ
+rΩ +V sin Ψ
+)
+(87)
+Furthermore, if the local angle of attack is in the linear range, then
+∆cl = clα wb
+rΩ +V sin Ψ − clα w2 (ub sin Ψ + vb cos Ψ)
+(rΩ +V sin Ψ)2 (88)
+The contributions of the wake turbulent velocity components ub and vb are generally small and therefore are usually neglected. The wake-induced lift and rolling moment produced by a rotor are computed as
+∆L = N
+∫R
+0
+1
+2ρV 2
+R c∆cldr = N
+∫R
+0
+1
+2 ρ (rΩ +V sin Ψ)2 c∆cldr (89)
+21 of 29
+American Institute of Aeronautics and Astronautics
+
+
+∆l = −N
+∫R
+0
+1
+2 ρ (rΩ +V sin Ψ)2 c∆clr sin Ψdr (90)
+If the rotor blades operate entirely in the linear range, then
+∆L = N
+∫R
+0
+1
+2 ρ (rΩ +V sin Ψ) cclα wbdr (91)
+∆l = −N
+∫R
+0
+1
+2 ρ (rΩ +V sin Ψ) cclα wbr sin Ψdr (92)
+For fixed-wing aircraft, the wake-induced lift and pitching moment are
+∆L =
+∫b
+2
+−b
+2
+1
+2 ρV 2c∆cldy (93)
+∆l = −
+∫b
+2
+−b
+2
+1
+2 ρV 2c∆clydy (94)
+In addition to the lift and rolling moment induced by wake vortices, all the other aerodynamic forces and moments are also affected to varying degrees. In particular, the wake-induced drag can be estimated as
+D = K∆L (2L ̄ + ∆L) (95)
+where L ̄ is a nominal lift and K is a drag polar parameter. The stability derivative Clp of the rolling moment with respect to the roll rate p determines the stability of the roll mode. Clp is also called roll damping derivative. For roll stability, Clp is required to be negative. It can be estimated by
+Clp = − 2
+Sb2
+∫b
+2
+−b
+2
+cclα y2dy (96)
+The roll control on a fixed-wing aircraft is produced by the ailerons. A positive rolling moment is created with the right aileron deflected upward and the left aileron deflected by the same amount downward. The rolling moment control derivative of the ailerons can be computed as
+clδa = 1
+Sb
+(
+∫ yL2
+yL1
+cclδ ydy +
+∫ yR2
+yR1
+cclδ ydy
+)
+(97)
+where yL1 and yL2 are the starting and ending y stations of the left aileron, yR1 and yR2 are the starting and ending y stations of the right aileron, clδ is the section lift coefficient derivative of the flap which may be estimated by
+clδ = e clα
+π
+[
+cos−1 (
+1−2cf
+c
+)
++2
+√cf
+c
+(
+1− cf
+c
+)
+]
+(98)
+where e < 1 is a correction factor and cf
+c is the flap-to-chord ratio. If the wake-induced downwash causes a wing tip stall which could cause clα to be negative, then the aileron loses the roll control effectiveness. Consider as an example a light fixed-wing aircraft, called aircraft C, flying behind aircraft A and B with an airspeed of 150 ft/sec due north. At time t = 0, aircraft C is at (−50, 22.5, 1000) ft such that the left wing tip aligns with the right wake vortex of aircraft A. Figure 26 shows the downwash across the rotor of aircraft C. Aircraft C has a gross weight of 700 lbs, a wing span of 15 ft, and constant wing chord of 3.75 ft. The lift coefficient parameters of the aircraft are given by CL0 = 0.1 and CLα = 2π
+1+ 2c
+bε
+= 4.0977 with an assumed span efficiency factor ε = 0.875. The trim
+lift coefficient is C ̄L = 0.5133 and the trim angle of attack is α ̄ = 5.78◦. The wing has a clean-wing CLmax = 0.8. The
+angle of attack where nonlinear aerodynamics begins occurs at αmax = 8◦. The nonlinear lift parameters are computed to be a = −32.8344/rad2, b = 13.2668/rad, and c = −0.5401. Figure 27 is the plot of the lift curve of aircraft C. The stall angle of attack is at 11.57◦.
+22 of 29
+American Institute of Aeronautics and Astronautics
+
+
+Figure 25. Three UAM Aircraft Operating in Wake Vortices
+15 17.5 20 22.5 25 27.5 30 y (ft)
+-5
+0
+5
+10
+15
+20
+25
+30
+Downwash w w (ft/sec)
+Figure 26. Downwash on Aircraft C
+Figure 28 is the plot of the local angle of attack across the wing, assuming the wing is untwisted. The maximum angle of attack occurs at the left wing tip at 16.36◦ which well exceeds the stall angle of attack. The minimum local angle of attack is 7.41◦ which is slightly below αmax. Thus, the wake-induced downwash causes the left wing to operate entirely in the nonlinear aerodynamic regime well beyond stall. The wake-induced lift coefficient is computed to be CL = 0.6807 corresponding to a wake-induced lift increase by 228 lbs, a 32.61% increase in lift. The wake-induced rolling moment coefficient is computed to be Cl = 0.01320 corresponding to a rolling moment of 270 ft-lbs. The aileron effectiveness is to be evaluated. The flap-to-chord ratio is 0.20 and the aileron length is 10% of wing span. The aileron correction factor is 0.75. The rolling moment control derivative for the ailerons is computed to be Clδa = 0.03395. When the wing operates out of the wake vortices in the linear aerodynamic regime, the rolling
+moment control derivative is Clδa = 0.1512. Thus, the wake vortex encounter causes a substantial reduction in the roll
+control effectiveness of the aileron. To trim out the wake-induced rolling moment, the ailerons are required to deflect
+to a value of δa = − Cl
+Clδa
+= −22.27◦. The wake-induced roll damping derivative is computed to be Clp = −0.3269. The
+23 of 29
+American Institute of Aeronautics and Astronautics
+
+
+out-of-wake roll damping derivative is computed to be Clp = −0.6830. Thus, roll stability is reduced by 48% during the wake vortex encounter.
+0 5 10 15 (deg)
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+CL, cl
+Figure 27. Lift Curve of Aircraft C
+15 17.5 20 22.5 25 27.5 30 y (ft)
+4
+6
+8
+10
+12
+14
+16
+18
+Local Angle of Attack c (deg)
+Figure 28. Local Angle of Attack Across Aircraft C Wing
+In this illustrative example, the effect of wake-induced lift and rolling moment is demonstrated. The effect of wakeinduced lift and rolling moment perhaps may be greater for rotorcraft due to the low speed operation of rotorcraft.
+B. Flight Control
+A flight path angle control uγ , airspeed control uV , and roll angle control uφ are implemented as proportional-integralderivative (PID) controllers. They are expressed as
+uγ = −kγP (γ − γc) − kγI
+∫t
+0
+(γ − γc) dτ (99)
+24 of 29
+American Institute of Aeronautics and Astronautics
+
+
+uV = −kVP (V −Vc) − kVI
+∫t
+0
+(V −Vc) dτ (100)
+uφ = −kφP φ − kφD φ ̇ − kφI
+∫t
+0
+(φ − φc) dτ (101)
+where k denotes the control gain, the subscripts P, I, and D denote proportional, integral, and derivative, respectively, and the subscript c denotes a command signal. Control saturation is included to ensure achievable control forces and moments. These limits are specified as
+Tmin ≤ T ≤ Tmax (102)
+CLmin ≤ CL ≤ CLmax (103)
+δamin ≤ δa ≤ δamax (104)
+In addition, a command shaping filter is implemented to reduce the control effort and transient response. It is a first-order filter implementation described by
+γc =
+(
+1 − e−λγt )
+(
+γ f − γ0
+) + γ0 (105)
+Vc =
+(
+1 − e−λV t )
+(Vf −V0
+) +V0 (106)
+φc =
+(
+1 − e−λφ t )
+(
+φ f − φ0
+) + φ0 (107)
+where λ is a time constant and the subscript f and 0 denote the final value and initial value, respectively. A simulation of the PID controllers is conducted for aircraft C during the simulated wake vortex encounter. The flight controller is tuned with the nominal out-of-wake roll stability and control derivatives Clp and Clδa . The simulation
+is then conducted with the nominal flight controller. The performance of the flight controller is seen to be substantially degraded in the presence of the wake-induced lift and rolling moment. Thus, this necessitates a flight controller redesign with the in-wake stability and control derivatives Clp and Clδa . Figure 29 is the plot of the airspeed response
+which shows that the airspeed with both the nominal and redesigned flight controllers is maintained by the auto-throttle at the airspeed setpoint of 150 ft/sec during the wake vortex encounter.
+0 20 40 60 80 100 t (sec)
+149.2
+149.4
+149.6
+149.8
+150
+150.2
+150.4
+150.6
+150.8
+Airspeed V (ft/sec)
+Nominal Control Redesigned Control
+Figure 29. Airspeed Response of Aircraft C
+The engine thrust control is plotted in Fig. 30. The thrust increase at the beginning is due to the wake-induced lift increase which causes an increase in drag. The engine thrust with the nominal flight controller is substantially larger
+25 of 29
+American Institute of Aeronautics and Astronautics
+
+
+than the engine thrust with the redesigned flight controller. Eventually, the engine thrust is able to return back to the original trim thrust value.
+0 20 40 60 80 100 t (sec)
+40
+50
+60
+70
+80
+90
+100
+110
+Thrust T (lb)
+Nominal Control Redesigned Control
+Figure 30. Thrust Control of Aircraft C
+Figure 31 shows the response of the flight path angle. The nominal flight controller produces a greater flight path angle response which indicates a larger change in the aircraft angle of attack. The redesigned flight controller reduces the flight path angle response substantially.
+0 20 40 60 80 100 t (sec)
+-1
+-0.8
+-0.6
+-0.4
+-0.2
+0
+0.2
+0.4
+Flight Path Angle (deg)
+Nominal Control Redesigned Control
+Figure 31. Flight Path Angle of Aircraft C
+The flight path angle is controlled through a lift control which is then used to generate the angle of attack command for the inner loop pitch rate control. The lift coefficient control is shown in Fig. 32 which shows a large lift coefficient reaching to the value of CLmax = 0.8 is produced by the nominal flight controller during the wake vortex encounter. The flight controller limits the maximum lift value to ensure that the flight controller does not cause the aircraft to stall.. The redesigned flight controller is able to reduce the lift coefficient substantially and bring it back to the original trim
+26 of 29
+American Institute of Aeronautics and Astronautics
+
+
+lift coefficient.
+0 20 40 60 80 100 t (sec)
+0.5
+0.55
+0.6
+0.65
+0.7
+0.75
+0.8
+Lift Coefficient C L
+Nominal Control Redesigned Control
+Figure 32. Lift Coefficient Control of Aircraft C
+Figure 33 is the plot of the roll angle of aircraft C. The nominal flight controller produces an excessive roll angle of up to 82.51◦. This roll angle would have created a load factor of 7.67 which indicates that the aircraft would have experienced a loss of control when the load factor reaches the design limit of probably 2.5 or less. The redesigned flight controller is able to suppress the roll angle excursion to 36.45◦ corresponding to a load factor of 1.24 and is able to bring the wing back to level.
+0 20 40 60 80 100 t (sec)
+-80
+-60
+-40
+-20
+0
+20
+40
+60
+80
+100
+Roll Angle (deg)
+Nominal Control Redesigned Control
+Figure 33. Roll Angle of Aircraft C
+Figure 34 is the plot of the aileron deflection. The aileron deflection produced by the nominal flight controller is saturated at −30◦. This saturation is likely the cause for the large roll angle excursion. The redesigned flight controller is able to reduce the control saturation substantially. The aileron deflection eventually settles to a trim setpoint of −22.27◦ computed previously.
+27 of 29
+American Institute of Aeronautics and Astronautics
+
+
+0 20 40 60 80 100 t (sec)
+-30
+-25
+-20
+-15
+-10
+-5
+0
+5
+Aileron Deflection a (deg)
+Nominal Control Redesigned Control
+Figure 34. Aileron Deflection of Aircraft C
+This simulation demonstrates that the role of flight control is integral to recovery from wake vortex encounter. The stability and control characteristics of an aircraft can be substantially degraded when the aircraft is in wake. Flight control design has to ensure robustness to handle extreme cases of severe wake vortex encounters.
+IV. Discussion
+This study illustrates an important issue of spatial wake interactional dynamics for UAM. The UAM vision depicts a new airspace operation with many small aircraft flying in urban environments in close proximity to each other and building structures. For this vision to be realizable, spatial wake interaction should be addressed to ensure flight safety. The dynamics of many of these new vehicles are highly variable depending on their locations relative to other aircraft. The wake vortex dynamics are spatially distributed and time varying. Autonomy is envisioned as a future technology. Without understanding the physics of the aircraft operation, autonomy will not be able to mature. Many current studies of UAM and UAS tend to not address the issues of spatial distribution of the wake vortices or gust fields. In some cases, these studies do not examine the effects of spatial distribution of wake vortices on aerodynamic forces, stability, and control. Consequently, reduced stability and control effectiveness are not accounted for in these studies. The spatial distribution can impact aircraft stability and control as demonstrated in this study. The problem will become magnified when the airspace is more crowded with many aircraft flying close together. Recommendations for future research are needed to ensure UAM will be a viable vision.
+V. Conclusion
+This paper presents a study on spatial wake interactional dynamics of both fixed-wing aircraft and rotorcraft for urban air mobility. The Proctor wake vortex model is validated against flight data for Boeing 757 and thus is used for the study. A propose method for computing the unsteady lift circulation for rotorcraft is presented to account for unsteady aerodynamics and the compressibility effect due to the rotor speed. The corrections make use of the Theodorsen’s theory and a new proposed method for the compressibility correction to Theodorsen’s theory. This method can compute a realistic lift circulation for use in estimating the wake-induced downwash of a rotorcraft. A vehicle-building wake interaction is studied using the method of image which can provide a quick and efficient way for estimating the wake vortex interaction with buildings. The effects of wake vortices on aerodynamic loads, stability, and control are examined. Wake-induced lift and rolling moment are a safety concern. The other effect is the reduced stability and control of aircraft which is demonstrated in the study. A flight control simulation is performed to illustrate the role of flight control during a wake vortex encounter. The stability and control characteristics of an aircraft can
+28 of 29
+American Institute of Aeronautics and Astronautics
+
+
+be substantially degraded when the aircraft is in wake. A nominal flight controller might not be able to perform well during a wake vortex encounter. This requires robustness in the flight control design to handle extreme cases of severe wake vortex encounters.
+Acknowledgment
+The author wishes to acknowledge the Transformative Tools and Technologies project for funding this work. The author also would like to thank Dr. Husni Idris for his support of this work.
+References
+1Katz, J., Plotkin, A., Low-Speed Aerodynamics: From Wing Theory to Panel Methods, MacGraw-Hill, 1991, p. 70, 137. 2Lamb, H., Hydrodynamics, 6th Edition, Dover Publications, 1932, p. 592. 3Saffman, P. G., Vortex Dynamics, Cambridge University Press, 1992. 4Van Hoydonck, W. R. M., Haverdings, H., Pavel, M. D., “A Review of Rotorcraft Wake Modeling Methods for Flight Dynamics Applications,” 35th European Rotorcraft Forum, 2009. 5Proctor, F. H., “Interaction of Aircraft Wakes from Laterally Spaced Aircraft,” 47th AIAA Aerospace Sciences Meeting, AIAA-2009-343, January 2009. 6Robinson, G. H., Larson, R. R., “A Flight Evaluation of Methods for Predicting Vortex Wake Effects on Trailing Aircraft,” NASA TN D-6904, November 1972. 7Delisi, D. P., Greene, G. C., Robins, R. E., Vicroy, D. C., Wang, F. Y., “Aircraft Wake Vortex Core Size Measurements,” AIAA 21st Applied Aerodynamics Conference, June 2003. 8Butler, K. M., “Estimation of Wake Vortex Advection and Decay Using Meteorological Sensors and Aircraft Data,” Report ATC-201, Lincoln Laboratory, September 1993. 9Crimi, P., “Theoretical Prediction of the Flow in the Wake of a Helicopter Rotor: Part 1 - Development of Theory and Results of Computations,” U.S. Army Ballistic Research Laboratory Final Report , Contract No. DA 30-069-AMC-645(R), September 1965. 10Theodorsen, T., “General Theory of Aerodynamic Instability and the mechanism of Flutter”, NACA Report No. 496, 1949. 11Nguyen, N., Xiong, J., “Transonic Correction to Theodorsen’s Theory for Oscillating Airfoil in Pitch and Plunge Toward Flutter,” AIAA Structural Dynamics Conference, AIAA-2021- , January 2021.
+29 of 29
+American Institute of Aeronautics and Astronautics

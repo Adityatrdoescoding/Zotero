@@ -1,0 +1,315 @@
+Engineering Notes
+Flight Dynamics of Helicopter Under Steady Maneuver: Interesting Observations
+T. Sakthivel∗ and C. Venkatesan†
+Indian Institute of Technology, Kanpur 208 016, India
+DOI: 10.2514/1.C034226
+Nomenclature
+g = gravitational acceleration, m∕s2 Ixx; Iyy; Izz; Ixz = mass moments of inertia of helicopter, kg ⋅ m2
+L, M, N = net moments at helicopter center of gravity along x, y, and z directions, N ⋅ m mh = mass of the helicopter, kg
+ny = lateral load factor
+p, q, r = fuselage angular velocity components along x x, y, and z axes, rad/s u, v, w = fuselage translational velocity components along x, y, and z directions, m/s Vf = helicopter velocity in Earth-fixed frame, m/s
+X, Y, Z = net forces at helicopter center of gravity along x, y, and z directions, N α = incidence angle βs = sideslip angle
+β0; β1c; β1s = main rotor collective and cyclic flap angles, nonrotating frame γf = flight-path angle
+Θ = pitch attitude θtr = tail rotor collective pitch angle θ0; θ1c; θ1s = main rotor collective and cyclic pitch angles
+μ = advance ratio Φ = roll attitude χe = flight track angle
+Ωa = vehicle turn rate, rad/s
+ωrf = main rotor blade rotating flap frequency
+I. Introduction
+T
+HERE are two important aspects in the analysis of rotorcraft dynamics. They are 1) aeroelastic loads and response studies, and 2) flight dynamics studies related to stability, control response, and handling qualities. A vast amount of literature is available on aeroelastic loads and response studies; but, only a few studies are available in the open literature on helicopter flight dynamics and handling qualities evaluation. It is interesting to note that several comprehensive analyses [1–3] extensively addressed the important aspects of aeroelastic loads and response from the point of view of
+helicopter vibration. Sophisticated structural modeling of elastic blade and aerodynamic modeling, including compressibility, reverse flow, and stall effects, is included in the comprehensive studies. The mathematical models for flight dynamics usually have relatively simple structural and aerodynamic models with a rigid-blade assumption [4–7]; but, the flight dynamics formulation is more general, so that various maneuvering flight conditions can be analyzed. Although many of the flight dynamics studies focused on hover and steady 1g level forward-flight conditions, only a few studies addressed high-g maneuvering flight conditions [8–15]. Unlike fixed-wing aircraft, high-g maneuvers for helicopters are quite complicated due to the changes in magnitude and the direction of rotor thrust. The prediction of maneuverability limits of a helicopter deals with analyzing or determining 1) the ability of the helicopter rotor to change the direction of thrust within the available power and energy constraints; and 2) the ability of the rotor to produce the thrust required for maneuver. Due to retreating blade stall during steep high-g maneuvers, flight measurements usually exceed the analytical predictions by a considerable margin. Inclusion of the stall effect in the rotor aerodynamics is needed for better maneuver capability predictions [16]. Chen [8] and Chen and Jeske [9] examined the kinematic properties of rotary-wing and fixed-wing aircraft in steady coordinated turns in detail. Various load factor definitions were interpreted, and it was concluded that the total load factor was the most logical definition for helicopters. The total load factor is the ratio of the total aerodynamic and propulsive force to the weight of the aircraft. In general, a coordinated turn is defined as the turn maneuver in which the total aerodynamic and propulsive forces acting on the aircraft lie in the plane of the x-z body axis (total external forces in the lateral direction are zero). For a fixed-wing aircraft, the sideslip angle of the vehicle is also zero in a steady coordinated turn. But, in the case of rotorcraft (conventional single main rotor helicopter), sideslip is inherently exhibited in a steady coordinated turn maneuver [10]. The roll rate and the pitch attitude are strongly influenced by the sideslip, which further influences the performance and handling qualities of helicopter. Because a precise coordinated turn is rarely achieved in the conventional rotorcraft, the knowledge of an uncoordinated steady turn is also of great interest. The turn is said to be uncoordinated if the lateral load factor is not equal to zero in the body-fixed frame. Chen [11] developed computational algorithms to calculate the trim states and small perturbation equation of motion for fixed-wing and rotarywing vehicles in coordinated and uncoordinated, steady, steep turn maneuvers. These algorithms are applied to investigate the flight dynamics of a tiltrotor and two single-rotor helicopters in various levels of uncoordinated and high-g turn maneuvers [12,13]. In both coordinated and uncoordinated turns, strong coupling exists in lateral and longitudinal motions for both symmetric and asymmetric configurations. Stability of the conventional helicopter is strongly influenced by the direction of turn. Celi [14] studied the aeroelastic stability of a soft-in-plane hingeless rotor helicopter under a coordinated turn maneuver. It was concluded that the steady level turns stabilized the lag modes due to the increase in aerodynamic damping. But, the flap mode stability decreased in steep maneuvers and, for better flight dynamic predictions in high-g maneuvers, the aerodynamic model may be improved by adding blade stall effects. Guglieri and Celi [15] studied the flight dynamics and handling qualities of a hingeless rotor helicopter during a steady turn and analyzed the frequency responses in pitch, roll, and heave for various advance ratios and turn rates. It was observed that the stable zeros in straight flight condition were converted into a nonminimum phase in high-g maneuvers, and it resulted in degradation of handling qualities during steep high-g maneuvers.
+Received 22 September 2016; revision received 29 November 2016; accepted for publication 29 November 2016; published online 27 February 2017. Copyright © 2016 by T. Sakthivel and C. Venkatesan. Published by the American Institute of Aeronautics and Astronautics, Inc., with permission. All requests for copying and permission to reprint should be submitted to CCC at www.copyright.com; employ the ISSN 0021-8669 (print) or 1533-3868 (online) to initiate your request. See also AIAA Rights and Permissions www.aiaa.org/randp. *Graduate Student, Department of Aerospace Engineering; sakvel@iitk.ac.in. †HAL Chair Professor, Department of Aerospace Engineering; cven@iitk. ac.in. Associate Fellow AIAA.
+1592
+JOURNAL OF AIRCRAFT Vol. 54, No. 4, July–August 2017
+Downloaded by Indian Institute of Technology, Bombay on January 28, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C034226
+
+
+There are some interesting observations made in the formulation and solution of a mathematical model that governs the helicopter motion under general maneuvering conditions. In general, a helicopter under any general flight condition has 13 trim parameters, and they are 1) four control angles of θ0, θ1c, θ1s and θtr; 2) two Euler
+angles of Θ and Φ; 3) three angular rates of p, q, and r; and 4) the velocity of the helicopter Vf, turn rate Ωa, flight-path angle γf, and
+flight track angle χe. Whereas the number of equations is only nine, there are three force equations, three moment equations, and three kinematic relations. To handle this problem in a deterministic manner, four trim parameters (namely, vehicle velocity, flight-path angle, turn rate, and flight track angle) need to be prescribed. The last parameter, the flight track angle, may be specified explicitly or can be evaluated by imposing specific conditions on either the sideslip angle or lateral load factor. There is very little literature available (Padfield [17], Venkatesan [18], and Rohin Kumar [19]) in which the flight track angle is used as the unknown parameter in the trim computation. Apart from the previously discussed parameters, there is also another parameter known as the incidence angle α that was used as an unknown trim parameter in earlier studies [8–14] in place of the flight track angle. A simple algebraic expression that related the incidence angle to the flight track angle was derived in this study. It is interesting to note that the same flight condition can be mathematically solved by imposing a known value (usually zero) to any one of the three parameters, namely, 1) sideslip angle βs, 2) flight track angle χe, and
+3) lateral load factor ny. Once the trim solution is obtained for the given condition of one parameter, the other two parameters can be evaluated for that flight condition from trim quantities. These results show that there are certain very specific flight conditions under which any two among the three conditions can be satisfied simultaneously. It has been brought out in this study that, by imposing the conditions of a 90 deg sideslip angle and zero lateral load factor simultaneously, a pirouettelike flight condition can be achieved. The objectives of this study are therefore 1) to develop a flight dynamic model and construct an efficient algorithm for trim computation for a conventional helicopter in general maneuvering flight condition, and 2) to study the influence of three mathematical conditions (zero sideslip angle, zero track angle, and zero lateral load factor) independently on the trim values for the same steady-state maneuvering flight condition.
+II. Flight Dynamic Model
+The set of rigid-body dynamics equations and kinematic relations representing the helicopter motion under general flight condition is presented in this section. A general steady maneuvering flight condition is depicted in Fig. 1. The Earth-fixed reference frame is xea–yea–zea, and xb–yb–zb is the body-fixed reference frame. The
+turn axis is always directed vertically (zea axis).
+A. Dynamics Equations
+The flight dynamic equations governing the helicopter in a general maneuvering flight condition are given as follows [17]. These equations are derived using linear and angular momentum conservation by treating the helicopter as a rigid body. It is assumed that the fuselage is symmetric about the xb–zb plane, and hence the
+product of inertia terms (Iyz and Ixy) are ignored. Force equations:
+u_ − wq − vr X
+mh
+− g sin Θ (1a)
+v_ − ur − wp Y
+mh
+g cos Θ sin Φ (1b)
+w_ − vp − uq Z
+mh
+g cos Θ cos Φ (1c)
+Moment equations:
+Ixxp_ Iyy − Izz rq Ixz r_ pq L (2a)
+Iyyq_ Izz − Ixx rp Ixz r2 − p2 M (2b)
+Izzr_ Ixx − Iyy pq Ixz p_ − rq N (2c)
+where X, Y, and Z are the total external forces; and L, M, and N are the total external moments at the helicopter center of gravity. These forces and moments are due to the main rotor, tail rotor, fuselage, and empennage. In the evaluation of rotor loads, the following assumptions and simplifications are made: 1) Rotor blades are assumed to be rigid with an equivalent hinge offset having a root spring. 2) Only blade flapping is considered. Lead–lag and torsion modes are ignored. 3) Blades are rectangular with linear twist. Three state dynamic inflow [20] and modified ONERA dynamic stall models [21] are used in the main rotor aerodynamic load calculations. For the tail rotor, only the thrust force is taken into account and uniform inflow is used. The fuselage is assumed as rigid, and an equivalent flat-plate area is used to evaluate the fuselage drag force.
+B. Kinematics
+Two reference frames, named the Earth-fixed (north–east–down) frame and body-fixed frame, are used to develop kinematic relations of both translational and rotational motions of the vehicle. The relation between the body angular rates with the Euler angles and turn rate are given by the following relations [17,18]:
+p Φ_ − Ωa sin Θ (3a)
+q Θ_ cos Φ Ωa cos Θ sin Φ (3b)
+r − _Θ sin Φ Ωa cos Θ cos Φ (3c)
+The body velocity components are defined in terms of flight velocity in Earth-fixed frame, flight track angle, flight-path angle, and Euler angles [17,18]. They are given as follows:
+Ωa
+yea
+xea
+zea
+Rotation axis
+Horizon
+γf
+Vf
+Vf
+yb
+xb
+zb
+χ
+Fig. 1 Helicopter in general maneuver.
+J. AIRCRAFT, VOL. 54, NO. 4: ENGINEERING NOTES 1593
+Downloaded by Indian Institute of Technology, Bombay on January 28, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C034226
+
+
+u Vf cos Θ cos γf cos χe − sin Θ sin γf (4a)
+v Vf cos Φ cos γf sin χe
+sin Φ sin Θ cos γf cos χe cos Θ sin γf (4b)
+w Vf − sin Φ cos γf sin χe
+cos Φ sin Θ cos γf cos χe cos Θ sin γf (4c)
+where the flight track angle is defined as χe χ − Ωat, with t representing time. For a steady maneuver, the track angle is a constant, even though χ is time varying. (The difference between two time-varying terms is a constant.)
+C. Relation Between Flight Track Angle, Sideslip Angle, and Incidence Angle
+The sideslip angle is defined as, from Eq. (4b),
+sin βs
+v
+Vf
+cos Φ cos γf sin χe
+sin Φ sin Θ cos γf cos χe cos Θ sin γf (5)
+The incidence angle is defined as
+α tan−1 w
+u (6)
+Using Eqs. (4a) and (4c), the incidence angle can be expressed as
+α tan−1 − sin Φ cos γf sin χe cos Φ sin Θ cos γf cos χe cos Θ sin γf
+cos Θ cos γf cos χe − sin Θ sin γf
+(7a)
+For a level flight condition (γf 0), the expression for the incidence angle gets simplified, and it is given as
+tan α − sin Φ
+cos Θ tan χe cos Φ tan Θ (7b)
+From Eq. (7b), the expression for the flight track angle in terms of the incidence angle and Euler angles can be written as
+χe tan−1 − cos Θ tan α cos Φ sin Θ
+sin Φ (7c)
+D. Solution Procedure for Trim
+In a steady flight condition, the rates of change of the body translational velocities (u_, v_, w_ ), angular velocities (p_, q_, r_), and
+Euler angles ( _Θ, Φ_ ) are set equal to zero in Eqs. (1–3). The trim computation of a rotorcraft under a steady turn maneuver involves 13 unknown parameters. Because the number of equations is only nine [Eqs. (1–3)], four parameters have to be prescribed. They are 1) vehicle velocity; 2) flight-path angle; 3) turn rate, and 4) flight track angle. The flight track angle can be prescribed in three ways, which are discussed later in this section. With prescribed flight parameters, the unknown trim parameters are reduced to nine. The nine equations are solved for the trim parameters, which are three main rotor control angles (θ0, θ1c, θ1s), the tail rotor collective θtr, the pitch attitude Θ, the roll attitude Φ, and the three angular rates (p, q, and r).
+The flowchart for the helicopter trim computation under general maneuvering flight condition is shown in Fig. 2. With the prescribed flight conditions and initial guess of trim parameters, the computation starts with the evaluation of the flight track angle. Body translational velocities and angular velocities are obtained with the initial Euler angle guess and the computed flight track angle using Eqs. (3) and (4). This information is passed to the inner loop in which the main rotor loads are calculated along with the blade flap response and rotor inflow. The loads, inflow, and flap response are calculated at every 5 deg azimuth location of blade movement. The inner loop runs until the convergence of the blade flap response, and convergence is checked over a complete revolution at 72 azimuthal locations. It may be noted that the responses of all blades in the rotor system are solved simultaneously. Converged loads are then averaged over one revolution and transferred to the center of gravity of the helicopter. The tail rotor, fuselage, and empennage loads are calculated and transferred to the helicopter c.g. and added to the main rotor loads to obtain total c.g. loads (X, Y, Z, L, M, and N). These loads are passed to the trim solver, in which the flight dynamics equations [Eqs. (1) and (2)] are solved by a Newton–Raphson algorithm (outer loop).
+E. Flight Track Angle Solver
+Evaluation of the flight track angle is the first task in the trim computation. In this study, three different mathematical conditions are used for solving trim states for the same flight condition. Each mathematical condition requires a distinctly different evaluation of flight track angle.
+1. Zero Sideslip Angle (βs 0)
+In this case, the sideslip angle is set to zero. The flight track angle is calculated from the definition of the sideslip angle [Eq. (5)]:
+cos Φ cos γf sin χe sin Φ sin Θ cos γf cos χe cos Θ sin γf 0
+The preceding equation can be rewritten as
+K1 cos χe K2 sin χe − K3 0 (8)
+where
+K1 sin Φ sin Θ cos γf; K2 cos Φ cos γf;
+K3 − cos Θ sin Φ sin γf
+Equation (8) can be expanded to form the following quadratic equation:
+K21 K22 sin2 χe − 2K2K3 sin χe K23 − K21 0 (9)
+Among the two solutions of sin χe from Eq. (9), only one solution is suitable to get the convergence in trim computation. The positive root gives the convergence in the right turn, and the negative root gives the convergence in the left turn.
+2. Zero Flight Track Angle (χ 0)
+The flight track angle is set to zero with prescribed Vf, γf, and Ωa.
+3. Zero Lateral Load Factor (ny 0)
+The lateral load factor is defined as the ratio between the total external load (except gravity load) in the lateral direction and the weight of the vehicle (n Y∕mg). The equation for the flight track angle is derived from Eq. (1b). It can be rewritten for the steady case as follows:
+1594 J. AIRCRAFT, VOL. 54, NO. 4: ENGINEERING NOTES
+Downloaded by Indian Institute of Technology, Bombay on January 28, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C034226
+
+
+1
+g ur − wp − cos Θ sin Φ Y
+mhg (10)
+Equation (10) is split into two equations by setting both the left-hand side and right-hand side of the equation separately to zero:
+Y
+mhg ny 0 (11)
+1
+g ur − wp − cos Θ sin Φ 0 (12)
+Equation (1b) is replaced with Eq. (11) while solving for trim parameters. The flight track is calculated from Eq. (12) by reducing it to
+the quadratic form. Equations (3) and (4) are substituted in Eq. (12) and simplified as
+V f Ωa
+g cos Φ cos γf cos χe − sin Φ sin Θ cos γf sin χe
+− cos Θ sin Φ 0
+It can be rewritten as
+K6 cos χe − K7 sin χe − K8 0 (13)
+Fig. 2 Flowchart for helicopter trim.
+Table 1 Helicopter configuration: main rotor and tail rotor
+Parameter Unit
+Value Main rotor Tail rotor
+Radius m 6.6 1.275 Rotor speed rad/s 32.88 163.772 No. of blades — — 4 4 Lift curve slope — — 5.73 5.73 Chord m 0.5 0.19 Twist deg −12 −12 Mass per unit length kg/m 11.21 — Flap frequency — — 1.09 — Hinge offset m 0.807 0.147 Position of hub from c.g. m 0.05; 0.0; −1.6 −7.9; 0.0; −2.0
+Table 2 Helicopter configuration: fuselage and empennage
+Parameter Unit Value
+Mass kg 4,500 Ixx kg ⋅ m2 5,000
+Iyy kg ⋅ m2 20,000
+Izz kg ⋅ m2 16,700
+Ixz kg ⋅ m2 3,700
+Fuselage flat plate area m2 1.8
+Horizontal tail area m2 1.326 Vertical fin area m2 1.2036 Position of Horizontal tail from c.g. m −7.325; 0; −0.535 Horizontal tail initial setting angle deg 1.5 Position of vertical fin from c.g. m −7.313; 0; −0.452 Vertical fin initial setting angle deg 2
+J. AIRCRAFT, VOL. 54, NO. 4: ENGINEERING NOTES 1595
+Downloaded by Indian Institute of Technology, Bombay on January 28, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C034226
+
+
+where
+K6 cosΦcosγf; K7 sinΦsinΘcosγf; K8
+g
+V f Ωa
+cosΘsinΦ
+Equation (13) can be expanded to form the following quadratic equation:
+K2
+6 K27 sin2 χe 2K7K8 sin χe K28 − K2
+6 0 (14)
+Convergence of trim for the level turn can be attained only for one solution of sin χe from Eq. (14). In the present study, it is found that a negative sign gives the convergence in the right turn (positive sign of Ωa) and a positive sign of the solution gives the converged solution in the left turn. It is noted that the zero lateral load factor case is not applicable to the limiting case of the straight level flight condition because angular rates are zero and the term g cos Θ sin Φ cannot be equal to zero [Eq. (12)], due to side force from the tail rotor.
+c) Main rotor longitudinal cyclic
+a) Main rotor collctive
+e) Pitch attitude f) Roll attitude
+d) Tail rotor collective
+b) Main rotor lateral cyclic
+Fig. 3 Trim angle comparison for zero sideslip and zero track angle cases at advance ratio of 0.14.
+1596 J. AIRCRAFT, VOL. 54, NO. 4: ENGINEERING NOTES
+Downloaded by Indian Institute of Technology, Bombay on January 28, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C034226
+
+
+III. Results and Discussion
+The results presented in this section are pertaining to a helicopter configuration of the 4–5 ton class, given in Tables 1 and 2. The direction of the main rotor rotation is counterclockwise when viewed from the top. The results are generated for various values of the steady turn rate. The positive turn rate corresponds to a right turn, whereas a negative turn rate corresponds to a left turn (from pilot’s view).
+A. Trim Parameters
+Trim parameters are obtained for the helicopter under the steady turn maneuvering flight condition using all the three mathematical conditions. The trim results are presented under three parts. In the first part, results pertaining to zero sideslip angle and zero track angle cases are presented. Because the lateral load factor can be nonzero, these two cases can be called an uncoordinated turn. The second part discusses the results pertaining to the zero lateral load factor case, which is denoted as a coordinated turn. In the third part, the results pertaining to specific flight conditions under which any two of the three conditions (sideslip angle, track angle, and lateral load factor) can be simultaneously satisfied.
+1. Uncoordinated Turn
+The trim parameters using zero sideslip and zero track angle cases are obtained for different turn rates at an advance ratio of 0.14, and they are shown in Figs. 3 and 4. In these figures, the circle symbols represent the zero sideslip case and the square symbols correspond to the zero track angle case. From Fig. 3, it can be seen that the trim parameters for both the cases almost coincide, except pitch attitude. A very small difference is observed in the pitch attitude between the zero sideslip and zero track angle cases (Fig. 3e). The main rotor collective, lateral cyclic, tail rotor collective, and pitch attitude show a positive increase with the turn rate for both right and left turns. The roll attitude also increases with the turn rate, but the sign of the roll attitude changes with the direction of the turn (positive roll attitude for right turn and negative roll attitude for left turn). It is interesting to note that, even though the roll attitude sign changes between the left and right turns, the lateral cyclic (Fig. 3b) is always positive. That implies that the lateral stick is always on one side (retreating side) with respect to the level flight condition. Figure 4 illustrates the variation of the flight track angle, sideslip angle, lateral load factor, and incidence angle for zero sideslip and zero flight track angle cases for the advance ratio of 0.14. From Fig. 4a, it may be noted that, for the case of zero sideslip, a small value of track angle is observed. In the right turn, the flight track angle increases and then decreases as the turn rate increases. The maximum flight track angle is 0.14 deg at the turn rate of 10 deg ∕s. In the left turn, the flight track angle first decreases and then increases as the turn rate increases, and it reaches a minimum of −0.186 deg at the turn rate of −10 deg ∕s. For the case of a zero track angle (Fig. 4b), a small nonzero sideslip angle is observed. In the right turn, the sideslip angle first decreases and then increases as the turn rate increases. The minimum sideslip angle is −0.16 deg at the turn rate of 10 deg ∕s. In the left turn, the sideslip angle increases and then decreases as the turn rate increases, and it reaches a maximum of 0.22 deg at the turn rate of −15 deg ∕s. From Fig. 4c, it is found that the lateral load factor coincides for both the cases, and it varies from 0.0455 to −0.0148. It may be noted that the helicopter is trimmed with a negative lateral load factor at high positive turn rates. It is observed that the incidence angle (Fig. 4d) also coincides for both zero sideslip and zero track angle cases.
+2. Coordinated Turn (ny 0)
+Figure 5 shows the trim parameters of the helicopter under a coordinated steady turn maneuver (zero lateral load factor) at an advance ratio of 0.14. As indicated in the earlier section, the zero lateral load factor case is not applicable to the straight level flight condition. Hence, there is a discontinuity existing between the left and right turns. From Fig. 5a, it is observed that the main rotor
+collective increases as the turn rate increases for both left and right turns. The main rotor lateral cyclic is always positive for both the left and right turns (Fig. 5b). The tail rotor blades require a high positive pitch angle during the left turn and a negative pitch angle in the right turn (Fig. 5d). From Fig. 5e, it can be seen that the helicopter is trimmed with a nosedown pitch attitude for both the left and right turns. The left turn exhibits more nosedown attitude than the right turn. It is noted from Fig. 5f that the helicopter always rolls toward the turn. A variation of the flight track angle, sideslip angle, lateral load factor (equal to zero), and incidence angle of the helicopter are
+a) Track angle
+b) Sideslip angle
+c) Lateral load factor
+d) Incidence angle
+Fig. 4 Track angle, sideslip angle, lateral load factor, and incidence angle comparison for zero sideslip and zero track angle cases at an advance ratio of 0.14.
+J. AIRCRAFT, VOL. 54, NO. 4: ENGINEERING NOTES 1597
+Downloaded by Indian Institute of Technology, Bombay on January 28, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C034226
+
+
+shown in Fig. 6. It is noted from Figs. 6a and 6b that the left turn exhibits a large positive flight track angle and positive sideslip angle, and the right turn shows a negative track angle and negative sideslip angle. But, the magnitude of the required flight track angle and sideslip angle in the left turn is more than that of the right turn. From Fig. 6d, it is noted that the incidence angle is on the order of 1 deg, and no specific trend is observed. Comparing the results shown in Figs. 3 and 5, it is noted that the results corresponding to a zero lateral load factor case are different from the results obtained from the zero sideslip angle and zero track angle cases. Further scrutiny of the
+results shown in Figs. 4 and 6 reveals certain interesting special flight conditions under which any two among the three conditions can be satisfied simultaneously. These observations and results will be discussed under a separate section. For the sake of understanding, the trim loads and other trim parameters corresponding to the three conditions for both the left and right turns are given in Table 3. The data correspond to the flight condition of the high turn rates of 25 deg ∕s at an advance ratio of 0.14. It is observed that the results corresponding to zero sideslip and zero track angle cases are almost the same for both left
+a) Main rotor collctive b) Main rotor lateral cyclic
+c) Main rotor longitudinal cyclic d) Tail rotor collective
+e) Pitch attitude f) Roll attitude
+Fig. 5 Trim angle variation of helicopter for zero lateral load factor condition at advance ratio of 0.14.
+1598 J. AIRCRAFT, VOL. 54, NO. 4: ENGINEERING NOTES
+Downloaded by Indian Institute of Technology, Bombay on January 28, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C034226
+
+
+and right turns. The trim loads and parameters for the case of the zero lateral load factor (coordinated turn) are different from the results pertaining to the zero sideslip and zero track angle cases. The main rotor thrust Fz is on the order of 75,000––76,000 N for all the cases, which corresponds to the turning flight condition of a 1.71g thrust load factor. The hub rolling moment Mx is always positive for both the left and right turns, even though the roll attitude Φ changes the sign. Among the three cases in the right turn, the zero lateral load factor case exhibits a higher positive rolling moment than the other two cases. For zero sideslip and zero track
+angle cases, the pitching moment My is nose down for the left turn
+and nose up for the right turn. However, the pitch attitude Θ is very small. However, in the case of a zero lateral load factor, the pitching moment is always nose down for left and right turns and the pitch attitude Θ is very high. The yaw moment Mz is of the same order for all the cases. The lateral velocity v in the zero lateral load factor case is significantly large when compared to the other two cases. This indicates a substantial sideslip in the flight, which is indicated by the sideslip angle βs and track angle χ. For the left turn, the sideslip
+angle is −68.86 deg; and for the right turn, it is −31.98 deg. In the case of a zero lateral load factor, the lateral velocity of 28.34 m∕s increases the tail rotor inflow; hence, the tail rotor collective is increased to 33.16 deg in the left turn. For the right turn, the lateral velocity of −16.10 m∕s reduces the tail inflow; hence, the tail rotor collective is dropped to −4.48 deg. In zero sideslip and zero track angle cases, the roll rate is almost zero for both left and right turns. However, the zero lateral load factor case exhibits a significantly higher roll rate. The pitch rate is almost the same for the left and right turns in zero sideslip and zero track angle cases. However, it differs significantly between the left and right turns for the zero lateral load factor case. It is noted that the magnitude of the yaw rate r is almost the same in all three cases for both the left and right turns, and it changes the direction with respect to the direction of turn (positive for right turn; and negative for left turn). It is noted that the sideslip angle and flight track angle are very large in the zero lateral load factor case as compared to the other two cases. With a large sideslip angle, the pitch attitude Θ is also found to be large. Applying multiblade coordinate transformation to the steady-state flap response of individual blades, the rotor flap angles in various modes are obtained. The rotor disk coning angle β0 is the same in all the cases for both left and right turns. The longitudinal tilt of the rotor disk β1c is always positive (forward tilt) for both left and right turns in all the cases, with the zero lateral load factor case exhibiting more forward tilt than the other two cases. The later tilt of the rotor disk β1s is positive for the left turn and negative for the right turn, indicating that the rotor disk tilts in the direction of turn. It is interesting to note that the lateral cyclic pitch input is positive for both left and right turns, as shown in Fig. 3b. For the sake of completeness, all the other loads along with net loads (including main rotor contribution) at the c.g. are given in Table 4 for all three cases for both left and right turns.
+3. Special Cases
+From Fig. 4c, it can be seen that lateral load factor is zero for a positive turn rate of 7.66 deg ∕s for both zero sideslip and zero track angle cases. It can also be seen from Figs. 4a and 4b that both the sideslip angle and track angle are zero at −25 and 20 deg ∕s turn rates. These observations indicate that there are specific flight conditions in which any two of the three conditions can be satisfied simultaneously. From Fig. 6b, it is interesting to note that the sideslip angle is close to 90 deg at a −15 deg ∕s turn rate. The trim parameters corresponding to these special flight conditions are given in Table 5. Case 1 satisfies both zero sideslip and zero lateral load factor conditions, and case 2 satisfies zero track angle and zero lateral load factor conditions. It is noted that the results corresponding to case 1 and case 2 are very close to each other in all the trim parameters. Case 3 corresponds to both zero sideslip and zero track angle conditions. Case 4 represents the flight condition corresponding to a 90 deg sideslip angle and zero lateral load factor. It is noted that the forward velocity and vertical velocity are close to zero, and the total flight velocity is represented by sideward velocity alone. Because the flight-path angle is already set to zero, the altitude remains constant. This particular flight condition resembles a pirouette maneuver. At an advance ratio of 0.14 and a turn rate of −15 deg ∕s, the helicopter is into the pirouette maneuver of 116.05 m radius and it completes one circle in 23.98 s. It is noted that this flight condition is applicable only for the negative turn rate. In the opinion of the authors, for the first time in the open literature, a mathematical condition for a pirouette maneuver of a helicopter has been identified and shown in this Note.
+a) Track angle
+b) Sideslip angle
+c) Lateral load factor
+d) Incidence angle
+Fig. 6 Track angle, sideslip angle, lateral load factor, and incidence angle variation of a helicopter for the zero lateral load factor condition at an advance ratio of 0.14.
+J. AIRCRAFT, VOL. 54, NO. 4: ENGINEERING NOTES 1599
+Downloaded by Indian Institute of Technology, Bombay on January 28, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C034226
+
+
+Figure 7 shows the variation of the track angle, sideslip angle, and lateral load factor of a helicopter for different advance ratios. The occurrence of a zero lateral load factor is found to be dependent on the advance ratio. For an advance ratio of 0.14, the zero lateral load factor is satisfied at the turn rate of 7.22 deg ∕s; for an advance
+ratio of 0.20, a zero lateral load factor is achieved at two turn rates of 7.22 and 22 deg ∕s. But, for the case of an advance ratio of 0.25, the condition of a zero lateral load factor is not satisfied at any turn rate; however, the minimum lateral load factor is observed to be 0.00106 at the turn rate of 10 deg ∕s. Figure 7 clearly shows that the magnitude of
+Table 3 Comparison of main rotor trim loads and trim parameters for zero sideslip, zero track angle, and zero lateral load factor cases at an advance ratio of 0.14
+Left turn (−25 deg ∕s) Right turn ( 25 deg ∕s)
+Units Symbols
+Zero sideslip angle βs 0
+Zero track angle χ 0
+Zero lateral load factor ny 0
+Zero sideslip angle βs 0
+Zero track angle χ 0
+Zero lateral load factor ny 0
+Main rotor loads at hub N Fx −756.8 −757.9 −386.5 −895.8 −943.6 −138.5
+Fy −1;408.8 −1;409.8 −2;594.4 −4;009.8 −4031.3 −3616.7
+Fz 75,472.3 75,472.1 75,280.3 75,153.7 75,487.0 75,922.7
+N ⋅ m Mx 4,467.8 4,470.8 3,259.0 229.8 253.7 2,057.7
+My −239.1 −243.2 −1676.2 179.7 97.6 −2637.4
+Mz −26;816.9 −26;817.2 −23;571.9 −27;211.3 −27;070.5 −30;022.3
+Control angles deg θ0 9.68 9.68 8.89 10.03 10.03 10.64 θ1c 3.18 3.18 1.63 2.30 2.32 3.45
+θ1s −1.86 −1.86 −0.87 −2.23 −2.26 −2.35
+θtr 9.58 9.59 33.16 5.50 5.58 −4.48 Θ −0.003 −0.01 −47.37 0.0 0.24 −25.48 Φ −55.01 −55.01 −25.34 54.00 54.01 49.06
+Translational velocities m/s u 30.39 30.39 10.95 30.39 30.39 25.78 v 0.0 0.004 28.34 0.0 0.105 −16.10 w −0.003 −0.003 0.256 0.0 0.076 −0.193
+Angular rates deg/s p −0.002 −0.004 −18.39 0.0 −0.106 10.76 q 20.48 20.48 7.25 20.23 20.23 17.05 r −14.34 −14.34 −15.30 14.70 14.69 14.79
+Other parameters deg χ −0.005 0.0 57.84 0.049 0.0 −20.02 βs 0.0 0.01 68.86 0.0 0.2 −31.98
+α −0.006 −0.006 1.34 0.0 0.143 −0.43 ny 0.0424 0.0424 0.0 −0.0145 −0.0142 0.0
+Rotor flap angles deg β0 5.26 5.26 5.16 5.44 5.46 5.55 β1c 0.194 0.195 0.590 0.347 0.372 1.13 β1s 0.362 0.362 0.485 −0.630 −0.635 −0.317
+Table 4 Comparison of trim loads from all the components for zero sideslip, zero track angle, and zero lateral load factor cases at an advance ratio of 0.14
+Left turn (−25 deg ∕s) Right turn ( 25 deg ∕s)
+c.g. loads Units Symbols
+Zero sideslip angle βs 0
+Zero track angle χ 0
+Zero lateral load factor ny 0
+Zero sideslip angle βs 0
+Zero track angle χ 0
+Zero lateral load factor ny 0
+Tail rotor loads N Fx 0.0 0.0 0.0 0.0 0.0 0.0
+Fy 3,481.7 3,482.1 4,163.2 3,077.8 3,082.2 3,613.1
+Fz 0.0 0.0 0.0 0.0 0.0 0.0
+N ⋅ m Mx 7,158.4 7,159.3 8,559.4 6,328.0 6,337.0 7,428.5
+My 0.0 0.0 0.0 0.0 0.0 0.0
+Mz −27;637.7 −27;641.1 −33;047.1 −24;431.6 −24;466.6 −28;680.5
+Fuselage loads N Fx −792.9 −792.9 −537.0 −792.9 −792.9 −715.8
+Fy 0.0 0.0 0.0 0.0 0.0 0.0
+Fz 0.0 0.1 583.3 0.0 −3.4 341.1
+Empennage loads N Fx 28.1 28.1 3,793.0 40.9 40.9 12.0
+Fy −77.4 −77.8 −1;374.0 292.6 282.2 2.6
+Fz −373.9 −373.9 −58.1 −370.6 −379.0 −247.1
+N ⋅ m Mx −35.0 −35.2 −621.0 132.3 127.6 1.2 My −2754.4 −2754.4 −2;140.7 −2;736.4 −2;798.0 −1;817.6
+Mz 564.7 567.8 10,046.9 −2;141.0 −2;064.8 −20.2
+Gravity loads N Fx 2.6 7.8 33,200.0 0.0 −191.6 19,414.0
+Fy −36;970.1 −36;970.1 −13;081.2 36,507.1 36,511.1 30,770.7
+Fz 25,876.0 25,876.0 27,622.4 26,525.2 26,519.1 26,694.8
+Net c.g. loads N Fx −5.4 0.9 36,842.5 143.7 0.1 18,848.7
+Fy −34;974.6 −34;975.5 −12;886.4 35,867.7 35,844.2 30,769.7
+Fz −49;970.0 −49;969.8 −47;132.6 −48;999.2 −49;350.3 −49;133.9
+N ⋅ m Mx 359.1 355.4 450.6 −305.6 −360.0 −523.2 My −227.2 −232.8 −456.8 −33.4 −237.5 −656.6
+Mz −330.8 −330.9 434.2 426.1 325.4 1,129.9
+1600 J. AIRCRAFT, VOL. 54, NO. 4: ENGINEERING NOTES
+Downloaded by Indian Institute of Technology, Bombay on January 28, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C034226
+
+
+a) μ = 0.14 b) μ = 0.20 c) μ = 0.25
+Fig. 7 Track angle, sideslip angle, and lateral load factor comparison for different advance ratios.
+Table 5 Comparison of main rotor trim loads and trim parameters for four special cases at an advance ratio of 0.14
+Case 1 Case 2 Case 3 Case 4 Units Symbols βs 0 and ny 0 χ 0 and ny 0 βs 0 and χ 0 βs 90 deg and ny 0
+Turn rate deg/s Ωa 7.66 7.66 −25.00 20.00 −15.00
+Main rotor loads at hub N Fx −494.8 −492.9 −756.8 −755.8 682.2
+Fy −1;832.7 −1;831.7 −1;408.8 −3;401.9 −1;570.9
+Fz 48,738.4 48,740.5 75,472.3 66,140.0 56,865.1
+N ⋅ m Mx 456.1 448.1 4,467.8 −80.1 2,252.4
+My −1;040.4 −1;045.3 −239.1 −237.6 −1;412.6
+Mz −14;420.1 −14;426.5 −26;816.9 −22;178.5 −15;479.4
+Control angles deg θ0 6.16 6.16 9.68 8.68 6.69 θ1c 1.79 1.80 3.18 2.16 0.28
+θ1s −2.14 −2.14 −1.86 −2.19 0.11
+θtr 2.23 2.21 9.58 4.02 28.46 Θ −0.33 −0.383 −0.003 −0.0098 −38.50 Φ 22.52 22.51 -−55.01 47.79 −0.28
+Translational velocities m/s u 30.39 30.39 30.39 30.39 0.18 v 0.00 −0.077 0.00 0.00 30.39 w −0.187 −0.187 −0.0030 −0.0078 0.0017
+Angular velocities deg/s p 0.044 0.0512 −0.0014 0.0034 −9.34 q 2.93 2.93 20.48 14.81 0.06 r 7.07 7.07 −14.34 13.44 −11.74
+Other parameters deg χ 0.01232 0.000 −0.005 0.001 89.56 βs 0.00 −0.136 0.00 0.00 89.66
+α −0.35 −0.350 −0.006 −0.015 0.541 ny 0.00 0.00 0.044 −0.014 0.00
+Rotor flap angles deg β0 3.23 3.23 5.26 4.67 3.75 β1c 0.645 0.645 0.195 0.410 0.197
+β1s −0.257 0.257 0.362 −0.525 0.260
+J. AIRCRAFT, VOL. 54, NO. 4: ENGINEERING NOTES 1601
+Downloaded by Indian Institute of Technology, Bombay on January 28, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C034226
+
+
+the track angle and sideslip angle increases with the advance ratio, but the trend in the variation is found to be similar.
+IV. Conclusions
+In this study, a detailed mathematical model and systematic algorithm have been developed to obtain the trim conditions of a helicopter under any general maneuvering flight condition. Using this model, the trim conditions of a helicopter under a steady turn maneuver were analyzed. It was shown that the trim states could be evaluated by imposing any one of the three mathematical conditions, namely, zero sideslip, zero flight track angle, and zero lateral load factor. 1) The trim results corresponding to zero sideslip and zero track angle cases are almost same. But, the zero lateral load factor case is completely different from the other two cases. 2) It is shown that, under a few specific flight conditions, any two among the three mathematical conditions can be satisfied simultaneously. By imposing simultaneously the conditions of a 90 deg sideslip angle and a zero lateral load factor, a pirouettelike flight condition can be achieved. For the first time in the open literature, a mathematical condition for the pirouette maneuver of a helicopter has been identified. 3) The zero lateral load factor condition cannot be satisfied at all the advance ratios.
+Acknowledgment
+The authors would like to acknowledge the Department of Science and Technology, India, for their financial support of this work.
+References
+[1] Johnson, W., “A Comprehensive Analytical Model of Rotorcraft Aerodynamics and Dynamics. Part 1,” Analysis Development NASA TM-81182, June 1980. [2] Yen, J. G., Corrigan, J. J., Schillings, J. J., and Hsieh, P. Y., “Comprehensive Analysis Methodology at Bell Helicopter: COPTER,” Proceedings of AHS Aeromechanics Specialists Conference, American Helicopter Soc., Alexandria VA, Jan. 1994, pp. 2.1–2.19. [3] Rohin Kumar, M., and Venkatesan, C., “Rotorcraft Aeroelastic Analysis Using Dynamic Wake/Dynamic Stall Models and Its Validation,” Journal of Aeroelasticity and Structural Dynamics, Vol. 3, No. 1, 2013, pp. 65–87. [4] Bradley, R., Padfield, G., Murray-Smith, D., and Thomson, D. G., “Validation of Helicopter Mathematical Models,” Transactions of the Institute of Measurement and Control, Vol. 12, No. 4, 1990, pp. 186–196. doi:10.1177/014233129001200405 [5] Takahashi, M. D., “A Flight-Dynamic Helicopter Mathematical Model with a Single Flap-Lag-Torsion Main Rotor,” NASA TM 102267, Feb. 1990.
+[6] Torasso, A., “Low-Order Models and Numerical Techniques for the Analysis of Rotorcraft Flight Mechanics,” Ph.D. Dissertation, Politecnico di Torino, Torino, Italy, May 2012. [7] Singh, G. D., “Helicopter Flight Dynamics Simulation for Analysis of Trim, Stability and Control Response,” M.S. Thesis, Indian Inst. of Technology, Kanpur, India, May 2012. [8] Chen, R. T. N., “Kinematic Properties of Rotary-Wing and Fixed-Wing Aircraft in Steady Coordinated High-g Turns,” AIAA Atmospheric Flight Mechanics Conference, AIAA Paper 1981-1855, Aug. 1981. [9] Chen, R. T. N., and Jeske, J. A., “Kinematic Properties of Helicopter in Coordinated Turn,” NASA TP 1773, April 1981. [10] Chen, R. T. N., and Jeske, J. A., “Influence of Sideslip on the Helicopter in Steady Coordinated Turns,” Journal of the American Helicopter Society, Vol. 27, No. 4, 1982, pp. 84–92. doi:10.4050/JAHS.27.84 [11] Chen, R. T. N., “Efficient Algorithms for Computing Trim and Small Disturbance Equations of Motion of Aircraft in Coordinated and Uncoordinated Steady Steep Turns,” NASA TM 84324, 1983. [12] Chen, R. T. N., “Flight Dynamics of Rotorcraft in Steep High-g Turns,” Journal of Aircraft, Vol. 21, No. 1, 1984, pp. 14–22. doi:10.2514/3.48216 [13] Chen, R. T. N., Jeske, J. A., and Steinberger, R. H., “Influence of Sideslip on the Flight Dynamics of Rotorcraft in Steep Turns at Low Speeds,” American Helicopter Society 39th Annual Forum, American Helicopter Soc., Alexandria, VA, 1983, pp. 759–784. [14] Celi, R., “Hingeless Rotor Dynamics in Coordinated Turns,” Journal of the American Helicopter Society, Vol. 36, No. 4, 1991, pp. 39–47. doi:10.4050/JAHS.36.39 [15] Guglieri, G., and Celi, R., “Some Aspects of Helicopter Flight Dynamics in Steady Turns,” Journal of Guidance, Control, and Dynamics, Vol. 21, No. 3, 1998, pp. 383–390. doi:10.2514/2.4270 [16] Wells, C. D., and Wood, T. L., “Maneuverability—Theory and Application,” Journal of the American Helicopter Society, Vol. 18, No. 1, 1973, pp. 10–22. [17] Padfield, G. D., Helicopter Flight Dynamics, 2nd ed., Blackwell Publ., Boston, MA, 2011, pp. 192–200.
+[18] Venkatesan, C., Fundamentals of Helicopter Dynamics, 1st ed., CRC Press, Boca Raton, FL, 2014, pp. 251–257. [19] Rohin Kumar, M., “Comprehensive Aeroelastic and Flight Dynamic Formulation for the Prediction of Loads and Control Response of a Helicopter in General Maneuvering Flight,” Ph.D. Dissertation, Dept. of Aerospace Engineering, Indian Inst. of Technology Kanpur, Kanpur, India, June 2014. [20] Pitt, D. M., and Peters, D. A., “Rotor Dynamic Inflow Derivatives and Time Constants from Various Inflow Models,” 9th European Rotorcraft Forum, Italy, Sept. 1983. [21] Laxman, V., and Venkatesan, C., “Influence of Dynamic Stall and Dynamic Wake Effects on Helicopter Trim and Rotor Loads,” Journal of the American Helicopter Society, Vol. 54, No. 3, July 2009, Paper 32001. doi:10.4050/JAHS.54.032001
+1602 J. AIRCRAFT, VOL. 54, NO. 4: ENGINEERING NOTES
+Downloaded by Indian Institute of Technology, Bombay on January 28, 2026 | http://arc.aiaa.org | DOI: 10.2514/1.C034226

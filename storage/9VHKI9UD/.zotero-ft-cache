@@ -1,0 +1,771 @@
+State Space Methods for Flight Vehicles
+AE 695
+Shashi Ranjan Kumar
+Associate Professor Intelligent Systems and Control (ISaC) Lab Department of Aerospace Engineering Indian Institute of Technology Bombay Powai, Mumbai- 400076
+https://www.aero.iitb.ac.in/ ̃shashi R srk@aero.iitb.ac.in
+
+
+Definition of State of System
+• Input output description applicable only for initially relaxed systems.
+• Output depends not only on input but also on initial conditions.
+State
+The state of the system at time t0 is the amount of information at t0 that, together with u[t0,∞), determines uniquely the behavior of the system for all t ≥ t0.
+• Behavior of system: All responses including system state
+• State at any time summarizes the essential information about past inputs required for the prediction of future behavior.
+• Different inputs might lead to the same state at a given time, but their future behavior would be the same for the same future inputs.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 1 / 24
+
+
+Systems and State Vectors
+u
+3Ω 1H
+0.5F Voltage source
++
+−
+y
++
+−
+• With known initial current and voltage across the capacitor, the behavior of the network is uniquely determinable for any input. • Inductor current and capacitor voltage as the state of the system. • Transfer function from u to y for this network system
+g(s) = y(s)
+u(s) = 2
+(s + 1)(s + 2) = 2
+s+1 − 2
+s+2
+• Impulse response: g(t) = 2e−t − 2e−2t • With system relaxed at t0, ∀ t ≥ t0
+y(t) =
+∫t
+t0
+g(t − τ )u(τ )dτ
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 2 / 24
+
+
+Systems and State Vectors
+• With the system not relaxed at t0, the system output
+y(t) =
+∫ t0
+−∞
+g(t − τ )u(τ )dτ +
+∫t
+t0
+g(t − τ )u(τ )dτ
+• Effect of input u(−∞,t0) on the system output y[t0,∞)
+∫ t0
+−∞
+g(t − τ )u(τ )dτ = 2e−t
+∫ t0
+−∞
+eτ u(τ )dτ
+} {{ } c1
+−2e−2t
+∫ t0
+−∞
+e2τ u(τ )dτ
+} {{ } c2
+• System output at a time instant t = t0
+y(t0) = 2c1e−t0 − 2c2e−2t0
+• Taking the time derivative of the output
+y ̇(t) = −2c1e−t + 4c2e−2t + g(0)u(t) +
+∫t
+t0
+∂
+∂t g(t − τ )u(τ )dτ
+d dt
+∫t
+t0
+g(t − τ )u(τ )dτ = g(t − τ )u(τ )|t=τ +
+∫t
+t0
+∂
+∂t g(t − τ )u(τ )dτ
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 3 / 24
+
+
+Systems and State Vectors
+• With g(0) = 0, y ̇(t0) = −2c1e−t0 + 4c2e−2t0
+• Solving for the coefficients c1 and c2
+c1 = 0.5et0 [2y(t0) + y ̇(t0)], c2 = 0.5e2t0 [y(t0) + y ̇(t0)]
+• With system not relaxed at t = t0, the system output ∀ t ≥ t0
+y(t) = [2y(t0) + y ̇(t0)]e−(t−t0) − [y(t0) + y ̇(t0)]e−2(t−t0) +
+∫t
+t0
+g(t − τ )u(τ )dτ
+• Information about y(t0) and y ̇(t0) required to uniquely determine y(t)
+• Relaxedness of system at t0 is not necessary to determine system behavior
+• Quantities (y(t0), y ̇(t0)) or (c1, c2) qualify for state of system
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 4 / 24
+
+
+Systems and State Vectors
+u
+R +
+−
+x1
+−
++
+x2
++−
+x3
++
+−
+y
++
+−
+• With all capacitor voltages known, network behavior is uniquely determinable for any input, thus a set of capacitor voltages as state
+• Using Kirchoff’s voltage law, x1 + x2 + x3 = 0
+• Only two capacitor voltages sufficient to uniquely determine system behavior • Any two capacitor voltages qualify as the state
+• Unit-time delay: y(t) = u(t − 1) ∀ t
+• To uniquely determine y[t0,∞) from u[t0,∞), we need u[t0−1,t0)
+• Thus, u[t0−1,t0) as state of unit-time delay system
+State choice not unique, may not be a physical quantity, or may be finite or infinite in numbers.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 5 / 24
+
+
+Systems and State Vectors
+• State vector: Finite-dimensional column vector that includes all information (variables) necessary for determining system behavior with known future inputs.
+• State variables: Components of the state vector
+• State space ∑: A linear space in which the state vector ranges.
+Dynamical equations
+The set of equations that describes the unique relations between the input, output, and state of the system. State and output equations:
+x ̇ = h (x(t), u(t), t) , y = g (x(t), u(t), t)
+Lumped and Distributed Systems
+Lumped: Number of state variables is finite or its state is a finite vector Distributed: Infinitely many state variables
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 6 / 24
+
+
+Linearity of Dynamical Systems
+• Input-state-output pair: {u[t0,∞), x(t0)} → {x[t0,∞), y[t0,∞)}
+• An input-state-output pair is admissible if system can generate such a pair.
+A system is said to be linear iff for any two admissible pairs
+{x1(t0), u1
+[t0,∞)} → {x1
+[t0,∞), y1
+[t0 ,∞) }
+{x2(t0), u2
+[t0,∞)} → {x2
+[t0,∞), y2
+[t0 ,∞) }
+and any real numbers α1 and α2, the following pair
+{α1x1(t0) + α2x2(t0), α1u1
+[t0,∞) + α2u2
+[t0 ,∞) }
+→ {α1x1
+[t0,∞) + α2x2
+[t0,∞), α1y1
+[t0,∞) + α2y2
+[t0 ,∞) }
+is also admissible. Otherwise, the system is said to be nonlinear.
+• Superposition: Additivity (α1 = α2 = 1), Homogeneity (α2 = 0)
+• Superposition must hold not only at output but also at all state variables
+• Superposition must hold for zero and nonzero initial states
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 7 / 24
+
+
+Linearity of Dynamical Systems
+• Can the system be linear as per the previous linearity definition, but not as per the current definition of linearity?
+u
+1Ω
+1Ω
+1Ω
+1Ω
+C
+y
++
+−
+u
+C
+L
+u
+1Ω
+2H 3F y
++
+−
+• With a nonlinear capacitor, if the voltage across the capacitor is zero at t0 = 0, then it will remain at zero for all time, irrespective of inputs.
+• As the LC loop is in series with the current source, its behavior will not be transmitted to the output.
+• Thus, these systems are linear systems with the old linearity definition, but nonlinear as per the new definition for dynamical systems.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 8 / 24
+
+
+Linearity of Dynamical Systems
+• Necessary condition for linear system: {0, 0} → {0[t0,∞), 0[t0,∞)}
+• With zero initial state and zero input, system responses are identically zero.
+• Response of linear system due to {x(t0), u[t0,∞)}: Response due to {x(t0), 0} + Response due to {0, u[t0,∞)}
+• Zero input response: Response due to {x(t0), 0}
+• Zero state response: Response due to {0, u[t0,∞)}
+• For a linear dynamical system
+h(x, u, t) = A(t)x(t) + B(t)u(t), g(x, u, t) = C(t)x(t + E(t)u(t)
+x ̇ = h(x, u, t) = A(t)x(t + B(t)u(t), y = g(x, u, t) = C(t)x(t + E(t)u(t)
+• Unique solution: Every entry of A(t) be a continuous function of t over (−∞, ∞)
+• Linear time-varying (LTV) dynamical system
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 9 / 24
+
+
+Time Invariance of Dynamical Systems
+A system is said to be time-invariant iff for any admissible pair
+{x(t0), u[t0,∞)} → {x[t0,∞), y[t0,∞)}
+and any real number α, the pair
+{Qαx(t0), Qαu[t0,∞)} → {Qαx[t0,∞), Qαy[t0,∞)}
+is also admissible. Otherwise, the system is said to be time-varying.
+• For same initial states and waveform of excitations, waveform of responses will always be the same, no matter what instant the excitations are applied.
+• For LTI systems, x ̇ = Ax + Bu(t), y = Cx + Eu(t)
+• For LTI systems, responses are independent of initial time, thus t0 = 0.
+• State-space: n-dimensional real vector space (Rn, R)
+• A: Linear operator that maps ∑ to itself, with basis vectors ni
+• Dynamical systems are all causal.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 10 / 24
+
+
+Transfer Function Matrix for State Space Systems
+• For LTI systems, using the Laplace transform
+sx(s) − x0 = Ax(s) + Bu(s), y(s) = Cx(s) + Eu(s)
+x(s) = (sI − A)−1x0 + (sI − A)−1Bu(s)
+y(s) = C(sI − A)−1x0 + C(sI − A)−1Bu(s) + Eu(s)
+• Determinant of sI − A different from zero, thus its inverse always exists.
+• Assuming x0 = 0 and using comparison
+y(s) = [C(sI − A)−1B + E]
+} {{ }
+G(s)
+u(s), G(s) = 1
+det(sI − A) C[Adj(sI−A)]B+E
+• Why is C(sI − A)−1B always strictly proper?
+• G(∞) = E
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 11 / 24
+
+
+Linear Dynamical Equations
+• Two-dimensional dynamical equation
+[x ̇ 1 x ̇ 2
+]
+=
+[a11 a12
+a21 a22
+]
+} {{ }
+A
+[x1
+x2
+]
++
+[b11 b12
+b21 b22
+]
+} {{ }
+B
+[u1
+u2
+]
+[y1
+y2
+]
+=
+[c11 c12
+c21 c22
+]
+} {{ }
+C
+[x1
+x2
+]
++
+[e11 e12
+e21 e22
+]
+} {{ }
+E
+[u1
+u2
+]
+++
++
+a11
+b11
+b12
++ c22 +
+b22
+c11
+c12
+c21
+y1
+y2
+u1
+u2
+∫
+∫
+x1
+x2
+b21
+e12
+e11
+a12
+a21
+a22
+e21
+e22
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 12 / 24
+
+
+Example: Spring-Mass System
+• Friction force: f = k1
+dy
+dt • Spring force: k2y
+• Using Newton’s law
+m d2y
+dt2 = u − k1
+dy
+dt − k2y
+• With x1 = y and x2 = y ̇
+x ̇ 1 = x2, mx ̇ 2 = u − k1x2 − k2x1
+• System equations
+[x ̇ 1 x ̇ 2
+]
+=
+[0 1
+− k2
+m − k1
+m
+]
+[x1
+x2
+]
++
+[0
+1 m
+]
+u
+y = [1 0]
+[x1
+x2
+]
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 13 / 24
+
+
+Example: Translational Mechanical System
+• Using Newton’s second law applied to each mass
+m1y ̈1 + k1y1 − k2(y2 − y1) = f
+m2y ̈2 + cy ̇2 + k2(y2 − y1) = 0
+• Energy-storage elements: two springs and two masses
+• State variables in terms of mass displacements and velocities • With x1 = y1, x2 = y2 − y1, x3 = y ̇1 and x4 = y ̇2
+
+  
+x ̇ 1 x ̇ 2 x ̇ 3 x ̇ 4
+
+  
+=
+
+    
+0 010 0 0 −1 1
+− k1
+m1
+− k2
+m1
+00
+0 − k2
+m2
+0 −c
+m2
+
+    
+
+  
+x1
+x2
+x3
+x4
+
+  
++
+
+   
+0
+0 1
+m1 0
+
+   
+u
+y=
+[1 0 0 0 1100
+]
+[x1 x2 x3 x4
+]⊤
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 14 / 24
+
+
+Example: Translational Mechanical System
+• Using Newton’s second law applied to each mass
+m1y ̈1 + k1y1 − k2(y2 − y1) = f
+m2y ̈2 + cy ̇2 + k2(y2 − y1) = 0
+• With x1 = y1, x2 = y2, x3 = y ̇1 and x4 = y ̇2
+
+  
+x ̇ 1 x ̇ 2 x ̇ 3 x ̇ 4
+
+  
+=
+
+    
+0 010 0 001 − k1 + k2
+m1
+− k2
+m1
+00
+k2
+m2
+− k2
+m2
+0 −c
+m2
+
+    
+
+  
+x1
+x2
+x3
+x4
+
+  
++
+
+   
+0
+0 1
+m1 0
+
+   
+u
+y=
+[1 0 0 0 0100
+]
+[x1 x2 x3 x4
+]⊤
+• Different choices of state variable lead to different representations.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 15 / 24
+
+
+Example: Translational Mechanical System
+m1 m2
+k1 k3
+k2
+u1 u2
+y1 y2
+• With Newton’s second law applied to each mass
+m1y ̈1 + (k1 + k2)y1 − k2y2 = u1
+m2y ̈2 − k2y1 + (k1 + k2)y2 = u2
+• State variables: x1 = y1, x2 = y ̇2, x3 = y2, x4 = y ̇2 • State equations
+
+  
+x ̇ 1 x ̇ 2 x ̇ 3 x ̇ 4
+
+  
+=
+
+    
+0100 − k1 + k2
+m1
+0 k2
+m1
+0
+0001 k2
+m2
+0 − k1 + k2
+m2
+0
+
+    
+
+  
+x1
+x2
+x3
+x4
+
+  
++
+
+    
+00 1
+m1
+0
+00 01
+m1
+
+    
+u
+y=
+[1 0 0 0 0010
+]
+[x1 x2 x3 x4
+]⊤
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 16 / 24
+
+
+Example: Inverted Pendulum
+• Rigid rod with zero mass
+• Free to swing in the vertical plane
+• A frictional force resisting the motion, proportional to the speed of the bob with a coefficient of friction k
+• Equation of motion in the tangential direction
+mlθ ̈ = −mg sin θ − klθ ̇
+• Equilibrium points at θ = 0, ±π, ±2π, . . .
+• System states: x1 = θ, x2 = θ ̇
+• In state-space form, the system equations
+x ̇ =
+[x ̇ 1 x ̇ 2
+]
+=
+[ x2
+−g
+l sin x1 − k
+m x2
+]
+, y = x1
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 17 / 24
+
+
+Example: Inverted Pendulum on Cart
+• Movement of cart and pendulum in one plane
+• Friction, mass of the stick, and wind gusts neglected
+• Model for space booster at takeoff
+• Using Newton’s law for linear movements
+M d2y
+dt2 = u − H
+H = m d2(y + l sin θ)
+dt2 = my ̈+ml(cos θθ ̈−sin θ(θ ̇)2)
+mg−V = m d2(l cos θ)
+dt2 = ml(− sin θθ ̈−cos θ(θ ̇)2)
+• Using Newton’s law for rotational movement around the hinge
+ml2θ ̈ = mgl sin θ − my ̈l cos θ
+• With small θ, θ ̇, and squared terms
+sin θ ≈ θ, cos θ ≈ 1
+M y ̈ = u − my ̈ − mlθ ̈
+ml2θ ̈ = mglθ − my ̈l
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 18 / 24
+
+
+Example: Inverted Pendulum on Cart
+• Governing equations for inverted-pendulum and cart motion
+(M + m)y ̈ + mlθ ̈ = u, lθ ̈ − gθ + y ̈ = 0
+• With some algebraic manipulations
+y ̈ = − mg
+M θ+ 1
+M u, θ ̈ = (M + m)
+Ml gθ − 1
+Mlu
+• With system state variables
+x1 = y, x2 = y ̇, x3 = θ, x4 = θ ̇
+
+  
+x ̇ 1 x ̇ 2 x ̇ 3 x ̇ 4
+
+  
+=
+
+    
+01 0 0
+0 0 − mg
+M0 00 0 1 0 0 (M + mg)
+Ml 0
+
+    
+
+  
+x1
+x2
+x3
+x4
+
+  
++
+
+    
+0 1
+M 0
+−1
+Ml
+
+    
+u
+y = [1 0 0 0] [x1 x2 x3 x4
+]⊤
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 19 / 24
+
+
+Example: Series RLC Circuit
+−
++
+v(t)
+i(t)
+R
++ vR(t) −
+L
++ vL(t) −
+C vC (t)
++
+−
+• State variables:
+▶ Current i through the inductor ▶ Voltage vC across the capacitor
+x1 = i, x2 = vC
+• Input and output: v and i
+• Capacitor voltage
+C dvC
+dt = i =⇒ x ̇ 2 = 1
+C x1
+• Kirchoff’s voltage law:
+v = iR + vC + vL =⇒ L di
+dt + vC + iR = v =⇒ x ̇ 1 = − R
+L x1 − 1
+L x2 + 1
+Lu
+• State equations
+[x ̇ 1 x ̇ 2
+]
+=
+
+
+−R
+L −1
+L
+1
+C0
+
+
+[x1
+x2
+]
++
+[1
+L 0
+]
+u, y = [1 0]
+[x1
+x2
+]
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 20 / 24
+
+
+Example: Parallel RLC Circuit
+i(t) R L
+iL(t) C v(t)
++
+−
+• State variables:
+▶ Current iL through the inductor ▶ Voltage v across the capacitor
+x1 = iL, x2 = v
+• Input and output: i and v
+• Inductor’s voltage-current relationship
+x2 = L diL
+dt = Lx ̇ 1 =⇒ x ̇ 1 = 1
+L x2
+• Kirchhoff’s current law:
+v
+R + iL + C dv
+dt = i =⇒ x ̇ 2 = − 1
+RC x2 − 1
+C x1 + 1
+Cu
+• State equations
+[x ̇ 1 x ̇ 2
+]
+=
+
+
+01
+L
+−1
+C −1
+RC
+
+
+[x1
+x2
+]
++
+[0
+1 C
+]
+u, y = [0 1]
+[x1
+x2
+]
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 21 / 24
+
+
+Unmanned Aerial Vehicles: Axes and Symbols
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 22 / 24
+
+
+Unmanned Aerial Vehicles: Kinematics and Dynamics
+
+
+p ̇n p ̇e p ̇d
+
+=
+
+
+cθcψ sφsθcψ − cφsψ cφsθcψ + sφsψ cθsψ sφsθsψ + cφcψ cφsθsψ − sφcψ −sθ sφcθ cφcθ
+
+
+
+
+u v w
+
+
+
+
+φ ̇ θ ̇ ψ ̇
+
+=
+
+
+1 sin φ tan θ cos φ tan θ 0 cos φ − sin φ 0 sin φ sec θ cos φ sec θ
+
+
+
+
+p q r
+
+
+
+
+u ̇ v ̇ w ̇
+
+=
+
+
+rv − qw pw − ru qu − pv
+
++ 1
+m
+
+
+fx
+fy
+fz
+
+
+
+
+p ̇ q ̇ r ̇
+
+=
+
+
+Γ1pq − Γ2qr
+Γ5pr − Γ6(p2 − r2) Γ7pq − Γ1qr
+
++
+
+
+Γ3 0 Γ4 0 1/Jy 0 Γ4 0 Γ8
+
+
+
+
+l m n
+
+
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 23 / 24
+
+
+References
+References
+▶ Chen, Chi-Tsong, “Linear System Theory and Design”, CBS College Publishing, 1984.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles State-Space Representation of System Lecture 6 24 / 24

@@ -1,0 +1,579 @@
+Academic Editor: Abdessattar
+Abdelkefi
+Received: 9 June 2025
+Revised: 23 July 2025
+Accepted: 29 July 2025
+Published: 30 July 2025
+Citation: Wang, Y.; Ji, H.; Kang, Q.;
+Qi, H.; Wen, J. Autonomous Trajectory
+Control for Quadrotor eVTOL in
+Hover and Low-Speed Flight via the
+Integration of Model Predictive and
+Following Control. Drones 2025, 9, 537.
+https://doi.org/10.3390/
+drones9080537
+Copyright: © 2025 by the authors.
+Licensee MDPI, Basel, Switzerland.
+This article is an open access article
+distributed under the terms and
+conditions of the Creative Commons
+Attribution (CC BY) license
+(https://creativecommons.org/
+licenses/by/4.0/).
+Article
+Autonomous Trajectory Control for Quadrotor eVTOL in Hover and Low-Speed Flight via the Integration of Model Predictive and Following Control
+Yeping Wang 1 , Honglei Ji 1,2,* , Qingyu Kang 1, Haotian Qi 3 and Jinghan Wen 1
+1 College of Aerospace Engineering, Chongqing University, Chongqing 400030, China; wyping@stu.cqu.edu.cn (Y.W.); qykang@stu.cqu.edu.cn (Q.K.); wjh_cqu@163.com (J.W.) 2 Key Laboratory of Rotor Aerodynamics, China Aerodynamics Research and Development Center, Mianyang 621000, China 3 College of Electrical Energy and Power Engineering, Yangzhou University, Yangzhou 225127, China; qhtwld@foxmail.com * Correspondence: jhl@cqu.edu.cn
+Abstract
+This paper proposes a novel hierarchical control architecture that combines Model Predictive Control (MPC) with Explicit Model-Following Control (EMFC) to enable accurate and efficient trajectory tracking for quadrotor electric Vertical Takeoff and Landing (eVTOL) aircraft operating in urban environments. The approach addresses the challenges of strong nonlinear dynamics, multi-axis coupling, and stringent safety constraints by separating the planning task from the fast-response control task. The MPC layer generates constrained velocity and yaw rate commands based on a simplified inertial prediction model, effectively reducing computational complexity while accounting for physical and operational limits. The EMFC layer then compensates for dynamic couplings and ensures the rapid execution of commands. A high-fidelity simulation model, incorporating rotor flapping dynamics, differential collective pitch control, and enhanced aerodynamic interference effects, is developed to validate the controller. Four representative ADS-33E-PRF tasks—Hover, Hovering Turn, Pirouette, and Vertical Maneuver—are simulated. Results demonstrate that the proposed controller achieves accurate trajectory tracking, stable flight performance, and full compliance with ADS-33E-PRF criteria, highlighting its potential for autonomous urban air mobility applications.
+Keywords: quadrotor; electric vertical takeoff and landing; model predictive control; explicit model-following control; flight dynamics
+1. Introduction
+Urban air mobility (UAM) has emerged as a promising solution for addressing traffic congestion and enabling rapid point-to-point transportation in dense urban environments [1–3]. Among various UAM platforms, quadrotor electric Vertical Takeoff and Landing (eVTOL) aircraft stand out for their superior maneuverability, effective hover control, and inherent VTOL capabilities, making them a favorable choice for short-range, on-demand aerial missions [4]. One of the key enabling technologies for such missions is autonomous trajectory tracking control, which plays a vital role in ensuring safety and operational efficiency. While human pilots are expected to retain supervisory authority [5], autonomous tracking methods can significantly reduce pilot workload, improve consistency, and enhance safety during precision maneuvers [6].
+Drones 2025, 9, 537 https://doi.org/10.3390/drones9080537
+
+
+Drones 2025, 9, 537 2 of 24
+A substantial body of research has been devoted to the development of autonomous trajectory tracking strategies for quadrotor aircraft [7–9]. Among them, classical nonlinear control techniques—such as backstepping [10], sliding mode control [11], and generalized dynamic inversion [12]—have achieved notable success in various multirotor implementations. However, these methods often rely on detailed system modeling, are limited in their ability to handle state or input constraints, and can become computationally intensive when applied to complex flight scenarios. In addition, many previous studies adopt overly simplified dynamic models that are based on generic quadrotor assumptions, which may fail to capture the nuanced behavior of advanced multirotor eVTOL platforms, leading to inaccuracies in control performance prediction. More recently, many researchers have focused on reinforcement-learning-based solutions [13–15], due to their strong capability in handling nonlinear control systems. Nevertheless, such methods typically require extensive training data, lack generalizability across varying flight conditions, and provide limited guarantees on closed-loop stability. All of the above challenges underscore the need for a more accurate, high-fidelity flight dynamic model that reflects the true behavior of modern quadrotor aircraft. On top of such a model, it is essential to design a control system that can account for real-world constraints, reduce computational complexity, and still achieve precise and reliable trajectory tracking performance suitable for UAM operations [16]. In this context, Model Predictive Control (MPC) offers a compelling framework due to its ability to plan future actions under constraints and to act as a high-level trajectorygeneration and tracking system [17,18]. Unlike classical controllers, MPC excels in handling multi-variable coupling, explicitly incorporating system constraints and optimizing over a finite prediction horizon. These characteristics have led to a growing interest in applying MPC to multirotor aircraft, particularly for trajectory generation and safe navigation in cluttered or uncertain environments [19]. For instance, Bauersfeld et al. [20] developed an MPC-based control framework for a hybrid tilt-quadrotor fixed-wing aircraft, enabling smooth and unified control across all flight modes and transitions. Ahn et al. [21] proposed a convex MPC-based motion planning framework for indoor multirotor UAVs using point cloud data, which facilitates efficient and collision-free trajectory generation through piecewise convex flight corridors. Benotsmane et al. [22] implemented MPC on a Tello quadrotor using sensor-based modeling, enabling precise trajectory tracking and obstacle avoidance in indoor environments. In the context of environments lacking absolute localization, Alexis et al. [23] designed a switching MPC scheme based on piecewise affine models and onboard sensor fusion, achieving robust trajectory tracking under wind disturbances. While these studies demonstrate the versatility of MPC in addressing constrained trajectory control, they also expose practical limitations—particularly regarding computational demands when deployed in high-agility flight tasks [18]. These issues underscore the need for a hybrid control strategy that can retain the predictive strengths of MPC while improving execution efficiency and robustness. To combine the trajectory-level autonomy of MPC with the fast command execution capabilities of inner-loop control, this paper proposes a hierarchical control architecture that cascades a tracking-level MPC layer with a control-level Explicit Model-Following Control (EMFC) system. The MPC layer leverages a first-order inertial model derived from the command model of the EMFC system, which accurately captures the dominant dynamics of the translational velocities and yaw rate. This simplified model enables efficient real-time optimization while incorporating system constraints and tracking the reference trajectories. The EMFC layer ensures fast and accurate command following of the MPC outputs by emulating a desired closed-loop behavior, effectively compensating for the intrinsic coupling and nonlinearities of the flight dynamics. The output from the MFC layer is fed into the flight dynamics model, and the states obtained from the
+
+
+Drones 2025, 9, 537 3 of 24
+flight dynamics model are then fed back to the MPC and EMFC layers for correction, completing the control loop for trajectory tracking and flight simulation. Subsequently, in accordance with the ADS-33E-PRF standard [24], four representative Mission Task Elements (MTEs) encompassing typical eVTOL aircraft low-speed operations—Hover, Hovering Turn, Pirouette, and Vertical Maneuver—are simulated numerically to evaluate the effectiveness of the proposed autonomous trajectory control system. The main contributions of this work can be summarized as follows:
+(1) A high-fidelity simulation model, incorporating rotor flapping dynamics, differential collective pitch control, and enhanced aerodynamic interference effects, is developed to realistically capture nonlinear flight behavior. (2) A novel hierarchical control architecture is proposed, combining the predictive and constraint-handling advantages of MPC with the fast command execution of EMFC. This design balances computational demands with accurate trajectorytracking performance. (3) The effectiveness of the proposed framework is validated through four representative ADS-33E-PRF mission tasks, showing strong compliance with ADS-33E-PRF-desired criteria in low-speed flight conditions.
+The remainder of this paper is organized as follows: Section 2 describes the simulation model of the quadrotor aircraft. Section 3 presents the formulation of the MPC-EMFC hierarchical control system. Section 4 provides simulation results and a performance analysis for the four ADS-33E-PRF scenarios. Sections 5 and 6 provide the discussion and conclusions, respectively. Finally, Section 7 outlines the identified limitations and proposes directions for future work.
+2. Flight Dynamic Modeling with Multirotor Aerodynamic Interference
+The simulation model used in this study is based on NASA’s quadrotor eVTOL configuration optimized for single-passenger transport [25], with its overall layout and spatial component distribution illustrated in Figure 1. The aircraft features four variable-pitch rotors arranged in a cross configuration, enabling full attitude control authority through a differential collective pitch strategy. Specifically, roll motion is achieved by modulating the collective pitch between the rotors on the left side (Rotors 2 and 3) and those on the right side (Rotors 1 and 4). Similarly, pitch motion is governed by altering the pitch angle between the front rotor pair (Rotors 1 and 2) and the rear pair (Rotors 3 and 4). For yaw control, pitch differentials are applied across diagonal rotor pairs. This triaxial actuation strategy enables agile maneuvering while maintaining a mechanically streamlined design.
+Figure 1. Single-passenger quadrotor aircraft. Reprinted with permission from Ref. [25], © 2021, Cambridge University Press. The red arrows indicate the rotation direction of each rotor.
+To account for aerodynamic interference between rotors, an improved vortex-tubebased inflow model is introduced. Each rotor is modeled using a straight vortex tube based on classical vortex theory and the Glauert rotor model [26], assuming continuous tip vortex shedding and neglecting radial contraction and axial feedback effects [27], as illustrated
+
+
+Drones 2025, 9, 537 4 of 24
+in Figure 2. In this diagram, λ0 denotes the disk-averaged induced velocity, λ f represents the inflow ratio induced by freestream velocity, and μ denotes the advance ratio. The rotor wake skew angle χ is decomposed into two components, χ1 and χ2, corresponding to projections of the wake skew angle onto the xszs- and yszs- planes, respectively.
+Rotor disk
+Vortex tube
+Figure 2. Schematic of rotor vortex tube wake model in rotor shaft axes.
+Under this framework, the rotor wake skew angle χ and sideslip angle βw can be analytically derived from the geometric relationships illustrated in Figure 2,
+(
+χ = tan−1 ptan2 χ1 + tan2 χ2
+βw = tan−1 tan χ2
+tan χ1
+(1)
+During flight, the rotor wake no longer remains straight but curves due to the aircraft’s angular motion. This curvature can be equivalently modeled by introducing additional rotor wake skew angles ∆χ1 and ∆χ2, which account for the effects of pitch and roll rates, respectively, as illustrated in Figure 3. In this diagram, D denotes the distance between front–rear or left–right rotors, qs and ps represent the pitch and roll rates in the rotor shaft axes, and VT is the total velocity through the rotor disk. The coefficients k1 and k2 are time scale factors associated with wake response dynamics.
+Multirotor vortex tubes in steady level flight Multirotor vortex tubes with pitch/roll rate Equivalent vortex tubes with pitch/roll rate
+Front
+rotor Rear
+rotor
+Left rotor
+Right rotor
+Figure 3. Effect of angular motions on rotor wake skew angle.
+
+
+Drones 2025, 9, 537 5 of 24
+These corrections are incorporated into the final expressions for the effective wake angle and sideslip angle, given by
+(
+χ′ = tan−1 ptan2(χ1 + ∆χ1) + tan2(χ2 + ∆χ2)
+β′w = tan−1 tan(χ2+∆χ2)
+tan(χ1 +∆χ1 )
+(2)
+Through this dynamic vortex-tube-modeling approach, the influence of aircraft motion on rotor-to-rotor aerodynamic interference can be quantitatively characterized, enabling the more accurate capture of inter-rotor aerodynamic interactions. In our previous work [28], this theoretical framework was applied to develop a quadrotor-induced velocity model for estimating the total induced velocity acting on each individual rotor. The detailed modeling procedure can be found in Ref. [28]. Based on the quadrotor-induced velocity model, rotor aerodynamic forces are computed using the blade element method [29,30], while flapping motion is determined by solving the moment equilibrium at the hinge [31]. Fuselage aerodynamics are modeled using simplified coefficients [32], with rotor–airframe interference considered negligible. Blade flapping dynamics and aerodynamic components are integrated into a 6-degree-offreedom (6-DoF) rigid body dynamics framework, forming a nonlinear flight dynamics model with 68 state variables. The complete nonlinear dynamics of the system are described by the following full-state equations:
+.x = f (x, u) (3)
+where x represents the state vector of the system. For clarity of representation, the state vector is partitioned as
+x=
+h
+xb xR,1 xR,2 xR,3 xR,4
+iT (4)
+Here:
+• xb ∈ R12 represents the rigid-body states of the quadrotor platform,
+xb =
+h
+φθψpqruvwxyz
+i
+where φ, θ, and ψ denote the Euler angles representing roll, pitch, and yaw, respectively; p, q, and r are the angular velocity components in the body-fixed frame; u, v, and w represent the translational velocities along the body axes; and x, y, z specify the position coordinates in the inertial reference frame.
+• xR,i ∈ R14 for i = 1, 2, 3, 4 denote the rotor-specific dynamic states for the four rotors, defined as
+xR,i = [ .a0,i
+.a1,i
+.
+b1,i a0,i a1,i b1,i λS
+0,i λS
+1c,i λS
+1s,i λI0,i λI1c,i λI1s,i μIx,i μIy,i]
+where a0,i, a1,i, b1,i and .a0,i, .a1,i,
+.
+b1,i are the flap angles and flap angular rates of rotor i. Terms λS and λI represent vertical self-induced and interference-induced velocities, respectively, with 0, 1c, 1s indicating the mean, first-order cosine, and first-order sine harmonic terms in the inflow expansion. The variables μIx,i and μIy,i denote the interference-induced longitudinal and lateral velocity components of rotor i. u represents the control input vector,
+u=
+h
+δcol δlat δlon δped
+iT (5)
+in which δcol represents collective pitch control input, δlat represents lateral control input, δlon represents longitudinal control input, and δped represents yaw control input. Each
+
+
+Drones 2025, 9, 537 6 of 24
+input is expressed in radians. To generate individual control commands for each rotor, these four control inputs are transformed through a mixing matrix C,
+C=
+
+   
+1 −1 1 −1 11 1 1 1 1 −1 −1 1 −1 −1 1
+
+   
+(6)
+The matrix C transforms the control input u into nominal pitch commands for
+each rotor,
+
+   
+δR,1
+δR,2
+δR,3
+δR,4
+
+   
+= C · u (7)
+The key design parameters of the quadrotor configuration used in this study are listed in Table 1, based on data from established sources [33]. This configuration features a vertically staggered rotor arrangement, in which the rear rotors are located above the front rotors. To assess the fidelity of the developed quadrotor flight dynamics model, its trim results—including rotor thrust and power requirements over the full velocity envelope (0–70 m/s)—are compared with reference data from Johnson and Silva [25], as illustrated in Figure 4.
+Table 1. Critical parameters characterizing the quadrotor configuration.
+Parameter Value Parameter Value
+Design gross weight/kg 600.92 Center of gravity coordinates/m (0.1208, 0, 0.2743) Rotor mass static moment/kg · m2 4.8605 Rotor radius/m 1.9812 Rotor moment of inertia/kg · m2 6.3210 Tip speed/m · s 137.16 Rotor solidity 0.0650 Blade twist/◦ −12 Moment of inertia about x-axis/kg · m2 1056.8 Lateral spacing of rotors/m 2.7 R Moment of inertia about y-axis/kg · m2 1153.6 Longitudinal spacing of rotors/m 2.7 R Moment of inertia about z-axis/kg · m2 1359.8 Vertical spacing of rotors/m 0.35 R
+Figure 4a shows that as forward speed increases, front rotor thrust decreases while rear rotor thrust increases. At low speeds, the front rotors generate higher thrust to balance the nose-down pitching moment caused by the forward-located center of gravity. With increasing speed, the fuselage’s aerodynamic surfaces generate larger stabilizing nose-up moments, reducing front rotor demand, while the rear rotors provide greater thrust to maintain trim. The calculated thrust closely matches the reference data, with a maximum deviation of 5.22%, validating the model’s accuracy in capturing the rotor load distribution. Figure 4b illustrates that rear rotor power requirements exceed those of the front rotor at higher speeds, primarily due to aerodynamic interference: the front rotor wake increases rear rotor inflow, raising its power consumption, while simultaneously reducing the inflow and power demand of the front rotor. The close agreement between predicted power requirements and reference data further confirms the fidelity of the flight dynamics model, making it suitable for use in advanced flight control design and simulation tasks.
+
+
+Drones 2025, 9, 537 7 of 24
+(a)
+(b)
+Figure 4. Comparison of (a) rotor thrust and (b) power requirements with forward speed.
+Figure 5 further presents the variation in total power with forward speed. The total power exhibits a non-monotonic trend, decreasing initially and then increasing as speed rises, which is consistent with the characteristic propulsion–power curve of conventional helicopters. This phenomenon has also been reported in prior studies [34,35], which indicate that for a fixed energy budget, there exists a specific forward speed—denoted as VMR—that maximizes the achievable flight range. Physically, this speed corresponds to the tangential point between the total power curve and a straight line passing through the origin, representing the most energy-efficient cruising condition.
+0 10 20 30 40 50 60 70
+20
+40
+60
+80
+100
+120
+Figure 5. Variation in total power with forward speed. The blue dashed line represents the tangent passing through the origin.
+3. Hierarchical Control Architecture
+This section presents a hierarchical control architecture for autonomous trajectory tracking, composed of an outer MPC loop for trajectory tracking and an inner loop implemented by EMFC. The EMFC itself features two cascaded sub-loops: an outer loop responsible for following translational velocity and yaw rate commands, and an inner loop
+
+
+Drones 2025, 9, 537 8 of 24
+dedicated to attitude/altitude stabilization. Operating in closed-loop with the quadrotor eVTOL dynamics model, this hierarchical controller ensures improved trajectory tracking accuracy and convergence performance, as depicted in Figure 6. In the diagram, the EMFC structure consists of the command model M(s), the inverse plant P−1(s), and the feedback compensation H(s). The input δc represents the stick input, yc is the state output from the command model, δf f is the output of the inverse plant, δf d denotes the output of the feedback compensation, and δa is the actuator control input.
+Model predictive control
+Explicit modelfollowing control
+Quadrotor eVTOL dynamics ()
+Reference trajectory
+Figure 6. Hierarchical control architecture for trajectory tracking.
+In our Simulink-based simulation environment, all the relevant state variables are assumed to be directly available and measurable for control and evaluation purposes. Specifically, the measured output vector is defined as
+y=
+h
+φ θ ψ p q r vx vy vz x y z
+iT
+which includes the Euler angles (φ, θ, ψ), angular velocities (p, q, r), linear velocities (vx, vy, vz), and position coordinates (x, y, z). In real-world applications, these measurements would typically rely on multiple onboard sensors: an inertial measurement unit (IMU) to provide angular velocity measurements and orientation estimates through sensor fusion algorithms; a GPS or motion capture system to obtain absolute position data in the inertial frame; and a state estimator, such as an Extended Kalman Filter (EKF), to fuse sensor data and estimate linear velocities.
+3.1. Explicit Model-Following Control Design
+In EMFC structure, the transfer function of the system is identified as
+y(s)
+δc(s) = M(s) ·
+h
+P−1(s) + H(s)
+i
+· P(s)
+1 + P(s)H(s) (8)
+Here, the plant P(s) represents the quadrotor aircraft system, which forms a stable feedback loop with the feedback compensation H(s). The closed-loop transfer function of
+this stable loop is given by
+y(s)
+δf f (s) = P(s)
+1 + P(s)H(s) (9)
+For high-gain feedback designs where the open-loop gain P(s)H(s) is significantly larger than 1, the closed-loop transfer function simplifies to
+y(s)
+δf f (s) = P(s)
+1 + P(s)H(s) ≈ P(s)
+P(s)H(s) = 1
+H(s) (10)
+
+
+Drones 2025, 9, 537 9 of 24
+Consequently, this high-gain feedback configuration effectively suppresses the intrinsic coupling and nonlinearities of the flight dynamics, thereby enhancing command following performance. This paper presents a baseline flight control system utilizing the EMFC method, which incorporates distinct response types across all control channels. To ensure optimal low-speed flight performance, the system implements the following: Translational Rate Command/Position Hold (TRCPH) in the lateral and longitudinal axes, Rate Command/Direction Hold (RCDH) in the heading axis, and Rate Command/Height Hold (RCHH) in the vertical axis, respectively.
+3.2. Model Predictive Control Formulation
+To design a model predictive controller that is compatible with the inner-loop behavior of the quadrotor, a simplified linear model is constructed based on the command model of the EMFC system. This design ensures that the MPC-generated velocity and yaw rate commands can be effectively tracked by the inner-loop controller, forming a coherent hierarchical control structure. Specifically, the command models M(s) in each direction (longitudinal, lateral, vertical, and yaw) are approximated as first-order inertial systems of the form
+vi(s)
+vi,c(s) = kviωvi
+s + ωvi
+, i = x, y, z; r(s)
+rc(s) = krωr
+s + ωr
+(11)
+where vi and vi,c denote the actual velocity and the control stick input in each translational direction, respectively, while r and rc represent the actual yaw rate and the corresponding control input. kvi, kr represent the sensitivity coefficients of each channel, while ωvi, ωr denote the natural frequencies of each channel. These first-order systems are reformulated into second-order continuous-time statespace models by defining position pi and velocity vi (or heading angle ψ and yaw rate r) as state variables. For each axis i ∈ {x, y, z}, we define
+" ..vpii
+#
+=
+"
+01
+0 −ωvi
+#
+| {z }
+Ai
+"
+pi
+vi
+#
++
+"
+0
+kvi ωvi
+#
+| {z }
+Bi
+vi,c (12)
+For yaw dynamics,
+".
+r.ψ
+#
+=
+"
+01
+0 −ωr
+#
+| {z }
+Aψ
+"
+ψ r
+#
++
+"
+0
+kr ωr
+#
+| {z }
+Bψ
+rc (13)
+Combining all axes leads to a continuous-time linear state–space model of the form
+.xp = Apxp + Bpup (14)
+where xp = x, vx, y, vy, z, vz, ψ, r T and up = vx,c, vy,c, vz,c, rc T.
+The model is discretized using zero-order hold [36] with sampling time Ts, resulting in a discrete-time state–space model suitable for MPC prediction,
+xk+1 = Axk + Buk (15)
+
+
+Drones 2025, 9, 537 10 of 24
+Assuming a prediction horizon of NP steps and a control horizon of NU steps, with NU ≤ NP, the future states can be predicted as follows:
+
+    
+xk+1|k
+xk+2|k
+...
+xk+ NP |k
+
+    
+| {z }
+xpred
+=
+
+    
+A A2
+...
+ANP
+
+    
+| {z }
+Γ
+xk +
+
+    
+B 0 ... 0 AB B . . . 0
+... ... ... ...
+ANP−1B ANP−2B . . . ANP−NU B
+
+    
+| {z }
+Φ
+
+    
+uk
+uk+1|k
+...
+uk+NU −1|k
+
+    
+| {z }
+uc
+(16)
+where xpred denotes the stacked vector of predicted states over the prediction horizon NP, with each xk+i|k representing the predicted state at future time step k + i based on information available at time k; uc contains the control input sequence from the current step up to k + NU − 1, where only the first control input is applied at each step in accordance with the receding-horizon strategy. The control objective is to minimize a quadratic cost function that penalizes both the tracking error—formulated based on the states of the flight dynamics model—and the control effort,
+J=
+N∑P
+i=1
+xk+i|k − xre f
+T Q xk+i|k − xre f +
+NU −1
+∑
+i=0
+uT
+k+i|k Ruk+i|k (17)
+which can be written in compact form as
+J= 1
+2 ucT Huc + f Tuc (18)
+with H = ΦT QbarΦ + Rbar, f = ΦT Qbar(Γxk − xref)
+where Qbar = INP ⊗ Q and Rbar = INU ⊗ R, with ⊗ denoting the Kronecker product that constructs block-diagonal matrices by repeating Q and R along the prediction and control horizons, respectively. The weighting matrices Q and R are selected using Bryson’s tuning method [37]. Specifically, the weights are defined as
+Q=
+
+  
+q1 . . . 0
+... . . . ...
+0 . . . qn
+
+  
+,R =
+
+  
+r1 . . . 0
+... . . . ...
+0 . . . rm
+
+  
+(19)
+where qi = 1/xi2,max and rj = 1/uj2,max, with xi,max and uj,max representing the maximum allowable magnitudes of state xi and control input uj, respectively. The control commands generated by the MPC controller—including horizontal and vertical velocity components, as well as the yaw rate—are subject to saturation limits reflecting actuator capabilities and safety requirements. These constraints are expressed as bounds on each component of the control vector,
+umin ≤ uk+i ≤ umax, i = 0, . . . , NU − 1 (20)
+where umin, umax represent the lower and upper bounds defined by the system limitations. To ensure safe dynamic behavior, additional constraints are imposed on selected system states, which must remain within allowable bounds over the entire prediction
+
+
+Drones 2025, 9, 537 11 of 24
+horizon. The specific bound values depend on the operational requirements of different flight missions, as summarized in Table 2 [24,38].
+Table 2. Requirements for large-amplitude attitude and speed changes—hover and low speed.
+Agility Category MTE
+Achievable Angular Rate (deg/s)
+Achievable Speed Components (m/s)
+Achievable Climb/Descent Rate (m/s)
+Level 1 Level 2/3 Level 1 Level 2/3 Level 1 Level 2/3
+Yaw Yaw v v .z z.
+Limited agility (Hover) ±9.5 ±5 ±5.14 ±2.57 ±5.08 ±2.54 Moderate agility (Hovering
+Turn, Pirouette) ±22 ±9.5 ±10.29 ±7.72 ±10.16 ±7.62
+Aggressive agility (Sidestep) ±60 ±22 ±15.43 ±12.86 ±15.24 ±12.7
+Based on the predicted state formulation in (16), constraints on individual state components can be expressed as linear inequalities with respect to the control sequence uc. For example, if a specific state component xi is required to satisfy
+ximin ≤ xi,k+j ≤ xmax
+i , j = 1, . . . , NP (21)
+Then, the corresponding rows of Γ and Φ related to xi are extracted as Γi and Φi, and the constraints are equivalently expressed as
+Φiuc ≤ xmax
+i · 1 − Γixk
+−Φiuc ≤ −ximin · 1 + Γi xk
+(22)
+By stacking such inequalities for all constrained states, the state constraints are compactly expressed as
+Cinequc ≤ dineq (23)
+which can be seamlessly incorporated into the MPC optimization problem. The resulting quadratic programming problem is solved using the algorithmic framework presented in Ref. [39], implemented via a standard optimization toolbox. Then, we use the maximum achievable lateral velocity (15.43 m/s) and climb rate (15.24 m/s), as defined in the agility performance boundaries of Table 2, as step inputs to evaluate the validity of the linear prediction model in Equations (12) and (13) under large velocity deviations. Figure 7 shows that the resulting lateral and vertical velocity responses accurately follow the commanded values, exhibiting near-perfect tracking. These results indicate that, within the feasible velocity envelope, the controller maintains high tracking fidelity. Accordingly, the linear prediction model provides sufficient accuracy across the specified flight envelope, thereby justifying the linearization assumptions adopted in the formulation of the state constraints in Equation (23).
+
+
+Drones 2025, 9, 537 12 of 24
+0
+5
+10
+15
+20
+0 5 10 15 20 25 30
+Time(s)
+0
+5
+10
+15
+20
+Command Response
+Figure 7. Comparison of command and response velocity.
+3.3. Parameter Tuning and Stability Analysis
+To balance the tracking accuracy and computational efficiency, a parametric study is conducted to investigate the effect of the prediction horizon NP on controller performance. The initial state is set to x0 = [0, 0, 0, 0, −5, 0, 0, 0]T, and the reference state is defined as xre f = [6, 0, 6, 0, −5, 0, 0, 0]T. The value of NP varies from 5 to 50 in increments of 5, and for each configuration, the system operates under a receding-horizon control strategy. At every control step, the optimization problem is solved, but only the first control input is applied to the system. As for the control horizon NU, it is generally required that NU ≤ NP. In this work, the full-horizon strategy NU = NP is adopted, and the optimization is resolved at each step using updated state feedback, which ensures closed-loop robustness to modeling errors. To evaluate the trade-off between tracking accuracy and computational load, two metrics are recorded: the average tracking error, representing the steady-state Euclidean distance between the predicted state and reference over the final simulation steps, and the average optimization time per step, reflecting the computational load of solving the MPC problem. As shown in Figure 8, the tracking error decreases significantly as NP increases from 5 to 20 and reaches near zero beyond NP = 20, indicating that larger horizons offer no significant improvement in accuracy past a certain threshold. In contrast, the average solve time grows moderately up to NP = 25, but then increases rapidly due to the larger optimization problem size. Based on this trade-off, NP = 20 is selected as a practical and balanced choice. Furthermore, since the state weighting matrix Q and control weighting matrix R are positive definite, the resulting Hessian matrix H is also positive definite, making the cost function J strictly convex. This ensures the existence and uniqueness of the optimal solution at each control step. The prediction model is constructed based on the command model of the EMFC, maintaining consistency between the inner- and outer- loop control layers. The closed-loop error is defined as
+ek+1 = xk+1 − xre f (24)
+
+
+Drones 2025, 9, 537 13 of 24
+0
+2
+4
+6
+5 10 15 20 25 30 35 40 45 50
+0
+1
+2
+3
+4
+Figure 8. Variation of tracking error and solve time with prediction horizon.
+Under the proposed control strategy, the system satisfies the asymptotic stability criterion for receding-horizon control,
+kli→m∞∥ek∥ = kli→m∞ xk − xre f = 0 (25)
+This is also confirmed by the numerical results showing vanishing steady-state error when NP ≥ 20.
+4. Numerical Simulations and Performance Evaluation
+To validate the effectiveness and applicability of the proposed hierarchical control architecture, numerical simulations are carried out based on four MTEs defined in the ADS-33E-PRF standard: Hover, Hovering Turn, Pirouette, and Vertical Maneuver.
+4.1. Hover
+The Hover task is designed to evaluate the quadrotor aircraft’s ability to maintain the precise control of position, heading, and altitude. The aircraft enters the maneuver at an altitude of 5 m above ground level with a ground velocity of 4 m/s at a 45◦ angle relative to the aircraft’s body axis. Upon reaching the target hover point, it transitions to a steady hover and maintains this state for at least 30 s. The performance criteria for this maneuver are defined in Table 3 according to the ADS-33E-PRF standard.
+Table 3. Performance criteria for the Hover Maneuver.
+Desired Performance Adequate Performance
+Deceleration to stable hover ≤ X s 5 8 Stable hover duration ≥ X s 30 30 Longitudinal and lateral position
+errors ≤ X m 0.91 1.83 Altitude error ≤ X m 0.61 1.22 Heading error ≤ X deg 5 10
+Figure 9 illustrates the comparison between the reference path and the executed flight path in 3D space. The close match between the two paths indicates that the aircraft closely followed the pre-defined path as intended.
+
+
+Drones 2025, 9, 537 14 of 24
+Figure 9. Comparison of reference and executed flight paths in 3D space.
+Figures 10 and 11 show the top-view (X-Y plane) trajectory and the position responses along each axis, respectively. In both figures, the predicted trajectories generated by the MPC layer are compared against the actual responses of the eVTOL system. From the figures, it can be observed that the predicted trajectories from the MPC layer closely match the actual responses of the eVTOL system, indicating that the proposed control framework provides accurate trajectory prediction and could be suitable for real-time applications. The aircraft successfully arrives directly above the designated hover point with high precision, and all performance metrics meet the desired criteria specified in Table 3. As shown in Figure 11, the aircraft maintains a stable hover for over 30 s after reaching the target, demonstrating its capability to accomplish the Hover task within the expected performance envelope.
+X Position
+MPC Prediction eVTOL Response
+Heading 4 m/s
+Heading
+6m
+6m
+Cones denoting adequate performance boundary
+Desired X
+0.91 m
+Adequate X
+Reference symbol
+Hover board
+Desired
+1.83 m
+Figure 10. Top-view trajectory of the Hover Maneuver simulation.
+
+
+Drones 2025, 9, 537 15 of 24
+X Position
+Y Position
+Z Position
+Figure 11. Position components along each axis during the Hover task.
+4.2. Hovering Turn
+The Hovering Turn Maneuver is initiated from a steady hover at an altitude of 5 m above ground level, during which the aircraft performs a 180◦ yaw rotation while maintaining its position. The performance criteria for the Hovering Turn task are summarized in Table 4.
+Table 4. Performance criteria for the Hovering Turn Maneuver.
+Desired Performance Adequate Performance
+Longitudinal and lateral
+position errors ≤ X m 0.91 1.83 Altitude error ≤ X m 0.91 1.83 Heading error ≤ X deg 5 10 Turn to stable hover ≤ X s 15 20
+Figure 12 presents the simulation results of the quadrotor aircraft during the Hovering Turn task, including the time histories of angular rates, attitude angles, and position components. As shown in the figure, the yaw angle increases smoothly from 0◦ to 180◦, indicating a successful turn. Meanwhile, the translational positions along the X, Y, and Z axes remain stable throughout the maneuver, demonstrating effective decoupling between yaw motion and translational dynamics. All performance metrics meet the desired thresholds specified in Table 4, confirming the controller’s capability to achieve precise orientation changes during hover. Furthermore, the yaw rate trajectory remains within the dynamic constraints defined in Table 2, validating that the system respects the imposed state limits during the maneuver. To further evaluate the robustness and reliability of the proposed control system under practical uncertainties, a Monte Carlo simulation is conducted for the Hovering Turn Maneuver. A total of 100 randomized trials are performed, with each trial initialized using perturbed initial conditions drawn from zero-mean Gaussian distributions. The standard deviations for the perturbations are selected based on the Adequate Performance boundaries defined in the ADS-33E-PRF standard. Specifically, the initial longitudinal, lateral, and altitude positions are disturbed with deviations of 1.83 m, and the initial heading angle is perturbed with a deviation of 10◦.
+
+
+Drones 2025, 9, 537 16 of 24
+Angular rate (deg/s)
+Attitude (deg)
+Position (m)
+Figure 12. Angular rate, attitude angles, and position responses during Hovering Turn Maneuver.
+The distribution of final state errors—specifically, the position and yaw angle errors after task completion—is illustrated in Figure 13 using boxplots. The results demonstrate that the errors across all 100 trials are consistently small and well-contained within a narrow range, with no outliers observed in the boxplots. This indicates a high level of robustness and repeatability in the closed-loop system response. The controller successfully drives the aircraft to complete a 180◦ rotation maneuver while maintaining position stability. These outcomes confirm that the proposed MPC–EMFC hierarchical controller is capable of reliably handling realistic uncertainties while meeting stringent flight performance requirements.
+Final yaw error (deg)
+Final X error (m)
+Final Y error (m)
+Final Z error (m)
+Figure 13. Boxplot of final state errors from Monte Carlo simulations.
+
+
+Drones 2025, 9, 537 17 of 24
+4.3. Pirouette
+The Pirouette Maneuver is designed to evaluate the quadrotor aircraft’s ability to simultaneously control motion along the pitch, roll, yaw, and vertical axes with precision and coordination. The maneuver begins from a stable hover position located on a circular trajectory with a radius of 30.48 m and a constant altitude of approximately 3.05 m. The aircraft’s heading initially points toward the center of the circle. It then executes lateral motion along the circular path while maintaining its heading continuously aligned with the circle’s center. A nearly constant lateral ground speed is maintained throughout, and at the end of the maneuver, the aircraft is required to return to the starting point and hover stably. The construction of the corresponding reference trajectory is detailed in Appendix A. And the performance criteria for this maneuver are listed in Table 5.
+Table 5. Performance criteria for the Pirouette Maneuver.
+Desired Performance Adequate Performance
+Circular path error ≤ X m 3.048 4.572 Altitude error ≤ X m 0.91 3.048 Heading error ≤ X deg 10 15 Loop completion time ≤ X s 45 60 Hover stabilization time ≤ X s 5 10 Stable hover duration ≥ X s 5 5
+Figure 14 shows the time history of the aircraft’s attitude angles. It can be observed that the yaw angle increases continuously from 0◦ to 360◦, indicating that the aircraft completes a full rotation as intended. The roll and pitch angles remain within ±10◦ throughout the maneuver, as the aircraft continuously adjusts its attitude to maintain trajectory accuracy and stability during the circular flight.
+−10
+0
+10
+−10
+0
+10
+0 10 20 30 40 50 Time (s)
+0
+200
+346000
+Figure 14. Attitude angle responses during Pirouette Maneuver.
+Figure 15 further analyzes the heading error during this maneuver. The error is defined as the angular difference between the actual yaw angle and the desired yaw angle, which is determined based on the direction from the current aircraft position to the center of the circular path. The results show that the heading error remains within 10◦, fully satisfying
+
+
+Drones 2025, 9, 537 18 of 24
+the desired performance criterion specified in Table 5. This demonstrates that the aircraft maintains a consistent orientation toward the center of the circle throughout the maneuver.
+Heading error (deg)
+Figure 15. Heading angle error between the actual yaw and the desired direction toward the circle center during Pirouette Maneuver.
+Figures 16 and 17 present the top-view (X-Y plane) comparison and the position components of the predicted trajectories by the MPC layer and the actual responses of the eVTOL during the Pirouette Maneuver. The close agreement between the MPC predictions and the aircraft’s responses indicates that the aircraft successfully tracks the desired circular trajectory while maintaining precise control over position, heading, and speed throughout the maneuver. From Figure 17, it can also be inferred that the aircraft completes the pirouette in approximately 45 s and subsequently maintains a stable hover for 5 s, meeting the desired performance criteria outlined in Table 5.
+Reference symbol
+6.096 m
+Cones denoting desired performance boundary
+9.144 m
+Cones denoting adequate performance boundary
+Figure 16. Top-view trajectory of the Pirouette Maneuver simulation.
+
+
+Drones 2025, 9, 537 19 of 24
+−40
+−20
+0
+20
+40
+−40
+−20
+0
+20
+40
+0 10 20 30 40 50
+Time (s)
+−5
+−4
+−3
+−2
+−1
+0
+MPC Prediction eVTOL Response
+Figure 17. Position components along each axis during the Pirouette Maneuver.
+Additionally, Figure 18 illustrates the variation of ground speed over time. The plot demonstrates that the quadrotor aircraft maintains a nearly constant lateral ground speed between 10 s and 35 s, indicating stable translational motion throughout the maneuver.
+0 10 20 30 40 50
+Time (s)
+0
+1
+2
+3
+4
+5
+6
+Figure 18. Ground speed profile during the Pirouette Maneuver.
+4.4. Vertical Maneuver
+The Vertical Maneuver task is designed to evaluate the quadrotor aircraft’s ability to initiate and terminate vertical motion precisely, as well as to examine potential coupling between collective control and the pitch, roll, and yaw axes. In this maneuver, the aircraft starts from a steady hover at an altitude of 3.048 m, ascends vertically to 7.62 m, maintains that altitude for 2 s, and then descends back to the original hovering position. The performance criteria for this maneuver are listed in Table 6.
+
+
+Drones 2025, 9, 537 20 of 24
+Table 6. Performance criteria for the Vertical Maneuver.
+Desired Performance Adequate Performance
+Longitudinal and lateral position
+errors ≤ X m 0.91 1.83 Start/end altitude error ≤ X m 0.91 1.83 Heading error ≤ X deg 5 10 Maneuver completion time ≤ X s 15 18
+Figure 19 presents the simulation results, including the time histories of angular rates, attitude angles, and position components. As shown in the figure, the position along the xand y-axes remains nearly constant throughout the maneuver, indicating effective lateral stability and the absence of significant horizontal drift during vertical transitions. Along the z-axis, the altitude increases from 3.048 m to 7.62 m during the ascent phase, remains stable for 2 s, and then returns smoothly to the original altitude during the descent phase.
+Figure 19. Angular rate, attitude angles, and position responses during Vertical Maneuver.
+In terms of the attitude response, minor pitch angle fluctuations are observed during the ascent and descent phases, primarily due to transient aerodynamic effects and dynamic control coupling. Nevertheless, the aircraft successfully restores its trimmed attitude at the conclusion of the maneuver, confirming that no adverse coupling exists between the collective axis and the other control channels. Overall, the aircraft completes the Vertical Maneuver within the time constraints and meets all desired performance metrics specified in Table 6. These results validate the control framework’s effectiveness in managing vertical motion while preserving lateral stability and attitude integrity.
+5. Discussion
+This study established a hierarchical MPC-EMFC framework for autonomous trajectory control of quadrotor eVTOL aircraft during hover and low-speed regimes. A high-fidelity 50-DoF simulation platform was developed, integrating rigid-body dynamics, rotor flapping dynamics, self-induced inflow, and aerodynamic interference effects. The model’s trim results—including rotor thrust and power requirements across the full
+
+
+Drones 2025, 9, 537 21 of 24
+velocity envelope (0–70 m/s)—were compared with reference data and showed strong consistency, confirming that the comprehensive model accurately captures the complex nonlinear couplings and dynamic interactions representative of real-flight behavior. The construction of both the EMFC and MPC was described in detail. Parameter analysis was conducted to verify the stability of the controller under various configurations, supporting the reliability of the proposed control architecture. To further evaluate performance, four representative ADS-33E-PRF maneuver tasksHover, Hovering Turn, Pirouette, and Vertical Maneuver—were numerically simulated. Results demonstrate that the hierarchical controller successfully combines the predictive, constraint-handling capability of MPC with the fast execution and model compensation of EMFC. The system achieved precise and stable trajectory tracking with low position and attitude errors, meeting all ADS-33E-PRF desired performance criteria. These findings validate the effectiveness and autonomy of the proposed framework for urban low-speed flight scenarios.
+6. Conclusions
+This paper proposed a hierarchical control framework that combines MPC with EMFC to achieve autonomous trajectory tracking of quadrotor eVTOL aircraft in hover and lowspeed flight regimes. A simplified first-order model was used to reduce the computational cost in MPC, while EMFC ensured precise and responsive execution of commands. The key findings are as follows:
+• Aerodynamic interference between rotors was explicitly modeled, and the developed flight dynamics model successfully captured these effects to replicate real conditions; • By separating the planning task from the fast-response control task, the architecture achieved a clear division of roles, maintaining system stability while improving computational efficiency; • Flight simulations on four representative ADS-33E-PRF tasks demonstrated accurate and stable trajectory tracking, with all desired performance criteria fully satisfied.
+7. Limitations and Future Work
+While the proposed MPC–EMFC framework demonstrates robust and accurate performance in hover and low-speed regimes, certain limitations remain. The simulation environment employed in this study assumes ideal conditions and does not incorporate wind disturbances or model uncertainties, which may affect control performance under more complex and variable flight scenarios. Additionally, the proposed control framework has yet to be extended to high-speed flight and flight mode transitions, where unsteady aerodynamic effects and faster dynamic responses present increased control challenges. Future work will focus on extending the control strategy to address these more demanding flight phases, enhancing its adaptability to rapidly changing conditions. Furthermore, more sophisticated aerodynamic models will be integrated into the prediction model, alongside robust or adaptive control techniques, to improve system stability and tracking accuracy in the presence of external disturbances and model uncertainties.
+Author Contributions: Methodology, H.J.; Validation, Y.W.; Writing—original draft, Y.W.; Writingreview & editing, H.J., Q.K., H.Q. and J.W.; Visualization, Y.W.; Funding acquisition, H.J. All authors have read and agreed to the published version of the manuscript.
+Funding: This research was supported by the National Natural Science Foundation of China, NO: 11902052; the Natural Science Foundation of Chongqing, NO: CSTB2022NSCQ-MSX1592; and the Rotor Aerodynamics Key Laboratory, China Aerodynamics Research and Development Center, NO: RAL202302-3.
+
+
+Drones 2025, 9, 537 22 of 24
+Data Availability Statement: The original contributions presented in the study are included in the article, further inquiries can be directed to the corresponding author.
+Conflicts of Interest: The authors declare no conflict of interest.
+Appendix A
+To construct the Pirouette Maneuver’s reference trajectory, a time-parameterized model is used, consisting of three distinct motion phases: acceleration, constant-speed cruise, and deceleration. The total duration of the maneuver is 45 s, with the following segment durations: acceleration time Ta = 10 s, cruise time Tc = 25 s, and deceleration time Td = 10 s. The desired constant tangential velocity is set to vcons = 5.5 m/s. Then a fifth-order polynomial profile is employed to ensure smooth transitions during the acceleration and deceleration phases. This guarantees continuous velocity and acceleration, thereby reducing control transients. The normalized quintic profile is defined as
+c(t) = 10c3 − 15c4 + 6c5 (A1)
+where c = t
+T is a normalized time variable within the interval t ∈ [0, T], and T corresponds to either Ta (for acceleration) or Td (for deceleration). The function c(t) smoothly interpolates from 0 to 1 over the interval, with zero initial and final derivatives up to the second order.
+• During the acceleration phase (t ≤ Ta), the tangential velocity is
+vtan(t) = c(t) · vcons, atan(t) = dc(t)
+dt · vcons, c = t
+Ta
+• In the constant-speed cruise phase (Ta < t ≤ Ta + Tc), the tangential velocity is held constant, vtan(t) = vcons, atan(t) = 0
+• During the deceleration phase (t > Ta + Tc), the same quintic profile is used in reverse to smoothly reduce velocity to zero,
+vtan(t) = [1 − c(t)] · vcons, atan(t) = − dc(t)
+dt · vcons, c = t − Ta − Tc
+Td
+At each time step, the angular position ψ(t) is integrated from the angular velocity r(t) = vtan(t)/r, where r = 30.48 m is the circular radius. And the position and velocity components are derived as
+x(t) = −r cos[ψ(t)], vx(t) = vtan(t) sin[ψ(t)]
+y(t) = r sin[ψ(t)], vy(t) = vtan(t) cos[ψ(t)] (A2)
+Thus, the reference state vector is defined as
+xref(t) = x(t), vx(t), y(t), vy(t), z(t), vz(t), ψ(t), r(t) T (A3)
+References
+1. Doff-Sotta, M.; Cannon, M.; Bacic, M. Data-driven robust model predictive control of tiltwing vertical takeoff and landing aircraft. J. Guid. Control Dyn. 2025, 48, 203–211. [CrossRef]
+2. Wang, S.; Lima Pereira, L.T.; Ragni, D. Design exploration of UAM vehicles. Aerosp. Sci. Technol. 2025, 160, 110058. [CrossRef] 3. Kang, N.; Lu, L.; Whidborne, J. Energy optimization strategies for automatic tiltrotor electric vertical takeoff and landing aircraft. J. Guid. Control Dyn. 2025, 48, 1196–1200. [CrossRef]
+
+
+Drones 2025, 9, 537 23 of 24
+4. Kiesewetter, L.; Shakib, K.H.; Singh, P.; Rahman, M.; Khandelwal, B.; Kumar, S.; Shah, K. A holistic review of the current state of research on aircraft design concepts and consideration for advanced air mobility applications. Prog. Aerosp. Sci. 2023, 142, 100949. [CrossRef] 5. Lu, L.; Jump, M.; White, M.; Perfect, P. Development of occupant-preferred landing profiles for personal aerial vehicles. J. Guid. Control Dyn. 2016, 39, 1805–1819. [CrossRef] 6. Mehra, R.; Wasikowski, M.; Prasanth, R.; Bennett, R.; Neckels, D. Model predictive control design for XV-15 tilt rotor flight control. In AIAA Guidance, Navigation, and Control Conference and Exhibit; American Institute of Aeronautics and Astronautics: Reston, VA, USA, 2012. [CrossRef] 7. Han, B.; Zhou, Y.; Deveerasetty, K.K.; Hu, C. A review of control algorithms for quadrotor. In Proceedings of the 2018 IEEE International Conference on Information and Automation (ICIA), Wuyishan, China, 11–13 August 2018; pp. 951–956. 8. Rubí, B.; Pérez, R.; Morcego, B. A survey of path following control strategies for UAVs focused on quadrotors. J. Intell. Robot. Syst. 2020, 98, 241–265. [CrossRef] 9. Lee, H.; Kim, H.J. Trajectory tracking control of multirotors from modelling to experiments: A survey. Int. J. Control Autom. Syst. 2017, 15, 281–292. [CrossRef] 10. Nguyen, A.T.; Xuan-Mung, N.; Hong, S.-K. Quadcopter adaptive trajectory tracking control: A new approach via backstepping technique. Appl. Sci. 2019, 9, 3873. [CrossRef] 11. Eltayeb, A.; Rahmat, M.F.; Basri, M.A.M.; Eltoum, M.A.M.; El-Ferik, S. An improved design of an adaptive sliding mode controller for chattering attenuation and trajectory tracking of the quadcopter UAV. IEEE Access 2020, 8, 205968–205979. [CrossRef] 12. Ansari, U.; Bajodah, A.H. Quadrotor motion control using adaptive generalized dynamic inversion. In Proceedings of the 2018 Annual American Control Conference (ACC), Milwaukee, WI, USA, 27–29 June 2018; pp. 4311–4316. 13. Wang, Y.; Sun, J.; He, H.; Sun, C. Deterministic policy gradient with integral compensator for robust quadrotor control. IEEE Trans. Syst. Man Cybern. Syst. 2020, 50, 3713–3725. [CrossRef]
+14. Dong, H.; Zhao, X.; Luo, B. Optimal tracking control for uncertain nonlinear systems with prescribed performance via critic-only ADP. IEEE Trans. Syst. Man Cybern. Syst. 2022, 52, 561–573. [CrossRef]
+15. Ma, B.; Liu, Z.; Zhao, W.; Yuan, J.; Long, H.; Wang, X.; Yuan, Z. Target tracking control of UAV through deep reinforcement learning. IEEE Trans. Intell. Transp. Syst. 2023, 24, 5983–6000. [CrossRef]
+16. Enenakpogbe, E.; Whidborne, J.F.; Lu, L. Control allocation problem transformation approaches for over-actuated vectored thrust VTOLs. Aerosp. Sci. Technol. 2025, 161, 110145. [CrossRef] 17. Nguyen, H.; Kamel, M.; Alexis, K.; Siegwart, R. Model predictive control for micro aerial vehicles: A survey. In Proceedings of the 2021 European Control Conference (ECC), Rotterdam, The Netherlands, 29 June–2 July 2021; pp. 1556–1563. 18. Eren, U.; Prach, A.; Koçer, B.B.; Rakovic ́, S.V.; Kayacan, E.; Açıkmes ̧e, B. Model pedictive control in aerospace systems: Current state and opportunities. J. Guid. Control Dyn. 2017, 40, 1541–1566. [CrossRef] 19. Wang, D.; Pan, Q.; Shi, Y.; Hu, J.; Zhao, C. Efficient nonlinear model predictive control for quadrotor trajectory tracking: Algorithms and experiment. IEEE Trans. Cybern. 2021, 51, 5057–5068. [CrossRef] 20. Bauersfeld, L.; Spannagl, L.; Ducard, G.J.J.; Onder, C.H. MPC flight control for a tilt-rotor VTOL aircraft. IEEE Trans. Aerosp. Electron. Syst. 2021, 57, 2395–2409. [CrossRef] 21. Ahn, H.; Park, J.; Bang, H.; Kim, Y. Model predictive control-based multirotor three-dimensional motion planning with point cloud obstacle. J. Aerosp. Inf. Syst. 2022, 19, 179–193. [CrossRef] 22. Benotsmane, R.; Reda, A.; Vásárhelyi, J. Model predictive control for autonomous quadrotor trajectory tracking. In Proceedings of the 2022 23rd International Carpathian Control Conference (ICCC), Sinaia, Romania, 29 May–1 June 2022; pp. 215–220. 23. Alexis, K.; Nikolakopoulos, G.; Tzes, A. Model predictive quadrotor control: Attitude, altitude and position experimental studies. IET Control Theory Appl. 2012, 6, 1812–1827. [CrossRef]
+24. ADS-33E-PRF; Aeronautical Design Standard Performance Specification Handling Qualities Requirements for Military Rotorcraft. United States Army Aviation and Missile Command Aviation Engineering Directorate: Huntsville, AL, USA, 2000. 25. Johnson, W.; Silva, C. NASA concept vehicles and the engineering of advanced air mobility aircraft. Aeronaut. J. 2022, 126, 59–91. [CrossRef] 26. Gianert, H. Airplane Propellers; Springer: Berlin/Heidelberg, Germany, 1935. 27. Wang, Y.; Ji, H.; Zhou, P.; Ye, Y. Fast analysis of aerodynamic interference for quad-tiltrotor based on vortex tube model. Acta Aeronaut. Astronaut. Sin. 2025, 46, 130705. (In Chinese) [CrossRef] 28. Wang, Y.; Ji, H.; Lu, L.; Zhou, P. Modeling multirotor wake interference in quadrotor eVTOL flight dynamics and handling qualities. Aerosp. Sci. Technol. 2025, 165, 110533. [CrossRef] 29. Ji, H.; Chen, R.; Li, P. Rotor-state feedback control to alleviate pilot workload for helicopter shipboard operations. J. Guid. Control Dyn. 2017, 40, 3088–3099. [CrossRef] 30. Ji, H.; Lu, L.; White, M.D.; Chen, R. Advanced pilot modeling for prediction of rotorcraft handling qualities in turbulent wind. Aerosp. Sci. Technol. 2022, 123, 107501. [CrossRef]
+
+
+Drones 2025, 9, 537 24 of 24
+31. Chen, R.T. A Simplified Rotor System Mathematical Model for Piloted Flight Dynamics Simulation. U.S. Patent NASA-TM-78575, 1 May 1979. 32. Atci, K.; Jusko, T.; Štrbac, A.; Guner, F. Impact of differential torsional rotor cant on the flight characteristics of a passenger-grade quadrotor. CEAS Aeronaut. J. 2024, 15, 513–528. [CrossRef] 33. Johnson, W.; Silva, C.; Solis, E. Concept vehicles for VTOL air taxi operations. In Proceedings of the AHS Specialists’ Conference on Aeromechanics Design for Transformative Vertical Flight, San Francisco, CA, USA, 16–19 January 2018. 34. Zeng, Y.; Xu, J.; Zhang, R. Energy minimization for wireless communication with rotary-wing UAV. IEEE Trans. Wirel. Commun. 2019, 18, 2329–2345. [CrossRef] 35. Jia, G.; Li, C.; Li, M. Energy-efficient trajectory planning for smart sensing in IoT networks using quadrotor UAVs. Sensors 2022, 22, 8729. [CrossRef] 36. Karafyllis, I.; Krstic, M. Nonlinear stabilization under sampled and delayed measurements, and with inputs subject to delay and zero-order hold. IEEE Trans. Autom. Control 2012, 57, 1141–1154. [CrossRef] 37. Franklin, G.F.; Powell, J.D.; Emami-Naeini, A. Feedback Control of Dynamic Systems; Pearson: Upper Saddle River, NJ, USA, 2010; Volume 10. 38. Lombaerts, T.; Kaneshige, J.; Feary, M. Control concepts for simplified vehicle operations of a quadrotor eVTOL vehicle. In Proceedings of the AIAA Aviation 2020 Forum, Reno, NV, USA, 15–19 June 2020; p. 3189. 39. Gill, P.E.; Murray, W.; Wright, M.H. Chapter 5: Linear Constraints. In Practical Optimization; Society for Industrial and Applied Mathematics: Philadelphia, PA, USA, 2019; pp. 155–203.
+Disclaimer/Publisher’s Note: The statements, opinions and data contained in all publications are solely those of the individual author(s) and contributor(s) and not of MDPI and/or the editor(s). MDPI and/or the editor(s) disclaim responsibility for any injury to people or property resulting from any ideas, methods, instructions or products referred to in the content.

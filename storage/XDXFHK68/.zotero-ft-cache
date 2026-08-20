@@ -1,0 +1,236 @@
+Rotary Wing Aerodynamics
+(AE 667)
+
+
+Vehicle Performance
+2
+
+
+Performance Parameters
+o Endurance
+o Range
+o Speed
+o Service Altitude
+o Payload
+3
+
+
+Engine Information
+We assume that the following information is available from the engine manufacturer
+o Shaft power output & Fuel Consumption
+o w.r.t: Altitude, Forward speed, Temperature
+o at different throttle settings
+oInstalled power losses: Losses associated with installation of an engine on a vehicle
+(inlet duct skin friction, air filter, exhaust duct skin friction, infrared suppressors, compressor bleed, accessories, transmission losses)
+4
+http://www.flight.mace.manchester.ac.uk/air-particle-separator-design/about/about.html
+
+
+Fuselage Download
+Download: Downward force on fuselage due to rotor downwash
+Found experimentally, or by modelling fuselage as a series of segments
+5
+
+
+Need to correct for:
+oMain rotor – Tail rotor
+aerodynamic interference
+[causing higher power
+requirement at tail rotor]
+oGround effect [ground
+restricting rotor inflow,
+benefiting performance]
+6 https://www.helis.com/howflies/igeoge.php
+http://www.dlr.de/media/en/desktopdefault.aspx/tabid-4985/8422_read-19451
+
+
+Need to correct for:
+oParasitic drag due to fuselage, hub, antennae, pitot probes, hinges, steps, landing gear etc.
+oFuselage drag generally expressed as equivalent flat plate area.
+7
+
+
+Ground effect in hover
+Height above ground / Rotor diameter (z/D)
+vIGE / vOGE
+0.1 1.0
+0.6
+0.95
+vIGE
+vOGE
+=1
+0.9926 + 0.0379 D/z 2
+IGE: In Ground Effect OGE: Out of Ground Effect
+8
+
+
+Vertical Climb Performance
+o Power requirement includes:
+o Main rotor power
+o Induced power (accounting for thrust = vehicle weight + downwash on fuselage) [Pi] o Profile power [Po] o Additional power due to climb [Pc] = climb rate × gross weight
+o Tail rotor power o Engine power transmission and installation Losses
+oAbsolute Ceiling:
+Power required = power available @ Zero climb rate
+oService ceiling:
+Power available = Power required to climb @ 100 ft/min
+9
+
+
+Power with Altitude
+oAvailable power dependent on density:
+oRotor power’s dependency on density
+Note that induced power increases with decrease in density and profile power decreases with density
+oDensity dependent on altitude through expression:
+P
+Psea−level
+=ρ
+ρsea−level
+ρ
+ρsea−level
+= 1 − 0.00198h
+288.16
+4.2553
+P = κT T
+2ρA + σCd ρ(ΩR)3πR2/8
+(Induced power) (profile power)
+10
+
+
+Find vertical climb rate at an altitude
+oFind air density ρ at the altitude
+oCompute available engine power [installed power]
+oCompute required power for hover:
+[Main rotor power (accounting for fuselage download) + Tail rotor power]
+oCompute Excess Power = Installed power – Required power for hover
+oMax climb rate = Excess power/gross weight
+oService ceiling ➔ Max climb rate = 100ft/min
+oAbsolute ceiling ➔ Max climb rate = 0
+11
+
+
+Power Balance in Hover/Climb (Graphical)
+Altitude
+Power
+Excess
+power
+Absolute Ceiling
+12
+
+
+Climb performance trends
+Gross Weight
+Hover Ceiling
+Altitude
+Rate of Climb
+Absolute Ceiling
+100 ft/min
+Service Ceiling
+Gross Weight
+Rate of Climb
+
+
+Forward flight performance
+o Power requirement includes:
+o Main rotor power
+o Induced power (accounting for thrust = vehicle weight + downwash on fuselage) [Pi]
+o Profile power [Po]
+o Tail rotor power (induced + profile power)
+o Fuselage parasite drag power (Drag × forward speed)
+o Engine power transmission and installation Losses
+oMax speed is when:
+o Power required for forward flight = power available
+oClimb rate = Excess power/Gross weight
+where excess power = installed power – power for forward flight
+14
+
+
+Power balance in level forward flight (Graphical)
+Forward Speed
+Power
+Installed Power
+Excess
+power
+Max speed
+15
+
+
+Power balance in level forward flight at two different altitudes (Graphical)
+Forward Speed
+Power
+Installed Power
+Higher Altitude
+Lower Altitude
+16
+
+
+Max speed limited by stall
+Forward Speed
+Power
+High Installed Power
+Low Installed Power
+Max speed constrained by stall
+17
+
+
+Equivalent Lift to Drag ratio for rotors
+o L = Vertical component of rotor thrust
+o D = Main rotor power
+forward speed − Fuselage drag
+(only rotors are being compared, so fuselage drag subtracted)
+Forward Speed
+L/D
+10
+Induced losses dominated
+profile losses dominated
+18
+
+
+Specific Range
+oSpecific Range(SR) = Distance travelled
+Fuel burn
+oFuel burn rate = Power × fuel per kW
+Instantaneous specific range depends on fuel flow rate which is dependent on instantaneous power which is a function of instantaneous gross weight, altitude, speed, rotor geometry.
+R= න
+start
+end
+Vdt = න
+start
+end
+V −dW
+fuel burn rate (kg/sec) = න
+GW,landing
+GW,take−off
+(SR)d(GW)
+19
+
+
+Endurance
+oSpecific Endurance(SE) = 1
+Fuel burn rate ( Τ
+kg hr)
+oFuel burn rate = Power @ loiter × fuel per kW
+Total Endurance, hr = න
+Start
+End
+dt
+=න
+GWatlanding
+GW,takeoff
+(SE)d(GW)
+20
+
+
+Maximizing Range and Endurance
+Forward Speed
+Fuel burn rate (kg/hr)
+Max endurance speed Max range speed
+Lowest fuel burn per unit distance
+21
+
+
+Payload Range
+oIncrease in payload decreases amount of fuel that can be carried for the given GW, reducing range
+Range
+Payload
+Increase in Gross Weight
+22

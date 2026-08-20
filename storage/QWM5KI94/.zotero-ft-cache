@@ -1,0 +1,988 @@
+BBrriigghhaamm YYoouunngg UUnniivveerrssiittyy
+BBYYUU SScchhoollaarrssAArrcchhiivvee
+Faculty Publications
+2022-6
+FFLLOOWWUUnnsstteeaaddyy:: AAnn IInntteerraaccttiioonnaall AAeerrooddyynnaammiiccss SSoollvveerr ffoorr
+MMuullttiirroottoorr AAiirrccrraafftt aanndd WWiinndd EEnneerrggyy
+Eduardo Alvarez BrighamYoungUniversity, ealvarez@byu.edu
+Judd Mehr BrighamYoungUniversity, juddmehr@gmail.com
+Andrew Ning BrighamYoungUniversity, aning@byu.edu
+Follow this and additional works at: https://scholarsarchive.byu.edu/facpub
+Part of the Mechanical Engineering Commons
+OOrriiggiinnaall PPuubblliiccaattiioonn CCiittaattiioonn Alvarez, E. J., Mehr, J., and Ning, A., “FLOWUnsteady: An Interactional Aerodynamics Solver for Multirotor Aircraft and Wind Energy,” AIAA Aviation Forum, Chicago, IL, Jun. 2022.
+BBYYUU SScchhoollaarrssAArrcchhiivvee CCiittaattiioonn Alvarez, Eduardo; Mehr, Judd; and Ning, Andrew, "FLOWUnsteady: An Interactional Aerodynamics Solver for Multirotor Aircraft and Wind Energy" (2022). FacultyPublications. 5830. https://scholarsarchive.byu.edu/facpub/5830
+This Conference Paper is brought to you for free and open access by BYU ScholarsArchive. It has been accepted for inclusion in Faculty Publications by an authorized administrator of BYU ScholarsArchive. For more information, please contact ellen_amatangelo@byu.edu.
+
+
+FLOWUnsteady: An Interactional Aerodynamics Solver for
+Multirotor Aircraft and Wind Energy
+Eduardo J. Alvarez∗, Judd Mehr†, and Andrew Ning‡ Brigham Young University, Provo, Utah, 84602
+Manuscript accompanying the presentation delivered at AIAA AVIATION Forum 2022 under the same title. The code released in this study is available at github.com/byuflowlab/FLOWUnsteady.
+The ability to accurately and rapidly assess unsteady interactional aerodynamics is a shortcoming and bottleneck in the design of various next-generation aerospace systems: from electric vertical takeoff and landing (eVTOL) aircraft to airborne wind energy (AWE) and wind farms. In this study, we present a meshless CFD framework based on the reformulated vortex particle method (rVPM) for the analysis of complex interactional aerodynamics. The rVPM is a large eddy simulation (LES) solving the Navier-Stokes equations in their vorticity form. It uses a meshless Lagrangian scheme, which not only avoids the hurdles of mesh generation, but it also conserves the vortical structure of wakes over long distances with minimal numerical dissipation, while being 100x faster than conventional mesh-based LES. Wings and rotating blades are introduced in the computational domain through actuator line and actuator surface models. Simulations are coupled with an aeroacoustics solver to predict tonal and broadband noise radiated by rotors. The framework, called FLOWUnsteady, is hereby released as an open-source code and extensively validated. Validation studies published in previous work by the authors are summarized, showcasing rotors across operating conditions with a rotor in hover, propellers, a wind turbine, and two side-by-side rotors in hover. Validation of rotor-wing interactions is presented simulating a tailplane with tip-mounted propellers and a blown wing with propellers mounted mid-span. The capabilities of the framework are showcased through the simulation of a tiltwing eVTOL vehicle and an AWE wind-harvesting aircraft, featuring rotors with variable RPM, variable pitch, tilting of wings and rotors, non-trivial flight paths, and complex aerodynamic interactions.
+Fig. 2 Example of an eVTOL aircraft. This is a modified version of the A3 Vahana demonstrator, which is a tandem tiltwing aircraft.
+Fig. 3 Other multirotor aerospace systems that encounter complex aerodynamic interactions: (top) Makani AWE windharvesting aircraft and (bottom) wind farm.
+∗Doctoral Candidate, Department of Mechanical Engineering, edoalvarezr@gmail.com, AIAA Member. †Doctoral Candidate, Department of Mechanical Engineering, juddmehr@gmail.com, AIAA Member. ‡Associate Professor, Department of Mechanical Engineering, aning@byu.edu, AIAA Senior Member.
+1
+
+
+I. Introduction
+Electric vertical takeoff and landing (eVTOL) aircraft is a flourishing technology that is projected to grow into a $1.5 trillion industry of urban air mobility by the year 2040 [1]. These novel aircraft belong to a new design space that has been enabled by recent and ongoing advancements in electric battery technology. An electric powertrain allows the designer to distribute the propulsion system into multiple rotors to takeoff and land vertically, as shown in Fig. 2. However, the complicated aerodynamic interactions encountered in eVTOL are not well understood, are not captured through conventional design tools, and need to be addressed in the early stages of design [2, 3]. For instance, current models used in preliminary design fail to predict and assess configurations that may lead to the wake of a rotor impinging on another rotor or a wing during the transition maneuver. These unsteady interactions can be analyzed with computational fluid dynamics (CFD) methods; however, resolving wake dynamics in conventional CFD tools requires high-order numerical schemes and mesh resolutions with associated computational costs that make them prohibitive for design space exploration. Furthermore, similar interactions are also encountered across many aerospace systems that make use of multiple rotors: from recreational photography drones and fixed-wing aircraft with distributed propulsion to airborne wind energy (AWE) and conventional wind farms, the last two shown in Fig. 3. Thus, the ability to rapidly and accurately assess unsteady interactional aerodynamics is a shortcoming and bottleneck in the design of various next-generation aerospace systems. Facing the growing need to predict complex aerodynamic interactions, academia and industry have turned their attention in recent years to a promising candidate that might address this need: the vortex particle method (VPM). The VPM is a Lagrangian method solving the Navier-Stokes equations in their vorticity-velocity form, which is especially well suited for resolving wake dynamics over long distances with minimal computational effort. For instance, Fig. 4 shows the propeller wake of a VPM simulation, capturing the evolution of the wake even with a coarse resolution: from a coherent vortical structure to turbulent breakdown and mixing, predicting the correct mechanisms of transition in between. Fig. 5 shows a mid-fidelity VPM simulation resolving the wake mixing and aerodynamic interactions between two propellers. The VPM has recently been used as a mid-fidelity tool for eVTOL rotor-rotor interactions [6, 7], flight path [8], stacked rotors [9], tiltrotor [10], and multirotor tiltwing [11]. For context, Table 1 shows the VPM (middle column) in the range of existing analysis tools for multirotor aircraft design. In spite of its growing popularity, VPM is known to be numerically unstable when vortical structures break down close to the turbulent regime. This has limited its range of applications in the aforementioned studies to mostly benign cases with well-behaved numerics (e.g., coarse simulations of rotors with an axial inflow). Furthermore, limited
+Fig. 4 Low-fidelity VPM simulation capturing the evolution of a propeller wake from a coherent vortical structure to turbulent breakdown and mixing. Figure reproduced from Reference [4].
+Fig. 5 Mid-fidelity VPM simulation capturing wake mixing and aerodynamic interactions between two propellers. Figure reproduced from Reference [5].
+2
+
+
+Table 1 Analysis tools for multirotor aircraft design.
+Low fidelity Low computation
+High fidelity High computation
+Unsteady
+interactions? ✘ ✓ ✓ ✓ ✓
+Wake mixing? ✘ ✘ ✓ ✓
+Fast enough
+for design? conceptual conceptual /
+preliminary preliminary preliminary / detailed detailed
+Software AVL, ASWING, XFLR5,
+XROTOR, CCBlade
+RCAS, CAMRAD II, CHARM, VSPAERO, FlightStream
+GENUVP, DUST, RCAS-VPM
+FLOWVPM, FLOWUnsteady
+STAR-CCM+, ANSYS Fluent, OVERFLOW, Helios, PowerFLOW
+[a] Sheridan et al. (2021). Evaluation of VSPAERO Analysis Capabilities for Conceptual Design of Aircraft with Propeller-Blown Wings. AIAA AVIATION Forum. [b] Droandi et al. (2018). Tiltwing Multi-Rotor Aerodynamic Modeling in Hover, Transition and Cruise Flight Conditions. AHS International 74th Annual Forum. [c] Montagnani et al. (2019). Mid-fidelity Analysis Of Unsteady Interactional Aerodynamics Of Complex VTOL Configurations. 45th European Rotorcraft Forum. [d] Ventura Diaz, P., & Yoon, S. (2018). High-Fidelity Computational Aerodynamics of Multi-Rotor Unmanned Aerial Vehicles. AIAA Aerospace Sciences Meeting.
+meshless LES
+Free-wake Methods
+Vortex Particle Method
+Reformulated Vortex Particle Method
+Mesh-Based CFD
+BEMT lifting line VLM
+panel methods UVLM
+filament wake URANS LES
+DES LBM
+[a]
+[b] [c]
+[d]
+validation has been provided since the lack of numerical stability typically embroils the efforts to show that simulations are convergent. In short, the classic VPM suffers from the following shortcomings due to its poor numerical stability: 1) Applicable to only low and mid-fidelity simulations (simulations become numerically unstable as spatial resolution is increased). 2) Applicable to only numerically well-behaved cases (e.g., propellers in forward flight and wakes before breakdown/mixing). 3) Lack of numerical convergence. 4) Scarcity of validation studies in the literature.
+In order to address these issues, the VPM has been overhauled in recent work by the authors [12, 13], proposing a reformulation of the VPM. The new method, referred to as the reformulated VPM or rVPM, uses a new set of governing equations derived directly from the Navier-Stokes equations filtered for large eddy simulation (LES). The new equations reinforce conservation of mass and angular momentum by reshaping the vortex elements subject to vortex stretching. The VPM reformulation, coupled with a novel subfilter-scale model of vortex stretching, provides an LES scheme that is meshless and numerically stable. In this study, we present a CFD framework based on the reformulated VPM for simulating complex interactional aerodynamics. As shown in References [12] and [13], the rVPM is a meshless LES that efficiently preserves vortical structures, eliminates the complexities of mesh generation, is absent of the numerical dissipation associated with mesh-based CFD, does not suffer from the conventional Courant–Friedrichs–Lewy (CFL) condition, and is 100x faster than mesh-based LES with comparable fidelity. Furthermore, since it is not limited by the classic CFL condition, rVPM can be used across all levels of fidelity, all in the same framework by simply coarsening or refining the simulation. This makes the reformulated VPM a variable-fidelity tool: low and mid-fidelity simulations can be used for design exploration (conceptual and preliminary design stages) with run times of minutes and hours, while high-fidelity simulations can be used for detailed design with run times of hours and days, all in the same framework as depicted in Table 2. In Section II, we build upon Reference [12] and further develop our meshless LES to include rotors and wings in the computational domain through actuator models. A novel, vorticity-based, actuator surface model (ASM) is
+3
+
+
+Table 2 Variable fidelity achieved with the reformulated VPM.
+Low fidelity Low computation
+High fidelity High computation
+Variable fidelity with reformulated VPM
+Low Fidelity Mid Fidelity High Fidelity
+Resolution coarse
+(10k – 100k particles)
+mid (100k – 1M particles)
+fine (1M – 10M particles) Wall-clock time
+(on laptop computer) 3 minutes – 30 minutes 1 hour – 12 hours 1 day – 4 days
+Design stage conceptual preliminary detailed
+developed for wings, which is suitable for rotor-wing interactions when a wake impinges on the surface of a wing. This ASM imposes the no-flow-through condition at the airfoil centerline by calculating the circulation that meets this condition and by immersing the associated vorticity following a pressure-like distribution. The aeroacoustics solver PSU-WOPWOP is also coupled to our meshless LES to predict tonal and broadband aeroacoustic noise radiated by rotors. This framework, called FLOWUnsteady∗, is implemented and hereby released as an open-source software. In Section II.F, previous studies by the authors validating FLOWUnsteady for the simulation of rotor-rotor interactions are summarized. These studies have simulated rotors across operating conditions with a rotor in hover, propellers, a wind turbine, and two side-by-side rotors in hover. In Section III, we incrementally validate each aspect of the rotor-wing interactions encountered when a rotor wake impinges on a wing. Predicting accurate rotor-wing interactions hinges on accurately resolving the rotor wake; hence, a detailed validation study characterizing the accuracy of the propeller wake is presented. A wing and rotors are then placed in a configuration resembling a tailplane with tip-mounted propellers, followed by a conventional configuration where the propellers are mounted mid-span. The predicted rotor-wing interactions are validated by comparison to experimental studies reported in the literature. Finally, the capabilities of FLOWUnsteady are showcased in Section IV through the simulation of a tiltwing eVTOL vehicle and an AWE wind-harvesting aircraft, featuring rotors with variable RPM, tilting of wings and rotors, non-trivial flight paths, and complex aerodynamic interactions.
+II. Modeling Methodology
+II.A. Meshless Large Eddy Simulation
+In recent work [12], we have derived a new formulation of the vortex particle method (VPM) from the LES-filtered Navier-Stokes equations. The new method, referred to as the reformulated VPM or rVPM, is an LES that is both numerically stable and meshless, while able to accurately resolve mean and fluctuating large-scale features of turbulent flow with minimal computational effort. In this section we concisely summarize the governing equations of the reformulated VPM, and the reader is referred to Reference [12] and the doctoral dissertation [13] accompanying this work for a detailed derivation of the method. The reformulated VPM uses a Lagrangian scheme to solve the vorticity form of the LES-filtered Navier-Stokes
+∗Open-source code available at github.com/byuflowlab/FLOWUnsteady
+4
+
+
+equations
+∂ωi
+∂t + uj
+∂ωi ∂xj
+= ωj
+∂ui ∂xj
++ ν∇2ωi −
+∂T ′
+ij
+∂xj
++ ∂Tij
+∂xj
+, (1)
+where the bar denotes the filter operator†, and Tij ≡ uiωj − ui ωj is the subfilter-scale (SFS) vorticity stress capturing the interactions between large-scale dynamics and SFS dynamics. The term ∂T′
+ij/∂xj represents the SFS contributions arising from the advective term (vorticity advection), while ∂Tij/∂xj represents the contributions arising from vortex stretching. For simplicty, Eq. (1) is written in vector notation as
+d
+dt ω = (ω · ∇) u + ν∇2ω − Eadv − Estr, (2)
+where (Eadv)i ≡ ∂T′
+ij
+∂xj is the SFS vorticity advection, (Estr)i ≡ − ∂Ti j
+∂xj is the SFS vortex stretching, and the d
+dt operator is
+the linearized version of the filtered material derivative, d
+dt () ≡ ∂
+∂t () + (u · ∇)(). Notice that casting the Navier-Stokes
+equation into this vorticity form gets rid of all dependance on pressure. Furthermore, this equation depends on ω alone since u can be calculated directly from ω through the Biot-Savart law. The material derivative in Eq. (2) and the material-conservative nature of the vorticity makes the ω field especially well fit for a Lagrangian description. The unfiltered ω field is discretized with singular vortex particles of positions xp and coefficients Γp (called vortex strength), approximating ω as
+ω(x, t) ≈ ∑
+p
+Γp (t)δ(x − xp (t)), (3)
+where δ is the Dirac delta. Applying the filter operator,
+ω (x) =
+∞ ∫
+−∞
+ω (y) ζσ (x − y) dy ≈
+∞ ∫
+−∞
+*.
+,
+∑
+p
+Γp δ(y − xp )+/ 
+ζσ (x − y) dy,
+the Dirac delta collapses the integral, obtaining an approximation of the filtered vorticity field as
+ω (x, t) ≈ ∑
+p
+Γp (t)ζσp (x − xp (t)), (4)
+where ζσ (x) ≡ 1
+σ3 ζ ( ‖x‖
+σ
+) is the filter kernel of width σ and radial basis ζ. As seen in Eq. (4), the filter operator has the effect of spreading the vortex strength Γp in space, regularizing the singularity originally introduced by the Dirac delta. Thus, the filter kernel takes the role of a basis function that is used to discretize ω through particles. We let the filter width σ (here on called smoothing radius or core size) change in time and space according to the evolution of each individual particle. The particle field constructs a continuous vorticity field computed through radial basis functions as given by Eq. (4), and also a continuous velocity field by inverting the relation ω = ∇ × u as
+u (x) = − 1
+4π
+∑
+p
+gσp
+(x − xp
+) x − xp
+‖x − xp ‖3 × Γp, (5)
+where gσ is a regularizing function associated with the filter kernel ζσ. Hence, all fluid properties—like u and its spatial derivatives—are continuous and can be computed analytically. Similar to the process that led from Eq. (3) to Eq. (4), we use singular particles to discretize the LES-filtered vorticity
+†Let φ be a field and ζσ a filter kernel with cutoff length σ, the filter operator is denoted by a bar and defined as φ (x) ≡
+∞ ∫
+−∞
+φ(y)ζσ (x − y) dy.
+5
+
+
+equation, Eq. (2), and arrive to the governing equations of the reformulated VPM:
+d
+dt xp = u(xp) (6)
+d
+dt Γp = (Γp · ∇) u(xp) − g + f
+1/3 + f
+{ [ (Γp · ∇) u(xp )] · Γˆ p
+} Γˆ p − Cd
+ζσp (0)
+[
+Estr (xp ) − f
+1/3 + f
+(Estr (xp ) · ˆΓp
+) Γˆ p
+]
+(7)
+d
+dt σp = −
+( g+ f 1+3f
+) σp
+‖Γp ‖
+[ (Γp · ∇) u(xp )] · Γˆ p +
+(f
+1+3f
+) σp
+‖Γp ‖
+Cd
+ζσp (0) Estr (xp ) · Γˆ p (8)
+(d
+dt ω
+)
+viscous
+= ν∇2ω (9)
+where Eq. (6) resolves vorticity advection by convecting the particles, Eq. (7) governs the evolution of vortex strength, and Eq. (8) governs the evolution of particle size. Eq. (7) in conjunction with Eqs. (6) and (8) resolve the inviscid part of the LES-filtered vorticity Navier-Stokes equation, while the viscous part in Eq. (9) is resolved through any of the various schemes proposed in the literature (e.g., vortex redistribution method [14, 15], particle strength exchange [16], or core spreading [17]). The main headway of the reformulated VPM over the classic VPM is that rVPM uses the particle size, or d
+dt σp, as an extra degree of freedom to reinforce conservation laws. As shown in References [12] and [13], momentum and mass conservation leads to f = 0 and g = 1/5, and Eqs. (7) and (8) become
+d
+dt Γp = (Γp · ∇) u(xp ) − 3
+5
+{ [ (Γp · ∇) u(xp )] · ˆΓp
+} Γˆ p − Cd
+ζσp (0) Estr (xp )
+d
+dt σp = − 1
+5
+σp ‖Γp ‖
+[ (Γp · ∇) u(xp )] · Γˆ p,
+which is the formulation referred to as the “reformulated VPM”. Notice that when f = g = 0 and Estr is neglected, Eqs. (7) and (8) collapse back to the classic VPM equations, making these equations a generalization of the classic method. In Reference [12], we show that the classic VPM turns out to violate both conservation of momentum and mass when it assumes d
+dt σp = 0, which explains the tendency of the classic VPM to be numerically unstable. Furthermore, notice that the rVPM equations do not require more computation than the classic VPM: When SFS effects are neglected (Estr = 0), both dσp
+dt and dΓp
+dt are calculated directly and solely from vortex stretching, (Γp · ∇) u(xp).
+Turning our attention back to the SFS stress tensor Tij, the accuracy of LES hinges on the modeling of this tensor. Its divergence represents the rate at which enstrophy—a measure of rotational kinetic energy—is transferred from resolved scales to subfilter scales (diffusion) and from subfilter scales to resolved scales (backscatter). In vortex methods, the most common SFS models use variants of the Smagorinsky eddy-viscosity model formulated for the vorticity stress [18, 19]. However, these models are developed on the basis of homogeneous isotropic turbulence, which makes them overly diffusive in simulations with coherent vortical structures. In Reference [12], we have developed the following anisotropic dynamic model of SFS vortex stretching:
+Estr (x) ≈ ∑
+q
+ζσ (x − xq) (Γq · ∇) (u (x) − u (xq
+)) .
+The model coefficient Cd is calculated dynamically at the position of every particle as
+Cd =
+〈Γp · L〉
+〈Γp · m〉,
+where 〈·〉 denotes an integration along Lagrangian trajectories [20], and
+m = σ3
+ζ (0)
+∂Estr
+∂σ (xp)
+L= 3
+σ
+(Γp · ∇) (u(xp) − u(xp)) + (Γp · ∇) ∂u
+∂σ (xp).
+6
+
+
+Table 3 Benchmark of reformulated VPM against the classic VPM reported in Reference [12].
+Formulation SFS Model CPU Time Overhead
+Classic None tref 
+Reformulated None 1.01 tref <1%
+Reformulated Constant Cd 1.08 tref +8%
+Reformulated Dynamic Cd 1.43 tref +43%
+This dynamic procedure is based on a simultaneous balance of enstrophy-production and derivatives between true and modeled SFS contributions. Backscatter is controlled by clipping the model coefficient to Cd = 0 whenever the
+condition CdΓp · Estr(xp) ≥ 0 is not satisfied. This results in a low-dissipation SFS model that uses vortex stretching as the physical mechanism for turbulence, which is well suited for flows with coherent vortical structures where the predominant cascade mechanism is vortex stretching. In FLOWVPM—the rVPM solver used by FLOWUnsteady—vortex stretching is solved in the transposed scheme [21, 22] and the divergence of the vorticity field is treated through the relaxation scheme developed by Pedrizzeti [23]. The time integration of the governing equations is done through a low-storage third-order Runge-Kutta scheme [24]. A Gaussian kernel is used as the LES filter ζσ (or VPM radial basis function). Like the classic VPM, the reformulated VPM is spatially second-order accurate in the convective term when a Gaussian basis is used [25]. Viscous diffusion is solved through the core spreading method coupled with the radial basis function interpolation approach for spatial adaptation developed by Barba [26–28]. This viscous scheme has second-order spatial convergence, while showing linear convergence when coupled with spatial adaptation [17]. The fast multipole method [29, 30] (FMM) is used for the computation of the regularized Biot-Savart law, approximating the velocity field and vortex stretching through spherical harmonics with computational complexity O(N ), where N is the number of particles. The FMM computation of vortex stretching is performed through an efficient complex-step derivative approximation [31], implemented in a modified version of the open-source, parallelized code ExaFMM [32, 33]. FLOWVPM and FLOWUnsteady are implemented in the Julia language [34], which is a modern, high-level, dynamic programming language for high-performance computing. In Reference [12], the computational cost of the VPM reformulation, the SFS model, and the dynamic procedure were benchmarked against the classic VPM in a vortex ring simulation, which is summarized in Table 3. The reformulated VPM runs as fast as the classic VPM, adding no extra computation. The SFS model increases the computational cost by 8% when a constant model coefficient is prescribed and 43% when the dynamic procedure is used. Comparing this to a benchmark study on conventional mesh-based LES by Chapelier et al. [35], we see that the cost of our SFS model is comparable to a Smagorinsky eddy-viscosity model, while our dynamic procedure has a cost comparable to a Germano-identity dynamic model.
+II.B. Meshless LES With Immersed Vorticity
+In order to immerse the vorticity of solid boundaries into the LES-filtered Navier-Stokes equations, the filtered vorticity field ω(x, t) is decomposed into a free-vorticity field ωfree(x, t) and a bound-vorticity field ωbound(x, t) as
+ω = ωfree + ωbound.
+Both components can be discretized with vortex particles as
+ω(x) = ∑
+p
+Γp ζσp
+(x − xp
+)
+} {{ } ω free
++
+∑
+b
+Γb ζσb (x − xb )
+} {{ } ω bound
+,
+where the particles discretizing the free-vorticity field evolve according to the rVPM governing equations, Eqs. (6) to (9), while the ones discretizing the bound-vorticity are embedded on the boundary and their strength is calculated by actuator models given in the following sections. The velocity field is obtained by inverting the relation ω = ∇ × u, resulting in
+u (x) = ∑
+p
+gσp
+(x − xp
+) K (x − xp
+) × Γp
+} {{ } ufree
++
+∑
+b
+gσb (x − xb ) K (x − xb ) × Γb
+} {{ } ubound
+,
+7
+
+
+which includes the velocity induced by both free and bound vorticity components, and where K (x) ≡ − 1
+4π
+x
+‖x‖3 . Thus, the evolution of the free particles is influenced by the presence of the bound particles, affecting their convection and vortex stretching through the velocity field induced by the immersed vorticity. The immersed vorticity not only affects the evolution of existing free vorticity, but it also creates new free vorticity at the boundary through viscous diffusion. In reality, vorticity is created in the boundary layer, it builds up as it travels along the surface, and it is eventually shed off the surface either by the Kutta condition at the trailing edge, flow separation, or other turbulent mechanisms. In a slender body, the vorticity can be assumed to be shed at the trailing edge. In our simulations, instead of creating vorticity through the viscous diffusion equation, the immersed vorticity is shed at a prescribed trailing edge. This approach neglects the wake created by flow separation. However, the effects of flow separation on loading (like the drop in lift and increase in pressure drag on a stalled airfoil) can still be captured whenever lookup airfoil tables are used.
+II.C. Rotor Model (Actuator Line Model)
+Rotors will be introduced in our meshless LES through an actuator line model (ALM), as described in this section. Studies have shown that wake dynamics and unsteady quantities (like thrust and power) predicted with ALM can be as accurate as a blade-resolved simulation [36, 37]. Actuator models typically include two schemes: one scheme for calculating blade forces from the fluid domain, and another for immersing such forces back into the fluid domain. In Section II.C.1 we describe how the force is calculated in our ALM using blade elements with lookup airfoil tables, which is a common ALM approach. However, instead of introducing the force as a momentum source as typically done in conventional CFD, the force is introduced in our meshless LES by immersing its associated vorticity, as explained in Section II.C.2.
+II.C.1. Force Calculation
+Blades are discretized through blade elements, which carry 2D airfoil data like lift and drag coefficients as a function of the angle of attack seen by the airfoil. These lift and drag curves are either automatically precomputed through the viscous panel code XFOIL or prescribed from experimental data to construct lookup tables. Hence, our ALM relies on the accuracy of the tabulated airfoil data to capture viscous effects like parasitic drag and stalled conditions, and compressible effects like wave drag, and it assumes that the data provided by the user already account for the effects of Mach and Reynolds numbers. Both lift and drag curves are then treated to capture three-dimensional drag and stall-delay effects due to centrifugal forces [38] and the Viterna method [39] is applied to obtain post-stall ±180◦ extrapolations of these curves. During the simulation, the fluid domain computed by the LES is probed at the quarter-chord position of each blade element. The local velocity is used to calculate the effective angle of attack θeff, which is in turn used with the tabulated
+airfoil data to determine the sectional lift and drag coefficients, c` and cd respectively. A tip correction Ftip is then
+applied to c` to account for the effects that bring the aerodynamic loading at the tip to zero, while a hub correction Fhub
+is also applied to account for the presence of the hub. Ftip and Fhub are defined as modified Prandtl loss functions,
+Ftip = 2
+π cos−1 (exp (− ftip
+) ) , ftip = B
+2
+[ ( Rrotor r
+)t1 − 1
+] t2
+| sin (θeff ) |t3
+and
+Fhub = 2
+π cos−1 (exp (− fhub)) , fhub = B
+2
+[( r
+Rhub
+)h1 − 1
+] h2
+| sin (θeff ) |h3 ,
+where Rrotor and Rhub are the rotor and hub radii, B is the number of blades, r is the radial position of the blade element,
+and t1, t2, t3, h1, h2, and h3 are tunable parameters. Finally, the normal and tangential force coefficients, respectively cn
+and ct , are calculated as
+cn = FtipFhubc` cos θeff + cd sin θeff
+and
+ct = FtipFhubc` sin θeff − cd cos θeff .
+Rotor metrics like thrust, torque, and power are computed by integrating the load distribution along each blade.
+8
+
+
+Fig. 6 Particles used for immersed vorticity in actuator line model. Particles colored by their source of vorticity; arrows indicate direction of vortex strength. Figure reproduced from Reference [31].
+II.C.2. Immersed Vorticity
+The force along each blade is introduced back into the fluid domain by converting it into an equivalent immersed vorticity. The aerodynamic loading is first converted into a circulation distribution Γ using the Kutta-Joukowski theorem as
+Γ = cVlocal
+2 FtipFhubc`,
+where Vlocal is the local velocity seen by the blade element and c is its chord length. The vorticity is immersed by embedding particles along the surface that capture the blade’s circulation distribution, while shedding free particles at the trailing edge associated with unsteady loading and trailing circulation, as shown in Fig. 6. The frequency of particle shedding per revolution determines the initial spacing ∆x in between particles, which, along with the core size σ, determines the spatial resolution at which the wake is being resolved. The number of elements along each blade determines the spatial resolution at which the blades are being resolved.
+II.D. Wing Model (Actuator Surface Model)
+While the ALM based on tabulated airfoil data is accurate for rotors, such an actuator model is only loosely-coupled with the fluid domain and imposes no boundary conditions. This makes it inadequate for cases with strong wake impingement, as in the case of a blown wing. Hence, wings will be introduced in our meshless LES through a different actuator model that is tightly coupled imposing a boundary condition at the surface of the wing. This boundary condition, called no-flow-through condition, consists of imposing a zero velocity normal to the surface of the wing, meaning that no flow goes through the surface. This is satisfied by solving for the circulation distribution that cancels the normal flow, as explained in Section II.D.1. The associated vorticity is then immersed in the LES through an actuator surface model (ASM) in Section II.D.2. Finally, the calculation of aerodynamic, viscous, and unsteady forces are described in Section II.D.3.
+II.D.1. Circulation Solver
+The wing is discretized into wing elements in similitude to the discrete-vortex Weissinger model [40], as shown in Fig. 7. Each wing element is composed of a bound vortex at the quarter-chord position (line AB) and two trailing bound vortices extending to the trailing edge (lines A′ A and BB′). The velocity induced by the i-th wing element is approximated through vortex filaments as
+ui (x) = Γi
+∑
+(a,b) ∈Hi
+gab (x) , Hi = {( A′, A), ( A, B), (B, B′)} ,
+where
+gab (x) = 1
+4π
+ra × rb
+‖ra × rb ‖2
+( ra
+‖ra ‖ − rb
+‖rb ‖
+)
+· rab,
+9
+
+
+A'
+A
+B
+B'
+cp
+Fig. 7 Wing element used in circulation solver.
+rab = xb − xa, ra = x − xa, and rb = x − xb. For ease of notation, we rewrite this as
+ui (x) = ΓiGi (x) (10)
+where Gi = ∑ gab contains the geometric information of the i-th wing element. The wing’s self-induced velocity is then calculated as
+uwing (x) = ∑
+i
+ui (x) . (11)
+In order to compute the circulation Γ along the wing, a control point xcp is defined at the three-quarter-chord position of each wing element shown in Fig. 7, on which the no-flow-through condition is imposed. The local velocity ulocal is calculated by adding the wing-induced velocity uwing, the kinematic velocity due to the motion of the wing ukin, and the velocity field calculated by the LES uLES (computed before immersing the vorticity of the wing surface‡). The local
+velocity at the i-th control point is then computed as
+ui
+local (t) = uwing (xi
+cp, t) + ui
+kin (t) + uLES (xi
+cp, t)
+and the no-flow-through condition is imposed as
+ui
+local · ˆni = 0,
+leading to
+ui
+wing · nˆ i = − (ui
+kin + ui
+LES
+) · ˆni, (12)
+where the superscript i denotes the corresponding function evaluated at the i-th control point, and ˆni is the unit vector
+that represents the normal to the surface of the i-th wing section. We approximate nˆ as n = (xA′ − xA) × (xB − xA) and nˆ = n/‖n‖.
+Replacing Eqs. (10) and (11) in Eq. (12), we arrive to
+∑
+j
+Γj Gi
+j · nˆ i = − (ui
+kin + ui
+LES
+) · nˆ i.
+Given a wing with N elements, this poses a linear system of N equations (one for each control point xicp) and N unknowns, Γj. The circulation distribution Γj that satisfies the boundary condition is then obtained by solving the system of equations. When the vorticity of the wing is immersed in the fluid domain, the LES solver and the circulation solver become tightly coupled. We have observed that this system can become numerically unstable when the wing experiences large velocity fluctuations, hence we introduce a relaxation procedure that updates Γ as
+Γnew = αΓ + (1 − α)Γold.
+All simulations in this study use α = 0.3.
+‡Thus, uLES at this point includes the velocity induced by the wing wake, but it excludes the velocity induced by the wing surface on itself.
+10
+
+
+II.D.2. Immersed Vorticity
+In order to immerse the wing’s vorticity in the computational domain of the LES, the vorticity associated with the circulation distribution needs to be spread chordwise rather than concentrated at the lifting line. This requires assuming a distribution g(x∗) that will spread the circulation of the i-th blade element into a vortex sheet of strength γ(x∗) as
+γ(x∗) = Γig(x∗), with
+∞ ∫
+−∞
+g(x/c) dx = 1
+and where x∗ = x/c is the chordwise position. At the same time, the trailing circulation is spread onto a vortex sheet of strength γt (x∗) as
+γt (x∗) =
+x∗
+∫
+0
+γ(x, ) dx,,
+in order to satisfy Kelvin’s theorem. Given g(x∗), the center of pressure is the centroid of the distribution. Noticing that most of the turning of the flow is usually done towards the leading edge, and that the pressure distribution typically follows that trend, we now propose a vorticity distribution akin to a pressure distribution. As a reference, Fig. 8 (left) shows the pressure difference between upper and lower surfaces at multiple stations measured experimentally by Veldhuis [41] on a planar wing. Even though the chordwise pressure distribution seems to vary between the different spanwise stations, normalizing each distribution evidences their similarity, as shown in Fig. 8 (right, black lines). Also, note that the center of pressure ranges between x/c = 0.20 to x/c = 0.25. We propose a pressure-like distribution given by
+g(x∗) =
+
+a 4π
+1−exp
+(
+−( x∗
+0.02
+)3)
+x∗ if 0 ≤ x∗ ≤ 1
+0 else
+where a is determined numerically as a = 3.061661 in order to obtain a unitary distribution. This distribution is shown in Fig. 8 (right), with its center of pressure at x/c = 0.2393. Fig. 9 shows the simulation of a planar wing (aspect ratio 5.33 and AOA 4◦) using the pressure-like vorticity distribution, where the vorticity is concentrated at the leading edge, while varying spanwise and chordwise. In order to assess the fitness of the vorticity distribution, Fig. 10 shows a slice of the flow field around the planar wing. The figure in the right show the velocity field, where the the pressure-like distribution leads to a flow that is turned close to the leading edge. Note that it succeeds at making the flow tangent to the airfoil centerline at the three-quarter chord position. The streamlines passing through leading and trailing edges are shown in blue and brown, respectively, and the gap between them corresponds to the flow that crosses the centerline. In Reference [13], we compared multiple ASM distributions, concluding that the pressure-like distribution minimizes the amount of flow permeated through the centerline surface. A pressure-like ASM was previously proposed by Shen et al. [42]; however, their ASM was based on tabulated airfoil data and developed as a momentum-source term for the Navier-Stokes equations in their pressure-velocity form. The novelty of our ASM lays on that it is based on a circulation solver and developed for immersing vorticity in the vorticity form of the Navier-Stokes equations.
+II.D.3. Force Calculation
+The intensive force f exerted on a fluid, or force per unit volume, is defined as
+f= d
+dt ( ρu) ,
+which in incompressible flow becomes
+f = ρ du
+dt .
+11
+
+
+0.00 0.25 0.50 0.75 1.00
+x/c
+0
+1
+2
+Pressure difference Cp
+2y/b = 0.17 2y/b = 0.35 2y/b = 0.60 2y/b = 0.81
+0.00 0.25 0.50 0.75 1.00
+x/c
+0
+2
+4
+6
+8
+Distribution Cp
+1
+0 Cp dx
+g(x ) = 4a
+1 exp( (0x.02 )3) x
+Fig. 8 (left) Experimental chordwise pressure distribution on a planar wing reported by Veldhuis [41], and (right) their normalized distributions. Markers in (right) indicate corresponding centers of pressure.
+Fig. 9 Wing simulation using ASM with pressure-like distribution. Volume rendering of vorticity magnitude. Vertical plane at 2y/b = 0.5 corresponds to slice shown in Fig. 10.
+ω∗
+y, ω∗
+x
+Fig. 10 Slice at 2y/b = 0.5 in planar wing simulation with ASM. (Left) lifting vorticity ω∗
+y = ωy b/U∞ and
+trailing vorticity ω∗
+x = ωx b/U∞, and (right) velocity magnitude and streamlines. Streamlines that pass through
+leading edge and trailing edge are shown in blue (- ) and brown (-), respectively.
+12
+
+
+Expanding the total derivative operator,
+f = ρ∂u
+∂t + ρ (u · ∇) u,
+we notice that this is simply the left-hand side of the Navier-Stokes momentum equation. The force can then be decomposed into an unsteady component fu ≡ ρ ∂u
+∂t and a quasi-steady component fs ≡ ρ (u · ∇) u as
+f = fu + fs.
+Using the following identity
+∇(A · B) = (A · ∇)B + (B · ∇)A + A×(∇×B) + B×(∇×A),
+the quasi-steady component becomes
+fs = ρ
+[1
+2 ∇ (u · u) − u × (∇ × u)
+] .
+For ease of notation, we write this as
+fs = ρ ∇u2
+2 − ρu × ω,
+where ∇u2 ≡ ∇ (u · u) and ω ≡ ∇ × u. We further decompose the steady force into a kinetic component fkin ≡ ρ ∇u2
+2
+and an aerodynamic component faero ≡ −ρu × ω as
+fs = fkin + faero.
+Note that faero is the Lamb vector when the density is unitary. Consider a chunk of fluid with volume Vol, represented by a vortex particle placed at xp inside the volume and vortex strength
+Γp ≈
+∫
+Vol
+ω dx.
+We integrate the aerodynamic component of the intensive force, faero, to get an extensive force in such volume of fluid, denoted Faero, as
+Faero = − ρ
+∫
+Vol
+u(x′) × ω(x′) dx′,
+where we have assumed a uniform density ρ and incompressible flow. Assuming that the particle is the only source of vorticity inside the volume and using the singular particle approximation, ω(x) ≈ Γp δ(x − xp), the force is then approximated as
+Faero ≈ − ρ
+∫
+Vol
+u(x′) × Γp δ(x′ − xp ) dx′,
+becoming
+Faero ≈ −ρu(xp ) × Γp. (13)
+Thus, we have arrived to a simple but general expression that approximates the aerodynamic force experienced by the fluid. We have chosen to call it “aerodynamic” force since it is caused by the vorticity in the fluid, typically associated with the presence of circulation. Furthermore, the Kutta-Joukowski theorem—the fundamental theorem of aerodynamics—can be derived directly from this expression, as follows.
+13
+
+
+Suppose that the vorticity in such volume corresponds to the immersed vorticity of a lifting line segment with length ` and circulation Γ. The vorticity can then be represented with a bound particle of vortex strength Γb = Γ` placed at the center of the lifting line, xb. The force experienced by the volume of fluid is then
+Faero ≈ −ρu(xb ) × Γ`.
+Since the lifting line corresponds to a wing section, this Faero is an external force exerted by the wing on the fluid, and the wing feels the opposite force in response. We denote the force experienced by the wing as Fkj, defined as
+Fkj = ρu(xb) × Γ`. (14)
+If u(xb) and ` are perpendicular, the force per unit length, defined as F′
+kj ≡ ‖Fkj ‖/‖` ‖, becomes
+F′
+kj = ρu(xb )Γ,
+which is the Kutta-Joukowski theorem when u(xb) = u∞. Hence, the particle approximation of the aerodynamic force, as given in Eq. (13), is consistent with the theorem. The only assumptions we have undertaken to arrive to Eq. (13) is that of incompressible flow, and that the particle is the only source of vorticity inside the volume, i.e., ∫
+Vol
+ω dx ≈ Γp.
+In the case of the wing section, the velocity field u used in Eq. (14) can be the superposition of a freestream u∞, a kinematic velocity ukin, the velocity induced by other lifting surfaces uwing/blade, and/or a wake velocity uwake. In simple terms, the force given by Eq. (14) is the reaction due to the wing section turning the local flow around it. Hence, we refer to this force as the Kutta-Joukowski force, Fkj. Decomposing u as
+u = ukin + u∞ + uwing/blade + uwake } {{ }
+uLES
+,
+the last three velocity components are calculated by the LES. Writting Γb = Γ`, the Kutta-Joukowski force is then computed as
+Fkj = ρub
+kin × Γb + ρuLES (xb ) × Γb . (15)
+Parasitic drag along the wing is calculated using a lookup airfoil table. The drag coefficient cd can be determined
+either from the local angle of attack or the local lift coefficient, c` = 2Γ
+U∞c . Our experience is that the most accurate
+results are obtained through the local lift coefficient. The parasitic drag includes both form and skin friction drag, where form drag includes both wave drag and pressure drag due to separation. An additional force term Funs is added due to the unsteady changes of circulation, which is calculated as
+Funs = ρ dΓ
+dt Anˆ,
+where A is the area of the wing element and nˆ is its normal vector.
+II.E. Aeroacoustic Solver: Ffowcs Williams-Hawkings Analogy
+High-fidelity approaches for the prediction of aeroacoustic noise can be derived from the application of acoustic analogies to the Navier-Stokes equations. Ffowcs Williams and Hawkings introduced in 1969 an analogy that includes the effects of surfaces in arbitrary motion and turbulent flow [45]. The Ffowcs Williams-Hawkings (FW-H) equation reads
+2p′ (x, t) = ∂
+∂t ( ρ0unδ( f ))
+} {{ } monopole (thickness)
+−∂
+∂xi
+(∆Pij nˆ j δ( f ))
+} {{ } dipole (loading)
+, (16)
+where 2 ≡ 1
+c2
+∂2
+∂t2 − ∇2 is the wave-equation operator and p′ is the acoustic pressure. The first term in the right-hand
+side is a monopole source representing the volume displaced by the thickness of a solid body in motion, where un is the
+local velocity normal to the body surface and δ( f ) is the Dirac delta function describing the surface. The second term
+is a dipole source representing the force applied on the fluid by the body, where nˆ j is the normal vector away from the
+14
+
+
+body surface. Pij is the compressive stress tensor assuming ∆Pij = (p − p0)δij, where p − p0 is the gauge pressure and δij is the Kronecker delta. In this study we will solve the FW-H equation using the time-domain integral formulation 1A developed by Farassat [46]. Thickness and loading noise will be computed through the code PSU-WOPWOP coupled to FLOWUnsteady, which uses a retarded-time algorithm discretizing each integral as a mid-panel quadrature over the surface. Thickness pressure will be calculated from the three-dimensional loft of the blade, while loading pressure will use a compact representation of two-dimensional cross sections that correspond to the blade elements used by the actuator line model discussed in Section II.C The FW-H analogy not only captures the noise of blade thickness and loading, but if unsteady
+Table 4 Previous studies by the authors validating FLOWUnsteady as an accurate tool for rotor simulations.
+Case Summary Reference∗
+Turbulent
+Jet
+Validation of rVPM and SFS model as an LES able to resolve mean and fluctuating large-scale features of turbulent flow, while resolving Reynolds stresses directly. Velocity profiles compared to experiments in the literature, showing good agreement.
+[12]
+Rotor
+in Hover
+Validation of ALM in hover simulating a DJI rotor. Predicted thrust coefficient CT within 2% of the experimental value. The low computational cost of our meshless LES was demonstrated comparing the simulation to mesh-based CFD reported in the literature on this or similar DJI rotors. Our meshless LES is shown to be 100x faster than a meshbased LES with comparable fidelity.
+[12]
+Wind
+Turbine
+Validation of ALM in power-generation mode simulating a wind turbine. In a sweep of tip speed ratio, curves of thrust and power coefficients are within 1% and 13% of experimental values, respectively.
+[43]
+Rotor
+Noise
+Validation of aeroacoustic noise predicted on a DJI rotor in hover. First blade passing frequency (BPF) at most 1 dB from the experiment in all directions. Second BPF in good agreement with dettached eddy simulation (DES).
+[44]
+-45°
+-22°
+0°
+22°
+45°
+SPL (dB) of first BPF
+40
+44
+48
+52
+-45°
+-22°
+0°
+22°
+45°
+SPL (dB) of second BPF
+15
+20
+25
+30
+DES URANS
+VPM
+Side-by-Side
+Rotors
+Validation of rotor-rotor interactions predicted on two side-by-side DJI rotors in hover. The simulation captures both the thrust drop and fluctuation as rotors are brought closer together, showing satisfactory agreement with the experiment.
+[31]
+∗ Some of these studies are also found in the doctoral dissertation accompanying this work [13].
+15
+
+
+interactional aerodynamics are accurately resolved, FW-H can also predict the noise caused by unsteady loading, as in blade-vortex interaction, wake-rotor interactions, rotor-rotor interactions, and wing-rotor interactions. The noise radiated from very small scales is difficult and computationally expensive to predict deterministically, for example, in the case of noise radiated as vortices in the boundary layer stretch at the trailing edge. In this study, non-deterministic noise sources will be modeled through the semi-empirical methodology developed by Brooks, Pope, and Marcolini [47], referred to as BPM. The methodology models five self-noise mechanisms due to boundary-layer phenomena: boundary-layer turbulence passing the trailing edge, separated boundary-layer and stalled-airfoil flow, vortex shedding due to laminar-boundary-layer instabilities, vortex shedding from blunt trailing edges, and turbulent flow due to vortex tip formation.
+II.F. Previous Validation Studies
+In previous work by the authors, FLOWUnsteady has been extensively used for the simulation of rotors. Use cases have ranged from rotors in hover, propellers, and wind turbines to the interactional aerodynamics between rotors. Even though the rVPM and LES formulation of the framework is a recent development, the ALM described in Section II.C has been used with the classic VPM and extensively validated prior to the development of the rVPM. Table 4 summarizes past and recent validation studies performed with FLOWUnsteady by the authors, giving confidence that FLOWUnsteady is an accurate tool for the simulation of rotors.
+III. Validation of Rotor-Wing Interactions
+In this section, we incrementally validate each aspect of the interactions encountered when a rotor wake impinges on a wing. First, wing and rotors are considered in isolation. In Section III.B, the wing loading predicted with the actuator surface model on an isolated swept-back wing (with spanwise flow) is compared to experimental measurements. Predicting accurate rotor-wing interactions hinges on accurately resolving the rotor wake. Hence, the predicted vortical structure and velocity in a propeller wake is validated by comparison to experimental measurements, and also compared to conventional mesh-based CFD results reported in the literature. Next, a wing is placed in the wake of the propeller. In Section III.D, wing and rotor are placed in a tip-mounted configuration. The wing has a low aspect ratio and a large flap, resembling a tailplane (or horizontal stabilizer) with tip-mounted propellers. Finally, validation on a blown wing case is presented in Section III.E simulating the conventional configuration of a propeller mounted mid-span on a main wing.
+III.A. Isolated Rotor
+In order to validate our rotor ALM in propeller mode, we simulated the Beaver propeller originally used by Veldhuis [41]. This four-bladed propeller is 0.237 m in diameter, and, even though its design is rather outdated, it has been thoroughly tested experimentally and computationally by the Flight Performance and Propulsion research group at Delft University of Technology, producing abundant data for model validation. The propeller was simulated across a range of advance ratio J = V∞/nD, with a diameter-based Reynolds number at 70% the blade span ReD = 0.7πnD2/ν of
+approximately 1.8 × 106, where n is the rotations per second. No collective pitch was used, resulting in a blade pitch angle of 23.9◦ at the radial position r/R = 0.75. The propeller thrust, torque, and propulsive efficiently predicted with FLOWUnsteady are compared in Fig. 12 to experimental and numerical results reported in the literature, showing satisfactory agreement across advance ratios. Propellers typically operate at a mild incidence angle. This is because of the pitch of the vehicle, circulation in the vicinity of a wing, or both. In order to validate the accuracy of our simulations in these operating conditions, the isolated Beaver propeller was simulated ranging its angle of attack relative to the freestream from 0◦ to 20◦. Fig. 12 compares the predicted thrust to the experimental measurements reported by Sinnige et al. [49] as the incidence angle is increased at a variety of advance ratios, showing reasonable agreement with the experiment.
+III.B. Isolated Wing
+In order to validate the actuator surface model used for wings, a 45◦ swept-back wing is simulated matching the experimental conditions reported by Weber and Brebner [51]. The wing has an aspect ratio of 4.9, a span of 2.5 m, an RAE 101 airfoil section with 12% thickness, and no dihedral, twist, nor taper. This geometry is shown in Fig. 13. The freestream velocity V∞ was 49.7 m/s throughout the tests, corresponding to a chord-based Reynolds number of 1.7 × 106. The high sweep of the wing causes non-negligible spanwise flow. The wing loads reported by Weber and
+16
+
+
+Fig. 11 Beaver propeller in forward flight. Simulations: - rVPM in FLOWUnsteady; ? URANS by Sinnige
+et al. [48] using FLUENT. Experimental: 4 Sinnige et al. [49]; ◦ Sinnige et al. [50]; ? Veldhuis [41].
+Fig. 12 Simulation of Beaver propeller at an incidence angle, compared to experimental measurements reported by Sinnige et al. [49].
+Fig. 13 Swept-back wing simulation (volume rendering of vorticity field).
+0123
+No. resolved spans, t U
+b
+0.0
+0.1
+0.2
+0.3
+CL
+Exp.
+rVPM
+Fig. 14 History of CL in sweptback wing simulation at α = 4.2◦ as the wake is deployed.
+17
+
+
+0 2 4 6 8 10 12 Angle of attack
+0.0
+0.2
+0.4
+0.6
+0.8
+Lift coefficient CL
+Experimental rVPM
+0 2 4 6 8 10 12 Angle of attack
+0.00
+0.01
+0.02
+0.03
+0.04
+Drag coefficient CD
+0.0 0.2 0.4 0.6 0.8 1.0 Span position 2y/b
+0.0
+0.2
+0.4
+0.6
+Sectional lift c
+= 8.4
+= 6.3
+= 4.2
+= 2.1
+0.0 0.2 0.4 0.6 0.8 1.0 Span position 2y/b
+0.04
+0.00
+0.04
+0.08
+0.12
+Sectional drag cd
+= 8 . 4 =
+4 . 2
+= 6.3
+Experimental rVPM
+Fig. 15 Integrated lift and drag (top), and spanwise distributions (bottom) in swept wing as angle of attack is increased.
+Brebner were integrated from pressure-tap measurements, hence the drag reported in this section includes induced and form drag while excluding skin friction drag. Fig. 14 shows the history of CL as the wake is deployed. The time has been normalized by the equivalent number of spans lengths resolved in the wake. Here we conclude that resolving the wake for about 1.5 span-distances is sufficient to obtain a converged wing simulation. The predicted CL converges to a value of 0.329 while Weber and Brebner reported a mean value of 0.328, leading to a prediction within 2% of the experiment. Next, the case was repeated for multiple angles of attack and compared to the experiment, as seen in Fig. 15. The integrated lift and drag (top) show excellent agreement with the experiment from 0◦ to 10.5◦. We expect this to be the case only for mild AOAs before approaching stall conditions as our ASM does not capture the mechanisms of flow separation. The loading distribution (bottom) also shows good agreement with the experiment across AOA. Thus, through this swept-wing case, we gain confidence that our ASM yields accurate predictions in conditions with spanwise flow as AOA is increased.
+III.C. Propeller Wake
+Predicting accurate rotor-wing interactions hinges on accurately resolving the rotor wake; hence, we turn our attention to the wake dynamics of the isolated propeller as predicted by our meshless LES. This test case uses the Beaver propeller (previously used in Section III.A) at an advance ratio J of 0.8 and freestream velocity V∞ of 40 m/s at no incidence angle. This corresponds to a tip Mach number of 0.46 and a diameter-based Reynolds number of 1.8 × 106 at 70% the blade span. No collective pitch is used, resulting in a blade pitch angle of 23.9◦ at the radial position r/R = 0.75. In our meshless LES, the number of sheds per revolution Nsheds was set to 360 × 4 (corresponding to shedding
+particles every 0.25◦ of rotation). while the time steps per revolution Nsteps was set to 72 (equivalent to steps of 5◦).
+This is a rather coarse temporal resolution, but the results presented here will show that Nsteps = 72 is sufficient to
+fully resolve the wake close to the rotor. The number of blade elements nblade was set to 200. The initial core overlap λ ≡ ∆x
+σ = 2πR
+σNsheds was set to 2.125. The spatial discretization is visualized in Fig. 16, using up to 9.5M particles after
+eight revolutions. The simulation was run for eight revolutions and averaged quantities were calculated over the last three. Fig. 17 visualizes the wake in our simulation through a volume rendering of the vorticity field. The vorticity has been nondimensionalized as ω∗ ≡ ωD/Vdisk, where D is the rotor diameter, and Vdisk is the equivalent actuator-disk velocity
+18
+
+
+Fig. 16 Computational elements (vortex particles and strengths) after 8 revolutions with Nsheds = 360 × 4 and
+nblade = 200, using 9.5 million particles.
+Fig. 17 Meshless LES of Beaver propeller after five revolutions. Volume rendering of vorticity field.
+2Vdisk = V∞ +
+√V∞2 + 8T/ρπD2. The volume rendering shows the simulation capturing the fine vortical structure of the wake and the development of turbulence as the wake evolves. The flow field is shown in Fig. 18, with (top) a volume rendering of the instantaneous vorticity and (middle) a slice of the ensemble-average in-plane vorticity component taken as blades intersect the plane in between revolutions 4.5 and 6.5. In between the plane of rotation and x/R = 3, the ensemble average shows the inner vortex sheet stretching and folding around tip vortices. At x/R > 3, the inner sheet approaches the preceding tip vortex, causing it to deform and develop turbulence that eventually breaks the vortex down. The time-average axial velocity and streamlines are shown in Fig. 18 (bottom), where the streamtube is seen to contract between the plane of rotation and x/R ≈ 1, after which it slowly expands as turbulence starts to develop. In order to validate the flow field predicted in the wake of the propeller, we now compare our meshless LES to the experimental measurements reported by Sinnige et al. [50] and Stokkermans et al. [37] Our results are also compared to the URANS simulation reported by both Sinnige et al. [48] and Stokkermans et al. [37], and a detached-eddy simulation (DES) reported by Chu et al. [52] The different CFD solvers are summarized in Table 5. The URANS simulation used a compressible finite-volume solver through the commercial software ANSYS Fluent. The solver used a second-order time integration scheme, a second-order spatial scheme, the Spalart-Allmaras turbulence model resolving the blade down to a y+ value of less than one, and periodic boundary conditions on a 90◦ wedge domain. The DES reported by Chu et al. resolved the mounting pod surface with the Spalart-Allmaras improved delayed DES (IDDES) turbulence model, while using an actuator surface model for the blades. It used second-order-accurate spatial and temporal schemes implemented in an OpenFOAM incompressible solver. Fig. 19 shows the thrust history of our meshless LES converging to a mean value of 0.935, which is within 1.6% of
+19
+
+
+Fig. 18 Flow field in Beaver propeller simulation: (top) instantaneous volume rendering of vorticity field after 5.5 revolutions, (middle) slice of ensemble-average in-plane vorticity, and (bottom) time-average axial velocity and streamlines.
+20
+
+
+Table 5 Description of CFD solvers compared in PROWIM popeller validation.
+Simulation Software Blade Scheme Turbulence Model Computational Elements
+rVPM
+(meshless LES) FLOWUnsteady Actuator line model Anisotropic dynamic SFS 9.5M vortex elements
+URANS
+(Sinnige et al. and Stokkermans et al.) ANSYS Fluent Blade-resolved Spalart-Allmaras 7.6M grid cells
+(Wedge-periodic domain)
+DES
+(Chu et al.) OpenFOAM Actuator surface model Spalart-Allmaras IDDES 21M grid cells
+012345678 Number of revolutions
+0.07
+0.09
+0.11
+0.13
+0.15
+Thrust coefficient CT
+rVPM
+URANS
+Exp.
+DES
+Fig. 19 Thrust history of Beaver propeller simulation using rVPM, compared to experimental, URANS, and DES mean CT . Shaded region encompasses the 95%-confidence interval of the experiment
+0.0 0.2 0.4 0.6 0.8 1.0 Radial position r/R
+1.5
+0.0
+1.5
+3.0
+4.5
+6.0
+Thrust distribution TT (1
+m)
+rVPM URANS
+0.0 0.2 0.4 0.6 0.8 1.0 Radial position r/R
+0.0
+1.5
+3.0
+4.5
+6.0
+Torque distribution TT (1
+m)
+rVPM URANS
+Fig. 20 Time-average thrust and power distribution of Beaver propeller in rVPM simulation with actuator line model, compared to blade-resolved URANS results reported by Stokkermans et al. [37]
+the experimental mean CT of 0.0953 reported by Sinnige et al. [50] and within the reported experimental uncertainty.
+Fig. 19 also shows the mean CT of the DES and URANS simulations, reported to be respectively within 1.4% and 6.6% of the experimental measurement. Fig. 20 shows the time-average thrust and torque distributions in our meshless LES captured with the actuator line model, compared to the blade-resolved URANS simulation reported by Stokkermans et al. [37] Both approaches show good agreement away from the spinner. A slight discrepancy is observed towards the spinner in the region r/R < 0.35, which is likely caused by both the mounting pod and the cylindrical section near the root. The mounting pod, which is included in the URANS while ignored in the rVPM, blocks the flow from the centerline up to r/R = 0.3, while the cylindrical root section does not transition into a streamlined shape until about r/R ≈ 0.35, leading to separated flow over this entire section. The good agreement over the rest of the blade (which is responsible for most of the rotor performance) and the good agreement with the experimental mean CT confirm that our meshless LES accurately resolves the loading and performance of the propeller. Fig. 21 shows a slice of the ensemble-average flow field downstream of the plane of rotation as predicted with our
+21
+
+
+Experimental
+Reformulated VPM
+Fig. 21 Ensemble-average flow field downstream of the plane of rotation, (top) measured experimentally and (bottom) predicted with our meshless LES. Experimental PIV (top) retrieved from Sinnige et al. [50]
+Fig. 22 Ensemble-average flow field as measured experimentally, compared to rVPM and URANS simulations. Vertical white lines show slices plotted in Fig. 23. Experimental and URANS figures retrieved from Stokkermans et al. [37]
+0.6 0.8 1.0 1.2 1.4 1.6 Axial velocity Vx/V
+0.4
+0.6
+0.8
+1.0
+1.2
+Radial position r/R
+Second tip vortex
+0.6 0.8 1.0 1.2 1.4 1.6 Axial velocity Vx/V
+Fourth tip vortex
+rVPM Experimental DES URANS
+Fig. 23 Ensemble-average axial velocity probed across tip vortices as predicted by our meshless LES, compared to mesh-based CFD simulations and experiment.
+22
+
+
+0.6 0.8 1.0 1.2 1.4 1.6 Axial velocity Vx/V
+0.4
+0.6
+0.8
+1.0
+1.2
+Radial position r/R
+0.10 0.05 0.00 0.05 0.10 Swirl velocity Vt/V
+rVPM Experimental URANS
+6 30 3 6 Swirl angle ( )
+Fig. 24 Time-average velocity profile at r/R = 0.19 as predicted by our meshless LES, compared to URANS and experiment.
+meshless LES, compared to the experimental PIV reported by Sinnige et al. [50] The grayscale colormap visualizes the axial velocity induced by the wake, defined as ∆Vx = Vx − V∞, while three contour levels of vorticity help visualize the tip vortices and the inner vortex sheet. The position of tip vortices and the folding of the inner sheet predicted by rVPM show good qualitative agreement with the experiment, confirming that our meshless LES accurately resolve these wake dynamics. Fig. 22 shows a wider view of the flow field, comparing the rVPM simulation to the blade-resolved URANS simulation and experimental PIV, both reported by Stokkermans et al. [37] Both URANS and experiment show a slow velocity in the proximity of the mounting pod, while the rVPM predicts that the flow approaches the freestream velocity towards the centerline since both spinner and mounting pod are neglected. Fig. 23 shows the axial velocity along the second and fourth tip vortices. The rVPM underpredicts the velocity in the inboard section r/R < 0.8 and tip vortices are slightly shifted inboard, both effects caused by omitting the flow blockage of the mounting pod. The rVPM, however, resolves the tip vortices with remarkable accuracy as evidenced by the velocity peaks near r/R ≈ 1, outperforming both URANS and DES. As noted by Stokkermans et al. [37], the numerical dissipation associated with mesh-based CFD makes it computationally unfeasible to fully resolve the tip vortices. On the other hand, the low-numerical dissipation of our meshless LES makes it possible to preserve and resolve the vortical structure with minimal computational effort. Fig. 24 shows the time-average velocity profile close to the plane of rotation as predicted with our meshless LES, compared to the experimental and blade-resolved URANS results reported by van Arnhem. Aside from the streamtube edge shifted inboard and the axial velocity underpredicted for r/R < 0.8 (both effects caused by omitting the flow blockage of the mounting pod), Fig. 24 shows reasonable agreement between rVPM and both experiment and URANS. All these results build our confidence that the propeller wake that will later be impinging on the wing is accurate and well resolved. Hence, any inconsistencies later encountered in the predicted rotor-wing interactions can be narrowed down to possible deficiencies of the wing’s actuator surface model rather than the propeller wake.
+III.D. Tip-Mounted Propeller
+We will now look at the interactions in a tip-mounted configuration, simulating the experiment performed by van Arnhem known as PROWIM-HTP, shown in Fig. 25. van Arnhem et al. [53] conducted the study of rotor-wing interactions on a tip-mounted propeller configuration using the Beaver propeller, which was further expounded in van Arnhem’s doctoral thesis [54]. This dataset was later used to validate a URANS study of rotor-wing interactions by Stokkermans et al. [37], further expounded in Stokkermans’ doctoral thesis [55]. The configuration used a straight wing with low aspect ratio (b/c = 2.7), symmetric NACA 642-A015 profile, and a 25%-chord flap spanning 62% of the semi-span. This geometry resembles a tailplane (or horizontal stabilizer) with tip-mounted propellers. The wing has a span b of 0.654 m, while the diameter D of the Beaver propeller is 0.237 m. Propeller and wing share the same angle of attack. Each test uses a freestream velocity V∞ of 40 m/s, advance ratio J of 0.8, and inboard-up propeller rotation, unless otherwise indicated. This corresponds to a diameter-based Reynolds number of 1.8 × 106 at 70% of the blade span and a tip Mach number of 0.46 for the rotor, and a chord-based Reynolds number of 0.7 × 106 for the wing. The flow over the wing was tripped close to the leading edge in the experiment. No collective pitch is used,
+23
+
+
+PIV plane
++e
++
+c = 240 mm 1.50 c
+b/2 = 327 mm
+transition strip
+28 mm
+335 mm 485 mm
+205 mm
+59 mm
+104 mm
+70 mm
+35 mm
+D =237 mm
+60 mm
+x
+z
+y
+z
+x
+Fig. 25 Tailplane with tip-mounted propeller case, or PROWIM-HTP. Diagram of the experiment retrieved from van Arnhem et al. [53]
+Fig. 26 Time-average load distribution in tip-mounted case of propeller blowing on flat wing (α = 0◦, δe = 0◦, and inboard-up rotation direction).
+0 2 4 6 8 10 12
+No. revolutions, t R6P0M
+0.1
+0.2
+0.3
+CL
+Prop off
+Prop on
+rVPM Experimental
+0123
+No. resolved spans, t U /b
+Fig. 27 History of CL in tip-mounted case with and without propeller. Test at α = 0◦, δe = +10◦, and inboard-up rotation direction.
+which, as shown in Section III.C, leads to a thrust coefficient CT = T/ρn2D4 of 0.0935 in our simulations, while van
+Arnhem reported an experimental CT of 0.0936. Rotor-wing interactions were introduced with incremental complexity. First, the prop-wing system was tested at zero angle of attack (α = 0◦) and no elevator deflection (δe = 0◦), with the wing simply acting as a flat plate. Hence, the aerodynamic wing load was caused purely by the swirl of the wake. The predicted wing loading is shown in Fig. 26, showing reasonable agreement with the experiment. Since this load is caused entirely by the wake swirl, these favorable results give us confidence that both the circulation solver and force calculation in the ASM are physically accurate beyond the simple case of a uniform freestream. Next, the wing was aerodynamically loaded by deflecting the elevator§ by δe = +10◦. Fig. 27 shows the history of
+the lift generated by the wing with and without the propeller running. In both cases, CL seems to converge after about seven rotor revolutions, equivalent to resolving the wake for about two span-distances. Hence, all simulation were run for 12 revolutions and all results will hereon be reported considering only the last four revolutions. When the wing generates lift through elevator deflection, the elevator also causes a mild turning of the rotor wake, which enhances the circulation and lift of the wing. On the case α = 0◦ and δe = +10◦, Stokkermans reported an
+experimental mean CL that increases from 0.189 when the prop is off to 0.257 when the prop is on, leading to a lift augmentation of 36% due to beneficial rotor-on-wing interactions. As shown in Fig. 27, our simulation converges to a mean CL of 0.196 and 0.262 when the prop is off and on, respectively, leading to a lift augmentation of 34%. In order to
+§Since our ASM assumes wing elements with a straight chord, the elevator deflection is modeled as an equivalent twist of the elements about the quarter-chord line, varying from 3.75◦ inboard to 6.5◦ outboard of the elevator section. This equivalent twist was determined matching the experimental wing loading in the prop-off case.
+24
+
+
+–6
+–4
+–2
+0
+2
+4
+6
+–0.4
+–0.2
+0.0
+0.2
+0.4
+2z/b
+Experimental
+Reformulated VPM
+Elevator vortex Tip vortex
+2y/b
+2z/b
+Fig. 28 Time-average axial vorticity in tip-mounted case at plane 1.5c from trailing edge, (top) measured experimentally and (bottom) predicted with our meshless LES. Case α = 0◦, δe = +10◦, and J = 0.8. Experimental figure (top) retrieved from van Arnhem’s doctoral thesis [54].
+20 2 4 6 Axial vorticity x
+0.4
+0.2
+0.0
+0.2
+0.4
+Normal position 2z/b
+Elevator
+20 2 4 6
+Tip
+rVPM Exp.
+Fig. 29 Time-average vorticity across elevator and tip vortices shown in Fig. 28.
+Prop off, δe = +10◦ Prop on, δe = +10◦
+Prop off, δe = −10◦ Prop on, δe = −10◦
+Fig. 30 Time-average lift distribution in tip-mounted case with positive and negative elevator deflection δe at α = 0◦. Inboard-up rotation direction.
+25
+
+
+Fig. 31 Time-average lift distribution in tipmounted case as propeller thrust is increased. Test at α = 0◦, δe = +10◦, and inboard-up rotation direction.
+Fig. 32 Time-average lift distribution in tipmounted case at angle of attack α = 10◦. Test with δe = 0◦ and inboard-up rotation direction.
+confirm that our predicted lift augmentation is caused by the correct physical mechanisms, Fig. 28 shows the vorticity at a plane downstream of the wing compared to experimental particle image velocimetry (PIV) reported by van Arnhem. The vortices shed by the inboard and outboard elevator edges are seen at 2y/b ≈ 0.2 and 2y/b ≈ 0.8, respectively, along with the tip vortex at 2y/b ≈ 1. The rotor slipstream surrounds the tip vortex and is deformed by the wing surface in qualitative agreement with the experiment. Fig. 29 shows slices of the vorticity across the elevator vortex and tip vortex encompassed by the slipstream, evidencing quantitative agreement between simulation and experiment. This good agreement between the flow field predicted by our meshless LES and the experiment shows that the interactions between the rotor wake and the wing surface captured by our ASM, which lead to lift augmentation, are physically correct. The lift distribution with propeller on and off is shown in Fig. 30, and compared to the experiment with both positive and negative elevator deflection (δe = ±10◦ and α = 0◦). As a reference, Fig. 30 also includes the lift distribution reported by van Arnhem et al. [53] with URANS. The URANS simulation fully resolves the wing surface down to a y+ of 1 in the boundary layer, in contrast to our LES that simply models the wing through an actuator surface model. When δe is positive, Fig. 30 (top) shows good agreement between our meshless LES and both the experiment and URANS. When δe is negative, Fig. 30 (bottom) shows some discrepancies, but overall the loading is in within reasonable agreement. This shows that the ASM is able to accurately predict the wing loading with minimal computational effort. Our predictions were also tested at different thrust settings by varying the advance ratio J. Fig. 31 shows that good agreement between our LES and the experiment is maintained across thrust settings. Finally, stronger rotor-wing interactions were tested by pitching the wing system to an angle of attack of 10◦. In this setting, the circulation of the wing becomes stronger, more prominently turning the propeller slipstream. Also, since the angle of attack sets the rotor at an incidence angle relative to the freestream, the freestream pushes the wake against the wing’s lower surface while also creating an asymmetric slipstream with advancing and retreating sides. Fig. 32 shows the wing loading, finding good agreement between simulation and experiment.
+III.E. Blown-Wing Case
+We will now look at the interactions in a conventional configuration where the propeller is mounted mid-span. In this configuration, the full slipstream interacts with the wing (as opposed to the tip-mounted case where only the inboard part of the slipstream does); hence, this case is refered to as the “blown wing” case. For this case, we simulated the experiment performed by Veldhuis [41] known as PROWIM, shown in Fig. 33. The configuration uses a straight wing with aspect ratio b/c = 5.33, symmetric NACA 642-A015 profile, a span b of
+1.28 m, and the Beaver propeller mounted at the span position 2y/b = 0.469. Propeller and wing share the same angle of attack. Each test uses a freestream velocity V∞ of 49.5 m/s and an advance ratio J of 0.85. This leads to similar Reynolds and Mach numbers as in the tip-mounted case. The experiment was reportedly conducted at a thrust setting Tc = T/ρV∞2 D2 of 0.168 (corresponding to a thrust coefficient CT = T/ρn2D4 of 0.121). A collective pitch of 2◦ was used
+in the simulation in order to match that thrust setting, leading to a blade angle of 25.9◦ at the radial position r/R = 0.75. The simulation then resulted in Tc = 0.160 (or CT = 0.117), which is a thrust 5% lower than used in the experiment, but we deemed this difference to be negligible.
+26
+
+
+Fig. 33 Description of blown wing case, or PROWIM, with propeller mounted mid-span. Dimensions in mm. Diagram of the experiment retrieved from Veldhuis’ doctoral thesis [41].
+Prop off Inboard up Outboard up
+Fig. 34 Time-average normal force distribution in blown-wing case at multiple angles of attack α (left) without the propeller, (middle) with the propeller rotating inboard up, and (right) outboard up. rVPM simulation (solid lines) compared to experimental measurements (markers) reported by Veldhuis [41].
+-0.15
+-0.10
+-0.05
+0 Inboard up
+Experimental rVPM
+0 0.2 0.4 0.6 0.8 1 Span position 2y/b
+-0.15
+-0.10
+-0.05
+0
+Sectional tangential force ct
+Outboard up
+Fig. 35 Time-average tangential force in blown-wing case at angle of attack α = 10◦.
+27
+
+
+The blown wing was tested as the angle of attack varied from 0◦ to 10◦, while determining the effects of propeller rotation direction. Fig. 34 shows the distribution of force normal to the wing, as predicted with our simulation and compared to the experiment. The cases with α = 0◦ (where the wing acts as a flat plate) and α = 4◦ (where the wing turns the slipstream) agree reasonably well with the experiment, showing the loading increasing where the blade goes up, while decreasing where the blade goes down. These changes in the loading are caused by the swirl direction locally increasing or decreasing the AOA of the wing. In the case with α = 10◦, these dynamics change due to the stronger nature of the interactions. For instance, notice in both simulation and experiment that the loading no longer drops where the blade goes down. This is because the effects of turning the slipstream become stronger than the effects of swirl. Even though the simulation shows the right trend, it overpredicts the lift augmentation in the slipstream at this AOA. Noticing that the prop off case also overpredicts the loading, it is possible that the wing in the experiment is mildly stalled at α = 10◦. This could drive the discrepancy between simulation and experiment since our ASM does not capture stalled conditions. In light of this, we conclude that our LES simulation accurately predicts rotor-wing interactions up to a moderate angle of attack. In the previous tests we have discussed only the interactional effects on normal force or lift, however, the drag force is also accurately captured. To show this, Fig. 35 compares our simulation to the tangential force reported by Veldhuis at α = 10◦. This tangential force was measured experimentally integrating pressure taps around the wing profile, hence it includes form and induced drag, while excluding skin friction drag. Since this force is tangential to the wing (and not to the freestream), it also includes a small component of lift. In both rotation directions, the simulation agrees reasonably well with the experiment, giving confidence that the drag is accurately predicted.
+IV. Example Applications
+In the preceding sections, we validated a meshless LES framework able to predict the interactional aerodynamics that are typically encountered in multirotor aircraft. We will now exemplify the capabilities of this framework through the simulation of two multirotor aicraft: a tiltwing eVTOL vehicle and an AWE wind-harvesting aircraft.
+IV.A. eVTOL Aircraft
+Meshless CFD is fitting for simulations with moving boundaries. Our meshless LES allows us to effortlessly rotate and translate rotors, wings, and the whole vehicle without the hurdles of sliding/rotating/overset meshes that are typically necessary in mesh-based CFD. In order to take advantage of this feature, instead of simulating an aircraft at a quasi-static “frozen” point along a trajectory, the full trajectory of the eVTOL maneuver was simulated continuously. In this manner, the vehicle is simulated translating and pitching as it transitions from hover to cruise, while tilting rotors and the wing, as shown in Fig. 36. Rotors also change collective blade pitch and RPM throughout the simulation. In this section we present a concise summary of the simulation setup and results, and the reader is referred to the doctoral dissertation accompanying this work [13] for the full study. The vehicle used in this example is a modified version of the tiltwing multirotor Vahana aircraft, featuring a tilting tandem wing, tilt rotors on the main wing, and a set of stacked rotors. The vehicle was sized to an empty weight of roughly 500 kg and a cruise speed of 30 m/s with variable-pitch propellers. The main wing features tip-mounted tilt rotors and two stacked rotors. The stacked rotors can change index angle throughout the simulation, playing the same functionality as collective pitch but with potential aeroacoustic advantages.
+(a) Climb (b) Start of transition (c) Mid transition (d) Cruise
+Fig. 36 eVTOL maneuver as vehicle transitions from powered-lift to wing-borne flight in mid-fidelity simulation. Arrows show the vortex strength of the particles.
+28
+
+
+Fig. 37 Meshless LES of eVTOL aircraft during hover in high-fidelity simulation: (left) computational elements (vortex particles and strength), and (right) volume rendering of vorticity field. Figure reproduced from Reference [12].
+axis
+M
+− ̂My
+̂Mx
+Fig. 38 Misalignment between moment M of the tip-mounted rotor and its rotation axis.
+0.0 0.2 0.4 0.6 0.8 1.0 1.2 Simulation time (s)
+20
+0
+20
+40
+Off-axis moment (N m)
+Axis-aligned
+Off-axis,Mx
+Off-axis,
+M
+y
+Fig. 39 Off-axis moment of the right tip-mounted tilt rotor during hover.
+Fig. 37 shows the simulation during hover, visualizing the wake structure. As expected, each rotor wake breaks up into turbulence after a few diameter-distances due to the significant interactions with neighboring rotors and/or wing surfaces. In particular, we note that the wakes of the tip-mounted tilt rotors are obstructed by the presence of the horizontal wing, creating an asymmetric rotor wake. The obstructed wake leads to a considerable asymmetric loading of the rotor. To illustrate this, we integrated the time-resolved loading of each blade to calculate the instantaneous moment M of the rotor. The moment turns out to be misaligned from the axis of rotation, as shown in Fig. 38, turning away from the wing surface. The off-axis components of the moment are shown in Fig. 39 over time. As a reference of magnitude, the axis-aligned component is also shown. At a vehicle level, Mx cancels with the same component in the rotor at the opposite wing
+tip, while the My components of both rotors get added together creating a small pitching moment. Furthermore, each off-axis component creates a torsional load on the tilting structure and its hinge, which, along with the component’s fluctuations, may merit some structural and vibratory considerations. Each of these effects stem from the poor placement of the rotor, which led to the wing obstructing the wake. Our meshless LES makes it possible to identify, quantify, and address these effects early in the design process. In ongoing research, we are testing FLOWUnsteady’s ability to predict the noise signature of the aircraft during the eVTOL maneuver, from takeoff to climb, hover, and transition to cruise. Fig. 40 shows preliminary results where
+29
+
+
+Fig. 40 Instantaneous acoustic pressure field as radiated by eVTOL aircraft mid transition.
+(a) Side and front view of path (b) Wake in circular path
+Fig. 41 Tethered circular path of wind-harvesting aircraft with crosswind.
+the aerodynamic solution obtained with the rVPM is passed to PSU-WOPWOP to compute the acoustic pressure on the ground along the corridor traversed by the aircraft. This has the potential of capturing the aeroacoustic noise in a high-fidelity manner, capturing the noise radiated by the unsteady loading of the rotors due to the maneuver and aerodynamic interactions.
+IV.B. Wind-Harvesting Aircraft
+Another example of complex interactional aerodynamics is that of the Makani airbone wind energy (AWE) kite. This kite is a multirotor aircraft that is tethered to the ground, flying in a circular path in a cross wind as shown in Fig. 41. The aircraft has eight rotors that are used as onboard power generators (turbines) harvesting the energy of the wind. The electrical power is then transferred from the aircraft to a ground station through the tether. This AWE aircraft circumvents the costs of the structural tower and nacelle that hold the large rotor of a traditional wind turbine, while being able to access locations where wind speed are too high and/or too low for traditional turbines to be effective. On the other hand, this concept operates under strong aerodynamic interactions as the rotors are closely spaced with each other, pylons, and the wing, affecting the performance of rotors and wing, while exciting aerostructural instability modes that are non-trivial. Furthermore, since the aircraft constantly flies a circular path in a relatively tight radius, the outboard wing tip sees a larger freestream velocity than the inboard tip, hence the aircraft needs to be designed with an
+30
+
+
+Fig. 42 Simulation of wind-harvesting aircraft flying a circular path: (left) computational elements (vortex particles and strength), and (right) volume rendering of vorticity field.
+−1.00 −0.75 −0.50 −0.25 0.00 0.25 0.50 0.75 1.00
+2by
+100
+200
+300
+400
+500
+600
+Lift (N)
+Isolated Wing Distributions Wing Distribution with Rotors Straight Wing Distribution with Rotors Circular Path
+Fig. 43 Lift distributions of wind-harvesting aircraft in straight and circular paths, with and without rotors. Time-average (lines) and thee-standard-deviation (shaded regions) values. Preliminary results of study to be published in Mehr et al. [43].
+asymmetric tail and horizontal stabilizers. In Reference [43] we explored in detail the interactional aerodynamics of the Makani AWE kite, shown in Fig. 42. We looked at the energy kite operating in both a straight and circular path. For the straight path, we set the kite velocity to be 50 m/s forward with a 10 m/s cross-wind component heading “upward” in the kite frame of reference. For the circular path, we prescribed the kinematics for the windcraft such that it circumscribes a circle with a diameter of 135 m at a velocity of 50 m/s, and maintain the same 10 m/s cross-wind component. We adjusted the RPM of the rotors for both cases such that all rotors operated at the same tip speed ratio. We found that modeling circular paths, was insightful, but also that beginning conceptual designs using straight paths shows the major trends with fewer complexities. As seen in Fig. 43, the trends between the straight and circular path simulations are nearly identical, with only two major differences: the magnitude of variation, and the skewed nature of the circular path wing loading. The skew should be expected due to the variation in velocity across the wing, and the increased variation shown can be attributed to the non-straight nature of the circular path wake. For the full study on the interactional aerodynamics encountered by this AWE multirotor aircraft, the reader is referred to Reference [43].
+V. Conclusion
+In this study, we have presented a CFD framework based on the reformulated VPM for simulating complex interactional aerodynamics. We further developed our meshless LES scheme to include rotors and wings in the computational domain through actuator models. A novel, vorticity-based, actuator surface model (ASM) was developed
+31
+
+
+for wings, which is suitable for rotor-wing interactions when a wake impinges on the surface of a wing. This ASM imposes the no-flow-through condition at the airfoil centerline by calculating the circulation that meets this condition and by immersing the associated vorticity following a pressure-like distribution. The ASM used for wings in our LES was validated as an accurate approach to capturing rotor-wing interactions. First, the predicted vortical structure and velocity in the propeller wake was validated by comparison to experimental measurements reported in the literature, showing good agreement with the experiment. Next, a wing was placed in the wake of the propeller in a tip-mounted configuration. The case with the wing acting as a flat plate showed that the ASM accurately calculates the loading on the wing caused by the propeller swirl. The case with elevator deflection showed that our meshless LES captures the physical mechanisms that lead to lift augmentation when the wing surface deflects the propeller slipstream. Then, the interactions on a blown wing were characterized at multiple AOAs and different rotation directions, showing good agreement with experiment up to moderate AOAs. To conclude, the capabilities of the framework were showcased through a summary of previous applications explored by the authors on two multirotor aircraft: a tiltwing eVTOL vehicle and an AWE wind-harvesting aircraft. The eVTOL vehicle was simulated mid maneuver as it transitions from powered lift to wing-borne flight, featuring rotors with variable RPM and variable blade pitch, tilting of wings and rotors, and significant rotor-rotor and rotor-wing interactions from hover to cruise. The AWE aircraft was simulated flying in a circular path with crosswind and tethered to the ground as the onboard turbines harvest energy from the wind. This study validates FLOWUnsteady as an accurate tool for predicting complex interactional aerodynamics. We have focused on the high-fidelity LES achieved with rVPM; however, since it is not limited by the classic CFL condition, rVPM can be used across all levels of fidelity, all in the same framework by simply coarsening or refining the simulation. Thus, FLOWUnsteady provides aircraft designers with a high-fidelity tool that is orders of magnitude faster than mesh-based CFD, while also featuring variable-fidelity capabilities.
+V. Acknowledgments
+This material is based upon work supported by (1) Brigham Young University under the High Impact Doctoral Research Award, (2) Center for Unmanned Aircraft Systems, (3) National Science Foundation under Grant No. 2006219, and (4) Department of Defense through AFWERX contract FA8649-21-P-0095. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the supporting institutions. FLOWUnsteady uses the open-source code FLOWVPM [12] developed by the authors and a modified version of the open-source code ExaFMM [33] originally developed by Lorena Barba and Rio Yokota. FLOWUnsteady is implemented in the Julia programming language [34] and integrates the open-source software ParaView [56, 57] as its visualization engine. FLOWUnsteady integrates the aeroacoustics code PSU-WOPWOP developed by Kenneth Brentner.
+V. References
+[1] “Flying Cars: Investment Implications of Autonomous Urban Air Mobility,” Tech. rep., Morgan Stanley Research, 2018.
+[2] Brelje, B. J., and Martins, J. R. R. A., “Electric, hybrid, and turboelectric fixed-wing aircraft: A review of concepts, models, and design approaches,” Progress in Aerospace Sciences, , No. June, 2018, pp. 1–19. https://doi.org/10.1016/j.paerosci.2018.06.004, URL https://doi.org/10.1016/j.paerosci.2018.06.004.
+[3] Pelz, P. F., Leise, P., and Meck, M., “Sustainable aircraft design – A review on optimization methods for electric propulsion with derived optimal number of propulsors,” Progress in Aerospace Sciences, Vol. 123, 2021, p. 100714. https://doi.org/10. 1016/j.paerosci.2021.100714, URL https://linkinghub.elsevier.com/retrieve/pii/S0376042121000191.
+[4] Alvarez, E. J., and Ning, A., “Development of a Vortex Particle Code for the Modeling of Wake Interaction in Distributed Propulsion,” 2018 Applied Aerodynamics Conference, American Institute of Aeronautics and Astronautics, 2018, pp. 1–22. https://doi.org/10.2514/6.2018-3646, URL https://arc.aiaa.org/doi/10.2514/6.2018-3646.
+[5] Alvarez, E. J., and Ning, A., “Modeling Multirotor Aerodynamic Interactions Through the Vortex Particle Method,” AIAA Aviation 2019 Forum, American Institute of Aeronautics and Astronautics, Dallas, Texas, 2019. https://doi.org/10.2514/6.2019-2827, URL https://arc.aiaa.org/doi/10.2514/6.2019-2827.
+[6] Lee, H., and Lee, D. J., “Rotor interactional effects on aerodynamic and noise characteristics of a small multirotor unmanned aerial vehicle,” Physics of Fluids, Vol. 32, No. 4, 2020. https://doi.org/10.1063/5.0003992, URL https://doi.org/10.1063/5.0003992.
+32
+
+
+[7] Zanotti, A., and Algarotti, D., “Aerodynamic interaction between tandem overlapping propellers in eVTOL airplane mode flight condition,” Aerospace Science and Technology, Vol. 124, 2022, p. 107518. https://doi.org/10.1016/j.ast.2022.107518.
+[8] Arda Yücekayali, “Noise Minimal & Green Trajectory And Flight Profile Optimization For Helicopters,” Ph.D. thesis, Middle East Technical University, 2020.
+[9] Jacobellis, G., Singh, R., Johnson, C., Sirohi, J., and McDonald, R., “Experimental and computational investigation of stacked rotor performance in hover,” Aerospace Science and Technology, Vol. 1, 2021, p. 106847. https://doi.org/10.1016/j.ast.2021. 106847.
+[10] Zanotti, A., Savino, A., Palazzi, M., Tugnoli, M., and Muscarello, V., “Assessment of a Mid-Fidelity Numerical Approach for the Investigation of Tiltrotor Aerodynamics,” Applied Sciences, Vol. 11, No. 8, 2021, p. 3385. https://doi.org/10.3390/app11083385, URL https://www.mdpi.com/2076-3417/11/8/3385.
+[11] Tugnoli, M., Montagnani, D., Syal, M., Droandi, G., and Zanotti, A., “Mid-fidelity approach to aerodynamic simulations of unconventional VTOL aircraft configurations,” Aerospace Science and Technology, Vol. 115, 2021, p. 106804. https: //doi.org/10.1016/j.ast.2021.106804.
+[12] Alvarez, E. J., and Ning, A., “Reviving the Vortex Particle Method: A Stable Formulation for Meshless Large Eddy Simulation,” (in review), 2022.
+[13] Alvarez, E. J., “Reformulated Vortex Particle Method and Meshless Large Eddy Simulation of Multirotor Aircraft,” Ph.D. thesis, Brigham Young University, 2022.
+[14] Shankar, S., and Dommelen, L., “A New Diffusion Procedure for Vortex Methods,” Journal of Computational Physics, Vol. 127, No. 1, 1996, pp. 88–109. https://doi.org/10.1006/jcph.1996.0160, URL https://linkinghub.elsevier.com/retrieve/pii/ S0021999196901606.
+[15] Gharakhani, A., “Grid-free simulation of 3-D vorticity diffusion by a high-order vorticity redistribution method,” 15th AIAA Computational Fluid Dynamics Conference, , No. June 2001, 2001. https://doi.org/doi:10.2514/6.2001-2640, URL http://dx.doi.org/10.2514/6.2001-2640.
+[16] Degond, P., and Mas-Gallic, S., “The Weighted Particle Method for Convection-Diffusion Equations. Part 1: The Case of an Isotropic Viscosity,” Mathematics of Computation, Vol. 53, No. 188, 1989, p. 485. https://doi.org/10.2307/2008716.
+[17] Rossi, L. F., “Resurrecting Core Spreading Vortex Methods: A New Scheme that is Both Deterministic and Convergent,” SIAM Journal on Scientific Computing, Vol. 17, No. 2, 1996, pp. 370–397. https://doi.org/10.1137/S1064827593254397, URL http://epubs.siam.org/doi/10.1137/S1064827593254397.
+[18] Winckelmans, G. S., “Some progress in large-eddy simulation using the 3D vortex particle method,” CTR Annual Research Briefs, , No. 2, 1995, pp. 391–415.
+[19] Mansfield, J. R., Knio, O. M., and Meneveau, C., “A Dynamic LES Scheme for the Vorticity Transport Equation: Formulation and a Priori Tests,” Journal of Computational Physics, Vol. 145, No. 2, 1998, pp. 693–730. https://doi.org/10.1006/jcph.1998.6051.
+[20] Meneveau, C., Lund, T. S., and Cabot, W. H., “A Lagrangian dynamic subgrid-scale model of turbulence,” Journal of Fluid Mechanics, Vol. 319, No. -1, 1996, p. 353. https://doi.org/10.1017/S0022112096007379, URL http://www.journals.cambridge. org/abstract{_}S0022112096007379.
+[21] Winckelmans, G. S. S., “Topics in vortex methods for the computation of three and two dimensional incompressible unsteady flows,” Phd thesis, California Institute of Technology, 1989. URL http://core.kmi.open.ac.uk/download/pdf/11813390.pdf.
+[22] Winckelmans, G. S., and Leonard, A., “Contributions to Vortex Particle Methods for the Computation of Three-Dimensional Incompressible Unsteady Flows,” Journal of Computational Physics, Vol. 109, No. 2, 1993, pp. 247–273. https://doi.org/10. 1006/jcph.1993.1216, URL http://linkinghub.elsevier.com/retrieve/pii/S0021999183712167.
+[23] Pedrizzetti, G., “Insight into singular vortex flows,” Fluid Dynamics Research, Vol. 10, No. 2, 1992, pp. 101–115. https://doi.org/10.1016/0169-5983(92)90011-K.
+[24] Williamson, J. H., “Low-storage Runge-Kutta schemes,” Journal of Computational Physics, Vol. 35, No. 1, 1980, pp. 48–56. https://doi.org/10.1016/0021-9991(80)90033-9.
+[25] Leonard, A., “Vortex methods for flow simulation,” Journal of Computational Physics, Vol. 37, No. 3, 1980, pp. 289–335. https://doi.org/10.1016/0021-9991(80)90040-6, URL https://linkinghub.elsevier.com/retrieve/pii/0021999180900406.
+33
+
+
+[26] Barba, L. A., Leonard, A., and Allen, C. B., “Advances in viscous vortex methods - Meshless spatial adaption based on radial basis function interpolation,” International Journal for Numerical Methods in Fluids, Vol. 47, No. 5, 2005, pp. 387–421. https://doi.org/10.1002/fld.811.
+[27] Barba, L. A., “Vortex Method for computing high-Reynolds number Flows: Increased accuracy with a fully mesh-less formulation,” California Institute of Technology, Vol. 2004, 2004.
+[28] Torres, C. E., and Barba, L. A., “Fast radial basis function interpolation with Gaussians by localization and iteration,” Journal of Computational Physics, Vol. 228, No. 14, 2009, pp. 4976–4999. https://doi.org/10.1016/j.jcp.2009.03.007, URL http://dx.doi.org/10.1016/j.jcp.2009.03.007.
+[29] Greengard, L. F., “The Rapid Evaluation Of Potential Fields In Particle Systems,” Phd thesis, Yale University, 1987.
+[30] Cheng, H., Greengard, L., and Rokhlin, V., “A Fast Adaptive Multipole Algorithm in Three Dimensions,” Journal of Computational Physics, Vol. 155, No. 2, 1999, pp. 468–498. https://doi.org/10.1006/jcph.1999.6355, URL http://www.sciencedirect. com/science/article/pii/S0021999199963556{%}5Cnhttp://linkinghub.elsevier.com/retrieve/pii/S0021999199963556.
+[31] Alvarez, E. J., and Ning, A., “High-Fidelity Modeling of Multirotor Aerodynamic Interactions for Aircraft Design,” AIAA Journal, Vol. 58, No. 10, 2020, pp. 4385–4400. https://doi.org/10.2514/1.J059178, URL https://arc.aiaa.org/doi/10.2514/1.J059178.
+[32] Yokota, R., and Barba, L. A., “Treecode and fast multipole method for N-body simulation with CUDA,” GPU Computing Gems Emerald Edition, 2011, pp. 113–132. https://doi.org/10.1016/B978-0-12-384988-5.00009-7.
+[33] Wang, T., Yokota, R., and Barba, L., “ExaFMM: a high-performance fast multipole method library with C++ and Python interfaces,” Journal of Open Source Software, Vol. 6, No. 61, 2021, p. 3145. https://doi.org/10.21105/joss.03145, URL https://joss.theoj.org/papers/10.21105/joss.03145.
+[34] Bezanson, J., Edelman, A., Karpinski, S., and Shah, V. B., “Julia: A Fresh Approach to Numerical Computing,” SIAM Review, Vol. 59, No. 1, 2017, pp. 65–98. https://doi.org/10.1137/141000671, URL https://epubs.siam.org/doi/10.1137/141000671.
+[35] Chapelier, J.-B., Wasistho, B., and Scalo, C., “A Coherent vorticity preserving eddy-viscosity correction for Large-Eddy Simulation,” Journal of Computational Physics, Vol. 359, 2018, pp. 164–182. https://doi.org/10.1016/j.jcp.2018.01.012.
+[36] Troldborg, N., Zahle, F., Réthoré, P.-E., and Sorensen, N., “Comparison of the wake of different types of wind turbine CFD models,” 50th AIAA Aerospace Sciences Meeting including the New Horizons Forum and Aerospace Exposition, American Institute of Aeronautics and Astronautics, Reston, Virigina, 2012. https://doi.org/10.2514/6.2012-237, URL https://arc.aiaa.org/doi/10.2514/6.2012-237.
+[37] Stokkermans, T. C. A., van Arnhem, N., Sinnige, T., and Veldhuis, L. L. M., “Validation and Comparison of RANS Propeller Modeling Methods for Tip-Mounted Applications,” AIAA Journal, Vol. 57, No. 2, 2019, pp. 566–580. https: //doi.org/10.2514/1.J057398, URL https://arc.aiaa.org/doi/10.2514/1.J057398.
+[38] Du, Z., and Selig, M., “A 3-D stall-delay model for horizontal axis wind turbine performance prediction,” 1998 ASME Wind Energy Symposium, American Institute of Aeronautics and Astronautics, Reston, Virigina, 1998. https://doi.org/10.2514/6.199821.
+[39] Viterna, L. A., and Janetzke, D. C., “Theoretical and experimental power from large horizontal-axis wind turbines,” Tech. rep., Washington Procurement Operations Office, Washington, DC (United States), sep 1982. https://doi.org/10.2172/6763041, URL http://www.osti.gov/servlets/purl/6763041/.
+[40] Weissinger, J., “The Lift Distribution of Swept-Back Wings,” Tech. rep., National Advisory Committee for Aeronautics, 1947.
+[41] Veldhuis, L. L. M., “Propeller Wing Aerodynamic Interference,” Ph.D. thesis, Delft University of Technology, 2005.
+[42] Shen, W. Z., Zhang, J. H., and Sørensen, J. N., “The Actuator Surface Model: A New Navier-Stokes Based Model for Rotor Computations,” Journal of Solar Energy Engineering, Vol. 131, No. 1, 2009, pp. 0110021–0110029. https://doi.org/10.1115/ 1.3027502, URL https://asmedigitalcollection.asme.org/solarenergyengineering/article/doi/10.1115/1.3027502/444133/TheActuator-Surface-Model-A-New-NavierStokes.
+[43] Mehr, J., Alvarez, E. J., and Ning, A., “Interactional Aerodynamics Analysis of a Multi-Rotor Energy Kite,” (in review), 2022.
+[44] Alvarez, E. J., Schenk, A., Critchfield, T., and Ning, A., “Rotor-on-Rotor Aeroacoustic Interactions of Multirotor in Hover,” The Vertical Flight Society’s 76th Annual Forum, 2020. URL https://scholarsarchive.byu.edu/facpub/4053/.
+34
+
+
+[45] Ffowcs Williams, J., and Hawkings, D., “Sound generation by turbulence and surfaces in arbitrary motion,” Philosophical Transactions of the Royal Society of London. Series A, Mathematical and Physical Sciences, Vol. 264, No. 1151, 1969, pp. 321–342. https://doi.org/10.1098/rsta.1969.0031, URL https://royalsocietypublishing.org/doi/10.1098/rsta.1969.0031.
+[46] Farassat, F., “Derivation of Formulations 1 and 1A of Farassat,” Nasa/TM-2007-214853, Vol. 214853, No. March, 2007, pp. 1–25.
+[47] Brooks, T., Pope, D., and Marcolini, M., “Airfoil Self-Noise and Prediction,” Tech. rep., NASA, jul 1989.
+[48] Sinnige, T., Stokkermans, T. C., van Arnhem, N., and Veldhuis, L. L., “Aerodynamic performance of a wingtip-mounted tractor propeller configuration in windmilling and energy-harvesting conditions,” AIAA Aviation 2019 Forum, , No. June, 2019, pp. 1–17. https://doi.org/10.2514/6.2019-3033.
+[49] Sinnige, T., van Arnhem, N., Stokkermans, T. C. A., Eitelberg, G., and Veldhuis, L. L. M., “Wingtip-Mounted Propellers: Aerodynamic Analysis of Interaction Effects and Comparison with Conventional Layout,” Journal of Aircraft, Vol. 56, No. 1, 2019, pp. 295–312. https://doi.org/10.2514/1.C034978, URL https://arc.aiaa.org/doi/10.2514/1.C034978.
+[50] Sinnige, T., de Vries, R., Corte, B. D., Avallone, F., Ragni, D., Eitelberg, G., and Veldhuis, L. L. M., “Unsteady Pylon Loading Caused by Propeller-Slipstream Impingement for Tip-Mounted Propellers,” Journal of Aircraft, Vol. 55, No. 4, 2018, pp. 1605–1618. https://doi.org/10.2514/1.C034696, URL https://arc.aiaa.org/doi/10.2514/1.C034696.
+[51] Weber, J., and Brebner, G., “Low-Speed Tests on 45-deg Swept-Back Wings, Part I,” Tech. rep., 1951.
+[52] Chu, S., Linton, D., Verstraete, D., and Thornber, B., “Aerodynamic Analysis of Multi-Propeller/Wing Interaction using the Actuator Surface Model,” AIAA Scitech 2021 Forum, American Institute of Aeronautics and Astronautics, Reston, Virginia, 2021, pp. 1–15. https://doi.org/10.2514/6.2021-1661, URL https://arc.aiaa.org/doi/10.2514/6.2021-1661.
+[53] van Arnhem, N., Sinnige, T., Stokkermans, T. C., Eitelberg, G., and Veldhuis, L. L., “Aerodynamic Interaction Effects of Tip-Mounted Propellers Installed on the Horizontal Tailplane,” 2018 AIAA Aerospace Sciences Meeting, American Institute of Aeronautics and Astronautics, Reston, Virginia, 2018. https://doi.org/10.2514/6.2018-2052, URL https://arc.aiaa.org/doi/10. 2514/6.2018-2052.
+[54] van Arnhem, N., “Unconventional Propeller-Airframe Integration for Transport Aircraft Configurations,” Ph.D. thesis, Delft University of Technology, 2022.
+[55] Stokkermans, T. C. A. S., “Aerodynamics of Propellers in Interaction Dominated Flowfields,” Ph.D. thesis, TU Delft University, 2020.
+[56] Ahrens, J., Geveci, B., and Law, C., “ParaView: An End-User Tool for Large Data Visualization,” Visualization Handbook, Elsevier, 2005.
+[57] Ayachit, U., The ParaView Guide: A Parallel Visualization Application, Kitware, 2015.
+35

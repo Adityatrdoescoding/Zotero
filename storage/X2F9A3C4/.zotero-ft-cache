@@ -1,0 +1,1509 @@
+Review of vortex methods for rotor aerodynamics and wake dynamics
+H. Lee*, B. Sengupta, M. S. Araghizadeh and R. S. Myong
+1 Introduction
+Recently, environmental concerns and energy consumption have motivated the aviation
+industry to develop electric vertical takeoff and landing (eVTOL) aircraft with multiple
+lifting rotors or prop-rotors. These can be used not only for military and emergency ser
+vices but also as next-generation urban transport systems in highly crowded megacities.
+The versatility, VTOL capability, and maneuverability of rotorcraft make them excellent
+candidates for many military missions and urban mobility services. Although turbojet
+aircraft have recently become capable of vertical take-off and landing, rotorcraft still
+have the lowest disk loading among all VTOL aircraft, making them an attractive and
+efficient choice for the aviation industry.
+Abstract
+Electric vertical take-off and landing (eVTOL) aircraft with multiple lifting rotors or proprotors have received significant attention in recent years due to their great potential for next-generation urban air mobility (UAM). Numerical models have been developed and validated as predictive tools to analyze rotor aerodynamics and wake dynamics. Among various numerical approaches, the vortex method is one of the most suitable because it can provide accurate solutions with an affordable computational cost and can represent vorticity fields downstream without numerical dissipation error. This paper presents a brief review of the progress of vortex methods, along with their principles, advantages, and shortcomings. Applications of the vortex methods for modeling the rotor aerodynamics and wake dynamics are also described. However, the vortex methods suffer from the problem that it cannot deal with the nonlinear aerodynamic characteristics associated with the viscous effects and the flow behaviors in the post-stall regime. To overcome the intrinsic drawbacks of the vortex methods, recent progress in a numerical method proposed by the authors is introduced, and model validation against experimental data is discussed in detail. The validation works show that nonlinear vortex lattice method (NVLM) coupled with vortex particle method (VPM) can predict the unsteady aerodynamic forces and complex evolution of the rotor wake.
+Keywords: Vortex methods, Nonlinear vortex lattice method, Viscous vortex particle method, Rotor aerodynamics, Wake dynamics
+Open Access
+© The Author(s) 2022. Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article’s Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article’s Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http:// creativecommons.org/licenses/by/4.0/.
+REVIEW
+Lee et al. Advances in Aerodynamics (2022) 4:20
+https://doi.org/10.1186/s42774-022-00111-3 Advances in Aerodynamics
+*Correspondence: hlee@gnu.ac.kr School of Mechanical and Aerospace Engineering, Gyeongsang National University, Jinju, Gyeongnam 52828, South Korea
+
+
+Page 2 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+Rotorcraft undergo complex aerodynamic phenomena due to sharp gradients of veloc
+ity and pressure near the blade tips, strong wake vortices, compressible dynamic stall,
+large fluctuation amplitude, and unsteady flow reversal. Rotorcraft’s complex aerody
+namics create many challenges for engineers. Progress in the aviation industry has come
+from initial experimental rotorcraft development, conducted in wind tunnel facilities,
+along with simple mathematical calculations [1–4]. However, the limitation of experi
+mental studies is that they can consider only a small number of aerodynamic rotorcraft
+layouts. Wind-tunnel tests also cannot be used to carry out multi-objective, multi
+parameter aerodynamic optimizations that address interactional effects. Nonetheless,
+wind-tunnel testing is required as the last step in the manufacturing process to validate
+numerical simulations [5–8]. A valuable list of empirical research done to study rotor
+flow fields is provided in the references [9–11].
+With improvements in computing power and resources, engineers are now able to
+use numerical methods to analyze complex rotorcraft configurations and improve their
+understanding of areas of rotor aerodynamics that had been difficult to investigate via
+wind-tunnel tests [12–14]. A variety of numerical methods, ranging from engineering
+level models to intensive high-fidelity approaches, have been developed and validated as
+predictive tools to analyze rotor aerodynamics and wake dynamics. The blade element
+momentum (BEM) theory was derived by combining the basic principles of the one
+dimensional momentum theory and blade element theory. The BEM theory has a simple
+structure and can rapidly calculate the rotor performance with very low computational
+cost. Therefore, the BEM theory is an engineering-level model, and has been widely used
+for design purposes. However, owing to its inherent assumptions, it can only describe
+quasi-steady solutions and ignores mutual aerodynamic interactions between adjacent
+blade elements. Computational Fluid Dynamics (CFD) methods were used to simu
+late rotor flow fields and had an undeniable impact on rotorcraft design developments.
+CFD methods are the high-fidelity, expensive approaches used to predict unsteady and
+transient phenomena by directly solving entire flow-fields containing rotor blades and
+downstream regions. As computing performance and resources have begun to grow dra
+matically, industrial and academic research has been attempting to simulate the isolated
+rotor, multirotor, and complete rotorcraft configurations using various CFD methods. In
+general, they can be classified into the Reynolds-Averaged Navier–Stokes (RANS), Large
+Eddy Simulation (LES), and Detached Eddy Simulation (DES) techniques depending on
+turbulence models with the range of length and time scales. However, CFD methods
+inherently suffer from grid-induced dissipation errors because of the numerical discre
+tization over the flow field. Excessive dissipation error caused by the numerical discre
+tization may result in rapid decay of the intensity of the rotor tip vortex downstream and
+a breakdown of the helical rotor wake structure. Moreover, although many modifications
+have been made to make CFD methods more efficient [15–18], high computational costs
+and complicated equation setup still make these methods unfeasible for designers aim
+ing for rapid feedback to optimize their models [19, 20].
+Accordingly, there has been increasing demand for a fast and reliable method to ana
+lyze new eVTOL aircraft. Vortex methods are becoming useful tools to predict the
+unsteady flow physics and to study rotorcraft’s complex wake flow. Although vortex
+methods are basically used for irrotational and incompressible flow, they can produce
+
+
+Page 3 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+acceptable and accurate results for complex configuration designs in less time than the
+CFD methods [21–24]. For these reasons, most current comprehensive rotorcraft analy
+sis codes have adopted vortex methods, in which the lifting surface (e.g., rotor blade) can
+be modeled in various ways, including the lifting line theory (LLT), Weissinger’s LLT
+(extended lifting-line theory), the lifting surface method, and the source-doublet panel
+method. LLT or Weissinger’s LLT use the simplest representation of the blade model
+in terms of vortex singularities, called horseshoe vortex filaments, along the spanwise
+direction. However, these models do not capture the three-dimensional effects on the
+rotor blade because the lifting surface is represented by only a single chordwise vortex
+element. The lifting surface method, referred to as the vortex lattice method (VLM), rep
+resents the curvature of the rotor blade using both the chordwise and the spanwise dis
+tribution of vortex ring elements on the actual camber surface. Therefore, the VLM has
+been shown to give much better representation of the three-dimensionality of the flow
+on the blade. The source-doublet panel method, in which the airfoil involved in the rotor
+blade is divided into upper and lower panels, can consider the thickness effect of the
+rotor blade. This is a major advantage compared to VLM. The rotor wake model is also
+used to represent the wake structure and to describe vorticity fields in the wake through
+the use of straight/curved vortex filaments or vortex particles. A vortex filament is the
+concentrated vortices along a segment with a singularity at the center, whereas a vortex
+particle is the concentrated vortices within a certain volume. These vortices are gener
+ated from the trailing-edge of each blade and convected downstream. Tables 1 and 2
+present a simple overview of the blade and wake models, respectively, for the rotor simu
+lation reported in this paper.
+The most challenging problems of rotorcraft can be divided into three fields of engi
+neering: aerodynamics, aeroacoustics, and aeroelastics. Researchers have used different
+vortex methods to tackle these challenges. The main topics in rotor aerodynamics are
+the influences of interactions among components [41, 45–47] and with nearby infra
+structure (e.g., brownout and shipboard operation) [48, 49], on rotorcraft performance,
+stability, control, and safety. There have also been several investigations on the design
+of rotorcraft configuration to improve aerodynamic performance [50–52]. The next
+Table 1 Overview of blade models for rotor simulation
+Methods Singularity Blade grid Computation time References
+LLM Horseshoe vortex No grid (lifting line) Very fast Leishman [25] Johnson [26]
+Landgrebe et al. [27, 28]
+VLM Vortex ring element Lattice on camber line
+Fast (slower than LLM)
+DeYoung [29] Katz and Maskew [30] Wachspress and Yu [31]
+Panel method Source and doublet elements
+Panels on upper and lower surface
+Medium (slower than VLM)
+Rubbert and Saaris [32] Hess [33], Crispin [34] Wachspress et al. [35]
+Hybrid method Horseshoe vortex Only volume grid for flow field (CFD domain)
+Slow (Faster than only CFD simulation)
+Rajmohan and He [36] Zhao et al. [37] Bae and He [38]
+
+
+Page 4 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+rotorcraft design challenge is to reduce their noise, especially in urban environments.
+Blade-vortex interaction (BVI) is identified as the dominant source of noise in rotorcraft.
+Vortex methods are powerful tools for researchers to study interactions of blade wake
+vortices with each other as well as with other rotorcraft components [23, 53–55]. Rotor
+craft are strongly affected by unsteady aerodynamic loads (e.g., BVI), which significantly
+contribute to vibration and structural deformation. Aeroelastic analysis has always been
+a crucial step in designing rotorcraft. With the new generation of compound rotorcraft,
+which generally have hingeless and bearingless rotors, rotor aeroelastic and response
+problems are attracting great attention in the aviation industry. Vortex methods are reli
+able and low-cost aerodynamic approaches for studying aeroelasticity in rotary wing air
+craft [56–58].
+The main objectives of this paper are to provide an overall review of vortex methods
+including principles, advantages, and drawbacks, as well as development and applica
+tions (specifically in the rotorcraft industry). In addition, the authors’ recent progress in
+their numerical method of modeling rotor aerodynamics and wake dynamics is intro
+duced, and its applications are discussed. The paper is organized as follows: Section 2
+gives an overview of the principles of vortex methods and their fundamental formula
+tion. Section 3 explains the three most common vortex methods used to predict rotor
+aerodynamics and introduces hybrid approaches. Applications of the vortex method
+for modeling rotor wake dynamics are presented in Section 4, which reviews the time
+marching free-wake method and viscous vortex particle method in detail. Section 5
+introduces our proposed nonlinear vortex lattice methods and compares our numerical
+results with experimental data. Finally, concluding remarks are made in Section 6.
+2 Vortex theory
+The vortex method is based on the assumption of inviscid, incompressible, and irrota
+tional flow over the entire domain surrounding the body surface and wake region. The
+velocity field is obtained by solving Laplace’s equation using appropriate velocity bound
+ary conditions on the body surface and far-field. The continuity equation for incom
+pressible potential flow, also represented by Laplace’s equation for the velocity potential,
+is given by Eq. (1). Here, φ is the velocity potential; the velocity of an irrotational flow
+can be defined as in Eq. (2):
+(1)
+∇2φ = 0
+Table 2 Overview of wake models for rotor simulation
+Methods Singularity Volume grid References
+Free-wake method Straight and curved filaments
+No grid Wie et al. [22] Leishman and Bhagwat [39] Lee and Na [40] Vortex particle method Particles No grid Jang et al. [41], He and Zhao [42] Winckelmans and Leonard [43] Singh and Friedmann [44]
+
+
+Page 5 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+Green’s second identity can be used to find the general solution to Laplace’s equa
+tion. The wake surface is supposed to be thin; it can be represented as the sum of only
+the doublet distribution on the wake surface Sw, and the sum of source (σ) and doublet
+(μ) distribution on the body surfaces SB. The integral form used to generate the solu
+tion is derived as in Eq. (3) and Eq. (4), in which surface integration should be made
+over all boundaries containing singularity elements. Here, G is Green’s function; β is a
+solid angle, of which the value is 4π when the point x is located at the outside of the
+body surface boundary for three-dimensional flow; n is the outward unit normal vec
+tor of the surface. σ and μ are the strength of the source and doublet singular elements,
+respectively.
+The difference between the values of external and internal potential on the solid
+boundary defines the strength of the doublet elements in Eq. (5); discontinuity in the
+normal derivative of the velocity potential on the solid boundary can be referred to as
+the strength of the source element in Eq. (6).
+Using the definitions of the source and doublet strength, the general solution is rear
+ranged as in Eq. (7).
+Equation (8) shows the resulting velocity induced by the source and doublet distribu
+tion on the body surface and wake.
+3 Vortex methods for rotor aerodynamics
+3.1 Lifting line method
+The lifting line method dates back to the development of Prandtl’s lifting-line theory (LLT)
+[59]. It was the first analytical method used to predict lift and induced drag on lifting sur
+faces. In this theory, each spanwise section of a finite wing has a section lift equivalent to
+that acting on a similar section of an infinite wing having the same section circulation. The
+(2)
+V = ∇φ
+(3)
+βφ(x) = −
+∫∫
+SB
+[G∇(φ − φi) · n − (φ − φi)∇G · n]dS −
+∫∫
+SW
+φ ∇G · ndS
+(4)
+βφ(x) = −
+∫∫
+SB
+[G∇σ · n − μ∇G · n]dS +
+∫∫
+SW
+μ∇G · ndS
+(5)
+μ = φi − φ
+(6)
+σ = (φi − φ) · n = ∂φi
+∂n − ∂φ
+∂n
+(7)
+φ(x) = − 1
+4π
+∫∫
+SB
+[
+σ
+(1
+r
+)
+− μ∇
+(1
+r
+)
+·n
+]
+dS + 1
+4π
+∫∫
+SW
+μ∇
+(1
+r
+)
+· ndS
+(8)
+∇φ(x) = − 1
+4π
+∫∫
+SB
+[
+σ∇
+(1
+r
+)
+− μ∇
+[∂
+∂n
+(1
+r
+)]]
+dS + 1
+4π
+∫∫
+SW
+μ∇
+[∂
+∂n
+(1
+r
+)]
+dS
+
+
+Page 6 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+local circulation is related to the local aerodynamic force of a three-dimensional wing using
+the two-dimensional vortex lifting law of Kutta and Joukowski. LLT assumes an incom
+pressible and inviscid fluid for which compressibility and viscous effects are negligible for
+application areas of interest. However, for Mach numbers less than 0.6, the effect of low
+speed compressibility can be introduced by the Prandtl-Glauert rule [60].
+The classical theory assumes an infinitesimally thin and uncambered rigid flat plate with
+zero spanwise twist and zero sweep. Wing twist about a spanwise axis can be included as
+an alteration to the wing geometric angle of attack. Lifting surfaces, such as wings or rotor
+blades, are modeled as bound vortices with the strength of Ŵ(r) at the aerodynamic center.
+The goal of LLT is to determine Ŵ(r) as a function of the wing geometric properties; then,
+the Kutta-Joukowski theorem is used to obtain the lift per unit span [25, 61]:
+where ρ is air density, V(r) is sectional flow speed along wing length, r is wing radial posi
+tion measured from the wing root, and c is the chord. Clα,2d is the airfoil lift curve slope,
+αg and αi are the wing geometric angle and the induced angle of attack, respectively.
+Thus, Γ(r) can be computed as shown in Eq. (10), where w(r) is the induced downwash
+velocity distribution along the wing length.
+LLT has wide application in evaluating the aerodynamics of wings with prescribed rotary
+and flapping motions. Goldstein [62] applied the original LLT of Prandtl for propellers.
+Lerbs [63] extended the formulations for moderately loaded propellers of arbitrary cir
+culation distribution using the induction concept proposed by Kawada [64]. Conlisk [65]
+discussed the use of LLT for rotary wings in hover, emphasizing the importance of account
+ing for the influence of linear velocity variation along the blade on the bound circulation
+distribution. Johnson [26] emphasized the significance of applying modifications to LLT
+to handle specific rotary-wing aerodynamic phenomena such as wake periodicity, whereas
+Leishman [25] gave a generic formulation of LLT for rotary-wing motions.
+LLT can be applied to a rotating frame with constant angular velocity [66–68]. The rotor
+encounters a uniform velocity field (V∞) aligned perpendicular to the rotation axis, rotat
+ing with constant angular velocity (Ω). The relative velocity field is calculated as in Eq. (11).
+The Kutta-Joukowski theorem connects the lift force per unit length of the lifting line (L)
+to the total velocity field (V), as in Eq. (12). Here, ρ is the fluid density. The flow is assumed
+to be nearly two-dimensional at each radial position along the lifting lines.
+The lifting line approach accurately predicts the hover performance of a wide range
+of conventional and advanced rotor designs. Landgrebe et al. [27, 28] showed that the
+lifting line approach was adequate for predicting the aerodynamic performance of rotor
+blades in hover and forward flight conditions. Miller [69] explored the aerodynamics
+(9)
+dL(r) = ρV (r)Ŵ(r)dr = 1
+2 ρ(V (r))2c(r)drClα,2d
+(αg − αi(r))
+(10)
+Ŵ(r) = 1
+2 c(r)Clα,2d
+(V (r)αg − w(r))
+(11)
+V = V∞ − × r
+(12)
+L = ρV × Ŵ
+
+
+Page 7 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+and dynamics of a rotor and the dynamics and control characteristics of a vehicle by
+modeling the rotor with LLT. Analytical modeling and design of the Apache helicop
+ter were performed by Jones and Kunz [70, 71] using CAMRAD II, which uses LLT
+for blade modeling. Yeo et al. [72, 73] studied tail rotor flutter, exploring a wide range
+of design parameters and examining their effects on whirl flutter speed. Jain et al. [74]
+studied rotor performance in hover and forward flight and compared their results with
+experimental data. Interference of coaxial rotors in hover was studied by Ho et al. [75].
+Wachspress et al. [76] also studied coaxial rotor performance with wake geometry and
+aeroacoustics by changing key rotor design parameters. Conceptual design of a slowed
+rotor compound helicopter emphasizing aerodynamic efficiency was performed by
+Moodie et al. [77].
+Although classical LLT does not consider compressibility or viscosity and has limita
+tions in its consideration of low aspect ratio wings and the thickness effect, it is a pow
+erful tool to model lifting devices, offering a simple approach with low computational
+cost for the preliminary design of wings and for aerodynamic predictions. Though the
+method has some inherent limitations, researchers have proposed variations and adap
+tations over the years. Guermond [78] and Phillips [79] modified the classical LLT to
+account for curvature of swept wings. Several researchers also modified LLT to include
+unsteady effects [80–82].
+3.2 Vortex lattice method
+The vortex lattice method (VLM) is a branch of computational fluid dynamics that
+mathematically stems from finite-difference concepts [29]. In the VLM, lifting surfaces
+are approximated as thin surfaces represented by vortex sheets of unknown circulation.
+Because it allows the rotor blade to be discretized into both chordwise and spanwise
+directions, VLM can geometrically represent the curvature of a rotor blade surface,
+camber, and swept shape, a significant advantage of VLM compared to LLT [83].
+Vortex lattices (or vortex rings) with circulation (Γ) are placed on the mean surface
+of a wing (neglecting the thickness of the wing) and the wake. The normal vector (n)
+is defined at the center of the vortex ring element, and is referred to as the collocation
+point (see Fig. 1). The leading edge of the vortex ring element and collocation point are
+located at the quarter and the three-quarter chord lines of each vortex panel, respec
+tively. Because there is no flow separation in potential flow, the velocity field around the
+surface will be tangential. Moreover, no flow should cross the solid surface, in what is
+usually known as the no-penetration boundary condition, shown in Eqs. (13) and (14).
+The zero normal flow condition indicates that the sum of normal velocity components
+at each collocation point on the camber line induced by the rotor blade, wake, and time
+dependent kinematic velocity due to unsteady motion of the body must be zero.
+Here, the V term is the time-dependent kinematic velocity, which is the sum of the
+system’s velocity (V∞), the relative velocity of the body (Vrel), and the body’s frame
+(13)
+(∇φ + V) · n = 0
+(14)
+(Vind,bound + Vind,wake + V∞ − Vrel − × r) · n = 0
+
+
+Page 8 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+rotational velocity (Ω × r) at each collocation point. Vind,bound, and Vind,wake indicate
+the velocity components induced by the rotor blade and wake vortices.
+Applying the no penetration boundary condition to the vortex sheet reduces the
+problem of finding the vortex strengths to a system of linear algebraic equations, as in
+Eq. (15). The bound-vortex circulations (Γi), and thus the self-induced velocity by the
+rotor blade can be represented by a combination of influence coefficients (aij). These
+influence coefficients are defined as the velocity component normal to the surface
+induced by the j-th vortex ring element with unit strength to the collocation point of
+the i-th vortex ring element. The right-hand side of the equation includes the contri
+butions of wake-induced velocity and body kinematic velocities. Katz and Plotkin’s
+book [60] provides a detailed description of the derivation of VLM.
+The VLM mathematical model has seen much improvement and its application
+has been extended to compressible fluids [84], unsteady flow [30], and many other
+complex aerodynamic phenomena [29, 85]. Because the simplicity and low compu
+tational cost of VLMs increase their applicability, they are still being widely used in
+many aviation projects instead of CFD methods, which are far more demanding [31].
+VLMs have helped researchers investigate the influences of rotorcraft configuration
+and flying environment on its aerodynamic performance [52], noise generation [55,
+86], flight control [87], and aeroelasticity response [88].
+(15)
+
+  
+a11 a12 · · · a1m a21 a22 · · · a2m
+... ... . . . ...
+am1 am2 · · · amm
+
+  
+
+    
+    
+Ŵ1
+Ŵ2
+...
+Ŵm
+
+    
+    
+=
+
+    
+    
+RHS1
+RHS2
+...
+RHSm
+
+    
+    
+(16)
+RHSi = −(V∞ + Vind,wake − × r)
+i · ni
+(17)
+aij = (Vind,bound
+)
+ij · ni
+Fig. 1 Discretization of lifting surface by vortex lattices
+
+
+Page 9 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+3.3 Source‐doublet panel method
+Although VLM is a useful tool for analyzing the aerodynamics of many rotorcraft con
+figurations, it is not suitable for simulating flow-field over structures like fuselage or
+empennage. Engineers usually use the source-doublet panel method (also known as
+the panel method) to evaluate the aerodynamic performance of complex planforms
+[41, 50, 89–91].
+Like VLM, the source-doublet panel methods assume irrotational and incompressible
+flow. Therefore, they can also be used to solve Laplace’s equations for potential function in
+the vortex field. The general solution of Laplace’s equation for each element in an inertial
+system can be derived following Green’s second identity. Considering the source (σ) and
+doublet (μ) distribution on the lifting surface and its wakes (see Fig. 2), the general solution
+of Eq. (1) can be expressed as:
+The integral equation can be made into a more straightforward form by applying the Dir
+ichlet boundary condition to each of the collocation points in Eq. (19), where the total inner
+potential can be set equal to the freestream potential. To obtain a numerical solution of
+the integral equation, the body and wake surfaces are divided into a number of rectilin
+ear panels consisting of N body surface panels and NW additional wake panels with con
+stant-strength singularities. For the constant-strength source (σ) and doublet (μ) elements,
+the influences of body panel k and wake panel j at point P can be computed using Eqs.
+(21,22,23).
+(18)
+φi∗(x) = − 1
+4π
+∫∫
+SB
+[
+σ
+(1
+r
+)
+− μ∇
+(1
+r
+)
+·n
+]
+dS + 1
+4π
+∫∫
+SW
+μ∇
+(1
+r
+)
+· ndS + φ∞
+(19)
+φi∗ = (φ + φ∞)i = φ∞
+Fig. 2 Surface and wake panels arrangements on wing
+
+
+Page 10 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+The integral equation for finding the unknown doublet distribution (μ) on the body sur
+face can be established as a linear algebraic equation, as in Eq. (24). Here, μW is the strength
+of wake doublets, which can be expressed in terms of the unknown surface doublets (μk)
+by enforcing the Kutta condition as in Eq. (25). The Kutta condition implies that the wake
+doublets are related to the difference between the doublet strengths of the upper and lower
+panels of the trailing edge (See Fig. 2). In addition, for unsteady rotor simulation, the source
+strength (σ) can be determined by applying the zero normal flow condition on the surface,
+defined as in Eq. (26) with the local kinematic velocity.
+Note that the strengths of the source and wake doublet are known at each time step.
+Moving the source term of Eq. (24) to the right-hand side of the equation results in a linear
+system of N equations with the unknown μk, in the following form [60]:
+(20)
+N
+∑
+k =1
+1 4π
+∫∫
+SB
+μ∇
+(1
+r
+)
+· ndS+
+NW
+∑
+j=1
+1 4π
+∫∫
+SW
+μW ∇
+(1
+r
+)
+· ndS−
+N
+∑
+k =1
+1 4π
+∫∫
+SB
+σ
+(1
+r
+)
+dS = 0
+(21)
+Ck ≡ 1
+4π
+∫∫
+SB
+∇
+(1
+r
+)
+· ndS
+∣ ∣ ∣
+∣k
+(22)
+Cj ≡ 1
+4π
+∫∫
+SW
+∇
+(1
+r
+)
+· ndS
+∣ ∣ ∣
+∣j
+(23)
+Bk ≡ 1
+4π
+∫∫
+SB
+(1
+r
+)
+dS
+∣ ∣ ∣
+∣k
+(24)
+N
+∑
+k =1
+Ck μk +
+NW
+∑
+j=1
+CjμW ,j −
+N
+∑
+k =1
+Bk σk = 0
+(25)
+μW = μu − μl
+(26)
+σ = −(V∞ + Vrel + � × r) · n
+(27)
+N
+∑
+k =1
+Ak μk =
+N
+∑
+k =1
+Bk σk
+(28)
+
+  
+a11 a12 · · · a1N a21 a22 · · · a2N
+... ... . . . ...
+aN 1 aN 2 · · · aNN
+
+  
+
+    
+    
+μ1
+μ2
+...
+μN
+
+    
+    
+=
+
+    
+    
+RHS1
+RHS2
+...
+RHSN
+
+    
+    
+
+
+Page 11 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+Once the linear system of equations is solved, the local velocity components of the
+surface panel coordinates and the pressure coefficients can be evaluated. In addition, the
+aerodynamic loads are then obtained by integrating the pressure over the lifting surface.
+The literature refers to the articles of Hess and Rubbert [32, 33] as pioneering imple
+mentations of the panel method in the aviation industry [34, 92]. Because of their spe
+cial ability in simulating realistic, complex aircraft geometries, and their accuracy,
+these source-doublet panel methods are well-known in studying aerodynamic research,
+including area of optimizing all rotor design parameters [50, 93] and investigating com
+ponent interaction effects [41, 94]. Rotor performance in the vicinity of other rotorcraft
+components, such as fuselage and wings (for tilt rotors), is also important to ensure com
+plete rotorcraft analysis. Not only is a rotor affected by other vehicle components, but it
+also causes many changes in the components’ structural dynamic and control behavior.
+Therefore, many studies have been conducted to better understand interactive effects
+between rotor and airframe and to better predict rotorcraft characteristics.
+Recent developments in vortex methods have enabled researchers to analyze full rotor
+craft. Because rotor blades usually have low thickness sections, it is advantageous to use
+the VLM to simulate various blade shapes. The source-doublet panel method can ade
+quately represent thick components, such as fuselage. One well-known example of using
+these methods for comprehensive analysis of full-configuration rotorcraft is CHARM,
+which stands for Comprehensive Hierarchical Aeromechanics Rotorcraft Model. Con
+tinuum Dynamics, Inc. [35, 95] developed this comprehensive analysis model by com
+bining several extended versions of their previous models; they later employed CHARM
+to analyze various rotorcraft phenomena such as rotor/airframe flow interaction [35],
+vibration [96], and noise propagation [97]. Other noteworthy combinations of VLM and
+the panel method for comprehensive analysis of rotorcraft can be found in Jang et al. [41]
+and Cao et al. [45], which investigate pressure fluctuation on fuselage surfaces and aero
+dynamic interaction among rotorcraft components, respectively. For more on coupled
+VLM and panel analysis, we encourage you to read the NASA Ames report by Wayne
+Johnson [98] on developing a comprehensive analysis.
+3.4 Hybrid vortex methods
+Although vortex methods, including LLT, VLM, and the source-doublet panel method,
+are useful approaches for analyzing rotor aerodynamics and simulating a complete
+rotorcraft configuration, they do not consider viscous and compressibility effects. These
+effects become more important than the influence of rotor wake when the rotorcraft
+operates in high-speed forward flight. CFD methods allow us to simulate a wide range
+of flow regimes and to accurately capture the complex flow physics occurring in near
+fields around rotor blades. However, CFD simulations suffer from excessive numerical
+dissipation on coarse grids; hence, wake structure and vorticity tend to dissipate rapidly
+after shedding from rotating blades. Therefore, hybrid approaches combining the advan
+tages of the vortex and CFD methods have been suggested to overcome these inherent
+shortcomings.
+Advanced Rotorcraft Technology, Inc. developed a coupled vortex particle method
+(VPM) and CFD analysis model in which VPM and CFD are employed to resolve the
+wake vorticity dynamics and to compute the near-body flow solution, respectively [36,
+
+
+Page 12 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+37]. VPM is used to solve the dynamics of wakes generated by rotors, wings, and other
+rotorcraft components, convect the wake vorticity under the combined influence of
+the freestream, and account for self-induced wake velocities and flow field perturba
+tions caused by bodies like the fuselage. The CFD solver is used to compute the flow
+field around the bodies, including rotor wake-induced velocities. Yang et al. [99] devel
+oped another hybrid method, which combines Navier–Stokes equations near the blade
+to consider the viscous effects and near wake, and potential flow analysis in the far
+field to model inviscid isentropic flow. Wie et al. [100, 101] suggested an approach that
+reduces computational time by minimization of the computational domain: the strength
+and motions of the wake are modeled using the time-marching free-wake approach, and
+the rotating blades and flow field around the rotor are estimated using CFD. A moving
+overset grid approach was used to consider rotor motions during hovering and forward
+flight. The time-marching free-wake method provides inflow and outflow conditions in
+the CFD domain from an induced flow at each time step. A similar approach can be
+observed in the works of Shi et al. [102] and Zhao et al. [103]. In the present paper, a
+coupled VPM/CFD methodology is presented briefly, as follows.
+Flow field velocity from the CFD solution, termed uCFD, is treated as an interference
+velocity in the VPM simulation. CFD flow field solution directly affects the rotor wake
+dynamics, represented by the vortex particles, as in Eqs. (29) and (30). The grid points
+and flow properties on the grid are derived from the CFD solution.
+The governing equation of the near-body CFD solver can be changed to account for
+the influence of VPM wake induced velocity, as follows [104]:
+In the equation above, Q is the flow state variable; Fi and Fv are the inviscid and vis
+cous fluxes. V is the considered fluid domain, S is the boundary of the fluid domain,
+and n is the normal vector pointing into the fluid domain. A flux correction term, ∆Fi,
+is provided to account for the VPM driven velocity. Due to the coupled approach, the
+flux correction is dependent on both the VPM-induced velocity field and the CFD solver
+velocity field. The flow state variables for compressible flow are shown in Eq. (32).
+In the above equation, uCFD = (uCFD, vCFD, wCFD) is the flow field; ρ and E are density
+and total energy obtained from CFD simulation. In CFD solvers, for both structured and
+(29)
+dx
+dt = utot = u∞ + uVPM +uCFD
+(30)
+dω
+dt = ω · ∇utot + ν∇2ω + γsrc = ω · ∇(uVPM + uCFD) + ν∇2ω + γsrc
+(31)
+∂
+∂t
+∫∫∫
+V
+Q dV +
+∫∫
+S
+(Fi − Fv + �F(uVPM, uCFD)) · n dS = 0
+(32)
+Q=
+
+   
+ρ
+ρ uCFD ρ vCFD
+ρ wCFD
+E
+
+   
+
+
+Page 13 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+unstructured frameworks, the Flux Correction Approach can be used to account for the
+VPM-induced velocity. The implementation of VPM-induced velocity contributes to the
+CFD solver’s correction of the convective flux term. The VPM-induced velocity correc
+tion terms can be formatted as follows:
+Here, uVPM and p are the VPM-induced velocity field and the pressure, respectively.
+The boundary condition on the body surfaces must be changed in the tightly coupled
+VPM/CFD solver. Due to the viscosity effect, the flow velocity on the body surfaces will
+be the same as the body velocity. The no-slip boundary condition was enforced in VPM/
+CFD coupling in such a way that the combined velocity field, uCFD + uVPM, is the same as
+the body velocity, ubody, as follows:
+According to the no-slip boundary condition, for a stationary body, ubody = 0. There
+fore, the boundary condition becomes uCFD = -uVPM in VPM/CFD coupling analysis.
+Similarly, the far-field boundary condition must be applied to the outer boundary of
+the CFD grid domain. Riemann invariants are commonly used to impose the far-field
+boundary condition. The far-field Riemann boundary condition can be modified to
+include VPM/CFD interaction and to account for the effect of the VPM rotor wake on
+the CFD far-field boundary. When the flow at the local grid possesses outgoing char
+acteristics, the flow state at the boundary can be extrapolated from the inner CFD grid
+nodes. When the flow at the local grid has incoming characteristics, the flow state at
+the boundary can take the combined values from the free stream and the VPM-induced
+velocity data. For an incompressible flow, the freestream state is written as shown in
+Eq. (35), whereas for compressible flow it is a function of the local speed of sound.
+4 Vortex methods for rotor wake dynamics
+The wake field plays an important role in rotorcraft performance with significant impacts
+on rotorcraft’s performance, vibration [105], maneuverability [106], and noise [54, 105].
+The dominant vortical structures of the rotor wake are the inboard vortex sheet and the
+tip vortices [25]. The vortices generated by a rotorcraft form different structures accord
+ing to the flight condition. Compared to other wake components, the concentrated vor
+tices evolving from the blade tips have the highest contributions to the flow field and
+blade aerodynamics [25]. Therefore, it is critical for the wake model to simulate tip vor
+tices accurately.
+(33)
+�Fi(uVPM, uCFD) · n =
+
+   
+ρuVPM · n
+ρuCFDuVPM · n ρvCFDuVPM · n
+ρwCFDuVPM · n
+(E + p)uVPM · n − p uVPM · n
+
+   
+(34)
+ubody = uVPM + uCFD
+(35)
+Qfreestream =
+
+ 
+u′ v′ w′ p′
+
+
+=
+
+ 
+u∞ + uVPM v∞ + vVPM
+w∞ + wVPM
+p∞ + 0.5�u2∞ + v2∞ + w2∞ − u′2 − v′2 − w′2�
+
+ 
+
+
+Page 14 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+Many experiments have been conducted to investigate disturbances and instabilities
+in rotor wake flow fields; resulting data have become the basis for several semi-empirical
+rotor wake models [107–111]. Wake models aim to predict the strengths and structures
+of rotorcraft wake vortex fields [112]. Choosing a proper wake model is an important
+responsibility for designers of rotorcraft. Therefore, researchers are continuously trying
+to improve the ability of wake models to accurately predict the aerodynamic loads of
+certain configurations. A common problem with the CFD method is that its inherent
+numerical dissipation causes the wake vorticity to diffuse too quickly. This causes prob
+lems in applying far-wake boundary conditions, especially for hovering flight, which are
+critical in wake modeling [112–114]. These difficulties of CFD, alongside its computa
+tional burden, reduce its application for practical problems. Therefore, vortex methods
+are still being implemented to model the rotor wake flow field [115] since they can offer
+accurate solutions with affordable computational burden and model the wake geometry
+without numerical dissipation error. References [9, 34, 116] provide exhaustive infor
+mation on the history of wake models, as well as their development and application in
+rotorcraft studies. In this section, two wake models based on vortex theory, the free
+wake method (FWM) and the viscous vortex particle method (VPM), are introduced.
+4.1 Time‐marching free‐wake method
+In the free-vortex or free-wake methods, the wake vortex sheet can be divided into trail
+ing and shed vortices, as shown in Fig. 3. The strength of a trailed vortex is the radial
+change between the bound vortices, whereas the strength of a shed vortex is related to
+the azimuthal change in the bound vortices with time [60, 83]. The time-marching free
+wake method, in contrast to the prescribed wake model, allows the vortex sheet consist
+ing of vortex filaments behind the rotor to move in free motion as the wake propagates
+downstream. In addition, the vortex sheet will deform at each time step based on the
+induced velocities by other vortex elements during unsteady rotor simulation [117].
+According to the Kutta condition, which acts as a bridge between the wake field and the
+lifting surface vortices in the vortex methods, the strength of a nascent shed wake vortex
+element is equal to the strength of a blade vortex element placed at the trailing edge in
+Fig. 3 Rotor wake model using free-wake method (FWM)
+
+
+Page 15 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+the previous time step. Once the wake vortices are shed, their strengths remain constant
+according to Helmholtz’s theorem.
+Because the vortex surface has no force exerted on it, a number of discrete vortex
+elements are allowed to convect freely with the local stream velocity, which is induced
+by other vortex elements in the wake region. Biot-Savart’s law in Eq. (36) provides the
+induced velocity components of a Lagrangian marker, which is connected to adjacent
+markers by straight or curved vortex filaments [60, 118].
+Here, V is the velocity of the marker induced by other markers, dl is the vortex line
+element, r is the distance between the Lagrangian markers, and Γ is the strength of the
+vortex filaments.
+The positions of the Lagrangian markers are defined as a function of the blade azimuth
+angle (ψ) and wake age (ζ). Thus, the initial helical wake structure will change as the
+markers convect downstream. The rate of change of the Lagrangian markers’ position
+can be expressed in the partial differential equation (PDE) form, which should be trans
+formed into a finite number of finite difference equation (FDE) to obtain the wake solu
+tion by the time-accurate numerical means. Various time-marching approaches, such
+as Euler explicit, Adams–Bashforth, and two predictor–corrector schemes, have been
+employed for the time integration of the rotor wake equations. However, the free-wake
+method is sensitive to numerical instabilities, particularly in hovering and low-speed
+forward flight conditions [155] since the rotor wake is inherently unsteady and unstable
+[156]. The time-marching methods affect the overall stability of the free-wake analysis
+and the numerical errors could induce nonphysical disturbances. Bhagwat and Leish
+man [39] suggested a predictor–corrector central (PCC) and a predictor–corrector with
+second-order backward (PC2B) difference schemes. The PC2B utilizes the solutions at
+the three previous time steps for approximating the temporal derivative. This algorithm
+implicitly introduces additional effective damping terms, making it more stable with
+second-order accuracy. Kini and Conlisk [157] used a fourth-order Adams–Moulton
+method, which is implicit and computationally expensive for a free-wake analysis. Gupta
+and Leishman [158] performed both linear and nonlinear stability analyses of time
+marching methods used in the free-wake analysis. Bagai and Leishman [159] developed
+a pseudo-implicit predictor–corrector method with a five-point central differencing
+approach for improving the convergence characteristics of the free-wake method. The
+numerical results obtained from free-wake method with a relaxation implementation
+were compared with the measurements of the tip vortex locations and flow field in hover
+and forward flight. The numerical instability of time marching free-wake modeling is
+also caused by the impulsive rotation at the beginning of computation, which creates a
+strong starting vortex. Initial treatments for this problem used a helicoidal spiral wake at
+the start [119] or assumed a uniform axial velocity [30]. Lee and Na [40, 120] suggested
+that, for this problem, it is better to increase the rotating speed of the blade slowly from
+zero to the desired speed after some revolution. Their model achieved a close agreement
+with experiments [114]. Leishman and Bhagwat [39] provided more detailed informa
+tion on this matter. Abedi et al. [160] suggested the VLM with the free-wake method to
+(36)
+V=− 1
+4π
+∫
+c
+r × Ŵdl
+|r|3
+
+
+Page 16 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+predict aerodynamic loads of wind turbine rotor blades operating the unsteady flow field
+by employing tabulated airfoil data and the dynamic stall model. Wachspress and Yu [31]
+also proposed the lifting surface blade model with free-vortex wake model for compre
+hensive rotorcraft analysis, and Wachspress et al. applied to the problems of rotor/wake/
+body interaction [35] and rotor/airframe noise of eVTOL aircraft [86] by incorporat
+ing fast panel methods and aeroacoustic software. Yeo [161] explored the performance
+potential of advanced compound helicopter configurations with a wide range of sizes,
+gross weight, and rotor systems using an aeromechanics analysis tool based on lifting
+line theory with the free-wake method.
+4.2 Viscous vortex particle method
+The potential flow assumption in the rotor wake limits the free-wake method’s ability to
+forecast the rotor wake dynamics. The effects of turbulence on the diffusive characteris
+tics of the vortex and the vortex stretching are considered empirically. The vortex decay
+factor or vortex core growth are modeled empirical formulations with the parameters,
+which are often derived experimentally [121]. Therefore, the numerical results of the
+free-wake analysis strongly depend on empirical formulations and the values of param
+eters. The viscous vortex particle method (VPM) solves the vorticity-velocity form of the
+incompressible Navier–Stokes equations with a Lagrangian description for obtaining the
+wake vorticity field. Therefore, consideration of viscous effect utilizing the VPM, which
+directly simulates the viscous flow and avoids artificial numerical dissipation, is crucial
+for solution accuracy. This method, which was developed for 2-D [122, 123] and 3-D vis
+cous flow [123–126], has been used in rotor flow field analysis [42]. A rotor wake gener
+ated from the trailing edge of the rotor blade is modeled by a number of vortex particles,
+which influence each other and induce a velocity in the flow-field in the wake evolu
+tion process, as shown in Fig. 4. Compared to the vortex filament method, VPM has
+the advantage that the particles do not necessarily need to maintain connectivity with
+adjacent particles because particles propagate independently during the time-marching
+step. This property is especially useful for investigating wake interaction phenomena
+occurring with rotors or rotor-body configuration. In addition, VPM can be used to eas
+ily treat the wake vortex penetration problem.
+The Navier–Stokes equation can be represented in vorticity-velocity form with a
+Lagrangian description for incompressible flow. The Lagrangian description of the vorti
+city-velocity form is used in the VPM approach. The vorticity dynamics equation can be
+expressed as in Eq. (37), where ω is the vorticity and u is the velocity.
+A natural way to solve the vortex transport problem is to use the vorticity-velocity
+form with a Lagrangian description. Grid generation is not required for the VPM simu
+lation. Moreover, the convection term in Eq. (37) is not explicitly treated, resulting in a
+dissipation-free approach for the vortex particle model. To solve the vorticity-velocity
+governing equation, the vorticity field can be represented by a set of S Lagrangian vec
+tor-valued particles, as in Eq. (38).
+(37)
+Dω
+Dt = ω · ∇u + ν∇2ω
+
+
+Page 17 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+where xi and αi are the position and the vector-valued total vorticity inside the vortex
+particle with volume Vi, respectively. The three-dimensional regularization function or
+smoothing function (ξσ) can be defined as in Eq. (39), where σ is the smoothing parame
+ter [42]. A Gaussian distribution is one of the distribution functions that can be utilized,
+as expressed in Eq. (40) [43, 127].
+The velocity component of the i-th vortex particle (xi) induced by other particles can
+be computed using Eq. (41), where σij is a symmetrized smoothing parameter used to
+conserve the linear and angular vortex impulses.
+Here, ρ is a non-dimensional distance parameter, Κ(ρ) is the regularized Biot-Savart
+kernel used for the velocity calculation, and G(ρ) is Green’s function, used for the stream
+function evaluation, as follows:
+(38)
+ω(x, t) =
+S
+∑
+i=1
+ξσ (x − xi)αi =
+S
+∑
+i=1
+ξσ (x − xi)ωiVi
+(39)
+ξσ (r) = 1
+σ3
+ξ
+( |r|
+σ
+)
+(40)
+ξ (ρ) = 1
+(2π )3/2 e−ρ2/2
+(41)
+u(xi, t) = −
+S
+∑
+j=1
+1
+σ3
+ij
+K (ρ)(xi − xj) × αj
+(42)
+σij = √12
+√
+σ2
+i + σ2
+j
+(43)
+K (ρ) = G(ρ) − ξ(ρ)
+ρ2
+Fig. 4 Rotor wake modeling using vortex particle method (VPM)
+
+
+Page 18 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+During the time-marching step for unsteady rotor simulation, the location of parti
+cles xi (t) will be updated using the local convection velocity, which is the sum of the
+freestream velocity, self-induced velocity, and wake-induced velocity. Then, the convec
+tion equation governs particle positions xi as follows:
+The governing equation for the vorticity field is defined in Eq. (37). The left-hand side
+of the equation is the material derivative of the vorticity. The first term on the right-hand
+side of the governing equation for the vortex dynamics represents the stretching effect,
+which describes vortex stretching and rotation owing to the velocity gradient. The vis
+cous diffusion term is the second term on the right-hand side of Eq. (37); it describes
+the vorticity diffusion due to viscous effects. In the direct scheme, the vortex stretching
+effect is accounted for by directly multiplying the velocity gradient matrix by the particle
+vorticity [42].
+The particle strength exchange (PSE) method [122, 124, 128–131] can be utilized to
+consider the viscous diffusion effect, for which the second term is on the right-hand
+side of the vorticity governing equation in Eq. (37). The fundamental idea of the PSE
+algorithm is to approximate the Laplacian operator with an integral operator, avoiding
+numerical differentiation, which has lower numerical precision than the integral opera
+tion. The approximated Laplacian can be written as in Eq. (48).
+The kernel ησ in the above equation is considered to have a Gaussian distribution func
+tion. The integral in Eq. (48) can be discretized across all particles by using the midpoint
+quadrature, resulting in the following equation:
+Koumoutsakos et al. [132] implemented the Neumann type vorticity boundary condi
+tions to consider the no-slip state, which is expressed in terms of vorticity flux. Singh
+and Friedmann [133] used viscous VPM to simulate coaxial rotors in hover flight, which
+yields complex unsteady aerodynamic interaction effects. The flow separation during the
+dynamic stall is an important source of vibrations on a rotor at high advance ratios. They
+(44)
+G(ρ) = 1
+4πρ erf
+( √ρ2
+)
+(45)
+ρ= 1
+σj
+∣
+∣x − xj
+∣ ∣
+(46)
+d dt
+xi(t) = u(xi, t)
+(47)
+dαi dt
+∣ ∣ ∣
+∣ST
+= αi · ∇u(xi, t)
+(48)
+∇2ω(xi) ≈ 2
+σ2
+∫
+ησ (xi − y)[ω(y) − ω(xi)]dy
+(49)
+∇2ω(xi) ≈ 2
+σ2
+S
+∑
+j=1
+ησ (xi − yj)[ω(yj) − ω(xi)]Vj
+
+
+Page 19 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+also used VPM simulation to model the shedding of concentrated vorticity from the air
+foil’s leading edge and study the wake evolution of the coaxial rotors [44]. Su et al. [134]
+applied the VPM to an electrically controlled swashplateless rotor to investigate aerody
+namic characteristics and wake structure. He et al. [42] investigated the effects of mod
+eling parameters such as wake cut-off distance, time-step size, and other model tuning
+parameters for hovering and forward flight. Helicopter rotor loads were predicted using
+a source-doublet panel/VPM hybrid approach combined with a computational struc
+tural dynamics (CSD) algorithm. In a hybrid approach, the panel method was employed
+to simulate the rotor blade surfaces and close wakes, and VPM was used to model the far
+wake [91]. Alvarez and Ning [162] developed a viscous VPM code to study the unsteady
+wake dynamics of individual propellers of distributed propulsion electric aircraft, includ
+ing near-far field transition and vortex breakdown. They presented its capacity to model
+rotor-on-rotor aerodynamic interactions in a side-by-side configuration [163]. Tan et al.
+[164] suggested coupling VPM and a discrete element method to simulate the helicopter
+brownout phenomenon and investigated the particle–surface interactions and the flow
+field of a helicopter in ground effect. Huberson et al. [165] employed the panel method
+with VPM and Farassat’s formulation 1A to predict the vortex–solid interactions, such
+as helicopter blade–vortex interaction noise.
+While flow is passing over the rotor blade, the wake elements keep emitting from it
+and the number of vortex particles increases at every time step. Although the number
+of wake elements determines the prediction accuracy of the wake region, any increase in
+the number of vortex particles extends the computational time of the numerical model
+[114, 120]. Therefore, an efficient summation rule needs to be incorporated for VPM
+simulation. In the literature, there are two broad groups of fast summing algorithms for
+resolving the N-body problem. The first is the Tree-Code approach [129–131]; the sec
+ond is the fast multipole method (FMM) [135, 136]. The detailed description is out of
+the scope of this paper. Berdowski et al. [166] developed the efficient framework coupled
+with actuator disc method, VPM, and open-source FMM library for handling the effi
+cient data-parallelism on a CPU, and Willis et al. [167] suggested a pFFT-Fast Multipole
+Tree algorithm to accelerate the calculation of particle-induced velocity.
+5 Nonlinear vortex lattice method
+A comprehensive simulation tool capable of accurately and efficiently predicting rotor
+aerodynamics and wake dynamics is needed to design more advanced rotor systems.
+Among the various numerical approaches, VLM is one of the most suitable because it
+can provide reasonably accurate solutions with affordable computational cost and can
+represent the wake vorticity fields without numerical dissipation error. However, VLM
+simulation cannot consider nonlinear aerodynamic characteristics, which are mainly
+associated with viscosity, flow separation, and low-Reynolds number flow. To overcome
+these drawbacks, the authors of this paper have suggested a nonlinear vortex lattice
+method (NVLM) that combines VLM with airfoil lookup tables, semi-empirical mod
+els, and vortex strength correction. Moreover, NVLM is tightly coupled with VPM to
+simulate unsteady wake dynamics. Details of the numerical strategies used in NVLM/
+VPM are elucidated in previous studies [83, 137]. In the following sections, NVLM/VPM
+methodology is briefly presented, and its applications are discussed.
+
+
+Page 20 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+5.1 Airfoil look‐up table
+VLM simulation yields accurate results with an affordable computational cost for sub
+sonic attached flow. However, it fails to predict the nonlinear aerodynamic behavior of
+rotor blades that occurs at high angles of attack (above stalling or critical angle of attack)
+or low-Reynolds number flow. For these flow regimes, an abrupt drop in the lift coeffi
+cient and nonlinear variation in lift coefficient with respect to the angle of attack become
+important in determining the rotor aerodynamics. The airfoil look-up table is an effi
+cient and practical way of obtaining aerodynamic information about the airfoils of the
+rotor blades operating in both attached and stalled flow conditions. The sectional look
+up table containing pre-computed airfoil aerodynamic data for a wide range of Reynolds
+numbers and angles of attack is used in the NVLM/VPM simulation to compute the lift
+and drag coefficients at each blade section’s control point. The location of the control
+point should be explicitly specified to conduct an airfoil look-up table. The mathematical
+equation is derived by applying zero normal boundary conditions, and it is numerically
+solved using the root-finding approach. The result shows that the most suitable control
+point location is at half of the chord for NLVM [138]. A detailed derivation is outside the
+scope of this paper.
+The aerodynamic coefficients of the individual blade sections rely largely on the local
+inflow velocity and effective angle of attack, which are calculated using Eqs. (50) and
+(51), based on VLM solutions.
+Here, Vinflow is the local inflow velocity. θtwist and θpitch are the local twist angle and
+collective pitch angle at each blade section, respectively. a1 and a3 are unit vectors along
+directions tangential and normal to the rotating plane. Once the strengths of the bound
+vortices on the rotor blade are determined by solving the linear system of equations
+with an instantaneous boundary condition at each time step, the self-induced velocity
+(Vind,bound) and wake-induced velocity (Vind,wake) can be calculated by Biot-Savart’s law.
+Finally, each blade section’s sectional lift and drag forces can be calculated using Eqs.
+(52) and (53).
+According to the force conventions for the rotor blade, all other aerodynamic coef
+ficients, including normal (CN), tangential (CA), thrust (CT), and torque (CQ) can be eval
+uated using the lift (CL) and drag (CD) coefficients in conjunction with their reference
+angles. The normal and tangential force coefficients are determined relative to the chord
+line plane, while the thrust and torque coefficients are determined relative to the rota
+tion plane.
+(50)
+Vinflow = V∞ − × r + Vind,bound + Vind,wake
+(51)
+αeff = θtwist + θpitch − tan−1
+( Vinflow · a3
+Vinflow · a1
+)
+(52)
+dLtable = 1
+2 ρ∞
+(
+(Vinflow · a1)2 + (Vinflow · a3)2)
+cl dA
+(53)
+dDtable = 1
+2 ρ∞
+(
+(Vinflow · a1)2 + (Vinflow · a3)2)
+cd dA
+
+
+Page 21 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+5.2 Semi‐empirical models for airfoil aerodynamics
+The centrifugal and Coriolis forces caused by three-dimensional effects and rotational
+augmentation affect the stability of the boundary layer of the rotor blades, resulting in
+significantly higher lift coefficients than in the two-dimensional or three-dimensional
+non-rotating cases. These events are called as stall delay phenomenon, which is espe
+cially noticeable at the inboard section of the rotating blade, where they strongly influ
+ence the onset of flow separation. The boundary layer can be stabilized, minor separation
+bubbles can return to attached flow, and flow separation can be postponed above stall
+onset angle corresponding to the two-dimensional situation, despite the comparatively
+high angle of attack due to the low rotational speed at the inboard of the blade. As a
+result, the rotor blade in the inboard region experiences different post-stall airfoil char
+acteristics than in the two-dimensional scenario. Several stall delay models have been
+developed to account for the three-dimensional rotating effect by adjusting the two
+dimensional aerodynamic coefficient data. Among several other models, Raj and Selig’s
+model [139] can be utilized to account for the influence of stall delay on the aerodynamic
+coefficients at the inboard portion of the rotor blade; their model is an improvement of
+Du and Selig’s model [140]. The corrected lift and drag coefficients, cl,3D and cd,3D, can be
+calculated in the following way:
+where cl,2D and cd,2D are two-dimensional lift and drag coefficients. ∆cl and ∆cd are the
+differences between aerodynamic coefficients obtained from the potential theory and
+the two-dimensional configuration. Incremental factors for the lift and drag coefficients,
+gcl and gcd, are determined as follows:
+where c/r and λ are the ratio of a local chord to the local radius and a local speed ratio.
+a, b, d, and n are empirical constants for the correction formula; their values were deter
+mined from the measurements.
+The dynamic stall phenomenon is also most likely to occur in the inboard regions of
+the rotor blade because the effective angle of attack is much higher than in the outboard
+regions due to the low rotational speed. This creates significantly unstable aerodynamic
+behavior in the blade section, resulting in a situation in which the aerodynamic coef
+ficients enter a hysteresis loop. As a result of the presence of shedding vortices from the
+leading edge of the airfoil, nonlinear variations in lift, drag, and pitching moment coef
+ficients as a function of angle of attack occur, and their values in the stall and post-stall
+regions are completely different from the static aerodynamic coefficients. Dynamic stall
+(54)
+cl,3D = cl,2D + gcl cl
+(55)
+cd,3D = cd,2D + gcd cd
+(56)
+gcl = 1
+2
+
+
+1.6 (c/r)
+0.1267
+al − (c/r) (r/R)nl
+dl
+bl + (c/r) (r/R)nl
+dl
+
+
+�
+1− r
+R
+�
+(57)
+gcd = 1
+2
+
+
+1.6 (c/r)
+0.1267
+ad − (c/r) (r/R)nd
+dd
+bd + (c/r) (r/R)nd
+dd
+
+
+�
+2− r
+R
+�
+
+
+Page 22 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+generally causes unsteady and high loads on the rotor blades, which could cause struc
+tural damage to the rotor blade and other components. To forecast the aerodynamic
+loads acting on a rotor blade subjected to unsteady inflow circumstances, it is crucial to
+include the dynamic stall effect and the nonlinear aerodynamic features of the airfoils in
+the stall or post-stall regions. Various dynamic stall models have been proposed, includ
+ing the ONERA model [141], the Leishman and Beddoes (L-B) model [142, 143], and the
+Stig Øye model [144]. The L-B model, devised by Leishman and Beddoes, is the most
+widely used semi-empirical modeling method for the hysteresis loop of the aerodynamic
+coefficients. This model consists of three parts that were formulated to represent flow
+behaviors occurring around rotor blades: unsteady attached flow, trailing-edge separated
+flow, and dynamic stall flow. The details of the L-B model are omitted as it is rather com
+plicated and lengthy.
+5.3 Vortex strength correction
+The sectional aerodynamic forces acting on the rotor blades for separated flow or low
+Reynolds number flow can be evaluated through the look-up table. However, the bound
+circulation strength of the rotor blades, derived by solving a linear system of equa
+tions may be significantly over-predicted. Vortex elements placed on the trailing edge
+of the rotor blades will shed into the wake during time-marching simulation, and their
+strength will remain constant due to Helmholtz’s theorem. As a result, the over-pre
+dicted strengths of bound and wake vortices can cause inaccurate estimation of the rotor
+wake geometry and evolution process, leading to errors in induced velocity predictions.
+Therefore, the influence of nonlinear aerodynamics on the bound circulation strength
+should be included to obtain a more accurate solution. In NVLM, sectional lift forces
+from the look-up table are employed to correct the bound vortex strength derived from
+VLM simulation. By equating the formulas for sectional lift forces based on airfoil the
+ory in Eq. (52) and the Kutta-Joukowski theorem, the representative circulation strength
+at the control point, represented as Γtable, can be newly determined. A correction process
+with an under-relaxation factor is iteratively conducted until a convergence criterion is
+satisfied. If the difference between the current and updated circulation strengths reaches
+a value under 0.001%, then the iterative correction is stopped, and the corrected circula
+tion strength is assigned to both the chordwise and spanwise vortex elements depend
+ing on the ratio of strength of each chordwise element to the average strength. A full
+description of the circulation strength correction technique can be found in the refer
+ences [138].
+After the bound circulation strength on the rotor blade converges, the corrected
+bound vortices located at the trailing edge will shed into the wake according to the Kutta
+condition. The rotor blade is rotated at each time step, and wake vortex elements are
+generated from the rotor blades’ trailing edges. Once the strength of wake vortices is
+determined, the wake structure can be modeled through two approaches, vortex fila
+ments and vortex particles, as mentioned above. In NVLM/VPM, the nascent wake that
+was recently shed from the full span of blades is represented using curved vortex fila
+ments during approximately 4 ~ 5 discretized time steps. After that, the vortex filaments
+are split into a finite number of vortex particles, except for the nascent wake panels,
+to avoid wake instability problems. Vortex particles mutually interact with each other,
+
+
+Page 23 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+allowing them to distort and propagate freely downstream with local convection veloc
+ity. A large number of vortex particles are generated during the time-marching step for
+wake evolution. The computing time to evaluate each vortex particle’s local convection
+velocity increases exponentially as the number of vortex particles increases. To allevi
+ate the computational burden, parallel computing using the Message Passing Interface
+(MPI) library on a multi-core processor is applied to evaluate the induced velocities at
+each vortex particle.
+5.4 Applications
+As previously mentioned, NVLM/VPM has been suggested to overcome the intrinsic
+drawbacks of the existing VLM, which is impractical for many applications. NVLM/
+VPM has been applied to investigate the rotor aerodynamics, wake dynamics, and
+acoustics of various types of rotors, such as propellers [55, 145–148] and wind turbine
+blades [137, 138, 149, 150]; its predictive capability has been compared with those of
+other numerical predictions and experimental results. The validation results show that
+NVLM/VPM can consider the nonlinear aerodynamic characteristics, which are mainly
+introduced by viscous effects and low Reynolds number flow. In this paper, specific
+application examples are introduced to assess the model accuracy of NVLM/VPM.
+5.4.1 Caradonna‐Tung rotor
+The experiment on the Caradonna-Tung rotor model was conducted in 1981 [151], and
+provided extensive measurements of rotor aerodynamics and wake dynamics that have
+been widely used in the rotorcraft field to validate the accuracy of numerical methods.
+The model rotor is made of two blades installed on a tall column with a drive shaft. The
+Caradonna-Tung rotor is a rectangular blade without twist or swept angles, and its sec
+tional shape is that of a NACA 0012 airfoil. The aspect ratio of the rotor blade is 6, the
+chord length is 0.1905 m (0.625 ft), and the rotor diameter is 2.286 m (7.5 ft), as listed
+in Table 3. A wide range of test parameters were used under ambient conditions, with a
+tip Mach number ranging from 0.226 to 0.890; the collective pitch setting varied from
+0 to 12 degrees. The tip vortex trajectory was retrieved using a hotwire approach after
+pressure distributions were recorded at five cross-sections of the blade. The specific flow
+conditions chosen for the validation work are listed in Table 4.
+The thrust coefficient is a non-dimensional parameter representing the aerody
+namic load acting on the rotor blades in a direction normal to the rotating plane. Fig
+ure 5 provides a comparison between measurements and numerical predictions for
+the thrust coefficient distribution along the radial direction for various blade pitch
+angles. The results of VLM (blue dashed line with triangle symbols) and NVLM (red
+solid line with square symbols) are compared with experimental data to validate the
+prediction capability of the numerical models. Results obtained from both VLM and
+NVLM simulations matched well with the measurements, although VLM tended to
+slightly over-predict the sectional thrust force, especially in the blade tip region. The
+variation in the integrated thrust force coefficient with respect to collective pitch
+angle is shown in Fig. 6. Exact agreement between the experiment and NVLM was
+observed, whereas slight overprediction was observed in the case of VLM.
+
+
+Page 24 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+The rotor wake is defined as an unsteady fluctuation flow that generates unsteady
+rotor blade aerodynamics and complicates the flow field. The wake vortex particles
+have different sizes depending on the circulation strength. The stronger the wake vor
+tex strength, the larger the particle size. The color of the vortex particles also varies
+with their circulation strength, just as the size does. The evolution of wake geometries
+of the Caradonna Tung rotor with respect to revolutions is shown in Fig. 7. The devel
+opment of near and far wakes is easily predicted as rotor revolutions increase; tip vor
+tex descent and wake contraction can be clearly noticed. Figure 8 shows a comparison
+of vorticity magnitude contours on a vertical cross-section (x–z plane) through the
+center of the rotating axis with an increase in revolutions. It can be clearly seen that
+the periodic shedding of wake vortices behind the rotor plane gives rise to a symmet
+ric wake structure. A comparison of the tip vortex trajectory locus between experi
+ment and computation is provided in Fig. 9, which shows an excellent agreement with
+the experiment.
+5.4.2 NREL Phase VI rotor
+Vortex methods also have broad applicability in simulating wind turbines, which
+operate at lower Mach numbers than rotorcraft. Here, we again validate the proposed
+Table 3 Model description of Caradonna-Tung rotor [151]
+Parameter Value
+Number of blades, NB [-] 2 Chord length, c [m] 0.1905 Rotor radius, R [m] 1.143 Twist angle, θtwist [deg.] 0 Blade planform Rectangular blade Blade sectional profile NACA 0012 airfoil
+Table 4 Flow conditions for Caradonna-Tung rotor simulation
+Parameter Value
+Collective pitch angle, θc [deg.] 5, 8, 12 Rotating speed, Ω [rpm] 1250 Tip Mach number, Mtip [-] 0.439
+Fig. 5 Comparison of sectional thrust coefficients: (a) θc = 5o, (b) θc = 8o, and (c) θc = 12o
+
+
+Page 25 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+NVLM against extensive and high-quality measurements of an NREL Phase VI wind
+turbine operating in both axial and yawed flow conditions. A well-known experimen
+tal study was conducted in the NASA-Ames wind tunnel facility under controlled
+wind conditions [152]. The NREL Phase VI wind turbine consists of two-bladed rotors
+without hub tilt, coning, and prebend angles. The rotor blade is an S809 airfoil with a
+tapered-twisted configuration. Details of the NREL Phase VI model and its operating
+conditions for the validation work are provided in Tables 5 and 6, respectively.
+Because the NREL Phase VI is a stall-regulated wind turbine, the rotor blades are
+designed so that flow begins to separate from their upper surfaces at high wind speeds.
+The aerodynamic thrust and power output are controlled by stall effects occurring on
+the wind turbine blades. Below a wind speed of 10 m/s, the flow remains fully attached
+over the rotor blade. However, with increases in wind speed, separated flow starts to
+cover the rotor blade from the inboard to outboard regions. Finally, the flow is com
+pletely separated from the rotor blade at a wind speed of 20 m/s, and massive flow
+separation occurs at a wind speed of 25 m/s. Once flow separation occurs, the flow
+Fig. 6 Comparison of integrated rotor thrust coefficient depending on collective pitch angle
+Fig. 7 Rotor wake structures: (a) 10 rev., (b) 15 rev., and (c) 20 rev
+
+
+Page 26 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+field around the rotor blades becomes highly unsteady and transient. Figures 10 and
+11 respectively provide comparisons of the normal and tangential force distribu
+tions along the radial direction, depending on the wind speed. Above a wind speed of
+10 m/s, there is a distinct difference between the results of VLM and NVLM simula
+tions; significant improvements associated with flow separation and the stall effect are
+evident. NVLM predictions are seen to be quite close to the measurements, even if
+there are minor discrepancies, whereas the VLM simulations show significant over
+prediction of the normal and tangential force coefficients due to the neglecting of the
+nonlinear aerodynamic behaviors caused by the flow separation. In Fig. 12, the overall
+aerodynamic performances of wind turbines in terms of low-speed shaft torque and
+Fig. 8 Rotor vorticity structures: (a) 10 rev., (b) 15 rev., and (c) 20 rev
+Fig. 9 Comparison of tip vortex trajectory in terms of radial and vertical positions for θc = 8o
+
+
+Page 27 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+thrust force predicted by VLM and NVLM simulations are compared with experimen
+tally measured data. Above a wind speed of 10 m/s, VLM tends to overestimate the
+aerodynamic load on the rotor blades, while the NVLM results are in reasonably good
+agreement with experimental data and the CFD results, even if flow separation occurs
+at high wind speed.
+Figures 13 and 14 show NVLM predictions of unsteady aerodynamic loads on a wind
+turbine blade subjected to wind speed of 7 m/s and yaw angle of 30°. Under yawed flow
+conditions, the wind turbine blades suffer from cycle-to-cycle variation in aerodynamic
+load. This is mainly attributed to the advancing and retreating blade effect and the
+skewed wake effect. It can be observed that azimuthal variations in the sectional aerody
+namic loads are much more pronounced at the inboard section because, there, the rotor
+blade experiences significant variation in angle of attack due to asymmetric inflow dis
+tribution. The time-averaged normal and tangential force coefficients of the rotor blade
+are shown in Fig. 15. Comparing Fig. 15 (a) and (b), we can confirm that NVLM also
+accurately predicts wind turbine aerodynamic loads with yaw angle.
+Figures 16,17,18 compare the results of NVLM and LLM [153] with NREL measure
+ment data obtained under wind speed of 10 m/s and yaw angle of 30°. At higher wind
+speeds, advancing and retreating blade effects become more dominant. This can induce
+a dynamic stall of rotor blades; the blades experience periodic variation in angle of attack
+with large amplitude, particularly at the inboard section. These results indicate that
+NVLM can provide more accurate predictions of aerodynamic load from the inboard
+to the outboard regions than LLM, which tends to overestimate the aerodynamic loads.
+Based on the authors’ experience, it is difficult to use the LLM approach to accurately
+predict tangential forces of rotor blades because a single vortex element in the chord
+wise direction cannot sufficiently represent the three-dimensional geometry and various
+planform shapes of the rotor blades [31, 138, 154].
+Table 5 Model description of NREL Phase VI rotor [152]
+Parameter Value
+Number of blades, NB [-] 2 Chord length, cr = 0.75R [m] 0.483 Rotor radius, R [m] 5.029 Blade planform Tapered-twisted blade Blade sectional profile S809 airfoil
+Table 6 Flow conditions for NREL Phase VI rotor simulation
+Parameter Value
+Collective pitch angle, θc [deg.] 4.815 Tip pitch angle, θtip [deg.] 3 Rotating speed, Ω [rpm] 72 Tip Mach number, Mtip [-] 0.11 Wind speed, V∞ [m/s] 5, 7, 10, 15, 20, 25 Yaw angle, β [deg.] 0, 30
+
+
+Page 28 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+Fig. 10 Comparison of normal force coefficients depending on wind speed: (a) 5 m/s, (b) 7 m/s, (c) 10 m/s, and (d) 15 m/s
+Fig. 11 Comparison of tangential force coefficients depending on wind speed: (a) 5 m/s, (b) 7 m/s, (c) 10 m/s, and (d) 15 m/s
+Fig. 12 Comparison of rotor aerodynamic performance depending on wind speed: (a) aerodynamic thrust force and (b) low-speed shaft torque (LSSTQ)
+
+
+Page 29 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+6 Conclusion
+This paper provides a brief introduction to the most common vortex methods for
+analyzing rotor aerodynamics and wake dynamics. The purpose of this paper is not
+Fig. 13 Azimuthal variation of normal force coefficient acting at specific radial positions for V = 7 m/s and β = 30o: (a) r/R = 0.47, (b) r/R = 0.63, and (c) r/R = 0.8
+Fig. 14 Azimuthal variation of tangential force coefficient acting at specific radial positions for V = 7 m/s and β = 30o: (a) r/R = 0.47, (b) r/R = 0.63, and (c) r/R = 0.8
+Fig. 15 Comparison of time-averaged force coefficients for V = 7 m/s and β = 30o: (a) normal force and (b) tangential force coefficients
+Fig. 16 Azimuthal variation of normal force coefficient acting at specific radial positions for V = 10 m/s and β = 30o: (a) r/R = 0.47, (b) r/R = 0.63, and (c) r/R = 0.8
+
+
+Page 30 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+to present an exhaustive review but to present state-of-the-art vortex methods and
+address well-known uses of these methods for simulating flow over rotorcraft. The
+vortex methods are still appealing today due to their negligible numerical dissipation,
+conservation of flow invariants, relaxed stability condition at time steps, and abil
+ity to capture high-resolution wake structure. The vortex methods are coupled with
+grid-free wake modeling methods, such as the time-marching free-wake method and
+viscous vortex particle method, which do not require any grid generation effort and
+minimize the dissipation of vorticities over long distance traveled. Moreover, the vor
+tex methods are useful for preliminary designs and parametric studies because they
+produce numerical results much more quickly than grid-based CFD simulation. How
+ever, the numerical methods based on vortex theory fail to provide accurate represen
+tations of the viscous boundary layer and lead to underestimation of the drag force
+due to the assumption of potential flow. They are also unable to consider nonlinear
+aerodynamic characteristics of airfoils involved in the rotor blade, including viscosity,
+flow separation, and low-Reynolds number flow. To overcome the intrinsic shortcom
+ings of VLM, the authors have proposed NVLM; its applications to rotor aerodynam
+ics and wake dynamics were discussed. Simulations indicated that NVLM/VPM has
+great capability to assess aerodynamic loads acting on rotor blades for a wide range
+of operating conditions and to simulate the generation and evolution of rotor wake,
+allowing for higher resolution simulation of the helical wake structure.
+Recent increases in efficiency of electric propulsion, particularly in areas of motor
+and battery technology, have been driving the development of electric vertical take
+off and landing (eVTOL) aircraft, which use electric power to hover, take off, and land
+vertically in highly populated urban areas. Among various configurations, eVTOL
+Fig. 17 Azimuthal variation of tangential force coefficient acting at specific radial positions for V = 10 m/s and β = 30o: (a) r/R = 0.47, (b) r/R = 0.63, and (c) r/R = 0.8
+Fig. 18 Comparison of time-averaged force coefficients for V = 10 m/s and β = 30o: (a) normal force and (b) tangential force coefficients
+
+
+Page 31 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+aircraft designed with multiple lifting rotors or prop-rotors are popular in the UAM
+market because distributed electric propulsion (DEP) systems using multiple rotors
+can improve safety and reduce noise. With the increasing number of rotor systems,
+vortex methods have emerged as useful tools for comprehensive analysis of eVTOL
+aircraft; these methods can provide a comprehensive solution with an affordable com
+putational cost by combining structural, flight dynamic, and acoustic analysis solvers.
+Furthermore, in the presence of fuselage or any other such body, a hybrid method
+that combines vortex methods with CFD or a generalized treatment of boundary con
+ditions on solid walls can be used, an efficient and accurate way to compute flow fields
+around bodies while considering the effects of the rotor wake.
+Acknowledgements
+This study was supported by the National Research Foundation of Korea (NRF) grant funded by the Ministry of Science, ICT & Future Planning (NRF-2017-R1A5A1015311 and 2021R1C1C1010198), South Korea.
+Availability of supporting data Not applicable.
+Authors’ contributions
+This research is the outcome of joint effort. All authors have read and approved the final manuscript.
+Funding
+The National Research Foundation of Korea (NRF-2017-R1A5A1015311 and 2021R1C1C1010198), South Korea.
+Availability of data and materials
+All data and materials are available upon request.
+Declarations
+Competing interests
+The authors declare that they have no competing interests.
+Received: 9 December 2021 Accepted: 13 March 2022
+References
+1. Castles W Jr, Gray RB (1951) Empirical relation between induced velocity, thrust, and rate of descent of a helicopter rotor as determined by wind-tunnel tests on four model rotors. NACA Technical Note NACA-TN-2474 2. Wilson JC, Mineck RE (1974) Wind tunnel investigation of helicopter rotor wake effects on three helicopter fuselage models. NASA Technical Memorandum NASA-TM-X-3185-SUPPL 3. Landgrebe AJ (1971) An analytical and experimental investigation of helicopter rotor hover performance and wake geometry characteristics. AD0728835 4. McCroskey WJ, Fisher RK (1972) Detailed aerodynamic measurements on a model rotor in the blade stall regime. J Am Helicopter Soc 17(1):20–30. https://doi.org/10.4050/JAHS.17.1.20 5. Johnson B, Leishman JG, Sydney A (2010) Investigation of sediment entrainment using dual-phase, high-speed particle image velocimetry. J Am Helicopter Soc 55(4):42003. https://doi.org/10.4050/JAHS.55.042003 6. Crozier P, Leconte P, Delrieux Y, Gimonet B, Pape AL, des Rochettes HM (2006) Wind-tunnel tests of a helicopter rotor with active flaps. In: 32nd European Rotorcraft Forum, Maastricht, the Netherlands, 12–14 September 2006. 7. van der Wall BG, Burley CL, Yu Y, Richard H, Pengel K, Beaumier P (2004) The HART II test – measurement of helicopter rotor wakes. Aerosp Sci Technol 8(4):273–284. https://doi.org/10.1016/j.ast.2004.01.001 8. Datta A, Yeo H, Norman TR (2013) Experimental investigation and fundamental understanding of a full-scale slowed rotor at high advance ratios. J Am Helicopter Soc 58(2):1–17. https://doi.org/10.4050/JAHS.58.022004 9. Komerath NM, Smith MJ, Tung C (2011) A review of rotor wake physics and modeling. J Am Helicopter Soc 56(2):22006. https://doi.org/10.4050/JAHS.56.022006 10. Beaumier P (2018) Rotorcraft experimental databases: future needs in the fields of aeromechanics and aeroacoustics. In: 7th Asian/Australian Rotorcraft Forum, Jeju Island, South Korea, 30 October - 1 November 2018 11. Desopper A, Lafon P, Ceroni P, Philippe JJ (1989) Ten years of rotor flow studies at ONERA. J Am helicopter Soc 34(1):34–41. https://doi.org/10.4050/JAHS.34.34 12. Strawn RC, Barth TJ (1993) A finite-volume Euler solver for computing rotary-wing aerodynamics on unstructured meshes. J Am Helicopter Soc 38(2):61–67. https://doi.org/10.4050/JAHS.38.61 13. Srinivasan GR, Baeder JD, Obayashi S, McCroskey WJ (1992) Flowfield of a lifting rotor in hover - A Navier-Stokes simulation. AIAA J 30(10):2371–2378. https://doi.org/10.2514/3.11236 14. Duque EPN (1992) A numerical analysis of the British experimental rotor program blade. J Am Helicopter Soc 37(1):46–54. https://doi.org/10.4050/JAHS.37.46
+
+
+Page 32 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+15. Chen H, Kandasamy S, Orszag S, Shock R, Succi S, Yakhot V (2003) Extended Boltzmann kinetic equation for turbulent flows. Science 301(5633):633–636. https://doi.org/10.1126/science.1085048 16. Narducci R (2015) Hover performance assessment of several tip shapes using OVERFLOW. In: 53rd AIAA Aerospace Sciences Meeting. Kissimmee, Florida, USA, 5–9 January 2015 17. Chaderjian NM (2017) Navier-Stokes simulation of UH-60A rotor/wake interaction using adaptive mesh refinement. In: Proceedings of the AHS International 73rd Annual Forum of the American Helicopter Society. Fort Worth, Texas, USA, 9–11 May 2017. 18. Pang C, Yang H, Gao Z, Chen S (2021) Enhanced adaptive mesh refinement method using advanced vortex identification sensors in wake flow. Aerosp Sci Technol 115:106796. https://doi.org/10.1016/j.ast.2021.106796 19. Wilbur IC, Moushegian A, Smith MJ, Whitehouse GR (2020) UH-60A rotor analysis with an accurate dual-formulation hybrid aeroelastic methodology. J Aircr 57(1):113–127. https://doi.org/10.2514/1.C035467 20. Yoon S, Diaz PV, Boyd Jr DD, Chan WM, Theodore CR (2017) Computational aerodynamic modeling of small quadcopter vehicles. In: Proceedings of the AHS International 73rd Annual Forum of the American Helicopter Society. Fort Worth, Texas, USA, 9–11 May 2017. 21. Leishman JG, Ananthan S (2006) Aerodynamic optimization of a coaxial proprotor. In: Proceedings of the AHS International 62nd Annual Forum and Technology Display, Phoenix, AZ, USA, 9–11 May 2006 22. Wie SY, Lee S, Lee DJ (2009) Potential panel and time-marching free-wake coupling analysis for helicopter rotor. J Aircr 46(3):1030–1041. https://doi.org/10.2514/1.40001 23. Gennaretti M, Bernardini G, Serafini J, Romani G (2018) Rotorcraft comprehensive code assessment for blade–vortex interaction conditions. Aerosp Sci Technol 80:232–246. https://doi.org/10.1016/j.ast.2018.07.013 24. Tugnoli M, Montagnani D, Syal M, Droandi G, Zanotti A (2021) Mid-fidelity approach to aerodynamic simulations of unconventional VTOL aircraft configurations. Aerosp Sci Technol 115:106804. https://doi.org/10.1016/j.ast.2021. 106804 25. Leishman JG (2006) Principles of helicopter aerodynamics. Cambridge University Press, Cambridge 26. Johnson W (2013) Rotorcraft aeromechanics. Cambridge University Press, Cambridge 27. Landgrebe AJ, Moffitt RC, Clark DR (1977) Aerodynamic technology for advanced rotorcraft-part I. J Am Helicopter Soc 22(2):21–27. https://doi.org/10.4050/JAHS.22.21 28. Landgrebe AJ, Moffitt RC, Clark DR (1977) Aerodynamic technology for advanced rotorcraft-part II. J Am Helicopter Soc 22(3):2–9. https://doi.org/10.4050/JAHS.22.3.2 29. DeYoung J (1976) Historical evolution of vortex-lattice methods. NASA Langley Res Cent Vor Util N76–28164 30. Katz J, Maskew B (1988) Unsteady low-speed aerodynamic model for complete aircraft configurations. J Aircr 25(4):302–310. https://doi.org/10.2514/3.45564 31. Wachspress DA, Yu MK (2015) Lifting surface blade model for comprehensive rotorcraft analysis. In: Proceedings of the AHS International 71st Annual Forum and Technology Display, Virginia Beach, VA, USA, 5–7 May 2015 32. Rubbert PE, Saaris GR (1968) A general three-dimensional potential-flow method applied to V/STOL aerodynamics. SAE Trans 77:945–957. https://doi.org/10.4271/680304 33. Hess JL (1972) Calculation of potential flow about arbitrary three-dimensional lifting bodies. AD0755480. 34. Crispin Y (1982) Unsteady rotor aerodynamics using a vortex panel method. In: 9th Atmospheric Flight Mechanics Conference, San Diego, CA, USA, 9–11 August 1982. 35. Wachspress DA, Quackenbush TR, Boschitsch AH (2003) Rotorcraft interactional aerodynamics with fast vortex/fast panel methods. J Am Helicopter Soc 48(4):223–235. https://doi.org/10.4050/JAHS.48.223 36. Rajmohan N, He C (2016) A VPM/CFD coupling methodology to study rotor/ship aerodynamic interaction. In: AIAA Modeling and Simulation Technologies Conference, San Diego, California, USA, 4–8 January 2016 37. Zhao J, He C, Zhang L, Zhao H, Hu P (2011) Coupled viscous vortex particle method and unstructured computational fluid dynamics solver for rotorcraft aerodynamic interaction analysis. In: 49th AIAA Aerospace Sciences Meeting including the New Horizons Forum and Aerospace Exposition, Orlando, Florida, USA, 4–7 January 2011. 38. Bae ES, He C (2017) On high fidelity modeling of aerodynamic interaction between ship and rotor. In: 35th AIAA Applied Aerodynamics Conference, Denver, Colorado, USA, 5–9 June 2017 39. Bhagwat MJ, Leishman JG (2001) Stability, consistency and convergence of time-marching free-vortex rotor wake algorithms. J Am Helicopter Soc 46(1):59–71. https://doi.org/10.4050/JAHS.46.59 40. Lee D-J, Na SU (1994) Predictions of helicopter wake geometry and air loadings by using a time marching free wake method. In: Proceedings of the 1st Forum Russian Helicopter Society, Moscow 41. Jang JS, Park SH, Lee DJ (2014) Prediction of fuselage surface pressures in rotor–fuselage interactions using an integral solution of Poisson equation. J Am Helicopter Soc 59(4):1–11. https://doi.org/10.4050/JAHS.59.042001 42. He C, Zhao J (2009) Modeling rotor wake dynamics with viscous vortex particle method. AIAA J 47(4):902–915. https://doi.org/10.2514/1.36466 43. Winckelmans GS, Leonard A (1993) Contributions to vortex particle methods for the computation of three-dimensional incompressible unsteady flows. J Comput Phys 109(2):247–273. https://doi.org/10.1006/jcph.1993.1216 44. Singh P, Friedmann PP (2021) Dynamic stall modeling using viscous vortex particle method for coaxial rotors. J Am Helicopter Soc 66(1):1–16. https://doi.org/10.4050/JAHS.66.012010 45. Cao Y, Lv S, Li G (2014) A coupled free-wake/panel method for rotor/fuselage/empennage aerodynamic interaction and helicopter trims. Proc Inst Mech Eng Part G J Aerosp Eng 229(3):435–444. https://doi.org/10.1177/09544 10014534203 46. Tan JF, Sun YM, Barakos GN (2018) Unsteady loads for coaxial rotors in forward flight computed using a vortex particle method. Aeronaut J 122(1251):693–714. https://doi.org/10.1017/aer.2018.8 47. Tan JF, Cai JG, Barakos GN, Wang C, Huang MQ (2020) Computational study on the aerodynamic interference between tandem rotors and nearby obstacles. J Aircr 57(3):456–468. https://doi.org/10.2514/1.C035629 48. Tan JF, Sun YM, Barakos GN (2018) Vortex approach for downwash and outwash of tandem rotors in ground effect. J Aircr 55(6):2491–2509. https://doi.org/10.2514/1.C034740
+
+
+Page 33 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+49. Tan JF, Zhou TY, Sun YM, Barakos GN (2019) Numerical investigation of the aerodynamic interaction between a tiltrotor and a tandem rotor during shipboard operations. Aerosp Sci Technol 87:62–72. https://doi.org/10.1016/j. ast.2019.02.005 50. Lee J, Chae S, Oh S, Yee K (2010) Parametric study for hovering performance of a coaxial rotor unmanned aerial vehicle. J Aircr 47(5):1517–1530. https://doi.org/10.2514/1.46460 51. Brocklehurst A, Barakos GN (2013) A review of helicopter rotor blade tip shapes. Prog Aerosp Sci 56:35–74. https:// doi.org/10.1016/j.paerosci.2012.06.003 52. Colmenares JD, López OD, Preidikman S (2015) Computational study of a transverse rotor aircraft in hover using the unsteady vortex lattice method. Math Probl Eng 2015:478457. https://doi.org/10.1155/2015/478457 53. Chung KH, Kim JW, Ryu KW et al (2006) Sound generation and radiation from rotor tip-vortex pairing phenomenon. AIAA J 44(6):1181–1187. https://doi.org/10.2514/1.22548 54. Saetti U, Horn JF, Brentner KS, Villafana W, Wachspress D (2016) Rotorcraft simulations with coupled flight dynamics, free wake, and acoustics. In: Proceedings of the AHS International 72nd Annual Forum and Technology Display, West Palm Beach, Florida, USA, 17–19 May 2016. 55. Lee H, Lee D-J (2020) Rotor interactional effects on aerodynamic and noise characteristics of a small multirotor unmanned aerial vehicle. Phys Fluids 32:47107. https://doi.org/10.1063/5.0003992 56. Kwon OJ, Hodges DH, Sankar LN (1991) Stability of hingeless rotors in hover using three-dimensional unsteady aerodynamics. J Am Helicopter Soc 36(2):21–31. https://doi.org/10.4050/JAHS.36.21 57. Yoo KM, Hodges DH, Peters DA (1992) An interactive numerical procedure for rotor aeroelastic stability analysis using elastic lifting surface. In: 18th ICAS Conference, Beijing, China, 20–25 September 1992. 58. Roura M, Cuerva A, Sanz-Andrés A, Barrero-Gil A (2010) A panel method free-wake code for aeroelastic rotor predictions. Wind Energy 13(4):357–371. https://doi.org/10.1002/we.358 59. Prandtl L (1921) Applications of modern hydrodynamics to aeronautics. NACA Technical Report NACA-TR-116 60. Katz J, Plotkin A (2001) Low-speed aerodynamics. Cambridge University Press, Cambridge 61. Glauert H (1947) The elements of aerofoil theory. Cambridge University Press, Cambridge 62. Goldstein S (1929) On the vortex theory of screw propellers. Proc R Soc Lond A 123(792):440–465. https://doi.org/ 10.1098/rspa.1929.0078 63. Lerbs H (1952) Moderately loaded propellers with a finite number of blades and an arbitrary distribution of circulations. Trans SNAME 60:73–123 64. Kawada S (1933) On the induced velocity and characteristics of a propeller. J Eng 20:147–162 65. Conlisk AT (2001) Modern helicopter rotor aerodynamics. Prog Aerosp Sci 37:419–476. https://doi.org/10.1016/ S0376-0421(01)00011-2 66. Melo DB, Baltazar J, de Campos JACF (2018) A numerical wake alignment method for horizontal axis wind turbines with the lifting line theory. J Wind Eng Ind Aerodyn 174:382–390. https://doi.org/10.1016/j.jweia.2018.01.028 67. Kerwin JE, Lee C-S (1978) Prediction of steady and unsteady marine propeller performance by numerical liftingsurface theory. In: SNAME Annual Meeting. Society of Naval Architects and Marine Engineers, Jersey City, NJ, USA, 16–18 November 1978. 68. José AC, de Campos F (2007) Hydrodynamic power optimization of a horizontal axis marine current turbine with lifting line theory. In: 17th International Offshore and Polar Engineering Conference, Lisbon, Portugal, 1–6 July 2007. 69. Miller RH (1985) Methods for rotor aerodynamic and dynamic analysis. Prog Aerosp Sci 22:113–160. https://doi. org/10.1016/0376-0421(85)90008-9 70. Jones HE, Kunz DL (2001) Comprehensive modeling of the Apache with CAMRAD II. In: American Helicopter Society Structure Specialists Meeting, Williamsburg, VA, USA, 1 January 2001 71. Kunz DL, Jones HE (2001) Modeling and simulation of the Apache rotor system in CAMRAD II. In: American Helicopter Society Structure Specialists Meeting, Williamsburg, VA, USA, 1 January 2001 72. Yeo H, Saberi H (2021) Tiltrotor conversion maneuver analysis with RCAS. J Am Helicopter Soc 66(4):1–14. https:// doi.org/10.4050/JAHS.66.042010 73. Yeo H, Bosworth J, Acree CW Jr, Kreshock AR (2018) Comparison of CAMRAD II and RCAS predictions of tiltrotor aeroelastic stability. J Am Helicopter Soc 63(2):1–13. https://doi.org/10.4050/JAHS.63.022001 74. Jain RK, Yeo H, Ho JC, Bhagwat M (2016) An assessment of RCAS performance prediction for conventional and advanced rotor configurations. J Am Helicopter Soc 61(4):1–12. https://doi.org/10.4050/JAHS.61.042005 75. Ho JC, Yeo H, Bhagwat M (2017) Validation of rotorcraft comprehensive analysis performance predictions for coaxial rotors in hover. J Am Helicopter Soc 62(2):1–13. https://doi.org/10.4050/JAHS.62.022005 76. Wachspress DA, Quackenbush TR (2006) Impact of rotor design on coaxial rotor performance, wake geometry and noise. In: Proceedings of the AHS International 62nd Annual Forum and Technology Display, Phoenix, AZ, USA, 9–11 May 2006 77. Moodie AM, Yeo H (2012) Design of a cruise-efficient compound helicopter. J Am Helicopter Soc 57(3):1–11. https://doi.org/10.4050/JAHS.57.032004 78. Guermond J-L (1990) A generalized lifting-line theory for curved and swept wings. J Fluid Mech 211:497–513. https://doi.org/10.1017/S0022112090001665 79. Phillips WF, Snyder DO (2000) Modern adaptation of Prandtl’s classic lifting-line theory. J Aircr 37(4):662–670. https://doi.org/10.2514/2.2649 80. Phlips PJ, East RA, Pratt NH (1981) An unsteady lifting line theory of flapping wings with application to the forward flight of birds. J Fluid Mech 112:97–125. https://doi.org/10.1017/S0022112081000311 81. Ahmadi AR, Widnall SE (1985) Unsteady lifting-line theory as a singular perturbation problem. J Fluid Mech 153:59–81. https://doi.org/10.1017/S0022112085001148 82. Sclavounos PD (1987) An unsteady lifting-line theory. J Eng Math 21:201–226. https://doi.org/10.1007/BF001 27464 83. Lee H (2019) Development of nonlinear vortex lattice method for predicting wind turbine performance and wake structures. Korea Advanced Institute of Science and Technology
+
+
+Page 34 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+84. Tulinius J (1972) Unified subsonic, transonic, and supersonic NAR vortex lattice. TFD-72–523 North American Rockwell Los Angeles 85. Joseph C, Mohan R (2021) A parallel, object-oriented framework for unsteady free-wake analysis of multi-rotor/ wing systems. Comput Fluids 215:104788. https://doi.org/10.1016/j.compfluid.2020.104788 86. Wachspress DA, Yu MK, Brentner KS (2019) Rotor/airframe aeroacoustic prediction for EVTOL UAM aircraft. In: Vertical Flight Society’s 75th Annual Forum and Technology Display, Philadelphia, PA, USA, 13–16 May 2019. 87. Govdeli Y, Muzaffar SMB, Raj R, Elhadidi B, Kayacan E (2019) Unsteady aerodynamic modeling and control of pusher and tilt-rotor quadplane configurations. Aerosp Sci Technol 94:105421. https://doi.org/10.1016/j.ast.2019. 105421 88. Cho MH, Lee I (1995) Aeroelastic analysis of multibladed hingeless rotors in hover. AIAA J 33(12):2348–2353. https://doi.org/10.2514/3.12990 89. Lee J-W, Oh S-J, Yee K-J et al (2007) Loose coupling approach of CFD with a free-wake panel method for rotorcraft applications. Int J Aeronaut Sp Sci 8:1–9. https://doi.org/10.5139/IJASS.2007.8.1.001 90. Lee J, Yee K, Oh S (2009) Aerodynamic characteristic analysis of multi-rotors using a modified free-wake method. Trans Jpn Soc Aeronaut Space Sci 52(177):168–179. https://doi.org/10.2322/tjsass.52.168 91. Zhu W, Morandini M, Li S (2021) Viscous vortex particle method coupling with computational structural dynamics for rotor comprehensive analysis. Appl Sci 11(7):3149. https://doi.org/10.3390/app11073149 92. Ballmann J, Eppler R, Hackbusch W (1987) Panel methods in fluid mechanics with emphasis on aerodynamics. In: Proceedings of the 3rd GAMM-seminar, Kiel, 16–18 January 1987 93. Jun S, Yee K, Lee J, Lee D-H (2011) Robust design optimization of unmanned aerial vehicle coaxial rotor considering operational uncertainty. J Aircr 48(2):353–367. https://doi.org/10.2514/1.C001016 94. Morino L, Kuo C-C (1974) Subsonic potential aerodynamics for complex configurations: a general theory. AIAA J 12(2):191–197. https://doi.org/10.2514/3.49191 95. Quackenbush TR, Wachspress DA, Boschitsch AH, Curbishley TB (1999) A comprehensive hierarchical aeromechanics rotorcraft model (CHARM) for general rotor/surface interaction. Princeton, NJ Continuum Dynamics, Inc 96. Zhang C, Quackenbush TR, Saberi H, Sheng C, Gaffey T (2015) Aeromechanics of the coaxial compound helicopter. In: 56th AIAA/ASCE/AHS/ASC Structures, Structural Dynamics, and Materials Conference, Kissimmee, Florida, USA, 5–9 January 2015 97. Wachspress DA, Quackenbush TR (2001) BVI noise prediction using a comprehensive rotorcraft analysis. In: Proceedings of the American Helicopter Society 57th Annual Forum, Washington D.C., USA, 9–11 May 2001 98. Johnson W (2012) A history of rotorcraft comprehensive analysis. NASA/TP-2012–216012 99. Yang Z, Sankar LN, Smith MJ, Bauchau O (2002) Recent improvements to a hybrid method for rotors in forward flight. J Aircr 39(5):804–812. https://doi.org/10.2514/2.3000 100. Wie SY, Lee JH, Kwon JH, Lee DJ (2010) Far-field boundary condition effects of CFD and free-wake coupling analysis for helicopter rotor. J Fluids Eng 132(8):084501. https://doi.org/10.1115/1.4002110 101. Wie SY, Im DK, Kwon JH, Lee DJ (2010) Numerical simulation of rotor using coupled computational fluid dynamics and free wake. J Aircr 47(4):1167–1177. https://doi.org/10.2514/1.46797 102. Shi Y, Xu G, Wei P (2016) Rotor wake and flow analysis using a coupled Eulerian-Lagrangian method. Eng Appl Comput Fluid Mech 10(1):384–402. https://doi.org/10.1080/19942060.2016.1174887 103. Zhao Y, Shi Y, Xu G (2017) Helicopter blade-vortex interaction airload and noise prediction using coupling CFD/ VWM method. Appl Sci 7(4):381. https://doi.org/10.3390/app7040381 104. Bae ES, Rand P, He C (2019) Hybrid Lagrangian-Eulerian approach for modeling aerodynamic interactions. In: AIAA Aviation 2019 Forum, Dallas, Texas, USA, 17–21 June 2019 105. Kelly ME, Duraisamy K, Brown R (2008) Predicting blade vortex interaction, airloads and acoustics using the vorticity transport model. In: Proceedings of the AHS Specialists’ Conference on Aeromechanics, San Francisco, CA, USA, 23–25 January 2008. 106. Renaud T, Le Pape A, Péron S (2013) Numerical analysis of hub and fuselage drag breakdown of a helicopter configuration. CEAS Aeronaut J 4:409–419. https://doi.org/10.1007/s13272-013-0081-0 107. Taylor MK (1950) A balsa-dust technique for air-flow visualization and its application to flow through model helicopter rotors in static thrust. NACA Technical Note NACA-TN-2220 108. Gray RB (1957) An aerodynamic analysis of a single-bladed rotor in hovering and low-speed forward flight as determined from smoke studies of the vorticity distribution in the wake. Dissertation, Princeton University 109. Landgrebe AJ (1972) The wake geometry of a hovering helicopter rotor and its influence on rotor performance. J Am Helicopter Soc 17(4):3–15. https://doi.org/10.4050/JAHS.17.4.3 110. Sullivan JP (1973) Experimental investigation of vortex rings and helicopter rotor wakes using a laser Doppler velocimeter. Massachusetts Institute of Technology Aerophysics Laboratory, Technical Report 183 111. Tangler JL (1977) Schlieren and noise studies of rotors in forward flight. In: Proceedings of the American Helicopter Society 33rd Annual Forum, Washington D.C., USA, May 1977. 112. Leishman JG, Bhagwat MJ, Bagai A (2002) Free-vortex filament methods for the analysis of helicopter rotor wakes. J Aircr 39(5):759–775. https://doi.org/10.2514/2.3022 113. Strawn RC, Djomehri MJ (2002) Computational modeling of hovering rotor and wake aerodynamics. J Aircr 39(5):786–793. https://doi.org/10.2514/2.3024 114. Lee DJ (2000) Numerical prediction of rotor tip-vortex roll-up in axial flights by using a time-marching free-wake method. In: Kamemoto K, Tsutahara M (eds) Vortex Methods. 1st International Conference on Vortex Methods, Kobe, 4 – 5 November 1999. World Scientific Publishing, Tokyo, pp 177–187. https://doi.org/10.1142/9789812793 232_0021 115. Wie SY, Im DK, Kim E, Kwon JH, Lee DJ (2008) An analysis on the helicopter rotor aerodynamics in hover and forward flight using CFD/time-marching-free-wake coupling method. In: Proceedings of the ICCFD 5 - International Conference on Computational Fluid Dynamics. Springer 116. Hariharan N, Sankar L (2000) A review of computational techniques for rotor wake modeling. In: 38th Aerospace Sciences Meeting and Exhibit, Reno, NV, USA, 10–13 January 2000.
+
+
+Page 35 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+117. Rosen A, Graber A (1988) Free wake model of hovering rotors having straight or curved blades. J Am helicopter Soc 33(3):11–19. https://doi.org/10.4050/JAHS.33.11 118. Wie S-Y, Lee J-H, Kwon J-H et al (2007) A study on the far-field boundary condition effects of CFD/time-marchingfree-wake coupled method. J Korean Soc Aeronaut Space Sci 35(11):957–963 119. Morino L, Kaprielian Z, Sipcic SR (1983) Free wake analysis of helicopter rotors. Paper presented in the 9th European Rotorcraft Forum, Stresa, September 1983 120. Lee DJ, Na SU (1999) Numerical simulations of wake structure generated by rotating blades using a time marching, free vortex blob method. Eur J Mech - B/Fluids 18:147–159. https://doi.org/10.1016/S0997-7546(99)80011-9 121. Bhagwat MJ, Leishman JG (2002) Generalized viscous vortex model for application to free-vortex wake and aeroacoustic calculations. In: Proceedings of the American Helicopter Society 58th Annual Forum and Technology Display, Montreal, Canada, 11–13 June 2002. 122. Ploumhans P, Winckelmans GS (2000) Vortex methods for high-resolution simulations of viscous flow past bluff bodies of general geometry. J Comput Phys 165:354–406. https://doi.org/10.1006/jcph.2000.6614 123. Cottet G-H, Koumoutsakos PD (2000) Vortex methods: theory and practice. Cambridge university press Cambridge 124. Ploumhans P, Winckelmans GS, Salmon JK et al (2002) Vortex methods for direct numerical simulation of threedimensional bluff body flows: application to the sphere at Re = 300, 500, and 1000. J Comput Phys 178(2):427463. https://doi.org/10.1006/jcph.2002.7035 125. Winckelmans GS (2004) Vortex methods. Encycl Comput Mech. https://doi.org/10.1002/0470091355.ecm055 126. Winckelmans G, Cocle R, Dufresne L, Capart R (2005) Vortex methods and their application to trailing wake vortex simulations. Comptes Rendus Phys 6(4–5):467–486. https://doi.org/10.1016/j.crhy.2005.05.001 127. Leonard A (1985) Computing three-dimensional incompressible flows with vortex elements. Annu Rev Fluid Mech 17:523–559. https://doi.org/10.1146/annurev.fl.17.010185.002515 128. Russo G (1990) Deterministic diffusion of particles. Commun Pure Appl Math 43(6):697–733. https://doi.org/10. 1002/cpa.3160430602 129. Dehnen W (2002) A hierarchical O(N) force calculation algorithm. J Comput Phys 179:27–42. https://doi.org/10. 1006/jcph.2002.7026 130. Warren MS, Salmon JK (1994) A parallel, portable and versatile treecode. In: 7th Society for Industrial and Applied Mathematics (SIAM) conference on parallel processing for scientific computing. San Francisco, CA, USA, 15–17 February 1995. 131. Salmon JK, Warren MS (1994) Fast parallel tree codes for gravitational and fluid dynamical N-body problems. Int J Supercomput Appl High Perform Comput 8(2):129–142. https://doi.org/10.1177/109434209400800205 132. Koumoutsakos P, Leonard A, Pépin F (1994) Boundary conditions for viscous vortex methods. J Comput Phys 113(1):52–61. https://doi.org/10.1006/jcph.1994.1117 133. Singh P, Friedmann PP (2018) A computational fluid dynamics–based viscous vortex particle method for coaxial rotor interaction calculations in hover. J Am Helicopter Soc 63(4):1–13. https://doi.org/10.4050/JAHS.63.042002 134. Su T, Lu Y, Ma J, Guan S (2020) Aerodynamic characteristics analysis of electrically controlled rotor based on viscous vortex particle method. Aerosp Sci Technol 97:105645. https://doi.org/10.1016/j.ast.2019.105645 135. Greengard L, Rokhlin V (1987) A fast algorithm for particle simulations. J Comput Phys 73(2):325–348. https://doi. org/10.1016/0021-9991(87)90140-9 136. Cheng H, Greengard L, Rokhlin V (1999) A fast adaptive multipole algorithm in three dimensions. J Comput Phys 155(2):468–498. https://doi.org/10.1006/jcph.1999.6355 137. Lee H, Lee D-J (2019) Wake impact on aerodynamic characteristics of horizontal axis wind turbine under yawed flow conditions. Renew Energy 136:383–392. https://doi.org/10.1016/j.renene.2018.12.126 138. Lee H, Lee D-J (2019) Numerical investigation of the aerodynamics and wake structures of horizontal axis wind turbines by using nonlinear vortex lattice method. Renew Energy 132:1121–1133. https://doi.org/10.1016/j. renene.2018.08.087 139. Raj NV (2000) An improved semi-empirical model for 3-D post-stall effects in horizontal axis wind turbines. Master Thesis, University of Illinois, Urbana-Champaign 140. Du Z, Selig M (1998) A 3-D stall-delay model for horizontal axis wind turbine performance prediction. In: 1998 ASME Wind Energy Symposium, Reno, NV, USA, 12–15 January 1998. 141. Peters DA (1985) Toward a unified lift model for use in rotor blade stability analyses. J Am Helicopter Soc 30(3):3242. https://doi.org/10.4050/JAHS.30.3.32 142. Leishman JG, Beddoes TS (1986) A generalized method for airfoil unsteady aerodynamic behavior and dynamic stall using the indicial method. In: Proceedings of the 42nd Annual Forum of the American Helicopter Society, Washington D.C., USA, June 1986 143. Leishman JG, Beddoes TS (1989) A semi-empirical model for dynamic stall. J Am Helicopter Soc 34(3):3–17. https:// doi.org/10.4050/JAHS.34.3.3 144. Øye S (1991) Dynamic stall simulated as time lag of separation. Technical report, Department of Fluid Mechanics,Technical University of Denmark, 1991. 145. Lee H, Lee DJ (2019) Prediction of aerodynamic noise radiated from a small multicopter unmanned aerial vehicle using acoustic analogy. Trans Korean Soc Noise Vib Eng 29(4):518–526. https://doi.org/10.5050/KSNVE.2019.29.4.518 146. Lee H, Lee D-J (2019) Noise prediction of multi-rotor unmanned aerial vehicle considering wake interaction effects. In: Proceedings of the Vertical Flight Society’s 75th Annual Forum and Technology Display, Philadelphia, PA, USA, May 13–16, 2019 147. Lee H, Lee D-J (2019) Numerical prediction of aerodynamic noise radiated from quadcopter unmanned aerial vehicles. In: Proceedings of INTER-NOISE and NOISE-CON Congress, InterNoise19, Madrid, Spain, 16–19 June 2019. 148. Lee HJ, Lee DJ (2018) Computational study of wake interaction in quadcopter unmanned aerial vehicle. In: 7th Asian/Australian Rotorcraft Forum, Jeju Island, South Korea, 30 October - 1 November 2018. 149. Lee H, Lee D-J (2020) Low Reynolds number effects on aerodynamic loads of a small scale wind turbine. Renew Energy 154:1283–1293. https://doi.org/10.1016/j.renene.2020.03.097
+
+
+Page 36 of 36
+Lee et al. Advances in Aerodynamics (2022) 4:20
+150. Lee H, Lee D-J (2019) Effects of platform motions on aerodynamic performance and unsteady wake evolution of a floating offshore wind turbine. Renew Energy 143:9–23. https://doi.org/10.1016/j.renene.2019.04.134 151. Caradonna FX, Tung C (1981) Experimental and analytical studies of a model helicopter rotor in hover. NASA Technical Memorandum NASA-TM-81232 152. Hand MM, Simms DA, Fingersh LJ, et al (2001) Unsteady aerodynamics experiment Phase VI: wind tunnel test configurations and available data campaigns. NREL Technical Report NREL/TP-500–29955 153. Gupta S, Leishman JG (2006) Performance predictions of NREL Phase VI combined experiment rotor using a freevortex wake model. In: 44th AIAA Aerospace Sciences Meeting and Exhibit, Reno, Nevada, USA, 9–12 January 2006 154. Gupta S (2006) Development of a time-accurate viscous Lagrangian vortex wake model for wind turbine applications. Dissertation, University of Maryland 155. Bhagwat MJ, Leishman JG (2000) Stability analysis of rotor wakes in axial flight. J Am Helicopter Soc 45(3):165–178. https://doi.org/10.4050/JAHS.45.165 156. Li P, Chen R (2012) Rotor unsteady aerodynamics model using an efficient free-vortex method. Aircr Eng Aerosp Technol 84(5):311–320. https://doi.org/10.1108/00022661211255494 157. Kini S, Conlisk AT (2002) Nature of locally steady rotor wakes. J Aircr 39(5):750–758. https://doi.org/10.2514/2.3021 158. Gupta S, Leishman JG (2004) Stability of methods in the free-vortex wake analysis of wind turbines. In: 42nd AIAA Aerospace Sciences Meeting and Exhibit, Reno, Nevada, USA, 5–8 January 2004. 159. Bagai A, Leishman JG (1995) Rotor free-wake modeling using a pseudo implicit technique-including comparisons with experimental data. J Am Helicopter Soc 40(3):29–41. https://doi.org/10.4050/JAHS.40.29 160. Abedi H, Davidson L, Voutsinas S (2017) Enhancement of free vortex filament method for aerodynamic loads on rotor blades. J Sol Energy Eng 139(3):031007. https://doi.org/10.1115/1.4035887 161. Yeo H (2019) Design and aeromechanics investigation of compound helicopters. Aerosp Sci Technol 88:158–173. https://doi.org/10.1016/j.ast.2019.03.010 162. Alvarez EJ, Ning A (2018) Development of a vortex particle code for the modeling of wake interaction in distributed propulsion. In: AIAA AVIATION Forum and Applied Aerodynamics Conference, Atlanta, Georgia, USA, 25–29 June 2018 163. Alvarez EJ, Ning A (2019) Modeling multirotor aerodynamic interactions through the vortex particle method. In: AIAA Aviation Forum, Dallas, Texas, USA, 17–21 June 2018 164. Tan JF, Gao J, Barakos GN, Lin CL, Zhang WG, Huang MQ (2021) Novel approach to helicopter brownout based on vortex and discrete element methods. Aerosp Sci Technol 116:106839. https://doi.org/10.1016/j.ast.2021.10683 165. Huberson S, Rivoalen E, Voutsinas S (2008) Vortex particle methods in aeroacoustic calculations. J Comput Phys 227:9216–9240. https://doi.org/10.1016/j.jcp.2008.06.011 166. Berdowski T, Ferreira C, Walther J (2016) 3D Lagrangian VPM: simulations of the near-wake of an actuator disc and horizontal axis wind turbine. J Phys: Conf Ser 753:032004. https://doi.org/10.1088/1742-6596/753/3/032004 167. Willis DJ, Peraire J, White JK (2007) A combined pFFT-multipole tree code, unsteady panel method with vortex particle wakes. Int J Numer Meth Fluids 53(8):1399–1422. https://doi.org/10.1002/fld.1240
+Publisher’s Note
+Springer Nature remains neutral with regard to jurisdictional claims in published maps and institutional affiliations.

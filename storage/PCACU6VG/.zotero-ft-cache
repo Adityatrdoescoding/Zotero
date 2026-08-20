@@ -1,0 +1,331 @@
+Rotary Wing Aerodynamics
+(AE 667)
+
+
+Blade Element (BE) Theory
+
+
+Blade Element Theory
+o ‘Strip’ theory
+o Divide blade into thin strips
+o Compute lift, drag, etc. at the strips
+o Integrate values at the strips to get the total thrust, torque, power
+o Assumes uniform induced velocity (v)
+= =
+R
+R
+R
+RRC RC
+T b dT ; P b dP
+R
+dr
+r
+RRC
+
+
+Blade section view
+Wr
+V+v q
+f
+aeffective = q - f
+
+
+
+
+W
++
+=-=
+
+
+
+
+W
++
+=
+=
+=
+
+
+r
+V
+r
+V
+effective
+v
+tan
+v
+tan
+Angle of attack
+Local blade pitch angle
+1
+1
+a qfq
+f
+a
+q
+
+
+Blade section forces
+UT = Ωr
+UP = V+v q
+f
+aeffective = q - f
+dL
+dD
+dFx
+dT
+Nomenclature
+• dL: Sectional airfoil lift • dD: Sectional airfoil Drag • dT: Sectional thrust • dFx: Force in X direction (tangential to rotor disk)
+R
+dr
+r
+Rrc
+• UT: Tangential Velocity = Wr • UP: Perpendicular Velocity = V+v
+
+
+Blade section forces
+UT = Ωr
+UP = V+v q
+f
+aeffective = q - f
+dL
+dD
+dFx
+dT
+dL = 1
+2 ρ UT2 + UP2 cCl
+dT = dL cos f − dD sin f dr
+=1
+2 ρ UT2 + UP2 c Cl cos f − Cd sin f dr
+• UT: Tangential Velocity = Wr • UP: Perpendicular Velocity = V+v
+dP = UTdFx = ΩrdFX
+dFx = dD cos f + dL sin f dr
+=1
+2 ρ UT2 + UP2 c Cd cos f + Cl sin f dr
+dD = 1
+2 ρ UT2 + UP2 cCd
+
+
+Rotor Forces
+WrU
+UP =
+V+v q
+f
+aeffective = q - f
+ΔL
+ΔD
+ΔFx
+ΔT
+R
+dr
+r
+RRC
+T=b න
+RRC
+R
+dT ;
+=b න
+RRC
+R1
+2 ρ UT2 + UP2 c Cl cos f − Cd sin f dr
+P=b න
+RRC
+R
+ΩrdFX
+=b න
+RRC
+R
+Ωr 1
+2 ρ UT2 + UP2 c Cd cos f + Cl sin f dr
+= QΩ
+Q=b න
+RRC
+R
+rdFx (Torque)
+=b න
+RRC
+R
+r1
+2 ρ UT2 + UP2 c Cd cos f + Cl sin f dr
+
+
+For analytical integration
+Assumptions:
+o Constant chord (c)
+o (V+v) << Ωr ∴ Ф << 1, cos(Ф) ≈ 1, sin(Ф) ≈ Ф
+o Linearly varying Coefficient of lift (Cl) = a(αeff) = a(θ- Ф)
+o Cd << 1 , therefore Cd sin(Ф) ≈ 0
+P=b න
+RRC
+R
+Ωr 1
+2 ρ UT2 + UP2 c Cd cos f + Cl sin f dr
+P≈1
+2 ρcbaΩ3 න
+r=0
+r=R
+θ− V
+Ωr − v
+Ωr
+V
+Ωr + v
+Ωr + Cd r3dr
+T=b න
+RRC
+R1
+2 ρ UT2 + UP2 c Cl cos f − Cd sin f dr ≈ 1
+2 ρcbaΩ2 න
+r=0
+r=R
+θ− V
+Ωr − v
+Ωr r2dr
+
+
+For analytical integration
+oMore assumptions:
+o Linear blade twist: θ = E + Fr
+()
+R
+Vv
+where
+aa
+R
+abc
+C
+ca R R
+b
+R
+R
+Vv
+ca E FR
+b
+T
+RR T
+R
+W
++
+==
+
+
+
+= 
+
+
+
+= 
+
+
+
+= 
+
+
+
+= W
+
+
+
+
+W
++
+
+
+
+
+= W +
+Inflow Ratio
+3
+4
+4
+/2
+23
+/2
+23
+/2
+42 2 3
+3
+3
+1
+2
+.75 .75 .75
+.75
+2
+23
+
+
+q
+
+
+q
+
+
+q
+
+
+q
+
+Notice that CT is linearly proportional to pitch at 75% radius. Hence, pitch angle is generally defined at r = 0.75R
+
+
+For analytical integration
+oPower can be integrated in the similar fashion.
+o If Cd is assumed to be constant along rotor,
+8
+d PT
+C
+C C
+= +
+
+
+FM for BET rotor
+FM = Ideal power through Momentum Theory
+Power through Blade Element Theory
+= λCT
+λCT + σCd/8
+• High solidity (wide blades, more blades) ➔ low FM
+• High Cd (high airfoil drag) ➔ low FM
+• High CT ➔ high FM
+(caution!) high FM ≠ better efficiency
+
+
+Computing average Cl of rotor blade
+(Equivalent constant ሜCl across the blade)
+Assuming untapered (c = constant)
+T =bන
+0
+R1
+2 ρc Ωr 2 ሜCldr = ρbc ሜClΩ2R3
+6;
+CT = T
+ρπR2 ΩR 2 = bc
+πR
+ሜCl
+6 = σ ሜCl
+6
+ሜCl = 6 CT
+σ where ሜCl = Average Lift Coefficient
+
+
+Defining a few more terms...
+o Average/mean Lift Coefficient = ሜCl = 6 CT
+σ
+o CT
+σ = Thrust
+ρ(Blade area)(ΩR)2 ➔ Blade Loading
+o ሜCl
+a = 6CT
+σa ➔ Mean Angle of Attack
+
+
+Limitations
+o Does not account for swirl losses
+o Assumes uniform induced velocity
+o Does not account for tip losses
+o Tip loss factor (as a function of radius) can be included in thrust expression while integrating
+where 1.15
+8
+Empirical expression for power :
+= + k
+C
+CC d
+P  T 

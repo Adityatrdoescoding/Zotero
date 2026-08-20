@@ -1,0 +1,430 @@
+State Space Methods for Flight Vehicles
+AE 695
+Shashi Ranjan Kumar
+Associate Professor Intelligent Systems and Control (ISaC) Lab Department of Aerospace Engineering Indian Institute of Technology Bombay Powai, Mumbai- 400076
+https://www.aero.iitb.ac.in/ ̃shashi R srk@aero.iitb.ac.in
+
+
+Systems: Types
+• Input-Output description: Transfer function that describes only the terminal properties of the system
+• Internal or state variable description: A set of differential equations that describes internal as well as terminal behaviors
+• Single-input single-output (SISO) system: A system with only one input terminal and only one output terminal
+• Multi-input multi-output (MIMO) system: A system with two or more input terminals and two or more output terminals
+• Continuous-time system: Continuous-time signals as its input and continuous-time signals as its output
+• Discrete-time system: Discrete-time signals as its input and discrete-time signals as its output
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 1 / 22
+
+
+Systems: Memoryless
+Instantaneous or zero memory system
+A system is called a memoryless system if its output y(t0) depends only on input applied at t0, independent of input applied before or after t0.
+• Most systems have memory; thus, output depends on previous inputs. • System must be relaxed or at rest to develop the input-output description. • A system is relaxed if, at time t1, no energy is stored in the system at that instant. (Every system is assumed to be relaxed at t = −∞)
+• Under the relaxedness assumption, with operator H, the output can be
+y = Hu
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 2 / 22
+
+
+Systems: Linearity
+A relaxed system is said to be linear iff
+H(α1u1 + α2u2) = α1H(u1) + α2H(u2)
+for any u1 and u2 and for any real numbers α1, α2. Otherwise, the relaxed system is nonlinear.
+• Principle of superposition: Additivity and Homogeneity
+H(u1 + u2) = H(u1) + H(u2) H(αu) = αH(u)
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 3 / 22
+
+
+Systems: Linearity
+• Principle of superposition: Additivity and Homogeneity
+H(u1 + u2) = H(u1) + H(u2) H(αu) = αH(u)
+• What about the linearity of the system below?
+y(t) =
+
+
+
+u2(t)
+u(t − 1) u(t − 1) ̸= 0
+0 u(t − 1) = 0
+• Homogeneity true but not the additivity, thus a nonlinear system.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 4 / 22
+
+
+Systems: Linearity
+Example
+Consider a system whose input x(t) and output y(t) are related by y(t) = tx(t).
+• x1(t) → y1(t) = tx1(t), x2(t) → y2(t) = tx2(t)
+• x3(t) = ax1(t) + bx2(t)
+• y3(t) = t(ax1(t) + bx2(t)) = atx1(t) + btx2(t) = ay1(t) + by2(t)
+• Linear system
+Example
+Consider a system whose input x(t) and output y(t) are related by y(t) = x2(t).
+Nonlinear system
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 5 / 22
+
+
+Control Theory: Linearity Test
+Example
+Check the linearity of the following functions:
+▷ f (x) = 2x ∀ x ∈ R
+▷ f (x) = 2x + 9 ∀ x ∈ R
+▷ f (x) = x2 + x ∀ x ∈ R
+▷ f (x) = 3x ∀ x ∈ {0, 2, 4, 6, . . .}
+▷ f (x) = 2x where x =
+[a
+0
+]
+,
+[0
+b
+]
+, a, b ∈ R
+• Linear
+• Nonlinear (Additivity and Homogeneity)
+• Nonlinear (Additivity and Homogeneity)
+• Nonlinear (Homogeneity)
+• Nonlinear (Additivity)
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 6 / 22
+
+
+Linearity
+A system L is said to be linear if whenever an input u1 yields an output L(u1) and an input u2 yields output L(u2), we also have
+L(c1u1 + c2u2) = c1L(u1) + c2L(u2); c1, c2 ∈ R, C
+Linear System
+Linear System
+• Any restrictions on the inputs?
+• Space of possible inputs should be closed under a linear combination.
+• Input c1u1 + c2u2 must belong to same space if inputs u1 and u2 do so.
+• How is this notion of linear systems useful in condensing the input-output description of a system?
+• Consider input space with periodic functions having Fourier representation
+u(t) =
+∞
+∑
+n=−∞
+u ̃nej2πnt/T , u ̃n = 1
+T
+∫T
+0
+u(t)e−j2πnt/T dt
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 7 / 22
+
+
+Linearity
+• Output of the system
+L(u(t)) = L
+(∞ ∑
+n=−∞
+u ̃n ej 2πnt/T
+)
+=
+∞
+∑
+n=−∞
+u ̃nL (ej2πnt/T )
+• How to specify the system’s output for any general input?
+• Information about responses to countably infinite set of inputs ej2πnt/T , n = 0, ±1, · · · (sometimes even less)
+• Many orders less than all allowable inputs.
+• Any other assumptions we made while coming to this conclusion?
+• Extension of additive property to an infinite sum
+L
+(∞ ∑
+1
+ui
+)
+̸=
+∞
+∑
+1
+L (ui)
+• Interchange of operations: Justified only when system L is “sufficiently smooth”.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 8 / 22
+
+
+Issues with Linearity Example
+Consider a system defined as follows: The inputs to the system are restricted to being piece-wise continuous functions, bounded over (−∞, ∞), and having no more than a finite number of discontinuities in a finite time. The system response at any time t is defined as algebraic sum of jumps that are present in the input signal from −∞ up to the current time t.
+Example
+Example
+• Space of inputs: Linear space
+L(c1u1 + c2u2) = c1L(u1) + c2L(u2)
+• Response to a step input to such system is a step output.
+• What about its impulse response? Ambiguous !! Why?
+• Different approximations of impulse lead to different results.
+• Response to any continuous approximation of step is also zero.
+• Non-smoothness is an issue.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 9 / 22
+
+
+Impulse function or Dirac delta function
+• Impulse or Dirac delta function
+δ∆(t−t1) =
+
+ 
+ 
+0 t < t1
+1
+∆ t1 ≤ t < t1 + ∆
+0 t ≥ t1 + ∆
+δ(t − t1) ≜ lim
+∆→0
+δ∆(t − t1)
+∫∞
+−∞
+δ(t−t1)dt =
+∫ t1+ε
+t1 −ε
+δ(t−t1)dt = 1
+• For f (t), continuous function at t1
+∫∞
+−∞
+f (t)δ(t − t1)dt = f (t1)
+• A relaxed single variable system, with an input-output relation
+y = Hu
+• Approximation of input
+u≈
+∑
+i
+u(ti)δ∆(t − ti)∆
+• For a relaxed linear system
+y = Hu ≈
+∑
+i
+Hδ∆(t − ti)u(ti)∆
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 10 / 22
+
+
+Systems: Input-Output Relation
+• With a limit ∆ → 0
+y(t) =
+∫∞
+−∞
+[Hδ(t − τ )]u(τ )dτ
+• What is the meaning of impulse response g(t, τ ) = Hδ(t − τ )?
+• Output of relaxed system, due to impulse function input, applied at time τ
+• Output at the time instant t
+y(t) =
+∫∞
+−∞
+g(t, τ )u(τ )dτ
+• A linear relaxed system completely characterized by the impulse response
+• Impulse response obtained by direct measurements at input and output
+• For system with p input and q output terminals
+y(t) =
+∫∞
+−∞
+G(t, τ )
+} {{ }
+Impulse response matrix
+u(τ )dτ
+• gij(t, τ ): Impulse response between jth input and ith output terminal
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 11 / 22
+
+
+Causal/Nonanticipatory System
+Causal/Nonanticipatory System
+A system whose current output depends on past and current inputs but not on future inputs.
+• A noncausal system can predict or anticipate future inputs.
+• Causality is an intrinsic property of a physical system.
+• Causality: A necessary condition for a system to be built or implemented in the real world.
+• For causal systems,
+y(t) = Hu(−∞,t] ∀ t ∈ (−∞, ∞)
+• Noncausal: Current output depends not only on past but also depends on future input.
+• If a system is causal and linear then what about the matrix G(t, τ )?
+G(t, τ ) = 0 ∀ τ and ∀ t < τ =⇒ y(t) =
+∫t
+−∞
+G(t, τ )u(τ )dτ
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 12 / 22
+
+
+Causal System
+• Examples of causal system:
+▷ y=∫t
+−∞ x(τ )dτ
+▷ y[n] = x[n − 1], y[n] = ∑n
+k=−∞ x[k] ▷ All memoryless systems
+• Non-causal systems: y[n] = x[n] − x[n + 1], y(t) = x(t + 1)
+Check causality of the systems given by
+y[n] = x[−n]; y(t) = x(t) cos(t + 1)
+• For positive n, y[n] = x[−n] depends on past inputs at past time.
+• Not true for negative time, so non-causal system
+• What can you say about the second system?
+• Look at the effect of input x only, and not on other functions
+• Causal system
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 13 / 22
+
+
+Relaxedness of System
+A system is said to be relaxed at time t0 iff the output y[t0,∞) is solely and uniquely excited by u[t0,∞).
+• Relation y = Hu applicable only to the relaxed system
+• For a system relaxed at time t0, the input-output relation
+y[t0,∞) = H u[t0,∞)
+• Necessary and sufficient condition for the system to be relaxed at t0
+y(t) = Hu(−∞,t0) = 0 ∀ t ≥ t0
+• Net effect of u(−∞,t0) on the output after t0 is zero.
+• Example: A time delay system s.t. y(t) = u(t − 1)∀ t
+• System is relaxed at t0 if u[t0−1,t0) ≡ 0 although u[−∞,t0−1) ̸= 0
+• For a relaxed (causal) system, the input output description
+y(t) =
+∫∞
+t0
+G(t, τ )u(τ )dτ, y(t) =
+∫t
+t0
+G(t, τ )u(τ )dτ
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 14 / 22
+
+
+Relaxedness of System
+• Given a system at time t0, how do we know that the system is relaxed?
+A system, described by y(t) = ∫ ∞
+−∞ G(t, τ )u(τ )dτ , is relaxed at t0 iff
+u[t0,∞) ≡ 0 =⇒ y[t0,∞) ≡ 0
+• Necessity: If system is relaxed at t0, the output for t ≥ t0
+y(t) =
+∫∞
+t0
+G(t, τ )u(τ )dτ, u[t0,∞) ≡ 0 =⇒ y[t0,∞) ≡ 0
+• Sufficiency: Need to show that if u[t0,∞) ≡ 0 =⇒ y[t0,∞) ≡ 0 then system is relaxed at t0.
+y(t) =
+∫∞
+−∞
+G(t, τ )u(τ )dτ =
+∫ t0
+−∞
+G(t, τ )u(τ )dτ +
+∫∞
+t0
+G(t, τ )u(τ )dτ
+y(t) =
+∫ t0
+−∞
+G(t, τ )u(τ )dτ = 0 ∀ t ≥ t0
+• Net effect of u[t0,∞) on y(t) for t ≥ t0 is zero, thus the system is relaxed.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 15 / 22
+
+
+Relaxedness of System
+• Is it practical to check the system output for all time t ≥ t0?
+If the impulse response matrix G(t, τ ) of a system can be decomposed into G(t, τ ) = M (t)N (τ ), and every element of M is analytic on (−∞, ∞), then system is relaxed at t0 iff for some fixed positive ε
+u[t0,t0+ε) ≡ 0 =⇒ y[t0,t0+ε) ≡ 0
+• With u[t0,∞) = 0,
+y(t) =
+∫ t0
+−∞
+G(t, τ )u(τ )dτ = M (t)
+∫ t0
+−∞
+N (τ )u(τ )dτ ∀ t ≥ t0
+• As ∫ t0
+−∞ N (τ )u(τ )dτ is constant vector, analyticity assumption of M =⇒ y(t) is analytic on [t0, ∞).
+• If y[t0,t0+ε) ≡ 0 and u[t0,∞) ≡ 0 then y[t0,∞) ≡ 0.
+• Relaxedness checked by observing output over any nonzero interval of time for the system satisfying the above constraints.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 16 / 22
+
+
+Time Invariance of System
+• Time invariant, fixed, or stationary system: Characteristics of system do not change with time.
+• Shift operator Qα:
+u ̄ = Qαu ⇐⇒ u ̄(t) = u(t − α), or u ̄(t + α) = u(t) ∀ t
+A relaxed system is time-invariant (or stationary or fixed) iff
+HQαu = QαHu = Qαy
+for any input u and any real number α. Otherwise, the relaxed system is called time-varying.
+• For shifted input, the output waveform remains the same except for a shift.
+• Impulse response: g(·, τ ) = Hδ(t − τ )
+• If a linear relaxed system is time-invariant, what condition does that impose on its impulse response?
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 17 / 22
+
+
+Time Invariance of System
+• For LTI systems,
+Qαg(t, τ ) = QαHδ(t − τ ) = HQαδ(t − τ ) = Hδ(t − τ − α) = g(t, τ + α)
+• As shift operator u ̄ = Qαu ⇐⇒ u ̄(t + α) = u(t) ∀ t
+g(t, τ + α)
+} {{ }
+u ̄
+= Qα g(t, τ )
+} {{ }
+u
+=⇒ g(t, τ ) = g(t + α, τ + α) ∀ t, τ, α
+• Using τ = −α and ∀ t, τ, α,
+g(t, τ ) = g(t − τ, 0) = g(t − τ )
+• Impulse response g(t, τ ) depends only on the difference (t − τ )
+• For the multi-variable case, G(t, τ ) = G(t − τ, 0) = G(t − τ ) ∀ t, τ
+• Output of multi-variable LTI and causal system, with t0 = 0
+y(t) =
+∫t
+t0
+G(t − τ )u(τ )dτ =
+∫t
+0
+G(t − τ )u(τ )dτ =
+∫t
+0
+G(τ )u(t − τ )dτ
+• For causal systems, G(t) = 0 ∀ t < 0.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 18 / 22
+
+
+Time-Invariant System
+Check the time-invariance property of the system given by
+y(t) = sin[x(t)]
+• Need to check time-invariance properties for any inputs and any time shift
+• For arbitrary input x1(t), let output be y1(t) = sin[x1(t)]
+• Input after shifting by t0: x2(t) = x1(t − t0)
+• Output now becomes y2(t) = sin[x2(t)] = sin[x1(t − t0)]
+• By shifting output y1 by t0,
+y1(t − t0) = sin[x1(t − t0)] = y2(t)
+• Invariant system
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 19 / 22
+
+
+Laplace Transform and Transfer Function Matrix
+• Using Laplace transform, the output of a system
+y(s) ≜ L(y) =
+∫∞
+0
+y(t)e−stdt, y(t) =
+∫∞
+0
+G(t − τ )u(τ )dτ
+• Since G(t − τ ) = 0 ∀ τ > t,
+y(s) =
+∫∞
+0
+∫∞
+0
+(G(t − τ )u(τ )dτ ) e−stdt
+=
+∫∞
+0
+∫∞
+0
+(G(t − τ )e−s(t−τ)dτ ) u(τ )e−sτ dt
+=
+∫∞
+0
+G(v)e−sv dv
+∫∞
+0
+u(τ )e−sτ dt ≜ G(s)u(s)
+• Transfer function matrix: G(s) = ∫ ∞
+0 G(t)e−stdt
+• Transfer function: Laplace transform of an impulse response for a single variable
+• System is implicitly assumed to be relaxed when transfer function is used.
+• Proper and strictly proper transfer functions/matrices
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 20 / 22
+
+
+Definition of State of System
+• Input output description applicable only for initially relaxed systems.
+• Output depends not only on input but also on initial conditions.
+State
+The state of the system at time t0 is the amount of information at t0 that, together with u[t0, ∞), determines uniquely the behavior of the system for all t ≥ t0.
+• Behavior of system: All responses including system state
+• State at any time summarizes the essential information about past inputs required for the prediction of future behavior.
+• Different inputs might lead to the same state at a given time, but their future behavior would be the same for the same future inputs.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 21 / 22
+
+
+Reference
+Reference
+▶ Chen, Chi-Tsong, “Linear System Theory and Design”, CBS College Publishing, 1984.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles System Properties Lecture 5 22 / 22

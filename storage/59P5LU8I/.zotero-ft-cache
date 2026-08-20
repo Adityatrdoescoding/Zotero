@@ -1,0 +1,444 @@
+Deep Neural Networks for Nonlinear Model Order Reduction of Unsteady Flows
+Hamidreza Eivazi1,∗ Hadi Veisi1,† Mohammad Hossein Naderi1,‡ and Vahid Esfahanian2§ 1Faculty of New Sciences and Technologies, University of Tehran, Tehran 1439957131, Iran and 2School of Mechanical Engineering, College of Engineering, University of Tehran, Tehran 14395515, Iran
+Unsteady fluid systems are nonlinear high-dimensional dynamical systems that may exhibit multiple complex phenomena both in time and space. Reduced Order Modeling (ROM) of fluid flows has been an active research topic in the recent decade with the primary goal to decompose complex flows to a set of features most important for future state prediction and control, typically using a dimensionality reduction technique. In this work, a novel data-driven technique based on the power of deep neural networks for reduced order modeling of the unsteady fluid flows is introduced. An autoencoder network is used for nonlinear dimension reduction and feature extraction as an alternative for singular value decomposition (SVD). Then, the extracted features are used as an input for long short-term memory network (LSTM) to predict the velocity field at future time instances. The proposed autoencoder-LSTM method is compared with non-intrusive reduced order models based on dynamic mode decomposition (DMD) and proper orthogonal decomposition (POD). Moreover, an autoencoder-DMD algorithm is introduced for reduced order modeling, which uses the autoencoder network for dimensionality reduction rather than SVD rank truncation. Results show that the autoencoder-LSTM method is considerably capable of predicting fluid flow evolution, where higher values for coefficient of determination R2 are obtained using autoencoder-LSTM compared to other models.
+I. INTRODUCTION
+Fluid flow around aerodynamic configurations can experience complex nonlinearities with a wide range of spatial and temporal features. These are mainly related to nonlinear convection term and turbulence that often cannot be treated by simple linearization. Many of complex fluid flows evolve on a low-dimensional subspace that may be characterized by dominant spatiotemporal coherent structures. It is of interest in the analysis of unsteady fluid flows to extract dominant features and introduce a reduced model of the complex system based on physically important features. This performs typically through the modal decomposition of a numerical or experimental dataset of the flow-field. However, a problem arises when attempting model reduction of unsteady flows, where long term transient phenomena need to be predicted accurately. Some examples of common unsteady flow features and phenomena are von K ́arm ́an shedding, Kelvin–Helmholtz instability, and vortex pairing/merging [1]. Reduced order modeling of the fluid systems is a challenging task due to the existence of these complex phenomena at multiple spatiotemporal scales. It means that they are difficult to reduce to a low-dimensional subspace without losing at least some of these scales. During the last three decades, several efforts in theoretical foundations, numerical investigations,
+∗ hamid.eivazi@ut.ac.ir † Corresponding author; h.veisi@ut.ac.ir ‡ mhnaderi1994@ut.ac.ir § evahid@ut.ac.ir This article may be downloaded for personal use only. Any other use requires prior permission of the author and AIP Publishing. This article appeared in: Phys. Fluids 32, 105104 (2020), and may be found at: https://doi.org/10.1063/5.0020526.
+and methodological improvements have made it possible to develop general ideas in reduced order modeling and to tackle several problems arising in fluid dynamics [24]. Proper orthogonal decomposition (POD) [5, 6], dynamic mode decomposition (DMD) [7], and Koopman analysis [8] are some of the well-known reduced order methods (ROMs) in the field of fluid dynamics. POD was first introduced by Lumley [5] to the fluid dynamics community for the study of the turbulent boundary layer. It is a modal decomposition method designed to identify the features (a set of orthogonal modes) of flow most important for reconstructing a dataset. POD modes are not necessarily optimal for modeling dynamical systems while the modes do not depend on the time evolution/dynamics encoded in the data [9]. DMD is a method for analyzing the time evolution of a dynamical system. It is originated in the fluid dynamics community and first was introduced by Schmid and Sesterhenn [10]. Only a year later, Rowley et al. [8] presented a technique for describing the global behavior of complex nonlinear flows by decomposing the flow into modes determined from spectral analysis of the Koopman operator [11]. They showed that DMD could be considered as an algorithm that calculates an approximate Koopman decomposition. Schmid [7] followed this with his article in 2010 and demonstrated the DMD capability in providing an accurate decomposition of complex systems into coherent spatiotemporal structures that may be used for short-time future state prediction and control. DMD is an equation-free data-driven method based on the power of the singular value decomposition (SVD), and it has been employed for modal analysis of a variety of fluid flows [12, 13].
+Deep learning is a subset of machine learning methods based on artificial neural networks, which is capable of extracting hidden information with multiple levels
+arXiv:2007.00936v3 [physics.flu-dyn] 2 Oct 2020
+
+
+2
+of representation from nonlinear and complex dynamical systems [14]. Lately, deep learning has made its mark in various areas such as virtual assistants, image and video processing, speech recognition, genetics and disease diagnosis [15–17].
+In recent years, efficient strategies have emerged in the field of fluid mechanics based on machine learning (ML) and deep neural networks (DNNs). Complementary information on the use of ML for fluid dynamics can be found in many recent reviews [18–23]. It was shown that the autoencoder network could be efficiently used as a nonlinear principal component analysis (PCA) technique for dimensionality reduction of the fluid flows rather than the linear SVD. Moreover, the ability of recurrent neural networks (RNNs) for prediction of the sequential data brings the idea of using RNNs for learning dynamics and future state estimation of the dynamical systems. The advantage of using deep neural networks rather than the Galerkin projection technique has been stated in several research studies [24]. Besides, a type of RNNs, the long short-term memory (LSTM), which has shown attractive potential in the modeling of the sequential problems such as speech modeling and language translation, is used for prediction of the flow evolution, e.g., learning dynamic and prediction of the turbulent shear flows [25]. Yang et al. [26], used field inversion and ML to enhance the four-equation k–ω–γ–Ar transition model. Moreover, ML strategies have been used for extracting information from high-fidelity data to inform low-fidelity numerical simulations for higher accuracy. The specific aim is to use DNNs to build an improved representation of the Reynolds stress anisotropy tensor from highfidelity simulation data [27, 28]. Besides, deep neural networks have been used for learning the physics of the flow over aerodynamic structures to hasten the process of geometrical optimization [29]. Recently, deep reinforcement learning has been used for active flow control in many studies [30–32]. In brief, dimensionality reduction, feature extraction, super-resolution, reduced order modeling, turbulence closure, shape optimization, and flow control are some of the critical tasks in fluid dynamics that could be enhanced with the implementation of the ML algorithms.
+Unsteady flows are, in essence, high dimensional dynamical systems. The use of ML for model-free prediction of spatiotemporal dynamical systems purely from the system’s past evolution is of interest to both scientists and industries in the field of fluid dynamics. Therefore, the development of non-intrusive reduced order models (NIROMs) is of particular interest in the fluid dynamics community. In the context of ROM, both dimensionality reduction and future state prediction could be advanced from deep learning strategies. Baldi and Hornik [33] showed that an autoencoder network with one hidden layer and linear activation functions could closely resemble the standard POD/PCA decomposition. Wang et al. [34] used a deep autoencoder architecture for reduced order modeling and dimensionality reduction of
+distributed parameter systems. Liu et al. [35] proposed a novel compression method based on generative adversarial network (GAN), which had significant advantages in compression time. More recently, Murata et al. [36] developed a new nonlinear mode decomposition method based on a convolutional neural network (CNN) autoencoder. Implementation of nonlinear activation functions leads to lower reconstruction errors than POD, and nonlinear embedding considered the key to improving the capability of the model. Although the deep learning method is used to make dimensionality reduction, they do not take advantage of its predictive capability. Moreover, Guastoni et al. used convolutional-network models for the prediction of wall-bounded turbulence from wall quantities [37, 38].
+RNNs are of particular interest to fluid mechanics due to their ability in learning and prediction of the sequential data. The renewed interest in RNNs has largely attributed to the development of the LSTM algorithms. Commonly, the Galerkin projection has been used to obtain the evolution equations for the lower order system with POD. However, POD-Galerkin method is an intrusive ROM (IROM), and several studies have been conducted using ANNs [39, 40], RNNs [24], and LSTM networks [41–43] to construct an NIROM based on POD modes. Li et al. [44] investigated a new model to improve ROM’s predicting ability for varying operating conditions. They used the LSTM network for large training datasets and sampling space and assessed the performance of the method by a NACA 64A010 airfoil pitching and plunging in the transonic flow condition over various Mach numbers. Renganathan et al. [45] proposed an ML method to build ROMs with LSTM and POD. They showed that this procedure preserves accuracy with a significantly more inexpensive computational cost. Their ML method is physics-informed and restrained by the utilization of an interpretable encoding. Halder et al. [46] presented a method for modeling transonic airfoil–gust interaction, which included two fundamental steps; A dimensionality reduction method where the Discrete Empirical Interpolation was employed, and the compressed state was trained utilizing the LSTM for the reconstruction of the flow field. Maulik et al. [47] formed a non-autoregressive time series method in order to forecast linear reduced-basis time records of forwarding bases. They showed that non-autoregressive counterparts of sequential learning techniques (e.g., LSTM) significantly increase machine-learned ROMs’ stability and assessed their method on the shallow water equations. Tatar and Sabour [48] introduced a nonlinear ROM of dynamic stall employing a fuzzy inference system (FIS) and the adaptive network-based FIS (ANFIS). They used the Gram–Schmidt orthogonalization method to build a higher dimension of the input variables. The outcomes reveal that great modeling is obtained by ANFIS within the new structure of the inputs and the corresponding aerodynamic coefficients utilizing ten percent of data. Pawar et al. [49] employed POD as a dimensionality
+
+
+3
+reduction technique to build orthonormal bases and a Galerkin projection to create a dynamical core of a system. The Galerkin projection also adjusted at each timestep by employing an LSTM network to include hidden physics. Furthermore, a Grassmann manifold method was selected to interpolate basis functions to unnoticed parametric restrictions.
+Besides, data-driven finite dimensional approximations of the Koopman operator has been received significant attention in recent years, in particular, for problems dealing with complex spatiotemporal behaviors such as unsteady fluid flows. DMD, in its original formulation, implicitly utilizes linear observables of the state of the system. Extended DMD [50] and Hankel-DMD [51] were proposed to include a richer set of observables that spans a Koopman invariant subspace. Recently, several works have been done, introducing fully data-driven approaches for learning Koopman embedding using deep neural networks (DNNs) [52–54]. Morton et al. [55] presented a new architecture based on the work by Takeishi et al. [53] to predict the time evolution of a cylinder system. Their approach was grounded in Koopman’s theory and aimed to estimate a set of functions that transform data into a form in which a linear least-squares regression fits well. However, it has been shown by Khodkar et al. [56] that the linear combination of a finite number of modes may not accurately reproduce the nonlinear characteristics of a chaotic dynamics for a reasonably long period of time. They showed that adding nonlinearities to the linear model as a forcing term leads to an excellent short-term prediction of several well-known prototypes of chaos. Moreover, Eivazi et al. [57] showed that the Koopman framework with nonlinear forcing (KNF) provides accurate predictions of the dynamical evolution of the coefficients of a low-order model for near-wall turbulence [58].
+To this end, it has been shown that adding nonlinearity to the dimensionality reduction process by using nonlinear activation functions in the autoencoder architecture can effectively enhance the efficiency of the dimensionality reduction process. However, the majority of research studies have been dedicated to the development of reduced order models based on linear compression techniques such as SVD. Moreover, promising capability of the LSTM network in the learning of the complex systems dynamic brings the opportunity to implement LSTM network for future time prediction rather than a linear mapping of the previous observations to the future time instances using the DMD algorithm. In this regard, this paper presents a novel reduced order model based on deep neural networks. A deep autoencoder network with nonlinear activation functions is designed and implemented for nonlinear dimensionality reduction and dominant features extraction, and then, LSTM network is used for prediction of the flow evolution. A sequence of the extracted features from the autoencoder network is the input of the LSTM, and the output is the flow-field in the future time step. Train and test sets are acquired
+from numerical simulation of the flow around a cylinder and an oscillating airfoil. Two test cases are examined for the cylinder. One at a constant Reynolds number Re of 3900 inducing single frequency vortex shedding, and the other one at gradually decreasing Reynolds number from 3355 to 676, which leads to decay of the vortex shedding behind the cylinder, and consequently, a variable frequency dynamical system. The airfoil oscillates sinusoidally at Re number of 1.35 × 105. The performance of the proposed autoencoder-LSTM method in future state prediction of the flow is compared with the DMD and POD based models. Moreover, an autoencoder-DMD algorithm is introduced for reduced order modeling, which uses the autoencoder network for dimensionality reduction rather than SVD rank truncation. The main novelties of this research study are listed below:
+• Introduce a novel data-driven method based on deep neural networks for nonlinear reduced order modeling of complex unsteady fluid flows
+• Implementation of autoencoder network for nonlinear dimensionality reduction and feature extraction of the fluid systems
+• Future state estimation of a nonlinear dynamical system using LSTM network from its features extracted by the autoencoder network
+• Comparison of linear and nonlinear non-intrusive ROM frameworks
+II. NUMERICAL ANALYSIS AND DATA SETS
+Two-dimensional Navier-Stokes equations are solved using finite volume method (FVM). Temporal and spatial properties are discretized with the second-order implicit scheme and second-order upwind scheme, respectively. The computational domain is a circle with O-type mesh and velocity inlet and pressure outlet as the boundary conditions. k − ω SST turbulence model is adopted and y+ value is checked to be lower than one. For the unsteady flow over the cylinder, two test cases are examined. First, the flow around a cylinder at Reynolds number Re = U∞D/ν of 3900 (cylinder test 1) is simulated where ν is the kinematic viscosity, D is the cylinder diameter, and U∞ is the free-stream velocity. The computational domain is a circle with a radius of 20D. The O-type grid is generated with 360 equally sized grid point in the azimuthal direction, but with grid stretching in the radial direction with the total cell number of 98878. Figure 1 represents the pressure distribution over the cylinder for the present simulation against the URANS simulation of [59], which is shown a good agreement between the results. Simulation is conducted with a time step of 0.2, which results in 357 time steps per each cycle period. Snapshots are extracted from every seven time steps; consequently, 51 snapshots for each cycle. Calculations are performed for 20 complete cycles;
+
+
+4
+four cycles are considered as a training set, and the next four cycles are picked for testing the networks. At the second test case for the cylinder, free-stream velocity U∞ is decreased relative to the time from its value corresponding to Re = 3900 as U∞ = U∞,Re=3900/t, where t is the time. The simulation time step is 0.2, and snapshots are collected from the velocity field at every ten time steps. 332 snapshots are extracted from the wake of the cylinder, and 166 snapshots are used as the training set. Variation of lift coefficient besides training and testing data sets are shown in Fig. 2. The gradual decrease of the free-stream velocity weakens the vortex shedding and leads to the change in its frequency. Reynolds number varies from 3355 to 676, as it is depicted in Fig. 3. For the oscillating airfoil test case, the flow around a pitch oscillating NACA0012 airfoil is simulated at Reynolds number Re = U∞C/ν of 1.35 × 105, where C is the airfoil chord. Airfoil oscillates sinusoidally (α = αmean + αamp × sin(Ωt)) about its 1
+4 chord with
+the reduced frequency k = ΩC/2U∞ of 0.1 according to the [60] test case. αmean and αamp represent mean angle of attack and amplitude of oscillations, respectively. Airfoil oscillation is modeled with the sliding mesh technique. For using dimensional reduction methods on moving meshes, the data collected at each time step from grid points can be interpolated to a single stationary grid and then snapshots can be constructed from these fixed points. The data on the dynamic mesh is interpolated on a constant mesh using K-nearest neighbors (KNN) machine learning algorithm. The principle behind the KNN method is to detect a predefined number of training instances that are close to the new point and compute the value based on the mean of these nearest neighbors’ values. In this method, the velocity of points which are inside the solid structure (e.g., airfoil) at each time step is set to zero. Complementary information about data interpolation using ML techniques can be found in work by Naderi et al. [61]. Figure 4 presents the lift coefficient versus angle of attack obtained from present simulation against experimental and numerical data [60, 62]. For this test case, the data corresponding to two cycles of airfoil’s oscillations are used as the training data set and the next two cycles are predicted.
+III. METHODOLOGY
+To extract dominant features of the unsteady flow-field around the test cases, an autoencoder network is designed and trained with the snapshots obtained from CFD simulation. These features are organized as temporal sequences that are used as the inputs of the LSTM network with the aim of the prediction of the flow-field at future time steps. In contrast with the SVD, which is a basic part of modal decomposition techniques, autoencoder with nonlinear activation functions provides a nonlinear dimensionality reduction. In the following, an elaboration on the networks architecture, inputs and outputs of
+0 0 0 0 0 00 0 0 0 0 θ
+)0
+)
+)0
+)0
+00
+0
+0
+# $$&# $%# &% "! "' # ( ! # 00
+"&! " 00 ) # $ !% & % "!
+FIG. 1. Pressure distribution over cylinder, comparison of present simulation with URANS simulation of Young and Ooi [59]
+11
+1
+1
+1
+1
+Cl
+FIG. 2. Variation of Lift coefficient with time for the second test case
+each network, training and optimization algorithms, and selection of hyperparameters is presented.
+1 83 166 249 332 Number of Snapshots
+100
+1050
+2000
+2950
+3900
+Re
+FIG. 3. Reynolds number at the collected snapshots for the second test case
+
+
+5
+Upstroke
+Downstroke
+FIG. 4. Lift coefficient versus angle of attack for the pitch oscillating airfoil; comparison of the present simulation and experimental [60] and numerical [62] data
+A. Autoencoder Neural Network
+Autoencoder neural networks are a type of network architecture developed for unsupervised feature extraction and dimensionality reduction. The main incentive for utilizing autoencoder architecture in the context of ROM is to perform a nonlinear dimensionality reduction to possibly enhance the efficiency of the process. In this architecture, the inputs and the outputs are the same with a size larger than the dimension of the hidden layers. The network comprises of two parts, namely, encoder and decoder. The encoder part, φ, maps the inputs to a latent space, g, with a lower dimension by decrease of the number of neurons in hidden layers. Then, the decoder part, ψ, projects the latent space back to the original space according to Eq. (1). The middle layer between encoder and decoder is called the bottleneck layer and may be used for the extraction of the most dominant features from the input data. In this study, the input and output data of the autoencoder network are the velocity magnitudes V on the computational grid points obtained from CFD simulation of the flow-field over the test cases. The data on the two-dimensional CFD grid is first flattened and then fed to the network. The architecture of the autoencoder network, encoder and decoder parts, and the bottleneck layer are depicted in Fig. 5.
+g(t) = φ(V (t)), V ̃rec(t) = ψ(g(t)) (1)
+B. Long Short-Term Memory Network
+Long short-term memory (LSTM) was proposed by Hochreiter and Schmidhuber in 1997 [63]. LSTM is an artificial recurrent neural network (RNN) architecture designed for learning of the sequential data such as numerical or experimental time series and to overcome the forgetting problem in conventional RNNs [64]. An LSTM neural network unit is comprised of an input gate, a cell
+Bottleneck Layer
+......
+... ......
+...
+Encoder Decoder
+Input
+Input Reconstruction
+FIG. 5. The architecture of autoencoder network
+state, a forget gate, and an output gate (Fig. 6). The cell state can transfer important data throughout the processing of the sequence. Therefore the information from the earlier sequences or time steps can move to later time steps, decreasing the impacts of short-term memory. While the cell state tries to transfer the information, data get appended or eliminated to the cell state by gates. The gates are various neural networks that choose which data is permitted on the cell state.
+FIG. 6. Schematic of the LSTM cell
+• Forget Gate
+Data from the previous time step (ht−1) and information from the current time step (xt) is given through the sigmoid function. Values come out within 0 and 1. If the output is over some trained parameter, then the cell state is entirely reset to 0, mostly forgetting its long term memory.
+• Input Gate
+The input gate decides if the data is required for the long term. Firstly, we transfer the output of the hidden state (ht−1) and the labeled data input (xt) into a sigmoid function. That determines which values will be updated by changing the amounts to be between 0 and 1: 0 indicates not essential, and 1 means important. The hidden state and current input also are passed into the tanh function to assist in regulating the neural network. Next, the tanh output is multiplied with the sigmoid function out
+
+
+6
+put. The sigmoid function output will select which data is critical to hold from the tanh output.
+• Cell State
+The Ct indicates the current cell state of the LSTM neural network. The cell state is an array of numbers that are transferred through all cells in its way. The cell state is multiplied with the forget array. This has the chance of declining values in the cell state if it gets multiplied by numbers close to zero. Next, the output from the input gate and is added, which updates the cell state to a new state. That provides the latest cell state.
+• Output Gate
+The output gate provides the following hidden state array for the next cell (ht). The former hidden state and the current input is passed toward a sigmoid function. Next, the recently changed cell state is transferred to the tanh function. The tanh output is multiplied by the sigmoid output to determine what data the hidden state should take. This is the short-term memory character of the LSTM neural network.
+C. Autoencoder-LSTM method for ROM
+In this paper, the power of autoencoder and LSTM networks in nonlinear dimension reduction and learning of the sequential data is leveraged for non-intrusive reduced order modeling of unsteady flows. The schematic of the proposed method is presented in Fig. 7. The first step is to train the autoencoder network using the snapshot data collected from the flow-field with the aim of nonlinear dimension reduction and feature extraction (Fig. 7a). The data on the two-dimensional grid is first flattened and then fed to the network. Each time step data V (t), which is a vector of state variables at time t, is mapped to the latent space through the function φ as g(t) with much lower dimension, ng ninput. Then, g(t) is projected back to the original space to reconstruct the input data, V ̃rec(t). The data on the latent space, g(t), is then used as the input to train the LSTM network with the aim of future prediction (Fig. 7b). The input of the LSTM network is a sequence of g as [g(tn), ..., g(tn+p)] with the length of p and the output is the flow-field data at the next time step of the input sequence V ̃ (tn+p+1). Note that in this way, p previous time units are used for prediction of the next time step. For testing and using the autoencoder-LSTM method for reduced order modeling, an iterative procedure is conducted. An initial sequence is first mapped to the latent space using the encoder (φ) part of the autoencoder. The data on the latent space is fed to the LSTM network to predict the flow-field data for the next time step of the input sequence. The predicted value is then stacked to the input sequence ignoring the
+first snapshot data to prepare a sequence one step further in time. The new sequence is fed again to the network to predict the next time step, and the procedure is performed iteratively for future prediction (Fig. 7c). All of the neural network models are created using a machine learning software framework developed by Google Research called TensorFlow [65]. The autoencoder and LSTM networks are trained by the feedforward and backpropagation algorithms. For all the training runs in this work, a variant of the stochastic gradient descent algorithm called adaptive moment estimation (Adam) [66] is utilized with the learning rate of 0.001. Adam has an adaptive learning rate method, which is commonly used to train deep networks. As a standard choice for regression problems, the mean squared error (MSE) is used as the loss function according to Eq. (3). For all the training, the batch size is equal to 32. Two different metrics are used for error estimation. The first metric is Coefficient of Determination (R2) which is defined in Eq. (2). R2 is commonly between zero and one.
+R2 = 1 −
+∑n
+i=1 (yi − ̂yi)2
+∑n
+i=1 (yi − y)2 (2)
+The second metric for error calculation is MSE, which is also considered as the loss function for training of the networks (Eq. (3)).
+MSE =
+∑n
+i=1 (yi − ̂yi)2
+n (3)
+In Eq. (2) and Eq. (3), yi is the real data, ̂yi represents the predicted data, and y is the mean of the real data. In addition, n is the number of samples, which in this study is the number of nodes (grids) in the computational domain.
+D. Hyperparameter Analysis
+The number of layers and the number of neurons in the hidden layers of both autoencoder and LSTM networks besides their activation functions are the hyperparameters of the presented method. An analysis of the hyperparameters is conducted, and the results for the most important ones are presented in Fig. 8 for the cylinder test 2. Here, the performance of the autoencoder and LSTM networks in reconstruction and prediction of the testing data is investigated using three different activation functions, i.e., tanh, ReLU, and softplus, three different number of hidden layers for the autoencoder network (1, 2, 3), and three different number of LSTM cells (10, 100, 600) in the LSTM network. 15% of the train data set is considered as the validation set. Results are presented as the validation loss during the training process and R2 value of the prediction or reconstruction of the testing data. Note that error for the autoencoder network is the error in reconstruction of the flow-field from
+
+
+7
+its dominant features, and the error for the LSTM is the prediction error. Figure 8a shows the validation loss versus number of epochs for the autoencoder network and Fig. 8b depicts the obtained R2 for the test data set. It can be seen that the ReLU activation function performs better for the autoencoder. Here, results are reported for the autoencoder network with three hidden layers and ng = 50. The first and third hidden layers contain 500 neurons. Note that we use linear activation functions for the Input, output, and the bottleneck layers and nonlinear activation functions for other layers. Figure 8c and Fig. 8d present the same results for the LSTM network indicating the better performance of the tanh activation function for the LSTM. Moreover, Fig. 8e and Fig. 8f shows the results for the LSTM networks with various number of LSTM cells. It can be seen that the increase in the number of LSTM cells leads to better predictions. Also, the effect of the number of hidden layers of the autoencoder in the accuracy of the autoencoder-LSTM predictions is investigated, and the results are reported in Fig. 8g. It can be observed that the autoencoder with three hidden layers obtains the best results. It also should be noted that to avoid overfitting, the training process is stopped where more training epochs do not lead to further reduction of the validation loss. Another choice for the architecture of the LSTM network is to consider [g(tn), ..., g(tn+p)] as the input and get g(tn+p+1) at the output. Then, the velocity field V ̃ (tn+p+1) can be obtained using the decoder part of the autoencoder network. We refer to this architecture as LSTM-2. We tested the performance of this model, and compare it with the architecture in which the LSTM network directly predicts the velocity field as described in §III C. We refer to this model as LSTM-1. We observed that lower validation loss for the velocity field can be obtained using the LSTM-1 architecture as it is shown in Fig. 8h. Note that for LSTM-2, we used the decoder part during the training of the LSTM to calculate the validation loss for the velocity field. Based on these results, the autoencoder network with three hidden layers and ReLU activation function and the LSTM1 network with one hidden layer containing 600 LSTM cells with tanh activation function are chosen as the network architectures for the autoencoder-LSTM method. We also observed that these hyperparameters are robust for all the test cases, showing possible applicability of ReLU and tanh activation functions, respectively, for dimension reduction and future prediction in the domain of fluid dynamics.
+E. Structure of the Inputs and Outputs
+In this section, more detailed information on the shape of the inputs and outputs for each test case is presented. For the cylinder test cases, the snapshots are constructed from the velocity domain (−2D < x < 8D and −4D < y < 4D). This leads to a snapshot of 81401
+nodes. In this regard, the input and output layers of the autoencoder have 81401 nodes. In the oscillating airfoil test case, snapshots are extracted from the velocity domain (−2c < x < 7c and −4c < y < 4c). Each snapshot consists of 99473 nodes, so the input and the output layers of the autoencoder network for this test case have 99473 nodes. Other properties of the network remain unchanged. The input data is normalized to cover both negative and positive values through the equation below:
+Vˆi = Vi − μVi
+σVi
+, (4)
+where i represents each measured point, V is the measured value, and μVi is the time average and standard deviation of Vi. Vˆ represents the normalized value. The inputs of the LSTM network are sequences of the outputs of the bottleneck layer of the autoencoder network [g(tn), ..., g(tn+p)] with the size of ng. At the output, it is of interest to have the predicted velocity field. Therefore the output layer has the same number of nodes as the velocity field dimension, which is 81401 for the cylinder test cases and 99473 for the oscillating airfoil test case. The input of the LSTM network is a threedimensional matrix indicating the size of the input arrays, ng, the number of time steps in a sequence, p, and the number of sequences.
+F. DMD with Autoencoder for Dimensionality Reduction
+Dynamic mode decomposition is one of the well-known model-free reduced order modeling techniques that is based on the measurements of the system rather than the governing equations. In fluid dynamics, it is also a method to decompose complex flows into dominant spatiotemporal coherent structures using the power of the SVD. The first step for utilizing the DMD analysis is to construct the snapshots’ matrix X and the lagged matrix X′:
+X=
+
+
+|| | | x0 x1 · · · xm || | |
+
+ , (5)
+X′ =
+
+
+|| | | x1 x2 · · · xm+1 || | |
+
+ . (6)
+The locally linear approximation can be written in terms of these data matrices as below:
+X′ ≈ AX. (7)
+Therefore, the best-fit operator A is given by:
+A = X′X†, (8)
+
+
+8
+LSTM Cells
+(a) Train of the Autoencoder Neural Network (b) Train of the LSTM Neural Network
+(c) Autoencoder-LSTM for ROM
+LSTM Cells
+FIG. 7. Autoencoder-LSTM reduced order modeling framework; a) train of the autoencoder network, given snapshot data V (t) return unsteady flow features g(t) and reconstructed data V ̃rec(t); b) train of the LSTM network, given a sequence of extracted flow features of g(t) compute the data for the next time step V ̃ (tn+p+1); c) autoencoder-LSTM for ROM, given a sequence of snapshots V (t) return unsteady flow features g(t) and predict flow-field for the next time step of the sequence V ̃ (tn+p+1) and iterate to predict the unsteady flow over time.
+where † is the Moore-Penrose pseudoinverse. The highdimensional matrix A is not computed directly; instead, it is first projected onto a low-rank subspace using SVD. The SVD of X can be calculated as:
+X = U ΣV ∗. (9)
+Then, the matrix A is obtained from:
+A = X′V Σ−1U ∗. (10)
+Therefore, A ̃ the r × r projection of the matrix A onto the low-ranked subspace can be obtained as below, where r is the rank of truncation:
+A ̃ = U ∗AU = U ∗X′V Σ−1. (11)
+Eigendecomposition of A ̃ obtain a set of eigenvectors w and eigenvalues λ, where:
+A ̃w = λw. (12)
+For each pair of w and λ, a DMD eigenvalue, which is λ itself, and a DMD mode can be defined as:
+φ= 1
+λ X′V Σ−1w. (13)
+Finally, the approximate solution of at the future times can be calculated from:
+x(t) ≈
+r
+∑
+k=1
+φk e(ωk t) bk, (14)
+where, ωk = ln( λk
+∆t ) and b = Φ†x1 is the initial amplitude
+of each mode. x1 is the initial snapshot, and Φ is the matrix of DMD eigenvectors. In this work, we also investigate the possibility of performing DMD analysis with the autoencoder network as a tool for dimension reduction rather than SVD. The velocity field around the test cases is reduced to the latent space of g. These reduced order vectors can be interpreted as the input snapshots, allowing to construct the input matrices required for the DMD as:
+G = [g(t0) g(t1) · · · g(tm)],
+G′ = [g(t1) g(t2) · · · g(tm+1)]. (15)
+Then, a full-ranked DMD analysis can be performed on the matrices G and G′ to compute the mapping matrix of A = G′G†, which can propagate the data into the future time steps. After performing DMD on the g space, the predicted values are passed from the decoder part, ψ, of the autoencoder network to obtain the predicted velocity field for future time steps. Figure 9 illustrates the schematic of this method, which is referred, hereafter, as autoencoder-DMD. In this study, DMD analysis is performed with the use of the PyDMD [67] library in Python. It is worth to mention that for choosing the number of DMD modes, we follow a simple procedure. As shown in Fig. 10 for the oscillating airfoil, the cumulative energy of DMD modes and the accuracy of the test case (R2) are flattened at a certain point and converge to a specific number. In this regard, we have used this criteria
+
+
+9
+T #! $"
+R
+T #! $"
+R
+!
+%
+%
+%
+%
+T
+#! $"
+!
+%
+%
+%
+%
+%T
+#! $"
+NT
+R
+!
+%
+%
+%
+%
+%
+%
+NT N N
+Nh
+R
+!
+%
+%
+%
+%
+%
+%
+-1 LSTM-2
+FIG. 8. Results of the hyperparameter analysis; validation loss versus epochs (a) and R2 of the reconstruction of the test data set (b) for autoencoder network with three different activation functions, validation loss versus epochs (c) and R2 of the prediction of the test data set (d) for LSTM network with three different activation functions, validation loss versus epochs (e) and R2 of the prediction of the test data set (f) for LSTM network with three different number of LSTM cells, effect of the number of hidden layers of the autoencoder network on the predictions with autoencoder-LSTM (g), and validation loss versus epochs for two different LSTM architectures (h)
+.
+for choosing the number of DMD modes for prediction. In other words, the number of DMD modes is selected when the accuracy of our method reaches a particular threshold. In this way, we ensure that the DMD method has the highest efficiency with the optimum number of parameters that are not affected by any sub-optimal or erroneous modes.
+IV. RESULTS AND DISCUSSION
+A. Dimension Reduction with Autoencoder
+The autoencoder network has been used as a nonlinear dimension reduction technique to project the high dimensional data onto the low dimensional subspace. The velocity field is processed through the lower-dimensional representation at the bottleneck layer and then mapped back to the ambient dimension. Data loss is an inevitable consequence of dimension reduction, and the amount of compression which leads to a reasonable approximation error in the reconstructed data is significant. Therefore, the number of neurons at the bottleneck layer of the autoencoder network, ng, is an important hyperparameter and should be chosen based on thorough experiments. Here, autoencoder networks with the size of the bottleneck layer of 3, 5, 25, and 50 are trained and tested with the training and testing data sets of the three test cases. R2 of the testing data is reported in Table I. It can be seen that even with ng = 3, the data has been recon
+structed with acceptable accuracy. As it is expected, an increase of the dimension at the bottleneck layer leads to an increase in the accuracy of the reconstruction and a decrease of the approximation error.
+TABLE I. Approximation errors of the dimension reduction using autoencoder networks with various number of neurons at the bottleneck layer
+ng Cylinder test 1 Cylinder test 2 Pitching airfoil
+3 0.999 0.882 0.927 5 0.999 0.899 0.930 25 0.999 0.928 0.932 50 0.999 0.936 0.936
+At the latent space, the autoencoder network extracts the main features of the flow-field, which is adequate for the reconstruction of the velocity field at the output layer. To visualize the main features of the flow for the aforementioned test cases, an input array of g is given to the bottleneck layer, and the results are taken from the output layer. For visualizing the features extracted by the first neuron, g(1) is considered equal to one and others, g(2), · · · , g(ng), are equal to zero. For the second neuron, g(2) is equal to one and others are zero, and so on. Figures 11 to 13 illustrate the first three features extracted by the autoencoder network (autoencoder modes) from the velocity field for the cylinder test 1, cylinder test 2, and the pitching airfoil, respectively. Figures 14 to 16 depict the DMD modes for the mentioned test cases. It can be seen that the autoencoder modes are different from the modes of decomposition-based model reductions, such as DMD modes. The main reason is the nonlinearity added to the dimension reduction technique using nonlinear activation functions. However, similar to the DMD modes, the autoencoder modes represent the most dominant features of the flow-field. For better representation, DMD modes corresponding to the steady mean flow and the complex conjugate modes are not illustrated. We observed that the extracted features from the autoencoder may contain noise, and we performed a two-dimensional Gaussian filter to provide a better representation of the dominant modes.
+B. Comparison of Autoencoder-LSTM with DMD-based models
+Here, the performance of the proposed ROM framework, autoencoder-LSTM, in the prediction of the future estate of the test cases is compared with the DMD and autoencoder-DMD methods. Results are reported for the train and test data sets, where the train data set is reconstructed and the test data set is predicted by the models. We report the performance of the models for the training
+
+
+10
+Encoder Decoder
+Construction of G and G’ Matrices
+Full-ranked DMD
+FIG. 9. Schematic of DMD with autoencoder for dimensionality reduction; here, m is the number of prediction steps
+11
+1
+1
+1
+C
+FIG. 10. Cumulative energy of the DMD modes and coefficient of determination (R2) for the oscillating airfoil
+FIG. 11. Autoencoder modes; cylinder test 1
+FIG. 12. Autoencoder modes; cylinder test 2
+FIG. 13. Autoencoder modes; pitching airfoil
+FIG. 14. DMD modes; cylinder test 1
+FIG. 15. DMD modes; cylinder test 2
+FIG. 16. DMD modes; pitching airfoil
+
+
+11
+data sets to also show their skills in the reconstruction of the flow-field from its dominant modes. However, the main focus is on the comparison of the prediction skills of the models. For all the models, the size of the latent space is equal to 50, which means that ng = 50 for the autoencoder network, and r = 50 for the DMD.
+TABLE II. R2 and MSE of the examined models for the prediction and reconstruction of the testing and training data sets. The latent space dimension ng is equal to 50.
+Test cases Autoencoder-LSTM DMD
+R2 MSE R2 MSE
+Cylinder 1 Train 0.9999 2.70 × 10−9 0.9982 1.02 × 10−6
+Test 0.9988 8.46 × 10−9 0.9949 2.93 × 10−6
+Cylinder 2 Train 0.9999 1.13 × 10−8 0.9937 4.58 × 10−7
+Test 0.9405 1.06 × 10−6 0.0826 2.00 × 10−5
+Oscillating airfoil Train 0.9431 3.58 × 10−4 0.7796 3.59 × 10−2
+Test 0.9421 6.17 × 10−4 0.7239 4.64 × 10−2
+R2 and MSE obtained from the models in the prediction of the training and testing data sets are reported in Table II. It can be seen that the autoencoder-LSTM method obtains the R2 of at least 0.9405 in the prediction of the test data set of the cases, which indicates the excellent performance of this method in prediction of the future state of the flow, only from past measurements. For the cylinder test 1, the DMD performance is comparable with the autoencoder-LSTM. However, for the cylinder test 2 and oscillating airfoil, which exhibit, respectively, multi-frequency and extreme events phenomena, the performance of the autoencoder-LSTM method outperforms the DMD method. Figure 17 shows the velocity magnitude over the cylinder test 1 at the last prediction step for the various models against the real data. Moreover, to depict the performance of the models in the prediction of the velocity evolution through the time, the data for three different points in the wake of the cylinder at x = 1, 2, 4 and y = 0 are presented in Fig. 18. The grey area shows the training data that is reconstructed by the models, and the white area shows the predictions of the testing data. It can be seen that for this test case, which is a periodic dynamical system, all of the data-driven models provide accurate results. The best predictions of the test data set are obtained from the autoencoder-LSTM method leading to the R2 of 0.9988 against 0.9949 of the DMD. For the cylinder test 2, the autoencoder-LSTM method performs much better than the DMD method in prediction of the velocity variations through the time acquiring R2 of 0.9405 against 0.0826 of the DMD for the testing data (see Table II). Figure 19 represents the time evolution of the velocity magnitude at three different points in the wake of the cylinder test 2. Again, the grey area shows the data which is inside the training data set, and
+FIG. 17. Contour of velocity magnitude over the cylinder test 1; prediction of the various models against the real data at the last prediction step
+the white area shows the data which is outside of the training data set. Here, It can be seen that the DMD method is not able to predict the time variations of the velocity for the testing data and leads in variations with higher frequencies while the autoencoder-LSTM method performs very well in the prediction of the flow evolution. It also can be observed that the performance of the autoencoder-DMD is almost the same as the DMD method. To illustrate the performance of the models in the prediction of the flow-field, contours of velocity magnitude are shown in Fig. 20 at three time instances corresponding to the three snapshots at the testing data. It can be seen that the autoencoder-LSTM method, can acquire trustworthy results in the prediction of the time evolution of a complex fluid system while the well-known method of DMD is not able to predict the future time instances properly for this test case since it is essentially a linear model. We compared the performance of the proposed autoencoder-LSTM model with the DMD in the prediction of this non-periodic test case to give an impression of the importance of modeling of nonlinear processes. The inaccuracy of the DMD method is not just related to the SVD rank truncation, where a full ranked DMD analysis of the cylinder test 2 leads to R2 of 0.1776 and MSE of 1.81 × 10−5 for the testing data; however, autoencoderLSTM provides R2 of 0.9405 and MSE of 1.06 × 10−6. The accuracy of the DMD results may be enhanced by the increase of the number of snapshots taken from the flowfield, but here, it can be concluded that the autoencoderLSTM method provides more accurate results than the DMD method for an identical data set. In the oscillating airfoil test case, dynamic stall occurs when the airfoil’s angle of attack surpasses a specific angle. The dynamic stall is a complex nonlinear phenomenon that follows with strong variations of the flow parameters around the airfoil due to the consecutive vortex shedding. By the increase of the angle of attack, the boundary layer separates from the airfoil surface leading to the dynamic stall phenomena, and by the decrease of the angle of attack through the airfoil oscillations, the boundary layer reattaches to the airfoil surface. Here, it is of value to assess the ability of the data-driven ROMs in the prediction of the dynamic stall. Figure 21 shows the variation of the velocity magnitude versus time
+
+
+12
+1 102 204 Number of Snapshots
+0.02
+0.04
+0.06
+0.08
+0.10
+v [m/s]
+x = 1 and y = 0
+1 102 204 Number of Snapshots
+0.02
+0.04
+0.06
+0.08
+0.10
+x = 2 and y = 0
+1 102 204 Number of Snapshots
+0.02
+0.04
+0.06
+0.08
+0.10
+x = 4 and y = 0
+autoencoder-LSTM autoencoder-DMD DMD real data
+FIG. 18. Time evolution of the velocity magnitude at three different points in the wake of the cylinder test 1; predictions of the various models against the real data
+1 166 332 Number of Snapshots
+0.02
+0.04
+0.06
+0.08
+0.10
+v [m/s]
+x = 1 and y = 0
+1 166 332 Number of Snapshots
+0.02
+0.04
+0.06
+0.08
+0.10
+x = 2 and y = 0
+1 166 332 Number of Snapshots
+0.02
+0.04
+0.06
+0.08
+0.10
+x = 4 and y = 0
+autoencoder-LSTM autoencoder-DMD DMD real data
+FIG. 19. Time evolution of the velocity magnitude at three different points in the wake of the cylinder test 2; predictions of the various models against the real data
+FIG. 20. Contours of velocity magnitude over the cylinder test 2; prediction of the various models against the real data for three time instances corresponding to 220th, 280th and 332th snapshots
+for the oscillating airfoil at three different points in the wake. Strong variations in velocity magnitude indicate the dynamic stall and consecutive vortex shedding. It can bee seen that the autoencoder-LSTM predicts the velocity variations accurately, which shows the excellent performance of this method in forecasting of an extreme event. The DMD and the autoencoder-DMD methods, however, are not able to perfectly capture the dynamic stall phenomena, and it can be seen that even the reconstruction of the train data set is not accurate. To provide a better insight into the physics of the dynamic stall and the performance of various models in prediction of the flow-field, Fig. 22 presents the contours of velocity magnitude over the airfoil at three time instances after occurrence of the dynamic stall. Here, the excellent performance of the autoencoder-LSTM against the DMD and autoencoder-DMD methods is evident. It can be seen that the vortex shedding behind the airfoil is very well predicted by the autoencoder-LSTM while the predictions of the other methods are inaccurate. Our results show the excellent performance of the proposed autoencoder-LSTM method in both dimension reduction and future prediction of the periodic and non-periodic flows investigated in this paper. However, the viability of this framework for very large-scale test cases with hundreds of millions nodes should be investigated through more general model assessment.
+C. Comparison of Autoencoder-LSTM with POD-based models
+In Section IV B, we compared autoencoder-LSTM method with linear non-intrusive ROMs based on Koop
+
+
+13
+1 320 640 Number of Snapshots
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+v [m/s]
+x = 1.5 and y = 0
+1 320 640 Number of Snapshots
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+x = 1 and y = 0.5
+1 320 640 Number of Snapshots
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+x = 2 and y = 1
+autoencoder-LSTM autoencoder-DMD DMD real data
+FIG. 21. Time evolution of the velocity magnitude at three different points in the wake of the oscillating airfoil; predictions of the various models against the real data
+FIG. 22. Contours of velocity magnitude over the oscillating airfoil; prediction of the various models against the real data for three time instances after occurrence of the dynamic stall
+man operator to show the effect of adding nonlinearities on the performance of the reduced order model. It is also interesting to compare results with POD-based ROMs. A conventional strategy is to use the spatial POD functions, the so-called POD modes, as basis functions for Galerkin method to construct a system of ordinary differential equation (ODEs), known as Galerkin system (GS), which approximates the temporal dynamics. Since fluid flows are often consisted only a small number of coherent
+structures, a low-order model can be constructed using a few dominant POD modes, leading to an ODE system of small dimension. However, the obtained ODE system may be inaccurate and unstable especially for transitional and turbulent flows [68]. Moreover, it may be challenging to represent highly nonlinear problems, such as high Reynolds number flows, only with few POD modes due to the linear nature of the method. For instance, 7260 most energetic modes are needed to reconstruct about 95% of the total energy content of a turbulent channel flow at Reτ = 180 [69]. Recently, efficient strategies have been proposed for non-intrusive ROM based on POD modes by utilizing DNNs and RNNs for temporal predictions of the amplitudes and to overcome the limitations of the Galerkin method [24, 41, 42, 49]. However, these methods may still suffer from fundamental challenges of traditional POD-based models. Here, we compare the autoencoder-LSTM method with a POD-based method which uses the LSTM network for temporal predictions of the mode amplitudes a(t). We refer to this model as POD-LSTM. Note that for the POD-LSTM method, the LSTM network predicts the temporal dynamics in the low-order dimension while for the autoencoder-LSTM, it directly predicts the temporal evolution of the flow from the past low-order representations. We also will discuss the viability of performing predictions in the low-order dimension for the autoencoder-LSTM later in this section.
+We tested the performance of the models for two latent space dimension ng of 3 and 50. For both methods, the LSTM network contains one hidden layer with 600 LSTM cells and tanh activation function. For the cylinder test 1, both methods provide excellent predictions with R2 of above 0.99, so here, we only reported the results for the cylinder test 2 and the airfoil as more challenging test cases. In the first step, it is interesting to evaluate the effect of the efficiency of dimension reduction technique on the accuracy of the predictions. To this end, we predict the whole time span of each test case using models with the latent dimension of 3 (POD rank truncation of 3 for the POD-LSTM and 3 neurons at the bottleneck layer for the autoencoder-LSTM) and obtain the predicted velocity snapshots. We then perform a POD of the predicted snapshots to see how many POD bases are captured in the predictions. Figure 23 presents the results of the decomposition for the predicted and the real data for both
+
+
+14
+FIG. 23. POD of the predicted velocity fields and the original reference data. Blue lines represent the results for the real data, and orange and green shows the results obtained from the predictions of the autoencoder-LSTM and POD-LSTM methods, respectively.
+test cases of the cylinder test 2 and the oscillating airfoil. For the POD-LSTM method, the predictions based on 3 modes only contains 3 POD basis as is expected. These modes are the same as the ones for the real data, so they are not depicted in Fig. 23. It can be seen that the energy of the modes drops to almost zero after mode 3. The interesting view is that the LSTM network perfectly exploits the dynamics of the temporal amplitudes of these 3 modes for both test cases. In this case, the temporal amplitudes for higher modes are not depicted for POD-LSTM since they are just noise. For the autoencoder-LSTM, the interesting results is that the predictions based on only 3 autoencoder modes contain more than 3 POD basis as it can be observed in Fig. 23 for up to mode 6. In fact, the autoencoder can compact a higher number of POD modes in just 3 autoencoder modes. Moreover, the energy of the modes are comparable to the ones from the original data especially for the modes with higher energy. The LSTM network also can provide excellent predictions of the temporal amplitudes as can be seen in Fig. 23. In Table III we report R2 and MSE of the predictions and reconstructions of the train and test sets. Our results show that excellent predictions can be obtained from the autoencoder-LSTM even using ng of 3 due to the promising ability of the autoencoder in dimension reduction.
+In the next step, we increase the size of the latent space to 50 and compare the performance of the models. Results are reported in Table IV for the POD-LSTM model and the corresponding results for the autoencoderLSTM model can be found in Table II. For the oscillating airfoil, which is a periodic test case, consideration of a higher number of POD modes lead to a more accurate performance of the POD-LSTM method. However,
+TABLE III. R2 and MSE of the autoencoder-LSTM and POD-LSTM models in the prediction and reconstruction of the original test and train data. The latent space dimension ng is equal to 3.
+Test cases Autoencoder-LSTM POD-LSTM
+R2 MSE R2 MSE Cylinder 2 Train 0.9998 1.34 × 10−8 0.7148 4.55 × 10−6
+Test 0.9095 1.58 × 10−6 0.6988 4.72 × 10−6
+Oscillating airfoil Train 0.9434 2.77 × 10−4 0.6416 5.32 × 10−2
+Test 0.9424 5.16 × 10−4 0.6403 5.32 × 10−2
+for the non-periodic flow of the cylinder test 2, it leads to a sub-optimal performance where a lower value is obtained for R2 of the predictions in comparison with the test with the rank truncation of 3. We observed that the LSTM network could obtain excellent predictions of the dynamics when 3 temporal modes are considered as the input. However, in the case where 50 temporal modes are predicted with the LSTM network, the predictions are not as accurate as before. It is due to the fact that higher-order POD modes are essentially higherfrequency modes; prediction of the temporal dynamics of these modes may be challenging for the LSTM network especially for non-periodic flows. In Fig. 24, we show the first three temporal modes and their predictions by the LSTM network when the rank of truncation is equal to 3 Fig. 24 (top) and 50 Fig. 24 (bottom). Each temporal mode is normalized with its mean and standard deviation for better representation. It can be observed that the predictions of these temporal modes, in the case of POD rank truncation of 50, are contaminated with higher-frequencies as the LSTM network also tries to predict higher-frequency temporal amplitudes. On the other hand, the autoencoder-LSTM model also provides excellent predictions in this case as can be seen in Table II.
+
+
+15
+TABLE IV. R2 and MSE for the POD-LSTM model in the prediction and reconstruction of the original test and train data. The latent space dimension ng is equal to 50. Corresponding results for the autoencoder-LSTM model have been reported in Table II.
+Test cases R2 MSE
+Cylinder 2 Train 0.9995 3.64 × 10−8
+Test 0.3771 5.88 × 10−6
+Oscillating airfoil Train 0.9211 1.45 × 10−3
+Test 0.9163 1.54 × 10−3
+0
+2
+ai(t)
+1th temporal mode 2th temporal mode 3th temporal mode
+0 167 333
+0
+2
+ai(t)
+FIG. 24. Predictions of the first three temporal amplitudes for the POD-LSTM models against the reference data when the rank of truncation is equal to 3 (top) and 50 (bottom). The data is normalized with mean and standard deviation of each amplitude. Solid lines represent reference data and dash-dotted lines represent the LSTM predictions.
+It should be noted that the POD provides a set of orthogonal modes that are ordered based on their energy. In contrast, the autoencoder modes are correlated and they are not ordered; it is not applicable to identify the dominant autoencoder modes. Moreover, we observed that, for instance, it is not guaranteed that the three modes of an autoencoder network with three neurons at the bottleneck layer be completely similar to three of the modes of an autoencoder with more neurons at the bottleneck. In fact, the size of the bottleneck layer is a priori proposition with a posteriori validation. The feasibility of the selected size of the bottleneck layer can be evaluated only after the training of the network, and if the selected size is not appropriate, the training process should be conducted again. It is in contrast to the POD that the appropriate size of the latent space can be obtained after the computation of the POD. It is one of the drawbacks of using the autoencoder network for ROM that may increase the computation time. However, we showed that for the investigated test cases, even an autoencoder with only a few neurons at the bottleneck can obtain very good reconstructions of the velocity field. It may be possible to use probabilistic neural networks such as variational autoencoders (VAE) and generative adversarial networks (GAN) to only store minimal sufficient uncorrelated representations at the latent space.
+D. Prediction of Transient Dynamics
+In the next test setup, we investigate the applicability of the LSTM network in the prediction of the transient dynamics of fluid flows. To this end, we utilize a meanfield model for two-dimensional viscous flow past a circular cylinder at Re = 100 [70, 71] as a canonical test case for modal decomposition, reduced order modeling, and model identification [72–74]. The temporal dynamics of the flow are provided based on two most energetic POD modes and an additional mode, called the shift mode, which is included to capture the transient dynamics from the onset of vortex shedding to the periodic von K ́arm ́an street. The low-order model for the described system is given by:
+x ̇1 = μx1 − ωx2 + Ax1x3 (16a)
+x ̇2 = ωx1 + μx2 + Ax2x3 (16b)
+x ̇3 = −λ(x3 − x2
+1 − x2
+2), (16c)
+where μ = 0.1, ω = 1, A = −0.1, and λ = 10. We solve this system from an initial condition on the slow manifold where r = 0.05, θ = 0, x1 = r cos(θ), x2 = r sin(θ), and x3 = x21 + x22 for 2000 time steps with ∆t = 0.1. The first 340 time steps are used for training of the model. An LSTM network is constructed with one hidden layer containing 600 LSTM cells and 60 previous time steps are used for one step prediction. The model is trained with the same stopping criterion as before and then the whole time span of the reference data is predicted. The DMD method cannot predict the transient dynamics of this system as it is essentially a linear model. Results are depicted in Fig. 25. It can be observed that although a small portion of the dynamics is used for training, the LSTM model can provide an excellent prediction of these nonlinear dynamics. These results suggest the possible applicability of the LSTM network for the prediction of the transient dynamics. However, since the investigated model here is a low-order model, the feasibility of the autoencoder-LSTM model for reduce order modeling of such fluid systems should be investigated through a more general model assessment.
+E. Computational Cost
+In this section, we discuss the computational efficiency of the proposed autoencoder-LSTM method and compare it with the DMD method. The main computational cost of the proposed ROM is the offline computation required for the training of the neural networks. The required time for both online and offline computations for each method are reported in Table V. These costs are non-dimensional according to the time required for CFD simulations as tROM/tCFD. Results are averaged over the three test cases of cylinder 1 and 2 and the oscillating airfoil. It can be observed that the autoencoder-LSTM method is twoorder of magnitudes faster than CFD, which makes it vi
+
+
+16
+x1
+1
+1
+x
+1
+1
+x
+1
+1
+x1
+1
+1
+x
+1111
+1
+x
+FIG. 25. Transient dynamics of a low-order model of cylinder wake at Re = 100; prediction of the LSTM network against reference data.
+able for reduced order modeling of fluid flows. The DMD algorithm, however, is much faster than the autoencoderLSTM, since it is trained in one shot, and it is five orders of magnitudes faster than CFD. Note that, we conducted our CFD simulations with RANS models, and in the case of direct numerical simulations (DNS) the computational costs of ROMs would be much lower than CFD.
+TABLE V. Computational costs required for offline (training) and online (prediction) computations of the autoencoderLSTM and the DMD methods. Times are non-dimensional according to the time required for CFD simulations as
+tROM/tCFD.
+Model ng Offline (autoencoder & LSTM) Online autoencoder-LSTM 3 1.86×10−2 & 1.18×10−2 0.19×10−2
+50 3.95×10−2 & 2.98×10−2 0.19×10−2 DMD 3 7.05×10−5 1.56×10−5
+50 9.19×10−5 2.66×10−5
+V. CONCLUSION
+In this paper, a novel data-driven reduced order method based on the power of deep neural networks is presented with the aim of future estate estimation of the complex unsteady fluid flows. The proposed method is based on the power of the autoencoder neural network in dimensionality reduction and feature extraction and the power of the LSTM network in the prediction of the sequential data. Training and testing data are obtained from CFD simulations using finite volume method. Three test cases are investigated; a cylinder at the constant Reynolds number of 3900, a cylinder for which the
+Reynolds number is decreased with the time from 3355 to 676, and an oscillating airfoil. In the first step, the autoencoder network has been used as a nonlinear dimension reduction technique to project the high dimensional data onto the low dimensional subspace. In this way, the essential features of the flow feasible for accurate reconstruction of the velocity field are extracted at the bottleneck layer of the autoencoder. Then, sequences of the extracted features implemented as the input of an LSTM network with the aim of future state estimation. The output of the LSTM network is the velocity field at the next time step. Results are compared with the results of the well-known DMD method and a newly developed ROM based on the POD modes and the LSTM network. The performance of each method is assessed with the use of the coefficient of determination R2 and MSE. Moreover, for the DMD method, the use of the autoencoder network for dimensionality reduction instead of SVD rank truncation is assessed. Results indicate the excellent potential of deep neural networks for data-driven reduced order modeling of complex unsteady flows. For all the cases, the autoencoder-LSTM network obtains the best results in the prediction of the velocity field in future time instances. Results show that the DMD and autoencoderLSTM method can predict the flow evolution of the first test case accurately. However, for the second and third test cases, the autoencoder-LSTM method outperforms the DMD method in the prediction of the flow dynamics. Our results show excellent performance of the LSTM network in the prediction of the transient dynamics of a low-order model of cylinder wake at Re = 100. Moreover, we showed that the predictions of an autoencoder-LSTM model with three neurons at the bottleneck layer contain more than three POD basis, indicating excellent performance of the autoencoder network in dimension reduction.
+
+
+17
+DATA AVAILABILITY
+The data that support the findings of this study are available from the corresponding author upon reasonable request.
+[1] Kunihiko Taira, Steven L. Brunton, Scott T. M. Dawson, Clarence W. Rowley, Tim Colonius, Beverley J. McKeon, Oliver T. Schmidt, Stanislav Gordeyev, Vassilios Theofilis, and Lawrence S. Ukeiley, “Modal analysis of fluid flows: An overview,” AIAA J 55, 4013–4041 (2017), 1702.01453. [2] Witold Stankiewicz, Marek Morzyn ́ski, Krzysztof Kotecki, Robert Roszak, and Michal Nowak, “Modal decomposition-based global stability analysis for reduced order modeling of 2D and 3D wake flows,” Int J Numer Methods Fluids 81, 178–191 (2016). [3] M. Mohebujjaman, L.G. Rebholz, and T. Iliescu, “Physically constrained data-driven correction for reducedorder modeling of fluid flows,” Int J Numer Methods Fluids 89, 103–122 (2019). [4] S. Kelbij Star, Francesco Belloni, Gert Van den Eynde, and Joris Degroote, “POD-identification reduced order model of linear transport equations for control purposes,” Int J Numer Methods Fluids 90, 375–388 (2019). [5] J L Lumley, “The structure of inhomogeneous turbulent flows,” in Atmospheric Turbulence and Radio Wave Propogation , 166–78 (Nauka, Moscow, 1967).
+[6] John L. Lumey, Stochastic Tools in Turbulence (Elsevier Science, 1970) p. 209. [7] Peter J. Schmid, “Dynamic mode decomposition of numerical and experimental data,” J. Fluid Mech. 656, 528 (2010). [8] Clarence W. Rowley, Igor Mezi, Shervin Bagheri, Philipp Schlatter, and Dan S. Henningson, “Spectral analysis of nonlinear flows,” J. Fluid Mech. 641, 115–127 (2009). [9] Jonathan H Tu, Clarence W Rowley, Dirk M Luchtenburg, Steven L Brunton, and J Nathan Kutz, “On dynamic mode decomposition: Theory and applications,” J. Comput. Dyn. 1, 391–421. [10] Peter Schmid and J. Jo ̈rn Sesterhenn, “Dynamic mode decomposition of numerical and experimental data,” 61st Annual Meeting of the APS Division of Fluid Dynamics. American Physical Society (2008). [11] Bernard O Koopman, “Hamiltonian systems and transformation in Hilbert space,” Proceedings of the National Academy of Sciences of the United States of America 17, 315 (1931). [12] A. K. Alekseev, D. A. Bistrian, A. E. Bondarev, and I. M. Navon, “On linear and nonlinear aspects of dynamic mode decomposition,” Int J Numer Methods Fluids 82, 348–371 (2016). [13] Diana A. Bistrian and Ionel M. Navon, “The method of dynamic mode decomposition in shallow water and a swirling flow problem,” Int J Numer Methods Fluids 83, 73–89 (2017). [14] Yann LeCun, Yoshua Bengio, and Geoffrey Hinton, “Deep learning,” Nature 521, 436 (2015). [15] Tara N. Sainath, Abdel Rahman Mohamed, Brian Kingsbury, and Bhuvana Ramabhadran, “Deep convolu
+tional neural networks for LVCSR,” ICASSP, IEEE International Conference on Acoustics, Speech and Signal Processing-Proceedings (IEEE, 2013) pp. 8614–8618. [16] Alex Krizhevsky, Ilya Sutskever, and Geoffrey E Hinton, “Imagenet classification with deep convolutional neural networks,” in Advances in Neural Information Processing Systems 25 (Curran Associates, Inc., 2012) pp. 10971105. [17] Farzad Abdolhosseini, Behrooz Azarkhalili, Abbas Maazallahi, Aryan Kamal, Seyed Abolfazl Motahari, Ali Sharifi-Zarchi, and Hamidreza Chitsaz, “Cell identity codes: Understanding cell identity from gene expression profiles using deep neural networks,” Sci. Rep. 9, 2342 (2019). [18] Jared Willard, Xiaowei Jia, Shaoming Xu, Michael Steinbach, and Vipin Kumar, “Integrating PhysicsBased Modeling with Machine Learning: A Survey,” arXiv:2003.04919 [physics, stat] (2020), arXiv: 2003.04919. [19] Jean Rabault, Feng Ren, Wei Zhang, Hui Tang, and Hui Xu, “Deep reinforcement learning in fluid mechanics: A promising method for both active flow control and shape optimization,” J. of Hydrodynamics 32, 234–246 (2020). [20] Sandeep Pandey, Jo ̈rg Schumacher, and Katepalli R. Sreenivasan, “A perspective on machine learning in turbulent flows,” J. of Turbulence , 1–18 (2020). [21] Kai Fukami, Koji Fukagata, and Kunihiko Taira, “Assessment of supervised machine learning methods for fluid flows,” Theor Comput Fluid Dyn 34, 497–519 (2020). [22] Steven L. Brunton, Bernd R. Noack, and Petros Koumoutsakos, “Machine learning for fluid mechanics,” Annu. Rev. Fluid Mech. 52, 477–508 (2020). [23] J. Nathan Kutz, “Deep learning in fluid dynamics,” J. Fluid Mech. 814, 1–4 (2017). [24] S. Pawar, S. M. Rahman, H. Vaddireddy, O. San, A. Rasheed, and P. Vedula, “A deep learning enabler for nonintrusive reduced order modeling of fluid flows,” Phys. Fluids 31, 085101 (2019). [25] P. A. Srinivasan, L. Guastoni, H. Azizpour, P. Schlatter, and R. Vinuesa, “Predictions of turbulent shear flows using deep neural networks,” Phys. Rev. Fluids 4, 054603 (2019). [26] Muchen Yang and Zhixiang Xiao, “Improving the k–ω–γ–Ar transition model by the field inversion and machine learning framework,” Phys. Fluids 32, 064101 (2020). [27] Julia Ling, Andrew Kurzawski, and Jeremy Templeton, “Reynolds averaged turbulence modelling using deep neural networks with embedded invariance,” J. Fluid Mech. 807, 155–166 (2016). [28] Karthik Duraisamy, Gianluca Iaccarino, and Heng Xiao, “Turbulence modeling in the age of data,” Annu. Rev. Fluid Mech. 51, 357–377 (2019).
+
+
+18
+[29] Bruno A. Storti, Jonathan J. Dorella, Nadia D. Roman, Ignacio Peralta, and Alejandro E. Albanesi, “Improving the efficiency of a Savonius wind turbine by designing a set of deflector plates with a metamodel-based optimization approach,” Energy 186, 115814 (2019). [30] Jean Rabault, Miroslav Kuchta, Atle Jensen, Ulysse Re ́glade, and Nicolas Cerardi, “Artificial neural networks trained through deep reinforcement learning discover control strategies for active flow control,” J. Fluid Mech. 865, 281–302 (2019). [31] Hongwei Tang, Jean Rabault, Alexander Kuhnle, Yan Wang, and Tongguang Wang, “Robust active flow control over a range of Reynolds numbers using an artificial neural network trained through deep reinforcement learning,” Phys. Fluids 32, 053605 (2020). [32] Gerben Beintema, Alessandro Corbetta, Luca Biferale, and Federico Toschi, “Controlling Rayleigh–Be ́nard convection via reinforcement learning,” J. of Turbulence , 1–21 (2020). [33] Pierre Baldi and Kurt Hornik, “Neural networks and principal component analysis: Learning from examples without local minima,” Neural Netw 2, 53–58 (1989). [34] Mingliang Wang, Han-Xiong Li, Xin Chen, and Yun Chen, “Deep learning-based model reduction for distributed parameter systems,” IEEE Trans. Syst. Man Cybern. Syst. 46, 1664–1674 (2016). [35] Yang Liu, Yueqing Wang, Liang Deng, Fang Wang, Fang Liu, Yutong Lu, and Sikun Li, “A novel in situ compression method for CFD data based on generative adversarial network,” Journal of Visualization 22, 95–108 (2019). [36] Takaaki Murata, Kai Fukami, and Koji Fukagata, “Nonlinear mode decomposition with convolutional neural networks for fluid dynamics,” J. Fluid Mech. 882, A13 (2020). [37] Luca Guastoni, Miguel P. Encinar, Philipp Schlatter, Hossein Azizpour, and Ricardo Vinuesa, “Prediction of wall-bounded turbulence from wall quantities using convolutional neural networks,” J Phys Conf Ser 1522, 012022 (2020). [38] L. Guastoni, A. G ̈uemes, A. Ianiro, S. Discetti, P. Schlatter, H. Azizpour, and R. Vinuesa, “Convolutionalnetwork models to predict wall-bounded turbulence from wall quantities,” (2020), arXiv:2006.12483 [physics.fludyn]. [39] Omer San, Romit Maulik, and Mansoor Ahmed, “An artificial neural network framework for reduced order modeling of transient flows,” Commun Nonlinear Sci Numer Simul 77, 271 – 287 (2019). [40] Omer San and Romit Maulik, “Neural network closures for nonlinear model order reduction,” Adv Comput Math 44, 1717–1750 (2018). [41] Z. Wang, D. Xiao, F. Fang, R. Govindan, C. C. Pain, and Y. Guo, “Model identification of reduced order fluid dynamics systems using deep learning,” Int J Numer Methods Fluids 86, 255–268 (2018). [42] Arvind T Mohan and Datta V Gaitonde, “A deep learning based approach to reduced order modeling for turbulent flow control using LSTM neural networks,” arXiv preprint arXiv:1804.09269 (2018). [43] Shady E. Ahmed, Omer San, Adil Rasheed, and Traian Iliescu, “A long short-term memory embedding for hybrid uplifted reduced order models,” (2019), arXiv:1912.06756 [physics.flu-dyn].
+[44] Kai Li, Jiaqing Kou, and Weiwei Zhang, “Deep neural network for unsteady aerodynamic and aeroelastic modeling across multiple Mach numbers,” Nonlinear Dynamics 96, 2157–2177 (2019). [45] S. Ashwin Renganathan, Romit Maulik, and Vishwas Rao, “Machine learning for nonintrusive model order reduction of the parametric inviscid transonic flow past an airfoil,” Phys. Fluids 32, 047110 (2020). [46] R. Halder, M. Damodaran, and B. C. Khoo, “Deep Learning Based Reduced Order Model for Airfoil-Gust and Aeroelastic Interaction,” AIAA Journal , 1–18 (2020). [47] Romit Maulik, Bethany Lusch, and Prasanna Balaprakash, “Non-autoregressive time-series methods for stable parametric reduced-order models,” Phys. Fluids 32, 087115 (2020). [48] Massoud Tatar and Mohammad Hossein Sabour, “Reduced-order modeling of dynamic stall using neurofuzzy inference system and orthogonal functions,” Phys. Fluids 32, 045101 (2020). [49] Suraj Pawar, Shady E. Ahmed, Omer San, and Adil Rasheed, “Data-driven recovery of hidden physics in reduced order modeling of fluid flows,” Phys. Fluids 32, 036602 (2020). [50] Matthew O. Williams, Ioannis G. Kevrekidis, and Clarence W. Rowley, “A data-driven approximation of the koopman operator: Extending dynamic mode decomposition,” J Nonlinear Sci 25, 1307–1346 (2015). [51] Hassan Arbabi and Igor Mezic ́, “Ergodic theory, dynamic mode decomposition, and computation of spectral properties of the koopman operator,” SIAM J. Appl. Dyn. Syst. 16, 2096–2126 (2017). [52] Bethany Lusch, J. Nathan Kutz, and Steven L. Brunton, “Deep learning for universal linear embeddings of nonlinear dynamics,” Nat. Commun. 9, 4950 (2018). [53] Naoya Takeishi, Yoshinobu Kawahara, and Takehisa Yairi, “Learning Koopman invariant subspaces for dynamic mode decomposition,” in NIPS 30, edited by I. Guyon, U. V. Luxburg, S. Bengio, H. Wallach, R. Fergus, S. Vishwanathan, and R. Garnett (Curran Associates, Inc., 2017) pp. 1130–1140. [54] Qianxiao Li, Felix Dietrich, Erik M. Bollt, and Ioannis G. Kevrekidis, “Extended dynamic mode decomposition with dictionary learning: A data-driven adaptive spectral decomposition of the koopman operator,” Chaos 27, 103111 (2017). [55] Jeremy Morton, Antony Jameson, Mykel J Kochenderfer, and Freddie Witherden, “Deep dynamical modeling and control of unsteady fluid flows,” in Advances in Neural Information Processing Systems 31, edited by S. Bengio, H. Wallach, H. Larochelle, K. Grauman, N. CesaBianchi, and R. Garnett (Curran Associates, Inc., 2018) pp. 9258–9268. [56] Mohammad Amin Khodkar, Pedram Hassanzadeh, and Athanasios Antoulas, “A koopman-based framework for forecasting the spatiotemporal evolution of chaotic dynamics with nonlinearities modeled as exogenous forcings,” arXiv preprint arXiv:1909.00076 (2019). [57] Hamidreza Eivazi, Luca Guastoni, Philipp Schlatter, Hossein Azizpour, and Ricardo Vinuesa, “Recurrent neural networks and Koopman-based frameworks for temporal predictions in turbulence,” (2020), arXiv:2005.02762 [physics.flu-dyn].
+
+
+19
+[58] J. Moehlis, H. Faisst, and B. Eckhardt, “A lowdimensional model for turbulent shear flows,” New J. Phys. 6, 56 (2004). [59] M E Young and A Ooi, “Comparative Assessment of LES and URANS for Flow Over a Cylinder at a Reynolds Number of 3900,” Proceedings of the 16th Australasian Fluid Mechanics Conference, 16AFMC (2007). [60] T. LEE and P. GERONTAKOS, “Investigation of flow over an oscillating airfoil,” J. Fluid Mech. 512, 313–341 (2004). [61] Mohammad Hossein Naderi, Hamidreza Eivazi, and Vahid Esfahanian, “New method for dynamic mode decomposition of flows over moving structures based on machine learning (hybrid dynamic mode decomposition),” Physics of Fluids 31, 127102 (2019). [62] Kobra Gharali and David A. Johnson, “Dynamic stall simulation of a pitching airfoil under unsteady freestream velocity,” J Fluids Struct 42, 228–244 (2013). [63] Sepp Hochreiter and J ̈urgen Schmidhuber, “Long shortterm memory,” Neural Comput 9, 1735–1780 (1997). [64] Ian Goodfellow, Yoshua Bengio, and Aaron Courville, Deep Learning (MIT Press, 2016). [65] Martin Abadi, Paul Barham, Jianmin Chen, Zhifeng Chen, Andy Davis, Jeffrey Dean, Matthieu Devin, Sanjay Ghemawat, Geoffrey Irving, Michael Isard, Manjunath Kudlur, Josh Levenberg, Rajat Monga, Sherry Moore, Derek G. Murray, Benoit Steiner, Paul Tucker, Vijay Vasudevan, Pete Warden, Martin Wicke, Yuan Yu, and Xiaoqiang Zheng, “Tensorflow: A system for large-scale machine learning,” 12th USENIX Symposium on Operating Systems Design and Implementation (OSDI 16), , 265–283 (2016).
+[66] D Kingma and J Ba, “Adam: A method for stochastic optimization, in proceedings of the 3rd International Conference for Learning Representations (ICLR’15),” San Diego (2015). [67] Nicola Demo, Marco Tezzele, and Gianluigi Rozza, “PyDMD: Python Dynamic Mode Decomposition,” The Journal of Open Source Software 3, 530 (2018). [68] D. Rempfer, “On low-dimensional galerkin models for fluid flow,” Theor Comput Fluid Dyn 14, 75–88 (2000). [69] Giancarlo Alfonsi and Leonardo Primavera, “The structure of turbulent boundary layers in the wall region of plane channel flow,” Proc. Royal Soc. A 463, 593–612 (2007). [70] Bernd R. Noack, Konstantin Afanasiev, Marek Morzyn ́ski, Gilead Tadmor, and Frank Thiele, “A hierarchy of low-dimensional models for the transient and post-transient cylinder wake,” J. Fluid Mech. 497, 335–363 (2003), publisher: Cambridge University Press. [71] Jean-Christophe Loiseau and Steven L. Brunton, “Constrained sparse Galerkin regression,” J. Fluid Mech. 838, 42–67 (2018). [72] Shervin Bagheri, “Koopman-mode decomposition of the cylinder wake,” J. Fluid Mech. 726, 596–623 (2013). [73] Clarence W. Rowley and Scott T.M. Dawson, “Model reduction for flow analysis and control,” Annu. Rev. Fluid Mech. 49, 387–417 (2017). [74] Steven L. Brunton, Joshua L. Proctor, and J. Nathan Kutz, “Discovering governing equations from data by sparse identification of nonlinear dynamical systems,” Proc Natl Acad Sci 113, 3932–3937 (2016).

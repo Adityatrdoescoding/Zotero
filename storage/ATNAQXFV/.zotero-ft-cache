@@ -1,0 +1,161 @@
+Rotary Wing Aerodynamics
+AE 667
+Dhwanil Shukla
+
+
+The course will...
+o Teach you a ton about rotors
+o Force you to do open-ended assignments
+o Give you some programming practice
+o Probably make you better engineers overall (no promises!)
+
+
+Course Outline
+1. Introduction
+2. Rotor Hover Performance Prediction Methods
+3. Vertical Descent of Rotors
+4. Rotors in Forward Flight
+5. Vehicle Performance
+6. Advanced Topics
+
+
+Learning Outcomes
+By the end of the course, we should be able to:
+1. Analyse & design rotors/propellers for performance in hover/climb using
+Momentum theory and Blade Element Momentum theory
+2. Predict basic helicopter blade and rotor dynamics in a steady level
+forward flight
+3. Find pilot inputs necessary to achieve trim conditions in a steady level
+forward flight
+4. Estimate helicopter performance based on design parameters
+5. Follow current research in the field of rotary wing aerodynamics
+
+
+Reference Books
+o Venkatesan, C. (2014). Fundamentals of helicopter dynamics. CRC Press.
+o Johnson, W. (2012). Helicopter theory. Courier Corporation.
+o Leishman, G. J. (2006). Principles of helicopter aerodynamics. Cambridge university press
+[Lecture notes will also be made available after the classes]
+
+
+Evaluation, Grading, Attendance
+o Exams: 2 (10% each)
+o Assignments: 3 (read: mini projects) (20% each)
+o Literature Survey Project (group effort) (20%) -------------------------------------------------------------------------------
+* Grades to be curved based on the class performance
+* Fail Grade for overall score less than 40%
+* Audit Criteria: Score at least 40% in the course, Satisfy Attendance Policy
+* Attendance Policy: No performance stress < 70% attendance!
+
+
+Discussions vs Plagiarism
+o Discussions on assignment problems encouraged well before the submission deadlines.
+o Sharing ≠ Caring
+Sharing assignment reports and codes not a way to help! Explain concepts and help your friend do the job by self...
+o 100% Discount Offer!!
+In marks for ALL involved in Copying/Plagiarising assignments.
+[Yes, we do have tools to detect plagiarism in computer codes as well]
+o Repeated 100% discount seekers to get the entire course free or cost.
+
+
+Assignment Theme:
+Indigenous High Speed Troop Transport Compound Helicopter
+o 400 km/h top speed
+o 5000 m service ceiling
+o 500 km range
+o ALH Druv platform
+o 2 pilots + 8 passengers
+
+
+Introducing Rest of the Team
+Murali Krishna Y 24M0001@iitb.ac.in
+S Rishabh Kumar 24M0002@iitb.ac.in
+Patel Jaydipkumar Lalitkumar 24M0004@iitb.ac.in
+Sai Sitharth G U 24M0014@iitb.ac.in
+Rakesh Kumar 20004185@iitb.ac.in
+Don’t hesitate to use the assistance you are provided with to succeed!
+
+
+Typical Lecture Structure...
+1. Join precisely on time..
+2. Discuss some interesting engineering fact/news – 5 min
+On nomination basis, For each lecture
+3. Recall the glorious past (Recap & attendance) – 2-3 min
+4. Proceed in the course...
+5. [Interruptions for relevant questions and discussions highly encouraged!]
+6. Reflections (lucky draw) – 5 min
+
+
+Introduction & History
+
+
+First Vertical Flight
+Paul Cornu (1907) The first flying machine to have risen from the ground using rotor blades instead of wings. [Wright brothers’ first flight in Dec 1903]
+
+
+First Helicopter
+Igor Sikorsky, 14th September 1939
+
+
+Early Ideas
+Leonardo da Vinci (15th century)
+Sir George Cayley (1796)
+
+
+Early Ideas
+Emile & Henry Berliner (1908 - 1929) • Coaxial Helicopter • Tilt Rotor
+
+
+Early Ideas
+De Bothezat’s Quadcopter (1921)
+Image result for pescara coaxial helicopter
+Pescara Coaxial Helicopter (1925)
+
+
+Early Ideas
+
+
+Early Ideas
+Curtiss-Bleeker helicopter (1930)
+
+
+Present day helicopters
+Conventional
+Coaxial
+
+
+Present day helicopters
+V-22 Osprey Tiltrotor
+CH-47 Chinook Tandem
+
+
+World’s largest
+Mil Mi-26
+Mil V-12
+
+
+India’s Indigenous Helicopters
+Dhruv
+(Advanced Light Helicopter)
+Prachand
+(Light Combat Helicopter)
+
+
+Problems of Forward Flight
+Mach number effects
+Yawed Flow
+Reverse Flow Dynamic Stall
+Blade Vortex Interaction
+Aeroelastic effects
+ = 0
+ = 270
+ = 180
+
+V
+Vtip = R
+Vtip = R
+Vtip = R − V
+Vti
+R
+Reverse Flow Region
+Retreating Side Advanci

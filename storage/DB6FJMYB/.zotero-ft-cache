@@ -1,0 +1,779 @@
+Politecnico di Milano
+School of Industrial and Information Engineering
+Department of Aerospace Sciences and Technologies Master of Science in Aeronautical Engineering
+2.1. | MARCHIO E LOGOTIPO
+Rotor-Rotor Aerodynamic Interactions for eVTOL Aircraft Configurations
+Supervisor:
+Prof. Alex Zanotti
+Candidate: Piccinini Riccardo ID n. 920204
+Accademic Year 2020-2021
+
+
+
+
+This work represents the end of my university courses and I would like to thank everyone who makes possible to reach this finish line.
+First of all, I would like to say thank you to Prof. Alex Zanotti, who has helped me in this work and in the related articles that have been published. Secondly I would like to mention Matteo Tugnoli and Davide Montagnani who have assisted me and that have also bear my numerous questions.
+I feel very grateful to my university colleagues and friends, who have shared with me this arduous path and that made pleasant the never ending lessons.
+My biggest thanks go to my family. They have sustained me since the first day of my studies. Particularly to my mum, who has always pushed me to move further and to be a better person.
+"One step at a time"
+Riccardo Piccinini, Novara, November 2020
+2
+
+
+
+
+Chapter 1
+Summary
+The demand for new systems of transportation which could be suitable for movements in metropolitan areas and also with a low environmental impact, has pushed the aerospace industries towards new electrical powered VTOL, called eVTOL. Such vehicles are characterised by the presence of multiple propellers in close proximity and this poses new challenges in the development of their aerodynamic. In particular, the rotor-rotor aerodynamic interaction for these kind of vehicles is a relatively new field which also requests new research techniques. This thesis work aims to understand the fundamental effects of the interactions between propellers in typical eVTOL configurations.
+For this purpose, a series of wind tunnel tests and numerical simulations have been performed on the two most relevant types of rotor-rotor interactions: the side and tandem ones. The simulations have been performed through a mid-fidelity VPM based code: DUST. The performances of the the interacting propellers have been compared with the isolated rotor, and the flow field visualisations have been obtained in order to have a deeper vision of the physic of the problems.
+Results have confirmed the importance to study such aerodynamic interactions. In fact, in side interaction high fluctuations in the developed loads have been found. Furthermore, due to the tandem interaction the rear rotor performances have been demonstrate to undergo to huge decreases as the degree of overlap between propeller disks increase. So, the results of this work can be considered as a basis for the investigation and design of the full eVTOL aerodynamic.
+4
+
+
+Contents
+1 Summary 4
+2 Introduction 11
+2.1 Rotor-Rotor Aerodynamic Interactions Challenges in eVTOL . . . . . . . . . . . . . . . . . . . 13
+2.2 Bibliography Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+2.3 Objectives of the Work . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+2.4 Thesis Outline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+3 Experimental Set Up 21
+3.1 Wind Tunnel Facility . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+3.2 Test Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+3.3 Measurement Techniques . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+3.4 Test Conditions and Parameters . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+4 Structure and Formulation of the Numerical Code 26
+4.1 Lifting Line Elements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+4.2 Surface Panels Method . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+4.3 Vortex Particle Method . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+5 Validation of Numerical Modeling 35
+5.1 Hover Simulation with DJI Blade . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35
+5.1.1 DJI Geometry Definition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35
+5.1.2 Numerical Simulations Results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37
+5.2 APC 10x7 Propeller Simulation in Cruise . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 41
+5.2.1 APC Geometry Definition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 41
+5.2.2 Numerical Simulations Results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42
+5.3 Side Interaction Simulations with DJI Blade . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47
+6 Numerical Model of the Interacting Propellers 52
+6.1 Variopropeller Geometry . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 52
+6.2 Preliminary Variopropeller Numerical Simulations . . . . . . . . . . . . . . . . . . . . . . . . . 55
+6.3 Description of the Analysed Interacting Propellers Configurations . . . . . . . . . . . . . . . . . 57
+5
+
+
+7 Numerical Results for Side Configuration 59
+7.1 Performance Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 59
+7.2 Flow Field Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 62
+8 Numerical Results for Tandem Configuration 67
+8.1 Performance Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 67
+8.2 Flow Field Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 79
+9 Conclusions and Recommendations 87
+9.1 Conclusions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 87
+9.2 Recommendations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 89
+Bibliography 91
+6
+
+
+List of Figures
+2.1 Power loading vs. disc loading for different VTOL vehicle types. (From [8]) . . . . . . . . . . . 11
+2.2 Aviation Week produced this graphic based on data on more than 300 concepts in the VFS World eVTOL Aircraft Directory. It shows the progress of the 129 aircraft that are in active development. ( c© Aviation Week Network). From [18]. . . . . . . . . . . . . . . . . . . . . . . . 12
+2.3 Examples of eVTOLs aircraft architectures (from https://eVTOL.news/aircraft): a Archer aircraft, https://www.flyarcher.com/; (b) Vahana by A3 by Airbus LLC, https://acubed. airbus.com/projects/vahana/; (c) Bell-Nexus 6HX by Bell, https://www.bellflight.com/ products/bell-nexus; (d) S4 by Joby Aviation, https://www.jobyaviation.com/. . . . . . . 13
+2.4 Representation of the two most relevant rotor interactions. . . . . . . . . . . . . . . . . . . . . . 14
+2.5 Measured PIV results for the single rotor (left) and twin-rotor (right, L=0.05D) cases for Zhou [21] configuration. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+2.6 Phase-locked vorticity distributions for the single rotor (left) and twin rotors (right, L=0.05D) for Zhou [21] configuration. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+2.7 Phase-locked average vorticity distribution of single rotor (left) and side rotor (right, s = 0.05D) [2]. 17
+2.8 Velocity magnitude for Overmount, Undermount, and Off-body Undermount rotors; Pressure shown on the surface [15]. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+2.9 Downward velocitiy magnitude for an overmount quadrotor and a coaxial quadrotor (octorotor); Rotor positions are in phase.; Vorticity shown at the body surface [15]. . . . . . . . . . . . . . . 18
+2.10 Roadmap of the Thesis. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+3.1 Technical drawing of the De Ponte wind tunnel. . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+3.2 Layout of propeller model. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+3.3 Layout of the rotor-rotor interaction test rig at the S. De Ponte wind tunnel. . . . . . . . . . . 25
+4.1 DUST Workflow. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+4.2 Aerodynamic coefficients generated with XFoil simulations and Viterna’s correction for NACA 23012, Re = 1e06, M a = 0. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31
+5.1 Pitch and chord distributions for DJI blade. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36
+5.2 Convergence curve for the DJI blade in hover at RP M = 4860 and for critical number 5 and 9, Nrev = 20, N∆t = 72, Nelem = 21. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 38
+5.3 Convergence curve for the DJI blade in hover at RP M = 4860, Nrev = 10, Ncrit = 9, Nelem = 21. 39
+5.4 Convergence curve for the DJI blade in hover at RP M = 4860, Nrev = 10, N∆t = 72, Ncrit = 9. 40
+7
+
+
+5.5 Comparison between the geometry of the APC 10x7 Thin Electric blade of McCrink and UIUC database. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 41
+5.6 Convergence curve for the APC blade in forward flight at J = 0.6, RP M = 9200, Nrev = 20, N∆t = 40, Nelem = 21, Ncrit = 9. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42
+5.7 Convergence curve for the APC blade in forward flight at J = 0.6, RP M = 9200, Nrev = 10, Nelem = 21, Ncrit = 9. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 44
+5.8 Convergence curve for the APC blade in forward flight at J = 0.6, RP M = 9200, Nrev = 10, N∆t = 72, Ncrit = 9. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 44
+5.9 Convergence curve for the APC blade in forward flight RP M = 9200, Nrev = 10, N∆t = 72, Ncrit = 9. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 45
+5.10 Resulting values for the APC rotor in forward flight at RP M = 9200, Nrev = 10, N∆t = 72, Ncrit = 9. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 46
+5.11 Convergence curve for the DJI blade in side interaction in hover at s = 0.05D, RP M = 4860, Nrev = 10, N∆t = 72, Ncrit = 9. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47
+5.12 Wake representation of the DJI blade in side interaction in hover at s = 0.05D, RP M = 4860, Nrev = 12, N∆t = 72, Ncrit = 9. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 48
+5.13 Average velocity field for DJI blade at RP M = 4860, Nrev = 10, N∆t = 72, Ncrit = 9, s = 0.05. 49
+5.14 Instantaneous velocity field for DJI blade at RP M = 4860, Nrev = 10, N∆t = 72, Ncrit = 9, s = 0.05, ψ = 0◦. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 50
+5.15 Vorticity field for DJI blade at RP M = 4860, Nrev = 10, N∆t = 72, Ncrit = 9, s = 0.05, ψ = 0◦. 51
+6.1 (a) Geometry of the Varioprop 12C propeller blade; the coloured bar indicates the error in mm between the reconstructed CAD geometry and the surfaces provided by the 3D scanner. (b) Resulting mesh on propeller nacelle and the reference system adopted. . . . . . . . . . . . . . . 53
+6.2 Distributions of the Variopropeller blade, resulting from 3D scanning elaboration. . . . . . . . . 54
+6.3 All the selected profiles of the Variopropeller blade. . . . . . . . . . . . . . . . . . . . . . . . . . 54
+6.4 Results for the Variopropeller at different advance ratios, and at RP M = 7000, θ = 25.5◦. . . . 56
+6.5 Representation of the two phase angle positions for the side interaction. . . . . . . . . . . . . . 58
+6.6 Front vision for three disks superpositions. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 58
+7.1 Convergence curve of thrust coefficient for the rotor at different separation distances and at θ = 25.5◦, J=0.8, RPM=7000. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 59
+7.2 Resulting values on thrust and power coefficients for the rotor at different separation distance and at θ = 25.5◦, J=0.8, RPM=7000. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 60
+7.3 Resulting values of difference of effective angle of attack and lift coefficient between side and single configuration for different phase position of the blade, performed at θ = 25.5◦, J=0.8, RPM=7000. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 61
+7.4 Average velocity field for the single and side configurations at s = 0.05R and at θ = 25.5◦, J=0.8, RPM=7000. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 62
+7.5 Iso-surface of vorticity magnitude |ω| computed for the side propellers configuration with s = 2.05R at ψ = 0◦, |ω|D/Utip = 1.1, θ = 25.5◦, J = 0.8. . . . . . . . . . . . . . . . . . . . . . . . 63
+7.6 Average velocity field for XY planes at distances of Z/R=-0.2, -1, -2 for the single rotor at θ = 25.5◦ J=0.8, RPM=7000. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 64
+7.7 Average velocity field for XY planes at distances of Z/R=-0.2, -1, -2 for the side configuration at s = 0.05R, θ = 25.5◦, J=0.8, RPM=7000. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 64
+8
+
+
+7.8 Instantaneous vorticity field for the single and side configurations at s = 0.05R at θ = 25.5◦, ψ = 0◦, J=0.8, RPM=7000. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 65
+7.9 Convergence curve of thrust coefficient for the rotor at s = 0.05R and at θ = 25.5◦, J=0.8, RPM=7000 for two different phase angles. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 66
+7.10 Instantaneous vorticity field for side configuration at s = 0.05R at θ = 25.5◦, ψ = 60◦, J=0.8, RPM=7000. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 66
+8.1 Convergence curve of thrust coefficient for the real rotor at different separation distances and at θ = 25.5◦, J=0.8, RPM=7000. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 67
+8.2 Results of the numerical simulations on rear propeller for the tandem propellers configuration. Thrust coefficient (CT ), power coefficient (CP ) and propulsive efficiency η as function of the advance ratio (J), θ = 25.5◦, RPM=7000; (a)-(c)-(e) dz = 2.5R, (b)-(d)-(f) dz = 6R. . . . . . . 69
+8.3 Results of the numerical simulations on rear propeller for the tandem propellers configuration. Thrust coefficient (CT ) and power coefficient (CP ) as function of the separation distance dy, θ = 25.5◦, J = 0.8, RPM=7000; (a)-(c) dz = 2.5R, (b)-(d) dz = 6R. . . . . . . . . . . . . . . . 70
+8.4 Polar plots at dy = 0R, θ = 25.5◦, J = 0.8, RPM=7000, dz = 2.5R. . . . . . . . . . . . . . . . 73
+8.5 Polar plots at dy = 0R, θ = 25.5◦, J = 0.8, RPM=7000, dz = 6R. . . . . . . . . . . . . . . . . 74
+8.6 Polar plots at dy = 0.5R, θ = 25.5◦, J = 0.8, RPM=7000, dz = 2.5R. . . . . . . . . . . . . . . 75
+8.7 Polar plots at dy = 0.5R, θ = 25.5◦, J = 0.8, RPM=7000, dz = 6R. . . . . . . . . . . . . . . . 76
+8.8 Polar plots at dy = 1R, θ = 25.5◦, J = 0.8, RPM=7000, dz = 2.5R. . . . . . . . . . . . . . . . 77
+8.9 Polar plots at dy = 1R, θ = 25.5◦, J = 0.8, RPM=7000, dz = 6R. . . . . . . . . . . . . . . . . 78
+8.10 Average velocity field at θ = 25.5◦, J=0.8, RPM=7000, dy = 0R, (a) dz = 2.5R, (b) dz = 6R. . 79
+8.11 Average velocity field at θ = 25.5◦, J=0.8, RPM=7000, dy = 0.5R, (a) dz = 2.5R, (b) dz = 6R. 80
+8.12 Average velocity field at θ = 25.5◦, J=0.8, RPM=7000, dy = 1R, (a) dz = 2.5R, (b) dz = 6R. . 81
+8.13 Iso-surface of vorticity magnitude |ω| computed for the tandem propellers configuration at various dy at ψ = 0◦, |ω|D/Utip = 1.45, θ = 25.5◦, J = 0.8. . . . . . . . . . . . . . . . . . . . . . . 82
+8.14 Instantaneous vorticity field at ψ = 0, θ = 25.5◦, J=0.8, RPM=7000, dy = 0R, (a) dz = 2.5R, (b) dz = 6R. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 83
+8.15 Instantaneous vorticity field at ψ = 0, θ = 25.5◦, J=0.8, RPM=7000, dy = 0.5R, (a) dz = 2.5R, (b) dz = 6R. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 84
+8.16 Instantaneous vorticity field at ψ = 0, θ = 25.5◦, J=0.8, RPM=7000, dy = 1R, (a) dz = 2.5R, (b) dz = 6R. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 86
+9
+
+
+List of Tables
+3.1 Summary of the wind tunnel test configurations. . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+6.1 Summary of the configurations analysed by DUST simulations. . . . . . . . . . . . . . . . . . . 57
+10
+
+
+Chapter 2
+Introduction
+The conventional helicopter is limited in forward flight performance by the aerodynamic lift and propulsion limitations of the main rotor. These rotor limits come from the compressibility effects on the advancing blade, as well as stall on the retreating blade. In addition, the relatively high parasitic drag of the rotor hub and other airframe components leads to a relatively poor overall lift-to-drag ratio of the helicopter. So the need for an aircraft that could combine the benefits of a vertical takeoff and landing with the high speed cruise of a fixed-wing aircraft has led to a new type of vehicles called VTOL. These systems could also fill the gap between the helicopters and the fixed wing airplane, since they have a high vertical efficiency together with a relatively low disk loading, Figure 2.1.
+Figure 2.1: Power loading vs. disc loading for different VTOL vehicle types. (From [8])
+In the recent years great interests and development efforts have been devoted towards the design of unconventional VTOL aircraft based on electric distributed propulsion (eVTOLs) with the aim to create a novel concept of urban air mobility to be considered as an effective alternative to ground transportation in overcrowded metropolitan areas [14]. Furthermore, United Nations states that nowadays half of the world population lives
+11
+
+
+in cities and this is an increasing trend. The times involved in scaling actual infrastructures are too long and their are not suitable for the 3D nature of future cities. So an electric aircraft that has high performances, low costs, high safety and low noise, can be a reasonable solution. In fact, Morgan Stanley estimates that this new electric aircraft market will be $1.5 trillion by 2040 [1]. To demonstrate that this technology is a real possibility and that huge investments are made in this field, an article of official eVTOL website states that the VFS (Vertical Flight Society) estimates that more than $4B has gone into exploring the transformative potential of eVTOL aircraft. In particular, great parts of this capitals are coming from outside of the traditional aerospace industry. For example, Toyota Motor Corporation has invested some $394M in US-based Joby Aviation (bringing total outside investment to $720M) and Hyundai Motor has planned to invest $1.5B in its UAM efforts. In Germany, Lilium has now raised $376M from investors like Baillie Gifford, Tencent and Atomico, while Volocopter has received $140M, largely from transportation companies like Daimler, Geely and DB Schenker. [18]. Furthermore, to prove that the development of such vehicles is at an advanced point, the same article reports also that between the 300 aircraft concepts analyzed by VFS, a total of 129 companies have been found to be developing eVTOL aircraft. As shown in the resulting graph, Figure 2.2, VFS and Aviation Week estimate that 43 companies were at the large-scale demonstrator phase. A dozen had flown engineering or certification prototypes: Joby Aviation, Kitty Hawk (Heaviside), Lilium, Volocopter, EHang, LIFT Aircraft, Hoversurf, Kitty Hawk (Flyer), Opener BlackFly and the Boeing Cargo Air Vehicle. Of these, three aircraft had gone into batch or series production [18].
+Figure 2.2: Aviation Week produced this graphic based on data on more than 300 concepts in the VFS World eVTOL Aircraft Directory. It shows the progress of the 129 aircraft that are in active development. ( c© Aviation Week Network). From [18].
+12
+
+
+2.1 Rotor-Rotor Aerodynamic Interactions Challenges in eVTOL
+The eVTOL configurations are characterized by the co-presence of different aerodynamic elements typical of classical aircraft layouts, such as wings, lifting rotors, and thrusting propellers. This unusual configurations pose unprecedented challenges to engineers in several area; for example the implementation of a safe and accurate controller system, the integration between different avionic systems or the achievement of stable handling qualities or low levels of noise. According to an aerodynamic standpoint, even if the eVTOL configurations developed by various companies seem rather different, they are all characterised by the presence of several electric driven rotors one near to each other, as can be seen in Figure 2.3. The rotors can be mounted on the same wing in close proximity, as in Archer aircraft, Figure 2.3a, or in Vahana designed by Airbus, Figure 2.3b. Another possibility is that the propellers are positioned in different lifting surfaces with the rotor disks overlapping in a certain region, as in the Bell-Nexus 6HX designed by Bell and shown in Figure 2.3c, or the S4 aircraft designed by Joby Aviation shown in Figure 2.3d. Therefore the aerodynamic interactions between eVTOL propellers can be divided in two categories: the side, Figure 2.4a, and tandem, Figure 2.4b. The main difference is that in the second case the propellers are overlapped and so the slipstream of the front one reaches the rear propeller disk.
+(a) Archer aircraft (b) Vahana by A3 by Airbus LLC
+(c) Bell-Nexus 6HX (d) S4 by Joby Aviation
+Figure 2.3: Examples of eVTOLs aircraft architectures (from https://eVTOL.news/aircraft): a Archer aircraft, https://www.flyarcher.com/; (b) Vahana by A3 by Airbus LLC, https://acubed.airbus.com/ projects/vahana/; (c) Bell-Nexus 6HX by Bell, https://www.bellflight.com/products/bell-nexus; (d) S4 by Joby Aviation, https://www.jobyaviation.com/.
+13
+
+
+(a) side-side rotors (b) tandem rotors
+Figure 2.4: Representation of the two most relevant rotor interactions.
+2.2 Bibliography Analysis
+The above mentioned interactions could produce variations in performances of the single rotor and thus on the global vehicle. In particular, since these phenomenons are typical of new and unconventional configurations and no particular investigation has already been performed on a vehicle propeller layout typical of eVTOLs, the starting point of the analysis can be identified in the numerous researches that have been conducted on small unmanned drones equipped with a quadrotor system. In fact, such flying systems are produced by many commercial companies and in several different configurations, thus the analysis of the related rotor aerodynamics have been of great interest in the scientific community in the past years. In fact, Zhou [21] performed a series of wind tunnel experiments for two identical rotors in side configuration. In particular, the tested blade was the one of the DJI Phantom II since it is easily available in commerce, and its performances were measured for a rotational speed of 4860 RPM. First of all, he investigated the isolated rotor to set a reference value for the developed thrust coefficient and then the lateral separation distance between the blade tips of two counter rotating rotors was changed from 0.05D to 1D. The comparison in the developed thrust coefficient between the single rotor and the side configuration showed that the generated mean thrust was independent of the separation distance, since the deficit of CT at the lower gap was only of around 2%. Instead the thrust fluctuations were found to increase dramatically as the lateral separation became smaller and eventually equal to three times the fluctuations of the isolated rotor when the blade tips distance was 0.05D. Furthermore he performed also a series of PIV (Particle Image Velocimetry) measurements for both the average velocity field and the vorticity field for the layout of side rotors at lateral blade tip separation of 0.05D. The first one showed that the slipstream for the side interaction was found to be slightly dragged towards the adjacent rotor if compared to the single rotor case, as shown in Figure 2.5. Instead, the vorticity field indicated that the tip vortices merged and dissipated much faster for the side interaction than the single rotor case, as shown in Figure 2.6. Shukla and Komerath [17] set up a similar experiments, thus considering the side rotor interaction of two minidrones. They found that while reducing the relative distance between the rotors, the Figure of Merit (FM), which is a measure of efficiency, slowly dropped and so the overall performances. Furthermore, through PIV meaurements they showed that decreasing the rotor distance, the tip vortices deviated from the single rotor
+14
+
+
+trajectory and they also lost their coherent structures in about one rotation. They also demonstrated that the same configuration, but for lower Reynolds number, showed more interaction effects since the tip vortices were weaker in terms of circulation. In addition, Shukla and Komerath [16] investigated also the coaxial configuration. In this layout one rotor is over the other one which is invested by the wake and so, due to the interaction, it should experience different performances. In particular, through a series of wind tunnel tests they showed that the upper rotor produced higher values of FM for all the considered Reynolds numbers if compared to the isolated one. Instead, since the lower rotor operated in higher downwash, its FM was found to be lower. Moreover, they obtained a series of PIV measurements for the coaxial interaction. Results showed that tip vortices of the lower rotor didn’t follow a fixed path, but they tended to alternate two possible trajectories. Instead, the upper rotor vortices stayed on a fixed line because they had higher strengths and convection velocities. A series of numerical simulations were performed by Alvarez and Ning [2] through the use of a mid-fidelity aerodynamic code based on VPM (Vortex Particle Method). In particular, three different experimental studies were reproduced in order to validate the code. The first one reflected the configuration analysed by Zhou, i.e. the DJI Phantom II blade isolated and at 4860 RPM. The computed mean thrust coefficient was found to have 0.5% error with respect to the experimental one. Moreover, the obtained wake showed the topology typical of a hovering rotor: a well defined structure near the rotor disk, leapfrog (i.e. interaction of pair of tip vortices) at a downstream distance of 0.5D and the transition to a turbulent breakdown at 1D. The second simulated configuration was a APC thin-electric propeller in forward flight. The observed thrust and torque coefficients was in great agreement with the experimental results performed by McCrink [11] for low and moderate advance ratios, J, instead they were underestimated at high advancing speeds. This reflected in the propulsive efficiency which was well predicted until J = 0.725. In the end he numerical simulated also the side interaction previously investigated by Zhou. The obtained mean thrust coefficient at a blade tip separation distance of 0.05D was found to be 3% lower than the isolated rotor case, thus confirming the validity of the VPM code for side interaction investigation. In addition, the obtained vorticity field showed that, as predicted by the wind tunnel tests, the tip vortices lost their structures nearer to the rotor disk than for the isolated case, in particular at a downstream distance of 0.4D they were not recognizable anymore, and the resulting fields for single and side rotors were found to be similar to the ones of Zhou, as presented in Figure 2.7. The only work which deals with a VTOL vehicle is the one by Yoon [23]. He performed a series of CFD simulations on a typical full vehicle configuration of a quadrotor VTOL. He found that the developed thrust coefficient of rotor in side configuration at a distance of 0.1D was 4% lower. In addition, the interactions of their wakes with wings and fuselage reduced the global vehicle lift of 16%. The interaction between rotors and fuselage has been studied also by Yoon and Diaz [15]. They performed a series of high-fidelity CFD simulations on different drones configurations. In particular, they examined the DJI Phantom III drone in which the positions of the four rotors were varied in relation to the fuselage: overmount, undermount and off-body undermount, as in Figure 2.8. They found that the first layout guaranteed the highest downwash and so the biggest total thrust. Instead, the other two configurations, due to the interaction of the flow with the drone body, developed respectively 1% and 2% less of total thrust. Instead, analysing the isolated rotor, they concluded that the developed thrust in off-body configuration was 6% lower than the one for the undermount and 7% smaller with respect to the overmount. Moreover, they showed that huge advantages could be produced mounting the propellers both above and below arms in coaxial configuration, as in Figure 2.9. In the end, even if the interest in eVTOL is huge, there is a lack in literature in the study of aerodynamic interaction for rotor configurations, both geometrical position and flight conditions, typical of these kind of vehicles.
+15
+
+
+(a) Single rotor (b) Side rotor
+Figure 2.5: Measured PIV results for the single rotor (left) and twin-rotor (right, L=0.05D) cases for Zhou [21] configuration.
+(a) Single rotor (b) Side rotor
+Figure 2.6: Phase-locked vorticity distributions for the single rotor (left) and twin rotors (right, L=0.05D) for Zhou [21] configuration.
+16
+
+
+(a) Single rotor (b) Side rotor
+Figure 2.7: Phase-locked average vorticity distribution of single rotor (left) and side rotor (right, s = 0.05D) [2].
+Figure 2.8: Velocity magnitude for Overmount, Undermount, and Off-body Undermount rotors; Pressure shown on the surface [15].
+17
+
+
+Figure 2.9: Downward velocitiy magnitude for an overmount quadrotor and a coaxial quadrotor (octorotor); Rotor positions are in phase.; Vorticity shown at the body surface [15].
+18
+
+
+2.3 Objectives of the Work
+As demonstrated in the two previous sections, eVTOL vehicles are a new and potentially profitable reality, but in spite of that, the research in the field of aerodynamic rotor interactions typical of such configurations is, until now, very limited. Some panel and filament methods have been developed for the modeling of unsteady free wakes, but the obtained results show that the preservation of wake connectivity makes such methods ill-conditioned for the modeling of wake mixing [9]. A possible way to investigate this topic is through the computational fluid dynamic (CFD). However a high-fidelity method, still requires too much computational effort for the simulation of a complex system like an eVTOL in which there are a lot of lifting elements rotating and that can mutually influence. On the other hand, a mid-fidelity numerical approach characterized by low computational effort, seems to be the best compromise to simulate both different types of rotor-rotor interactions and a wide range of space parameters. In particular, the use of vortex particle method (VPM) [5, 22] for wake modelling enables to obtain a better representation of the rotor aerodynamic characteristics and to capture the aerodynamic interactions between several bodies. In fact, as shown in the previous section, Alvarez and Ning [2] used a midfidelity aerodynamic code based on VPM to simulate numerical experiments of side propellers, thus obtaining good results. DUST (https://www.dust-project.org/) is a new medium fidelity aerodynamic open-source software developed by Politecnico di Milano in collaboration with A3 by Airbus LLC. It has been specifically realized for the simulation of complex aircraft configurations in a fast and reliable way. To do that, the adopted methods are lifting lines, vortex lattices and surface panels for the computation of loads, instead to accurately model the aerodynamic wake interactions a vortex particle method is accelerated through a Fast Multipole Method (FMM) [10]. DUST can be considered a reliable tool since it is already been tested on different rotorcraft configurations and the obtained results are in great agreement with reference CFD simulations. Furthermore, the mid-fidelity simulation have been demonstrated to properly predict complex aerodynamic multi-rotor configurations [6]. The aim of the following work is to investigate and comprehend the typical aerodynamic rotor-rotor interactions proper of an eVTOL vehicle. This reflects in both the choice of the mutual positions of the propellers and in the flight conditions. In particular, as shown in Figure 2.3, the two most significant aerodynamic interactions are the side and tandem ones. Since it is a relatively unapproached field, a particular focus is posed on the second one, thus considering different lateral and longitudinal distances between the rotors. The research is centered on the phase of cruise flight, since is the simpler and also the one in which possible improvement on the aerodynamic characteristics of such vehicles, may lead to huge advantages in the design and competitiveness of eVTOLs. To obtain valuable results, a series of numerical simulations are performed through the presented mid-fidelity software, DUST, and they will eventually be confirmed with future wind tunnels tests. The importance of this research is that, until now, none literature work has completely and deeply investigated these types of rotors interactions. In addition, since the eVTOL vehicles are powered by an electrical system, a possible improvement in their aerodynamic can produce an increase in the flights range.
+19
+
+
+2.4 Thesis Outline
+The following work can be divided in two main parts: the experimental wind tunnel tests, described in Chapter 3, and the numerical simulations. The numerical activity can be subdivided in a series of steps. In particular, first of all, DUST software together with the routine for the implementation of aerodynamic tables, which are needed for the lifting line calculation, are presented in Chapter 4. After that, the parameters used for DUST simulations are validated through the comparison with literature experimental data for a propeller model test case in forward flight conditions, Chapter 5. Then in Chapter 6 the numerical model used for the simulations is presented. In Chapter 7 and Chapter 8, the side and tandem interactions are investigated by DUST simulations for the same propeller and conditions that have been selected also for the wind tunnels experiments. Finally, the conclusions are presented in Chapter 9. A roadmap of the following work is shown in Figure 2.10.
+Figure 2.10: Roadmap of the Thesis.
+20
+
+
+Chapter 3
+Experimental Set Up
+In the following chapter the wind tunnel experiments, that guided the set up of the numerical simulations, are presented. First, in Section 3.1, the selected wind tunnel is presented, while in Section 3.2 the test model is described. Finally the measurement techniques and the test parameters are described respectively in Section 3.3 and Section 3.4.
+3.1 Wind Tunnel Facility
+The S. De Ponte wind tunnel of Politecnico di Milano is a closed circuit wind tunnel equipped with a closed aeronautical test chamber which has dimensions of 1.5m x 1m x 3m. Thanks to some devices like turning vanes, honeycomb rectifier grids and screens, the maximum achievable speed in the test chamber is 55m/s with a turbulence level lower than 0.1%. The advantage of using such wind tunnel is that it ensures proper distances of the propellers from the chamber walls, thus reducing possible mutual interactional effects, but it also guaranties low costs of the tests. A technical drawing of the facility together with its dimensions are shown in Figure 3.1.
+Figure 3.1: Technical drawing of the De Ponte wind tunnel.
+21
+
+
+3.2 Test Model
+Two propellers have been designed and produced for the wind tunnel tests. Each of these models is composed by a three bladed VarioPropeller 12C which has a diameter of 300mm and it is mounted on 65 mm diameter aluminium spinner. The main advantage of using such propellers is that the rotor hub has a internal system that permits a fine adjustment of the collective blade pitch, and thus the same model can be used for a wide range of experimental conditions. Inside the manufactured nacelle, which is made in polycarbonate through a FDM technique, there is a aluminium frame to support the driving system and the measurement sensors. The propeller is driven by a brushless motor equipped with a Hall effect sensor that ensures a signal for each revolution for measure the rotational speed. The sensor for the measurement of developed propeller thrust and torque consists of a Futek MBA500 strain gauge bi-axial load cell (50 lbs F.S.). The resulting internal and external layouts of the model are shown in Figure 3.2. The two propellers are mounted inside the test chamber on a thin metallic strut that allows the modification of their distances, in both lateral and longitudinal directions, enabling the analysis of both side and tandem rotor configurations, as shown in Figure 3.3.
+3.3 Measurement Techniques
+To measure the thrust and torque developed by the tested rotors in different configurations, a Futek MBA500 bi-axial strain gauge load cell is selected. The main advantages are that it is light and compact so it can be easily placed inside the model, and it also ensures high quality measurements since two separate outputs for applied torque and thrust forces are present and it also ensures a 0.2% nonlinearity error and yet provide 150% (50 to 150 lb) 125% ((200 lb) over-capacity. To capture the flow field which results from both the single rotor and interactional configurations, a Particle Image Velocimetry (PIV) survey is planned. The PIV system is constituted by a Litron NANO-L-200-15 Nd:Yag double-pulse laser with an output energy of 200 mJ and wavelength of 532 nm, and two Imperx ICLB1921M CCD cameras with a 12-bit, 1952 x 1112 pixel array. The laser is positioned under the floor of the wind tunnel test section to provide a laser sheet aligned with the freestream direction. The cameras are mounted on a metallic strut attached to one of the lateral wall of the test section and are positioned in tandem to cover the area of interest of the surveys. In this test campaign phase-locked 2C measurements are planned for different azimuthal angles of the blades. The flow fields are then time averaged to evaluate the mean behaviour of the interacting wakes of the rotors and phase averaged in order to investigate the evolution in time of the vortices released by the blades and their interactions. For the side-by-side configuration the area of interest is the region between the rotor hubs past the rotors disks, while for the tandem con-figuration the two cameras are used simultaneously to investigate the flow regions before and past the rear propeller disk.
+22
+
+
+3.4 Test Conditions and Parameters
+The operating conditions of the test can be selected by modifying different parameters. For the selected wind tunnel, the pressure, p∞, and air density, ρ∞, cannot be controlled and thus they are the same as the external atmospheric conditions. Instead the operator can modify: the freestream velocity, the rotational speed of the propellers and their lateral and longitudinal distances. First of all, a series of tests are performed on the isolated propeller. These are conducted varying the rotational speed between 1000 and 12000 RPM and each one through different freestream velocity from 16 m/s to 35 m/s. This permits to obtain a full reference matrix across several advance ratios and disk loadings, and it will be used to compare the results of the propeller interactions. After that the side interaction is investigated. Since the aim of the work is to understand the resulting aerodynamic performances of an eVTOL in cruise condition, the parallelism between the wind tunnel experiments and the real conditions is obtained considering to reach the same Mach number at the tip blades. In particular, the model rotational speed is considered to be fixed at 7000 RPM, so that for the maximum freestream velocity of 35 m/s the tip Mach number will be of around 0.5 (the same of a cruising eVTOL). As a result, the side interaction tests are performed for 7000 RPM for different advance ratios and also changing the lateral separation distance between the rotor hubs from 2.05 to 3 rotor radii. In the end, the tandem interaction is studied considering the same conditions at the blade tip. So the tests are performed for a rotational speed of 7000 RPM across different advance ratios, obtained varying the freestream velocity between 16 m/s to 35 m/s. For this type of interaction two possible distances can be changed: the longitudinal, dz, and lateral, dy. For the first one, to understand how this length influence the performance, two possible values have been selected. In particular looking at Figure 2.3, dz is assumed to be 2.5 radii (thus reproducing the geometry of he Vahana vehicle) or 6 radii (reproducing the Bell-Nexus configuration). Instead, always to reproduce the most typical layouts of these types of vehicles, the lateral distance between the rotor hubs is changed between 0 to 2.5 radii. In fact, changing dy the wake of the front rotor influence the inflow conditions of the rear one, thus modifying its performances. The discussed test conditions are presented in Table 3.1.
+Table 3.1: Summary of the wind tunnel test configurations.
+RP M V∞ [m/s] dz [R] dy [R]
+Single Prop 1000 to 12000 16 to 35 - Side-by-side Props 7000 16 to 35 0 2.05 to 3 Tandem Props 7000 16 to 35 [2.5, 6] 0 to 2.5
+Unfortunately, due to Covid-19 emergency and the consequent long lasting lockdown, the wind tunnel hasn’t been available for different months and this produces huge delays in the test campaign. The experiments, useful to provide data on both side and tandem interactions, will be performed as soon as the the access to university laboratories will be permitted by the sanitary situation (until now no possible times have been already defined). The same test parameters, that have been selected for wind tunnel tests, will be used also to guide the numerical simulations on isolated, side and tandem configuration rotors, as explained in Chapter 6.
+23
+
+
+(a) Internal layout
+(b) External layout
+Figure 3.2: Layout of propeller model. 24
+
+
+(a) Side-by-side configuration
+(b) Tandem configuration
+Figure 3.3: Layout of the rotor-rotor interaction test rig at the S. De Ponte wind tunnel.
+25
+
+
+Chapter 4
+Structure and Formulation of the
+Numerical Code
+The code is mainly composed by a pre-processor, solver and a post-processor and the typical DUST adopted process is shown in Figure 4.1. In the pre-processor the geometry components are or imported from pre-existing meshes or created parametrically. The volume mesh must not be defined, since the solid bodies are modeled as a surface distribution of singularities. Each frame is considered as an aerodynamic element which can be computed with a different level of fidelity: from one dimensional lifting line and actuator disk to zero thickness lifting surfaces and three-dimensional surface panels. The complete geometry model is created associating at each aerodynamic element a local reference frame. This is then related to the global and unique reference system, so that each component has a specific position in the considered volume. The solver needs as input the mesh geometries together with their reference frames and relative positions, the simulation conditions and the numerical solver parameters. The solution consists of a series of singularities with different intensities, which are used to represent both the solid bodies and the resulting wakes. The intensity of these singularities is determined as the solution of the boundary value problem for the potential part of the velocity, supplied with the non-penetration boundary conditions. The different solutions provided by the solver are used as input to the post-processor, which can reconstruct some useful quantities. First of all, from the integration of the pressure distribution, the loads acting on each aerodynamic element can be computed. Furthermore, also the visualisation of both average and instantaneous velocity fields can be obtained in a desired control volume.
+The aerodynamic solver relies on the Helmholtz decomposition of the velocity field, ~u = ~uφ + ~uψ, being ~uφ = ∇φ and ~uψ = ∇ × ψ the irrotational and solenoidal contributions respectively, with φ representing the kinetic potential and ψ the vector potential. So the aerodynamic problem is rearranged as the composition of two sub-problems, one for the irrotational velocity ~uφ and one for rotational contribution ~uψ. Using the intrinsic proprieties of such velocity components, this two problems can be rearranged and solved separately. Then they are summed up in order to obtain the resulting velocity field. Since the rotational velocity is a solenoidal vector field, the incompressibility constraint reduces to the Laplace equation for the kinetic potential φ~(r, t).
+0 = ~∇ · ~u = ~∇ · ~uφ + ~∇ · ~uψ → ∆φ = 0 (4.1)
+26
+
+
+Taking the curl of the velocity field decomposed in the two sub-components, the part involving the rotational speed can be easily rearranged to obtain the differential problem which governs the vorticity field:
+D~ω
+Dt = (~ω · ~∇)~u + ν∆~ω (4.2)
+where ν is the kinematic viscosity of the flow and the material derivative of the vorticity field D~ω/Dt represents the time derivative of the vorticity associated with a material particle. Using the Green’s function method, the differential problem defined in the fluid domain can be rearranged in order to obtain a formulation which doesn’t need a volume grid. The solution of the problem is calculated as the superposition of elemental singularities shed by three types of aerodynamic elements: surface panels, vortex rings and lifting lines. In particular, the surface panel method is particularly appropriate for the simulation of solid thick bodies, while the lifting line one for slender lifting bodies, like blades or wings. A more detailed description is given upon the lifting line elements, since in the present work they are used to model the propeller blades, on surface panels because they have been used in order to simulate the propeller nacelle and on the Vortex Particle Method (VPM) to explain how the wake is computed.
+27
+
+
+Figure 4.1: DUST Workflow.
+28
+
+
+4.1 Lifting Line Elements
+A lifting line element is a 1-D model of a thin slender lifting bodies, thus it can be successfully adopted to model bodies with high aspect ratios like wings or blades. The method intrinsecally considers the viscous effects, since it is based on tabulated and precomputed values of lift, drag and moment two-dimensional sectional coefficient as function of the local Reynolds number, Mach number and angle of attack.
+{CL, CD, Cm} = f (α, Re, M a) (4.3)
+The lifting line element represents a vortex ring positioned along the trailing vortex locations, and the last line vortex is shed in the wake aligned with the spanwise direction. The intensity Γ of this vortex ring, and thus of the lifting line, is determined through a nonlinear problem, which relates the intensity of the lifting line elements with the tabulated aerodynamic coefficients of the considered sections. Both a loosely-coupled Γ-method [7] and a α-method [13] solver are available in DUST formulation. The first method is obtained equaling the semi-empirical expression of the sectional lift and the expression obtained analytically from the Kutta-Joukowski theorem,
+1
+2 ρ|Urel,i|2cic`,i(αi(Γk)) = −ρ|Urel,i|Γi, (4.4)
+where ci is the chord of the ith section, c`,i(αi) its lift curve, being αi and Urel,i the angle of incidence and the relative velocity evaluated at the control point of the ith lifting line. The second method consists in the equality between the angle of incidence resulting from the induced velocity field and the angle of attack used to enter tabulated aerodynamic data,
+αi = atan2(Urel,i(αk) · ˆni, Urel,i(αk) · tˆi) . (4.5)
+The Kutta-Joukowski theorem is used to obtain the circulation of the lifting elements from their lift, and consequently a iterative method is defined to obtain the loads on the lines, also considering their mutual interferences. In the present work, always the α-method will be used, since it is the best one to represent the aerodynamics of a propeller together with optimum computational performances. As already mentioned, the lifting line element calculation is based on a given table of aerodynamic coefficients. Furthermore to model a blade, which is the key point of the following simulations, the user must specify the angle of pitch, the chord, span, dihedral and sweep angles of each section. Thus of basic importance is the definition of lift, drag and moment coefficients for whatever two-dimensional airfoil have to be analysed. To do that, cyclic simulations at different conditions must be performed in order to achieve such coefficients and so an external program has been specifically developed to do that. As done by Alvarez [2], the selected software for aerodynamic computations is XFoil. In the developed program, the user specifies the airfoil (by either points or name), local Reynolds number, Mach number, angle of attack, number of panels, of internal iterations and critical value for the transition model. The main advantage of adopting this software is that it uses a panel method, which doesn’t require a turbulence model, that in the considered range of Reynolds number of the following tests could produce great errors. To prevent problems of numerical convergence, all the XFoil simulations are performed at null Mach number, and subsequently a Prandtl-Glauert compressibility correction is applied to lift and moment curves (the following correction is valid until Ma < 0.8). A blade can undergo to reverse flow conditions, thus the aerodynamic coefficients must be defined between −180◦ to 180◦. To do that, the used correction is the one presented by Alvarez [2]. This correction is initially developed by Viterna [20] for large horizontal axis wind turbine, but it fits also for rotor blade. Furthermore, according to NASA, this correction is a improved version of the flat plate theory. The Viterna’s correction calculates the lift
+29
+
+
+and drag coefficients as a weighed combination of trigonometric functions. The weights are obtained from the stall conditions and the maximum drag coefficient (which both result from the XFoil simulations), instead the moment coefficient comes out from the combination of lift and drag. The used formulas are presented in the following, where AR is the aspect ratio, c70 is the chord at 70% of the blade, CDs, CLs and αs are the drag, lift and angle of attack in stall conditions (obtained when lift has a maximum).
+CDmax = 1.11 + 0.018AR AR = R/c70 (4.6)
+B1 = CDmax A1 = B1/2 (4.7)
+B2 = (CDs − CDmaxsin2(αs))/cos(αs) A2 = (CLs − CDmaxsin(αs)cos(αs))sin(αs)/cos2(αs) (4.8)
+CL = A1sin(2αs) + A2cos2(α)/sin(α) CD = B1sin2(α) + B2cos(α) (4.9)
+Cm = CLsin(α) − CDcos(α) (4.10)
+Figure 4.2 shows the calculated coefficients for a NACA 23012 at Re = 1e06 and M a = 0. The results indicate that the obtained trends are correct because they are in great agreement with [20]. Thus the implemented routine will be used for the determination of the aerodynamic tabulated data useful for the simulations employing the lifting line.
+30
+
+
+(a) CL
+(b) CD
+Figure 4.2: Aerodynamic coefficients generated with XFoil simulations and Viterna’s correction for NACA 23012, Re = 1e06, M a = 0.
+31
+
+
+4.2 Surface Panels Method
+The surface panel method is used to compute the aerodynamic of thick bodies, such as the propeller nacelle. It is based on the kinetic potential, and in particular on the Laplace equation obtained from the compressibility constrain expressed in 4.1. The problem can be rewritten in term of perturbation potential φ and perturbation velocity ~∇φ = u~φ = u~ψ − U~∞, which is governed by:
+∆φ = 0 (4.11)
+and considering the far-field condition φ = 0 and the no-penetration condition on the model body u~b · ˆn = ~u · ˆn, where ˆn is the normal to the solid body and u~b its movement:
+ˆn · ∆φ = nˆ · (u~b − U~∞ − u~ψ = σ(u~ψ) (4.12)
+Following Morino [12], the problem is rewritten as a boundary one:
+E(~r)φ(~r) −
+∮
+Sb
+ˆn(r~0) · ~∇G(r~0, ~r)φ(r~0) = −
+∮
+Sb
+G(r~0, ~r)σ(~uψ(r~0)) +
+∮
+Sw
+ˆn(r~0) · ~∇G(r~0, ~r)∆φw(r~0) (4.13)
+where Sb is the surface body, ∆φw(r~0) is the difference of potential across the wake surface Sw, G(r~0, ~r) = 1/(4π|~r − r~0) is the Green function and E(r~0) indicates the fluid domain. At each time step, 4.13 can be seen as a linear boundary problem which gives the intensities of the duoblets positioned on the body surface, if the boundary conditions have been provided.
+32
+
+
+4.3 Vortex Particle Method
+The vortex particle method can be used to represent the wake shed by a lifting body. Such model [5, 22] has been developed to investigate the wake resulting from the interaction of propellers in unusual aircraft configurations. The vortex particles method (VPM) is a Lagrangian method which doesn’t need a volume mesh. It is based on the rotational component of the velocity field ~uψ to describe the evolution of the wake and to obtain the approximate vorticity field,
+~ωh(~r, t) =
+Np
+∑
+p=1
+~αp(t)ζ (~r − ~rp(t); Rp) , (4.14)
+being ~rp(t) the position, ~αp(t) the intensity and Rp the radius of the p-th vortex particle, and ζ(r) the cutoff function that accounts for the distribution of the vorticity induced by each particle. Substituting such expression in Formula 4.2, a differential integrable in time equation can be obtained for the intensity ~αp(t) and the position ~rp(t) of all the material vortex particles,
+
+  
+  
+d~αp
+dt = ~αp · ∇~u(~rp(t), t) + ν “ ∇2~αp “
+d~rp
+dt = ~u(~rp(t), t) ,
+(4.15)
+The term representing the viscosity diffusion “ ∇2~αp “ is computed using the particle strength exchange method (PSE), as described by [22], to replace the Laplacian operator with an integral operator. The already mentioned solenoidal velocity contribution and its definition through the vector potential, ψ, can be brought back to the Poisson equation:
+− ∇2ψ~ = ~ω , (4.16)
+given the gauge condition ∇ · ψ~ = 0, the definition of the vorticity field ~ω = ∇ × ~u and the vector identity ∇ × ~uφ = ∇ × ∇φ = 0. The solution of the Poisson’s equation (4.16) is
+ψ~(~r, t) =
+∫
+V0
+G(~r, ~r0) ~ω(~r0, t)dV0 , (4.17)
+~uψ(~r, t) =
+∫
+V0
+K~ (~r, ~r0) × ~ω(~r0, t)dV0 (4.18)
+being G(~r, ~r0) the Green’s function of the Laplace equation and K~ (~r, ~r0) its gradient with respect to the first argument. Substituting Equation 4.14 into Equation 4.18, the equation determining the velocity induced by a particle can be obtained.
+~uh
+ψ(~r, t) =
+Np
+∑
+p=1
+K~ h(~r − ~rp(t)) × ~αp(t) . (4.19)
+The expression of the discrete kernel K~ h(~r − ~rp(t)) must be consistent with the choice of cutoff function ζ, which in this method is a Dirac delta function and so the obtained kernel is a Biot-Savart one. The particular choice of the cutoff function ζ in DUST results in the Rosenhead-Moore kernel,
+33
+
+
+K~ h(~x, ~y) = − 1
+4π
+~x − ~y
+(|~x − ~y|2 + Rv2)3/2 , (4.20)
+which is particularly adequate for the Cartesian fast multipole method (FMM) [4, 10]. The vortex stretchingtilting term needs the gradient of the velicity field in the FMM , and it can be represented as a function of the vortex intensities and distance between the particles during interactions [22].
+The vortex particle are generated from the wake vortex lattice after a prescribed number of time steps. In the following analysis the particles are released after 3 time instants, so that 3 wake panels are computed in the wake before resulting into vortex particles due to the integration of their vorticities. The newly generated particle is positioned at the center of the panel and then its evolution is computed according to 4.15. No significant errors are introduced in the wake due to the calculation of the particle strength and position, since they are approximate quantities. The velocity in a determined position is calculated as the summation of all the vortex particles in the fluid domain. This operation requires a O(N 2) number of operations at each time step, where N is the number of particles, since the velocity is contained also in the governing equations. So, such passage could produce a huge computational effort for the simulation of rotor-rotor interactions, where N is easily in the order of millions. As a result, the Fast Multipole Method (FMM) [10] is implemented in DUST to reduce such operation to O(N ).
+34
+
+
+Chapter 5
+Validation of Numerical Modeling
+In the following chapter some preliminary calculations are performed in order to validate the parameters used for DUST simulations, which will be adopted for the same propeller selected also for wind tunnel tests. First in Section 5.1 the DJI blade in literature hover conditions is analysed. Then in Section 5.2 the forward flight phase is simulated on the APC blade. In the end, in Section 5.3 the literature side interaction between DJI propellers is repeated in order to obtain the simulation parameters useful for the analysis of following propeller interactions.
+5.1 Hover Simulation with DJI Blade
+First of all, some simulations are performed on the blade of DJI Phantom II to validate the choice of simulation parameters against experiments. In fact, Zhou [21] performs a series of wind tunnel tests with this rotor in hover condition at a rotational speed of 4860 RPM. The resulting average thrust coefficient has a value equal to 0.013. Furthermore, Alvarez [2] conducts a series of numerical simulations in the same conditions of Zhou and through a vortex particle code. He finds out a thrust coefficient only 0.5% different from the experimental one. As a result, in this work CT = 0.013 is assumed to be the reference value of thrust coefficient developed by the DJI Phantom II Blade in such conditions. A spatial and temporal convergence study is performed with DUST against this experiment.
+5.1.1 DJI Geometry Definition
+The DJI blade mesh, useful for DUST solver, is created according to the geometry reported in Ning’s [21] and Alvarez’s [2] papers. In fact, this rotor is 240mm in diameter, 11mm in tip chord and its geometry approximates the optimum rotor design obtained by imposing a constant effective angle of attack along the blade. Thus, it is digitized assuming the twist distribution θ(r) = 5.3◦ + 6.3◦/r (with r the radial position) and a chord distribution c(r) = ctip/r. Since these distributions don’t permit to obtain acceptable values near the blade root, linear interpolations are used in the region 0 < r < 0.3, which is the first 30% of the blade, for both chord and twist. This procedure is also adopted in the two literature articles. The resulting distributions are shown in Figure 5.1. An E63 airfoil, which has an high ratio Cl/Cd, is assumed for each blade section. According to what is stated in Section 4.1, the aerodynamic tables are generated using XFoil. In particular, the airfoil is defined by points and the simulations are performed using 200 as value for both the number of panels and iterations, and changing the angle of attack between -12◦ and 12◦, with viscous simulations. The main objective of the analysis of the DJI blade is to reproduce the results presented by Zhou [21], whose experiments are performed in hover
+35
+
+
+condition at 4860 RPM. Thus the aerodynamic tables are generated for a maximum Mach at the tip of 0.2 (keeping a margin for possible acceleration of the fluid at the tip) and the Reynolds’ numbers in aperture are: 20,000 50,000 100,000. Furthermore, the tables are obtained for two different critical numbers and successively the one which guarantees the better convergence to the literature value of thrust coefficient is selected.
+Figure 5.1: Pitch and chord distributions for DJI blade.
+36
+
+
+5.1.2 Numerical Simulations Results
+All the simulations are performed at 4860 RPM in hover conditions (no axial free stream velocity) and in the same conditions as the experimental tests, which results in a diameter based Reynolds number ReD of 6.5x105. This parameter is calculated at 70% of the span and considering the effective velocity vector resulting from both the rotational and free stream speeds.
+ReD = V70%Dρ
+μ (5.1)
+As reported before, the reference value of the thrust coefficient developed by the DJI Phantom II blade in this described hover condition, is considered to be equal to 0.013, when calculated accordingly to 5.2.
+CT = 4T
+ρn2D4π3 n = RP M
+60 (5.2)
+The blade geometry is created using a lifting line model for all the eleven intervals shown in Figure 5.1. To investigate the spatial and temporal resolution dependence of the DUST simulation, some simulations are performed varying:
+• Total number of revolutions
+• Number of time interval for each revolution
+• Number of elements in span
+First of all, it is considered the thrust coefficient as a function of the number of revolutions. All the simulations are performed considering to shed a vortex particle each 5◦ and with 21 elements in aperture. Furthermore, also effect of both critical numbers is analysed. For each parameter, to understand the distance from the literature value of the thrust coefficient, the relative error is calculated as in 5.3, where CT lit is the literature value and CT cal is the one coming from DUST’s simulations.
+ErrCT = |CT lit − CT cal|
+CT lit
+∗ 100 (5.3)
+Figure 5.2 shows the thrust coefficient as the simulation proceeds until 20 revolutions. After 6 rounds, the solution reduces its oscillations, since the wake developed in the first instants of the simulation is being convected downstream. It can be also understood that the CT computed with the higher critical number is closer to the reference value. This has also an advantage according to a physical point of view; in fact, critical number equal to 9 means that the coefficients of XFoil are obtained as if the airfoil is tested in a low turbulence flow, for example an aeronautical wind tunnel. Furthermore, averaging the thrust coefficient for different time intervals, corresponding to successive revolutions, the CT has the lower relative error around 10 rotations. As a result, the best selected parameters, that will be used also for the following simulations, are Nrev = 10 and Ncrit = 9.
+37
+
+
+Figure 5.2: Convergence curve for the DJI blade in hover at RP M = 4860 and for critical number 5 and 9, Nrev = 20, N∆t = 72, Nelem = 21.
+Next, the results coming from an increase in the temporal resolution, i.e. raising the number of particles (and hence of solutions) that are shed from the lifting line calculation during a revolution, are analysed. This has be done also considering the results of the previous point. In fact, the simulations are performed for 10 revolutions and the thrust coefficient is obtained as an average on the last two revolutions. Even so Figure 5.3 shows that the solution has oscillations, but these can be lead back to the intrinsic unsteady nature of the problem. Furthermore, the aerodynamic tables are obtained only with the critical number equal to 9.
+Figure 5.3 shows that there is a drastic reduction of the error for higher number of time intervals. In particular, the best result is for 72 intervals, i.e. one particle each 5◦ of revolution, where the relative error is around 0.007%. Since this value is very low, it is useless to further increase the temporal resolution and NDeltat = 72 is selected as the optimum parameter.
+38
+
+
+Figure 5.3: Convergence curve for the DJI blade in hover at RP M = 4860, Nrev = 10, Ncrit = 9, Nelem = 21.
+In the end, the effect of the spatial resolution is taken in account. In fact, the number of elements for each of the eleven blade sections is increased. Each time, the diameter of the vortex particle generated by the lifting line solver is corrected, in order to match the new mesh thickness (this diameter must be lower than the distance between the elements). The simulations are performed with 10 revolutions and 72 time intervals. Looking at Figure 5.4 and considering the previous results, the thrust coefficient is obtained as an average on the last two revolutions. In Figure 5.4 it cannot be well understood how the spatial resolution influences the average thrust coefficient. Apparently the CT computed with 41 elements exhibits lower oscillations and it is also nearer to the reference value. However the lowest relative error is achieved for 21 elements in span. In fact, it is the same of the previous paragraph, i.e. it is equal to around 0.007%.
+The results obtained showed that the final computed thrust coefficient for the DJI blade in hover at 4860 RPM differs of 0.007% from the literature value found by Zhou [21]. So, it can be concluded that DUST is capable to reproduce the over condition of a propeller. Furthermore, the parameters which ensure the lowest relative error for the analysed conditions are: Nrev = 10, N∆t = 72, Ncrit = 9 and Nelem = 21.
+39
+
+
+Figure 5.4: Convergence curve for the DJI blade in hover at RP M = 4860, Nrev = 10, N∆t = 72, Ncrit = 9.
+40
+
+
+5.2 APC 10x7 Propeller Simulation in Cruise
+A series of simulations in forward-flight are performed in order to reproduce this flight condition and to find the most proper DUST parameters for this kind of tests.
+5.2.1 APC Geometry Definition
+The APC 10x7 blade performance and geometry have been measured, standardized and collected in UIUC database [3]. At the same time, its performances have been investigated by McCrink [11] through wind tunnel experiments and through BEM software simulations. In UIUC database there are several blades named as APC 10x7, each one with different performance and geometry. So, data have been compared in order to select the one which is also used by McCrink; as a result, the blade that is the most similar in terms of geometry and behaviour is the one called APC 10x7 Thin Electric. Since the main issue of the following paper deals with simulations performed by a vortex particle method (DUST) the obtained results are primarily compared with the one obtained by Alvarez [2] which uses a similar software. Thus the selected geometry for this blade will be the same, and in particular is the one presented by McCrink, which has small differences respect to the UIUC one (as presented in Figure 5.5).
+(a) Chord distribution (b) Pitch distribution
+Figure 5.5: Comparison between the geometry of the APC 10x7 Thin Electric blade of McCrink and UIUC database.
+The blade is generated assuming a Clark Y airfoil section from 0 to 5% span, and a NACA 4412 for the remainder aperture, the chord and twist distributions, as already explained, are the same of McCrink and they are plotted in Figure 5.5. The aerodynamic tables have been obtained using 200 panels and iterations, 9 as critical number (following the conclusions obtained for the DJI blade) and with the angle of attack varying between -12◦ and 12◦ with viscous simulations. The configuration considered for the APC blade simulations, is a rotational speed of 9200 RPM in forward flight with an advance ratio equal to 0.6. The rotor is in propeller position, thus with the incoming freestream fully axial. So the resulting Reynolds numbers used to obtain aerodynamic tables are: 30,000 and 40,000 for Clark Y airfoil, 25,000 50,000 70,000 and 100,000 for NACA 4412.
+41
+
+
+5.2.2 Numerical Simulations Results
+For the selected configuration, the obtained diameter based Reynolds number is ReD = 1.5x106. The freestream velocity is calculated from the number of revolutions per second, n, and advance ratio, J, as defined in 5.4. The thrust coefficient, calculated as in 5.5, resulting from McCrink’s tests is 0.0543, and it is used as the reference value for the validation of DUST parameters in forward flight conditions.
+J = V∞
+nD n = RP M
+60 (5.4)
+CT = T
+ρn2D4 (5.5)
+To understand if the simulation parameters previously found for the hover condition are also suitable for the forward flight, the same procedure adopted for the DJI blade is used also here. Thus the dependence of the thrust coefficient on the number of revolutions, spatial and temporal resolutions is investigated. First of all, the resulting CT calculated with 40 time intervals and for 20 revolutions is analysed. The thrust dependence is obtained as an average on the last cycle. Figure 5.6 shows that the results after only 5 revolutions can be already considered converged, since they don’t show high oscillations. This is due to the free stream which drags downstream the wake of the rotor. Furthermore, after 8 revolutions, the thrust coefficient seems to be more stable if compared to the hover one in the same time interval, Figure 5.2. Thus the following simulations will be performed with 10 revolutions, since increasing this value will only produce a rise in calculation time.
+Figure 5.6: Convergence curve for the APC blade in forward flight at J = 0.6, RP M = 9200, Nrev = 20, N∆t = 40, Nelem = 21, Ncrit = 9.
+42
+
+
+The dependence on temporal resolution is then investigated increasing the number of time intervals for each revolution. For each value, the resulting thrust coefficient is obtained as a last round average. Convergence curves, Figure 5.7, show that the minimum error is achieved for 72 time steps, and the solution becomes worse for bigger values. Thus it is useless to increase this parameter since the calculation time grows up and the solution does not improve.
+In the end, as done for the DJI, the spatial resolution dependence is analysed. In particular, the number of elements for each section is increased, thus always respecting the condition on the radius of the particles and selecting 72 time intervals for each revolution (as found in the previous paragraph). The thrust coefficient is obtained as an average on the last turn. Figure 5.8 shows that the solution computed for 41 elements is the nearest one to the reference value of thrust coefficient and thus the one which guarantees the lowest relative error, instead it increases for higher number of elements.
+As a result, selecting as parameters 10 revolutions, 72 time intervals each and 41 elements in span, the resulting thrust coefficient has an error of 2.5% respect the McCrink’s CT . Thus this confirms the suitability of DUST code also for forward flight conditions, and the optimum parameters for this kind of simulation have been determined.
+Furthermore, a series of simulations have been performed using the APC blade in different advance ratios and the results are then compared with the ones obtained by Alvarez [2] and McCrink [11]. In particular, J is changed between 0.05 and 0.75. This is achieved by modifying the freestream velocity, according to 5.4, and keeping the rotational speed equal to 9200 RPM. For each test the thrust coefficient, CT , torque coefficient, CQ, the propulsive efficiency, η, are calculated as reported in 5.6.
+CT = T
+ρn2D4 CQ = Q
+ρn2D5 η = T V∞
+2πnQ (5.6)
+All the simulations are performed with the optimum parameters found in the previous section: 10 revolutions, 72 time intervals, 41 elements in aperture. Figure 5.9 shows that the convergence curves are relatively smooth for all the advance ratios. In fact, even for J = 0.05, which has a very low freestream velocity, the wake is dragged downstream in a way that the oscillations present for the hover case here are no more identifiable. Thus the rotor coefficients, CT and CQ, are obtained with an average on the last two revolutions. Figure 5.10 compares the computed CT , CQ and η with the results of Alvarez [2] and McCrink [11] experiments. The obtained behaviour of the coefficients is in quite good agreement with the experimental ones. In particular, the CT is well predicted until J = 0.65 and it is also better if compared to the Alverez VPM code. For higher advance ratios the thrust coefficient is slightly underestimated. Concerning CQ evaluation, DUST showed the same quite good matching with experimental data for almost the whole range of advance ratios tested, with some discrepancies observed only at high advance ratios. In the end, the good agreement of the computed propulsive efficiencies validates the simulations parameters adopted and the possibility to use DUST for the study of a propeller model performance in forward-flight conditions. Therefore, the same parameters used for the APC propeller simulations in terms of time and space discretisations will be used for the numerical study of the interacting propellers.
+43
+
+
+Figure 5.7: Convergence curve for the APC blade in forward flight at J = 0.6, RP M = 9200, Nrev = 10, Nelem = 21, Ncrit = 9.
+Figure 5.8: Convergence curve for the APC blade in forward flight at J = 0.6, RP M = 9200, Nrev = 10, N∆t = 72, Ncrit = 9.
+44
+
+
+Figure 5.9: Convergence curve for the APC blade in forward flight RP M = 9200, Nrev = 10, N∆t = 72, Ncrit = 9.
+45
+
+
+(a) CT (b) CQ
+(c) Propulsive efficiency
+Figure 5.10: Resulting values for the APC rotor in forward flight at RP M = 9200, Nrev = 10, N∆t = 72, Ncrit = 9.
+46
+
+
+5.3 Side Interaction Simulations with DJI Blade
+Both Ning [21] and Alvarez [2] study the side interaction of two counter rotating DJI blades. The first one through wind tunnel experiments, the second one via numerical simulations. In both cases, the two rotors are in hover condition at 4860 RPM and with lateral separation distance between the tip of the blades of s = 0.05D. This particular configuration is here studied through DUST simulations to further validate the use of the code for the analysis of interacting propellers. The parameters used are the one which minimize the error for the hover CT for the DJI blade, and that have been presented in Section 5.1: 10 revolutions, 72 time steps and 21 elements in span.
+Figure 5.11: Convergence curve for the DJI blade in side interaction in hover at s = 0.05D, RP M = 4860, Nrev = 10, N∆t = 72, Ncrit = 9.
+The convergence curve, Figure 5.11, shows that the side interaction produces more oscillations in the CT if compared to the single rotor case, thus the unsteadiness of the wake is even worse in this configuration. The CT is obtained towards an average on the last two revolutions. The found coefficient for the side interaction is 2.1% lower than the single rotor one. The same deficit is also found by both Ning [21] and Alvarez [2]. The wake of the DJI in tandem interaction, shown in Figure 5.12, has a similar behaviour of the one presented by Alvarez. In fact, a well defined structure can be identified in the near disk region, Z/D < 0.5, after that the wake shows a instability which produces a turbulent region. This effect will be much more visible in the instantaneous vorticity field.
+47
+
+
+Figure 5.12: Wake representation of the DJI blade in side interaction in hover at s = 0.05D, RP M = 4860, Nrev = 12, N∆t = 72, Ncrit = 9.
+Looking at the average velocity field, Figure 5.13 obtained in the last revolution, for both the single and side rotors the high-velocity region has a radial contraction proceeding downstream. The main difference between the single and side cases is that in the second one the wake is dragged toward the adjacent rotor, which may be caused by a Coanda effect (i.e. a phenomenon in which a flow tends to be attract to a nearby object [21]). As a result, the region between −1.2 < Z/D < −0.6 is slower if compared to the corresponding one for the single rotor. In the instantaneous velocity field obtained for null phase angle (measured as the angle between the blade and the Y-Z plane) a series of wave shaped structures can be observed at the tip of the rotor blade for the single case, in Figure 5.14a, which are related to the periodical shedding of tip vortices. These structures seem to dissipate much faster and they become less pronounced in the gap region of the side configuration; in fact, they are no more visible here after Z/D < −0.3. Figure 5.15a shows the instantaneous vorticity field for null phase angle. As the tip vortices propagate downstream, pairs of vortex structures interact with each others in a phenomenon called leapfrog, and which is clearly visible at Z/D = −0.55. Eventually, they merge in a single vortex at Z/D = −0.7 and, then, they evolve in a high turbulent region, where the vortices of different ages are no more distinguishable. In the side rotors configuration, Figure 5.15b, the vortices dissipate much faster, thus they are no more visible in the gap region at Z/D = −0.8 and the leapfrog is nearer to the rotor disk, eventually at Z/D = −0.3. All the presented flow fields are in great agreement with the experimental results of Ning [21] and thus they confirm the capability of DUST to study interacting propellers.
+48
+
+
+(a) Single rotor
+(b) Side rotors
+Figure 5.13: Average velocity field for DJI blade at RP M = 4860, Nrev = 10, N∆t = 72, Ncrit = 9, s = 0.05.
+49
+
+
+(a) Single rotor
+(b) Side rotors
+Figure 5.14: Instantaneous velocity field for DJI blade at RP M = 4860, Nrev = 10, N∆t = 72, Ncrit = 9, s = 0.05, ψ = 0◦.
+50
+
+
+(a) Single rotor
+(b) Side rotors
+Figure 5.15: Vorticity field for DJI blade at RP M = 4860, Nrev = 10, N∆t = 72, Ncrit = 9, s = 0.05, ψ = 0◦.
+51
+
+
+Chapter 6
+Numerical Model of the Interacting
+Propellers
+In this chapter the numerical model of the propeller used for interacting test is described; in fact, in Section 6.1 the single propeller geometry is presented. Then in Section 6.2 some preliminary simulations are performed on the isolated propeller, in order to set the reference case for the comparison for the interaction configurations. In the end, in Section 6.3 the test matrix and conditions for the following interaction investigations are described.
+6.1 Variopropeller Geometry
+The model used for the study of the rotor-rotor aerodynamic interactions is a three-bladed propeller equipped with a Varioprop 12C blade with a rotor radius R of 0.15 m. This hobby-grade model propeller is selected for this study because is commercially available and provide dimensions suitable to perform experiments in the S. De Ponte wind tunnel for a thorough validation of the numerical investigation, as described in Chapter 3. Furthermore, this propeller has the advantage to be mounted on a internal mechanical system which permits a fine adjustment of the collective blade pitch, feature that is very useful to perform a wide range of wind tunnel tests. Since no data are available on this particular propeller, the blade geometry is digitally created by 3D scanning of the blade model. CAD software is used to manage the generation of the blade geometry from the surfaces provided by the scanning system. Figure 6.1a shows the geometry of the blade where the coloured bar indicates an error below 0.1 mm between the reconstructed CAD geometry and the surfaces provided by the 3D scanner. From this software, 18 airfoils in span have been defined by points. First of all, the reference airfoil is selected as the one nearest to the 75% of the span and in the local blade reference frame it corresponds to the one which has zero twist angle. After that, the chord length of each section is easily computed. In the end, the dihedral angle is found taking in consideration the quarter chord point and the distance from the hub of each airfoil. The twist, dihedral angle and chord distributions along the blade radial coordinate (r) are shown in Figure 6.2.
+52
+
+
+For DUST simulation, the blade is modeled using 40 lifting line elements in aperture. As explained in Section 4.1, such numerical method requires the definition of a lookup table for lift, drag and moment coefficients for all the airfoils present in the blade model. From the scanned geometry, four different blade sections, shown in Figure 6.3, have been selected. In particular, considering the local reference axis which extends in blade aperture from hub to tip, the following layout is identified:
+• Airfoil 17: from hub to 22%
+• Airfoil 16: from 22% to 29%
+• Airfoil 10: from 29% to 82%
+• Airfoil 06: from 82% to tip
+The aerodynamic tables are then computed according to the procedure described in Section 4.1 and using 200 panels and critical number equal to 9.
+The propeller model used for this study is completed by a nacelle equipped with a 65 mm diameter spinner to reproduce the geometry of a eVTOL aircraft propeller. Such component is modeled with 1212 surface panel elements and the resulting mesh is shown in Figure 6.1b.
+(a) (b)
+Figure 6.1: (a) Geometry of the Varioprop 12C propeller blade; the coloured bar indicates the error in mm between the reconstructed CAD geometry and the surfaces provided by the 3D scanner. (b) Resulting mesh on propeller nacelle and the reference system adopted.
+53
+
+
+(a) Distribution in span of the twist angle relative to the reference airfoil (the one at 75% of span) and distribution of dihedral angle
+(b) Distribution of chord in span
+Figure 6.2: Distributions of the Variopropeller blade, resulting from 3D scanning elaboration.
+Figure 6.3: All the selected profiles of the Variopropeller blade.
+54
+
+
+6.2 Preliminary Variopropeller Numerical Simulations
+The main objective of this work is the analysis of rotor interactions for an eVTOL. Thus the simulations have been performed in such configurations that correctly represent and reproduce these particular vehicles, in both flight conditions and propeller layouts. Since eVTOLs, for example the Vahana aircraft, are designed to flight over populated areas and for a limited range, their cruise speed is typically around 100 km/h (i.e. 28 m/s). As a result, the Mach number measured at the blade tip on the real vehicle, reaches the value of 0.5. Since the geometry of the rotor is fixed , which is the same selected also for wind tunnel tests, the conservation of compressibility flow similarity at the model blade tip imposes a rotational speed of the rotor in the simulations of 7000 RPM. The Reynolds number based on the propeller disk diameter and on the rotational velocity evaluated at 70%R results to be equal to ReD = 1.93e6. The propeller model has a internal mechanical system which permits to change the collective blade pitch, that consequently induces different performances of the propeller. In the following simulations, the blade pitch measured at 75% of the rotor radius is set to θ = 25.5◦, since this value guarantees the maximum efficiency for an advance ratio of J = 0.8 (calculated according to 5.6). This choice is dictated by the fact that such advance ratio corresponds to a free stream velocity of 100 km/h (28 m/s) that is considered as a eVTOL cruise flight, and operating at maximum propeller efficiency guaranties lower consumed electrical power and thus further range of flight. To set reference conditions for the comparison of propeller interaction results, a series of tests are performed considering the same pitch angle, θ = 25.5◦, but varying the advance ratio between 0.1 and 1. The DUST simulation parameters are the optimum one found for the APC blade: 10 revolutions with 72 time instants each, and 41 lifting line elements in span. The nacelle is computed with surface panels, as previously described. The obtained results are shown in Figure 6.4 and they demonstrate that the maximum of efficiency is for J = 0.8, together with the corresponding CT and CQ.
+55
+
+
+(a) Convergence curves of CT at different J (b) Resulting CT and CQ at different J
+(c) Propulsive efficiency at different J
+Figure 6.4: Results for the Variopropeller at different advance ratios, and at RP M = 7000, θ = 25.5◦.
+56
+
+
+6.3 Description of the Analysed Interacting Propellers Configura
+tions
+The numerical activity is mainly focused on the study of the interaction of two propellers in side-side and tandem configurations. Particular attention is dedicated on the flight conditions and propeller layouts typical of an eVTOL. As already described in 6.2, to match the cruise speed and the tip Mach number of such vehicles, the rotational speed of the propellers is set to 7000 RPM, while the freestream to 28 m/s (i.e. J = 0.8). To reach the maximum propulsive efficiency the collective pitch measured at 75% is θ = 25.5◦. In order to reproduce cruise flight conditions of eVTOLs, the simulations are performed with the propellers aligned to the freestream velocity vector. The first analysed configuration is the side one and this investigation is focused on the advance ratio of J = 0.8. As shown in Figure 2.4a the two counter rotating rotors lie on the same X-Y plane and the distance between the blade tips, s, is changed between 0.05R and 2R. During the analysis, the phase angle, ψ is defined as the angle between the reference blade (defined with the letter A in Figure 6.5) and the X-Z plane. The tandem interaction is investigated considering two co-rotating propellers positioned with two different longitudinal distances between the rotor disks, as shown in Figure 2.4b. In particular, simulations are performed with a longitudinal Z-distance of 6 rotor radii (dz = 6R) between the tandem propellers disks to reproduce the configuration of a Vahana-like aircraft. Moreover, in order to evaluate the effect of the longitudinal distance on the rotor-rotor interaction, simulations are also performed with dz = 2.5R reproducing the configuration of a more compact propulsive system that characterise for instance the Bell-Nexus 6HX aircraft architecture. A sweep along Y axis is considered to evaluate the effect of the interaction due to a different overlapping area between the tandem propellers disks. In particular, the simulations reproduce a lateral sweep ranging from the configuration where the propellers disks are completely superimposed, dy = 0R, to a separation distance between the propellers shaft axis of 2 rotor radii, dy = 2R. Some representative configurations, together with the reference system adopted are visible in Figure 6.6. The phase angle, ψ is defined as the angle between blade and the plane X-Z, which contains the axis of the front nacelle. Due to the low computational effort of the mid-fidelity approach, all the tandem simulations are performed for a sweep of advance ratios J between 0.4 and 0.9 with a step of 0.1. All the simulations are performed for 10 revolutions with 72 time intervals each and on a 18 cores workstation it takes 40 minutes each. To reproduce the wake, one million vortex particles are considered in the computational volume. Table 6.1 summarises the conditions adopted for DUST simulations.
+Table 6.1: Summary of the configurations analysed by DUST simulations.
+RP M θ75%R J dz [R] dy [R]
+Single 7000 25.5◦ [0.4, 0.5, 0.6, 0.7, 0.8, 0.9] - Side-by-side 7000 25.5◦ 0.8 0 [2.05, 2.15, 2.25, 2.4, 2.5, 2.7, 3, 3.3, 3.5, 4] Tandem 7000 25.5◦ [0.4, 0.5, 0.6, 0.7, 0.8, 0.9] [2.5, 6] [0, 0.25, 0.5, 1, 1.5, 2]
+57
+
+
+(a) Rotors at phase angle ψ = 330◦ (b) Rotors at phase angle ψ = 5◦
+Figure 6.5: Representation of the two phase angle positions for the side interaction.
+(a) dy = 0R (b) dy = 0.5R (c) dy = 1R
+Figure 6.6: Front vision for three disks superpositions.
+58
+
+
+Chapter 7
+Numerical Results for Side Configuration
+In this chapter the numerical results for the side configuration are presented. In particular comparing with the single rotor case, it is analysed the dependence of the developed performances on the lateral separation distance between the rotor disks. First, in Section 7.1 the changes in the relevant performance coefficients are analysed, then, in Section 7.2 the resulting flow fields are presented.
+7.1 Performance Evaluation
+Figure 7.1 shows the convergence history of the thrust coefficient for both the single rotor and the side configuration for some separation distances between the tips of the blades, s, as function of the number of revolutions.
+(a) Full convergence curve (b) Zoom of the convergence curve on the last three revolutions
+Figure 7.1: Convergence curve of thrust coefficient for the rotor at different separation distances and at θ = 25.5◦, J=0.8, RPM=7000.
+59
+
+
+The curves show that after a transient of four revolutions, the simulation reaches a periodic behaviour. This computational result reflects the physics of the problem. The periodicity of the convergence curve is particularly evident in the last three revolutions; so all the load values for this configuration are obtained as an average on this interval of time. First of all, the resulting thrust coefficient as a function of increasing adimensional separation distance, s (always considered between the tips of the blades), is evaluated.
+(a) Normalized CT (b) CT function of s
+(c) Normalized CP (d) CP function of s
+Figure 7.2: Resulting values on thrust and power coefficients for the rotor at different separation distance and at θ = 25.5◦, J=0.8, RPM=7000.
+The effect of the interaction of the counter rotating rotors produces a reduction in the thrust coefficient. In fact, in Figure 7.2a it can be easily seen that this coefficient for a distance of 0.05R is 99% of the isolated configuration. This effect can be considered negligible, since the reduction in CT is very small and it also decreases with distance and eventually it approaches the single rotor value. The coefficient decreases less than what is shown in Alvarez [2] for the same separation, but in hover configuration. This can be due to the high
+60
+
+
+advance ratio here examined. The major effect produced by the interaction is the fluctuation of the loads during a revolution. As a matter of facts, Figure 7.2b shows the obtained coefficients with their error bar, which is calculated as a standard deviation in the last three revolutions. As the separation distance increases, the thrust coefficient approaches the isolated rotor value, and the fluctuations reduce. The same behaviour is observed for the CP curves. In order to provide a more detailed analysis of the local performances of the propeller and to explain the reason for the thrust fluctuations for s = 0.05R, Figure 7.3 shows the difference of lift coefficient, ∆CL, and effective angle of attack, ∆α, between the side and single rotor configurations, computed during the last revolution. In fact Figure 7.3a indicates that the effective angle of attack in the blade tip for ψ around 0◦, is bigger for the side configuration than the single one. This reflects in an increased lift coefficient in the same region, Figure 7.3. Instead, α is lower for the interaction case when the azimuthal angle is between 300◦ and 330◦. Consequently also the developed CL is smaller. The two local behaviours of these quantities, correspond exactly to respectively a point of local maximum and minimum in the developed thrust coefficient convergence curve, Figure 7.1. As a result, such variations of effective angle of attack, concentrated in a relatively compact range of phase angles, is the reason for the measured fluctuations in the CT for s = 0.05R.
+(a) ∆α (b) ∆CL
+Figure 7.3: Resulting values of difference of effective angle of attack and lift coefficient between side and single configuration for different phase position of the blade, performed at θ = 25.5◦, J=0.8, RPM=7000.
+61
+
+
+7.2 Flow Field Analysis
+The reason for the change in blade loads and subsequent performances can be investigated by analysing the resulting flow fields. Particular attention is dictated to the configuration characterised by the greatest interaction; that is to say the two counter rotating rotor at a distance, s, equal to 0.05R. First of all, the resulting average velocity fields obtained on the last three revolutions, for both the single and side cases are compared in Figure 7.4.
+(a) Single Rotor
+(b) Side Configuration
+Figure 7.4: Average velocity field for the single and side configurations at s = 0.05R and at θ = 25.5◦, J=0.8, RPM=7000.
+62
+
+
+Figure 7.4b shows that at a distance of 0.5R downstream the rotor disk, the flow expands and this produces the combination of the two propeller wakes at about 3.5R. The effect is an increase in the resulting flow speed in this region, if compared to the single rotor case. The divergence of the wake was also found by Alvarez [2], but in the present case, due to the high advance ratio, it is further downstream; in DUST’s simulations it is also more evident the acceleration of the flow in the wake merging region. The same conclusions can be made seeing the average flowfield in a series of planes parallel to the rotor disk, Figure 7.6 and Figure 7.7. In particular, the mean velocity contour behind the single rotor case is found to be circular and symmetric. This is an expected result since everything is radially symmetric. In the plane at a distance Z/R = −2, a region of slower velocity is produced by the wake of the nacelle. Furthermore, the pressure coefficient computed on the nacelle presents a stagnation point on the nose and then it reduces downstream. The reason is that the flow is accelerated by the favorable curvature of such body, and this explains why the Cp has a minimum in the shoulder at Z/R = −0.2. The main difference in the side case can be identified in the plane at Z/R = −2. In this region, the two mean velocity contours, produced by the two rotors, merge and create a region of higher velocity. To understand the effect of the interaction, which can be the major responsible for the fluctuations in the thrust coefficient, the instantaneous vorticity field is obtained. The blades are considered aligned at a phase angle, ψ, equal to 0◦. Figure 7.5 shows the iso-surface of the instantaneous vorticity magnitude calculated in the exposed conditions. This flow representation clearly shows the interaction between the vortices released by the tips of the counter-rotating propellers that leads to the merging of the iso-vorticity tubes in the region of the wake between the propellers.
+Figure 7.5: Iso-surface of vorticity magnitude |ω| computed for the side propellers configuration with s = 2.05R at ψ = 0◦, |ω|D/Utip = 1.1, θ = 25.5◦, J = 0.8.
+63
+
+
+Figure 7.6: Average velocity field for XY planes at distances of Z/R=-0.2, -1, -2 for the single rotor at θ = 25.5◦ J=0.8, RPM=7000.
+Figure 7.7: Average velocity field for XY planes at distances of Z/R=-0.2, -1, -2 for the side configuration at s = 0.05R, θ = 25.5◦, J=0.8, RPM=7000.
+64
+
+
+(a) Single Rotor
+(b) Side Configuration
+Figure 7.8: Instantaneous vorticity field for the single and side configurations at s = 0.05R at θ = 25.5◦, ψ = 0◦, J=0.8, RPM=7000.
+A more detailed analysis of this vortex interaction can be provided by the comparison of the contours of the in-plane vorticity computed on Y − Z plane. The single rotor, Figure 7.8a, is characterised by the periodic shed of counter rotating tip vortices. These are dragged downstream and their strength is pretty constant. In fact, due to the high advance ratio, the vortices are quickly dragged by the uniform speed, so that they conserve their relative distances and intensity. In case of side interaction, Figure 7.8b, the major difference is in the region between the two rotors. In fact, here, the vortices rotating in opposite directions (since they have the same vorticity modulus but opposite sign) interact and they dissipate much faster; at a distance of 1R from the plane of the rotor they are nearly unrecognizable.
+65
+
+
+Until now all the simulations were performed considering the side rotors as perfectly synchronized, this means that they reach the null phase angle at the same instant. To understand if a deviation from this situation will alter the results, a simulation is performed considering the second rotor with a lag of 60◦ respect the other one.
+Figure 7.9: Convergence curve of thrust coefficient for the rotor at s = 0.05R and at θ = 25.5◦, J=0.8, RPM=7000 for two different phase angles.
+Figure 7.10: Instantaneous vorticity field for side configuration at s = 0.05R at θ = 25.5◦, ψ = 60◦, J=0.8, RPM=7000.
+Figure 7.9 shows that the new configuration maintains the same periodicity of the solution, but with lower overshot. In fact, the thrust coefficient, obtained as an average on the last three revolutions, is only 0.46% lower than the same parameter but for the synchronized case. The main difference between the two configurations can be seen in the resulting vorticity field. In fact, in Figure 7.10 it is clearly visible that the tip vortices don’t dissipate as they did previously. This is because they are shed at different time instants and so they are further, thus reducing the mutual dissipation.
+66
+
+
+Chapter 8
+Numerical Results for Tandem
+Configuration
+In this section the numerical results for the different configurations of the tandem interaction are presented. First of all, in Section 8.1 the rear rotor performances are evaluated in terms of variations of the main coefficients. After that, in Section 8.2 the resulting flow fields are analysed.
+8.1 Performance Evaluation
+First of all, to understand if the numerical simulations are correctly predicting the physics of the problems, the convergence curves are presented. In Figure 8.1, the variation of the thrust coefficient with the number of revolutions is shown for the advance ratio equal to 0.8 (as mentioned before, this value better represents the cruise condition typical of an eVTOL), for different separation distances.
+(a) Convergence curve for dz = 2.5R and at different dy (b) Convergence curve for dz = 6R and at different dy
+Figure 8.1: Convergence curve of thrust coefficient for the real rotor at different separation distances and at θ = 25.5◦, J=0.8, RPM=7000.
+67
+
+
+What can be identified is that the rear propeller is invested by the wake of the front one at different time instances for the two configurations. In fact, the CT for dz = 2.5R starts oscillating after one revolutions, instead for dz = 6R this happens only after 3 revolutions. In fact, the rear propeller has the uniform freestream as incoming flow conditions until it is reached by the front propeller wake. In this time interval it develops the same thrust coefficient of an isolated rotor and after this transient, which depends on the longitudinal distance between the propellers, the interaction begins. Figure 8.1 also shows that the convergence curves exhibit a periodicity for the different distances. Since the physics of the problem is intrinsic periodical, this trend can indicate the suitability of this simulations to study such problem. Looking at this figure, the simulation can be considered at regime after 7 revolutions, so the last three rotations are considered for the evaluation of the developed mean thrust coefficient. After that, the effect of the tandem interaction in terms of CT − J, CP − J and η − J curves is presented in Figure 8.2. Here both the dz, dy and J are changed in order to understand how these parameters influence the propeller performances. Starting from the biggest separation distance, dy = 2, it can be clearly seen that the performances of the rear propeller resume the single rotor ones. This means that the interaction can be considered as negligible, since at this lateral separation, the two rotor disks are completely separated and thus the rear propeller has as inflow the free stream. Reducing the lateral separation between the centre of the two rotor, dy, the interaction becomes more and more intense. The lower thrust coefficient is developed when they are completely overlapped, dy = 0. It can be also noticed that the decrease in the performances is not proportional to the lateral separation. In fact, the step between the curves of dy = 1 and dy = 0.5 is much bigger than the other ones. These last results are in great agreement with Usai’s [19] paper. Looking at the η − J curves for all the parameters, it can be understood that the maximum of the efficiency for this rotor remains at J = 0.8. As a result, in the following the attention is focused on J = 0.8. Looking at Figure 8.3, it can be noticed how the separation distance, dy, influences the thrust coefficient. In fact, this parameter converges to the isolated case as the two rotors become further and further. In particular, when dy = 2 the normalized coefficient is next to the unity. The error bars in figure (a) are calculated as a standard deviation of the thrust coefficient in the last three revolutions. These show that the maximum of the variations are for dy = 1, instead the minimum for dy = 0. This because in the last case, the downstream rotor is completely inside the wake of the front one. Instead, for the separation distance equal to unity, the rotor feels partially the wake and partially the free stream, during a revolution; thus changing the inflow conditions and producing the fluctuations on the thrust. Comparing the results for dz = 2.5R and 6R, it can be clearly seen that the interaction is greater in the second case. In fact, both the CT and normalized CT are lower for all the separation distances, for the case of further propeller. The same considerations can be made looking at the power coefficient shown in Figure 8.3c and d.
+68
+
+
+(a) (b)
+(c) (d)
+(e) (f)
+Figure 8.2: Results of the numerical simulations on rear propeller for the tandem propellers configuration. Thrust coefficient (CT ), power coefficient (CP ) and propulsive efficiency η as function of the advance ratio (J), θ = 25.5◦, RPM=7000; (a)-(c)-(e) dz = 2.5R, (b)-(d)-(f) dz = 6R.
+69
+
+
+(a) CT with distance (b) CP with distance
+(c) Normalized CT with distance (d) Normalized CP with distance
+Figure 8.3: Results of the numerical simulations on rear propeller for the tandem propellers configuration. Thrust coefficient (CT ) and power coefficient (CP ) as function of the separation distance dy, θ = 25.5◦, J = 0.8, RPM=7000; (a)-(c) dz = 2.5R, (b)-(d) dz = 6R.
+70
+
+
+In order to comprehend the reason of the obtained performances, the difference between the axial velocity, Va, tangential velocity, Vt, effective angle of attack, α, and lift coefficient, CL, between the tandem configuration and the single rotor one during the last revolution, are presented in the following polar plots. In particular, this analysis is performed for the lateral separation distances dy = 0, 0.5, 1R, since they are the ones characterized by the greatest interactions. For the configuration in which the two rotors are completely overlapped, dy = 0R, all the quantities are axisymmetric. In fact, in each phase angle the blade experiences the same incoming flow conditions, since it is completely within the front propeller wake and being the two rotors synchronized, the wake reaches the downstream rotor always in the same conditions. In particular, when the longitudinal distance is dz = 2.5R the rear propeller faces an increased axial velocity with respect to free stream velocity, due to the ingestion of the front rotor slipstream. Such effect can be clearly identified at the blade tip, Figure 8.4a, where this component of velocity is 5m/s higher than the isolated reference case. The front propeller imposes also a rotational speed to its wake and this reflects in the tangential component of velocity experienced by the downstream rotor. In fact, Figure 8.4b shows that, the difference between the tandem and single propeller Vt, is negative for all the azimuthal positions and for all the blade span. These two components of velocity combined together has the effect to reduce the effective angles of attack on the blade and particularly on the tip region, Figure 8.4c. As a result, the developed lift coefficient is globally lower and so the thrust coefficient. Since this phenomenon involves all the ψ angles and all the blade span, the experienced reduction in performances is the biggest one, but the thrust fluctuations can be considered negligible. Similar distributions of these variables can be identified also for dz = 6R, Figure 8.5. However, the axial velocity is slightly larger, since the front propeller slipstream is further developed due to the bigger available longitudinal distance. So, the effective angle of attack is a bit lower and so the developed thrust coefficient, directly resulting from the lower distribution of CL, is smaller if compared to the one of dz = 2.5R. As a result the configuration with higher longitudinal distance between the rotor disks is less efficient. For dy = 0.5R, the polar plots of Figure 8.6 and Figure 8.7 show that the axial symmetry is lost. In fact, the rear rotor during the last revolution is partially invested by the uniform freestream; this is pretty evident in the blade tip region for ψ between 0◦ and 170◦, where all the variables are quite similar to the single rotor case. Instead the effect of the tandem interaction can be identified for the azimuthal angles between 190◦ and 230◦ where the rotor is invested by the front propeller wake. In particular, due to the flow acceleration produced by the nacelle curvature, the axial velocity is bigger in this region. Such effect is clearly shown in the flow field of Figure 8.11. The only visible effect in the tangential velocity is in a small region around ψ = 310◦ and on a limited portion of blade span. Such distribution is produced by the ingestion of the outer region of the front propeller slipstream characterised by high swirl. The main difference between the polar plots at dz = 2.5R and dz = 6R is that in the second case the increase in tangential velocity is much less pronounced, since as the wake is convected downstream this component of velocity is quickly dissipated. As a result, the combination of axial and tangential component of velocities produces a concentrated region of smaller effective angles of attack in the ranges 190◦ < ψ < 230◦ and 330◦ < ψ < 360◦. This reflects in the developed lift coefficient in the same areas and so in the global thrust coefficient. In fact, the reduction in CT is low since the tandem interaction produces only local effects, but this has also the effect to induce great fluctuations in a revolution.
+71
+
+
+For dy = 1R, only less than a half of phase angles are involved in the tandem interaction due to the lower degree of overlap between the front and rear rotor disks. In fact, in the range between ψ = 0◦ and 180◦ all the analysed variables have the same values of the single propeller configuration. For both dz = 2.5R and dz = 6R the axial velocity, Figure 8.8a and Figure 8.9a, shows a local acceleration in this range of azimuthal angles. One more time, this is due to the curvature of the nacelle which induces a increased speed in the front propeller slipstream, as shown in Figure 8.12. In the same region, the tandem interaction of the front propeller wake provides a large increase of the tangential velocity, see Figure 8.8b and Figure 8.9b. So, the combination of these two components of velocity produces a concentrated region of smaller angles of attack between 210◦ < ψ < 240◦ and 300◦ < ψ < 330◦, as shown in Figure 8.8c and Figure 8.9c. In the end, since the tandem interaction influences a very small range of phase angles, the reduction in CT is the lowest one, but the fluctuations are very relevant.
+72
+
+
+(a) ∆Va (b) ∆Vt
+(c) ∆α (d) ∆Cl
+Figure 8.4: Polar plots at dy = 0R, θ = 25.5◦, J = 0.8, RPM=7000, dz = 2.5R.
+73
+
+
+(a) ∆Va (b) ∆Vt
+(c) ∆α (d) ∆Cl
+Figure 8.5: Polar plots at dy = 0R, θ = 25.5◦, J = 0.8, RPM=7000, dz = 6R.
+74
+
+
+(a) ∆Va (b) ∆Vt
+(c) ∆α (d) ∆Cl
+Figure 8.6: Polar plots at dy = 0.5R, θ = 25.5◦, J = 0.8, RPM=7000, dz = 2.5R.
+75
+
+
+(a) ∆Va (b) ∆Vt
+(c) ∆α (d) ∆Cl
+Figure 8.7: Polar plots at dy = 0.5R, θ = 25.5◦, J = 0.8, RPM=7000, dz = 6R.
+76
+
+
+(a) ∆Va (b) ∆Vt
+(c) ∆α (d) ∆Cl
+Figure 8.8: Polar plots at dy = 1R, θ = 25.5◦, J = 0.8, RPM=7000, dz = 2.5R.
+77
+
+
+(a) ∆Va (b) ∆Vt
+(c) ∆α (d) ∆Cl
+Figure 8.9: Polar plots at dy = 1R, θ = 25.5◦, J = 0.8, RPM=7000, dz = 6R.
+78
+
+
+8.2 Flow Field Analysis
+A more detailed understanding of the physic involved in the tandem interaction is provided through the flow fields analysis. The selected configurations are the ones characterised by the greatest interactions, thus dy = 0R, 0.5R, 1R for both dz = 2.5R and 6R. In the average velocity field obtained in the last revolution for dy = 0R, Figure 8.10, it can be clearly seen that the downstream rotor develops a faster wake in the tip region, if compared to the front one. This because the rear propeller is invested by the wake of the the preceding one, which is the result of the acceleration of the free stream, and so the resulting rear propeller slipstream is faster. Comparing the results of the two longitudinal distances, Figure 8.10a and Figure 8.10b, none noticeable difference can be identified.
+(a)
+(b)
+Figure 8.10: Average velocity field at θ = 25.5◦, J=0.8, RPM=7000, dy = 0R, (a) dz = 2.5R, (b) dz = 6R.
+79
+
+
+For dy = 0.5R, Figure 8.11, it is pretty evident that the recirculating region behind the rear nacelle is asymmetric. Thus because the wake of the front rotor is convected downstream until it reaches the rear nacelle, here it is accelerated due to the round shape of the body. This has the effect of increase the velocity of the flow in that side of the recirculating region, and thus it creates an asymmetric wake. This phenomenon is present for both dz = 2.5R and 6R. In this configuration only a portion of the rotor disk is invested by the front propeller wake. In particular, comparing Figure 8.11a and Figure 8.11b, it can be seen that the lower side of the wake of the rear rotor is faster for dz = 2.5R. The reason is that the propeller is in a faster flow region, since it is nearer to the rotor disk of the front rotor and which wake is younger and less dissipated, thus having a higher speed incoming flow.
+(a)
+(b)
+Figure 8.11: Average velocity field at θ = 25.5◦, J=0.8, RPM=7000, dy = 0.5R, (a) dz = 2.5R, (b) dz = 6R.
+80
+
+
+The same asymmetry of the recirculating region found for dy = 0.5 is present also for dy = 1R, but here the difference is that the faster flow region is in the lower side of the nacelle. In fact, the wake of the front propeller, impinging on the nose of the downstream nacelle, is accelerated and moved towards the lower part. As previously shown, the lower part of the wake of the rear propeller is faster. As already explained, the reason can be that this region has an higher velocity than the free stream. The wake in this region is also faster if compared to the case of dy = 0.5R, for both dz = 2.5R and 6R cases, since it is also influenced by the resulting incoming flow acceleration produced by the nacelle. As in the previous case, this phenomenon is more evident for dz = 2.5R than for 6R, due to the fact that the wake is less dissipated since it is nearer to the rotor disk.
+(a)
+(b)
+Figure 8.12: Average velocity field at θ = 25.5◦, J=0.8, RPM=7000, dy = 1R, (a) dz = 2.5R, (b) dz = 6R.
+81
+
+
+After the average velocity fields, the instantaneous vorticity ones are presented. They are all calculated for the phase angle, ψ = 0◦. This is defined as the angle between the blade and the plane X-Z, which contains the axis of the front nacelle. First of all, the iso-surface of the instantaneous vorticity magnitude for ψ = 0◦ are presented in Figure 8.13. For dy = 0R and for both dz distances, the tandem interaction doesn’t affect the coherence of the helical structure of vorticity released by the rear propeller. In particular, an increase of the iso-vorticity tubes is observed downstream the rear propeller due to the combination of the vortical structures released by the two co-axial propellers in tandem. Instead for dy = 0.5R a stronger interaction can be seen since the helical structures released by the downstream rotor lose their coherence, and this is clearly evident if compared to the null lateral separation distance case. In the end, similar result are visible for dy = 1R.
+(a) dy = 0R and dz = 2.5R (b) dy = 0 and dz = 6R
+(c) dy = 0.5R and dz = 2.5R (d) dy = 0.5R and dz = 6R
+(e) dy = 1R and dz = 2.5R (f) dy = 1R and dz = 6R
+Figure 8.13: Iso-surface of vorticity magnitude |ω| computed for the tandem propellers configuration at various dy at ψ = 0◦, |ω|D/Utip = 1.45, θ = 25.5◦, J = 0.8.
+82
+
+
+To have a deeper vision of the problem, the instantaneous vorticity fields obtained in the Y − Z plane for ψ = 0◦ are presented. Starting from the null lateral separation, dy = 0R, since the two rotors are always synchronised, the tip vortices shed by the front propeller interacts with the rear ones. The effect is that they sum up and they create bigger structures. This happens for both dz distances, but for dz = 2.5R the resulting vortices have an higher intensity. In fact, the two propellers are nearer and the structures coming from the front rotor are less dissipated and accordingly they conserve more vorticity. This is pretty evident looking at a distance of 2.5R downstream the rear rotor; at Z = 5R in Figure 8.14a the red tip vortices are much wider and more intense than the ones at Z = 8.5R in Figure 8.14b. Another visible effect is that the shear layers, released by the trailing edge of the blades of the rear rotor, dissipates much faster; this is pretty evident for dz = 2.5R. In fact, comparing Figure 8.14a with Figure 7.8a (the one of the single rotor), it is evident that the shear layer structures are not distinguishable at 2.5R downstream the rotor for the tandem interaction, but for the single rotor such structures are pretty noticeable until 3R.
+(a)
+(b)
+Figure 8.14: Instantaneous vorticity field at ψ = 0, θ = 25.5◦, J=0.8, RPM=7000, dy = 0R, (a) dz = 2.5R, (b) dz = 6R.
+83
+
+
+The main difference for dy = 0.5R is that the tip vortices of the front and rear propeller remain separated. A relevant effect is that due to the tandem interaction, the upper part of the wake of the front rotor seems to be dragged toward the rear rotor one. Thus the streamtube appears to diverge more than the single rotor or the previously shown tandem interaction. Another visible phenomenon is the effect of the interaction of couple of tip vortices with the shear layer. In fact, right after the rear rotor disk, the vortices shed by the tip of the front and rear propellers and rotating in the same direction, produces the winding of the shear layer into a vortex which rotates in the opposite direction. This is pretty evident for both dz = 2.5R and 6R, Figure 8.15a and b, in the upper part, since the tip vortices and the shear layer are nearer and so they can influence much more each other. In Figure 8.15, it can also be seen that the asymmetry of the recirculating region, already presented in Figure 8.11, produces a small vortex, which starts after the nose of the rear nacelle and it moves towards the slower region of the flow field as it is convected downstream.
+(a)
+(b)
+Figure 8.15: Instantaneous vorticity field at ψ = 0, θ = 25.5◦, J=0.8, RPM=7000, dy = 0.5R, (a) dz = 2.5R, (b) dz = 6R.
+84
+
+
+The main visible effect in the instantaneous vorticity field for dy = 1R, Figure 8.16, is that the tip vortices shed by the front rotor dissipate once they reach the rear nacelle. In fact, after that, they are not visible anymore in the wake and this phenomenon can be produced by this particular propeller layout. Furthermore, the tip vortex, impinging on the nose of the nacelle, represents a concentrated perturbation of velocity, thus producing a variation of the inflow conditions. In addition, since the tip vortices are not present anymore in the wake, the symmetry of the flow is lost. This contributes to the asymmetry of incoming stream conditions on the rear blades and the resulting loads, during a revolution. Another effect particularly visible for dz = 2.5R, Figure 8.16a, is that the recirculating region behind the rear nacelle produces an increment of vorticity in the wake. In this turbulent and very unsteady region, noticeable after Z=6.5R, no periodical structures can be identified. Also the effect of the evolution of the shear layer into a concentrated vortex, already shown in dy = 0.5R configuration, is present. This is particularly evident in the bottom part, where the tip vortices of the front and downstream rotors are nearer.
+85
+
+
+(a)
+(b)
+Figure 8.16: Instantaneous vorticity field at ψ = 0, θ = 25.5◦, J=0.8, RPM=7000, dy = 1R, (a) dz = 2.5R, (b) dz = 6R.
+86
+
+
+Chapter 9
+Conclusions and Recommendations
+In this chapter the main conclusions obtained from this work are presented in Section 9.1. After that, in Section 9.2, recommendations for possible future researches are described.
+9.1 Conclusions
+Numerical and experimental activities have been performed in order to investigate the rotor-rotor aerodynamic interactions typical of eVTOL vehicles. In particular, the selected configurations have been the side and tandem ones. The test matrix and the model setups useful for future wind tunnel tests have been described and designed. After that, the numerical simulations have been performed through a mid-fidelity aerodynamic solver: DUST, and the program, responsible for the calculation of the aerodynamic coefficients useful for the lifting line method, has been implemented and presented. The low computational effort, guaranteed by DUST, has permitted to model and simulate a wide range of propeller configurations and flight conditions typical of an eVTOL. First of all, some literature results on rotor-rotor aerodynamic interactions have been repeated, in order to verify the suitability of DUST software for this kind of investigations and to find the most proper simulation parameters. In particular, the DJI Phantom II blade in hover at the same conditions presented by Zhou [21] has been modeled and simulated. The numerical parameters which permits to achieve an error of only 0.007% on the mean thrust coefficient with respect to the literature one, results to be: 10 revolutions of 72 time intervals each and with 21 elements in span for each blade. The forward flight condition of a propeller has been simulated through the APC 10x7 thin-electric blade at the same conditions of McCrink wind tunnel experiments. The used numerical parameters are: 10 revolutions of 72 time intervals each and with 41 elements in span, which produces a error on CT at advance ratio of 0.6 equal to 2.5%. The last literature configuration analysed is two counter rotating DJI Phantom II blades in hover at a blade tip separation distance of 0.05D. The obtained mean thrust coefficient is found to be 2.1% lower with respect to the isolated rotor case. Furthermore, in the computed average velocity field, the wake of the rotor results to be dragged towards the adjacent one and the vorticity field shows that the side interaction produces a faster dissipation of tip vortices. All the presented results, being quite similar to the respective literature ones, demonstrate that DUST in conjunction with the considered numerical parameters, are an appropriate tool to simulate the rotor-rotor aerodynamic interaction. After that, the isolated propeller, which is the same that has been selected also for wind tunnel tests, has been modeled and simulated in order to set reference parameters for the comparison with rotor interactions results. In all the simulations, the focus has been posed on the cruise flight phase of an eVTOL and since these vehicles are designed to fly in urban areas, their cruise speed is around 100 km/h (28 m/s). So, in order to obtain the maximum propulsive efficiency in these conditions, which traduces in an advance ratio of J = 0.8, the blade
+87
+
+
+collective pitch has been set to 25.5◦.
+The side interaction has been investigated varying the lateral separation distance between the rotor tips, while being in forward flight at an advance ratio equal to 0.8. Results show that the performances reduce as the separation distance decreases. However, such effect can be considered negligible since at the lower considered distance of 0.05R, the deficit in developed thrust coefficient is around 1% with respect to the isolated configuration. Instead, the fluctuations in CT are relevant and they have been lead back to huge changes of effective angle of attack produced in a small portion of revolution. In particular, the lower effective angles of attack can be identified in the azimuthal angle range between 300◦ and 330◦, instead the higher around 0◦. Through the analysis of the average flow fields for the smallest separation distance and at J = 0.8, a region of accelerated wake can be recognised between the two rotor disks at a downstream distance of 0.5R. Such effect has been explained to be caused by the merging of the two rotor wakes. Furthermore, analysing the instantaneous vorticity fields, the tip vortices are found to interact and to dissipate much faster for the side configuration than the isolated rotor one. In addition, none noticeable difference is found in the developed performance between rotors with or without phase delay. As a result, it can be concluded that the obtained performances in side propeller configuration are produced by the interaction of tip vortices shed by the two adjacent rotors. Since such vortices have equal strength but opposite sign, they dissipate and the interaction produces a region of higher angles of attack which has little influence in the developed thrust coefficient but which produces great CT fluctuations.
+The tandem interaction has been investigated evaluating the changes in rear propeller performances due to the variation of lateral, dy, and longitudinal, dz distances and at different advance ratios. Particular attention is posed on the cruise flight condition of an eVTOL and so on the advance ratio equal to 0.8. As dy decreases, the rear propeller performances are find to be more influenced by the tandem interaction and in particular the developed CT reduces. In fact, at dy = 2R the rear propeller is not invested by the front rotor slipstream and so it behaves like in free stream conditions. Instead, at dy = 0R it is completely overlapped by the front rotor and the developed mean thrust coefficient is much lower and eventually around the 55% of the isolated case. Furthermore, also the dz distance influences the performances. In particular, for the bigger longitudinal distance the measured CT and CP are lower if compared to the nearer configuration. Such behaviours have been lead back to the particular distributions of axial and tangential velocities on the rear propeller and which are induced by the front rotor slipstream. In particular, when the two propellers are completely overlapped the composition of such velocities produces a global reduction of effective angles of attack in a revolution and this results in a big reduction of CT but low fluctuations. Instead, when dy is equal to 1R the tandem interaction influences only the azimuthal angles between 210◦ < ψ < 240◦ and 300◦ < ψ < 330◦. So the variation in effective angles of attack are much more local and so the deficit in thrust coefficient is lower but with higher fluctuations. Furthermore, analysing the resulting average velocity fields, the particular distributions of axial and tangential velocities are demonstrated to be produced by the acceleration of the front propeller slipstream on the rear nacelle. In conclusion, the measured performances in tandem interaction can be produced by the particular distribution of axial and tangential velocities induced by the front rotor wake on the downstream propeller.
+88
+
+
+9.2 Recommendations
+First of all, due to Covid-19 sanitary emergency the planned wind tunnel tests have undergo to huge delays and they can’t be performed in the deadline of this thesis. So they should be conducted when it will be possible to validate the numerical results. Also the wind tunnel tests on tandem interaction could produce decreased performances as dy and dz distances increase. Even if the developed performances of the rotors produced by the interactions have been studied studied in deep, some more simulations can be performed. In particular, more longitudinal distances in the tandem configuration can be investigated. Furthermore, more than two interacting propellers can be simulated. In fact, the interaction of more than two wake propellers can produce a further deficit in the obtained thrust and power coefficients and so this may determine a lower efficiency aerodynamic configuration. In addition, also the interaction of the propellers with lifting elements like wings or with the eVTOL fuselage can be simulated. In fact, such configuration can determine increased performances of the rotors due to an apparent ground effect, but the overall result may be a global reduction of the vehicle thrust. In this thesis only the cruise flight phase of eVTOL has been taken in consideration, but also other conditions like lift off or taxing can be simulated. In fact, a full comprehension of the aerodynamic of such vehicles can be a useful starting point for the research for the most proper urban areas that may be dedicated to the eVTOL maneuvering. One more possible research in the field of the aerodynamic of interacting propellers can be the analysis of the acoustic noises produced by eVTOL propeller configurations. In fact, such analysis can help in increasing the passenger comfort but also in the reduction of the ground noise.
+89
+
+
+Bibliography
+[1] Brett Adcock and Adam Goldstein. Roadmap To Sustainable Air Mobility. http://www.flyarcher.com/master-plan.
+[2] Eduardo J. Alvarez and Andrew Ning. High-fidelity Modeling of Multirotor Aerodynamic Interactions for Aircraft Design. Brigham Young University, Provo, Utah, 84602.
+[3] J. B. Brandt and M. S. Selig. Propeller Performance Data at Low Reynolds Numbers. University of Illinois at Urbana-Champaign, Urbana, IL 61801, USA, 2011.
+[4] Richard E Brown and Andrew J Line. Efficient high-resolution wake modeling using the vorticity transport equation. AIAA Journal, 43(7):1434–1443, 2005.
+[5] Georges-Henri Cottet, Petros D Koumoutsakos, D Petros, et al. Vortex methods: theory and practice. Cambridge University Press, 2000.
+[6] Giovanni Droandi, Monica Syal, and Geoffrey Bower. Analysis of the interactional aerodynamics of the vahana evtol using a medium fidelity open source tool. In Proceedings of the VFS Aeromechanics for Advanced Vertical Flight Technical Meeting, San Jose, CA, USA, January 21-23 2020. AHS International.
+[7] S Gallay and E Laurendeau. Nonlinear generalized lifting-line coupling algorithms for pre/poststall flows. AIAA Journal, 53(7):1784–1792, 2015.
+[8] Giovanni Droandi Geoffrey Bower and Monica Syal. Vahana Design Process Part II: Preparing for Lift-Off. https://acubed.airbus.com/blog/vahana/vahana-design-process-part-ii-preparing-for-lift-off/.
+[9] YEE K. LEE, J. and S. OH. Aerodynamic characteristic analysis of multi-rotors using a modified free-wake method. In Transaction of the Japan Society for Aeronautical and Space Sciences, 2009. http://joi.jlc.jst.go.jp/JST.JSTAGE/tjsass/52.168?from=CrossRef.
+[10] Keith Lindsay and Robert Krasny. A particle method and adaptive treecode for vortex sheet motion in three-dimensional flow. Journal of Computational Physics, 172(2):879–907, 2001.
+[11] Matthew H. McCrink and James W. Gregory. Blade Element Momentum Modeling of Low-Reynolds Electric Propulsion Systems. The Ohio State University, Columbus, Ohio 43235, 2017.
+[12] L. Morino and C.-C. Kuot. Subsonic potential aerodynamics for complex configurations: a general theory. Technical report, AIAA Journal, Vol. 12, (2), 1974, pp. 191– 197.
+[13] Stanley T Piszkin and ES Levinsky. Nonlinear lifting line theory for predicting stalling instabilities on wings of moderate aspect ratio. Technical report, General Dynamics San Diego CA Convair Div, 1976.
+[14] Nicholas Polaczyk, Enzo Trombino, Peng Wei, and Mihaela Mitici. A review of current technology and research in urban on-demand air mobility applications. In Proceedings of the Vertical Flight Society’s 6th Annual Electric VTOL Symposium, Mesa, AZ, USA, 29–31 January 2019.
+90
+
+
+[15] D. Douglas Boyd Jr William M. Chan Colin R. Theodore Seokkwan Yoon, Patricia Ventura Diaz. Computational aerodynamic modeling of small quadcopter vehicles. Technical report, NASA Ames Research Center Moffett Field, California, U.S.A., 2017.
+[16] D Shukla, N Hiremath, and Komerath NM. Low reynolds number aerodynamics study on coaxial and quad-rotor. In Proceedings of the 53th AIAA Aviation Forum, Atlanta, GA, USA, 25–27 June 2018.
+[17] D Shukla and N Komerath. Multirotor drone aerodynamic interaction investigation. Drones, 2(4):1–13, 2018.
+[18] VFS Staff. Supporting the Electric VTOL Revolution. https://evtol.news/news/supporting-the-electricvtol-revolution.
+[19] IR. L.L.M. Veldhuis Usai Daniele, Larocca Franceso. Aerodynamic interaction between overlapping propellers. Turin, Italy, 2019.
+[20] Harry A. Viterna and David C. Janetzke. Theoretical and Experimental Power From Large Herizontal-Axis Wind Turbines. National Aeronautics and Space Administration Lewis Research Center, 1982.
+[21] Haixing Li Hui Hu Wenwu Zhou, Zhe Ning. An Experimental Investigation on Rotor-to-Rotor Interactions of Small UAV. Department of Aerospace Engineering, Iowa State University, Ames, Iowa, 50011.
+[22] Gregoire Stephane Winckelmans. Topics in vortex methods for the computation of three-and twodimensional incompressible unsteady flows. PhD thesis, California Institute of Technology, 1989.
+[23] Pulliam H. Tomas NM Yoon Seokkwan, Henry C. Lee. Computational analysis of multi-rotor flows. NASA Ames Research Center, Moffet Field, California, 2010.
+91

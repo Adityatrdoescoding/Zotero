@@ -1,0 +1,111 @@
+Rotary Wing Aerodynamics
+(AE 667)
+
+
+Airfoils for Rotor
+Blades
+2
+
+
+Requirements
+oHigh
+o Static & Dynamic Cl: for high manoeuvre loads
+o Drag divergence number (MDD): to keep high speed flight power
+requirements under control
+oLow
+o Drag Coefficient Cd : to minimize profile power
+o Pitching Moments : for keeping structural forces and vibrations
+low
+oSufficient thickness for structural strength
+3
+
+
+Max speed limited by stall (Cl,max)
+Forward Speed
+Power
+High Installed Power
+Max speed constrained by stall
+4
+
+
+Static and Dynamic lift
+Cl
+α
+Static
+Dynamic
+Dynamic Stall
+Leads to vibration due to large change in lift
+5
+
+
+Static and Dynamic Pitching Moment
+Cm
+α
+`
+Static
+Dynamic High negative pitching moments
+fatigue pitch links
+Trailing edge tabs can reduce pitching moments
+6
+
+
+Static and Dynamic Drag
+Cd
+α
+Dynamic
+Static
+7
+
+
+Shock near Blade Tip
+Mt < 0.9
+Shock Shock
+Supersonic region
+Mt > 0.9
+Supersonic region
+8
+
+
+Wave drag mitigation
+oThinner airfoils near tip
+oLower twist
+oBackward sweep
+UH- 60A (Black Hawk) 9
+
+
+Design Perspective
+–A good Helicopter rotor airfoil ≠ good Wind Turbine rotor airfoil
+–Operates in a very different environment
+• Airborne particles get stuck to the blades causing roughness effects (Difficult to clean blades regularly)
+• Huge structural and aerodynamic loading (in a 1.5 MW turbine, each blade weigh ~ 5 tons)
+
+
+Design Philosophy and Criteria
+oSpecially-tailored airfoils for wind turbines
+oLarge thickness airfoils at the root. Thickness reduced closer to the tip
+oCriteria
+– Moderate to high thickness ratio t/c
+• Rigid rotor: 16%–26% t/c
+• Flexible rotor: 11%–21% t/c
+• Small wind turbines: 10%-16% t/c
+– High lift-to-drag ratio
+– Minimal roughness sensitivity
+– Weak laminar separation bubbles
+
+
+Airfoils Based on Rotor Sizes
+
+
+Airfoils Based on Rotor Sizes
+
+
+Airfoils Based on Rotor Sizes
+
+
+Airfoils Based on Rotor Sizes
+
+
+Airfoil Selection
+o Appropriate design Reynolds number
+o Airfoil thickness: Centrifugal stiffening and desired blade rigidity
+o Roughness Insensitivity

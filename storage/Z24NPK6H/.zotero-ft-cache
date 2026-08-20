@@ -1,0 +1,327 @@
+Ong, W., Srigrarom, S. and Hesse, H. (2019) Design Methodology for Heavy-Lift Unmanned Aerial Vehicles with Coaxial Rotors. In: AIAA SciTech Forum, San Diego, CA, USA, 7-11 Jan 2019, ISBN 9781624105784 (doi:10.2514/6.2019-2095)
+This is the author’s final accepted version.
+There may be differences between this version and the published version.
+You are advised to consult the publisher’s version if you wish to cite from
+it.
+http://eprints.gla.ac.uk/178026/
+Deposited on: 21 January 2019
+Enlighten – Research publications by members of the University of Glasgow http://eprints.gla.ac.uk
+
+
+1
+Design Methodology for Heavy-Lift Unmanned Aerial Vehicles with Coaxial Rotors
+Wayne Ong,1 Sutthiphong Srigrarom,2 and Henrik Hesse3
+University of Glasgow Singapore, 510 Dover Road, 139660 Singapore
+This work presents a novel design methodology for multirotor Unmanned Aerial Vehicles (UAVs). To specifically address the design of vehicles with heavy lift capabilities, we have extended existing design methodologies to include coaxial rotor systems which have exhibit the best thrust-to-volume ratio for operation of UAVs in urban environments. Such coaxial systems, however, come with decreased aerodynamic efficiency and the design approach developed in this work can account for this. The proposed design methodology and included market studies have been demonstrated for the development of a multi-parcel delivery drone that can deliver up to four packages using a novel morphing concept. Flight test results in this paper serve to validate the predictions of thrust and battery life of the coaxial propulsion system suggesting errors in predicted flight time of less than 5 percent.
+I. Nomenclature
+A = Area of rotor disk (m2) Acont = Continuous current rating (A) Adraw = Total current draw (A) Apeak = Peak current rating (A) Amax = Maximum continuous current (A) Crate = Battery discharge rating (C) FM = Figure of merit (−) KV = Motor speed constant (rpm⁄V) Pin = Input power (W)
+Prceq = Power required per coaxial rotor (W)
+Pmmax = Max continuous power per motor (W) Qb = Battery capacity (Ah) R = Propeller radius (m) S = Number of cells in LiPo battery (−)
+Tact = Actual thrust (N) Tid = Ideal thrust (N)
+Trceq = Thrust required per coaxial rotor (N) tavail = Available Flight Time (s) treq = Required Flight Time (s) Vnom = Nominal Voltage (V) Wo = Maximum take-off mass (g) We = Empty mass (g) Wpl = Payload mass (g) Wstr = Structural mass (g) Wm = Motor mass (g) Wsys = Mass of avionics (g) Wb = Battery mass (g) Wfix = Mass of non-removable payload (g)
+II. Introduction
+Recently, Unmanned Aerial Vehicles (UAVs) have passed the boundaries of personal leisure and are nowadays frequently found in industrial applications such as inspection, agriculture, surveillance and transportation. Heavy-lift UAVs are dominant in the logistics sector as their capabilities facilitate autonomous transportation of goods which can reduce the required transportation time. Examples of this trend in the logistics sector are the concepts shown in Fig. 1 for last mile delivery. Payload mass is unpredictable in such transportation applications as the contents is normally decided by the customers rather than the logistics company. Hence, to ensure that UAVs are suitable for a broad range of transportation tasks, it is critical for the vehicle to have heavy-lift capabilities [1]. Increased payload capability for last mile deliveries using UAVs also facilitates the concept of multi-stop deliveries which can increase coverage and significantly reduce the delivery cost and time [2].
+1 Research Student, Aerospace Division. 2 Associate Professor, Aerospace Division, AIAA Member. 3 Assistant Professor, Aerospace Division, AIAA Member. (corresponding author: henrik.hesse@glasgow.ac.uk)
+
+
+2
+(a) Delivery drone by DHL (www.dhl.com) (b) Delivery drone by Amazon (www.amazon.com/primeair)
+Fig. 1 Examples of commercial delivery drones.
+Unlike popular quadcopter configurations typically available for hobby use, commercial drones featuring such heavy-lifting capabilities usually constitute more than four rotors, such as the example shown in Fig. 1(b). However, such hexa- or octorotor configurations have a significantly larger planform area which limits their applicability in dense urban areas. To address this limitation, this work will consider the use of coaxial rotors in the design of heavylift UAVs. A coaxial propulsion system, as shown in the examples in Fig. 2, comprises of two counterrotating motors/propellers aligned about their axis of rotation. Traditionally such rotor configurations are used on helicopters but have recently found applications in novel designs of heavy-lift multirotor UAVs (M-UAVs), as the example in Fig. 2(a), and Personal Aerial Vehicles (PAVs), as shown in Fig. 2(b). The compact design of a coaxial propulsion systems enables the UAV to have a higher thrust-to-volume ratio and provides redundancies for motor failure [3]. These factors are critical in the design of compact and safe heavy-lift M-UAVs for the application of parcel delivery in urban areas [2] and make coaxial rotors a popular choice for PAVs.
+(a) Vulcan Airlift (www.vulcanuav.com) (b) Elroy Passenger Drone (www.flyastro.com)
+Fig. 2 Examples of coaxial propulsion systems.
+Although coaxial rotors are increasingly used in compact heavy-lift designs, the higher thrust-to-volume ratio comes at the cost of reduced efficiency. Several experimental studies [4]-[6] characterized the aerodynamic interference between the top and bottom propellers causing the coaxial system to require 17-29% more power to produce the same thrust as two isolated propellers. This decrease in efficiency of the coaxial propulsion system is close to the theoretical value of 26% decrease in induced power as predicted by blade-element momentum theory [3]. The aerodynamic performance of the coaxial system is naturally driven by the rotor configuration and the spacing between both propellers has been shown to affect the coaxial system efficiency [5]-[6]. An axial separation of 15-20% of the rotor diameter was found in different experiments on small-scale coaxial systems to produce the optimal results [6]. These coaxial system performance parameters drive the design methodology of heavy-lift UAVs as proposed in this paper. The recent trend in new UAV designs for industrial applications has been accompanied by research in the design of multirotor UAVs. This trend has supported the development of comprehensive design methodologies for M-UAVs to blend the design guidelines typically based on word-of-mouth approaches in the UAV hobby community [7] with
+
+
+3
+established design theories of conventional large-scale manned aerial vehicles, e.g. Raymer’s theory for fixed-wing aircraft [8]. Starting from Raymer’s traditional aircraft sizing methodology [8], Gatti and Giulietti [9] developed a sizing technique for electric M-UAVs through market trends of existing commercial drones. Since most multirotor drones are powered electrically, the traditional method developed for fuel-powered vehicles has been adjusted to replace the fuel mass with a constant battery mass which does not decrease over the flight duration. By parameterizing the electrical propulsion system of M-UAVs through historic trends, Ref. [10] also introduced a methodology for selecting the components such the motors, propellers, batteries, and Electronic Speed Controllers (ESCs). More recently, Ref. [12] developed a sizing methodology for small-scale M-UAVs by deriving empirical sizing trends based on existing quadrotor. The method adapts the multivariable linear regression, which has been applied to large-scale helicopters [13], and includes trends on brushless and brushed motors since the latter is more common in Micro Aerial Vehicles (MAVs) with less than 100 g maximum takeoff weight (MTOW). This work proposes a design methodology for heavy-lift M-UAVs starting from Raymer’s theory [8] and its extensions to multirotor vehicles in [9]. The novel sizing technique is tailored towards compact vehicles with coaxial propulsion systems suitable for delivery applications in urban settings, and accounts for the aerodynamic deficiencies of coaxial rotors. The paper presents the conceptual design process and introduces the relevant market trends for UAV components as a function of the MTOW. The sizing technique is demonstrated for the design of a heavy-lift morphing UAV. The vehicle is designed for multi-parcel deliveries based on a morphing technology proposed in [14]. Experimental flight test results in this paper validate the proposed design methodology for heavy-lift UAVs.
+III. Preliminary Design Process
+The flowchart in Fig. 3 summarizes all aspects that are considered in the conceptual design and implementation of a M-UAV. The overall design process, and specifically the market survey as well as mass sizing, are motivated by the related design theories for fixed-wing aircraft [8]. However, in this paper we show how the theory is adapted to electric-propulsion, heavy-lift multirotor vehicles by considering aspects of motor and battery sizing. The process is tailored towards heavy-lift vehicles but can be applied to the design of conventional quadrotor configurations and then compares to other sizing methods as for example proposed in [12].
+A. Overview of Preliminary Design Process
+Following the design process in Fig. 3, the starting point for any UAV design is to understand its purpose to determine appropriate design requirements of vehicle. Since the focus in this work is on general heavy-lift capabilities in dense urban settings, the UAV is required to have high thrust-to-volume ratio. Hence, a coaxial propulsion system is considered here to produce additional thrust without increasing the planform of the vehicle. Similar to the standard approach in fixed-wing aircraft [8], the proposed conceptual design phase starts with the generation of initial concepts and designs based on the defined design requirements to envision the desired vehicle configuration. This initial design exploration is crucial as it drives the entire design phase all the way to the detailed design. The detailed market survey provides statistical data of available products that have similar capabilities or design requirements. The market data is used to derive empirical trends of critical vehicle components which drives the subsequent mass sizing process. Hence, it is crucial to have reliable market data to ensure that the resulting UAV design is realistic within current market standards and novel technologies. This paper summarizes the current market trends in the area of heavy-lift drones. Concurrently, the mission plan and profile should be defined in accordance to the design requirements. However, it is important to note that both the mission plan and the design requirements must be satisfied individually and will need to be addressed in parallel. Therefore, the relation between both is represented by a dotted line in Fig. 3. From the mission profile we can then compute the required flight time, treq, and compare it against the available flight time, tavail, which can be computed after the battery selection as shown in Sec. III.C. Note again the parallels in this iterative approach to the conventional aircraft sizing methodology in [8]. However, instead of available/required empty weight typically used to drive the mass sizing for fixed-wing aircraft, we have modified the design methodology for multirotor UAVs to compare the available and required flight time in the mass sizing and battery selection. In the following we will demonstrate the proposed methodology for a generic design of a UAV with heavy-lift capabilities. Section IV provides a detailed design scenario for a multi-parcel M-UAV to validate the proposed design methodology based on experimental results.
+
+
+4
+Fig. 3 Flowchart of the preliminary design process of a M-UAV.
+B. Market Survey for Heavy-Lift UAVs
+This section presents market trends for the main components in UAVs that contribute dominantly to the overall vehicle mass and drive the mass sizing process. The surveyed trends include the overall vehicle weight distributions (incl. empty, total, and payload weight), motors, ESCs, and batteries. For this market survey, only drones that are considered Heavy Aerial Lifting (HAL) multirotor UAVs or agricultural drones are included as their capabilities and functions are similar to the intended purpose of the UAV being designed.
+(a) Empty weight fraction We Wo
+⁄ (b) Empty weight We
+Fig. 4 Trends of empty weight for commercial heavy-lift drones against total weight Wo
+1. Overall Weight Distribution of Heavy-Lift UAVs
+A total of 19 HAL drones have been surveyed from various commercial websites§ and industrial suppliers** to analyze the available trends on the vehicle weight fractions. Similar to [8], an important trend to drive the subsequent mass sizing is the empty-weight fraction, We Wo
+⁄ , which compares the empty weight We against the total weight of the
+§ Commercial websites include www.alibaba.com, www.foxtechfpv.com, www.dji.com, and www.wecanie.com **Industrial suppliers include www.4fpv.com and www.vulcanuav.com (accessed 1 Dec 2017)
+0.2
+0.25
+0.3
+0.35
+0.4
+0.45
+0.5
+0 20000 40000 60000
+We / Wo
+Wo (g)
+0
+5000
+10000
+15000
+20000
+25000
+0 20000 40000 60000 80000
+We (g)
+Wo (g)
+
+
+5
+vehicle, Wo. Based on the trend shown in Fig. 4(a) we can correlate the vehicle empty-weight fraction with the MTOW as,
+We
+Wo
+= 0. 4666Wo−0.02 (1)
+which suggests that We varies almost linearly with We = 0.37 Wo as indicated in Fig. 4(b). However, the market trend also indicates a large variation for the empty-weight fraction which depends significantly on the design parameters of the specific configuration. Equation (1) serves as a baseline trend for the sizing in this work and in Sec. III.D we discuss ways of changing the empty-weight fraction to include possible technological improvements. Understanding the payload capabilities of different UAV designs is an important consideration to determine if specific configurations are suitable for the anticipated mission. Hence, Fig. 5(a) shows the market trend for the surveyed HAL drones relating the vehicle payload weight Wpl and total weight Wo. The market trend in Fig. 5(a) confirms the notion that a heavier drone should be able to carry a higher payload Wpl. In fact, from Fig. 5(a) we can find the correlation between payload weight Wpl and MTOW to be approximately linear,
+Wpl = 0.4Wo (2)
+Note however that the trend in Eq. (2) only serves as an indication as the payload is fixed in this work as defined in the design requirements. Finally, the battery weight for different HAL drones is characterized. Here, we assume that the considered commercial manufacturers have equipped their designs with the largest possible batteries subject to payload limitations to achieve maximum flight time. The latter is usually a critical selling point. Therefore, by considering the battery fraction trend Wb Wo
+⁄ in Fig. 5(b), we can use the empirical correlation,
+Wb
+Wo
+= 195.27Wo−0.703 (3)
+as a starting point in the subsequent mass sizing process considering the final battery weight to be according to current market standards in the segment of commercial heavy-lift drones. However, similar to the empty-weight fraction, the battery fraction trend in Eq. (3) serves again as a starting point and can be adjusted in an iterative fashion to match the required flight time with the estimated available flight time as illustrated in Fig. 3.
+(a) Maximum carryable payload Wpl (b) Battery weight fraction Wb Wo
+⁄
+Fig. 5 Market trends for payload and battery weight for commercial heavy-lift drones.
+2. Motors
+Since M-UAVs generally have no lifting surfaces, the thrust generated by the rotors is the only available force to balance the weight of the payload and vehicle itself. Therefore, a market survey of motors is required where in this work we only consider Outrunner Brushless Direct Current (OR BLDC) motors, as they provide more torque compared to Inrunner BLDC types [10] which is crucial for the considered application of lifting heavy payloads. BLDC motors are characterized by the no-load speed constant KV which indicates how fast a motor spins without
+0
+5000
+10000
+15000
+20000
+25000
+10000 20000 30000 40000 50000 60000
+Wpl (g)
+Wo (g)
+0.05
+0.1
+0.15
+0.2
+0.25
+0.3
+10000 20000 30000 40000 50000 60000
+Wb / Wo
+Wo (g)
+
+
+6
+external load for a supplied voltage. Generally, OR BLDC motors have a lower speed constant, KV, than their counterparts and are used for heavier UAVs due to the achievable high torque within the efficient speed range [11]. Therefore, only motors with a speed constant of KV ≤ 500 are considered in the following market survey.
+(a) Speed constant KV (grey before and red after 2008) (b) Maximum continuous power
+Fig. 6 Motor market trends for commercial OR BLDC motors with low speed constant KV.
+The relationship between the motor mass Wm and KV is shown in Fig. 6(a) for a series of OR BLDC motors. The data is divided into motors available before†† and after‡‡ 2008 which highlights the technology advances in recent years leading to lighter motors. For the overall data, we can again empirically estimate KV in terms of the motor mass Wm as, KV = 3313.8 Wm−0.4 (4)
+The corresponding maximum continuous motor power shown in Fig. 6(b) indicates the following linear trend,
+Pmmax = 3.95 Wm (5)
+3. Electronic Speed Controller
+The primary task of an Electronic Speed Controller (ESC) is to control the speed of the motor. Once a motor has been selected, a suitable ESC can be selected based on the expected current draw by the motors. A market survey over 50 ESCs (not shown here) indicated no clear trends between continuous current of the ESC, Acont, and its weight, WESC. However, since the weight is less than 100 g for all surveyed ESC, it is negligible for the considered heavy-lift designs. Note however that market trends of ESCs can be relevant for small-scale UAVs as considered in [12].
+4. Battery
+Lithium Polymer (LiPo) batteries are the most common type used for UAVs, due to their high specific energy density which is approx. 250 Wh/kg [10]. The selection of batteries in the design of M-UAVs requires consideration of the battery capacity Qb, C-rating Crate, and cell count S. The battery capacity, Qb, measured in ampere hours (Ah) or frequently also in milliampere hours (mAh), indicates how much current draw is needed to discharge the battery in an hour. Hence, the battery capacity is a direct measure of the expected flight time. The market trend in Fig. 7(a) for 33 LiPo batteries surveyed from online markets§§ shows a linear correlation between Qb and the battery mass, Wb, which can be estimated by
+Qb = 0.008Wb (6)
+†† Data on OR BLDC motors before 2008: electrofly.free.fr/download.php (accessed: 26 Jan 2018) ‡‡ Data on OR BLDC motors after 2008: www.hobbyking.com, www.foxtechfpv.com, http://rctimer.com, www.helipal.com and www.4fpv.com (accessed: 26 Jan 2018) §§ Sources for batteries: www.foxtechfpv.com, www.4fpv.com, www.hobbyking.com, and shop.rotor.com.sg (28 Jan 2018)
+100
+150
+200
+250
+300
+350
+400
+450
+500
+550
+600
+0 200 400 600 800 1000
+KV (rpm/V)
+Motor mass (g)
+0
+200
+400
+600
+800
+1000
+1200
+1400
+1600
+50 150 250 350
+Max continuous power (W)
+Motor mass (g)
+
+
+7
+(a) Battery capacity Qb against battery mass Wb (b) Battery discharge rate Crate against capacity Qb
+Fig. 7 Market trend for commercial LiPo batteries.
+The discharge rating or C-rating Crate is measured in C, which is the battery capacity number, and indicates the fastest rate at which the battery can be discharged without damaging it. This rating is used to determine the maximum continuous discharge current, Amax, as
+Amax = Qb ∙ Crate (7)
+Fig. 7(b) shows that for large-capacity batteries, the discharge rating Crate is generally low and vice versa. The relation between both parameters can be correlated as
+Crate = 66.77Qb−0.538 (8)
+Lastly, we discuss the cell count, S, which represents the number of the individual LiPo cells that have been connected in series to constitute the overall LiPo battery. For the heavy lift UAVs considered in this work, the high input voltage required by the motors calls for 6S LiPo batteries to be used in the design. Since each LiPo cell has a nominal voltage of 3.7 V, the overall nominal voltage for the 6S LiPo system is Vnom = 22.2 V.
+C. Mass Sizing and Propulsion Requirements
+Following the original sizing approach by Raymer [8] for fixed-wing aircraft, the empirical trends from the market survey subsequently drive the mass sizing and loading aspects of the design phase. In this work, however, we follow the modifications in [9] to adapt the original sizing methodology to multirotor UAVs as shown in the flowchart in Fig. 3. From the discussion in the next sections, we are able to estimate the total mass of the vehicle (mass sizing) and select a suitable propulsion system (motor, ESC, and battery selection) to carry the overall vehicle weight over the desired duration specified in the design requirements (cmp. Sec. III.A).
+1. Mass Sizing
+Following the approach in [9], the original mass sizing concept by Raymer [8] can be adjusted to UAVs. The revised mass equation for the MTOW can then be formed as
+Wo = Wstr + Wm + Wsys + Wpl + Wb + Wfix (9)
+where Wstr, Wsys and Wfix represent the mass of the structure, systems (incl. avionics), and non-removable (fixed) payload, respectively. With the empty weight of the vehicle given as We = Wstr + Wm + Wsys, we can re-arrange the overall vehicle mass equation as
+Wo = Wpl + Wfix
+1 − WWoe − WWob
+(10)
+where Wfix accounts for additional equipment such as cameras or sensors. Defining the mass equation in this form designates Wpl and Wfix as the independent variables, and We and Wb as the dependent variables during the mass
+0
+5
+10
+15
+20
+25
+0 1000 2000 3000
+Capacity (Ah)
+Battery Mass (g)
+0
+10
+20
+30
+40
+50
+60
+70
+0 5 10 15 20 25
+C-rate (C)
+Capacity (Ah)
+
+
+8
+sizing process. The empty weight and battery fractions We Wo
+⁄ and Wb Wo
+⁄ , respectively, are obtained from the market survey using Eqs. (1) and (3). Hence, for payload masses defined as design requirements we can solve Eq. (10) to find the MTOW of the UAV.
+2. Motor Selection
+Once the total mass of the UAV has been estimated, the propulsion system consisting of motors and ESC can be selected. This part of the design process corresponds to wing and power loading in Raymer [8]. However, since MUAVs usually have no lifting surfaces, the entire weight of the vehicle is balanced by the thrust generated from the rotors. In this section we therefore relate the required thrust per rotor to the trends of power generated by commercial motors as surveyed above. Since this work focuses on the design of heavy-lift drones in urban environment, we consider the use of coaxial propulsion systems to produce required thrust to balance the MTOW. Coaxial systems not only have the advantage that they have the best thrust-to-volume ratio, but unlike single rotors each set of coaxial rotors generates no yaw moment due to the counter-rotating action of the propellers. Hence, the designer is free to pick an arbitrary configuration with N coaxial rotors and is not limited to an even number of rotors as would be the case for single rotors. We can then define the required nominal thrust that needs to be generated by each coaxial rotor c as
+Trceq = g ∙ Wo
+N (11)
+where g is the gravitational acceleration. Note that all aerodynamic losses due to the coaxial propulsion system are considered after the motor power requirements have been computed. As shown in the market survey, motors are typically characterized by their maximum continuous power. Hence, to select suitable motors, we need to relate the required thrust per coaxial rotor Trceq to the input power at the motors. In this work we use simple momentum theory to relate the ideal power Pid to the required thrust Trceq for hover condition as [15]
+Pid = √(Trceq)3
+2ρA (12)
+where ρ is the density of air and A = πR2 is the area of the rotor disc assuming all rotors to have identical radius R. The ideal power estimate can be corrected using the so-called figure of merit (FM) given as
+FM = Pid
+Pact
+(12)
+to relate the ideal power Pid per rotor to the actual power produced Pact. Depending on the design of the rotor and the operating conditions, large-scale rotors typically achieve a figure of merit of 0.6 ≤ FM ≤ 0.8 [15]. Due to the small vehicle and propeller sizes, we expect UAV propellers to have different FM values compared to traditional helicopter rotors. Data sheets by motor manufacturers usually provide measurements of nominal thrust Tact for different propeller sizes obtained experimentally using thrust stands. Hence, by re-arranging Eqs. (11-12) we can estimate the propeller FM from the data sheets as
+FM = (Tact
+Tid
+)
+3
+2 (13)
+by relating the provided measured thrust Tact to the ideal thrust computed as
+Tid = (√2ρA ∙ Pin)
+2
+3 (14)
+where Pin is the corresponding input power to the motor measured by the thrust stand, A the rotor area for the given
+rotor diameter, and ρ = 1.225 kg m3
+⁄ the density of air at sea level (ISA). Since in this work we focus specifically on the design of heavy lift drones, we have studied the motors in the market survey for propeller sizes between 17-30 inches (approx. 0.22m ≤ R ≤ 0.38m) and found the average FM to be FM = 0.59 for heavier UAVs. Next, we consider the coaxial propulsion system in the motor selection. Since coaxial systems are less efficient compared to single propellers due to aerodynamic interactions [3]-[6], we account for the additional power required for a coaxial propulsion system to produce the same amount of thrust as two isolated propellers through the correction
+
+
+9
+factor κ. Hence, the required power per set of coaxial motors is finally given in terms required thrust per coaxial rotors Trceq as
+Prceq = κ ∙ FM ∙ √(Trceq)3
+2ρA (15)
+where we assume κ = 1.5 which is slightly higher than found in [3] to allow for excess thrust during take-off or climb. Finally, the required power computed in Eq. (15) provides a guideline for the selection of the individual motors which are typically defined in terms of maximum continuous power Pmmax. To ensure that each motor is operating
+within the optimal efficiency range, we need to select the motors such that 0.4 Pmmax ≤ Prceq⁄2 ≤ 0.7 Pmmax as discussed in detail in [14]. Note that for the final selection of each motor above we only consider half of the required nominal power, i.e. Prmeq = 0.5Prceq, as each coaxial rotor consists of two motors. The total power requirement of the drone, Preq = N ∙ Prceq, can also be computed from the individual power requirements for the N sets of coaxial rotors. Note that in this work we assume the power requirements for the avionics system to be negligible compared to the overall power of the complete coaxial propulsion system.
+3. Battery Selection and Theoretical Flight Time
+Since the battery weight Wb is directly computed from the total weight Wo as part of the mass sizing in Sec. III.C.1, we can obtain the battery capacity Qb from the empirical correlation in Eq. (6). With the capacity determined, we are able to estimate the available discharge rating Crate from current batteries in the market using Eq. (8). As discussed before, it is crucial to check that the maximum available continuous current discharge Amax, which is calculated from Eq. (7) using the discharge rate, is higher than the total current draw from system Adraw to prevent battery saturation. We can compute Adraw by relating the total power of the propulsion system, Preq, to the motor input voltage as
+Adraw = Preq
+Vnom
+(16)
+where we assume the input voltage to be the constant nominal voltage Vnom for the selected motor. With this data, the designer can select the appropriate battery and the available flight time can be obtained as,
+tavail = Qb
+Adraw
+(17)
+It is very important to note that the sizing in this section is based on empirical correlation and the resulting estimates for the battery weight and capacity strongly depend on the type of surveyed vehicles and products studied in the market survey. Hence, it is expected that the estimated available flight time computed in Eq. (17) differs from the required flight time as defined in the design requirements. Next, we discuss how the approach can be adjusted to converge towards to the expected design requirements.
+D. Iterative Design Refinement
+Using Raymer’s concept of trade studies [8], certain trends obtained from the market survey can be altered. These trade-offs enable the designer to tailor the results from the mass sizing exercise to better suit the customer’s design requirements or to achieve a certain desired performance from the multirotor. For example, if the estimated available flight time tavail computed in Eq. (17) differs from the required flight time treq, we can alter the original battery weight fraction Wb Wo
+⁄ in Eq. (3) by a correction factor δk such that
+(Wb
+Wo
+)
+k
+= δk−1 (Wb
+Wo
+)
+k−1
+(18)
+where k indicates that we need to iterate through different empty weight fractions to finally match the design requirements. The correction factor δk−1 can be approximated using Eqs. (6) and (17) as
+δk−1 = treq
+(tavail )k−1
+(19)
+This process mimics the endurance to mass trade-off typical for fixed-wing aircraft, where the fuel tank capacity is reduced to lighten the aircraft which in turn results in less flight time.
+
+
+10
+Note that other trade studies can revisit the market trend of the empty-weight fraction We Wo
+⁄ in Fig. 4. The computed empirical correlation for the empty-weight fraction in Eq. (1) includes a wide range of heavy-lift vehicle designs with different airframe configurations. Hence, the trend can be refined discarding some existing designs that do not reflect the design scope.
+IV. Prototype Design and Flight Test Results
+This section exercises the proposed methodology for the complete design cycle of a delivery drone with capability to deliver multiple parcels. The presented results illustrate the mass sizing and component selection which are then validated against the final design and experimental results to confirm the weight breakdown of the different components and the flight time, respectively.
+A. Design Requirements & Mission Plan
+The purpose of the envisioned prototype system is to demonstrate the concept of multi-parcel last mile deliveries. Hence, we require the design to be capable of carrying up to four packages, each weighing a maximum of 1.5 kg, in hover condition over a duration of treq = 300 s (full load) and treq = 600 s (empty load). Since the anticipated design is simply a proof of concept, the requirements are not reflective of the actual prototype system and it is enough for the system to achieve the design requirements during hover.
+B. Conceptual Design
+To enable multi-parcel capabilities, this work considers a UAV design with morphing arms as described in detail in [14]. The proposed concept shown in Fig. 8(a) addresses the challenge that the overall Center of Gravity (CG) of the vehicle changes following the delivery of a single parcel. This can cause stability issues for multirotor vehicles, as UAV designs are required to be balanced for optimal flight performance. A balanced configuration implies that the CG coincides with the Neutral Point (NP) of the vehicle which is defined as the location where the moments from all thrust forces balance to zero. For a symmetric design with identical rotors, the NP lies at the center of all rotors. To implement the morphing concept as proposed in [14], we start from a Y6 tricopter configuration and implement a morphing mechanism which allows the front motor arms to symmetrically sweep along the x − y plane of the vehicle and thereby change the longitudinal position of the NP. Hence, by morphing from a Y6 configuration (as shown in Fig. 8) to a T6 configuration (not shown), we are able to shift the NP location rearwards to balance a possible tailheavy configuration following a parcel delivery. The details of the morphing concept, mechanism design and control approach are presented in [14]. In this paper, we demonstrate the conceptual design of the vehicle and consider the morphing mechanism as non-removable payload with Wfix = 2 kg in addition to the required payload Wpl = 6 kg.
+(a) CAD design of delivery drone (with parcels) (b) Actual implementation of concept (without parcels)
+Fig. 8 Concept and implementation of a multi-parcel delivery drone.
+Due to the heavy combined payload of 8 kg, this work focuses on the implementation of a coaxial propulsion system with three coaxial rotors mounted at the tips of each motor arm. The length of the motor arms is therefore determined by the size of the propeller blades as determined next as part of the mass sizing and component selection.
+
+
+11
+C. Mass Sizing & Component Selection
+To demonstrate the sizing methodology presented in Sec. III.C we apply the empirical trends in Eqs. (1-8) which have been derived from the market survey for commercially available heavy-lift drones. Considering that the combined payload for the design is 8 kg, from Eq. (2) we can anticipate the total mass of the vehicle to be approx. 20 kg which forms an upper bound for the mass sizing. After the first iteration of mass sizing we predict the total mass of the vehicle to be Wo = 18.9 kg, with the empty mass We and battery mass Wb estimated to be 7.2 kg and 3.6 kg, respectively. For this total weight estimate and
+following the propulsion requirements in Sec. III.C, we compute the required power per coaxial rotor to be Prceq = 1681 W. From the market survey it was found that the 330KV variant of the JMRRC 6215 Brushless Motor***, as specified in Table 2, fits the selection criteria and the required power per motor with 59% of maximum continuous power Pmmax is within the efficient operating range [14]. However, the resulting available flight with tavail = 635 s is twice as long as the required flight time for the fully loaded configuration. Hence, in the second iteration we reduce the battery weight fraction to 40%, i.e. δ2 = 0.4 in Eq. (18), to reduce the available flight time and total vehicle weight. As summarized in Table 1, the resulting available flight time is reduced to tavail = 411 s and the total mass of the vehicle to Wo = 15.2 kg. The required power is now Prceq = 1220 W and using the same motor and ESC selection as in the first iteration, each motor is now estimated to operate at 43% of the maximum continuous power Pmmax. For the final prototype shown in Fig. 8(b), two LiPo batteries have been used as specified in Table 2. Although the combined battery weight matches the estimated weight (cmp. Table 1), the combined capacity is only Qb = 10.4 Ah when joined in parallel. Hence, the final estimated available flight time for the actual system with all payload attached is tavail = 304 s which matches the design requirements. Table 1 compares the estimated weight composition from the second iteration against the actual implementation of the prototype system which demonstrates the accuracy of the sizing methodology. All values are within 3% of the predicted quantities, except the predicted battery capacity and the mass of the morphing mechanism. However, both are poor choices by the designer due to limited available data (morphing mechanism) or limited resources (battery capacity) which can be corrected in future work.
+Table 1 Comparison of mass sizing and component selection against the final implementation of the UAV concept in Fig. 8(b).
+Component mass Iteration 1 Iteration 2 Actual Design Error
+Wo 18863 g 15223 g 15160 g 0.4 %
+We 7783 g 5859 g 5720 g 2.5 %
+Wpl 6000 g 6000 g 6000 g 
+Wfix 2000 g 2000 g 1700 g 17.6 %
+Wb 3635 g 1750 g 1720 g -1.7 %
+Propulsion data
+Prceq 1681 W 1220 W 1250 W -2.4%
+Qb 30 Ah 14.1 Ah 10.4 Ah 35.6%
+tavail (theoretical) 635 s 411 s 304 s 35.2%
+D. Flight Test Results
+In this section flight test results are presented for the unloaded configuration with all parcels detached but considering the weight of the fixed morphing configuration. In this configuration the total weight of the vehicle is 9.2 kg which requires a power of Prceq = 450 W per coaxial rotor. Using the same components as defined in Table 2, we can compute the available flight time for this configuration to be tavail = 612 s which matches the design requirements of 600 s within 2% error. The objective of the flight tests presented next is to obtain the flight time of the actual vehicle under hover condition and the mean throttle levels for all rotors to compare against the predicted quantities. The flight experiment with the
+*** Source: www.4fpv.com/product/277390885 (accessed: 27 Mar 2018)
+
+
+12
+vehicle achieved a total flight time of 593 s which represents an error of 3% compared to the estimated available flight time of tavail = 612 s. This demonstrates that the proposed design methodology provides a reliable tool to size new UAV configuration and the predicted quantities are very close to the final design as demonstrated in this case study.
+Table 2 Details of selected components for the final implementation of UAV concept in Fig. 8(b).
+Motor and Propeller Battery
+Brand JMRRC 6215 Brand LPB 22.2V 5200mAh LiPo
+No of motors 6 No of batteries 2
+Wm 6 × 345 g = 2070 g Wb (actual) 2 × 860g = 1720g
+KV 330 rpm⁄V Cell Count 6S
+Pmmax 1425 W Qb 5.2 Ah × 2 = 10.4 Ah
+Propeller Diameter 22" Crate 60C
+Propeller Pitch 5.5"
+Electronic Speed Controller
+Brand Xrotor Pro 60A
+Number of ESC 6
+WESC 6 × 56 g = 336 g
+Acont 60 A
+Amax 80 A
+V. Conclusions
+The design methodology presented in this work provides a comprehensive tool for the complete design cycle of multirotor UAVs. Starting from basic design requirements and a mission profile, the empirical trends derived in this work can be used to drive the sizing and component selection process in the design of heavy-lift vehicles. We have extended existing design methodologies, starting from classical design theories of conventional fixed-wing aircraft, to account for coaxial propeller systems to reduce the vehicle planform for urban operations. The aerodynamic interactions in coaxial configurations cause the system to require 22% more power to produce the same thrust as an equivalent single rotor which has been included in the proposed design formulation. Exercising the methodology in the development of a coaxial prototype system that can deliver up to four packages, each weighing a maximum of 1.5kg, demonstrated the capabilities of the proposed formulation to produce accurate predictions of the resulting vehicle mass breakdown. Flight tests further validated the proposed methodology for the selection of propulsion components including motors, electronic speed controllers and batteries. The resulting flight time of 10 mins in hover was within 3% of the predicted values. The experimental results suggest that the proposed prediction tools including the market trends, coaxial corrections and component selection correctly predicts the dominant aspects driving the overall design of heavy-lift coaxial systems.
+Acknowledgments
+The invention/technology presented in this paper is the subject of patent protection for which there is a patent pending.
+References
+[1] Brar, S., Rabbat, R., Raithatha, V., Runcie, G., and Yu, A., “Drones for Deliveries,” University of California Berkeley, Sutardja Center for Entrepreneurship & Technology, Berkeley, CA, USA, 2015. [2] J. Xu, “Design Perspectives on Delivery Drones,” RAND Corporation, RR-1718/2-RC, Santa Monica, CA, USA, 2017. www.rand.org/pubs/research_reports/RR1718z2.html (accessed 2 Dec 2018) [3] M. Simões, “Optimizing a Coaxial Propulsion System to a Quadcopter,” Instituto Superior Técnico, Lisbon, Portugal, 2014.
+
+
+13
+[4] A. Bondyra, S. Gardecki, P. Gasior, and W. Giernacki, “Performance of Coaxial Propulsion in Design of Multi-rotor UAVs,” Challenges in Automation, Robotics and Measurement Techniques, pp. 523-531, Springer, Switzerland, 2016.
+[5] M. Ramasamy, “Measurements Comparing Hover Performance of Single, Coaxial, Tandem, and Tilt-Rotor Configurations,” in 69th American Helicopter Society Annual Forum, Phoenix, AZ, USA, 2013.
+[6] Y. Lei, Y. Bai, Z. Xu, Q. Gao, and C. Zhao, “An experimental investigation on aerodynamic performance of a coaxial rotor system with different rotor spacing and wind speed,” Experimental Thermal and Fluid Science, Vol. 44, pp. 779-785, 2013. [7] M. Mueller, “xcopterCalc – eCalc for Multirotor,” Tann, Switzerland, 2018. [Online]. Available: www.ecalc.ch (accessed 2 Dec 2018)
+[8] Raymer, P., Aircraft Design: A Conceptual Approach, 2nd ed., American Institute of Aeronautics and Astronautics, Washington, DC, USA, 1992.
+[9] M. Gatti and F. Giulietti, “Preliminary Design Analysis Methodology for Electric Multirotor,” in 2nd IFAC Workshop on Research, Education and Development of Unmanned Aerial Systems, Compiegne, France, 2013.
+[10] Bershadsky, S. Haviland and E. N. Johnson, “Electric Multirotor Propulsion System Sizing for Performance Prediction and Design Optimization,” in 57th AIAA Structures, Structural Dynamics, and Materials Conference, San Diego, CA, USA, 2016. [11] Gur, O., and Rosen, A., “Optimizing Electric Propulsion Systems for UAVs,” in 12th AIAA Multidisciplinary Analysis and Optimization Conference, Victoria, BC, Canada, 2008. [12] Winslow, J., Hrishikeshavan, V., and Chopra, I., “Design Methodology for Small-Scale Unmanned Quadrotors,” Journal of Aircraft, Vol. 55, No. 3, pp. 1062-1070, 2018.
+[13] Sinsay, J. D., and Nunez, G. F., “Toward Right-Fidelity Rotorcraft Conceptual Design,” in 51st AIAA Structures, Structural Dynamics, and Materials Conference, Orlando, FL, USA, 2010.
+[14] Cheng, D., Charles, A.C., Srigrarom, S., and Hesse, H., “Morphing Concept for Multirotor UAVs Enabling Stability Augmentation and Multiple-Parcel Delivery,” in AIAA Science and Technology Forum and Exposition, San Diego, CA, USA, 2019. [15] Leishman, G., Principles of Helicopter Aerodynamics, Cambridge University Press, New York, NY, USA, 2002.

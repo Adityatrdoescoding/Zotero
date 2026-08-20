@@ -1,0 +1,674 @@
+JOURNAL OF THE AMERICAN HELICOPTER SOCIETY 69, 032004 (2024)
+Aerodynamic Performance of a Hovering Cycloidal Rotor: A CFD Study with Experimental Validation
+Louis Gagnon∗ Leonard Donners Florian Zimmer Manuel Keßler Researcher Master Student Master Student Senior Researcher Institute of Aerodynamics and Gas Dynamics, University of Stuttgart, Stuttgart, Germany
+A three-dimensional (3D) unsteady Reynolds averaged Navier–Stokes (URANS) computational fluid dynamics (CFD) toolkit for cycloidal rotors was developed and used to perform a parametric study. It included blade aspect ratio, side disks, pitch mechanism, blade camber, and shaft size. The influence of the pitch rod length showed the importance of the lift distribution between the upstream and downstream parts of the rotor cylinder. The application of blade camber significantly affected thrust and power, while having a limited effect on efficiency. A similar effect was obtained by varying the pitch rod lengths. The presence of a central axis in the rotor had a negligible effect on efficiency. The most significant impact on efficiency came from the side disks, which behaved similarly to winglets on fixed-wing aircraft. However, changing the aspect ratio of the blades showed a similar response to that of aircraft wings, but with a smaller effect, making it conceivable to fly a square-bladed cyclorotor without side disks. To verify the CFD model, a cycloidal rotor was also built using 3D printed parts and carbon fiber tubing. It was then operated on a test rig where thrust and power were measured for speeds ranging from 408 to 2528 RPM. On the test bench, the blades were pitched with a uniform asymmetric mechanism. The maximum nose-up pitch angle in upstream of the rotor axis was 34.8◦. Due to its rotation around the rotor and its pitching in the opposite direction, the maximum nose-up pitch angle of the downstream blade was 38.6◦. The obtained rotor thrust and power curves and the flow visualization around the rotor confirmed the validity of the CFD toolkit.
+Nomenclature
+A projected rotor area a cylinder diameter an distance between pivot point and eccentricity for blade n b blade span c chord Cd drag coefficient CL lift coefficient Cp pressure coefficient Cpow power coefficient CT force coefficient in the main thrust direction d distance between rotor and control shafts in the x − y plane dn distance between the pivot and pitch hinges for blade n dax axle diameter dn vector starting at the pivot point and ending at the pitch point for blade n dt timestep e distance between rotor and control shafts in the x − y plane Fair,n aerodynamic force vector for blade n Farm3,n force of the rotor arm acting on blade n Fpit,n force carried by the pitch rod and acting on blade n
+∗Corresponding author. email: gagnon@iag.uni-stuttgart.de. Manuscript received March 2023; accepted February 2024.
+Fx,y,z force component in the x, y, or z-direction kˆ unit vector in the z-direction ln length of pitch link for blade n ln vector representation of the pitch link of blade n Mair,n aerodynamic moment acting about the blade’s pivot point for blade n Mcal calibration matrix Mz global moment Mmot motor moment Mz,e eccentric bending moment n index of the current blade (0, 1, 2, 3) N index of the last blade (number of blades minus 1) P power Pmot motor power P percentage deviation from the reference case for power R0 radius of the rotor Re Reynolds number Rn vector representation of the rotor arm link Rn rendplate endplate radius T thrust T percentage deviation from the reference case for thrust t time U∞ blade velocity U∞,c rotated blade velocity x y abscissa and ordinate of the inertial coordinate system
+DOI: 10.4050/JAHS.69.032004 032004-1 C© 2024 Vertical Flight Society
+
+
+L. GAGNON JOURNAL OF THE AMERICAN HELICOPTER SOCIETY
+y+ dimensionless wall distance z third axis of the inertial coordinate system, which is parallel to the rotor axle αa,0 angle between rotor arm and pivot point-eccentricity link αb,0 angle between chord and pivot-eccentricity link αLE angle of attack at the leading edge in case of curvilinear flow β0 angle between the rotor arm and the pitch offset link change ψ azimuthal increment angle between abscissa and pitch offset link θ thrust angle relative to the y-axis φn pitch angle of blade n with respect to the tangent line φmax maximum pitch angle φ ̇ pitch velocity ρ density σ rotor solidity ψn azimuthal angle of blade n with respect to the positive x-axis angular velocity of the rotor AMI arbitrary mesh interface CFD computational fluid dynamics DDES delayed detached eddy simulation FoM figure of merit PIMPLE merged the PISO-SIMPLE algorithm to solve the continuity and momentum equations PRL pitch rod length RPM revolutions per minute SST shear stress transport URANS unsteady Reynolds averaged Navier–Stokes
+Introduction
+The cycloidal rotor or cyclorotor has the particular feature of having its blades’ span direction aligned with the rotation axis. The working principle is shown in Fig. 1. Thrust is generated by harmonically pitching the blades, ensuring a positive angle of attack for the majority of the rotation. Despite being conceptualized over a century ago and recent industrial interest in cycloidal rotors, only limited test flights have been conducted thus far. To make cycloidal rotors industrially viable, their flight times need to be extended. To do this, their efficiency must be improved. Being efficient for a flying device capable of hover means that it has to be lightweight and has to efficiently use the area across which it propels the air through its rotor. For a cycloidal rotor, this area is calculated by rotor diameter times blade span. This area should also be kept small in order to ease flight in restrained zones. Researchers used two-dimensional (2D) computational fluid dynamics (CFD) to analyze different cyclorotor features such as the interactions between the blades (Ref. 1), alternative pitch functions (Ref. 2), airfoil shapes (Refs. 3, 4), the Magnus effect on the rotor axle (Ref. 5), virtual camber (Refs. 6–8), and, other dynamic effects (Ref. 9). The third spatial dimension becomes necessary to study tip vortices, out-of-plane inflow, turbulence, and aircraft structures. In addition, threedimensional (3D) CFD simulations are used to investigate the effects of blade endplates or rotor end-disks (Refs. 10, 11), the influence of blade planform taper and aspect ratios (Ref. 12), the spanwise thrust distribution (Refs. 13, 14), and guide the design of a drone (Refs. 15, 16). A case of using OpenFOAM’s PIMPLE algorithm with a 3D mesh to study a barebone cycloidal rotor system is also documented in Ref. 17. Additionally, numerous cyclorotors that have been constructed and tested are documented in the literature. Many of these tests were conducted in still
+BR
+H Fi
+B
+B
+B
+P offset
+B
+Fig. 1. Geometry of a rotor using a uniform pitch mechanism.
+air conditions (Refs. 1, 18–24). Various rotor angular velocities are often tested (Refs. 6, 23, 24). This paper presents the outcomes of a project involving the construction of a cycloidal rotor primarily utilizing 3D printing and carbon fiber tubes. The CFD model and rotor prototype were developed based on insights gained from a preceding experimental study (Ref. 21) focused on optimizing rotor efficiency during hover. The rotor was then tested at rotating velocities up to 3,000 RPM. High-frequency measurements were taken for forces and moments, while flow visualization and a velocity sensor were employed to reconstruct the experimental flow field. This then served to validate a 3D unsteady Reynolds averaged Navier–Stokes (URANS) CFD model, which was used to conduct a parametric study of various geometric aspects of the rotor. The aim of the study was to further increase the efficiency, measured with the figure of merit (FoM) of the rotor. To do so, the sensitivity of the FoM to the blade aspect ratio, presence of endplates, pitch rod length (PRL), blade camber, and axle size were verified. This study thus contributes significantly to understanding how cycloidal rotor hover performance may be improved. It confirms that the aspect ratio has a minimal effect on efficiency, consistent with previous findings. It also reveals the ability of 3D cyclorotor flow to significantly increase the pitch angle at which downstream blades encounter stall. The study of the interplay between physical camber and pitch schedule (PRL) sheds light on optimization opportunities. In addition, it explains the counterintuitive negative effect of positive camber observed by previous researchers and elucidates the intricacies of counteracting rotation-induced virtual camber to increase efficiency. Also, the research contributes to the improvement of the best demonstrated FoM for cycloidal rotors, confirming the optimal parameters identified by Kellen et al. (Refs. 21, 25). The study extends into higher RPM ranges than many previous works, both experimentally and theoretically and provides valuable insights. It confirms the tendency for cycloidal rotors to achieve higher efficiencies at higher Reynolds numbers. It also demonstrates the feasibility of using 3D printed rotor blades and arms for experimental rotor testing, even at high speeds without visible blade deflection. Finally, it demonstrates the capability of the OpenFOAM solver for high-fidelity rotor simulations. As such, both numerical and experimental analyses show strong agreement in revealing the highly 3D flow entering the cycloidal rotor including from the sides. This paper is structured to first introduce two particularly important aspects of cyclorotors—their pitch control mechanisms and
+032004-2
+
+
+AERODYNAMIC PERFORMANCE OF A HOVERING CYCLOIDAL ROTOR 2024
+CP
+aR
+a
+c
+b
+l
+ex
+P
+d
+V A
+Fig. 2. Geometry and used variables for blade 0, which has a fixed pitch link.
+virtual camber—then describe the CFD model and its subsequent validation with a rotor prototype of the same dimensions and finally discuss in detail the results of the parametric study.
+Particular Aspects of Cyclorotors
+Pitch control mechanism
+Both uniform and nonuniform pitch mechanisms can be used to control cycloidal rotors. The uniform mechanism applies the classic motion of a cycloidal rotor and provides each blade of the rotor with the same pitching schedule. It is used, for example, in the prototype of Ref. 25. On the other hand, the nonuniform mechanism applies a slightly different pitch function to each blade of the rotor. An example of its use is seen in Ref. 26. In this work, a uniform mechanism was used. This mechanism is built into the prototype and shown in Fig. 16. The geometry of the uniform mechanism corresponds to using n linkages identical to the one for blade 0 shown in Figs. 1 and 2. The uniform pitch mechanism is geometrically simpler but arguably more complex to build than the nonuniform mechanism. This is caused by the pitch arms having to all meet at the pitch offset center point, which can also interfere with the rotor axle. In the prototype, this is achieved by distributing them along the control shaft and using a coupling ring shown in Fig. 16. This mechanism has the advantage of allowing each blade to follow the same pitching schedule φn(ψn) over a rotation, as shown in Fig. 3. The figure shows the pitch angle for different changes of the pitch link length l0. A positive φ means that the blade nose is moving away from the circle described by the blade pivot point. The linkage of the control mechanism forms a four-bar mechanism for each blade. The equations of each linkage were derived from several sources including Refs. 27 and 28. The pitch motion of each blade of the uniform mechanism is given by Eqs. (1)–(4)
+a0 =
+√ R2
+0 + e2 − 2eR0 cos(β0 ) (1)
+αa,0 = arcsin
+(
+e sin β
+a0
+)
+(2)
+αb,0 = arccos
+(
+a2
+0 + d2
+0 − l2
+0 2 a0d0
+)
+(3)
+φ0 = π
+2 − αa,0 − αb,0 (4)
+where the variable names are defined in Fig. 2. The term β0 is the angle between the rotor arm of blade 0 and the pitch offset link, β0 = + ψ0, where ψ0 is the rotor arm angle of blade 0 with respect to the positive xaxis. The term is the angle, taken in the negative direction, of the pitch offset link and the positive x-axis. The length of the pitch link is l0, the
+0 45 90 135 180 225 270 315 360
+−50
+0
+50
+Rotation angle ψ
+Pitch angle φ
+Δ(l0) = 0 mm (ref) Δ(l0) = 2.2 mm Δ(l0) = 4.2 mm Δ(l0) = −3.8 mm Δ(l0) = −7.8 mm
+Fig. 3. Uniform pitching schedule for different changes of the pitch link lengths l0.
+Ψ=0 Ω
+Y
+X
+Fig. 4. Chord and virtual camber lines of a blade along the rotor.
+Ωb
+U∞
+Fig. 5. Chord and virtual camber lines caused by pitching.
+U∞ U∞
+U ∞c
+U ∞c
+αLE
+Fig. 6. Chord and virtual camber lines caused by rotation.
+variable d0 is the distance between the pivot and pitch hinges, and R0 is the radius of the rotor. The angles αa,0 and αb,0 and the virtual link a0 divide the quadrilateral formed by the pitch mechanism into two triangles. The pitch angle is obtained by using the cosine rule to obtain the auxiliary quantity αb,0. The angles αa,0 and αb,0 then allow the calculation of the pitch angle φ0. As the blade rotates due to an increasing ψ0, the two triangles formed by the a0 divider line will first switch sides with one another and then overlap themselves, but the definition of the αa,0 and αb,0 angles and their relation with φ0 as defined in Eq. (4) remain valid for the whole rotation.
+032004-3
+
+
+L. GAGNON JOURNAL OF THE AMERICAN HELICOPTER SOCIETY
+0 0.2 0.4 0.6 0.8 1
+−5
+−4
+−3
+−2
+−1
+0
+1
+2
+x/c
+CP
+Outer side Inner side
+(a) ψ = −10◦
+0 0.2 0.4 0.6 0.8 1
+−5
+−4
+−3
+−2
+−1
+0
+1
+2
+x/c
+CP
+Outer side Inner side
+(b) ψ = 186◦
+0 0.2 0.4 0.6 0.8 1
+−5
+−4
+−3
+−2
+−1
+0
+1
+2
+x/c
+CP
+Outer side Inner side
+(c) ψ = 90◦
+0 0.2 0.4 0.6 0.8 1
+−5
+−4
+−3
+−2
+−1
+0
+1
+2
+x/c
+CP
+Outer side Inner side
+(d) ψ = 270◦
+Fig. 7. Pressure coefficient Cp at various azimuthal positions.
+Virtual camber
+In the flow field of a cycloidal rotor, both curvilinear flow and fast pitching occur. Both effects cause the symmetrical airfoil to behave as a cambered one would in rectilinear flow. The approximate direction and amount of camber are shown in Fig. 4. This is a known effect (Refs. 8,29), which is called the virtual camber and is briefly explained here. Looking at the blade in the position of Fig. 5, the upstroke pitching creates a downwards relative velocity component in front of the pivot point and an upwards velocity component behind it. Proceeding incrementally over the chord and computing the different inflow angles yields the resulting additional relative flow velocity vector. This vector can then be transformed into the virtual camber line of Fig. 5. The opposite occurs for downstroke pitching. The pitching rate being a function of the azimuth angle ψ causes the pitch-induced virtual camber effect to also depend on the blade’s azimuthal position. On the other hand, the virtual camber caused by curvilinear flow is constant over the rotation and is determined solely by the chord-to-radius ratio c/R0, which, however, should be corrected to account for the influence of the pivot point position on the mean radius of the blade path and its fixed or instantaneous pitch angle on the chord length projected along this path. It results from the relative velocity being tangent to the path of the blade. This relative flow velocity angle is zero at the pivot but changes along the chord. It thus increases in strength with c/R0. The same procedure as for pitching can be made by rotating the inflow vector for each chord element until the inflow is parallel to the original chord. This results in the camber line shown in Fig. 6. As a result of the virtual camber, at the two near-zero physical pitch angles occurring at ψ = −10◦ and ψ = 186◦, strongly differing pressure
+distributions1 occur as shown in Figs. 7(a) and 7(b). In this figure, the inner side of the blade is the one facing the rotor center and rotation velocity is 5,300 RPM. The different pressure distributions at opposing positions can be explained by the two individual virtual cambers. At ψ = −10◦, the virtual camber due to curvilinear flow and virtual camber due to pitching velocity work in opposite directions. For the given geometric configuration, both effects have almost the same strength and cancel each other out. At ψ = 186◦, the virtual cambers resulting from curvilinear flow and pitching sum up and simulate a cambered profile. As a result, the pressure distribution along the chord differs as shown in Fig. 7(b). Although still disturbed by dynamic stall and the ensuing detaching vortex, the suction which occurs at the inner part of the symmetrical blade due to virtual camber is visible. Finally, Figs. 7(c) and 7(d) also show the influence of the virtual camber at ψ = 90◦ and ψ = 270◦. At those positions, the pitch velocity (φ ̇) is almost zero. For this reason, the virtual camber consists almost exclusively of the constant part from curvilinear flow. At ψ = 90◦, the virtual camber caused by rotation produces thrust in the negative y-direction, counteracting the thrust generated by the pitch angle of the blade. This leads, on the outer side of the airfoil, to a weaker negative pressure and a positive pressure at the rear half of the blade. At ψ = 270◦, pitching and virtual cambering act in the same direction. Hence, the whole inner side experiences a negative pressure and much more lift can be generated. The influence of the rotor-induced downflow reducing the effective angle of attack is at both positions important but is stronger at ψ = 270◦ because the vertical velocity increases from top to bottom.
+1Video of the pressure plots over a full rotation: https://youtu.be/ 33YoMBEAOdI.
+032004-4
+
+
+AERODYNAMIC PERFORMANCE OF A HOVERING CYCLOIDAL ROTOR 2024
+CFD Model
+Each simulation in this study is conducted using the 3D URANS CFD method. The PIMPLE algorithm, an unsteady incompressible solver of the OpenFOAM finite volume software, is used. Turbulence is modeled by the k−ω−SST model implemented in OpenFOAM. The rotor arms and pitch links are neglected by the simulation, and thus only the blades of the cyclorotor are modeled. Furthermore, a symmetry boundary condition is used at midspan to reduce the computing costs by 50%.
+Blade rotation and oscillation
+Each rotor blade is located in a hemispherical grid zone, as shown in Fig. 9, which oscillates as a whole. Between these zones, the arbitrary mesh interface (AMI) boundary condition, represented by the yellow circle in Fig. 10, performs the conservative field interpolation of Ref. 30. The AMI interpolation weights are hereby computed for each timestep as a set of values between the matching cells of the inner and outer boundaries of the blade’s elongated hemisphere. The rotor rotation is applied simultaneously to every zone of the simulation domain around the rotor center. The pitch function of Eq. (4) is also applied individually to each elongated hemisphere blade zone around its center.
+Boundary conditions and general parameters
+Farfield-type boundary conditions are used for the outer bounds of the domain. The walls of the blades use their moving velocity and a nonslip condition made for grids having y+ < 1 and thus not relying on wall functions. A symmetry boundary condition acts at the midspan point of the whole simulation domain. The use of the PIMPLE algorithm allows running with a high Courant number because it conducts several layers of inner iterations at each timestep. A more thorough description of its implementation is available in Ref. 31. The limited linear scheme is used to solve the divergence operators, as it reaches second-order accuracy and limits to the upwind solution where the gradient is strong. A second-order backward time scheme is used. A fixed timestep corresponding to a rotation of 0.5◦ is used for the start and settlement phase of the rotor flow. The timestep is then gradually decreased to reach 0.1◦ for the last rotor revolutions, leading to a maximum Courant number of 30. Care must be taken when interpreting the Courant number because the PIMPLE algorithm uses several layers of inner iterations for each timestep. The results are then extracted from these final rotor revolutions. At the start of each simulation, the amplitude of the pitching function is ramped and the final iteration of each timestep is underrelaxed. To do so, the pitch angle of the mesh as calculated by the code is multiplied by (1 − cos( t))/2 for the first half rotation. After these initial adjustments, underrelaxation is only used for the inner iterations of the timesteps. To damp unsteady effects such as start vortices as the rotor begins to rotate, 12 rotations are run prior to conducting any evaluation of the results. Tests have shown that, by then, periodical constancy is reached and a fully developed flow regime is established, as shown in Fig. 8.
+Mesh
+By means of symmetry, the complete CFD domain is a hemisphere. A hybrid mesh consisting of structured and unstructured portions was used. The blade zones with their boundary layer extrusions are structured and the background mesh unstructured, but mostly Cartesian. Pointwise was used to generate the structured component meshes of the rotor blades, and the meshing guidelines of the drag prediction workshop (Ref. 32) were followed. The half rotor blades are modeled with 144 points along the
+0 10 20 40
+0.65
+0.70
+.75
+0.80
+Revs
+CT
+Fig. 8. Mean thrust over calculated revolutions at = 2439.0 RPM.
+chord for each of pressure and suction sides, including 10 points forming a rounded trailing edge. In the spanwise direction, 64 points are used along half the blade span. A structured boundary layer mesh is extruded in the normal direction with the initial cell height required to ensure y+ ≤ 1. Its first two cells are equally sized, and the growth rate of the next 33 cells does not exceed 1.2. A second structured normal extrusion is conducted and then projected to the elongated hemisphere shape shown in Fig. 9, which has a radius equal to the chord length. The structured blade mesh at the symmetry plane is shown in Fig. 10. Postprocessing confirmed that at the maximal rotation velocity of 5,300 RPM used in this study, the maximal y+ value on the blade over a rotation varied between 0.5 and 0.8. This same mesh is then used for each investigated rotation velocity. The background mesh between the blade zones and the outer boundaries of the domain was created using OpenFOAM’s automatic meshing tool snappyHexMesh. As such, an unstructured Cartesian grid consisting of hexagonal cells is created around the elongated hemispheres of the blades and refined in the areas of interest by recursively bisecting the cells. A cell height of 2% chord length is used for the background mesh inside the rotor radius. The resulting rotor mesh consisting of the structured blade mesh and the unstructured background mesh at the symmetry plane is shown in Fig. 11. The hemispherical farfield has a radius of 60 rotor radii as seen in Fig. 12. A single boundary layer extrusion is added to the background mesh side onto each elongated hemisphere to match the cell edge length of their last blade extrusion layer and thus preserve the quality of the interpolation. Each elongated hemisphere zone has 1.9 million cells, while the background mesh consists of approximately 4 million hexahedral cells. The baseline mesh thus has 11.8 million cells. Differences in mesh size occur for the cases where the aspect ratio is varied, going from 9.5 million to 24 million cells between c/b = 1 and c/b = 6.
+Enhanced spatial discretization
+The mesh was then refined to have two times smaller cells on the blade and in the background mesh. We used the k-omega-SST delayed detached eddy simulation (DDES) model implemented in OpenFOAM. The choice of DDES was made because it was interesting to study the evolution of the vortex structures in the wake of the rotor. Testing2 has shown that the differences between URANS and DDES on the pressure distribution on the blades of a cycloidal rotor are negligible, and
+2The coherence between the pressure distributions obtained by URANS and DDES can be seen in the following video: https://www.youtube.com/ watch?v=33YoMBEAOdI
+032004-5
+
+
+L. GAGNON JOURNAL OF THE AMERICAN HELICOPTER SOCIETY
+Fig. 9. Blade elongated hemisphere grid zone.
+Fig. 10. Blade mesh zone with highlighted AMI interface.
+Fig. 11. Rotor with structured and unstructured grid regions.
+it was, therefore, decided to save computational time. The DDES case was, therefore, used both for the verification of the original mesh and for the identification of vortex structures outside the boundary layer and in the wake. To implement the refined wake extending downstream of the rotor, an additional rotation interface was inserted around the rotor. The total number of cells of this additional case is 284 million, of which 15 million is used for each blade. The purpose of this additional case was to test how well this CFD setup scales on the available high-performance computing system. As a result, while the reference case requires 1.6 s per timestep with approximately 10,000 cells per processor, this refined case requires 30 s per timestep at approximately 139,000 cells per processor.
+Fig. 12. Hemispherical farfield with Cartesian refinement regions.
+This value of 30 s also is only obtained after fine-tuning the inner loops of the PIMPLE algorithm to reduce to a maximum the number of iterations per timestep. Half of the computation time is used to compute the AMI interfaces. Therefore, using fewer cells per processor for the refined case no longer reduces the required computation time. It was expected that the refined mesh would provide a much better resolution of the vortices on the blade. The simulation timestep corresponds to an azimuthal increment of ψ = 0.25◦, which is 2.5 times that of the reference simulation, but well within standard practice for rotor CFD. The corresponding maximum Courant number was in the order of 300, which is acceptable considering that this high number is reached in the boundary layer where the DDES code runs in URANS mode and that the PIMPLE algorithm uses several layers of inner iterations for each timestep. Although a 0.1◦ timestep was used for the final revolutions of the regular mesh simulations, this proved to be excessive and was avoided for the more expensive refined mesh simulations. Also, no noticeable differences in forces and moments were observed between the two time resolutions. This result is in line with expectations, as URANS rotor models typically use timesteps of 1 or 2 deg. While a different argument could be made for a non-URANS simulation, the DDES model was only applied to the refined mesh to explore vortex structures and validate the mesh of the URANS model. In this context, there should be no significant differences between the two timestep sizes. The resulting percentage deviation from the reference case for rotation averaged values is T = −4.7% for thrust and P = −5.3% for power. The thrust and power coefficients CT and Cpow along the azimuth ψ are displayed in Fig. 13 and exhibit qualitative and quantitative very similar behaviors. Given that the displayed results of the reference and refined mesh cases overlap almost perfectly, the influence of the Courant number on the refined case was not further investigated. A further detailed mesh refinement study was also not performed because the meshing methodology from the drag prediction workshop was followed (Ref. 32). Furthermore, this meshing approach has been in use for many years in the rotorcraft simulation research group at IAG and has been also refined and tested for various cycloidal rotor projects such as Ref. 33. An attempt to observe the formation of the horseshoe vortex for the refined mesh for azimuths ψ = 150◦ and ψ = 160◦ is shown in Figs. 14(a) and 14(b), respectively. As the 284M case resolves much more small turbulent vortex structures, the horseshoe vortex is no longer discernible. Irrespective of the type of vortex, that is, horseshoe, wing or leading edge vortices, the presence of vortex structures that detach from the plunging cycloidal rotor and propeller blades was observed by many authors (Refs. 13,34,35). Experiments by van Rooij (Ref. 34) confirmed that they are quite sensitive to both pitch schedule and RPM and
+032004-6
+
+
+AERODYNAMIC PERFORMANCE OF A HOVERING CYCLOIDAL ROTOR 2024
+0 45 90 135 180 225 270 315 360
+0
+0.5
+1
+1.5
+2
+2.5
+Ψ
+CT
+Ref. CT 284M CT
+0 45 90 135 8 2 5 270 315 360
+0
+0.5
+1
+1.5
+2
+2.5
+Cpow
+Ref. Cpow 284M Cpow
+Fig. 13. Force and power coefficient at = 1695 RPM for two spatial discretizations.
+Δz = 0 0.55b
+(a) ψ = 150◦
+Δz = 0 0.55b
+(b) ψ = 160◦
+Fig. 14. Isosurfaces of the Lambda2 vortex criterion for both 284M and original case at = 1695.0 RPM.
+that they do not consistently repeat themselves for every blade of the rotor. Whether the horseshoe vortex of the current URANS model is an existing flow feature of a cycloidal rotor blade or just a visualization/discretization artifact and whether the high-resolution DDES model is closer to the reality remains to be investigated. The whole case of the refined mesh, along with code modifications, mesh generation files, and
+Fig. 15. Cyclorotor prototype on the test bench.
+Fig. 16. Main control shaft and pitch links.
+animated results is available online3 to allow testing and code optimization by other people.
+Experimental Validation
+Rotor prototype
+The rotor consists of four cycloidal rotor blades, which have been 3D printed and utilize the conventional four-bar mechanism for pitch control. It was built with the intent to develop it into a two-rotor flying device which is not described in this paper but rather in Ref. 36. To withstand the centrifugal forces of two coaxial cyclorotors, the rotor arms are thicker on one side. Also, weight and size were kept small to ensure airworthiness and limit prototyping costs. Within these given constraints and to ensure maximal efficiency, the geometry of the rotor and the operating Reynolds number were strongly inspired by the results of the experimental study by Kellen et al. (Refs. 21,25). Consequently, the Reynolds number of 200,000 given in the reference study leads to a 5,300 RPM rotation velocity for the current prototype. This velocity proved to be a structural challenge, and thus the current prototype was only tested up to approximately 3,000 RPM. The rotor was designed with four NACA 0024 airfoils and is shown in Fig. 15 along with two detailed views in Figs 16 and 17. The rotor arms and blades were 3D printed using Z-ULTRAT acrylonitrile butadiene styrene based filament and experienced material shrinkage in the order of approximately 1%. The printer used is a Zortrax M200, and the blades were printed to have a single layer of material. Consequently, the printed blade thickness ratio changed from the planned 24% to 25.8%. This discrepancy between the designed and printed parts is the result of the plastic material shrinking as it cools. The same material, printer, and settings
+3Dataset: https://doi.org/10.18419/darus-3340 and videos of wake vorticity: https://youtu.be/_vl5uO_mVVo and the impact of turbulence on surface pressure: https://youtu.be/jJQBeXSGawI
+032004-7
+
+
+L. GAGNON JOURNAL OF THE AMERICAN HELICOPTER SOCIETY
+Fig. 17. Rotor at 2,500 RPM lit by a stroboscope at 10,000 RPM.
+Table 1. Specifications of the rotor dimensions
+c dpivot
+c R0 d e l b dax (mm) (%) (mm) (mm) (mm) (mm) (mm) (mm)
+55.50 36.00 84.25 16.96 9.95 85.80 85.00 8.20
+Table 2. Specifications of the rotor operating parameters
+Flight Regime RPM Reynolds Number
+Hover 400 ≤ RPM ≤ 5, 300 12, 000 ≤ Re ≤ 200, 000
+were used, so the four blades are equal or very similar. This was also verified by manual measurement and by flashing the stroboscope at the blade passing frequency, as shown in Fig. 17. Under such flashing conditions, the sharpness of the image consisting of the four superimposed blades confirmed that the blades are equal or very similar. On another note, Fig. 17, confirms that each blade followed the same pitch schedule and that there were no visible blade deformations. The rotor dimensions provided, as well as those used in the CFD model, were calibrated through measurements of the 3D printed components. The adjusted values are as follows: chord length c = 55.50 mm, radius R0 = 84.25 mm, blade span b = 85.0 mm, pivot–pitch distance d = 16.96 mm, central offset e = 9.95 mm, and total pitch link length l = 85.80 mm, where l = l0. The pivot point is placed 20 mm from the leading edge, thus at 36% chord length. The rotor dimensions are summarized in Tables 1 and 2, where the given axle diameter dax applies to the experimental rotor since the reference CFD rotor has no axle.
+Measurement setup
+The rotor was held on the test bench from both sides, as depicted in Fig. 18. Based on typical cycloidal rotor flows, it is known that the inflow is spread over a large angle and only the wake produces a concentrated jet that is likely to interact with any blocking object. Therefore, the possibility of blockage from the support arm and test rig can be safely neglected. This was also confirmed by the measurements and CFD of the flow around the rotor, as shown in Fig. 25. The pitch mechanism was adjusted to generate horizontal thrust, thereby mitigating ground effects. To do so, the offset (eccentric) link was placed directly downstream of the rotor. It thus had a zero angle with the negative y-axis; or in other words, an angle = 90◦. On the one side, the axle driving the pitch rods was connected to the electric motor, and, on the other side, the pitch rods were attached to a rigid frame. An offset between the rotor’s axis of rotation and the pitching was necessary to force the harmonic pitching of
+Fig. 18. Schematic measurement setup seen from the upstream side.
+the blades. The whole setup was attached at a single point to the force gauge. The average thrust and the average moment were measured by the gauge for rotational velocities of 400 RPM ≤ ≤ 2600 RPM. The air density during these measurements was ρ = 1.1436 kg/m3. Further investigations of the flow field were conducted using a velocity probe and a smoke generator. The single rotor used in this study is powered by an electric motor, which is attached to a ME-Meßsysteme K6D40 500N/20Nm sixaxis force transducer. The rotor is driven by a Lindinger Joker5060-6 brushless electric motor, which is attached to its shaft as shown in Fig. 18. The rotational velocity is measured by a Contrinex LTK-1120-303 photoelectric proximity switch. The force balance output signal is amplified with an ME GSV-1A8 K6D/M16 amplifier. The (amplified) analog signals of the force balance and the photoelectric proximity switch are processed by a National Instruments DAQPad-6015 analog–digital converter. The signals are recorded by a laptop using LabView 2013. The high-precision calibration matrix given in the Appendix is used after verification by static test cases. The same matrix and force balance were also used by Ref. 37. As such the absolute errors are below 0.15 N for the forces perpendicular to and 0.01 Nm for the moment about the rotor shaft. A Pololu Micro Maestro servo controller connected to a Castle Phoenix Edge 50 motor controller drives the electric motor. Continuous monitoring of the RPM captured by the photoelectric sensor confirms that its variation remains below 2%, but average values of the RPM were nonetheless calculated for each sample. The electric power of the whole test rig is provided by two Varta G3 12 V 95Ah car batteries connected in series to provide a DC voltage of 24 V.
+Motor torque
+The torque provided by the motor is of primary interest when considering the efficiency of a cyclorotor. It allows to obtain the motor power Pmot = Mmot · , where is the angular velocity of the rotor. In the present study, its only nonzero component is in the z-direction, and inertial forces are neglected by the simulation. The neglect of the inertial forces thus implies that all the work done on the system comes from the aerodynamic forces. This work, however, does not directly correspond to the work performed by the motor and motor power. Therefore, the following mathematical expressions differentiate between the rotor moment calculated by a CFD simulation and that from the test bench. The two differ from each other due to the absence of linkages in the CFD simulation. The motor power is obtained by subtracting the vector of the pitch rod force Fpit,n from the aerodynamic force. This difference depends on the geometry of the pitch mechanism and the position of the blade, as shown in Fig. 19. Referring to the uniform pitch mechanism of the prototype
+032004-8
+
+
+AERODYNAMIC PERFORMANCE OF A HOVERING CYCLOIDAL ROTOR 2024
+0 45 90 135 180 225 270 315 360
+−2
+−1
+0
+·10−2
+Ψ (°)
+Mz (Nm)
+Mz
+Mz,e Mmot
+Fig. 19. Moment and torque of a single blade obtained by using the CFD-obtained Farm3,n and −Fair,n into Eq. (5) at = 1433.3 RPM.
+shown in Fig. 2 and generalizing it for a blade n, the motor moment is
+Mmot =
+∑n
+n=0
+(Rn × Farm,n ) (5)
+where n is the index of the last blade, Rn is the vector representation of the rotor arm link Rn having origin at the rotor center, and Farm3,n is the force of the rotor arm acting on blade n. By isolating the blade as link dn, its reaction forces yield the relation Farm3,n = −Fair,n −Fpit,n. The term Fair,n represents the aerodynamic force vector computed by CFD for blade n. Using the associated aerodynamic moment acting about the blade’s pivot point, Mair,n, the force carried by the pitch rod and acting on the blade can be calculated as
+Fpit,n = −ln
+‖ln‖
+Mair,n · kˆ
+‖oprojln dn‖ (6)
+where ln is the vector representation of the pitch link of blade n having origin at the control shaft and oprojln dn = dn − projln dn is the rejection of dn from ln, where dn is the vector starting at the pivot point and ending at the pitch point. The use of the vector rejection is because the pitch rod is hinged at both ends which implies that the force it carries can only act along its length. Although the model validation plots shown in Figs. 21 and 23 were computed without the torque correction, which allowed the physical arrangement of the test rig to be correctly represented, all other power coefficients Cpow and the FoM given in the parametric study of this paper were all computed using only the torque-corrected simulated motor power, which is different from the power calculated using the total moment at the center of the rotor. To quantify the difference, Fig. 19 shows the moment profile of a single blade over one revolution of a default CFD simulation. This includes the global moment Mz, as well as the motor torque Mmot and the eccentric bending moment Mz,e. The global moment is the total aerodynamic moment transmitted by the air to the blades and is equivalent to the moment measured in a typical CFD simulation. It is calculated as
+Mz = ∑
+fc
+(Fpres, fc + Fvisc, fc ) × r fc (7)
+where fc represents a cell face subjected to vectorial aerodynamic pressure and viscous forces Fpres, fc and Fvisc, fc , respectively. The position of the cell face with respect to the rotor axle is given by the vector r fc , and the summation is done on every wall cell face of the computational domain. The bending moment is the moment added or subtracted to the
+500 1,000 1,500 2,000 2,500
+0.4
+0.6
+0.8
+1
+1.2
+RPM
+CT
+Exp. CFD
+Fig. 20. Thrust coefficient CT .
+global moment by the pitch rods as they transmit their force with an offset through the eccentric link to the rotor axis. Therefore, the resulting moment to be provided by the motor is called the motor torque. In this case, the average motor torque is approximately 4% greater than the total moment. This is due to the eccentricity and its contribution to the rotor axis moment. This 4% value is also highly dependent on the geometry of the pitch mechanism, as it affects the amount of torque transferred through the pitch offset rod and then to the motor. Different configurations achieve a different deviation between motor torque and total moment, which makes the torque correction necessary even for qualitative comparison. Reed et al. (Ref. 38) investigated this topic using experimental measurements of the pitching moment. They defined a total power consisting of pitching power and rotation power. Their experimental data show curves similar to the current case. However, many studies, such as Kellen (Ref. 21) and Zimmer (Ref. 7), do not consider the torque correction described in the section of this paper on the particular cyclorotor aspects. This makes quantitative comparison more difficult.
+Results
+The momentum theory yields that thrust and power increase with the square and the cube of the rotation velocity, respectively. All references to experimental power in this study refer to mechanical power calculated from the force balance moment and rotational speed. Figures 20 and 21(a) display experimental and numerical values of the thrust CT = ρ T
+2 (ωR)2A and power Cpow = ρ P
+2 (ωR)3A coefficients, where
+A = 2bR is the projected rotor area, for various rotational speeds. The fluctuating CT values for ≈ 400 RPM deviate strongly from the quadratic relation and are attributed to oscillations in the motor start torque. The gradual deviation between experimental and simulation Cpow is partly explained by increasingly strong vibrations of the pitch control rods at high angular velocities. These vibrations lead to increased rotor friction and energy dissipation. Friction should be negligible, considering that every hinge in the built rotor has a ball bearing. The same cannot be said for the energy dissipation due to vibration, which could reach values as high as the upper limit between the experimental and simulated performance. Although no significant shaking of the test rig was observed, bending of the 3D printed parts and support arms likely dissipated energy. Another possible source of error could be the effect of small vibrations or displacements caused by bending of the pitch offset mechanism. By taking the aerodynamic forces and power measured experimentally starting at 680 RPM and not applying the torque correction, we obtained an average
+FoM =
+√
+T3 2ρA
+1
+P = 0.495. The first two RPMs are left out of the calculation
+032004-9
+
+
+L. GAGNON JOURNAL OF THE AMERICAN HELICOPTER SOCIETY
+1,000 2,000
+0
+0.2
+0.4
+0.6
+0.8
+1
+RPM (1/min)
+Cpow
+Exp. CFD
+(a) Overview
+500 1,000 1,500 2,000 2,500
+0.55
+0.6
+0.65
+0.7
+RPM
+Cpow
+Exp. CFD
+(b) Zoomed in
+Fig. 21. Power coefficient Cpow.
+500 1,000 1,500 2,000 2,500
+0
+1
+2
+3
+4
+RPM
+Thrust (N)
+Exp. CFD CT -Kellen Quadratic
+Fig. 22. Thrust.
+500 1,000 1,500 2,000 2,500
+0
+20
+40
+60
+RPM
+Power (W)
+Exp. CFD CP -Kellen Quadratic
+Fig. 23. Power.
+because of their large error. The figures for the thrust and power coefficient may lead one to think that the error in power is quite large at high RPMs. This error comes, among other factors, from the lack of rotor arms and pitch linkages in the CFD model. It should, however, be noted that both experimental thrust and power follow reasonably well the quadratic and cubic relationships to RPM. Also, they approximate very well the curves obtained by using the coefficients obtained by Kellen (Ref. 21) for thrust (CT = 1.0/σ ) and power (CP = 0.75/σ ) for his rotor which matches the current prototype geometry but is scaled up and thus running at lower
+500 1,000 1,500 2,000 2,500
+−20
+0
+20
+40
+RPM
+θ (◦)
+Θ, Exp. Θ, CFD
+−0.6
+−0.4
+−0.2
+0
+Fz (N)
+Fz, Exp.
+Fig. 24. Thrust angle and spanwise force.
+RPM but has a higher Reynolds number. This is shown in Figs. 22 and 23. In the figures, the functions are 5.176 × 10−7 · RPM2 − 7.493 × 10−2 for the quadratic fit and 4.017 × 10−9 · RPM3 − 0.9414 for the cubic fit. The power curve derived from the power coefficient measured by Kellen (Ref. 21) is closer to the CFD model, which seems reasonable given that Kellen’s rotor had carbon fiber blades and rotor arms. It likely experienced less vibration-induced dissipation and may have provided a smoother aerodynamic surface thanks to the covering film on the blades. However, they still do not appear to reproduce the benefits of increasing the Reynolds number demonstrated by the perfectly smooth blade surface modeled by CFD. This could be further investigated in future experimental work, building on the CFD results of Ref. 33, which indicated that a special flow regime that suppresses the formation of the leading edge vortex near ψ = 300◦ occurs at a Reynolds number of 500,000, resulting in increased efficiency. Such flow may not necessarily depend only on the Reynolds number and may also occur gradually. The thrust angle θ with negative y-axis for both the experiment and CFD and the experimental forces Fz in a spanwise direction are shown in Fig. 24. They are extracted from the unfiltered signal of the force balance taken over exactly 50 rotations. Each rotation is identified by four peaks of the blade passing signal of the light sensor. The presence of a growing force in the spanwise direction can be caused by the misalignment of the pitch control mechanism subjected to strong dynamic forces. In fact, each pitch rod and rotor arm has a cross section shaped like a symmetrical NACA airfoil that, if slightly misaligned, could generate thrust. Another possible explanation is the
+032004-10
+
+
+AERODYNAMIC PERFORMANCE OF A HOVERING CYCLOIDAL ROTOR 2024
+−2b z = 0 2b
+−2R
+y=0
+2R
+U = 0 5 10 m/s
+Fig. 25. Experimentally measured (arrows) and CFD-computed (streamlines) velocity vectors of the rotor at 1695 RPM.
+different thicknesses of the rotor arms on each side of the rotor prototype, which affect the tip vortex differently on each side, resulting in a slight spanwise force imbalance. These forces may also have contributed to the apparent overestimation of power, which was also an issue faced by Ref. 13. To capture the experimental flow field, the direction of the fluid and its velocity were captured by a smoke generator and a vane anemometer, respectively. The vane anemometer can detect a maximum velocity of 40 m/s, where the error would reach 0.6 m/s. The smoke generator released a continuous thin smoke stream and was moved through the surroundings of the cycloidal rotor while being recorded by three cameras. The same procedure was repeated with the velocity sensor. The cameras being located at different angles, it was then possible to extract the experimental flow field in the vicinity of the cycloidal rotor. It was reconstructed on an 81-cell 3D mesh and compared to the numerical flow field. The resulting good agreement between CFD and the experiment is shown in the front view of Fig. 25 for which a 3D animation is also available online.4 The inflow in both experiment and simulation exhibits a hemispherical component where the surrounding air is drawn by the rotor wake even downstream of the rotor. This suction effect is stronger for the air coming from the spanwise direction as for the radial direction. In both cases, the wake is a concentrated jet being curved in the rotor circular plane as is common for cyclorotors.
+Limitations of the validation
+Using a multibody dynamics model, an attempt was made to extract the inertia from the time signal of the forces and moments generated by the prototype rotor. To do this, the blade inertia was obtained by measuring its pendulum frequency and a simplified rotor model was constructed and used to identify the inertial forces. However, this attempt was not successful due to the presence of various nonharmonic vibration phenomena, including those associated with the test rig. This was the case even after filtering the experimental data with various band-pass filters. As a result, inertia was omitted because the high rotational frequency leads to nonlinear vibrations that cannot be filtered out by postprocessing. To ensure that inertial forces did not affect the measured force and moment, they were time-averaged over 50–400 revolutions, depending on the rotational speed. This method has been shown to give consistent results for a rotor using the same experimental equipment (Ref. 37). The
+4https://www.youtube.com/watch?v=qp4BWjcU7PY
+force transducer of the experiment measures the total aerodynamic forces and moments acting on the rotor surfaces. As such, the globally measured total moment is not equal to the motor torque. The total measured torque consists of the motor torque which is transferred by the pivot rods and the additional moment transferred by the pitch rods. The pitch rod moment arises from the force the pitch rods transfer and their eccentric attachment. This moment is measured by the force transducer but is not relevant for the power calculation. Only the moment borne by the pivot rods is transferred to the rotor axle.
+Parametric Study
+This section reports and discusses the findings of the CFD-based parametric study. To provide a quick overview, the performance indicators CT , Cpow, and FoM are plotted in Fig. 26 for most of the investigated cases. It also includes simulations with two and three blades, the results of which can be summarized by saying that the thrust and lift per blade hardly changed, thus leading to a lower FoM.
+Aspect ratio
+As is the case for helicopter blades and aircraft fixed wings, cycloidal rotor blades develop tip vortices. These high-energy turbulent wake phenomena usually disturb the generation of lift. To prevent the consequent loss of energy efficiency, helicopters and aircraft have blades or wings with high aspect ratios. However, the blades of a cyclorotor are subjected to strong centrifugal forces, which limit the maximum allowable aspect ratio because they act perpendicular to the spanwise axis. The aspect ratio of the blades of the built prototype is b/c = 1.5. Using the CFD model, ratios between b/c = 1 and b/c = 6 were simulated. The plots of the thrust and power coefficients over a rotation are shown in Figs. 27 and 28. As expected, elongating the blade span was found to increase energy efficiency. While the default case has a FoM of 0.540, the case with a doubled blade span increases to a FoM of 0.596. Further increasing the aspect ratio to 6 raises efficiency only slightly to a FoM of 0.601. This agrees with prior findings from other researchers such as Ref. 39 who showed that the FoM of their cyclorotor increases by roughly 0.05 between an aspect ratio of 1 and 4 and then stays unchanged for an aspect ratio of 8. The aspect ratio of 3 yields a higher thrust coefficient and a similar power coefficient than the reference case. The aspect ratio of 6 generates the same absolute thrust per area as the default while requiring less power per area. Thus, reducing blade span increases power demand per unit area, while the thrust per area shows a maximum for b/c = 3, as reported in Fig. 26. This can also be observed in the evolution of the thrust and power coefficients over the azimuthal angle ψ, CT , and Cpow. The aspect ratio b/c = 3 case attains a comparable amplitude in CT to the default case but with a less pronounced manner. Consequently, the average thrust coefficient is higher, while the power coefficient maintains a very similar shape and average value. The thrust for the aspect ratio of 6 is a lower but longer-lasting peak in the CT curve when compared to the default case. Furthermore, an increased thrust at ψ = 0◦ is observable, while previous cases have most often shown hardly any generated thrust at this azimuth. The power coefficient Cpow is decreased at almost every azimuthal position, which seems plausible when expecting smaller tip vortex losses. The blade with a square geometry (b/c = 1) exhibits a lower thrust coefficient at ψ = 90◦ but a similar shape of the thrust coefficient curve in the lower half, compared to the default case. The power coefficient curve follows roughly the default case and peaks at ψ = 270◦. The rotor with an aspect ratio of b/c = 1 and the default case with an aspect ratio of 1.5 show a single horseshoe vortex forming on each blade
+032004-11
+
+
+L. GAGNON JOURNAL OF THE AMERICAN HELICOPTER SOCIETY
+0.4 0.45 0.5 0.55 0.6 0.65 0.7 0.75 0.8 0.85 0.9 0.95 1 1.05 1.1 1.15 1.2 1.25
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+1.1
+1.2
+1.3
+78 mm
+80 mm
+82 mm
+84 mm
+85 mm
+87 mm
+88 mm
+89 mm
+90 mm
+12% 8%
+4%
+−4%
+−8%
+−12%
+n=2
+n=3
+b/c = 1 b/c = 3 b/c = 6
+Endplates
+FoM = 0.7
+FoM = 0.3
+CT
+Cpow
+PRL Camber BladeNo AspectRatio Endplates Default Axle Isolines FoM
+Fig. 26. Coefficients of thrust and power for the studied cases along with the lines of constant FoM.
+0 45 90 135 180 225 270 315 360
+−0.5
+0
+0.5
+1
+1.5
+2
+2.5
+Ψ (°)
+CT
+b/c = 1 b/c = 1.5 b/c = 3 b/c = 6
+Fig. 27. Thrust coefficient for various aspect ratios at 1433.3 RPM.
+between ψ = 120◦ and 180◦, as displayed in Fig. 29(a) and Fig. 29(b), respectively. For both aspect ratios of 3 and 6, three relatively smaller horseshoe vortices can be observed developing on the outer surface of each blade, as shown in Figs. 29(c) and 29(d). For the highest blade span (b/c = 6), the three tiny vortices on the blade surface are separated but connected via a separation bubble. For the aspect ratio 3, the vortices are contiguously located near the symmetry plane. After detaching, they quickly grow together into a single horseshoe vortex. Very similar vortex structures were observed by Ref. 39. While these observations are most interesting for the understanding of the complex airflow structures and can explain the strongly differing behavior of thrust and power coefficients for the highest aspect ratio at ψ = 150◦, their quantitative impact on the performance seems limited.
+0 45 90 135 180 225 270 315 360
+0
+0.5
+1
+1.5
+Ψ (°)
+CPow
+b/c = 1 b/c = 1.5 b/c = 3 b/c = 6
+Fig. 28. Power coefficient for various aspect ratios at 1433.3 RPM.
+Noteworthy observations about the pressure distribution on the blade at ψ = 270◦ are highlighted below. They are shown in Figs. 30(a)–30(c), where the pressure coefficient over the projected blade area for both the suction and pressure sides is shown. These sides correspond to the blade surfaces located inside and outside of the rotor at this azimuth, respectively. For comparability, the z-coordinate is given as multiple of the blade span b, where z = 0 marks the symmetry plane of the blade. As shown in Fig. 29(a), the tip vortex of the square blades extends furthest towards the symmetry axis and produces a suction region at the inner surface for z > 0.6 b
+2 . At the not shown pressure side of the b/c = 1 blade,
+the effect of decreasing pressure towards the tip is present for z > 0.84 b
+2, which is the largest value, compared to all other cases.
+032004-12
+
+
+AERODYNAMIC PERFORMANCE OF A HOVERING CYCLOIDAL ROTOR 2024
+|z| = 0 1.1 b
+2
+(a) b/c = 1.0
+|z| = 0 1.1 b
+2
+(b) b/c = 1.5
+|z| = 0 1.1 b
+2
+(c) b/c = 3
+|z| = 0 1.1 b
+2
+(d) b/c = 6
+Y
+X
+ZY
+X Z
+Y
+X Z
+Y X Z
+Fig. 29. Vortices for various aspect ratios at ψ = 150◦, φ = 24◦, and = 1433.3 RPM.
+For increasing aspect ratios, the chordwise elongation and the strength of the suction area at the inner surface continuously increase, while the tip vortex shrinks in relative z-direction but increases in strength. They are shown in Figs. 29(a)–29(d). Considering the absolute z position of the tip vortex, the maximum of the negative pressure was observed at a distance of 3.5 mm (b/c = 1) to 2.8 mm (b/c = 6) from the blade tip. Consequently, as the relative area influenced by the vortex is reduced when increasing the aspect ratio, the rotor efficiency is increased, although the vortex’s energy amplitude increases. At the outer surface, the pressure drop towards the tip shrinks in the z-direction.
+Endplates
+The addition of disks having a radius of rendplate = 140 mm and being spanwise coincident with the blade tips was studied. These disks or endplates were modeled without friction as slip walls. Adding them was expected to prevent the formation of blade tip vortices and thus increase efficiency. The simulation results confirmed this assumption as the endplates allowed the FoM to increase from 0.540 to 0.618 at 1,433 RPM and from 0.581 to 0.713 at 5,300 RPM. Since the endplates generate a much more 2D airflow regime, a comparison of both the 3D case without endplates and the 2D simulation was conducted. The azimuthal force and power distribution resulting from endplates resembled the 2D distribution much closer than the 3D case. The plots of the thrust and power coefficients over a rotation are shown in Figs. 31 and 32. It featured a large region of negative thrust for 135 ◦ ≤ ψ ≤ 200◦, positive thrust coupled to a negative power value at ψ = 0◦, and a highly disrupted thrust section in the second half of the revolution. A similarly disturbed 2D thrust curve was also observed by Ref. 40. With the endplates, thrust and power were reduced by 11% and 26%, respectively. This corresponds with the expectation that tip vortices
+increase lift slightly while significantly increasing power. Thus, the case with endplates requires the least power while still generating a decent amount of thrust. Although tip vortices reduce the FoM, other 3D effects such as the turbulent horseshoe vortex appear to delay stall and consequently increase efficiency. As such, the simulation with endplates yields a better FoM than the corresponding 2D case. Reference 21 measured configurations with endplates to be approximately 2% more efficient, while the FoM increases by 14% in the current work, leaving out the results at 5,300 RPM. However, they used individual side disks at the end of each blade instead of one large disk for all blades for each side used in the current work. The increase in efficiency found by the present study for a rotor with endplates agrees with the findings of Ref. 10 but not with those of Ref. 17. Reference 17 obtained about 15% lower aerodynamic efficiencies for a rotor with endplates by optimizing their pitch schedule. Reference 10, instead, did something similar to the current study and did not run an optimization algorithm on the pitch schedule. Thus, they observed that the rotor with endplates behaved similarly to the 2D rotor and was more efficient. This difference with the former can be explained by the individual optimization of their pitch schedule, which in their case may lead to better handling of 3D effects, such as those hindering stall, and a better interaction between the upstream and downstream flow. It thus indicates that future studies should investigate the combined effects of a tuned pitch control algorithm both with and without the endplates. At the bottom of the rotation (ψ = 0◦), the inner surface experiences a suction peak, caused by lateral inwards inflow which shifts the angle of attack (AoA) into negative regions. The resulting force points inwards and upwards delivering positive thrust and requiring negative power. At the top of the rotation (ψ = 90◦), the outer side experiences a strong suction peak which becomes slightly more pronounced closer to the endplates. It is noticeable that this rotor-upstream thrust peak is compressed
+032004-13
+
+
+L. GAGNON JOURNAL OF THE AMERICAN HELICOPTER SOCIETY
+0 0.2 b
+2 |z| = 0.5 b
+2 0.8 b
+2
+b 2
+1
+side
+Pressure
+x/c = 0
+side
+Suction
+1
+−4.2 Cp = 2.7 1.2
+(a) b/c = 1.5
+0 0.2 b
+2 |z| = 0.5 b
+2 0.8 b
+2
+b 2
+1
+side
+Pressure
+x/c = 0
+side
+Suction
+1
+−4.2 Cp = 2.7 1.2
+(b) b/c = 3
+0 0.2 b
+2 |z| = 0.5 b
+2 0.8 b
+2
+b 2
+1
+side
+Pressure
+x/c = 0
+side
+Suction
+1
+−4.2 Cp = 2.7 1.2
+(c) b/c = 6
+Fig. 30. Projected surface pressures on the scaled half-blade at ψ = 270◦. For this figure, the suction side corresponds to the inner side.
+in the azimuthal direction and experiences a stronger decrease compared to the case without endplates. The absence of the stabilizing 3D effects such as tip vortices can explain this behavior, which is comparable to the 2D simulation for 45◦ ≤ ψ ≤ 180◦. At ψ = 180◦, the inner side becomes the suction side and produces thrust inwards. A similar behavior as for ψ = 0◦ occurs. Due to lateral inflow thrust is generated. Its strength is comparable to the thrust at ψ = 0◦ but points in a different direction. This differs significantly from the case without endplates. Also, for ψ ≥ 180◦ the qualitative behavior of the thrust and power coefficients with and without endplates differ strongly. While the rotor without endplates exhibits a very sharp lift and power peak at approximately ψ ≈ 270◦, the endplates force a thrust and power peak at ψ ≈ 250◦, a local minimum with slightly reduced thrust and power at ψ ≈ 270◦ and another local maximum at ψ ≈ 300◦. The maximum values are below those of the rotor without endplates. The missing tip vortices support
+0 45 90 135 180 225 270 315 360
+−1
+0
+1
+2
+Ψ (°)
+CT
+3D w/ endplates 3D w/o endplates 2D
+Fig. 31. Thrust coefficient for 3D simulations with and without endplates and for a 2D simulation at 1433.3 RPM.
+0 45 90 135 180 225 270 315 360
+−0.5
+0
+0.5
+1
+1.5
+Ψ (°)
+CPow
+3D w/ endplates 3D w/o endplates 2D
+Fig. 32. Power coefficient for 3D simulations with and without endplates and for a 2D simulation at 1433.3 RPM.
+0 0.2 b
+2 |z| = 0.5 b
+2 0.8 b
+2
+b 2
+1
+side
+Pressure
+x/c = 0
+side
+Suction
+1
+−4.2 Cp = 2.7 1.2
+Fig. 33. Projected surface pressures on the scaled half-blade with endplates at ψ = 270◦.
+local flow detachments and, therefore, a collapse of thrust and power. However, the pressure distributions at different z-positions do rarely differ from one another. This can be explained with a mostly 2D flow field, as the endplates limit 3D effects, as shown in Fig. 33. To illustrate this further, Fig. 34 depicts the pressure distribution on three spanwise blade sections at the four cardinal azimuthal positions of blade rotation. Also, due to the lateral inflow, the resulting force is shifted by approximately 8◦ in a positive azimuthal direction. It is most notable that the wake is now creating a focused air jet with all streamlines leading into it. Any other inflow always has a downwards velocity component,
+032004-14
+
+
+AERODYNAMIC PERFORMANCE OF A HOVERING CYCLOIDAL ROTOR 2024
+Outer side: 51%, 75%, and 99% span; Inner side: 51%, 75%, and 99% span
+0 0.5 1
+−4 −3 −2 −1 0 1
+x/c
+CP
+(a) ψ = 0◦
+0 0.5 1 x/c
+(b) ψ = 90◦
+0 0.5 1 x/c
+(c) ψ = 180◦
+0 0.5 1 x/c
+(d) ψ = 270◦
+Fig. 34. Pressure coefficient Cp profiles at three distinct spanwise positions on the rotor blade, equipped with endplates, for various azimuthal positions.
+0 45 90 135 180 225 270 315 360
+0
+0.5
+1
+1.5
+2
+2.5
+3
+Ψ (°)
+CT
+78 mm 82 mm 85.8 (def.) 87 mm 90 mm
+Fig. 35. Thrust coefficient for a selection of PRLs at 1433.3 RPM.
+while the case without endplates also shows horizontal or even slightly upwards inflow. Furthermore, the endplates prevent inflow between both rotor halves. Streamlines outside of the endplates are sharply bent to enter the rotor on the top. Endplates are found to limit the spreading of the wake and limit oblique inflow when compared to the default rotor without endplates. The streamlines observed in this work coincide with those found by Ref. 41, both for the case with and without endplates.
+Pitch rod length
+The length of the pitch rod l0 affects the pitching schedule, as demonstrated in Fig. 3 for a blade controlled by a uniform pitch mechanism. It was initially expected that a short rod length would increase efficiency by yielding a better distribution of thrust along the blade path. In other words, reducing the AoA in the lower half of the rotor and increasing it in the upper half. However, decreasing the PRL actually significantly decreases the FoM because of a higher power demand. As such, the most efficient observed PRL was l0 = 87 mm which yielded a FoM 0.5532, a mere one-point increase with respect to the reference length of l0 = 85.8 mm. The thrust and power coefficient plots of a selection of tested PRLs are shown in Figs. 35 and 36. The figures clearly show how rod length has the opposite effect downstream than upstream. As shown in Fig. 3, PRLs significantly shorter or longer than the reference value will cause very high pitch angles and consequently significantly increase the required power. As predicted, increasing the PRL generally increases the thrust and power in the lower half of the revolution and reduces them in the first half. Decreasing the PRL has the opposite effect. In the bottom half of the rotor, the maximal thrust coefficient CT of the reference is approximately four times higher than in the top half. At the
+0 45 90 135 180 225 270 315 360
+0
+1
+2
+3
+Ψ (°)
+Cpow
+78 mm 82 mm 85.8 (def.) 87 mm 90 mm
+Fig. 36. Power coefficient for a selection of PRLs at 1433.3 RPM.
+maximum PRL, virtually all thrust is generated in the bottom half. For all cases studied, thrust and power always followed continuous, smooth curves in the bottom half and no flow separation was observed. The decrease of thrust in the bottom half for shorter PRLs is greater than the increase in the top half, explaining the decreasing FoM. When further increasing the maximum pitch angle at the top, larger areas of the blade experience stall effects. The baseline (ref) rod length is 85.8 mm, as shown in Table 1. The plots in Fig. 3 gave the progression of the pitch angle over a rotation for each rod length studied. The coefficients of thrust and power and their corresponding FoM are plotted in Fig. 26. At the minimum investigated PRL l0 = 78 mm, the pitch angle reaches its maximum value of φmax = 75◦ at the top of the rotor and lift collapses due to stall. The FoM is consequently drastically decreased to ≈ 0.3. Furthermore, for l0 = 82 mm with a maximum angle of φmax = 50◦, separation and stall phenomena were already observed, but not for l = 90 mm where |φmin| = 65◦. For a detailed discussion on cyclorotor pitch profiles, see Cogan (Ref. 42). He optimizes a 2D rotor’s pitch function by analytical methods independent of any mechanisms. Other studies (Ref. 43) observed that an increased pitch angle for the upper portion of the blade path is more efficient. This is contrary to the observation of the current investigation, which finds an increased pitch angle at the bottom more efficient in terms of FoM. The discrepancy between both observations may result from different rotor dimensions such as the c/R0 ratio. The strength of the virtual camber increases with this ratio, which affects the uneven load distribution between both rotor halves.
+Physical camber
+In light of the knowledge acquired by the investigation of the PRLs and the virtual camber, it was necessary to examine the impact of blade
+032004-15
+
+
+L. GAGNON JOURNAL OF THE AMERICAN HELICOPTER SOCIETY
+0 45 90 135 180 225 270 315 360
+0
+0.5
+1
+1.5
+2
+2.5
+3
+Ψ (°)
+CT
+−12% −8% −4% 0% 4% 8% 12%
+Fig. 37. Evolution of CT over a rotation for various cambers.
+camber on efficiency. Past studies of Ref. 44 and 45 showed increased FoMs for slightly negative fixed cambers or actively morphed cyclorotor blades, respectively. Thus, cases running at 1,433 RPM with both positive and negative cambers of 4%, 8%, and 12% were examined. Here, positive camber means that the blades have a positive camber in the upper half of the rotor. Three different competing effects enter into play. First, symmetric blade profiles are usually desired for cyclorotors because the lift direction changes from the outer side to the inner side and back during one revolution. Second, the constant virtual camber resulting from the rotation of the rotor increases with the ratio of chord to radius and is, therefore, quite significant for typical cycloidal rotors. Third, the maximum magnitudes of the blade pitch angles for the top and bottom portions of the rotor have a significant impact on thrust and efficiency. It is consequently difficult to estimate how camber in such a scenario will impact those values. Therefore, this needs to be investigated. Thrust and power continuously increase with increasing negative camber. An increase in the resulting force of 35% is observed for −12% camber compared to the symmetric blade. This increase is mainly due to the strong increase of thrust in the lower half of the cylinder (180◦ ≤ ψ ≤ 360◦). The force diminishing effect in the upper half due to cambering is weaker. These thrust improvements, however, result in a higher demand for power as well as in the lower than in the upper half. Comparing power demand and thrust production during the revolution, camber improves thrust production but comes at the cost of an increase in power requirement during the whole azimuth. This explains the constantly reduced FoM when increasing the amount of inverse camber. Positive camber increases the thrust production in the upper half, but a stronger inverse effect can be observed in the lower half. The power consumption behaves as expected. Averaged over one revolution, both power and thrust decrease with increasing camber. Thus, the FoM is slightly increased for 4% and 8% camber and the rotor becomes more efficient. For 12% camber, the FoM drops significantly. The thrust direction is constantly tilted counterclockwise when decreasing the camber from 12% to −12%. This effect is partly explained by the bottom thrust peak occurring evermore before the bottommost blade position because of the stronger camber acting in that portion of the blade path. Virtual camber effects could also play an important role. The effects described above for camber on thrust and power can be observed in Figs. 37 and 38 and noting that in the lower half of the rotor lift and power are almost linearly proportional to camber. These findings differ significantly from those of Ref. 44, and this indicates the impact that cyclorotor parameters such a pivot point position and c/R0 have on the behavior of the rotor. It seems reasonable to assume that an extended PRL has a similar effect on thrust and power as a cambered airfoil. This is because longer
+0 45 90 135 180 225 270 315 360
+0
+0.5
+1
+1.5
+2
+2.5
+Ψ (°)
+Cpow
+−12% −8% −4% 0% 4% 8% 12%
+Fig. 38. Evolution of Cpow over a rotation for various cambers.
+0 45 90 135 180 225 270 315 360
+0
+0.5
+1
+1.5
+2
+2.5
+3
+Ψ (°)
+CT
+−12% PRL=88 mm
+0 45 90 135 180 225 270 315 3 0
+0
+0.5
+1
+1.5
+2
+2.5
+3
+Cpow
+−12% PRL=88 mm
+Fig. 39. Force and power coefficient for −12% camber and PRL = 88 mm.
+PRLs result in larger pitch angles in the downstream half of the rotor and smaller pitch angles in the upstream half. A larger pitch angle produces more lift as long as the blade is not stalled, and stall in the downstream half of the rotor occurs only at very high pitch angles due to 3D effects. A similar increase in lift for a given pitch angle can be achieved with a physically cambered airfoil. To assess similarities and differences, an airfoil with −12% camber is compared to a symmetric airfoil with a PRL = 88 mm. Both reach almost identical thrust and power maxima of CT (ψ ≈ 260◦) ≈ 2.9 and Cpow(ψ ≈ 260◦) ≈ 2.2. Furthermore, qualitative and quantitative similar behavior is observable for ψ ≥ 200◦ (see Fig. 39). For ψ < 180◦, thrust is qualitatively similar in both cases but shifted and scaled while the power demand does not show any similarities. While the geometry with the enlarged PRLs avoids a power peak in the upper half by having an almost constant power coefficient of Cpow ≈ 0.1, the cambered profile exhibits a considerable power request, as, for example, the −12% camber having a Cpow(ψ = 110◦) = 0.57. Even though the thrust and power distribution for ψ ≥ 200◦ are very similar, rotation-averaged values differ strongly. While the thrust is similar between −12% camber (CT = 0.9689) and PRL = 88 mm (CT = 0.9445), the required power differs strongly. The cambered airfoil exhibits a higher power demand of Cpow = 1.053 and, therefore, a poorer FoM of 0.4529 than the rotor with the enlarged pitch rods which requires only Cpow = 0.829 of power and exhibits an enhanced FoM of 0.5538. This leads to the conclusion that the effect that a cambered airfoil has on the thrust and power distributions cannot be identically matched by adjusting the PRL.
+032004-16
+
+
+AERODYNAMIC PERFORMANCE OF A HOVERING CYCLOIDAL ROTOR 2024
+Rotor axle
+The influence of the rotor central shaft was investigated using simulations at = 1433.3 RPM. The mesh near the axle was generated in pointwise, including the boundary layer mesh. Axle diameters dax of 4 and 8.2 mm, which are the experimental rotor’s dimensions, and 12 mm were simulated. As the axle disturbs the wake and is affected by drag from surface friction, a larger axle diameter was expected to decrease the generated thrust and increase the required power, with both effects decreasing efficiency. As a result of the simulations, increasing the axle diameter only marginally decreased the FoM. Even at the largest axle diameter, the generated thrust was only reduced by less than 0.4% compared to the case without an axle. The increase in required power was analogously smaller than 0.3%, resulting in a FoM decreased by less than 0.004. Hence the influence of an axle of these dimensions on the efficiency is deemed negligible.
+Discussion and Conclusions
+A 3D URANS CFD toolkit was developed and validated qualitatively and quantitatively using a cyclorotor rotor built at the institute. The importance of the pitch mechanism and the virtual camber phenomenon were analyzed and discussed. Then, a CFD parametric study covering blade aspect ratio, side disks, pitch mechanism, blade camber, and axle size was conducted. The thrust and power coefficients for all investigated parametric studies are plotted in Fig. 26 together with the FoM isolines. The study revealed that efficiency is significantly affected by the distribution of thrust between the upstream and downstream portions of the rotor cylinder. In addition, the optimum distribution does not necessarily correspond to a uniform thrust distribution. This distribution can be directly influenced by adjusting the PRL or the camber of the blade, as shown in Figs. 37–39. The presence of a central axle in the rotor negligibly affected the efficiency. Manipulating the pitch mechanism can increase thrust and power to a large extent, and a longer pitch rod is in general more efficient than cambering the airfoils. The study of the effect of camber indicated that negative camber is unsuitable if the rotor is designed strictly for maximum hovering aerodynamic efficiency. However, the optimal positive camber only slightly increased the FoM while a −12% camber increased the thrust by approximately 35%. By using a −12% cambered airfoil, the same amount of thrust can be achieved by either a smaller blade area or a reduced rotational velocity. Both could lead to significant structural advantages due to a reduced blade mass and bending moment or to a reduced centripetal force for the same disk loading. In this study, the strongest observed impact on efficiency came from the side disks which behaved similarly to winglets on fixed wings. In addition to the observed positive impact, these endplates could cover the rotor and control rods to reduce parasitic aerodynamic losses. Nonetheless, changing the blade aspect ratios did show similar responses as for wings but with a less important impact, making it thinkable to fly a squarebladed cyclorotor even without side disks. Decreasing the blade aspect ratio worsened the rotor efficiency but in a surprisingly limited fashion. The reduced structural requirements associated with the reduced bending moment of a square blade would result in lighter blades. Overall, the sensibility of the rotor to different parameters was highlighted by the range of encountered FoMs going from 0.298 for a 78-mm long pitch rod to 0.713 for the four-blade rotor with endplates at 5,300 RPM. Furthermore, the simulations also showed that the FoM continuously increased with the rotation velocity, probably due to Reynolds number effects. A torque correction was applied to all moments, powers, and FoMs resulting from the parametric study. In doing so, only the actual power delivered by the motor was considered necessary, and the moment and
+resulting power coming from the force channeled through the pitching arm was not considered. Thus, the force required to hold the pitch control shaft in place was assumed to be negligible. There are many scenarios where this would be the case, such as the experimental test rig in this study where the pitch control shaft was physically blocked. It should be noted, however, that some flying prototypes may require servomotor power to achieve pitch control. Although a comprehensive study of various parameters was conducted, it remains clear that agreement with the research of other studies cannot always be reached. This is often due to the difference in observed Reynolds numbers but also comes from a more complex combination of parameters such as airfoil type, aspect ratio, pitch mechanism, chordto-radius ratio, and more. This indicates that it will eventually be desirable to establish a reference cyclorotor geometry on which the research tools and findings of different working groups may be benchmarked and validated.
+Appendix
+The calibration matrix Mcal used for the force balance is
+Mcal =
+⎛
+⎜⎜⎜⎜⎝
+175.49686 −1.12698 −190.77637 182.22751 1.85593 −179.29192 −105.46658 202.90231 −109.93833 −105.71498 220.10440 −96.65088 251.22388 254.56239 267.74003 279.14039 271.55562 257.80000 −7.00367 3.59636 2.81448 3.31053 3.78853 −7.41418 −0.67025 6.00089 6.41857 −6.81712 −6.16147 0.10835 4.64061 −4.50019 4.71746 −4.39089 4.79680 −4.58176
+⎞
+⎟⎟⎟⎟⎠
+and is used to obtain the force and moment components from
+Fbal = Vbal · Mcal (A1)
+where Vbal contains the measured channel voltages Vbal,1 to Vbal,6, and Fbal represents the loads applied to the balance Fbal,x to Mbal,z.
+Acknowledgments
+The work of Louis Gagnon was funded by the Alexander von Humboldt foundation through their Research Fellowships for Postdoctoral Researchers for the “A Novel and Simple Aircraft Requiring Minimal Power to Hover” project. The provided supercomputing time and technical support of the High Performance Computing Center Stuttgart (HLRS) of the University of Stuttgart within the HELISIM project is gratefully acknowledged.
+References
+1Iosilevskii, G., and Levy, Y., “Experimental and Numerical Study of Cyclogiro Aerodynamics,” AIAA Journal, Vol. 44, (12), 2006, pp. 28662870, DOI: 10.2514/1.8227. 2Siegel, S., Seidel, J., Cohen, K., and McLaughlin, T., “A Cycloidal Propeller Using Dynamic Lift.” AIAA-2007-4232, Proceedings of the AIAA 37th Fluid Dynamics Conference and Exhibit, Miami, FL, June 25–28, 2007. 3Tang, J., Hu, Y., Song, B., and Yang, H., “Unsteady Aerodynamic Optimization of Airfoil for Cycloidal Propellers Based on Surrogate Model,” Journal of Aircraft, Vol. 54, (4), 2017, pp. 1241–1256, DOI: 10.2514/1.C033649. 4Xisto, C. M., Leger, J. A., Páscoa, J. C., Gagnon, L., Masarati, P., Angeli, D., and Dumas, A., “Parametric Analysis of a Large-Scale Cycloidal Rotor in Hovering Conditions,” Journal of Aerospace Engineering, 30, 04016066 (2017), DOI: 10.1061/(ASCE)AS.1943-5525. 0000658.
+032004-17
+
+
+L. GAGNON JOURNAL OF THE AMERICAN HELICOPTER SOCIETY
+5Seifert, J., and Luftfahrt eV, B., “Aerodynamic Analysis of a New Hybrid Rotor,” Proceedings of Deutscher Luft und Raumfahrt Kongress, Aachen, Germany, September 8–10, 2009. 6Benedict, M., Jarugumilli, T., Lakshminarayan, V., and Chopra, I., “Effect of Flow Curvature on Forward Flight Performance of a MicroAir-Vehicle-Scale Cycloidal-Rotor,” AIAA Journal, Vol. 52, (6), 2014, pp. 1159–1169, DOI: 10.2514/1.J052065. 7Zimmer, F., “Investigation of the Reynolds Number on the Performance of a Cycloidal Rotor,” Bachelor’s Thesis, University of Stuttgart, Stuttgart, Germany, 2021. 8Walther, C. M., Coleman, D., and Moble, B., “Understanding Unsteady Aerodynamics of Cycloidal Rotors in Hover at Ultra-Low Reynolds Numbers,” Proceedings of the 2018 AIAA Aerospace Sciences Meeting, Kissimmee, FL, January 8–12, 2018, DOI: 10.2514/6.20180080. 9Hu, Y., Du, F., and Zhang, H. L., “Investigation of Unsteady Aerodynamics Effects in Cycloidal Rotor Using RANS Solver,” The Aeronautical Journal, Vol. 120, (1228), 2016, pp. 956–970, DOI: 10.1017/aer.2016.38. 10Dekterev, A., Dekterev, A., Dekterev, D., and Goryunov, Y., “Investigation of the Effects of End Faces Design on Parameters of Cycloidal Rotor,” Journal of Physics: Conference Series, 1105, 012029 (2018), DOI: 10.1088/1742-6596/1105/1/012029. 11Gagnon, L., Morandini, M., Quaranta, G., Muscarello, V., and Masarati, P., “Aerodynamic Models for Cycloidal Rotor Analysis,” Aircraft Engineering and Aerospace Technology, Vol. 88, (2), 2016, pp. 215–231, DOI:10.1108/AEAT-02-2015-0047, 2016. 12Hu, Y., Fu, X., Zhang, H., Wang, G., and Farhat, H., “Effects of Blade Aspect Ratio and Taper Ratio on Hovering Performance of Cycloidal Rotor with Large Blade Pitching Amplitude,” Chinese Journal of Aeronautics, Vol. 32, (5), 2019, pp. 1121–1135, DOI: https://doi.org/10.1016/j.cja.2019.01.015. 13Yang, K., “Aerodynamic Analysis of an MAV-Scale Cycloidal Rotor System Using a Structured Overset RANS Solver,” Master’s Thesis, University of Maryland, College Park, MD, 2010. 14Donners, L., “Experimental Validation of a Cycloidal Rotor URANS CFD Model and Geometric Parameter Optimization,” Bachelor’s Thesis, University of Stuttgart, Stuttgart, Germany, 2022. 15Gagnon, L., Quaranta, G., Schwaiger, M., and Wills, D., “Aerodynamic Analysis of an Unmanned Cyclogiro Aircraft,” SAE Technical Paper 2018-01-6005, October 2018, DOI: 10.4271/2018-01-6005. 16Gagnon, L., Quaranta, G., and Schwaiger, M., “Open-Source 3D CFD of a Quadrotor Cyclogyro Aircraft,” OpenFOAM: Selected Papers of the 11th Workshop, edited by J. M. Nóbrega and H. Jasak, Springer International Publishing, Cham, Switzerland, 2019, pp. 373388, DOI: 10.1007/978-3-319-60846-4_27. 17Rami, M. H., and Pascoa, J. C., “Coupled Active Control Technique for Oscillating Blades in a Cycloidal Rotor Using CFD and ANN Analysis by Including 3D End Wall Effects,” Journal of Aerospace Engineering, 34, 04021089 (2021), DOI: 10.1061/(asce)as.1943-5525. 0001332. 18Adams, Z., Benedict, M., Hrishikeshavan, V., and Chopra, I., “Design, Development, and Flight Test of a Small-Scale Cyclogyro UAV Utilizing a Novel Cam-Based Passive Blade Pitching Mechanism,” International Journal of Micro Air Vehicles, Vol. 5, (2), 2013, pp. 145–162, DOI: 10.1260/1756-8293.5.2.145. 19Dykas, S., Majkut, M., Smołka, K., Strozik, M., Chmielniak, T., and Stas ́ko, T., “Numerical and Experimental Investigation of the Fan with Cycloidal Rotor,” Mechanics and Mechanical Engineering, Vol. 22, 2018, pp. 447–454, DOI: 10.2478/mme-2018-0036.
+20Sirohi, J., Parsons, E., and Chopra, I., “Hover Performance of a Cycloidal Rotor for a Micro Air Vehicle,” Journal of the American Helicopter Society, Vol. 52, (3), July 2007, pp. 263–279, DOI: 10.4050/jahs.52.263. 21Kellen, A. J., “Performance Measurements on a UAV-Scale Cycloidal Rotor in Hover,” Master’s Thesis, Texas A&M University, College Station, TX, 2019. 22Gibbens, R., Boschma, J., and Sullivan, C., “Construction and Testing of a New Aircraft Cycloidal Propeller,” Proceedings of the 13th Lighter-Than-Air Systems Technology Conference, Norfolk, VA, June 28–July 1, 1999, DOI: 10.2514/6.1999-3906. 23Yun, C. Y., Park, I. K., and Lee, H. Y., “Design of a New Unmanned Aerial Vehicle Cyclocopter,” Journal of the American Helicopter Society, Vol. 52, (1), January 2007, pp. 24–35. 24McNabb, M., “Development of a Cycloidal Propulsion Computer Model and Comparison with Experiment,” Master’s Thesis, Mississippi State University, Starkville, MS, 2001. 25Kellen, A., and Benedict, M., “Effect of Rotor Geometry on UAVScale Cycloidal Rotor Hover Performance,” Proceedings of the AHS International 74th Annual Forum, Phoenix, AZ, May 14–17 2018. 26Hu, Y., Du, F., and Zhang, H. L., “Investigation of Unsteady Aerodynamics Effects in Cycloidal Rotor Using RANS Solver,” The Aeronautical Journal, Vol. 120, (1228), 2016, pp. 956–970, DOI: 10.1017/aer.2016.38. 27Cogan, S., and Gagnon, L., “Numerical Analysis of Cyclorotor Aerodynamic Properties in Hovering State,” In Proceedings of the 11th European Aeronautics Science Network International Conference, Virtual, September 1–4 2021. 28Leger, J. A., Páscoa, J. C., and Xisto, C. M., “Analytical Modeling of a Cyclorotor in Hovering State,” Proceedings of the Institution of Mechanical Engineers, Part G: Journal of Aerospace Engineering, Vol. 229, (12), 2015, pp. 2163–2177, DOI: 10.1177/0954410015569285. 29Halder, A., Walther, C., and Benedict, M., “Unsteady Hydrodynamic Modeling of a Cycloidal Propeller,” available on https://www. marinepropulsors.com/proceedings/2017/MB3-2.pdf+, June 2017. 30Farrell, P. E., and Maddison, J. R., “Conservative Interpolation between Volume Meshes By Local Galerkin Projection,” Computer Methods in Applied Mechanics and Engineering, Vol. 200, (1–4), 2011, pp. 89–100, DOI: 10.1016/j.cma.2010.07.015. 31Greenshields, C., and Weller, H., Notes on Computational Fluid Dynamics: General Principles, CFD Direct Ltd, Reading, UK, 2022, p. 5.21. 32Mavriplis, D. J., Vassberg, J. C., Tinoco, E. N., Mani, M., Brodersen, O. P., Eisfeld, B., Wahls, R. A., Morrison, J. H., Zickuhr, T., Levy, D., and Murayama, M., “Grid Quality and Resolution Issues from the Drag Prediction Workshop Series,” Journal of Aircraft, Vol. 46, (3), 2009, pp. 935–950, DOI: 10.2514/1.39201. 33Zimmer, F., and Gagnon, L., “Study on the Performance of a Cycloidal Rotor in Hover at Different Reynolds Numbers,” Journal of Fluids Engineering, 145, 051204 (2023), DOI: 10.1115/1.4056844. 34Van Rooij, A., “Time-Resolved Stereo PIV Measurements of a Cyclorotor in Hover,” Proceedings of the Vertical Flight Society 77th Annual Forum, Virtual, May 10–14, 2021, DOI: 10.4050/f-0077-202116717. 35Hu, J., Li, T., Wang, J., Zhang, W., and Guo, C., “Numerical Study on Vortex Shedding of Cycloidal Propellers,” Journal of Marine Science and Technology, Vol. 26, (4), March 2021, pp. 1217–1236, DOI: 10.1007/s00773-021-00808-y. 36Gagnon, L., and Schließus, J., “Fluggeraet,” German Patent Id. Number 10 2022 114 599 submitted on , June 9, 2022.
+032004-18
+
+
+AERODYNAMIC PERFORMANCE OF A HOVERING CYCLOIDAL ROTOR 2024
+37Dürrwächter, L., “Simulation of Installation Effects on Open-Rotor Acoustics with a Coupled Numerical Tool Chain,” Ph.D. Thesis, University of Stuttgart, Stuttgart, Germany, 2020. 38Reed, C. M., Coleman, D. A., and Benedict, M., “Force and Flowfield Measurements to Understand Unsteady Aerodynamics of Cycloidal Rotors in Hover at Ultra-low Reynolds Numbers,” International Journal of Micro Air Vehicles, Vol. 11, 2019, pp. 1–18, DOI: 10.1177/1756829319833. 39Hu, Y., Fu, X., Zhang, H., Wang, G., and Farhat, H., “Effects of Blade Aspect Ratio and Taper Ratio on Hovering Performance of Cycloidal Rotor with Large Blade Pitching Amplitude,” Chinese Journal of Aeronautics, Vol. 32, (5), 2019, pp. 1121–1135, DOI: https://doi.org/10.1016/j.cja.2019.01.015. 40Yu, H., Lang, Z. H., and Qi, W. G., “Two-Dimensional and ThreeDimensional Numerical Simulations of Cycloidal Propellers in Hover,” Proceedings of the Institution of Mechanical Engineers, Part G: Journal of Aerospace Engineering, Vol. 232, (7), 2018, pp. 1223–1234, DOI: 10.1177/0954410016660218.
+41Gagnon, L., Morandini, M., Quaranta, G., Muscarello, V., and Masarati, P., “Aerodynamic Models for Cycloidal Rotor Analysis,” Journal of Aircraft Engineering and Aerospace Technology, Vol. 88, (2), 2016, pp. 215–231, DOI: 10.1108/AEAT-02-2015-0047. 42Cogan, S. P., “CFD-Based Optimization of Cyclorotor Performance with Varying Reynold’s Number and Pitching Function,” Bachelor’s Thesis, University of Stuttgart, Stuttgart, Germany, 2020. 43Benedict, M., “Fundamental Understanding of the Cycloidal-Rotor Concept for Micro Air Vehicle Applications,” Ph.D. Thesis, University of Maryland, College Park, MD, 2010. 44Zhang, H., Hu, Y., and Wang, G., “The Effect of Aerofoil Camber on Cycloidal Propellers,” Aircraft Engineering and Aerospace Technology, Vol. 90, (8), November 2018, pp. 1156–1167, DOI: 10.1108/aeat08-2016-0128. 45Huang, D., and Gagnon, L., “Relying on Dynamically Morphing Blades to Increase the Efficiency of a Cycloidal Rotor,” IOP Conference Series: Materials Science and Engineering, 1226, 012014 (2022), DOI: 10.1088/1757-899X/1226/1/012014.
+032004-19

@@ -1,0 +1,1848 @@
+Fundamentals of
+Aerodynamics
+John Anderson
+S I XTH E DITION
+
+
+Fundamentals of Aerodynamics
+Sixth Edition
+John D. Anderson, Jr.
+
+
+McGRAW-HILL SERIES IN AERONAUTICAL AND AEROSPACE ENGINEERING
+T
+he Wright brothers invented the first practical airplane in the first decade of the twentieth century. Along with this came the rise of aeronautical engineering as an exciting, new, distinct discipline. College courses in aeronautical engineering were offered as early as 1914 at the University of Michigan and at MIT. Michigan was the first university to establish an aeronautics department with a four-year degree-granting program in 1916; by 1926 it had graduated over one hundred students. The need for substantive textbooks in various areas of aeronautical engineering became critical. Rising to this demand, McGraw-Hill became one of the first publishers of aeronautical engineering textbooks, starting with Airplane Design and Construction by Ottorino Pomilio in 1919, and the classic and definitive text Airplane Design: Aerodynamics by the iconic Edward P. Warner in 1927. Warner’s book was a watershed in aeronautical engineering textbooks. Since then, McGraw-Hill has become the time-honored publisher of books in aeronautical engineering. With the advent of high-speed flight after World War II and the space program in 1957, aeronautical and aerospace engineering grew to new heights. There was, however, a hiatus that occurred in the 1970s when aerospace engineering went through a transition, and virtually no new books in the field were published for almost a decade by anybody. McGraw-Hill broke this hiatus with the foresight of its Chief Engineering Editor, B.J. Clark, who was instrumental in the publication of Introduction to Flight by John Anderson. First published in 1978, Introduction to Flight is now in its 8th edition. Clark’s bold decision was followed by McGraw-Hill riding the crest of a new wave of students and activity in aerospace engineering, and it opened the flood-gates for new textbooks in the field. In 1988, McGraw-Hill initiated its formal series in Aeronautical and Aerospace Engineering, gathering together under one roof all its existing texts in the field, and soliciting new manuscripts. This author is proud to have been made the consulting editor for this series, and to have contributed some of the titles. Starting with eight books in 1988, the series now embraces 24 books covering a broad range of discipline in the field. With this, McGraw-Hill continues its tradition, started in 1919, as the premier publisher of important textbooks in aeronautical and aerospace engineering.
+John D. Anderson, Jr.
+
+
+Fundamentals of Aerodynamics
+Sixth Edition
+John D. Anderson, Jr. Curator of Aerodynamics National Air and Space Museum Smithsonian Institution and Professor Emeritus University of Maryland
+
+
+FUNDAMENTALS OF AERODYNAMICS, SIXTH EDITION
+Published by McGraw-Hill Education, 2 Penn Plaza, New York, NY 10121. Copyright © 2017 by McGraw-Hill Education. All rights reserved. Printed in the United States of America. Previous editions © 2011, 2007, and 2001. No part of this publication may be reproduced or distributed in any form or by any means, or stored in a database or retrieval system, without the prior written consent of McGraw-Hill Education, including, but not limited to, in any network or other electronic storage or transmission, or broadcast for distance learning.
+Some ancillaries, including electronic and print components, may not be available to customers outside the United States.
+This book is printed on acid-free paper.
+1 2 3 4 5 6 7 8 9 0 DOC/DOC 1 0 9 8 7 6
+ISBN 978-1-259-12991-9 MHID 1-259-12991-8
+Senior Vice President, Products & Markets: Kurt L. Strand Vice President, General Manager, Products & Markets: Marty Lange Vice President, Content Design & Delivery: Kimberly Meriwether David Managing Director: Thomas Timp
+Brand Manager: Thomas M. Scaife, Ph. D Director, Product Development: Rose Koos Product Developer: Jolynn Kilburg Marketing Manager: Nick McFadden Director of Digital Content: Chelsea Haupt, Ph. D Digital Product Analyst: Patrick Diller Director, Content Design & Delivery: Linda Avenarius Program Manager: Faye M. Herrig
+Content Project Managers: Heather Ervolino, Tammy Juran, Sandra Schnee Buyer: Susan K. Culbertson
+Content Licensing Specialist: Lorraine Buczek (Text)
+Cover Image: U.S. Navy photo by Mass Communication Specialist 2nd Class Ron Reeves Compositor: MPS Limited Printer R. R. Donnelley
+All credits appearing on page or at the end of the book are considered to be an extension of the copyright page.
+Library of Congress Cataloging-in-Publication Data
+Names: Anderson, John D., Jr. (John David), 1937- author. Title: Fundamentals of aerodynamics / John D. Anderson, Jr. Description: Sixth edition. | New York, NY : McGraw-Hill Education, [2017] |
+Series: McGraw-Hill series in aeronautical and aerospace engineering | Includes bibliographical references and index. Identifiers: LCCN 2015040997| ISBN 9781259129919 (alk. paper) | ISBN 1259129918 (alk paper) Subjects: LCSH: Aerodynamics. Classification: LCC TL570 .A677 2017 | DDC 629.132/3–dc23 LC record available at http://lccn.loc.gov/2015040997
+The Internet addresses listed in the text were accurate at the time of publication. The inclusion of a website does not indicate an endorsement by the authors or McGraw-Hill Education, and McGraw-Hill Education does not guarantee the accuracy of the information presented at these sites.
+mheducation.com/highered
+
+
+ABOUT THE AUTHOR
+John D. Anderson, Jr., was born in Lancaster, Pennsylvania, on October 1, 1937. He attended the University of Florida, graduating in 1959 with high honors and a bachelor of aeronautical engineering degree. From 1959 to 1962, he was a lieutenant and task scientist at the Aerospace Research Laboratory at WrightPatterson Air Force Base. From 1962 to 1966, he attended the Ohio State University under the National Science Foundation and NASA Fellowships, graduating with a Ph.D. in aeronautical and astronautical engineering. In 1966, he joined the U.S. Naval Ordnance Laboratory as Chief of the Hypersonics Group. In 1973, he became Chairman of the Department of Aerospace Engineering at the University of Maryland, and since 1980 has been professor of Aerospace Engineering at the University of Maryland. In 1982, he was designated a Distinguished Scholar/Teacher by the University. During 1986–1987, while on sabbatical from the University, Dr. Anderson occupied the Charles Lindbergh Chair at the National Air and Space Museum of the Smithsonian Institution. He continued with the Air and Space Museum one day each week as their Special Assistant for Aerodynamics, doing research and writing on the history of aerodynamics. In addition to his position as professor of aerospace engineering, in 1993, he was made a full faculty member of the Committee for the History and Philosophy of Science and in 1996 an affiliate member of the History Department at the University of Maryland. In 1996, he became the Glenn L. Martin Distinguished Professor for Education in Aerospace Engineering. In 1999, he retired from the University of Maryland and was appointed Professor Emeritus. He is currently the Curator for Aerodynamics at the National Air and Space Museum, Smithsonian Institution. Dr. Anderson has published 11 books: Gasdynamic Lasers: An Introduction, Academic Press (1976), and under McGraw-Hill, Introduction to Flight (1978, 1984, 1989, 2000, 2005, 2008, 2012, 2016), Modern Compressible Flow (1982, 1990, 2003), Fundamentals of Aerodynamics (1984, 1991, 2001, 2007, 2011), Hypersonic and High Temperature Gas Dynamics (1989), Computational Fluid Dynamics: The Basics with Applications (1995), Aircraft Performance and Design (1999), A History of Aerodynamics and Its Impact on Flying Machines, Cambridge University Press (1997 hardback, 1998 paperback), The Airplane: A History of Its Technology, American Institute of Aeronautics and Astronautics (2003), Inventing Flight, Johns Hopkins University Press (2004), and X-15, The World’s Fastest Rocket Plane and the Pilots Who Ushered in the Space Age, with co-author Richard Passman, Zenith Press in conjunction with the Smithsonian Institution (2014). He is the author of over 120 papers on radiative gasdynamics, reentry aerothermodynamics, gasdynamic and chemical lasers, computational fluid dynamics, applied aerodynamics, hypersonic flow, and the history of aeronautics. Dr. Anderson is a member of the National Academy of Engineering, and
+v
+
+
+vi About the Author
+is in Who’s Who in America. He is an Honorary Fellow of the American Institute of Aeronautics and Astronautics (AIAA). He is also a fellow of the Royal Aeronautical Society, London. He is a member of Tau Beta Pi, Sigma Tau, Phi Kappa Phi, Phi Eta Sigma, The American Society for Engineering Education, the History of Science Society, and the Society for the History of Technology. In 1988, he was elected as Vice President of the AIAA for Education. In 1989, he was awarded the John Leland Atwood Award jointly by the American Society for Engineering Education and the American Institute of Aeronautics and Astronautics “for the lasting influence of his recent contributions to aerospace engineering education.” In 1995, he was awarded the AIAA Pendray Aerospace Literature Award “for writing undergraduate and graduate textbooks in aerospace engineering which have received worldwide acclaim for their readability and clarity of presentation, including historical content.” In 1996, he was elected Vice President of the AIAA for Publications. He has recently been honored by the AIAA with its 2000 von Karman Lectureship in Astronautics. From 1987 to the present, Dr. Anderson has been the senior consulting editor on the McGraw-Hill Series in Aeronautical and Astronautical Engineering.
+
+
+CONTENTS
+Preface to the Sixth Edition XV
+PART 1
+Fundamental Principles 1
+Chapter 1
+Aerodynamics: Some Introductory Thoughts 3
+1.1 Importance of Aerodynamics: Historical Examples 5 1.2 Aerodynamics: Classification and Practical Objectives 11 1.3 Road Map for This Chapter 15 1.4 Some Fundamental Aerodynamic Variables 15
+1.4.1 Units 18
+1.5 Aerodynamic Forces and Moments 19 1.6 Center of Pressure 32 1.7 Dimensional Analysis: The Buckingham Pi Theorem 34 1.8 Flow Similarity 41 1.9 Fluid Statics: Buoyancy Force 52 1.10 Types of Flow 62
+1.10.1 Continuum Versus Free Molecule Flow 62
+1.10.2 Inviscid Versus Viscous Flow 62
+1.10.3 Incompressible Versus Compressible Flows 64
+1.10.4 Mach Number Regimes 64
+1.11 Viscous Flow: Introduction to Boundary Layers 68 1.12 Applied Aerodynamics: The Aerodynamic Coefficients—Their Magnitudes and Variations 75
+1.13 Historical Note: The Illusive Center of Pressure 89 1.14 Historical Note: Aerodynamic Coefficients 93 1.15 Summary 97 1.16 Integrated Work Challenge: Forward-Facing Axial Aerodynamic Force on an AirfoilCan It Happen and, If So, How? 98 1.17 Problems 101
+Chapter 2
+Aerodynamics: Some Fundamental Principles and Equations 105
+2.1 Introduction and Road Map 106 2.2 Review of Vector Relations 107
+2.2.1 Some Vector Algebra 108
+2.2.2 Typical Orthogonal Coordinate Systems 109
+2.2.3 Scalar and Vector Fields 112
+2.2.4 Scalar and Vector Products 112
+2.2.5 Gradient of a Scalar Field 113
+2.2.6 Divergence of a Vector Field 115
+2.2.7 Curl of a Vector Field 116
+2.2.8 Line Integrals 116
+2.2.9 Surface Integrals 117
+2.2.10 Volume Integrals 118
+2.2.11 Relations Between Line, Surface, and Volume Integrals 119
+2.2.12 Summary 119
+2.3 Models of the Fluid: Control Volumes and Fluid Elements 119
+2.3.1 Finite Control Volume Approach 120
+2.3.2 Infinitesimal Fluid Element Approach 121
+2.3.3 Molecular Approach 121
+vii
+
+
+viii Contents
+2.3.4 Physical Meaning of the Divergence of Velocity 122
+2.3.5 Specification of the Flow Field 123
+2.4 Continuity Equation 127 2.5 Momentum Equation 132 2.6 An Application of the Momentum Equation: Drag of a Two-Dimensional Body 137
+2.6.1 Comment 146
+2.7 Energy Equation 146 2.8 Interim Summary 151 2.9 Substantial Derivative 152 2.10 Fundamental Equations in Terms of the Substantial Derivative 158 2.11 Pathlines, Streamlines, and Streaklines of a Flow 160 2.12 Angular Velocity, Vorticity, and Strain 165 2.13 Circulation 176 2.14 Stream Function 179 2.15 Velocity Potential 183 2.16 Relationship Between the Stream Function and Velocity Potential 186 2.17 How Do We Solve the Equations? 187
+2.17.1 Theoretical (Analytical) Solutions 187
+2.17.2 Numerical Solutions—Computational Fluid Dynamics (CFD) 189
+2.17.3 The Bigger Picture 196
+2.18 Summary 196 2.19 Problems 200
+PART 2
+Inviscid, Incompressible Flow 203
+Chapter 3
+Fundamentals of Inviscid, Incompressible Flow 205
+3.1 Introduction and Road Map 206 3.2 Bernoulli’s Equation 209 3.3 Incompressible Flow in a Duct: The Venturi and Low-Speed Wind Tunnel 213
+3.4 Pitot Tube: Measurement of Airspeed 226 3.5 Pressure Coefficient 235 3.6 Condition on Velocity for Incompressible Flow 237 3.7 Governing Equation for Irrotational, Incompressible Flow: Laplace’s Equation 238
+3.7.1 Infinity Boundary Conditions 241
+3.7.2 Wall Boundary Conditions 241
+3.8 Interim Summary 242 3.9 Uniform Flow: Our First Elementary Flow 243 3.10 Source Flow: Our Second Elementary Flow 245 3.11 Combination of a Uniform Flow with a Source and Sink 249 3.12 Doublet Flow: Our Third Elementary Flow 253 3.13 Nonlifting Flow over a Circular Cylinder 255 3.14 Vortex Flow: Our Fourth Elementary Flow 264 3.15 Lifting Flow over a Cylinder 268 3.16 The Kutta-Joukowski Theorem and the Generation of Lift 282 3.17 Nonlifting Flows over Arbitrary Bodies: The Numerical Source Panel Method 284 3.18 Applied Aerodynamics: The Flow over a Circular Cylinder—The Real Case 294 3.19 Historical Note: Bernoulli and Euler—The Origins of Theoretical Fluid Dynamics 302 3.20 Historical Note: d’Alembert and His Paradox 307 3.21 Summary 308 3.22 Integrated Work Challenge: Relation Between Aerodynamic Drag and the Loss of Total Pressure in the Flow Field 311 3.23 Integrated Work Challenge: Conceptual Design of a Subsonic Wind Tunnel 314 3.24 Problems 318
+
+
+Contents ix
+Chapter 4
+Incompressible Flow over Airfoils 321
+4.1 Introduction 323 4.2 Airfoil Nomenclature 326 4.3 Airfoil Characteristics 328 4.4 Philosophy of Theoretical Solutions for Low-Speed Flow over Airfoils: The Vortex Sheet 333 4.5 The Kutta Condition 338
+4.5.1 Without Friction Could We Have Lift? 342
+4.6 Kelvin’s Circulation Theorem and the Starting Vortex 342 4.7 Classical Thin Airfoil Theory: The Symmetric Airfoil 346 4.8 The Cambered Airfoil 356 4.9 The Aerodynamic Center: Additional Considerations 365 4.10 Lifting Flows over Arbitrary Bodies: The Vortex Panel Numerical Method 369 4.11 Modern Low-Speed Airfoils 375 4.12 Viscous Flow: Airfoil Drag 379
+4.12.1 Estimating Skin-Friction Drag: Laminar Flow 380
+4.12.2 Estimating Skin-Friction Drag: Turbulent Flow 382
+4.12.3 Transition 384
+4.12.4 Flow Separation 389
+4.12.5 Comment 394
+4.13 Applied Aerodynamics: The Flow over an Airfoil—The Real Case 395 4.14 Historical Note: Early Airplane Design and the Role of Airfoil Thickness 406 4.15 Historical Note: Kutta, Joukowski, and the Circulation Theory of Lift 411 4.16 Summary 413 4.17 Integrated Work Challenge: Wall Effects on Measurements Made in Subsonic Wind Tunnels 415 4.18 Problems 419
+Chapter 5
+Incompressible Flow over Finite Wings 423
+5.1 Introduction: Downwash and Induced Drag 427 5.2 The Vortex Filament, the Biot-Savart Law, and Helmholtz’s Theorems 432 5.3 Prandtl’s Classical Lifting-Line Theory 436
+5.3.1 Elliptical Lift Distribution 442
+5.3.2 General Lift Distribution 447
+5.3.3 Effect of Aspect Ratio 450
+5.3.4 Physical Significance 456
+5.4 A Numerical Nonlinear Lifting-Line Method 465 5.5 The Lifting-Surface Theory and the Vortex Lattice Numerical Method 469 5.6 Applied Aerodynamics: The Delta Wing 476 5.7 Historical Note: Lanchester and Prandtl—The Early Development of Finite-Wing Theory 488 5.8 Historical Note: Prandtl—The Man 492 5.9 Summary 495 5.10 Problems 496
+Chapter 6
+Three-Dimensional Incompressible Flow 499
+6.1 Introduction 499 6.2 Three-Dimensional Source 500 6.3 Three-Dimensional Doublet 502 6.4 Flow over a Sphere 504
+6.4.1 Comment on the Three-Dimensional Relieving Effect 506
+6.5 General Three-Dimensional Flows: Panel Techniques 507 6.6 Applied Aerodynamics: The Flow over a Sphere—The Real Case 509
+
+
+x Contents
+6.7 Applied Aerodynamics: Airplane Lift and Drag 512
+6.7.1 Airplane Lift 512
+6.7.2 Airplane Drag 514
+6.7.3 Application of Computational Fluid Dynamics for the Calculation of Lift and Drag 519
+6.8 Summary 523 6.9 Problems 524
+PART 3
+Inviscid, Compressible Flow 525
+Chapter 7
+Compressible Flow: Some Preliminary Aspects 527
+7.1 Introduction 528 7.2 A Brief Review of Thermodynamics 530
+7.2.1 Perfect Gas 530
+7.2.2 Internal Energy and Enthalpy 530
+7.2.3 First Law of Thermodynamics 535
+7.2.4 Entropy and the Second Law of Thermodynamics 536
+7.2.5 Isentropic Relations 538
+7.3 Definition of Compressibility 542 7.4 Governing Equations for Inviscid, Compressible Flow 543 7.5 Definition of Total (Stagnation) Conditions 545 7.6 Some Aspects of Supersonic Flow: Shock Waves 552 7.7 Summary 556 7.8 Problems 558
+Chapter 8
+Normal Shock Waves and Related Topics 561
+8.1 Introduction 562 8.2 The Basic Normal Shock Equations 563
+8.3 Speed of Sound 567
+8.3.1 Comments 575
+8.4 Special Forms of the Energy Equation 576 8.5 When Is a Flow Compressible? 584 8.6 Calculation of Normal Shock-Wave Properties 587
+8.6.1 Comment on the Use of Tables to Solve Compressible Flow Problems 602
+8.7 Measurement of Velocity in a Compressible Flow 603
+8.7.1 Subsonic Compressible Flow 603
+8.7.2 Supersonic Flow 604
+8.8 Summary 608 8.9 Problems 611
+Chapter 9
+Oblique Shock and Expansion Waves 613
+9.1 Introduction 614 9.2 Oblique Shock Relations 620 9.3 Supersonic Flow over Wedges and Cones 634
+9.3.1 A Comment on Supersonic Lift and Drag Coefficients 637
+9.4 Shock Interactions and Reflections 638 9.5 Detached Shock Wave in Front of a Blunt Body 644
+9.5.1 Comment on the Flow Field Behind a Curved Shock Wave: Entropy Gradients and Vorticity 648
+9.6 Prandtl-Meyer Expansion Waves 648 9.7 Shock-Expansion Theory: Applications to Supersonic Airfoils 660 9.8 A Comment on Lift and Drag Coefficients 664 9.9 The X-15 and Its Wedge Tail 664 9.10 Viscous Flow: Shock-Wave/ Boundary-Layer Interaction 669 9.11 Historical Note: Ernst Mach—A Biographical Sketch 671
+
+
+Contents xi
+9.12 Summary 674 9.13 Integrated Work Challenge: Relation Between Supersonic Wave Drag and Entropy Increase—Is There a Relation? 675 9.14 Integrated Work Challenge: The Sonic Boom 678 9.15 Problems 681
+Chapter 10
+Compressible Flow Through Nozzles, Diffusers, and Wind Tunnels 689
+10.1 Introduction 690 10.2 Governing Equations for Quasi-One-Dimensional Flow 692 10.3 Nozzle Flows 701
+10.3.1 More on Mass Flow 715
+10.4 Diffusers 716 10.5 Supersonic Wind Tunnels 718 10.6 Viscous Flow: Shock-Wave/ Boundary-Layer Interaction Inside Nozzles 724 10.7 Summary 726 10.8 Integrated Work Challenge: Conceptual Design of a Supersonic Wind Tunnel 727 10.9 Problems 736
+Chapter 11
+Subsonic Compressible Flow over Airfoils: Linear Theory 739
+11.1 Introduction 740 11.2 The Velocity Potential Equation 742 11.3 The Linearized Velocity Potential Equation 745 11.4 Prandtl-Glauert Compressibility Correction 750 11.5 Improved Compressibility Corrections 755
+11.6 Critical Mach Number 756
+11.6.1 A Comment on the Location of Minimum Pressure (Maximum Velocity) 765
+11.7 Drag-Divergence Mach Number: The Sound Barrier 765 11.8 The Area Rule 773 11.9 The Supercritical Airfoil 775 11.10 CFD Applications: Transonic Airfoils and Wings 777 11.11 Applied Aerodynamics: The Blended Wing Body 782 11.12 Historical Note: High-Speed Airfoils—Early Research and Development 788 11.13 Historical Note: The Origin of the Swept-Wing Concept 792 11.14 Historical Note: Richard T. Whitcomb—Architect of the Area Rule and the Supercritical Wing 801 11.15 Summary 802 11.16 Integrated Work Challenge: Transonic Testing by the Wing-Flow Method 804 11.17 Problems 808
+Chapter 12
+Linearized Supersonic Flow 811
+12.1 Introduction 812 12.2 Derivation of the Linearized Supersonic Pressure Coefficient Formula 812 12.3 Application to Supersonic Airfoils 816 12.4 Viscous Flow: Supersonic Airfoil Drag 822 12.5 Summary 825 12.6 Problems 826
+Chapter 13
+Introduction to Numerical Techniques for Nonlinear Supersonic Flow 829
+13.1 Introduction: Philosophy of Computational Fluid Dynamics 830
+
+
+xii Contents
+13.2 Elements of the Method of Characteristics 832
+13.2.1 Internal Points 838
+13.2.2 Wall Points 839
+13.3 Supersonic Nozzle Design 840 13.4 Elements of Finite-Difference Methods 843
+13.4.1 Predictor Step 849
+13.4.2 Corrector Step 849
+13.5 The Time-Dependent Technique: Application to Supersonic Blunt Bodies 850
+13.5.1 Predictor Step 854
+13.5.2 Corrector Step 854
+13.6 Flow over Cones 858
+13.6.1 Physical Aspects of Conical Flow 859
+13.6.2 Quantitative Formulation 860
+13.6.3 Numerical Procedure 865
+13.6.4 Physical Aspects of Supersonic Flow over Cones 866
+13.7 Summary 869 13.8 Problem 870
+Chapter 14
+Elements of Hypersonic Flow 871
+14.1 Introduction 872 14.2 Qualitative Aspects of Hypersonic Flow 873 14.3 Newtonian Theory 877 14.4 The Lift and Drag of Wings at Hypersonic Speeds: Newtonian Results for a Flat Plate at Angle of Attack 881
+14.4.1 Accuracy Considerations 888
+14.5 Hypersonic Shock-Wave Relations and Another Look at Newtonian Theory 892 14.6 Mach Number Independence 896 14.7 Hypersonics and Computational Fluid Dynamics 898
+14.8 Hypersonic Viscous Flow: Aerodynamic Heating 901
+14.8.1 Aerodynamic Heating and Hypersonic Flow—The Connection 901
+14.8.2 Blunt Versus Slender Bodies in Hypersonic Flow 903
+14.8.3 Aerodynamic Heating to a Blunt Body 906
+14.9 Applied Hypersonic Aerodynamics: Hypersonic Waveriders 908
+14.9.1 Viscous-Optimized Waveriders 914
+14.10 Summary 921 14.11 Problems 922
+PART 4
+Viscous Flow 923
+Chapter 15
+Introduction to the Fundamental Principles and Equations of Viscous Flow 925
+15.1 Introduction 926 15.2 Qualitative Aspects of Viscous Flow 927 15.3 Viscosity and Thermal Conduction 935 15.4 The Navier-Stokes Equations 940 15.5 The Viscous Flow Energy Equation 944 15.6 Similarity Parameters 948 15.7 Solutions of Viscous Flows: A Preliminary Discussion 952 15.8 Summary 955 15.9 Problems 957
+Chapter 16
+A Special Case: Couette Flow 959
+16.1 Introduction 959 16.2 Couette Flow: General Discussion 960 16.3 Incompressible (Constant Property) Couette Flow 964
+16.3.1 Negligible Viscous Dissipation 970
+
+
+Contents xiii
+16.3.2 Equal Wall Temperatures 971
+16.3.3 Adiabatic Wall Conditions (Adiabatic Wall Temperature) 973
+16.3.4 Recovery Factor 976
+16.3.5 Reynolds Analogy 977
+16.3.6 Interim Summary 978
+16.4 Compressible Couette Flow 980
+16.4.1 Shooting Method 982
+16.4.2 Time-Dependent Finite-Difference Method 984
+16.4.3 Results for Compressible Couette Flow 988
+16.4.4 Some Analytical Considerations 990
+16.5 Summary 995
+Chapter 17
+Introduction to Boundary Layers 997
+17.1 Introduction 998 17.2 Boundary-Layer Properties 1000 17.3 The Boundary-Layer Equations 1006 17.4 How Do We Solve the Boundary-Layer Equations? 1009 17.5 Summary 1011
+Chapter 18
+Laminar Boundary Layers 1013
+18.1 Introduction 1013 18.2 Incompressible Flow over a Flat Plate: The Blasius Solution 1014 18.3 Compressible Flow over a Flat Plate 1021
+18.3.1 A Comment on Drag Variation with Velocity 1032
+18.4 The Reference Temperature Method 1033
+18.4.1 Recent Advances: The Meador-Smart Reference Temperature Method 1036
+18.5 Stagnation Point Aerodynamic Heating 1037
+18.6 Boundary Layers over Arbitrary Bodies: Finite-Difference Solution 1043
+18.6.1 Finite-Difference Method 1044
+18.7 Summary 1049 18.8 Problems 1050
+Chapter 19
+Turbulent Boundary Layers 1051
+19.1 Introduction 1052 19.2 Results for Turbulent Boundary Layers on a Flat Plate 1052
+19.2.1 Reference Temperature Method for Turbulent Flow 1054
+19.2.2 The Meador-Smart Reference Temperature Method for Turbulent Flow 1056
+19.2.3 Prediction of Airfoil Drag 1057
+19.3 Turbulence Modeling 1057
+19.3.1 The Baldwin-Lomax Model 1058
+19.4 Final Comments 1060 19.5 Summary 1061 19.6 Problems 1062
+Chapter 20
+Navier-Stokes Solutions: Some Examples 1063
+20.1 Introduction 1064 20.2 The Approach 1064 20.3 Examples of Some Solutions 1065
+20.3.1 Flow over a Rearward-Facing Step 1065
+20.3.2 Flow over an Airfoil 1065
+20.3.3 Flow over a Complete Airplane 1068
+20.3.4 Shock-Wave/Boundary-Layer Interaction 1069
+20.3.5 Flow over an Airfoil with a Protuberance 1070
+20.4 The Issue of Accuracy for the Prediction of Skin Friction Drag 1072 20.5 Summary 1077
+
+
+xiv Contents
+Appendix A Isentropic Flow Properties 1079
+Appendix B Normal Shock Properties 1085
+Appendix C Prandtl-Meyer Function and Mach Angle 1089
+Appendix D Standard Atmosphere, SI Units 1093
+Appendix E Standard Atmosphere, English Engineering Units 1103
+References 1111
+Index 1117
+
+
+PREFACE TO THE SIXTH EDITION
+T
+his book follows in the same tradition as the previous editions: it is for students—to be read, understood, and enjoyed. It is consciously written in a clear, informal, and direct style to talk to the reader and gain his or her immediate interest in the challenging and yet beautiful discipline of aerodynamics. The explanation of each topic is carefully constructed to make sense to the reader. Moreover, the structure of each chapter is highly organized in order to keep the reader aware of where we are, where we were, and where we are going. Too frequently the student of aerodynamics loses sight of what is trying to be accomplished; to avoid this, I attempt to keep the reader informed of my intent at all times. For example, preview boxes are introduced at the beginning of each chapter. These short sections, literally set in boxes, inform the reader in plain language what to expect from each chapter and why the material is important and exciting. They are primarily motivational; they help to encourage the reader to actually enjoy reading the chapter, therefore enhancing the educational process. In addition, each chapter contains a road map—a block diagram designed to keep the reader well aware of the proper flow of ideas and concepts. The use of preview boxes and chapter road maps are unique features of this book. Also, to help organize the reader’s thoughts, there are special summary sections at the end of most chapters. The material in this book is at the level of college juniors and seniors in aerospace or mechanical engineering. It assumes no prior knowledge of fluid dynamics in general, or aerodynamics in particular. It does assume a familiarity with differential and integral calculus, as well as the usual physics background common to most students of science and engineering. Also, the language of vector analysis is used liberally; a compact review of the necessary elements of vector algebra and vector calculus is given in Chapter 2 in such a fashion that it can either educate or refresh the reader, whatever may be the case for each individual. This book is designed for a one-year course in aerodynamics. Chapters 1 to 6 constitute a solid semester emphasizing inviscid, incompressible flow. Chapters 7 to 14 occupy a second semester dealing with inviscid, compressible flow. Finally, Chapters 15 to 20 introduce some basic elements of viscous flow, mainly to serve as a contrast to and comparison with the inviscid flows treated throughout the bulk of the text. Specific sections on viscous flow, however, have been added much earlier in the book in order to give the reader some idea of how the inviscid results are tempered by the influence of friction. This is done by adding self-contained viscous flow sections at the end of various chapters, written and placed in such a way that they do not interfere with the flow of the inviscid flow discussion, but are there to complement the discussion. For example, at the end of Chapter 4 on
+xv
+
+
+xvi Preface to the Sixth Edition
+incompressible inviscid flow over airfoils, there is a viscous flow section that deals with the prediction of skin friction drag on such airfoils. A similar viscous flow section at the end of Chapter 12 deals with friction drag on high-speed airfoils. At the end of the chapters on shock waves and nozzle flows, there are viscous flow sections on shock wave/boundary-layer interactions. And so forth. Other features of this book are:
+1. An introduction to computational fluid dynamics as an integral part of the study of aerodynamics. Computational fluid dynamics (CFD) has recently become a third dimension in aerodynamics, complementing the previously existing dimension of pure experiment and pure theory. It is absolutely necessary that the modern student of aerodynamics be introduced to some of the basic ideas of CFD—he or she will most certainly come face to face with either its “machinery” or its results after entering the professional ranks of practicing aerodynamicists. Hence, such subjects as the source and vortex panel techniques, the method of characteristics, and explicit finite-difference solutions are introduced and discussed as they naturally arise during the course of our discussion. In particular, Chapter 13 is devoted exclusively to numerical techniques, couched at a level suitable to an introductory aerodynamics text. 2. A chapter is devoted entirely to hypersonic flow. Although hypersonics is at one extreme end of the flight spectrum, it has current important applications to the design of hypervelocity missiles, planetary entry vehicles, and modern hypersonic atmospheric cruise vehicles. Therefore, hypersonic flow deserves some attention in any modern presentation of aerodynamics. This is the purpose of Chapter 14. 3. Historical notes are placed at the end of many of the chapters. This follows in the tradition of some of my previous textbooks, Introduction to Flight: Its Engineering and History, 8th Edition (McGraw-Hill, 2016) and Modern
+Compressible Flow: With Historical Perspecive, 3rd Edition (McGraw-Hill, 2003). Although aerodynamics is a rapidly evolving subject, its foundations are deeply rooted in the history of science and technology. It is important for the modern student of aerodynamics to have an appreciation for the historical origin of the tools of the trade. Therefore, this book addresses such questions as who Bernoulli, Euler, d’Alembert, Kutta, Joukowski, and Prandtl were; how the circulation theory of lift developed; and what excitement surrounded the early development of high-speed aerodynamics. I wish to thank various members of the staff of the National Air and Space Museum of the Smithsonian Institution for opening their extensive files for some of the historical research behind these history sections. Also, a constant biographical reference was the Dictionary of Scientific Biography, edited by C. C. Gillespie, Charles Schribner’s Sons, New York, 1980. This is a 16-volume set of books that is a valuable source of biographic information on the leading scientists in history.
+
+
+Preface to the Sixth Edition xvii
+4. Design boxes are scattered throughout the book. These design boxes are special sections for the purpose of discussing design aspects associated with the fundamental material covered throughout the book. These sections are literally placed in boxes to set them apart from the mainline text. Modern engineering education is placing more emphasis on design, and the design boxes in this book are in this spirit. They are a means of making the fundamental material more relevant and making the whole process of learning aerodynamics more fun.
+Due to the extremely favorable comments from readers and users of the first five editions, virtually all the content of the earlier editions has been carried over intact to the present sixth edition. In this edition, however, a completely new educational tool has been introduced in some of the chapters in order to enhance and expand the reader’s learning process. Throughout the previous editions, numerous worked examples have been included at the end of many of the sections to illustrate and reinforce the ideas and methods discussed in that particular section. These are still included in the present sixth edition. However, added at the end of a number of the chapters in this sixth edition, a major challenge is given to the reader that integrates and uses thoughts and equations drawn from the chapter as a whole. These new sections are called END OF CHAPTER INTEGRATED WORK CHALLENGES. They are listed next:
+1. Chapter 1: A forward-facing axial aerodynamic force on an airfoil sounds not possible, but it can actually happen. What are the conditions under which it can happen? Also, the history of when such a forward-facing force was first observed is discussed. 2. Chapter 2: Using the momentum equation, develop the relation between drag on an aerodynamic body and the loss of total pressure in the flow field. 3. Chapter 3: Perform a conceptual design of a low-speed subsonic wind tunnel. 4. Chapter 4: Find a way to account for the effects of wind tunnel walls on the measurements made on an aerodynamic body in a low-speed wind tunnel. 5. Chapter 7: Obtain and discuss a relation between supersonic wave drag on a body and the entropy increase in the flow. 6. Chapter 9: Consider the sonic boom generated from a body in supersonic flight. What is it? How is it created? How can its strength be reduced? 7. Chapter 10: Perform a conceptual design of a supersonic wind tunnel. 8. Chapter 11: At the end of World War II, in the face of the lack of reliable transonic wind tunnels and the extreme theoretical difficulty solving the nonlinear mathematical equations that govern transonic flow, the NACA developed an innovative experimental method for obtaining transonic aerodynamic data. Called the “wing-flow technique,” it involved mounting a small airfoil wing model vertically on the surface of the wing of a P-51
+
+
+xviii Preface to the Sixth Edition
+fighter airplane at a location inside the bubble of locally supersonic flow formed on the P-51 wing when the airplane exceeded its critical Mach number. Design this apparatus, taking into account the size of the test model, the flow conditions over the test model, the optimum locations on the P-51 wing, etc. Also, the history of the wing-flow techniques will be given.
+The answers to these Integrated Work Challenges are given right there in the text so that the reader can gain instant gratification after working them out, just like the other worked examples; the answers are just more complex with a more widespread educational value. New homework problems have been added to McGraw-Hill’s online learning environment, Connect®. These question banks will include all end-of-chapter problems from the textbook and additional problems unique to Connect. All the new additional material not withstanding, the main thrust of this book remains the presentation of the fundamentals of aerodynamics; the new material is simply intended to enhance and support this thrust. I repeat that the book is organized along classical lines, dealing with inviscid incompressible flow, inviscid compressible flow, and viscous flow in sequence. My experience in teaching this material to undergraduates finds that it nicely divides into a two-semester course with Parts 1 and 2 in the first semester and Parts 3 and 4 in the second semester. Also, I have taught the entire book in a fast-paced, first-semester graduate course intended to introduce the fundamentals of aerodynamics to new graduate students who have not had this material as part of their undergraduate education. The book works well in such a mode. I would like to thank the McGraw-Hill editorial and production staff for their excellent help in producing this book, especially Jolynn Kilburg and Thomas Scaife, PhD, in Dubuque. Our photo researcher, David Tietz, was invaluable in searching out new and replacement photographs for the new edition to satisfy new McGraw-Hill guidelines; I don’t know what I would have done without him. Also, special thanks go to my long-time friend and associate, Sue Cunningham, whose expertise as a scientific typist is beyond comparison and who has typed all my book manuscripts for me, including this one, with great care and precision. I want to thank my students over the years for many stimulating discussions on the subject of aerodynamics, discussions that have influenced the development of this book. Special thanks go to three institutions: (1) The University of Maryland for providing a challenging intellectual atmosphere in which I have basked for the past 42 years; (2) The National Air and Space Museum of the Smithsonian Institution for opening the world of the history of the technology of flight for me; and (3) the Anderson household—Sarah-Allen, Katherine, and Elizabeth—who have been patient and understanding over the years while their husband and father was in his ivory tower. Also, I pay respect to the new generation, which includes my two beautiful granddaughters, Keegan and Tierney Glabus, who represent the future. To them, I dedicate this book.
+
+
+Preface to the Sixth Edition xix
+As a final comment, aerodynamics is a subject of intellectual beauty, composed and drawn by many great minds over the centuries. Fundamentals of Aerodynamics is intended to portray and convey this beauty. Do you feel challenged and interested by these thoughts? If so, then read on, and enjoy!
+John D. Anderson, Jr.
+
+
+
+
+
+
+
+
+PART 1
+Fundamental Principles
+I
+n Part 1, we cover some of the basic principles that apply to aerodynamics in general. These are the pillars on which all of aerodynamics is based.
+1
+
+
+
+
+CHAPTER 1
+Aerodynamics: Some Introductory Thoughts
+The term “aerodynamics” is generally used for problems arising from flight and other topics involving the flow of air. Ludwig Prandtl, 1949
+Aerodynamics: The dynamics of gases, especially atmospheric interactions with moving objects.
+The American Heritage Dictionary of the English Language, 1969
+PREVIEW BOX
+Why learn about aerodynamics? For an answer, just take a look at the following five photographs showing a progression of airplanes over the past 70 years. The Douglas DC-3 (Figure 1.1), one of the most famous aircraft of all time, is a low-speed subsonic transport designed during the 1930s. Without a knowledge of low-speed aerodynamics, this aircraft would have never existed. The Boeing 707 (Figure 1.2) opened high-speed subsonic flight to millions of passengers beginning in the late 1950s. Without a knowledge of high-speed subsonic aerodynamics, most of
+us would still be relegated to ground transportation. Figure 1.1 Douglas DC-3 (NASA).
+3
+
+
+4 PART 1 Fundamental Principles
+Figure 1.2 Boeing 707 (© Everett Collection Historical/Alamy).
+Figure 1.3 Bell X-1 (Library of Congress [LC-USZ6-1658]).
+Figure 1.4 Lockheed F-104 (Library of Congress [LC-USZ62-94416]).
+The Bell X-1 (Figure 1.3) became the first piloted airplane to fly faster than sound, a feat accomplished with Captain Chuck Yeager at the controls on October 14, 1947. Without a knowledge of transonic aerodynamics (near, at, and just above the speed of sound), neither the X-1, nor any other airplane, would have ever broken the sound barrier. The Lockheed F-104 (Figure 1.4) was the first supersonic airplane
+Figure 1.5 Lockheed-Martin F-22 (U.S. Air Force Photo/Staff Sgt. Vernon Young Jr.).
+Figure 1.6 Blended wing body (NASA).
+point-designed to fly at twice the speed of sound, accomplished in the 1950s. The Lockheed-Martin F-22 (Figure 1.5) is a modern fighter aircraft designed for sustained supersonic flight. Without a knowledge of supersonic aerodynamics, these supersonic airplanes would not exist. Finally, an example of an innovative new vehicle concept for high-speed subsonic flight is the blended wing body shown in Figure 1.6. At the time of writing, the blended-wing-body promises to carry from 400 to 800 passengers over long distances with almost 30 percent less fuel per seat-mile than a conventional jet transport. This would be a “renaissance” in long-haul transport. The salient design aspects of this exciting new concept are discussed in Section 11.10. The airplanes in Figures 1.11.6 are six good reasons to learn about aerodynamics. The major purpose of this book is to help you do this. As you continue to read this and subsequent chapters, you will progressively learn about low-speed aerodynamics, high-speed subsonic aerodynamics, transonic aerodynamics, supersonic aerodynamics, and more.
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 5
+Airplanes are by no means the only application of aerodynamics. The air flow over an automobile, the gas flow through the internal combustion engine powering an automobile, weather and storm prediction, the flow through a windmill, the production of thrust by gas turbine jet engines and rocket engines, and the movement of air through building heater and air-conditioning systems are just a few other examples of the application of aerodynamics. The material in this book is powerful stuff—important stuff. Have fun reading and learning about aerodynamics. To learn a new subject, you simply have to start at the beginning. This chapter is the beginning of our study of aerodynamics; it weaves together a series of introductory thoughts, definitions, and concepts essential to our discussions in subsequent chapters. For example, how does nature reach out and grab hold of an airplane in flight—or any other object
+emmersed in a flowing fluid—and exert an aerodynamic force on the object? We will find out here. The resultant aerodynamic force is frequently resolved into two components defined as lift and drag; but rather than dealing with the lift and drag forces themselves, aerodynamicists deal instead with lift and drag coefficients. What is so magic about lift and drag coefficients? We will see. What is a Reynolds number? Mach number? Inviscid flow? Viscous flow? These rather mysterious sounding terms will be demystified in the present chapter. They and others constitute the language of aerodynamics, and as we all know, to do anything useful you have to know the language. Visualize this chapter as a beginning language lesson, necessary to go on to the exciting aerodynamic applications in later chapters. There is a certain enjoyment and satisfaction in learning a new language. Take this chapter in that spirit, and move on.
+1.1 IMPORTANCE OF AERODYNAMICS: HISTORICAL EXAMPLES
+On August 8, 1588, the waters of the English Channel churned with the gyrations of hundreds of warships. The great Spanish Armada had arrived to carry out an invasion of Elizabethan England and was met head-on by the English fleet under the command of Sir Francis Drake. The Spanish ships were large and heavy; they were packed with soldiers and carried formidable cannons that fired 50 lb round shot that could devastate any ship of that era. In contrast, the English ships were smaller and lighter; they carried no soldiers and were armed with lighter, shorter-range cannons. The balance of power in Europe hinged on the outcome of this naval encounter. King Philip II of Catholic Spain was attempting to squash Protestant England’s rising influence in the political and religious affairs of Europe; in turn, Queen Elizabeth I was attempting to defend the very existence of England as a sovereign state. In fact, on that crucial day in 1588, when the English floated six fire ships into the Spanish formation and then drove headlong into the ensuing confusion, the future history of Europe was in the balance. In the final outcome, the heavier, sluggish, Spanish ships were no match for the faster, more maneuverable, English craft, and by that evening the Spanish Armada lay in disarray, no longer a threat to England. This naval battle is of particular importance because it was the first in history to be fought by ships on both sides powered completely by sail (in contrast to earlier combinations of oars and sail), and it taught the world that political power was going to be synonymous with naval power. In turn, naval power was going to depend greatly on the speed and
+
+
+6 PART 1 Fundamental Principles
+Figure 1.7 Isaac Newton’s model of fluid flow in the year 1687. This model was widely adopted in the seventeenth and eighteenth centuries but was later found to be conceptually inaccurate for most fluid flows.
+maneuverability of ships. To increase the speed of a ship, it is important to reduce the resistance created by the water flow around the ship’s hull. Suddenly, the drag on ship hulls became an engineering problem of great interest, thus giving impetus to the study of fluid mechanics. This impetus hit its stride almost a century later, when, in 1687, Isaac Newton (1642–1727) published his famous Principia, in which the entire second book was devoted to fluid mechanics. Newton encountered the same difficulty as others before him, namely, that the analysis of fluid flow is conceptually more difficult than the dynamics of solid bodies. A solid body is usually geometrically well defined, and its motion is therefore relatively easy to describe. On the other hand, a fluid is a “squishy” substance, and in Newton’s time it was difficult to decide even how to qualitatively model its motion, let alone obtain quantitative relationships. Newton considered a fluid flow as a uniform, rectilinear stream of particles, much like a cloud of pellets from a shotgun blast. As sketched in Figure 1.7, Newton assumed that upon striking a surface inclined at an angle θ to the stream, the particles would transfer their normal momentum to the surface but their tangential momentum would be preserved. Hence, after collision with the surface, the particles would then move along the surface. This led to an expression for the hydrodynamic force on the surface which varies as sin2 θ . This is Newton’s famous sine-squared law (described in detail in Chapter 14). Although its accuracy left much to be desired, its simplicity led to wide application in naval architecture. Later, in 1777, a series of experiments was carried out by Jean LeRond d’Alembert (1717–1783), under the support of the French government, in order to measure the resistance of ships in canals. The results showed that “the rule that for oblique planes resistance varies with the sine square of the angle of incidence holds good only for angles between 50 and 90◦ and must be abandoned for lesser angles.” Also, in 1781, Leonhard Euler (1707–1783) pointed out the physical inconsistency of Newton’s model (Figure 1.7) consisting of a rectilinear stream of particles impacting without warning on a surface. In contrast to this
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 7
+model, Euler noted that the fluid moving toward a body “before reaching the latter, bends its direction and its velocity so that when it reaches the body it flows past it along the surface, and exercises no other force on the body except the pressure corresponding to the single points of contact.” Euler went on to present a formula for resistance that attempted to take into account the shear stress distribution along the surface, as well as the pressure distribution. This expression became proportional to sin2 θ for large incidence angles, whereas it was proportional to sin θ at small incidence angles. Euler noted that such a variation was in reasonable agreement with the ship-hull experiments carried out by d’Alembert. This early work in fluid dynamics has now been superseded by modern concepts and techniques. (However, amazingly enough, Newton’s sine-squared law has found new application in very high-speed aerodynamics, to be discussed in Chapter 14.) The major point here is that the rapid rise in the importance of naval architecture after the sixteenth century made fluid dynamics an important science, occupying the minds of Newton, d’Alembert, and Euler, among many others. Today, the modern ideas of fluid dynamics, presented in this book, are still driven in part by the importance of reducing hull drag on ships. Consider a second historical example. The scene shifts to Kill Devil Hills, 4 mi south of Kitty Hawk, North Carolina. It is summer of 1901, and Wilbur and Orville Wright are struggling with their second major glider design, the first being a stunning failure the previous year. The airfoil shape and wing design of their glider are based on aerodynamic data published in the 1890s by the great German aviation pioneer Otto Lilienthal (1848–1896) and by Samuel Pierpont Langley (1934–1906), secretary of the Smithsonian Institution—the most prestigious scientific position in the United States at that time. Because their first glider in 1900 produced no meaningful lift, the Wright brothers have increased the wing area from 165 to 290 ft2 and have increased the wing camber (a measure of the airfoil curvature—the larger the camber, the more “arched” is the thin airfoil shape) by almost a factor of 2. But something is still wrong. In Wilbur’s words, the glider’s “lifting capacity seemed scarcely one-third of the calculated amount.” Frustration sets in. The glider is not performing even close to their expectations, although it is designed on the basis of the best available aerodynamic data. On August 20, the Wright brothers despairingly pack themselves aboard a train going back to Dayton, Ohio. On the ride back, Wilbur mutters that “nobody will fly for a thousand years.” However, one of the hallmarks of the Wrights is perseverance, and within weeks of returning to Dayton, they decide on a complete departure from their previous approach. Wilbur later wrote that “having set out with absolute faith in the existing scientific data, we were driven to doubt one thing after another, until finally after two years of experiment, we cast it all aside, and decided to rely entirely upon our own investigations.” Since their 1901 glider was of poor aerodynamic design, the Wrights set about determining what constitutes good aerodynamic design. In the fall of 1901, they design and build a 6 ft long, 16 in square wind tunnel powered by a two-bladed fan connected to a gasoline engine. A replica of the Wrights’ tunnel is shown in Figure 1.8a. In their wind tunnel they test over 200 different wing and airfoil shapes, including flat plates,
+
+
+8 PART 1 Fundamental Principles
+(a)
+(b)
+Figure 1.8 (a) Replica of the wind tunnel designed, built, and used by the Wright brothers in Dayton, Ohio, during 1901–1902. (b) Wing models tested by the Wright brothers in their wind tunnel during 1901–1902. ((a) NASA; (b) Courtesy of John Anderson).
+curved plates, rounded leading edges, rectangular and curved planforms, and various monoplane and multiplane configurations. A sample of their test models is shown in Figure 1.8b. The aerodynamic data are taken logically and carefully. Armed with their new aerodynamic information, the Wrights design a new glider in the spring of 1902. The airfoil is much more efficient; the camber is reduced considerably, and the location of the maximum rise of the airfoil is moved closer to the front of the wing. The most obvious change, however, is that the ratio of the length of the wing (wingspan) to the distance from the front to the rear of the airfoil (chord length) is increased from 3 to 6. The success of this glider during
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 9
+the summer and fall of 1902 is astounding; Orville and Wilbur accumulate over a thousand flights during this period. In contrast to the previous year, the Wrights return to Dayton flushed with success and devote all their subsequent efforts to powered flight. The rest is history. The major point here is that good aerodynamics was vital to the ultimate success of the Wright brothers and, of course, to all subsequent successful airplane designs up to the present day. The importance of aerodynamics to successful manned flight goes without saying, and a major thrust of this book is to present the aerodynamic fundamentals that govern such flight. Consider a third historical example of the importance of aerodynamics, this time as it relates to rockets and space flight. High-speed, supersonic flight had become a dominant feature of aerodynamics by the end of World War II. By this time, aerodynamicists appreciated the advantages of using slender, pointed body shapes to reduce the drag of supersonic vehicles. The more pointed and slender the body, the weaker the shock wave attached to the nose, and hence the smaller the wave drag. Consequently, the German V-2 rocket used during the last stages of World War II had a pointed nose, and all short-range rocket vehicles flown during the next decade followed suit. Then, in 1953, the first hydrogen bomb was exploded by the United States. This immediately spurred the development of long-range intercontinental ballistic missiles (ICBMs) to deliver such bombs. These vehicles were designed to fly outside the region of the earth’s atmosphere for distances of 5000 mi or more and to reenter the atmosphere at suborbital speeds of from 20,000 to 22,000 ft/s. At such high velocities, the aerodynamic heating of the reentry vehicle becomes severe, and this heating problem dominated the minds of high-speed aerodynamicists. Their first thinking was conventional—a sharppointed, slender reentry body. Efforts to minimize aerodynamic heating centered on the maintenance of laminar boundary layer flow on the vehicle’s surface; such laminar flow produces far less heating than turbulent flow (discussed in Chapters 15 and 19). However, nature much prefers turbulent flow, and reentry vehicles are no exception. Therefore, the pointed-nose reentry body was doomed to failure because it would burn up in the atmosphere before reaching the earth’s surface. However, in 1951, one of those major breakthroughs that come very infrequently in engineering was created by H. Julian Allen at the NACA (National Advisory Committee for Aeronautics) Ames Aeronautical Laboratory—he introduced the concept of the blunt reentry body. His thinking was paced by the following concepts. At the beginning of reentry, near the outer edge of the atmosphere, the vehicle has a large amount of kinetic energy due to its high velocity and a large amount of potential energy due to its high altitude. However, by the time the vehicle reaches the surface of the earth, its velocity is relatively small and its altitude is zero; hence, it has virtually no kinetic or potential energy. Where has all the energy gone? The answer is that it has gone into (1) heating the body and (2) heating the airflow around the body. This is illustrated in Figure 1.9. Here, the shock wave from the nose of the vehicle heats the airflow around the vehicle; at the same time, the vehicle is heated by the intense frictional dissipation within the boundary layer on the surface. Allen reasoned that if more of the total reentry
+
+
+10 PART 1 Fundamental Principles
+Very highspeed flow
+Heat transfer into body from boundary layer
+Hot boundary layer
+Shockwave Shockwave
+heatsair
+Figure 1.9 Energy of reentry goes into heating both the body and the air around the body.
+energy could be dumped into the airflow, then less would be available to be transferred to the vehicle itself in the form of heating. In turn, the way to increase the heating of the airflow is to create a stronger shock wave at the nose (i.e., to use a blunt-nosed body). The contrast between slender and blunt reentry bodies is illustrated in Figure 1.10. This was a stunning conclusion—to minimize aerodynamic heating, you actually want a blunt rather than a slender body. The result was so important that it was bottled up in a secret government document. Moreover, because it was so foreign to contemporary intuition, the blunt-reentry-body concept was accepted only gradually by the technical community. Over the next few years, additional aerodynamic analyses and experiments confirmed the validity of blunt reentry bodies. By 1955, Allen was publicly recognized for his work, receiving the Sylvanus Albert Reed Award of the Institute of the Aeronautical Sciences (now the American Institute of Aeronautics and Astronautics). Finally, in 1958, his work was made available to the public in the pioneering document NACA Report 1381 entitled “A Study of the Motion and Aerodynamic Heating of Ballistic Missiles Entering the Earth’s Atmosphere at High Supersonic Speeds.” Since Harvey Allen’s early work, all successful reentry bodies, from the first Atlas ICBM to the manned Apollo lunar capsule, have been blunt. Incidentally, Allen went on to distinguish himself in many other areas, becoming the director of the NASA Ames Research Center in 1965, and retiring in 1970. His work on the blunt reentry body is an excellent example of the importance of aerodynamics to space vehicle design. In summary, the purpose of this section has been to underscore the importance of aerodynamics in historical context. The goal of this book is to introduce the fundamentals of aerodynamics and to give the reader a much deeper insight to many technical applications in addition to the few described above. Aerodynamics is also a subject of intellectual beauty, composed and drawn by many great minds over the centuries. If you are challenged and interested by these thoughts, or even the least bit curious, then read on.
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 11
+Figure 1.10 Contrast of aerodynamic heating for slender and blunt reentry vehicles. (a) Slender reentry body. (b) Blunt reentry body.
+1.2 AERODYNAMICS: CLASSIFICATION AND PRACTICAL OBJECTIVES
+A distinction between solids, liquids, and gases can be made in a simplistic sense as follows. Put a solid object inside a larger, closed container. The solid object will not change; its shape and boundaries will remain the same. Now put a liquid inside the container. The liquid will change its shape to conform to that of the container and will take on the same boundaries as the container up to the maximum depth of the liquid. Now put a gas inside the container. The gas will completely fill the container, taking on the same boundaries as the container. The word fluid is used to denote either a liquid or a gas. A more technical distinction between a solid and a fluid can be made as follows. When a force is applied tangentially to the surface of a solid, the solid will experience a finite deformation, and the tangential force per unit area—the shear stress—will usually be proportional to the amount of deformation. In contrast, when a tangential shear
+
+
+12 PART 1 Fundamental Principles
+stress is applied to the surface of a fluid, the fluid will experience a continuously increasing deformation, and the shear stress usually will be proportional to the rate of change of the deformation. The most fundamental distinction between solids, liquids, and gases is at the atomic and molecular level. In a solid, the molecules are packed so closely together that their nuclei and electrons form a rigid geometric structure, “glued” together by powerful intermolecular forces. In a liquid, the spacing between molecules is larger, and although intermolecular forces are still strong, they allow enough movement of the molecules to give the liquid its “fluidity.” In a gas, the spacing between molecules is much larger (for air at standard conditions, the spacing between molecules is, on the average, about 10 times the molecular diameter). Hence, the influence of intermolecular forces is much weaker, and the motion of the molecules occurs rather freely throughout the gas. This movement of molecules in both gases and liquids leads to similar physical characteristics, the characteristics of a fluid—quite different from those of a solid. Therefore, it makes sense to classify the study of the dynamics of both liquids and gases under the same general heading, called fluid dynamics. On the other hand, certain differences exist between the flow of liquids and the flow of gases; also, different species of gases (say, N2, He, etc.) have different properties. Therefore, fluid dynamics is subdivided into three areas as follows:
+Hydrodynamics—flow of liquids Gas dynamics—flow of gases Aerodynamics—flow of air
+These areas are by no means mutually exclusive; there are many similarities and identical phenomena between them. Also, the word “aerodynamics” has taken on a popular usage that sometimes covers the other two areas. As a result, this author tends to interpret the word aerodynamics very liberally, and its use throughout this book does not always limit our discussions just to air. Aerodynamics is an applied science with many practical applications in engineering. No matter how elegant an aerodynamic theory may be, or how mathematically complex a numerical solution may be, or how sophisticated an aerodynamic experiment may be, all such efforts are usually aimed at one or more of the following practical objectives:
+1. The prediction of forces and moments on, and heat transfer to, bodies moving through a fluid (usually air). For example, we are concerned with the generation of lift, drag, and moments on airfoils, wings, fuselages, engine nacelles, and most importantly, whole airplane configurations. We want to estimate the wind force on buildings, ships, and other surface vehicles. We are concerned with the hydrodynamic forces on surface ships, submarines, and torpedoes. We need to be able to calculate the aerodynamic heating of flight vehicles ranging from the supersonic transport to a planetary probe entering the atmosphere of Jupiter. These are but a few examples.
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 13
+Figure 1.11 A CO2-N2 gas-dynamic laser, circa 1969 (Courtesy of John Anderson).
+2. Determination of flows moving internally through ducts. We wish to calculate and measure the flow properties inside rocket and air-breathing jet engines and to calculate the engine thrust. We need to know the flow conditions in the test section of a wind tunnel. We must know how much fluid can flow through pipes under various conditions. A recent, very interesting application of aerodynamics is high-energy chemical and gas-dynamic lasers (see Reference 1), which are nothing more than specialized wind tunnels that can produce extremely powerful laser beams. Figure 1.11 is a photograph of an early gas-dynamic laser designed in the late 1960s.
+The applications in item 1 come under the heading of external aerodynamics since they deal with external flows over a body. In contrast, the applications in item 2 involve internal aerodynamics because they deal with flows internally within ducts. In external aerodynamics, in addition to forces, moments, and aerodynamic heating associated with a body, we are frequently interested in the details of the flow field away from the body. For example, the communication blackout experienced by the space shuttle during a portion of its reentry trajectory is due to a concentration of free electrons in the hot shock layer around the body. We need to calculate the variation of electron density throughout such flow fields. Another example is the propagation of shock waves in a supersonic flow; for instance, does
+
+
+14 PART 1 Fundamental Principles
+the shock wave from the wing of a supersonic airplane impinge upon and interfere with the tail surfaces? Yet another example is the flow associated with the strong vortices trailing downstream from the wing tips of large subsonic airplanes such as the Boeing 747. What are the properties of these vortices, and how do they affect smaller aircraft which happen to fly through them? The above is just a sample of the myriad applications of aerodynamics. One purpose of this book is to provide the reader with the technical background necessary to fully understand the nature of such practical aerodynamic applications.
+Figure 1.12 Road map for Chapter 1.
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 15
+1.3 ROAD MAP FOR THIS CHAPTER
+When learning a new subject, it is important for you to know where you are, where you are going, and how you can get there. Therefore, at the beginning of each chapter in this book, a road map will be given to help guide you through the material of that chapter and to help you obtain a perspective as to how the material fits within the general framework of aerodynamics. For example, a road map for Chapter 1 is given in Figure 1.12. You will want to frequently refer back to these road maps as you progress through the individual chapters. When you reach the end of each chapter, look back over the road map to see where you started, where you are now, and what you learned in between.
+1.4 SOME FUNDAMENTAL AERODYNAMIC VARIABLES
+A prerequisite to understanding physical science and engineering is simply learning the vocabulary used to describe concepts and phenomena. Aerodynamics is no exception. Throughout this book, and throughout your working career, you will be adding to your technical vocabulary list. Let us start by defining four of the most frequently used words in aerodynamics: pressure, density, temperature, and flow velocity.1
+Consider a surface immersed in a fluid. The surface can be a real, solid surface such as the wall of a duct or the surface of a body; it can also be a free surface which we simply imagine drawn somewhere in the middle of a fluid. Also, keep in mind that the molecules of the fluid are constantly in motion. Pressure is the normal force per unit area exerted on a surface due to the time rate of change of momentum of the gas molecules impacting on (or crossing) that surface. It is important to note that even though pressure is defined as force “per unit area,” you do not need a surface that is exactly 1 ft2 or 1 m2 to talk about pressure. In fact, pressure is usually defined at a point in the fluid or a point on a solid surface and can vary from one point to another. To see this more clearly, consider a point B in a volume of fluid. Let
+dA = elemental area at B
+dF = force on one side of dA due to pressure
+Then, the pressure at point B in the fluid is defined as
+p = lim
+( dF
+dA
+)
+dA → 0
+The pressure p is the limiting form of the force per unit area, where the area of interest has shrunk to nearly zero at the point B.2 Clearly, you can see that pressure
+1 A basic introduction to these quantities is given on pages 56–61 of Reference 2. 2 Strictly speaking, dA can never achieve the limit of zero, because there would be no molecules at point B in that case. The above limit should be interpreted as dA approaching a very small value, near zero in terms of our macroscopic thinking, but sufficiently larger than the average spacing between molecules on a microscopic basis.
+
+
+16 PART 1 Fundamental Principles
+is a point property and can have a different value from one point to another in the fluid. Another important aerodynamic variable is density, defined as the mass per unit volume. Analogous to our discussion on pressure, the definition of density does not require an actual volume of 1 ft3 or 1 m3. Rather, it is a point property that can vary from point to point in the fluid. Again, consider a point B in the fluid. Let
+dv = elemental volume around B
+dm = mass of fluid inside dv
+Then, the density at point B is
+ρ = lim dm
+dv dv → 0
+Therefore, the density ρ is the limiting form of the mass per unit volume, where the volume of interest has shrunk to nearly zero around point B. (Note that dv cannot achieve the value of zero for the reason discussed in the footnote concerning dA in the definition of pressure.) Temperature takes on an important role in high-speed aerodynamics (introduced in Chapter 7). The temperature T of a gas is directly proportional to the average kinetic energy of the molecules of the fluid. In fact, if KE is the mean molecular kinetic energy, then temperature is given by KE = 3
+2 kT , where k is the
+Boltzmann constant. Hence, we can qualitatively visualize a high-temperature gas as one in which the molecules and atoms are randomly rattling about at high speeds, whereas in a low-temperature gas, the random motion of the molecules is relatively slow. Temperature is also a point property, which can vary from point to point in the gas. The principal focus of aerodynamics is fluids in motion. Hence, flow velocity is an extremely important consideration. The concept of the velocity of a fluid is slightly more subtle than that of a solid body in motion. Consider a solid object in translational motion, say, moving at 30 m/s. Then all parts of the solid are simultaneously translating at the same 30 m/s velocity. In contrast, a fluid is a “squishy” substance, and for a fluid in motion, one part of the fluid may be traveling at a different velocity from another part. Hence, we have to adopt a certain perspective, as follows. Consider the flow of air over an airfoil, as shown in Figure 1.13. Lock your eyes on a specific, infinitesimally small element of mass
+Figure 1.13 Illustration of flow velocity and streamlines.
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 17
+in the gas, called a fluid element, and watch this element move with time. Both the speed and direction of this fluid element can vary as it moves from point to point in the gas. Now fix your eyes on a specific fixed point in space, say, point B in Figure 1.13. Flow velocity can now be defined as follows: The velocity of a flowing gas at any fixed point B in space is the velocity of an infinitesimally small fluid element as it sweeps through B. The flow velocity V has both magnitude and direction; hence, it is a vector quantity. This is in contrast to p, ρ, and T , which are scalar variables. The scalar magnitude of V is frequently used and is denoted by V . Again, we emphasize that velocity is a point property and can vary from point to point in the flow. Referring again to Figure 1.13, a moving fluid element traces out a fixed path in space. As long as the flow is steady (i.e., as long as it does not fluctuate with time), this path is called a streamline of the flow. Drawing the streamlines of the flow field is an important way of visualizing the motion of the gas; we will frequently be sketching the streamlines of the flow about various objects. A more rigorous discussion of streamlines is given in Chapter 2. Finally, we note that friction can play a role internally in a flow. Consider two adjacent streamlines a and b as sketched in Figure 1.14. The streamlines are an infinitesimal distance, dy, apart. At point 1 on streamline b the flow velocity is V ; at point 2 on streamline a the flow velocity is slightly higher, V + dV. You can imagine that streamline a is rubbing against streamline b and, due to friction, exerts a force of magnitude dF f on streamline b acting tangentially toward the right. Furthermore, imagine this force acting on an elemental area dA, where dA is perpendicular to the y axis and tangent to the streamline b at point 1. The local shear stress, τ , at point 1 is
+τ = lim
+( dF f
+dA
+)
+dA → 0
+The shear stress τ is the limiting form of the magnitude of the frictional force per unit area, where the area of interest is perpendicular to the y axis and has shrunk
+a
+b
+dFf
+V
+y
+dy
+V + dV
+1
+2
+Figure 1.14 Generation of frictional force due to a velocity gradient in a flow.
+
+
+18 PART 1 Fundamental Principles
+to nearly zero at point 1. Shear stress acts tangentially along the streamline. For the type of gases and liquids of interest in aerodynamic applications, the value of the shear stress at a point on a streamline is proportional to the spatial rate of change of velocity normal to the streamline at that point (i.e., for the flow illustrated in Figure 1.14, τ ∝ dV/dy). The constant of proportionality is defined as the viscosity coefficient, μ. Hence,
+τ = μdV
+dy
+where dV/dy is the velocity gradient. In reality, μ is not really a constant; it is a function of the temperature of the fluid. We will discuss these matters in more detail in Section 1.11. From the above equation, we deduce that in regions of a flow field where the velocity gradients are small, τ is small and the influence of friction locally in the flow is small. On the other hand, in regions where the velocity gradients are large, τ is large and the influence of friction locally in the flow can be substantial.
+1.4.1 Units
+Two consistent sets of units will be used throughout this book, SI units (Systeme International d’Unites) and the English engineering system of units. The basic units of force, mass, length, time, and absolute temperature in these two systems are given in Table 1.1. For example, units of pressure and shear stress are lb/ft2 or N/m2, units of density are slug/ft3 or kg/m3, and units of velocity are ft/s or m/s. When a consistent set of units is used, physical relationships are written without the need for conversion factors in the basic formulas; they are written in the pure form intended by nature. Consistent units will always be used in this book. For an extensive discussion on units and the significance of consistent units versus nonconsistent units, see pages 65–70 of Reference 2. The SI system of units (metric units) is the standard system of units throughout most of the world today. In contrast, for more than two centuries the English engineering system (or some variant) was the primary system of units in the United States and England. This situation is changing rapidly, especially in the aerospace industry in the United States and England. Nevertheless, a familiarity with both systems of units is still important today. For example, even though most engineering work in the future will deal with the SI units, there exists a huge bulk of
+Table 1.1
+Force Mass Length Time Temp.
+SI Units Newton kilogram meter second Kelvin (N) (kg) (m) (s) (K)
+English pounds slug feet second deg. Rankine Engineering (lb) (ft) (s) (◦R) Units
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 19
+present and past engineering literature written in the English engineering system, literature that will be used well into the future. The modern engineering student must be bilingual in these units, and must feel comfortable with both systems. For this reason, although many of the worked examples and end-of-the-chapter problems in this book are in the SI units, some are in the English engineering system of units. You are encouraged to join this bilingual spirit and to work to make yourself comfortable in both systems.
+1.5 AERODYNAMIC FORCES AND MOMENTS
+At first glance, the generation of the aerodynamic force on a giant Boeing 747 may seem complex, especially in light of the complicated three-dimensional flow field over the wings, fuselage, engine nacelles, tail, etc. Similarly, the aerodynamic resistance on an automobile traveling at 55 mi/h on the highway involves a complex interaction of the body, the air, and the ground. However, in these and all other cases, the aerodynamic forces and moments on the body are due to only two basic sources:
+1. Pressure distribution over the body surface 2. Shear stress distribution over the body surface
+No matter how complex the body shape may be, the aerodynamic forces and moments on the body are due entirely to the above two basic sources. The only mechanisms nature has for communicating a force to a body moving through a fluid are pressure and shear stress distributions on the body surface. Both pressure p and shear stress τ have dimensions of force per unit area (pounds per square foot or newtons per square meter). As sketched in Figure 1.15, p acts normal to the surface, and τ acts tangential to the surface. Shear stress is due to the “tugging action” on the surface, which is caused by friction between the body and the air (and is studied in great detail in Chapters 15 to 20). The net effect of the p and τ distributions integrated over the complete body surface is a resultant aerodynamic force R and moment M on the body, as sketched in Figure 1.16. In turn, the resultant R can be split into components, two sets of
+Figure 1.15 Illustration of pressure and shear stress on an aerodynamic surface.
+
+
+20 PART 1 Fundamental Principles
+Figure 1.16 Resultant aerodynamic force and moment on the body.
+Figure 1.17 Resultant aerodynamic force and the components into which it splits.
+which are shown in Figure 1.17. In Figure 1.17, V∞ is the relative wind, defined as the flow velocity far ahead of the body. The flow far away from the body is called the freestream, and hence V∞ is also called the freestream velocity. In Figure 1.17, by definition,
+L ≡ lift ≡ component of R perpendicular to V∞
+D ≡ drag ≡ component of R parallel to V∞
+The chord c is the linear distance from the leading edge to the trailing edge of the body. Sometimes, R is split into components perpendicular and parallel to the chord, as also shown in Figure 1.17. By definition,
+N ≡ normal force ≡ component of R perpendicular to c
+A ≡ axial force ≡ component of R parallel to c
+The angle of attack α is defined as the angle between c and V∞. Hence, α is also the angle between L and N and between D and A. The geometrical relation between these two sets of components is, from Figure 1.17,
+L = N cos α − A sin α (1.1)
+D = N sin α + A cos α (1.2)
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 21
+Figure 1.18 Nomenclature for the integration of pressure and shear stress distributions over a two-dimensional body surface.
+Let us examine in more detail the integration of the pressure and shear stress distributions to obtain the aerodynamic forces and moments. Consider the twodimensional body sketched in Figure 1.18. The chord line is drawn horizontally, and hence the relative wind is inclined relative to the horizontal by the angle of attack α. An x y coordinate system is oriented parallel and perpendicular, respectively, to the chord. The distance from the leading edge measured along the body surface to an arbitrary point A on the upper surface is su; similarly, the distance to an arbitrary point B on the lower surface is sl. The pressure and shear stress on the upper surface are denoted by pu and τu, both pu and τu are functions of su. Similarly, pl and τl are the corresponding quantities on the lower surface and are functions of sl. At a given point, the pressure is normal to the surface and is oriented at an angle θ relative to the perpendicular; shear stress is tangential to the surface and is oriented at the same angle θ relative to the horizontal. In Figure 1.18, the sign convention for θ is positive when measured clockwise from the vertical line to the direction of p and from the horizontal line to the direction of τ . In Figure 1.18, all thetas are shown in their positive direction. Now consider the two-dimensional shape in Figure 1.18 as a cross section of an infinitely long cylinder of uniform section. A unit span of such a cylinder is shown in Figure 1.19. Consider an elemental surface area dS of this cylinder, where dS = (ds)(1) as shown by the shaded area in Figure 1.19. We are interested in the contribution to the total normal force N ′ and the total axial force A′ due to the pressure and shear stress on the elemental area dS. The primes on N ′ and A′ denote force per unit span. Examining both Figures 1.18 and 1.19, we see that the elemental normal and axial forces acting on the elemental surface dS on the
+
+
+22 PART 1 Fundamental Principles
+s
+y
+p
+x
+l
+V
+ds
+Figure 1.19 Aerodynamic force on an element of the body surface.
+upper body surface are
+dN′
+u = − pudsu cos θ − τudsu sin θ (1.3)
+dA′
+u = − pudsu sin θ + τudsu cos θ (1.4)
+On the lower body surface, we have
+dN′
+l = pl dsl cos θ − τl dsl sin θ (1.5)
+dA′
+l = pl dsl sin θ + τl dsl cos θ (1.6)
+In Equations (1.3) to (1.6), the positive directions of N ′ and A′ are those shown in Figure 1.17. In these equations, the positive clockwise convention for θ must be followed. For example, consider again Figure 1.18. Near the leading edge of the body, where the slope of the upper body surface is positive, τ is inclined upward, and hence it gives a positive contribution to N ′. For an upward inclined τ , θ would be counterclockwise, hence negative. Therefore, in Equation (1.3), sin θ would be negative, making the shear stress term (the last term) a positive value, as it should be in this instance. Hence, Equations (1.3) to (1.6) hold in general (for both the forward and rearward portions of the body) as long as the above sign convention for θ is consistently applied. The total normal and axial forces per unit span are obtained by integrating Equations (1.3) to (1.6) from the leading edge (LE) to the trailing edge (TE):
+N′ = −
+∫ TE
+LE
+( pu cos θ + τu sin θ ) dsu +
+∫ TE
+LE
+( pl cos θ − τl sin θ ) dsl (1.7)
+A′ =
+∫ TE
+LE
+(− pu sin θ + τu cos θ ) dsu +
+∫ TE
+LE
+( pl sin θ + τl cos θ ) dsl (1.8)
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 23
+Figure 1.20 Sign convention for aerodynamic moments.
+In turn, the total lift and drag per unit span can be obtained by inserting Equations (1.7) and (1.8) into (1.1) and (1.2); note that Equations (1.1) and (1.2) hold for forces on an arbitrarily shaped body (unprimed) and for the forces per unit span (primed). The aerodynamic moment exerted on the body depends on the point about which moments are taken. Consider moments taken about the leading edge. By convention, moments that tend to increase α (pitch up) are positive, and moments that tend to decrease α (pitch down) are negative. This convention is illustrated in Figure 1.20. Returning again to Figures 1.18 and 1.19, the moment per unit span about the leading edge due to p and τ on the elemental area dS on the upper surface is
+dM′
+u = ( pu cos θ + τu sin θ )x dsu + (−pu sin θ + τu cos θ )y dsu (1.9)
+On the bottom surface,
+dM′
+l = (−pl cos θ + τl sin θ )x dsl + ( pl sin θ + τl cos θ )y dsl (1.10)
+In Equations (1.9) and (1.10), note that the same sign convention for θ applies as before and that y is a positive number above the chord and a negative number below the chord. Integrating Equations (1.9) and (1.10) from the leading to the trailing edges, we obtain for the moment about the leading edge per unit span
+M′
+LE =
+∫ TE
+LE
+[( pu cos θ + τu sin θ )x − ( pu sin θ − τu cos θ )y] dsu
+(1.11)
++
+∫ TE
+LE
+[(− pl cos θ + τl sin θ )x + ( pl sin θ + τl cos θ )y] dsl
+In Equations (1.7), (1.8), and (1.11), θ, x, and y are known functions of s for a given body shape. Hence, if pu, pl, τu, and τl are known as functions of s (from theory or experiment), the integrals in these equations can be evaluated. Clearly, Equations (1.7), (1.8), and (1.11) demonstrate the principle stated earlier, namely, the sources of the aerodynamic lift, drag, and moments on a body are the pressure and shear stress distributions integrated over the body. A major goal of theoretical aerodynamics is to calculate p(s) and τ (s) for a given body shape and freestream conditions, thus yielding the aerodynamic forces and moments via Equations (1.7), (1.8), and (1.11). As our discussions of aerodynamics progress, it will become clear that there are quantities of an even more fundamental nature than the aerodynamic forces and moments themselves. These are dimensionless force and moment coefficients, defined as follows. Let ρ∞ and V∞ be the density and velocity, respectively, in
+
+
+24 PART 1 Fundamental Principles
+the freestream, far ahead of the body. We define a dimensional quantity called the freestream dynamic pressure as
+Dynamic pressure: q∞ ≡ 1
+2 ρ∞V∞2
+The dynamic pressure has the units of pressure (i.e., pounds per square foot or newtons per square meter). In addition, let S be a reference area and l be a reference length. The dimensionless force and moment coefficients are defined as follows:
+Lift coefficient: CL ≡ L
+q∞ S
+Drag coefficient: CD ≡ D
+q∞ S
+Normal force coefficient: CN ≡ N
+q∞ S
+Axial force coefficient: CA ≡ A
+q∞ S
+Moment coefficient: CM ≡ M
+q∞ Sl
+In the above coefficients, the reference area S and reference length l are chosen to pertain to the given geometric body shape; for different shapes, S and l may be different things. For example, for an airplane wing, S is the planform area, and l is the mean chord length, as illustrated in Figure 1.21a. However, for a sphere, S is the cross-sectional area, and l is the diameter, as shown in Figure 1.21b.
+Figure 1.21 Some reference areas and lengths.
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 25
+The particular choice of reference area and length is not critical; however, when using force and moment coefficient data, you must always know what reference quantities the particular data are based upon. The symbols in capital letters listed above (i.e., CL , CD, CM , and CA) denote the force and moment coefficients for a complete three-dimensional body such as an airplane or a finite wing. In contrast, for a two-dimensional body, such as given in Figures 1.18 and 1.19, the forces and moments are per unit span. For these two-dimensional bodies, it is conventional to denote the aerodynamic coefficients by lowercase letters; for example,
+cl ≡ L′
+q∞c cd ≡ D′
+q∞c cm ≡ M′
+q∞c2
+where the reference area S = c(1) = c. Two additional dimensionless quantities of immediate use are
+Pressure coefficient: C p ≡ p − p∞
+q∞
+Skin friction coefficient: c f ≡ τ
+q∞
+where p∞ is the freestream pressure. The most useful forms of Equations (1.7), (1.8), and (1.11) are in terms of the dimensionless coefficients introduced above. From the geometry shown in Figure 1.22,
+d x = ds cos θ (1.12)
+dy = −(ds sin θ ) (1.13)
+S = c(1) (1.14)
+Substituting Equations (1.12) and (1.13) into Equations (1.7), (1.8), and (1.11), dividing by q∞, and further dividing by S in the form of Equation (1.14), we
+Figure 1.22 Geometrical relationship of differential lengths.
+
+
+26 PART 1 Fundamental Principles
+obtain the following integral forms for the force and moment coefficients:
+cn = 1
+c
+[∫ c
+0
+(C p,l − C p,u) d x +
+∫c
+0
+(
+c f,u
+d yu
+d x + c f,l
+d yl
+dx
+)
+dx
+]
+(1.15)
+ca = 1
+c
+[∫ c
+0
+(
+C p,u
+d yu
+d x − C p,l
+d yl
+dx
+)
+dx +
+∫c
+0
+(c f,u + c f,l ) d x
+]
+(1.16)
+cmLE = 1
+c2
+[∫ c
+0
+(C p,u − C p,l )x d x −
+∫c
+0
+(
+c f,u
+d yu
+d x + c f,l
+d yl
+dx
+)
+x dx
+(1.17)
++
+∫c
+0
+(
+C p,u
+d yu
+d x + c f,u
+)
+yu d x +
+∫c
+0
+(
+−C p,l
+d yl
+d x + c f,l
+)
+yl d x
+]
+The simple algebraic steps are left as an exercise for the reader. When evaluating these integrals, keep in mind that yu is directed above the x axis, and hence is positive, whereas yl is directed below the x axis, and hence is negative. Also, dy/d x on both the upper and lower surfaces follow the usual rule from calculus (i.e., positive for those portions of the body with a positive slope and negative for those portions with a negative slope). The lift and drag coefficients can be obtained from Equations (1.1) and (1.2) cast in coefficient form:
+cl = cn cos α − ca sin α (1.18)
+cd = cn sin α + ca cos α (1.19)
+Integral forms for cl and cd are obtained by substituting Equations (1.15) and (1.16) into (1.18) and (1.19). It is important to note from Equations (1.15) through (1.19) that the aerodynamic force and moment coefficients can be obtained by integrating the pressure and skin friction coefficients over the body. This is a common procedure in both theoretical and experimental aerodynamics. In addition, although our derivations have used a two-dimensional body, an analogous development can be presented for three-dimensional bodies—the geometry and equations only get more complex and involved—the principle is the same.
+E X A MPLE 1.1
+Consider the supersonic flow over a 5◦ half-angle wedge at zero angle of attack, as sketched in Figure 1.23a. The freestream Mach number ahead of the wedge is 2.0, and the freestream pressure and density are 1.01×105 N/m2 and 1.23 kg/m3, respectively (this corresponds to standard sea level conditions). The pressures on the upper and lower surfaces of the wedge are constant with distance s and equal to each other, namely, pu = pl = 1.31 × 105 N/m2, as shown in Figure 1.23b. The pressure exerted on the base of the wedge is equal to p∞. As seen in Figure 1.23c, the shear stress varies over both the upper and lower surfaces as τw = 431s−0.2. The chord length, c, of the wedge is 2 m. Calculate the drag coefficient for the wedge.
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 27
+Figure 1.23 Illustration for Example 1.1.
+
+
+28 PART 1 Fundamental Principles
+■ Solution
+We will carry out this calculation in two equivalent ways. First, we calculate the drag from Equation (1.8), and then obtain the drag coefficient. In turn, as an illustration of an alternate approach, we convert the pressure and shear stress to pressure coefficient and skin friction coefficient, and then use Equation (1.16) to obtain the drag coefficient. Since the wedge in Figure 1.23 is at zero angle of attack, then D′ = A′. Thus, the drag can be obtained from Equation (1.8) as
+D′ =
+∫ TE
+LE
+(− pu sin θ + τu cos θ ) dsu +
+∫ TE
+LE
+( pl sin θ + τl cos θ ) dsl
+Referring to Figure 1.23c, recalling the sign convention for θ , and noting that integration over the upper surface goes from s1 to s2 on the inclined surface and from s2 to s3 on the base, whereas integration over the bottom surface goes from s1 to s4 on the inclined surface and from s4 to s3 on the base, we find that the above integrals become
+∫ TE
+LE
+− pu sin θ dsu =
+∫ s2
+s1
+−(1.31 × 105) sin(−5◦) dsu
++
+∫ s3
+s2
+−(1.01 × 105) sin 90◦ dsu
+= 1.142 × 104(s2 − s1) − 1.01 × 105(s3 − s2)
+= 1.142 × 104 ( c
+cos 5◦
+)
+− 1.01 × 105(c)(tan 5◦)
+= 1.142 × 104(2.008) − 1.01 × 105(0.175) = 5260 N
+∫ TE
+LE
+pl sin θ dsl =
+∫ s4
+s1
+(1.31 × 105) sin(5◦) dsl +
+∫ s3
+s4
+(1.01 × 105) sin(−90◦) dsl
+= 1.142 × 104(s4 − s1) + 1.01 × 105(−1)(s3 − s4)
+= 1.142 × 104 ( c
+cos 5◦
+)
+− 1.01 × 105(c)(tan 5◦)
+= 2.293 × 104 − 1.767 × 104 = 5260 N
+Note that the integrals of the pressure over the top and bottom surfaces, respectively, yield the same contribution to the drag—a result to be expected from the symmetry of the configuration in Figure 1.23:
+∫ TE
+LE
+τu cos θ dsu =
+∫ s2
+s1
+431s−0.2 cos(−5◦) dsu
+= 429
+(
+s 0.8
+2 − s0.8
+1 0.8
+)
+= 429
+(c
+cos 5◦
+)0.8 1
+0.8 = 936.5 N
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 29
+∫ TE
+LE
+τl cos θ dsl =
+∫ s4
+s1
+431s−0.2 cos(−5◦) dsl
+= 429
+( s0.8
+4 − s0.8
+1 0.8
+)
+= 429
+(c
+cos 5◦
+)0.8 1
+0.8 = 936.5 N
+Again, it is no surprise that the shear stresses acting over the upper and lower surfaces, respectively, give equal contributions to the drag; this is to be expected due to the symmetry of the wedge shown in Figure 1.23. Adding the pressure integrals, and then adding the shear stress integrals, we have for total drag
+D′ = 1.052 × 104
+} {{ }
+pressure drag
++ 0.1873 × 104
+} {{ }
+skin friction drag
+= 1.24 × 104 N
+Note that, for this rather slender body, but at a supersonic speed, most of the drag is pressure drag. Referring to Figure 1.23a, we see that this is due to the presence of an oblique shock wave from the nose of the body, which acts to create pressure drag (sometimes called wave drag). In this example, only 15 percent of the drag is skin friction drag; the other 85 percent is the pressure drag (wave drag). This is typical of the drag of slender supersonic bodies. In contrast, as we will see later, the drag of a slender body at subsonic speed, where there is no shock wave, is mainly skin friction drag. The drag coefficient is obtained as follows. The velocity of the freestream is twice the sonic speed, which is given by
+a∞ = √γ RT∞ = √(1.4)(287)(288) = 340.2 m/s
+(See Chapter 8 for a derivation of this expression for the speed of sound.) Note that, in the above, the standard sea level temperature of 288 K is used. Hence, V∞ = 2(340.2) = 680.4 m/s. Thus,
+q∞ = 1
+2 ρ∞V 2∞ = (0.5)(1.23)(680.4)2 = 2.847 × 105 N/m2
+Also, S = c(1) = 2.0 m2
+Hence, cd = D′
+q∞ S = 1.24 × 104
+(2.847 × 105)(2) = 0.022
+An alternate solution to this problem is to use Equation (1.16), integrating the pressure coefficients and skin friction coefficients to obtain directly the drag coefficient. We proceed as follows:
+C p,u = pu − p∞
+q∞
+= 1.31 × 105 − 1.01 × 105
+2.847 × 105 = 0.1054
+On the lower surface, we have the same value for C p, that is,
+C p,l = C p,u = 0.1054
+
+
+30 PART 1 Fundamental Principles
+Also,
+c f,u = τw
+q∞
+= 431s−0.2
+q∞
+= 431
+2.847 × 105
+(x
+cos 5◦
+)−0.2 = 1.513 × 10−3x−0.2
+On the lower surface, we have the same value for c f , that is,
+c f,l = 1.513 × 10−3x−0.2
+Also, d yu
+d x = tan 5◦ = 0.0875
+and d yl
+d x = − tan 5◦ = −0.0875
+Inserting the above information into Equation (1.16), we have
+cd = ca = 1
+c
+∫c
+0
+(
+C p,u
+d yu
+d x − C p,l
+d yl
+dx
+)
+dx + 1
+c
+∫c
+0
+(c f,u + c f,l ) d x
+=1
+2
+∫2
+0
+[(0.1054)(0.0875) − (0.1054)(−0.0875)] d x
++1
+2
+∫2
+0
+2(1.513 × 10−3)x−0.2 d x
+= 0.009223x ∣∣2
+0 + 0.00189x0.8 ∣∣2
+0
+= 0.01854 + 0.00329 = 0.022
+This is the same result as obtained earlier.
+EXAMPLE 1.2
+Consider a cone at zero angle of attack in a hypersonic flow. (Hypersonic flow is very high-speed flow, generally defined as any flow above a Mach number of 5; hypersonic flow is further defined in Section 1.10.) The half-angle of the cone is θc, as shown in Figure 1.24. An approximate expression for the pressure coefficient on the surface of a hypersonic body is given by the newtonian sine-squared law (to be derived in Chapter 14):
+C p = 2 sin2 θc
+Note that C p, hence, p, is constant along the inclined surface of the cone. Along the base of the body, we assume that p = p∞. Neglecting the effect of friction, obtain an expression for the drag coefficient of the cone, where CD is based on the area of the base Sb.
+■ Solution
+We cannot use Equations (1.15) to (1.17) here. These equations are expressed for a twodimensional body, such as the airfoil shown in Figure 1.22, whereas the cone in Figure 1.24 is a shape in three-dimensional space. Hence, we must treat this three-dimensional body as follows. From Figure 1.24, the drag force on the shaded strip of surface area is
+( p sin θc)(2πr ) dr
+sin θc
+= 2πr p dr
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 31
+r
+sin c
+Shockwave
+c
+dr
+x
+r
+rb
+p
+c
+dx
+p
+Figure 1.24 Illustration for Example 1.2.
+The total drag due to the pressure acting over the total surface area of the cone is
+D=
+∫ rb
+0
+2πr p dr −
+∫ rb
+0
+r 2π p∞ dr
+The first integral is the horizontal force on the inclined surface of the cone, and the second integral is the force on the base of the cone. Combining the integrals, we have
+D=
+∫ rb
+0
+2πr ( p − p∞) dr = π( p − p∞)r 2
+b
+Referenced to the base area, πr 2
+b , the drag coefficient is
+CD = D
+q∞πr 2
+b
+= πr2
+b ( p − p∞) πr2
+b q∞
+= Cp
+
+
+32 PART 1 Fundamental Principles
+(Note: The drag coefficient for a cone is equal to its surface pressure coefficient.) Hence, using the newtonian sine-squared law, we obtain
+CD = 2 sin2 θc
+1.6 CENTER OF PRESSURE
+From Equations (1.7) and (1.8), we see that the normal and axial forces on the body are due to the distributed loads imposed by the pressure and shear stress distributions. Moreover, these distributed loads generate a moment about the leading edge, as given by Equation (1.11). Question: If the aerodynamic force on a body is specified in terms of a resultant single force R, or its components such as N and A, where on the body should this resultant be placed? The answer is that the resultant force should be located on the body such that it produces the same effect as the distributed loads. For example, the distributed load on a two-dimensional body such as an airfoil produces a moment about the leading edge given by Equation (1.11); therefore, N ′ and A′ must be placed on the airfoil at such a location to generate the same moment about the leading edge. If A′ is placed on the chord line as shown in Figure 1.25, then N ′ must be located at a distance xcp downstream of the leading edge such that
+M′
+LE = −(xcp)N ′
+xcp = − M ′
+LE
+N ′ (1.20)
+In Figure 1.25, the direction of the curled arrow illustrating M′
+LE is drawn in the positive (pitch-up) sense. (From Section 1.5, recall the standard convention that aerodynamic moments are positive if they tend to increase the angle of attack.) Examining Figure 1.25, we see that a positive N ′ creates a negative (pitch-down) moment about the leading edge. This is consistent with the negative sign in Equation (1.20). Therefore, in Figure 1.25, the actual moment about the leading edge is negative, and hence is in a direction opposite to the curled arrow shown.
+Figure 1.25 Center of pressure for an airfoil.
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 33
+Figure 1.26 Equivalent ways of specifying the force-and-moment system on an airfoil.
+In Figure 1.25 and Equation (1.20), xcp is defined as the center of pressure. It is the location where the resultant of a distributed load effectively acts on the body. If moments were taken about the center of pressure, the integrated effect of the distributed loads would be zero. Hence, an alternate definition of the center of pressure is that point on the body about which the aerodynamic moment is zero. In cases where the angle of attack of the body is small, sin α ≈ 0 and cos α ≈ 1; hence, from Equation (1.1), L′ ≈ N ′. Thus, Equation (1.20) becomes
+xcp ≈ − M ′
+LE
+L′ (1.21)
+Examine Equations (1.20) and (1.21). As N ′ and L′ decrease, xcp increases. As the forces approach zero, the center of pressure moves to infinity. For this reason, the center of pressure is not always a convenient concept in aerodynamics. However, this is no problem. To define the force-and-moment system due to a distributed load on a body, the resultant force can be placed at any point on the body, as long as the value of the moment about that point is also given. For example, Figure 1.26 illustrates three equivalent ways of specifying the forceand-moment system on an airfoil. In the left figure, the resultant is placed at the leading edge, with a finite value of M′
+LE. In the middle figure, the resultant is
+placed at the quarter-chord point, with a finite value of M′
+c/4. In the right figure, the resultant is placed at the center of pressure, with a zero moment about that point. By inspection of Figure 1.26, the quantitative relation between these cases is
+M′
+LE = − c
+4 L′ + M′
+c/4 = −xcp L′ (1.22)
+EXAMPLE 1.3
+In low-speed, incompressible flow, the following experimental data are obtained for an NACA 4412 airfoil section at an angle of attack of 4◦: cl = 0.85 and cm,c/4 = −0.09. Calculate the location of the center of pressure.
+
+
+34 PART 1 Fundamental Principles
+■ Solution
+From Equation (1.22),
+xcp = c
+4 − Mc′/4
+L′
+xcp
+c =1
+4 − (Mc/4/q∞c2)
+(L′/q∞c) = 1
+4 − cm,c/4
+cl
+=1
+4 − (−0.09)
+0.85 = 0.356
+(Note: In Chapter 4, we will learn that, for a thin, symmetrical airfoil, the center of pressure is at the quarter-chord location. However, for the NACA 4412 airfoil, which is not symmetric, the center-of-pressure location is behind the quarter-chord point.)
+EXAMPLE 1.4
+Consider the DC-3 shown in Figure 1.1. Just outboard of the engine nacelle, the airfoil chord length is 15.4 ft. At cruising velocity (188 mi/h) at sea level, the moments per unit span at this airfoil location are Mc′/4 = −1071 ft lb/ft and M′LE = −3213.9 ft lb/ft. Calculate the lift per unit span and the location of the center of pressure on the airfoil.
+■ Solution
+From Equation (1.22),
+c
+4 L′ = Mc′/4 − M′LE = −1071 − (−3213.9) = 2142.9
+At this airfoil location on the wing, c
+4 = 15.4
+4 = 3.85 ft.
+Thus,
+L′ = 2142.9
+3.85 = 556.6 lb/ft
+Returning to Equation (1.22),
+−xcp L′ = M′LE
+−xcp = − M′LE
+L′ = − (−3213.9)
+556.6 = 5.774 ft
+Note: In this section, we have shown that the force and moment system acting on an airfoil is uniquely specified by giving the lift acting at any point on the airfoil and the moment about that point. Analogously, this example proves that the force and moment system is also uniquely specified by giving the moments acting about any two points on the airfoil.
+1.7 DIMENSIONAL ANALYSIS: THE BUCKINGHAM PI THEOREM
+The aerodynamic forces and moments on a body, and the corresponding force and moment coefficients, have been defined and discussed in Section 1.5. Question:
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 35
+What physical quantities determine the variation of these forces and moments? The answer can be found from the powerful method of dimensional analysis, which is introduced in this section.3 Consider a body of given shape at a given angle of attack (e.g., the airfoil sketched in Figure 1.17). The resultant aerodynamic force is R. On a physical, intuitive basis, we expect R to depend on:
+1. Freestream velocity V∞. 2. Freestream density ρ∞. 3. Viscosity of the fluid. We have seen that shear stress τ contributes to the aerodynamic forces and moments, and that τ is proportional to the velocity gradients in the flow. For example, if the velocity gradient is given by ∂u/∂ y, then τ = μ∂u/∂ y. The constant of proportionality is the viscosity coefficient μ. Hence, let us represent the influence of viscosity on aerodynamic forces and moments by the freestream viscosity coefficient μ∞. 4. The size of the body, represented by some chosen reference length. In Figure 1.17, the convenient reference length is the chord length c. 5. The compressibility of the fluid. The technical definition of compressibility is given in Chapter 7. For our present purposes, let us just say that compressibility is related to the variation of density throughout the flow field, and certainly the aerodynamic forces and moments should be sensitive to any such variation. In turn, compressibility is related to the speed of sound a in the fluid, as shown in Chapter 8.4 Therefore, let us represent the influence of compressibility on aerodynamic forces and moments by the freestream speed of sound, a∞.
+In light of the above, and without any a priori knowledge about the variation of R, we can use common sense to write
+R = f (ρ∞, V∞, c, μ∞, a∞) (1.23)
+Equation (1.23) is a general functional relation, and as such is not very practical for the direct calculation of R. In principle, we could mount the given body in a wind tunnel, incline it at the given angle of attack, and then systematically measure the variation of R due to variations of ρ∞, V∞, c, μ∞, and a∞, taken one at a time. By cross-plotting the vast bulk of data thus obtained, we might be able to extract a precise functional relation for Equation (1.23). However, it would be hard work, and it would certainly be costly in terms of a huge amount of required wind-tunnel time. Fortunately, we can simplify the problem and considerably reduce our time and effort by first employing the method of dimensional analysis. This method will
+3 For a more elementary treatment of dimensional analysis, see Chapter 5 of Reference 2. 4 Common experience tells us that sound waves propagate through air at some finite velocity, much slower than the speed of light; you see a flash of lightning in the distance, and hear the thunder moments later. The speed of sound is an important physical quantity in aerodynamics and is discussed in detail in Section 8.3.
+
+
+36 PART 1 Fundamental Principles
+define a set of dimensionless parameters that governs the aerodynamic forces and moments; this set will considerably reduce the number of independent variables as presently occurs in Equation (1.23). Dimensional analysis is based on the obvious fact that in an equation dealing with the real physical world, each term must have the same dimensions. For example, if
+ψ+η+ζ =φ
+is a physical relation, then ψ, η, ζ , and φ must have the same dimensions. Otherwise we would be adding apples and oranges. The above equation can be made dimensionless by dividing by any one of the terms, say, φ:
+ψ
+φ +η
+φ+ζ
+φ =1
+These ideas are formally embodied in the Buckingham pi theorem, stated below without derivation. (See Reference 3, pages 21–28, for such a derivation.)
+Buckingham pi Theorem
+Let K equal the number of fundamental dimensions required to describe the physical variables. (In mechanics, all physical variables can be expressed in terms of the dimensions of mass, length, and time; hence, K = 3.) Let P1, P2, . . . , PN represent N physical variables in the physical relation
+f1(P1, P2, . . . , PN ) = 0 (1.24)
+Then, the physical relation Equation (1.24) may be reexpressed as a relation of (N − K ) dimensionless products (called products),
+f2( 1, 2, . . . , N−K ) = 0 (1.25)
+where each product is a dimensionless product of a set of K physical variables plus one other physical variable. Let P1, P2, . . . , PK be the selected set of K physical variables. Then
+1 = f3(P1, P2, . . . , PK , PK +1) (1.26)
+2 = f4(P1, P2, . . . , PK , PK +2) ................................
+N−K = f5(P1, P2, . . . , PK , PN )
+The choice of the repeating variables, P1, P2, . . . , PK should be such that they include all the K dimensions used in the problem. Also, the dependent variable [such as R in Equation (1.23)] should appear in only one of the products.
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 37
+Returning to our consideration of the aerodynamic force on a given body at a given angle of attack, Equation (1.23) can be written in the form of Equation (1.24):
+g(R, ρ∞, V∞, c, μ∞, a∞) = 0 (1.27)
+Following the Buckingham pi theorem, the fundamental dimensions are
+m = dimensions of mass l = dimension of length t = dimension of time
+Hence, K = 3. The physical variables and their dimensions are
+[R] = mlt−2
+[ρ∞] = ml−3
+[V∞] = lt −1
+[c] = l
+[μ∞] = ml−1t −1
+[a∞] = lt −1
+Hence, N = 6. In the above, the dimensions of the force R are obtained from Newton’s second law, force = mass × acceleration; hence, [R] = mlt−2. The dimensions of μ∞ are obtained from its definition [e.g., μ = τ/(∂u/∂ y)], and
+from Newton’s second law. (Show for yourself that [μ∞] = ml−1t−1.) Choose ρ∞, V∞, and c as the arbitrarily selected sets of K physical variables. Then Equation (1.27) can be reexpressed in terms of N − K = 6−3 = 3 dimensionless products in the form of Equation (1.25):
+f2( 1, 2, 3) = 0 (1.28)
+From Equation (1.26), these products are
+1 = f3(ρ∞, V∞, c, R) (1.29a)
+2 = f4(ρ∞, V∞, c, μ∞) (1.29b)
+3 = f5(ρ∞, V∞, c, a∞) (1.29c)
+For the time being, concentrate on 1, from Equation (1.29a). Assume that
+1 = ρd
+∞V b
+∞ce R (1.30)
+where d, b, and e are exponents to be found. In dimensional terms, Equation (1.30) is
+[ 1] = (ml−3)d (lt−1)b(l)e(mlt−2) (1.31)
+Because 1 is dimensionless, the right side of Equation (1.31) must also be dimensionless. This means that the exponents of m must add to zero, and similarly
+
+
+38 PART 1 Fundamental Principles
+for the exponents of l and t. Hence,
+For m: d + 1 = 0
+For l: −3d + b + e + 1 = 0
+For t: −b − 2 = 0
+Solving the above equations, we find that d = −1, b = −2, and e = −2. Substituting these values into Equation (1.30), we have
+1 = Rρ−1
+∞ V −2
+∞ c−2
+=R
+ρ∞V∞2 c2
+(1.32)
+The quantity R/ρ∞V∞2 c2 is a dimensionless parameter in which c2 has the di
+mensions of an area. We can replace c2 with any reference area we wish (such as the planform area of a wing S), and 1 will still be dimensionless. Moreover, we can multiply 1 by a pure number, and it will still be dimensionless. Thus, from Equation (1.32), 1 can be redefined as
+1= R
+1
+2 ρ∞V∞2 S = R
+q∞ S (1.33)
+Hence, 1 is a force coefficient CR, as defined in Section 1.5. In Equation (1.33), S is a reference area germane to the given body shape. The remaining products can be found as follows. From Equation (1.29b), assume
+2 = ρ∞V h
+∞ci μ j
+∞ (1.34)
+Paralleling the above analysis, we obtain
+[ 2] = (ml−3)(lt −1)h(l)i (ml−1t −1) j
+Hence,
+For m: 1 + j = 0
+For l: −3 + h + i − j = 0
+For t: −h − j = 0
+Thus, j = −1, h = 1, and i = 1. Substitution into Equation (1.34) gives
+2 = ρ∞V∞c
+μ∞
+(1.35)
+The dimensionless combination in Equation (1.35) is defined as the freestream Reynolds number Re = ρ∞V∞c/μ∞. The Reynolds number is physically a measure of the ratio of inertia forces to viscous forces in a flow and is one of the most powerful parameters in fluid dynamics. Its importance is emphasized in Chapters 15 to 20.
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 39
+Returning to Equation (1.29c), assume
+3 = V∞ρk∞cr as∞
+[ 3] = (lt −1)(ml−3)k(l)r (lt −1)s
+(1.36)
+For m: k = 0
+For l: 1 − 3k + r + s = 0
+For t: −1 − s = 0
+Hence, k = 0, s = −1, and r = 0. Substituting Equation (1.36), we have
+e = V∞
+a∞
+(1.37)
+The dimensionless combination in Equation (1.37) is defined as the freestream Mach number M = V∞/a∞. The Mach number is the ratio of the flow velocity to the speed of sound; it is a powerful parameter in the study of gas dynamics. Its importance is emphasized in subsequent chapters. The results of our dimensional analysis may be organized as follows. Inserting Equations (1.33), (1.35), and (1.37) into (1.28), we have
+f2
+( R
+1
+2 ρ∞V∞2 S , ρ∞V∞c
+μ∞
+, V∞
+a∞
+)
+=0
+or f2(CR, Re, M∞) = 0
+or CR = f6(Re, M∞) (1.38)
+This is an important result! Compare Equations (1.23) and (1.38). In Equation (1.23), R is expressed as a general function of five independent variables. However, our dimensional analysis has shown that:
+1. R can be expressed in terms of a dimensionless force coefficient, CR = R/1
+2 ρ∞V∞2 S. 2. CR is a function of only Re and M∞, from Equation (1.38).
+Therefore, by using the Buckingham pi theorem, we have reduced the number of independent variables from five in Equation (1.23) to two in Equation (1.38). Now, if we wish to run a series of wind-tunnel tests for a given body at a given angle of attack, we need only to vary the Reynolds and Mach numbers in order to obtain data for the direct formulation of R through Equation (1.38). With a small amount of analysis, we have saved a huge amount of effort and wind-tunnel time. More importantly, we have defined two dimensionless parameters, Re and M∞, which govern the flow. They are called similarity parameters, for reasons to be discussed in the following section. Other similarity parameters are introduced as our aerodynamic discussions progress.
+
+
+40 PART 1 Fundamental Principles
+Since the lift and drag are components of the resultant force, corollaries to Equation (1.38) are
+CL = f7(Re, M∞) (1.39)
+CD = f8(Re, M∞) (1.40)
+Moreover, a relation similar to Equation (1.23) holds for the aerodynamic moments, and dimensional analysis yields
+CM = f9(Re, M∞) (1.41)
+Keep in mind that the above analysis was for a given body shape at a given angle of attack α. If α is allowed to vary, then CL , CD, and CM will in general depend on the value of α. Hence, Equations (1.39) to (1.41) can be generalized to
+CL = f10(Re, M∞, α)
+CD = f11(Re, M∞, α)
+CM = f12(Re, M∞, α)
+(1.42)
+(1.43)
+(1.44)
+Equations (1.42) to (1.44) assume a given body shape. Much of theoretical and experimental aerodynamics is focused on obtaining explicit expressions for Equations (1.42) to (1.44) for specific body shapes. This is one of the practical applications of aerodynamics mentioned in Section 1.2, and it is one of the major thrusts of this book. For mechanical problems that also involve thermodynamics and heat transfer, the temperature, specific heat, and thermal conductivity of the fluid, as well as the temperature of the body surface (wall temperature), must be added to the list of physical variables, and the unit of temperature (say, kelvin or degree Rankine) must be added to the list of fundamental dimensions. For such cases, dimensional analysis yields additional dimensionless products such as heat transfer coefficients, and additional similarity parameters such as the ratio of specific heat at constant pressure to that at constant volume cp/cv, the ratio of wall temperature to freestream temperature Tw/T∞, and the Prandtl number Pr = μ∞cp/k∞, where k∞ is the thermal conductivity of the freestream.5 Thermodynamics is essential to the study of compressible flow (Chapters 7 to 14), and heat transfer is part of the study of viscous flow (Chapters 15 to 20). Hence, these additional similarity parameters will be emphasized when they appear logically in our subsequent discussions. For the time being, however, the Mach and Reynolds numbers will suffice as the dominant similarity parameters for our present considerations.
+5 The specific heat of a fluid is defined as the amount of heat added to a system, δq, per unit increase in temperature; cv = δq/dT if δq is added at constant volume, and similarly, for cp if δq is added at constant pressure. Specific heats are discussed in detail in Section 7.2. The thermal conductivity relates heat flux to temperature gradients in the fluid. For example, if q ̇x is the heat transferred in the x direction per second per unit area and dT /d x is the temperature gradient in the x direction, then thermal conductivity k is defined by q ̇x = −k(dT /d x). Thermal conductivity is discussed in detail in Section 15.3.
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 41
+1.8 FLOW SIMILARITY
+Consider two different flow fields over two different bodies. By definition, different flows are dynamically similar if:
+1. The streamline patterns are geometrically similar. 2. The distributions of V /V∞, p/ p∞, T /T∞, etc., throughout the flow field are the same when plotted against common nondimensional coordinates. 3. The force coefficients are the same.
+Actually, item 3 is a consequence of item 2; if the nondimensional pressure and shear stress distributions over different bodies are the same, then the nondimensional force coefficients will be the same. The definition of dynamic similarity was given above. Question: What are the criteria to ensure that two flows are dynamically similar? The answer comes from the results of the dimensional analysis in Section 1.7. Two flows will be dynamically similar if:
+1. The bodies and any other solid boundaries are geometrically similar for both flows. 2. The similarity parameters are the same for both flows.
+So far, we have emphasized two parameters, Re and M∞. For many aerodynamic applications, these are by far the dominant similarity parameters. Therefore, in a limited sense, but applicable to many problems, we can say that flows over geometrically similar bodies at the same Mach and Reynolds numbers are dynamically similar, and hence the lift, drag, and moment coefficients will be identical for the bodies. This is a key point in the validity of wind-tunnel testing. If a scale model of a flight vehicle is tested in a wind tunnel, the measured lift, drag, and moment coefficients will be the same as for free flight as long as the Mach and Reynolds numbers of the wind-tunnel test-section flow are the same as for the free-flight case. As we will see in subsequent chapters, this statement is not quite precise because there are other similarity parameters that influence the flow. In addition, differences in freestream turbulence between the wind tunnel and free flight can have an important effect on CD and the maximum value of CL . However, direct simulation of the free-flight Re and M∞ is the primary goal of many wind-tunnel tests.
+EXAMPLE 1.5
+Consider the flow over two circular cylinders, one having four times the diameter of the other, as shown in Figure 1.27. The flow over the smaller cylinder has a freestream density, velocity and temperature given by ρ1, V1, and T1, respectively. The flow over the larger cylinder has a freestream density, velocity, and temperature given by ρ2, V2, and T2, respectively, where ρ2 = ρ1/4, V2 = 2V1, and T2 = 4T1. Assume that both μ and a
+are proportional to T 1/2. Show that the two flows are dynamically similar.
+
+
+42 PART 1 Fundamental Principles
+Figure 1.27 Example of dynamic flow similarity. Note that as part of the definition of dynamic similarity, the streamlines (lines along which the flow velocity is tangent at each point) are geometrically similar between the two flows.
+■ Solution
+Since μ ∝ √T and a ∝ √T , then
+μ2
+μ1
+=
+√ T2
+T1
+=
+√ 4T1
+T1
+=2
+and a2 a1
+=
+√ T2
+T1
+=2
+By definition, M1 = V1
+a1
+and M2 = V2
+a2
+= 2V1
+2a1
+= V1
+a1
+= M1
+Hence, the Mach numbers are the same. Basing the Reynolds number on the diameter d of the cylinder, we have by definition,
+Re1 = ρ1V1d1
+μ1
+and Re2 = ρ2V2d2
+μ2
+= (ρ1/4)(2V1)(4d1)
+2μ1
+= ρ1V1d1
+μ1
+= Re1
+Hence, the Reynolds numbers are the same. Since the two bodies are geometrically similar and M∞ and Re are the same, we have satisfied all the criteria; the two flows are dynamically similar. In turn, as a consequence of being similar flows, we know from the definition that:
+1. The streamline patterns around the two cylinders are geometrically similar. 2. The nondimensional pressure, temperature, density, velocity, etc., distributions are the same around two cylinders. This is shown schematically in Figure 1.28, where
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 43
+Figure 1.28 One aspect of the definition of dynamically similar flows. The nondimensional flow variable distributions are the same.
+the nondimensional pressure distribution p/ p∞ is shown as a function of the nondimensional surface distance s/d. It is the same curve for both bodies. 3. The drag coefficients for the two bodies are the same. Here, CD = D/q∞ S, where S = π d2/4. As a result of the flow similarity, CD1 = CD2. (Note: Examining Figure 1.27, we see that the lift on the cylinders is zero because the flow is symmetrical about the horizontal axis through the center of the cylinder. The pressure distribution over the top is the same as over the bottom, and they cancel each other in the vertical direction. Therefore, drag is the only aerodynamic force on the body.)
+EXAMPLE 1.6
+Consider a Boeing 747 airliner cruising at a velocity of 550 mi/h at a standard altitude of 38,000 ft, where the freestream pressure and temperature are 432.6 lb/ft2 and 390◦R, respectively. A one-fiftieth scale model of the 747 is tested in a wind tunnel where the temperature is 430◦R. Calculate the required velocity and pressure of the test airstream in the wind tunnel such that the lift and drag coefficients measured for the wind-tunnel model are the same as for free flight. Assume that both μ and a are proportional to T 1/2.
+■ Solution
+Let subscripts 1 and 2 denote the free-flight and wind-tunnel conditions, respectively. For CL,1 = CL,2 and CD,1 = CD,2, the wind-tunnel flow must be dynamically similar to free flight. For this to hold, M1 = M2 and Re1 = Re2:
+M1 = V1
+a1
+∝ √VT11
+and M2 = V2
+a2
+∝ √VT22
+
+
+44 PART 1 Fundamental Principles
+Hence, √VT22
+= √VT11
+or V2 = V1
+√ T2
+T1
+= 550
+√
+430
+390 = 577.5 mi/h
+Re1 = ρ1V1c1
+μ1
+∝ ρ1V1c1
+√T1
+and Re2 = ρ2V2c2
+μ2
+∝ ρ2V2c2
+√T2
+Hence, ρ1V1c1
+√T1
+= ρ2V2c2
+√T2
+or ρ2 ρ1
+=
+( V1
+V2
+) ( c1
+c2
+) √ T2
+T1
+However, since M1 = M2, then
+V1
+V2
+=
+√ T1
+T2
+Thus, ρ2
+ρ1
+= c1
+c2
+= 50
+The equation of state for a perfect gas is p = ρ RT , where R is the specific gas constant. Thus
+p2
+p1
+= ρ2
+ρ1
+T2
+T1
+= (50)
+( 430
+390
+)
+= 55.1
+Hence, p2 = 55.1 p1 = (55.1)(432.6) = 23,836 lb/ft2
+Since 1 atm = 2116 lb/ft2, then p2 = 23,836/2116 = 11.26 atm .
+In Example 1.6, the wind-tunnel test stream must be pressurized far above atmospheric pressure in order to simulate the proper free-flight Reynolds number. However, most standard subsonic wind tunnels are not pressurized as such, because of the large extra financial cost involved. This illustrates a common difficulty in wind-tunnel testing, namely, the difficulty of simulating both Mach number and Reynolds number simultaneously in the same tunnel. It is interesting to note that the NACA (National Advisory Committee for Aeronautics, the predecessor of NASA) in 1922 began operating a pressurized wind tunnel at the NACA Langley Memorial Laboratory in Hampton, Virginia. This was a subsonic wind tunnel contained entirely inside a large tank pressurized to as high as 20 atm. Called the variable density tunnel (VDT), this facility was used in the 1920s and 1930s to provide essential data on the NACA family of airfoil sections at the high
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 45
+Figure 1.29 The NACA variable density tunnel (VDT). Authorized in March of 1921, the VDT was operational in October 1922 at the NACA Langley Memorial Laboratory at Hampton, Virginia. It is essentially a large, subsonic wind tunnel entirely contained within an 85-ton pressure shell, capable of 20 atm. This tunnel was instrumental in the development of the various families of NACA airfoil shapes in the 1920s and 1930s. In the early 1940s, it was decommissioned as a wind tunnel and used as a high-pressure air storage tank. In 1983, due to its age and outdated riveted construction, its use was discontinued altogether. Today, the VDT remains at the NASA Langley Research Center; it has been officially designated as a National Historic Landmark. (NASA).
+Reynolds numbers associated with free flight. A photograph of the NACA variable density tunnel is shown in Figure 1.29; notice the heavy pressurized shell in which the wind tunnel is enclosed. A cross section of the VDT inside the pressure cell is shown in Figure 1.30. These figures demonstrate the extreme measures sometimes taken in order to simulate simultaneously the free-flight values of the important similarity parameters in a wind tunnel. Today, for the most part, we do not attempt to simulate all the parameters simultaneously; rather, Mach number simulation is achieved in one wind tunnel, and Reynolds number simulation in another tunnel. The results from both tunnels are then analyzed and correlated to obtain reasonable values for CL and CD appropriate for free flight. In any event, this example serves to illustrate the difficulty of full free-flight simulation in a given wind tunnel and underscores the importance given to dynamically similar flows in experimental aerodynamics.
+
+
+46 PART 1 Fundamental Principles
+Figure 1.30 Schematic of the variable density tunnel (From Baals, D. D. and Carliss, W. R., Wind Tunnels of NASA, NASA SP-440, 1981).
+DESIGN BOX
+Lift and drag coefficients play a strong role in the preliminary design and performance analysis of airplanes. The purpose of this design box is to enforce the importance of CL and CD in aeronautical engineering; they are much more than just the conveniently defined terms discussed so far—they are fundamental quantities, which make the difference between intelligent engineering and simply groping in the dark. Consider an airplane in steady, level (horizontal) flight, as illustrated in Figure 1.31. For this case, the weight W acts vertically downward. The lift L acts vertically upward, perpendicular to the relative wind
+T
+L
+W
+VD
+Figure 1.31 The four forces acting on an airplane in flight.
+V∞ (by definition). In order to sustain the airplane in level flight,
+L=W
+The thrust T from the propulsive mechanism and the drag D are both parallel to V∞. For steady (unaccelerated) flight,
+T =D
+Note that for most conventional flight situations, the magnitude of L and W is much larger than the magnitude of T and D, as indicated by the sketch in Figure 1.31. Typically, for conventional cruising flight, L/D ≈ 15 to 20. For an airplane of given shape, such as that sketched in Figure 1.31, at given Mach and Reynolds number, CL and CD are simply functions of the angle of attack, α of the airplane. This is the message conveyed by Equations (1.42) and (1.43). It is a simple and basic message—part of the beauty of naturethat the actual values of CL and CD for a given body shape just depend on the orientation of the body in the flow (i.e., angle of attack). Generic variations for CL and CD versus α are sketched in Figure 1.32. Note that CL increases linearly with α until an angle of
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 47
+CL, max
+CL
+CD, min
+CD
+Angle of attack,
+Figure 1.32 Schematic of lift and drag coefficients versus angle of attack; illustration of maximum lift coefficient and minimum drag coefficient.
+attack is reached when the wing stalls, the lift coefficient reaches a peak value, and then drops off as α is further increased. The maximum value of the lift coefficient is denoted by CL,max, as noted in Figure 1.32. The lowest possible velocity at which the airplane can maintain steady level flight is the stalling velocity, Vstall; it is dictated by the value of CL,max, as
+follows.6 From the definition of lift coefficient given in Section 1.5, applied for the case of level flight where L = W , we have
+CL = L
+q∞ S = W
+q∞ S = 2W
+ρ∞V 2∞ S (1.45)
+Solving Equation (1.45) for V∞,
+V∞ =
+√ 2W
+ρ∞ SCL
+(1.46)
+For a given airplane flying at a given altitude, W , ρ, and S are fixed values; hence from Equation (1.46) each value of velocity corresponds to a specific value
+of CL . In particular, V∞ will be the smallest when CL is a maximum. Hence, the stalling velocity for a given airplane is determined by CL,max from Equation (1.46)
+Vstall =
+√
+2W
+ρ∞ SCL,max
+(1.47)
+For a given airplane, without the aid of any artificial devices, CL,max is determined purely by nature, through the physical laws for the aerodynamic flowfield over the airplane. However, the airplane designer has some devices available that artificially increase CL,max beyond that for the basic airplane shape. These mechanical devices are called high-lift devices; examples are flaps, slats, and slots on the wing which, when deployed by the pilot, serve to increase CL,max, and hence decrease the stalling speed. High-lift devices are usually deployed for landing and take-off; they are discussed in more detail in Section 4.12. On the other extreme of flight velocity, the maximum velocity for a given airplane with a given maximum thrust from the engine is determined by the value of minimum drag coefficient, CD,min, where CD,min is marked in Figure 1.32. From the definition of drag coefficient in Section 1.5, applied for the case of steady level flight where T = D, we have
+CD = D
+q∞ S = T
+q∞ S = 2T
+ρ∞V 2∞ S (1.48)
+Solving Equation (1.48) for V∞,
+V∞ =
+√ 2T
+ρ∞ SCD
+(1.49)
+For a given airplane flying at maximum thrust Tmax and a given altitude, from Equation (1.49) the maximum value of V∞ corresponds to flight at CD,min
+Vmax =
+√
+2Tmax
+ρ∞ SC D,min
+(1.50)
+From the above discussion, it is clear that the aerodynamic coefficients are important engineering
+6 The lowest velocity may instead be dictated by the power required to maintain level flight exceeding the power available from the powerplant. This occurs on the “back side of the power curve.” The velocity at which this occurs is usually less than the stalling velocity, so is of academic interest only. See Anderson, Aircraft Performance and Design, McGraw-Hill, 1999, for more details.
+
+
+48 PART 1 Fundamental Principles
+Flight velocity, V
+Lift coefficient, CL
+Vstall
+CL, max
+Vmax
+Decreasing
+Figure 1.33 Schematic of the variation of lift coefficient with flight velocity for level flight.
+quantities that dictate the performance and design of airplanes. For example, stalling velocity is determined in part by CL,max, and maximum velocity is determined in part by CD,min. Broadening our discussion to the whole range of flight velocity for a given airplane, note from Equation (1.45) that each value of V∞ corresponds to a specific value of CL . Therefore, over the whole range of flight velocity from Vstall to Vmax, the airplane lift coefficient varies as shown generically in Figure 1.33. The values of CL given by the curve in Figure 1.33 are what are needed to maintain level flight over the whole range of velocity at a given altitude. The airplane designer must design the airplane to achieve these values of CL for an airplane of given weight and wing area. Note that the required values of CL decrease as V∞ increases. Examining the lift coefficient variation with angle of attack shown in Figure 1.33, note that as the airplane flies faster, the angle of attack must be
+smaller, as also shown in Figure 1.33. Hence, at high speeds, airplanes are at low α, and at low speeds, airplanes are at high α; the specific angle of attack which the airplane must have at a specific V∞ is dictated by the specific value of CL required at that velocity. Obtaining raw lift on a body is relatively easyeven a barn door creates lift at angle of attack. The name of the game is to obtain the necessary lift with as low a drag as possible. That is, the values of CL required over the entire flight range for an airplane, as represented by Figure 1.33, can sometimes be obtained even for the least effective lifting shape—just make the angle of attack high enough. But CD also varies with V∞, as governed by Equation (1.48); the generic variation of CD with V∞ is sketched in Figure 1.34. A poor aerodynamic shape, even though it generates the necessary values of CL shown in Figure 1.33, will have inordinately high values of CD (i.e., the CD curve in Figure 1.34 will ride high on the
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 49
+Flight velocity, V
+Drag coefficient, CD
+Vstall
+CD, min
+Vmax
+Vmax
+Decreasing
+Low drag aerodynamic shape
+High drag aerodynamic shape
+Figure 1.34 Schematic of the variation of drag coefficient with flight velocity for level flight. Comparison between high and low drag aerodynamic bodies, with the consequent effect on maximum velocity.
+graph), as denoted by the dashed curve in Figure 1.34. An aerodynamically efficient shape, however, will produce the requisite values of CL prescribed by Figure 1.33 with much lower drag, as denoted by the solid curve in Figure 1.34. An undesirable by-product of the high-drag shape is a lower value of the maximum velocity for the same maximum thrust, as also indicated in Figure 1.34. Finally, we emphasize that a true measure of the aerodynamic efficiency of a body shape is its lift-todrag ratio, given by
+L
+D = q∞ SCL
+q∞ SCD
+= CL
+CD
+(1.51)
+Since the value of CL necessary for flight at a given velocity and altitude is determined by the airplane’s
+weight and wing area (actually, by the ratio of W/S, called the wing loading) through the relationship given by Equation (1.45), the value of L/D at this velocity is controlled by CD, the denominator in Equation (1.51). At any given velocity, we want L/D to be as high as possible; the higher is L/D, the more aerodynamically efficient is the body. For a given airplane at a given altitude, the variation of L/D as a function of velocity is sketched generically in Figure 1.35. Note that, as V∞ increases from a low value, L/D first increases, reaches a maximum at some intermediate velocity, and then decreases. Note that, as V∞ increases, the angle of attack of the airplane decreases, as explained earlier. From a strictly aerodynamic consideration, L/D for a given body shape depends on angle of attack. This can be seen from Figure 1.32,
+
+
+50 PART 1 Fundamental Principles
+Flight velocity, V
+V for (L /D)max
+(L /D)max
+L /D = CL /CD
+Figure 1.35 Schematic of the variation of lift-to-drag ratio with flight velocity for level flight.
+Angle of attack,
+( )(L /D)max
+(L /D)max
+L/D
+Figure 1.36 Schematic of the variation of lift-to-drag ratio with angle of attack.
+where CL and CD are given as a function of α. If these two curves are ratioed, the result is L/D as a function of angle of attack, as sketched generically in Figure 1.36. The relationship of Figure 1.35 to Figure 1.36 is that, when the airplane is flying at the velocity that corresponds to (L/D)max as shown in Figure 1.35, it
+is at the angle of attack for (L/D)max as shown in Figure 1.36. In summary, the purpose of this design box is to emphasize the important role played by the aerodynamic coefficients in the performance analysis and design of airplanes. In this discussion, what has
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 51
+been important is not the lift and drag per se, but rather CL and CD. These coefficients are a wonderful intellectual construct that helps us to better understand the aerodynamic characteristics of a body, and to make reasoned, intelligent calculations. Hence they are more than just conveniently defined quantities as might first appear when introduced in Section 1.5. For more insight to the engineering value of these coefficients, see Anderson, Aircraft Performance and Design, McGraw-Hill, 1999, and Anderson, Introduc
+tion to Flight, 6th edition, McGraw-Hill, 2008. Also, homework Problem 1.15 at the end of this chapter gives you the opportunity to construct specific curves for CL , CD, and L/D versus velocity for an actual airplane so that you can obtain a feel for some real numbers that have been only generically indicated in the figures here. (In our present discussion, the use of generic figures has been intentional for pedagogic reasons.) Finally, an historical note on the origins of the use of aerodynamic coefficients is given in Section 1.14.
+EXAMPLE 1.7
+Consider an executive jet transport patterned after the Cessna 560 Citation V shown in three-view in Figure 1.37. The airplane is cruising at a velocity of 492 mph at an altitude of 33,000 ft, where the ambient air density is 7.9656 × 10−4 slug/ft3. The weight and wing planform areas of the airplane are 15,000 lb and 342.6 ft2, respectively. The drag coefficient at cruise is 0.015. Calculate the lift coefficient and the lift-to-drag ratio at cruise.
+■ Solution
+The units of miles per hour for velocity are not consistent units. In the English engineering system of units, feet per second are consistent units for velocity (see Section 2.4 of Reference 2). To convert between mph and ft/s, it is useful to remember that 88 ft/s = 60 mph.
+Figure 1.37 Cessna 560 Citation V.
+
+
+52 PART 1 Fundamental Principles
+For the present example,
+V∞ = 492( 88
+60
+) = 721.6 ft/s
+From Equation (1.45),
+CL = 2W
+ρ∞V 2∞ S = 2(15,000)
+(7.9659 × 10−4)(721.6)2(342.6) = 0.21
+From Equation (1.51),
+L
+D = CL
+CD
+= 0.21
+0.015 = 14
+Remarks: For a conventional airplane such as shown in Figure 1.37, almost all the lift at cruising conditions is produced by the wing; the lift of the fuselage and tail are very small by comparison. Hence, the wing can be viewed as an aerodynamic “lever.” In this example, the lift-to-drag ratio is 14, which means that for the expenditure of one pound of thrust to overcome one pound of drag, the wing is lifting 14 pounds of weight—quite a nice leverage.
+EXAMPLE 1.8
+The same airplane as described in Example 1.7 has a stalling speed at sea level of 100 mph at the maximum take-off weight of 15,900 lb. The ambient air density at standard sea level is 0.002377 slug/ft3. Calculate the value of the maximum lift coefficient for the airplane.
+■ Solution
+Once again we have to use consistent units, so
+Vstall = 100 88
+60 = 146.7 ft/s
+Solving Equation (1.47) for CL,max, we have
+CL,max = 2W
+ρ∞V 2
+stall S = 2(15,900)
+(0.002377)(146.7)2(342.6) = 1.81
+1.9 FLUID STATICS: BUOYANCY FORCE
+In aerodynamics, we are concerned about fluids in motion, and the resulting forces and moments on bodies due to such motion. However, in this section, we consider the special case of no fluid motion (i.e., fluid statics). A body immersed in a fluid will still experience a force even if there is no relative motion between the body and the fluid. Let us see why. To begin, we must first consider the force on an element of fluid itself. Consider a stagnant fluid above the x z plane, as shown in Figure 1.38. The vertical direction is given by y. Consider an infinitesimally small fluid element with sides of length d x, dy, and dz. There are two types of forces acting on this fluid element: pressure forces from the surrounding fluid exerted on the surface of the
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 53
+Figure 1.38 Forces on a fluid element in a stagnant fluid.
+element, and the gravity force due to the weight of the fluid inside the element. Consider forces in the y direction. The pressure on the bottom surface of the element is p, and hence the force on the bottom face is p(d x dz) in the upward direction, as shown in Figure 1.38. The pressure on the top surface of the element will be slightly different from the pressure on the bottom because the top surface is at a different location in the fluid. Let dp/dy denote the rate of change of p with respect to y. Then the pressure exerted on the top surface will be p + (d p/dy) dy, and the pressure force on the top of the element will be [ p + (d p/dy) dy](d x dz) in the downward direction, as shown in Figure 1.38. Hence, letting upward force be positive, we have
+Net pressure force = p(d x dz) −
+(
+p + dp
+dy dy
+)
+(d x dz)
+= −dp
+dy (dx d y dz)
+Let ρ be the mean density of the fluid element. The total mass of the element is ρ(d x d y dz). Therefore,
+Gravity force = −ρ(d x d y dz)g
+where g is the acceleration of gravity. Since the fluid element is stationary (in equilibrium), the sum of the forces exerted on it must be zero:
+−dp
+dy (dx dy dz) − gρ(d x d y dz) = 0
+or dp = −gρ dy (1.52)
+Equation (1.52) is called the Hydrostatic equation; it is a differential equation which relates the change in pressure dp in a fluid with a change in vertical height dy.
+
+
+54 PART 1 Fundamental Principles
+The net force on the element acts only in the vertical direction. The pressure forces on the front and back faces are equal and opposite and hence cancel; the same is true for the left and right faces. Also, the pressure forces shown in Figure 1.38 act at the center of the top and bottom faces, and the center of gravity is at the center of the elemental volume (assuming the fluid is homogeneous); hence, the forces in Figure 1.38 are colinear, and as a result, there is no moment on the element. Equation (1.52) governs the variation of atmospheric properties as a function of altitude in the air above us. It is also used to estimate the properties of other planetary atmospheres such as for Venus, Mars, and Jupiter. The use of Equation (1.52) in the analysis and calculation of the “standard atmosphere” is given in detail in Reference 2; hence the details will not be repeated here. Appendices D and E, however, contain a tabulation of the properties of the 1959 ARDC model atmosphere for earth as compiled by the U.S. Air Force. These standard atmosphere tables are included in this book for use in solving certain worked examples and some end-of-chapter homework problems. Moreover, Example 1.10 at the end of this section illustrates how the Hydrostatic equation is used to obtain some of the entries in Appendices D and E. Let the fluid be a liquid, for which we can assume ρ is constant. Consider points 1 and 2 separated by the vertical distance h as sketched on the right side of Figure 1.38. The pressure and y locations at these points are p1, h1, and p2, h2, respectively. Integrating Equation (1.52) between points 1 and 2, we have
+∫ p2
+p1
+d p = −ρg
+∫ h2
+h1
+dy
+or p2 − p1 = −ρg(h2 − h1) = ρg h (1.53)
+where h = h1 − h2. Equation (1.53) can be more conveniently expressed as
+p2 + ρgh2 = p1 + ρgh1
+or p + ρgh = constant (1.54)
+Note that in Equations (1.53) and (1.54), increasing values of h are in the positive (upward) y direction. A simple application of Equation (1.54) is the calculation of the pressure distribution on the walls of a container holding a liquid, and open to the atmosphere at the top. This is illustrated in Figure 1.39, where the top of the liquid is at a height h1. The atmospheric pressure pa is impressed on the top of the liquid; hence, the pressure at h1 is simply pa. Applying Equation (1.54) between the top (where h = h1) and an arbitrary height h, we have
+p + ρgh = p1 + ρgh1 = pa + ρgh1
+or p = pa + ρg(h1 − h) (1.55)
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 55
+Figure 1.39 Hydrostatic pressure distribution on the walls of a container.
+Equation (1.55) gives the pressure distribution on the vertical sidewall of the container as a function of h. Note that the pressure is a linear function of h as sketched on the right of Figure 1.39, and that p increases with depth below the surface. Another simple and very common application of Equation (1.54) is the liquidfilled U-tube manometer used for measuring pressure differences, as sketched in Figure 1.40. The manometer is usually made from hollow glass tubing bent in the shape of the letter U . Imagine that we have an aerodynamic body immersed in an airflow (such as in a wind tunnel), and we wish to use a manometer to measure the surface pressure at point b on the body. A small pressure orifice (hole) at point b is connected to one side of the manometer via a long (usually flexible) pressure tube. The other side of the manometer is open to the atmosphere, where the pressure pa is a known value. The U tube is partially filled with a liquid of known density ρ. The tops of the liquid on the left and right sides of the U tube are at points 1 and 2, with heights h1 and h2, respectively. The body surface pressure pb is transmitted through the pressure tube and impressed on the top of the liquid at point 1. The atmospheric pressure pa is impressed on the top of the liquid at point 2. Because in general pb = pa, the tops of the liquid will be at different heights (i.e., the two sides of the manometer will show a displacement h = h1 − h2 of the fluid). We wish to obtain the value of the surface pressure
+Flexible pressure tube
+Tube open to the atmosphere
+Liquid with density (frequently mercury or silicone oil)
+U-tube manometer (usually made from glass tubing)
+2
+1
+pa
+h
+b
+Figure 1.40 The use of a U-tube manometer.
+
+
+56 PART 1 Fundamental Principles
+at point b on the body by reading the value of h from the manometer. From Equation (1.54) applied between points 1 and 2,
+pb + ρgh1 = pa + ρgh2
+or pb = pa − ρg(h1 − h2)
+or pb = pa − ρg h (1.56)
+In Equation (1.56), pa, ρ, and g are known, and h is read from the U tube, thus allowing pb to be measured. At the beginning of this section, we stated that a solid body immersed in a fluid will experience a force even if there is no relative motion between the body and the fluid. We are now in a position to derive an expression for this force, henceforth called the buoyancy force. We will consider a body immersed in either a stagnant gas or liquid, hence ρ can be a variable. For simplicity, consider a rectangular body of unit width, length l, and height (h1 − h2), as shown in Figure 1.41. Examining Figure 1.41, we see that the vertical force F on the body due to the pressure distribution over the surface is
+F = ( p2 − p1)l(1) (1.57)
+There is no horizontal force because the pressure distributions over the vertical faces of the rectangular body lead to equal and opposite forces which cancel each other. In Equation (1.57), an expression for p2 − p1 can be obtained by integrating the hydrostatic equation, Equation (1.52), between the top and bottom faces:
+p2 − p1 =
+∫ p2
+p1
+dp = −
+∫ h2
+h1
+ρg dy =
+∫ h1
+h2
+ρg dy
+Substituting this result into Equation (1.57), we obtain for the buoyancy force
+F = l(1)
+∫ h1
+h2
+ρg dy (1.58)
+Solid or
+hollow body Element of fluid
+l
+l l
+l
+p1
+p2
+h1
+h2
+h1 dy
+h2
+y
+x
+z
+Figure 1.41 Source of the buoyancy force on a body immersed in a fluid.
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 57
+Consider the physical meaning of the integral in Equation (1.58). The weight of a small element of fluid of height dy and width and length of unity as shown at the right of Figure 1.41 is ρg dy (1)(1). In turn, the weight of a column of fluid with a base of unit area and a height (h1 − h2) is
+∫ h1
+h2
+ρg dy
+which is precisely the integral in Equation (1.58). Moreover, if we place l of these fluid columns side by side, we would have a volume of fluid equal to the volume of the body on the left of Figure 1.41, and the weight of this total volume of fluid would be
+l
+∫ h1
+h2
+ρg dy
+which is precisely the right-hand side of Equation (1.58). Therefore, Equation (1.58) states in words that
+Buoyancy force
+on body = weight of fluid
+displaced by body
+We have just proved the well-known Archimedes principle, first advanced by the Greek scientist, Archimedes of Syracuse (287–212 B.C.). Although we have used a rectangular body to simplify our derivation, the Archimedes principle holds for bodies of any general shape. (See Problem 1.14 at the end of this chapter.) Also, note from our derivation that the Archimedes principle holds for both gases and liquids and does not require that the density be constant. The density of liquids is usually several orders of magnitude larger than the density of gases (e.g., for water ρ = 103 kg/m3, whereas for air ρ = 1.23 kg/m3). Therefore, a given body will experience a buoyancy force a thousand times greater in water than in air. Obviously, for naval vehicles buoyancy force is all important, whereas for airplanes it is negligible. On the other hand, lighter-than-air vehicles, such as blimps and hot-air balloons, rely on buoyancy force for sustenation; they obtain sufficient buoyancy force simply by displacing huge volumes of air. For most problems in aerodynamics, however, buoyancy force is so small that it can be readily neglected.
+EXAMPLE 1.9
+A hot-air balloon with an inflated diameter of 30 ft is carrying a weight of 800 lb, which includes the weight of the hot air inside the balloon. Calculate (a) its upward acceleration at sea level the instant the restraining ropes are released and (b) the maximum altitude it can achieve. Assume that the variation of density in the standard atmosphere is given by ρ = 0.002377(1 − 7 × 10−6h)4.21, where h is the altitude in feet and ρ is in slug/ft3.
+
+
+58 PART 1 Fundamental Principles
+■ Solution
+(a) At sea level, where h = 0, ρ = 0.002377 slug/ft3. The volume of the inflated balloon is 4
+3 π(15)3 = 14,137 ft3. Hence,
+Buoyancy force = weight of displaced air
+= gρV
+where g is the acceleration of gravity and V is the volume.
+Buoyancy force ≡ B = (32.2)(0.002377)(14,137) = 1082 lb
+The net upward force at sea level is F = B − W , where W is the weight. From Newton’s second law,
+F = B − W = ma
+where m is the mass, m = 800
+32.2 = 24.8 slug. Hence,
+a= B−W
+m = 1082 − 800
+24.8 = 11.4 ft/s2
+(b) The maximum altitude occurs when B = W = 800 lb. Since B = gρV, and assuming the balloon volume does not change,
+ρ= B
+gV = 800
+(32.2)(14,137) = 0.00176 slug/ft3
+From the given variation of ρ with altitude, h,
+ρ = 0.002377(1 − 7 × 10−6h)4.21 = 0.00176
+Solving for h, we obtain
+h= 1
+7 × 10−6
+[
+1−
+( 0.00176
+0.002377
+)1/4.21] = 9842 ft
+E X A MPLE 1.10
+The purpose of this example is to show how the standard altitude tables in Appendices D and E are constructed with the use of the Hydrostatic equation. A complete discussion on the construction and use of the standard altitude tables is given in Chapter 3 of Reference 2. From sea level to an altitude of 11 km, the standard altitude is based on a linear variation of temperature with altitude, h, where T decreases at a rate of −6.5 K per kilometer (the lapse rate). At sea level, the standard pressure, density, and temperature are 1.01325 × 105 N/m2, 1.2250 kg/m3, and 288.16 K, respectively. Calculate the pressure, density, and temperature at a standard altitude of 5 km.
+■ Solution
+Repeating Equation (1.52),
+dp = −gρ dy = −gρ dh
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 59
+The equation of state for a perfect gas is given in Chapter 7 as Equation (7.1),
+p = ρRT
+where R is the specific gas constant. Dividing Equation (1.52) by (7.1), we have
+dp
+p =−g
+R
+dh
+T (E1.1)
+Denoting the lapse rate by a, we have by definition
+a ≡ dT
+dh or
+dh = dT
+a (E1.2)
+Substituting (E1.2) into (E1.1), we obtain
+dp
+p =− g
+aR
+dT
+T (E1.3)
+Integrate Equation (E1.3) from sea level where the standard values of pressure and temperature are denoted by ps and Ts, respectively, and a given altitude h where the values of pressure and temperature are p and T , respectively. ∫p
+ps
+dp
+p =−
+∫T
+Ts
+g
+aR
+dT
+T
+or
+ln P
+ps
+=−
+∫T
+Ts
+g
+aR
+dT
+T (E1.4)
+In Equation (E1.4), a and R are constants, but the acceleration of gravity, g, varies with altitude. The integral in Equation (E1.4) is simplified by assuming that g is constant with altitude, equal to its value at sea level, gs. With this assumption, Equation (E1.4) becomes
+ln P
+ps
+= − gs
+aR ln T
+Ts or
+p
+ps
+=
+(T
+Ts
+)−gs /a R
+(E1.5)
+Note: Here we must make a distinction between the geometric altitude, hG , which is the actual “tape measure” altitude above sea level, and the geopotential altitude, h, which is a slightly fictitious altitude consistent with the assumption of a constant value of g. That is, when we write the Hydrostatic equation as
+d p = −gρ dhG
+we are treating g as a variable with altitude and hence the altitude is the actual geometric altitude, hG . On the other hand, when we assume that g is constant, say equal to its value
+
+
+60 PART 1 Fundamental Principles
+at sea level, gs, the Hydrostatic equation is
+p = −gs ρ dh (E1.6)
+where h is denoted as the geopotential altitude, consistent with the assumption of constant g. For reasonable altitudes associated with conventional atmospheric flight, the difference between hG and h is very small. Observe from Appendix D that altitude is listed under two columns, the first being the geometric altitude, hG , and the second being the geopotential altitude, h. For the current example we are calculating the properties at an altitude of 5 km. This is the real “tape measure” altitude, hG . The corresponding value of geopotential altitude, h, is 4.996 km, only a 0.08 percent difference. The calculation of h for a given hG is derived in Reference 2; it is not important to our discussions here. What is important, however, is that when we use Equation (E1.5), or any other such equation assuming a constant value of g, we must use the geopotential altitude. For the calculations in this example, where we are calculating properties at a geometric altitude of 5 km, we must use the value of the geopotential altitude, 4.996 km, in the equations. Equation (E1.5) explicitly gives the variation of pressure with temperature, and implicitly the variation with altitude because temperature is a known function of altitude via the given lapse rate a = dT /dh = −6.5 K/km. Specifically, because T varies linearly with altitude for the altitude region under consideration here, we have
+T − Ts = ah (E1.7)
+In Equation (E1.7), h is the geopotential altitude. The given value of a = −6.5 K/km = −0.0065/m is based on the change in geopotential altitude. Thus, from Equation (E1.7), we have at the specified geometric altitude of 5 km,
+T − 288.16 = −(0.0065)(4996) = −32.474
+T = 288.16 − 32.474 = 255.69 K
+Note that this value of T is precisely the value entered in Appendix D for a geometric altitude of 5000 m. In Equation (E1.5), for air, R = 287 J/kg K. Thus, the exponent is
+−gs
+a R = − (9.80)
+(−0.0065)(287) = 5.25328
+and
+p
+ps
+=
+(T
+Ts
+)−gs /a R
+=
+( 255.69
+288.16
+)5.25328 = 0.53364
+p = 0.53364 ps = 0.53364(1.01325 × 105)
+p = 5.407 × 104 N/m2
+This value of pressure agrees within 0.04 percent with the value entered in Appendix D. The very slight difference is due to the value of R = 287 J/(kg)(K) used here, which
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 61
+depends on the molecular weight of air, which in turn varies slightly from one source to another. Finally, the density can be obtained from the equation of state
+ρ= p
+RT = 5.407 × 104
+(287)(255.69) = 0.7368 kg/m3
+which agrees within 0.05 percent with the value entered in Appendix D.
+EXAMPLE 1.11
+Consider a U-tube mercury manometer oriented vertically. One end is completely sealed with a total vacuum above the column of mercury. The other end is open to the atmosphere where the atmospheric pressure is that for standard sea level. What is the displacement height of the mercury in centimeters, and in which end is the mercury column the highest? The density of mercury is 1.36 × 104 kg/m3.
+■ Solution
+Examining Figure 1.40, consider the sealed end with the total vacuum to be on the left, where pb = 0, and the height of the mercury column is h1. This is balanced by the right column of mercury with height h2 plus the atmospheric pressure pa exerted on the top of the column. Clearly, when these two columns of mercury are balanced, the left column must be higher to account for the finite pressure being exerted at the top of the right column, i.e., h1 > h2. From Equation (1.56), we have
+pb = pa − ρg h
+where
+h = h1 − h2
+Thus,
+h = pa
+ρg
+From Appendix D, at sea level pa = 1.013 × 105 N/m2. Hence,
+h = pa
+ρg = 1.013 × 105
+(1.36 × 104) (9.8) = 0.76 m = 76 cm
+Note: Since 2.54 cm = 1 in, then h = 76/2.54 = 29.92 in. The above calculation explains why, on a day when the atmospheric pressure happens to be that for standard sea level, the meteorologist on television will usually say that the pressure is now “76 cm, or 760 mm, or 29.92 in.” You rarely hear the pressure quoted in terms of “pounds per square foot,” or “pounds per square inch,” and hardly ever in “newtons per square meter.”
+
+
+62 PART 1 Fundamental Principles
+1.10 TYPES OF FLOW
+An understanding of aerodynamics, like that of any other physical science, is obtained through a “building-block” approach—we dissect the discipline, form the parts into nice polished blocks of knowledge, and then later attempt to reassemble the blocks to form an understanding of the whole. An example of this process is the way that different types of aerodynamic flows are categorized and visualized. Although nature has no trouble setting up the most detailed and complex flow with a whole spectrum of interacting physical phenomena, we must attempt to understand such flows by modeling them with less detail, and neglecting some of the (hopefully) less significant phenomena. As a result, a study of aerodynamics has evolved into a study of numerous and distinct types of flow. The purpose of this section is to itemize and contrast these types of flow, and to briefly describe their most important physical phenomena.
+1.10.1 Continuum Versus Free Molecule Flow
+Consider the flow over a body, say, for example, a circular cylinder of diameter d. Also, consider the fluid to consist of individual molecules, which are moving about in random motion. The mean distance that a molecule travels between collisions with neighboring molecules is defined as the mean-free path λ. If λ is orders of magnitude smaller than the scale of the body measured by d, then the flow appears to the body as a continuous substance. The molecules impact the body surface so frequently that the body cannot distinguish the individual molecular collisions, and the surface feels the fluid as a continuous medium. Such flow is called continuum flow. The other extreme is where λ is on the same order as the body scale; here the gas molecules are spaced so far apart (relative to d) that collisions with the body surface occur only infrequently, and the body surface can feel distinctly each molecular impact. Such flow is called free molecular flow. For manned flight, vehicles such as the space shuttle encounter free molecular flow at the extreme outer edge of the atmosphere, where the air density is so low that λ becomes on the order of the shuttle size. There are intermediate cases, where flows can exhibit some characteristics of both continuum and free molecule flows; such flows are generally labeled “low-density flows” in contrast to continuum flow. By far, the vast majority of practical aerodynamic applications involve continuum flows. Low-density and free molecule flows are just a small part of the total spectrum of aerodynamics. Therefore, in this book we will always deal with continuum flow; that is, we will always treat the fluid as a continuous medium.
+1.10.2 Inviscid Versus Viscous Flow
+A major facet of a gas or liquid is the ability of the molecules to move rather freely, as explained in Section 1.2. When the molecules move, even in a very random fashion, they obviously transport their mass, momentum, and energy from one location to another in the fluid. This transport on a molecular scale gives rise to the phenomena of mass diffusion, viscosity (friction), and thermal conduction.
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 63
+Flow outside the boundary layer is inviscid Thin boundary layer of viscous flow adjacent to surface
+Body surface
+Figure 1.42 The division of a flow into two regions: (1) the thin viscous boundary layer adjacent to the body surface and (2) the inviscid flow outside the boundary layer.
+Such “transport phenomena” will be discussed in detail in Chapter 15. For our purposes here, we need only to recognize that all real flows exhibit the effects of these transport phenomena; such flows are called viscous flows. In contrast, a flow that is assumed to involve no friction, thermal conduction, or diffusion is called an inviscid flow. Inviscid flows do not truly exist in nature; however, there are many practical aerodynamic flows (more than you would think) where the influence of transport phenomena is small, and we can model the flow as being inviscid. For this reason, more than 70 percent of this book (Chapters 3 to 14) deals primarily with inviscid flows. Theoretically, inviscid flow is approached in the limit as the Reynolds number goes to infinity (to be proved in Chapter 15). However, for practical problems, many flows with high but finite Re can be assumed to be inviscid. For such flows, the influence of friction, thermal conduction, and diffusion is limited to a very thin region adjacent to the body surface called the boundary layer, and the remainder of the flow outside this thin region is essentially inviscid. This division of the flow into two regions is illustrated in Figure 1.42. Hence, most of the material discussed in Chapters 3 to 14 applies to the flow outside the boundary layer. For flows over slender bodies, such as the airfoil sketched in Figure 1.42, inviscid theory adequately predicts the pressure distribution and lift on the body and gives a valid representation of the streamlines and flow field away from the body. However, because friction (shear stress) is a major source of aerodynamic drag, inviscid theories by themselves cannot adequately predict total drag. In contrast, there are some flows that are dominated by viscous effects. For example, if the airfoil in Figure 1.42 is inclined to a high incidence angle to the flow (high angle of attack), then the boundary layer will tend to separate from the top surface, and a large wake is formed downstream. The separated flow is sketched at the top of Figure 1.43; it is characteristic of the flow field over a “stalled” airfoil. Separated flow also dominates the aerodynamics of blunt bodies, such as the cylinder at the bottom of Figure 1.43. Here, the flow expands around the front face of the cylinder, but separates from the surface on the rear face, forming a rather fat wake downstream. The types of flow illustrated in Figure 1.43 are dominated by viscous effects; no inviscid theory can independently predict the
+
+
+64 PART 1 Fundamental Principles
+Figure 1.43 Examples of viscous-dominated flow.
+aerodynamics of such flows. They require the inclusion of viscous effects, to be presented in Part 4.
+1.10.3 Incompressible Versus Compressible Flows
+A flow in which the density ρ is constant is called incompressible. In contrast, a flow where the density is variable is called compressible. A more precise definition of compressibility will be given in Chapter 7. For our purposes here, we will simply note that all flows, to a greater or lesser extent, are compressible; truly incompressible flow, where the density is precisely constant, does not occur in nature. However, analogous to our discussion of inviscid flow, there are a number of aerodynamic problems that can be modeled as being incompressible without any detrimental loss of accuracy. For example, the flow of homogeneous liquids is treated as incompressible, and hence most problems involving hydrodynamics assume ρ = constant. Also, the flow of gases at a low Mach number is essentially incompressible; for M < 0.3, it is always safe to assume ρ = constant. (We will prove this in Chapter 8.) This was the flight regime of all airplanes from the Wright brothers’ first flight in 1903 to just prior to World War II. It is still the flight regime of most small, general aviation aircraft of today. Hence, there exists a large bulk of aerodynamic experimental and theoretical data for incompressible flows. Such flows are the subject of Chapters 3 to 6. On the other hand, high-speed flow (near Mach 1 and above) must be treated as compressible; for such flows ρ can vary over wide latitudes. Compressible flow is the subject of Chapters 7 to 14.
+1.10.4 Mach Number Regimes
+Of all the ways of subdividing and describing different aerodynamic flows, the distinction based on the Mach number is probably the most prevalent. If M is the
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 65
+local Mach number at an arbitrary point in a flow field, then by definition the flow is locally:
+Subsonic if M < 1 Sonic if M = 1 Supersonic if M > 1
+Looking at the whole field simultaneously, four different speed regimes can be identified using Mach number as the criterion:
+1. Subsonic flow (M < 1 everywhere). A flow field is defined as subsonic if the Mach number is less than 1 at every point. Subsonic flows are characterized by smooth streamlines (no discontinuity in slope), as sketched in Figure 1.44a. Moreover, since the flow velocity is everywhere less than the speed of sound, disturbances in the flow (say, the sudden deflection of the trailing edge of the airfoil in Figure 1.44a) propagate both upstream and downstream, and are felt throughout the entire flow field. Note that a freestream Mach number M∞ less than 1 does not guarantee a totally subsonic flow over the body. In expanding over an aerodynamic shape, the flow velocity increases above the freestream value, and if M∞ is close enough to 1, the local Mach number may become supersonic in certain regions of the flow. This gives rise to a rule of thumb that M∞ < 0.8 for subsonic flow over slender bodies. For blunt bodies, M∞ must be even lower to ensure totally subsonic flow. (Again, emphasis is made that the above is just a loose rule of thumb and should not be taken as a precise quantitative definition.) Also, we will show later that incompressible flow is a special limiting case of subsonic flow where M → 0. 2. Transonic flow (mixed regions where M < 1 and M > 1). As stated above, if M∞ is subsonic but is near unity, the flow can become locally supersonic (M > 1). This is sketched in Figure 1.44b, which shows pockets of supersonic flow over both the top and bottom surfaces of the airfoil, terminated by weak shock waves behind which the flow becomes subsonic again. Moreover, if M∞ is increased slightly above unity, a bow shock wave is formed in front of the body; behind this shock wave the flow is locally subsonic, as shown in Figure 1.44c. This subsonic flow subsequently expands to a low supersonic value over the airfoil. Weak shock waves are usually generated at the trailing edge, sometimes in a “fishtail” pattern as shown in Figure 1.44c. The flow fields shown in Figure 1.44b and c are characterized by mixed subsonic-supersonic flows and are dominated by the physics of both types of flow. Hence, such flow fields are called transonic flows. Again, as a rule of thumb for slender bodies, transonic flows occur for freestream Mach numbers in the range 0.8 < M∞ < 1.2. 3. Supersonic flow (M > 1 everywhere). A flow field is defined as supersonic if the Mach number is greater than 1 at every point. Supersonic flows are frequently characterized by the presence of shock waves across which the flow properties and streamlines change discontinuously (in contrast to the
+
+
+66 PART 1 Fundamental Principles
+Figure 1.44 Different regimes of flow.
+smooth, continuous variations in subsonic flows). This is illustrated in Figure 1.44d for supersonic flow over a sharp-nosed wedge; the flow remains supersonic behind the oblique shock wave from the tip. Also shown are distinct expansion waves, which are common in supersonic flow. (Again, the listing of M∞ > 1.2 is strictly a rule of thumb. For example, in Figure 1.44d, if θ is made large enough, the oblique shock wave will detach from the tip of the wedge and will form a strong, curved bow shock ahead of the wedge with a substantial region of subsonic flow behind the wave. Hence, the totally supersonic flow sketched in
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 67
+Figure 1.44d is destroyed if θ is too large for a given M∞. This shock detachment phenomenon can occur at any value of M∞ > 1, but the value of θ at which it occurs increases as M∞ increases. In turn, if θ is made infinitesimally small, the flow field in Figure 1.44d holds for M∞ ≥ 1.0. These matters will be considered in detail in Chapter 9. However, the above discussion clearly shows that the listing of M∞ > 1.2 in Figure 1.44d is a very tenuous rule of thumb and should not be taken literally.) In a supersonic flow, because the local flow velocity is greater than the speed of sound, disturbances created at some point in the flow cannot work their way upstream (in contrast to subsonic flow). This property is one of the most significant physical differences between subsonic and supersonic flows. It is the basic reason why shock waves occur in supersonic flows, but do not occur in steady subsonic flow. We will come to appreciate this difference more fully in Chapters 7 to 14. 4. Hypersonic flow (very high supersonic speeds). Refer again to the wedge in Figure 1.44d. Assume θ is a given, fixed value. As M∞ increases above 1, the shock wave moves closer to the body surface. Also, the strength of the shock wave increases, leading to higher temperatures in the region between the shock and the body (the shock layer). If M∞ is sufficiently large, the shock layer becomes very thin, and interactions between the shock wave and the viscous boundary layer on the surface occur. Also, the shock layer temperature becomes high enough that chemical reactions occur in the air. The O2 and N2 molecules are torn apart; that is, the gas molecules dissociate. When M∞ becomes large enough such that viscous interaction and/or chemically reacting effects begin to dominate the flow (Figure 1.44e), the flow field is called hypersonic. (Again, a somewhat arbitrary but frequently used rule of thumb for hypersonic flow is M∞ > 5.) Hypersonic aerodynamics received a great deal of attention during the period 1955–1970 because atmospheric entry vehicles encounter the atmosphere at Mach numbers between 25 (ICBMs) and 36 (the Apollo lunar return vehicle). Again during the period 1985–1995, hypersonic flight received a great deal of attention with the concept of air-breathing supersonic-combustion ramjet-powered transatmospheric vehicles to provide single-stage-to-orbit capability. Today, hypersonic aerodynamics is just part of the whole spectrum of realistic flight speeds. Some basic elements of hypersonic flow are treated in Chapter 14.
+In summary, we attempt to organize our study of aerodynamic flows according to one or more of the various categories discussed in this section. The block diagram in Figure 1.45 is presented to help emphasize these categories and to show how they are related. Indeed, Figure 1.45 serves as a road map for this entire book. All the material to be covered in subsequent chapters fits into these blocks, which are lettered for easy reference. For example, Chapter 2 contains discussions of some fundamental aerodynamic principles and equations which fit into both blocks C and D. Chapters 3 to 6 fit into blocks D and E, Chapter 7 fits into blocks D and F, etc. As we proceed with our development of aerodynamics, we
+
+
+68 PART 1 Fundamental Principles
+Figure 1.45 Block diagram categorizing the types of aerodynamic flows.
+will frequently refer to Figure 1.45 in order to help put specific, detailed material in proper perspective relative to the whole of aerodynamics.
+1.11 VISCOUS FLOW: INTRODUCTION TO BOUNDARY LAYERS
+Section 1.10.2 speaks to the problem of friction in an aerodynamic flow. Frictional shear stress is defined in Section 1.4; shear stress, τ , exists at any point in a flow where there is a velocity gradient across streamlines. For most problems in aerodynamics, the local shear stress has a meaningful effect on the flow only where the velocity gradients are substantial. Consider, for example, the flow over the body shown in Figure 1.42. For the vast region of the flow field away from the body, the velocity gradients are relatively small, and friction plays virtually no role. For the thin region of the flow adjacent to the surface, however, the velocity gradients are large, and friction plays a defining role. This natural division of the flow into two regions, one where friction is much more important than the other, was recognized by the famous German fluid dynamicist Ludwig Prandtl in 1904. Prandtl’s concept of the boundary layer created a breakthrough in aerodynamic analysis. Since that time theoretical analyses of most aerodynamic flows have treated the region away from the body as an inviscid flow (i.e., no dissipative effects due to friction, thermal conduction, or mass diffusion), and the thin region immediately adjacent to the body surface as a viscous flow where these dissipative effects are included. The thin viscous region adjacent to the body is called the boundary layer; for most aerodynamic problems of interest, the boundary layer is very thin compared to the extent of the rest of the flow. But what an effect this thin boundary layer has! It is the source of the friction drag on an aerodynamic
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 69
+body. The friction drag on an Airbus 380 jumbo jet, for example, is generated by the boundary layer that wets the entire surface of the airplane in flight. The phenomena of flow separation, as sketched in Figure 1.43, is associated with the presence of the boundary layer; when the flow separates from the surface, it dramatically changes the pressure distribution over the surface resulting in a large increase in drag called pressure drag. So this thin viscous boundary layer adjacent to the body surface, although small in extent compared to the rest of the flow, is extremely important in aerodynamics. Parts 2 and 3 of this book deal primarily with inviscid flows; viscous flow is the subject of Part 4. However, at the end of some of the chapters in Parts 2 and 3, you will find a “viscous flow section” (such as the present section) for the benefit of those readers who are interested in examining the practical impact of boundary layers on the inviscid flows studied in the given chapters. These viscous flow sections are stand-alone sections and do not break the continuity of the inviscid flow discussion in Parts 2 and 3; they simply complement those discussions. Why are the velocity gradients inside the boundary layer so large? To help answer this question, first consider the purely inviscid flow over the airfoil shape in Figure 1.46. By definition there is no friction effect, so the streamline that is right on the surface of the body slips over the surface; for example, the flow velocity at point b on the surface is a finite value, unhindered by the effect of friction. In actuality, due to friction the infinitesimally thin layer of air molecules immediately adjacent to the body surface sticks to the surface, thus it has zero velocity relative to the surface. This is the no-slip condition, and it is the cause of the large velocity gradients within the boundary layer. To see why, consider the flow illustrated in Figure 1.47; here the boundary layer is shown greatly magnified
+Vb
+b
+The streamline that is right on the surface slips over the surface
+Figure 1.46 Inviscid (frictionless) flow.
+Vb Va = 0
+w
+y
+b
+a
+Boundary
+layer
+Figure 1.47 Flow in real life, with friction. The thickness of the boundary layer is greatly overemphasized for clarity.
+
+
+70 PART 1 Fundamental Principles
+in thickness for clarity. The flow velocity at point a on the body surface is zero due to the no-slip condition. Above point a, the velocity increases until it reaches the value of Vb at point b at the outer edge of the boundary layer. Because the boundary layer is so thin, Vb at point b in Figure 1.47 is assumed to be the same as Vb at point b on the body in the inviscid flow shown in Figure 1.46. Conventional boundary layer analysis assumes that the flow conditions at the outer edge of the boundary layer are the same as the surface flow conditions from an inviscid flow analysis. Examining Figure 1.47, because the flow velocity inside the boundary layer increases from zero at point a to a significant finite velocity at point b, and this increase takes place over a very short distance because the boundary layer is so thin, then the velocity gradients, the local values of dV/dy, are large. Hence the boundary layer is a region of the flow where frictional effects are dominant. Also identified in Figure 1.47 is the shear stress at the wall, τw, and the boundary layer thickness, δ. Both τw and δ are important quantities, and a large part of boundary layer theory is devoted to their calculation. It can be shown experimentally and theoretically that the pressure through the boundary layer in a direction perpendicular to the surface is constant. That is, letting pa and pb be the pressures at points a and b, respectively, in Figure 1.47, where the y-axis is perpendicular to the body at point a, then pa = pb. This is an important phenomenon. This is why the surface pressure distribution calculated for an inviscid flow (Figure 1.46) gives accurate results for the real-life surface pressures; it is because the inviscid calculations give the correct pressure at the outer edge of the thin boundary layer (point b in Figure 1.47), and these pressures are impressed without change through the boundary layer right down to the surface (point a). The preceding statements are reasonable for thin boundary layers that remain attached to the body surface; they do not hold for regions of separated flow such as those sketched in Figure 1.43. Such separated flows are discussed in Sections 4.12 and 4.13. Looking more closely at the boundary layer, Figure 1.48 illustrates the velocity profile through the boundary layer. The velocity starts out at zero at the surface and increases continuously to its value of Vb at the outer edge. Let us set up coordinate axes x and y such that x is parallel to the surface and y is normal to the surface, as shown in Figure 1.48. By definition, a velocity profile gives the variation of velocity in the boundary layer as a function of y. In general, the velocity profiles at different x stations are different. Similarly, the temperature profile through the boundary layer is shown in Figure 1.49. The gas
+Outeredgeofboundarylayer
+y x
+Velocity profile through the boundary layer
+Surface
+Vb = V2
+Figure 1.48 Velocity profile through a boundary layer.
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 71
+Outeredgeofboundarylayer
+y
+Tb
+Tw
+y
+x
+Temperature profile through the boundary layer
+Figure 1.49 Temperature profile through a boundary layer.
+temperature at the wall (which is the same as the surface temperature of the wall itself—a kind of “no slip” condition on temperature) is Tw, and the temperature at the outer edge of the boundary layer is Tb. As before, the value of Tb is the same as the gas temperature at the surface calculated from an inviscid flow analysis. By definition, a temperature profile gives the variation of temperature in the boundary layer as a function of y. In general, the temperature profiles at different x stations are different. The temperature inside the boundary layer is governed by the combined mechanisms of thermal conduction and frictional dissipation. Thermal conduction is the transfer of heat from a hotter region to a colder region by random molecular motion. Frictional dissipation, in a very simplistic sense, is the local heating of the gas due to one streamline rubbing over another, somewhat analogous to warming your hands by vigorously rubbing them together. A better explanation of frictional dissipation is that, as a fluid element moves along a streamline inside the boundary layer, it slows down due to frictional shear stress acting on it, and some of the original kinetic energy it had before it entered the boundary layer is converted to internal energy inside the boundary layer, hence increasing the gas temperature inside the boundary layer. The slope of the velocity profile at the wall is of particular importance because it governs the wall shear stress. Let (d V /d y)y=0 be defined as the velocity gradient at the wall. Then the shear stress at the wall is given by
+τw = μ
+(dV
+dy
+)
+y=0
+(1.59)
+where μ is the absolute viscosity coefficient (or simply the viscosity) of the gas. The viscosity coefficient has dimensions of mass/(length)(time), as can be verified from Equation (1.59) combined with Newton’s second law. It is a physical property of the fluid; μ is different for different gases and liquids. Also, μ varies with T . For liquids, μ decreases as T increases (we all know that oil gets “thinner” when the temperature is increased). But for gases, μ increases as T increases (air
+
+
+72 PART 1 Fundamental Principles
+Temperature, K
+, kg/(m)(s) 105
+250
+1.5
+1.6
+1.7
+1.8
+1.9
+2.0
+2.1
+270 290 310 330 350
+Air
+Figure 1.50 Variation of viscosity coefficient with temperature.
+gets “thicker” when the temperature is increased). For air at standard sea-level temperature,
+μ = 1.7894 × 10−5kg/(m)(s) = 3.7373 × 10−7slug/(ft)(s)
+The temperature variation of μ for air over a small range of interest is given in Figure 1.50. Similarly, the slope of the temperature profile at the wall is very important; it dictates the aerodynamic heating to or from the wall. Let (dT /d y)y=0 be defined as the temperature gradient at the wall. Then the aerodynamic heating rate (energy per second per unit area) at the wall is given by
+q•w = −k
+(dT
+dy
+)
+y=0
+(1.60)
+where k is the thermal conductivity of the gas, and the minus sign connotes that heat is conducted from a warm region to a cooler region, in the opposite direction as the temperature gradient. That is, if the temperature gradient in Equation (1.60) is positive (temperature increases in the direction above the wall), the heat transfer is from the gas into the wall, opposite to the direction of increasing temperature. If the temperature gradient is negative (temperature decreases in the direction above the wall), the heat transfer is away from the wall into the gas, again opposite to the direction of increasing temperature. Frequently, the heating or cooling of a wall by a flow over the wall is called “convective heat transfer,” although from Equation (1.60) the actual mechanism by which heat is transferred between the gas and the wall is thermal conduction. In this book, we will label the heat transfer taking place between the boundary layer and the wall as aerodynamic heating. Aerodynamic heating is important in high-speed flows, particularly supersonic
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 73
+y
+x x
+Leading edge
+Figure 1.51 Growth of the boundary layer thickness.
+flows, and it becomes absolutely dominant in hypersonic flows. Finally, we note that k in Equation (1.60), like μ in Equation (1.59), is a physical property of the fluid, and is a function of temperature. For air at standard sea-level temperature,
+k = 2.53 × 10−2J/(m)(s)(K) = 3.16 × 10−3lb/(s)(◦R)
+Thermal conductivity is essentially proportional to the viscosity coefficient (i.e, k = (constant) × μ), so the temperature variation of k is proportional to that shown in Figure 1.49 for μ. Sections 1.7 and 1.8 introduced the Reynolds number as an important similarity parameter. Consider the development of a boundary layer on a surface, such as the flat plate sketched in Figure 1.51. Let x be measured from the leading edge, that is, from the tip of the plate. Let V∞ be the flow velocity far upstream of the plate. The local Reynolds number at a local distance x from the leading edge is defined as
+Rex = ρ∞V∞x
+μ∞
+(1.61)
+where the subscript ∞ is used to denote conditions in the freestream ahead of the plate. The local values of τw and δ are functions of Rex ; this is shown in Chapter 4, and in more detail in Part 4 of this book. The Reynolds number has a powerful influence over the properties of a boundary layer, and it governs the nature of viscous flows in general. We will encounter the Reynolds number frequently in this book. Up to this point in our discussion, we have considered flow streamlines to be smooth and regular curves in space. However, in a viscous flow, and particularly in boundary layers, life is not quite so simple. There are two basic types of viscous flow:
+1. Laminar flow, in which the streamlines are smooth and regular and a fluid element moves smoothly along a streamline. 2. Turbulent flow, in which the streamlines break up and a fluid element moves in a random, irregular, and tortuous fashion.
+If you observe smoke rising from a lit cigarette, as sketched in Figure 1.52, you see first a region of smooth flow—laminar flow—and then a transition to irregular, mixed-up flow—turbulent flow. The differences between laminar and turbulent flow are dramatic, and they have a major impact on aerodynamics. For example, consider the velocity profiles through a boundary layer, as sketched in Figure 1.53. The profiles are different, depending on whether the flow is laminar
+
+
+74 PART 1 Fundamental Principles
+Laminar
+Cigarette
+Turbulent
+Figure 1.52 Smoke pattern illustrating transition from laminar to turbulent flow.
+Turbulent
+turb
+lam
+V
+Laminar
+V
+y
+Figure 1.53 Velocity profiles for laminar and turbulent boundary layers. Note that the turbulent boundary layer thickness is larger than the laminar boundary layer thickness.
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 75
+or turbulent. The turbulent profile is “fatter,” or fuller, than the laminar profile. For the turbulent profile, from the outer edge to a point near the surface, the velocity remains reasonably close to the freestream velocity; it then rapidly decreases to zero at the surface. In contrast, the laminar velocity profile gradually decreases to zero from the outer edge to the surface. Now consider the velocity gradient at the wall, (d V /d y)y=0, which is the reciprocal of the slope of the curves shown in Figure 1.52 evaluated at y = 0. From Figure 1.53, it is clear that
+(dV
+dy
+)
+y=0
+for laminar flow <
+(dV
+dy
+)
+y=0
+for turbulent flow
+Recalling Equation (1.59) for τw leads us to the fundamental and highly important fact that laminar shear stress is less than turbulent shear stress:
+(τw)laminar < (τw)turbulent
+This obviously implies that the skin friction exerted on an airplane wing or body will depend on whether the boundary layer on the surface is laminar or turbulent, with laminar flow yielding the smaller skin friction drag. The same trends hold for aerodynamic heating. We have for the temperature gradients at the wall:
+(dT
+dy
+)
+y=0
+for laminar flow <
+(dT
+dy
+)
+y=0
+for turbulent flow
+Recalling Equation (1.60) for qw, we see that turbulent aerodynamic heating is larger than laminar aerodynamic heating, sometimes considerably larger. At hypersonic speeds, turbulent heat transfer rates can be almost a factor of 10 larger than laminar heat transfer rates—a showstopper in some hypersonic vehicle designs. We will have a lot to say about the effects of turbulent versus laminar flows in subsequent sections of this book. In summary, in this section we have presented some introductory thoughts about friction, viscous flows, and boundary layers, in keeping with the introductory nature of this chapter. In subsequent chapters we will expand on these thoughts, including discussions on how to calculate some of the important practical quantities such as τw, qw, and δ.
+1.12 APPLIED AERODYNAMICS: THE AERODYNAMIC COEFFICIENTS—THEIR MAGNITUDES AND VARIATIONS
+With the present section, we begin a series of special sections in this book under the general heading of “applied aerodynamics.” The main thrust of this book is to present the fundamentals of aerodynamics, as is reflected in the book’s title. However, applications of these fundamentals are liberally sprinkled throughout the book, in the text material, in the worked examples, and in the homework problems. The term applied aerodynamics normally implies the application of
+
+
+76 PART 1 Fundamental Principles
+aerodynamics to the practical evaluation of the aerodynamic characteristics of real configurations such as airplanes, missiles, and space vehicles moving through an atmosphere (the earth’s, or that of another planet). Therefore, to enhance the reader’s appreciation of such applications, sections on applied aerodynamics will appear near the end of many of the chapters. To be specific, in this section, we address the matter of the aerodynamic coefficients defined in Section 1.5; in particular, we focus on lift, drag, and moment coefficients. These nondimensional coefficients are the primary language of applications in external aerodynamics (the distinction between external and internal aerodynamics was made in Section 1.2). It is important for you to obtain a feeling for typical values of the aerodynamic coefficients. (For example, do you expect a drag coefficient to be as low as 10−5, or maybe as high as 1000—does this make sense?) The purpose of this section is to begin to provide you with such a feeling, at least for some common aerodynamic body shapes. As you progress through the remainder of this book, make every effort to note the typical magnitudes of the aerodynamic coefficients that are discussed in various sections. Having a realistic feel for these magnitudes is part of your technical maturity. Question: What are some typical drag coefficients for various aerodynamic configurations? Some basic values are shown in Figure 1.54. The dimensional analysis described in Section 1.7 proved that CD = f (M, Re). In Figure 1.54, the drag-coefficient values are for low speeds, essentially incompressible flow; therefore, the Mach number does not come into the picture. (For all practical purposes, for an incompressible flow, the Mach number is theoretically zero, not because the velocity goes to zero, but rather because the speed of sound is infinitely large. This will be made clear in Section 8.3.) Thus, for a low-speed flow, the aerodynamic coefficients for a fixed shape at a fixed orientation to the flow are functions of just the Reynolds number. In Figure 1.54, the Reynolds numbers are listed at the left and the drag-coefficient values at the right. In Figure 1.54a, a flat plate is oriented perpendicular to the flow; this configuration produces the largest possible drag coefficient of any conventional configuration, namely, CD = D′/q∞ S = 2.0, where S is the frontal area per unit span, i.e., S = (d)(1), where d is the height of the plate. The Reynolds number is based on the height d; that is, Re = ρ∞V∞d/μ∞ = 105. Figure 1.54b illustrates flow over a circular cylinder of diameter d; here, CD = 1.2, considerably smaller than the vertical plate value in Figure 1.54a. The drag coefficient can be reduced dramatically by streamlining the body, as shown in Figure 1.54c. Here, CD = 0.12; this is an order of magnitude smaller than the circular cylinder in Figure 1.54b. The Reynolds numbers for Figure 1.54a, b, and c are all the same value, based on d (diameter). The drag coefficients are all defined the same, based on a reference area per unit span of (d)(1). Note that the flow fields over the configurations in Figure 1.54a, b, and c show a wake downstream of the body; the wake is caused by the flow separating from the body surface, with a low-energy, recirculating flow inside the wake. The phenomenon of flow separation will be discussed in detail in Part 4 of this book, dealing with viscous flows. However, it is clear that the wakes diminish in size as we progressively go from Figure 1.54a, b, and c. The fact that CD also diminishes progressively from Figure 1.54a, b, and c is no accident—it
+
+
+CHAPTER 1 Aerodynamics: Some Introductory Thoughts 77
+Separation point Re 105
+Separation point
+Flat plate (Broadside) length d
+(a)
+(b)
+(c)
+(d)
+(e)
+Cylinder diameter d
+Streamline body thickness d CD 0.12
+CD 1.2
+CD 2.0
+CD 1.2
+CD 0.6
+Cylinder diameter d
+Cylinder
+diameter 1 d
+10
+Separation point
+Separation point
+Separation point Re 105
+Re 105
+Re 104
+Re 107
+Figure 1.54 Drag coefficients for various aerodynamic shapes. (Source: Talay, T. A., Introduction to the Aerodynamics of Flight, NASA SP-367, 1975).
+is a direct result of the regions of separated flow becoming progressively smaller. Why is this so? Simply consider this as one of the many interesting questions in aerodynamics—a question that will be answered in due time in this book. Note, in particular that the physical effect of the streamlining in Figure 1.54c results in a very small wake, hence a small value for the drag coefficient. Consider Figure 1.54d, where once again a circular cylinder is shown, but of much smaller diameter. Since the diameter here is 0.1d, the Reynolds number is now 104 (based on the same freestream V∞, ρ∞, and μ∞ as Figure 1.54a, b, and c). It will be shown in Chapter 3 that CD for a circular cylinder is relatively independent of Re between Re = 104 and 105. Since the body shape is the same between Figure 1.54d and b, namely, a circular cylinder, then CD is the same value
+of 1.2 as shown in the figure. However, since the drag is given by D′ = q∞ SCD, and S is one-tenth smaller in Figure 1.54d, then the drag force on the small cylinder in Figure 1.54d is one-tenth smaller than that in Figure 1.54b. Another comparison is illustrated in Figure 1.54c and d. Here we are comparing a large streamlined body of thickness d with a small circular cylinder of

@@ -1,0 +1,918 @@
+DESIGN CONSIDERATIONS FOR BEARINGLESS ROTOR HUBS -I
+William G. Bousman and Robert A. Ormiston U.S. Army Aeromechanics Laboratory (AVRADCOM)
+(MDNASA Ames Research Center AUS Moffett Field, California and
+Paul H. MirickA
+U.S. Army Applied Technology Laboratory (AVRADCOH) Fort Eustis, Virginia
+Abstract The first major effort to develop a bearingless rotor was a matched-stiffness
+Five studies were performed under rotor installed on the XH-51A by Lockheed
+contract for concept definition of the California for the U.S. Army Applied Tech
+Intecrated Technology Rotor/Flight Research nology Laboratory at Fort Eustis, Va., in
+Rotor (ITR/FRR) Project. The purpose of 1966.1 This development was only partialLy these studies was to examine numerous hub successful and, in a sense, was premature
+design concepts with the potential of meet- because of our limited knowledge of aero
+ino the technical goals and specifications mechanical stability and of the use of con
+set for the ITR/FRR. Thirty-three concepts ventional materials. The first successful
+were proposed, including 21 bearingless efforts to apply bearingless rotor techdesigns. Although the level of effort in nology were made in the design competition
+these studies was not equivalent to a pre- for the Utility Tactical Transport Aerial
+liminary design, many important design System (UTTAS) in the early 1970s, in which issues for advanced rotor hubs were exam- both the Sikorsky YUH-60A (Ref. 2) and the£
+ined, particularly with respect to Boeing Vertol YUH-61A (Ref. 3) used stiff
+bearingless-rotor designs. The critical inolane bearingless designs for their tail
+aspects of bearingless-hub design are sum- rotors. The Sikorsky design was carried
+marized herer they include the design of on to the production UH-60A aircraft and the flexbeam, the design of a torque has also been used successfully for the
+structure for pitch control, and the means S-76 helicopter. In many ways the applica
+of augmenting rotor lead-lag damping. tion of this technology to tail rotor
+Representative designs from the concept design has been a simpler task, and these
+definition studies are used to illuminate efforts have continued with prototype these design aspects. The capability of efforts at Messerschmitt-B61kow-Blohm the designs to meet the ITR/FRR technical (MBB)4 for a replacement tail rotor for the
+goals is also discussed. BO 105 and BK 117 aircraft, and at Hughes
+Helicopters5 with the Composite Flexbeam Tail Rotor (CFTR) for the AH-64A. Although Introduction not strictly a bearingless design, proto
+type teetering rotors using flexbeams for The structural simplicity of a heli- chordwise and torsional motion have been
+copter rotor that allows the centrifugal built and tested at Kaman 6 and Bell Heli
+loads, as well as all flapping, lead-lag, copter Textron.
+and torsional motions, to be carried by
+flexible structural elements rather than The design of a bearingless main
+by rolling-element or elastomeric bearings rotor, however, remained a difficult prob
+is attractive to the rotor designer. The lem. By the mid-1970s sufficient work had
+development of composite materials in been done so that the U.S. Army decided reucnt years has provided the necessary again to investigate the feasibility of a
+conditions for the design of rotors with- bearingless design, particularly with
+out bearings, but the apparent structural respect to aeromechanical stability. The simplicity of a bearingless rotor conceals Applied Technology Laboratory selected
+a number of difficult design problems, Boeing Vertol to build the Bearinoless
+including the strain on a flexbeam element dain Rotor (BMR) for the BO 105 in 1976.
+caused by combined deformations, aero- The BO 105/BMR first flew in 1978 with a
+mechanical stability, blade-pitch control, flexbeam made of back-to-back C-beams and and redundant structural load paths. with blade pitch that was controlled with
+a torque tube.8 '5 Other manufacturers
+such as Aerospatiale, with the Triflex
+design,'3 and Bell Helicopter Textron, with
+__ Presented at the 39th Annual Forum of the the Model 680 rotor" have pursued bearing
+It American Helicopter Society, St. Louis, less desions.
+Missouri, May 1983.
+ram &on" unme ______ 83 0 0 032?
+Ldi:tbuftoln is u"llMR~d
+
+
+DISCLAIMER NOTICE
+THIS DOCUMENT IS BEST
+QUALITY AVAILABLE. THE COPY
+FURNISHED TO DTIC CONTAINED
+A SIGNIFICANT NUMBER OF
+PAGES WHICH DO NOT
+REPRODUCE LEGIBLY,
+
+
+KH
+The bearingless-rotor development hinoeless and bearingless rotor experi
+efforts to date have been successful in mental data sets. These studies prLvide demonstrating that the critical design an assessment of existing methods in this problems with bearingless rotors can be critical area. The second effort is t.e
+overcome. However, with each of these concept-definition studiesl : which !ave
+development efforts, success in solving a examined various hub concepts that can particular design problem has usually been meet the ITR/FRR technical goals; it is
+achieved at the expense of another design the subject of the present paper. The goal. For example, long fatigue life may final effort is the FPR Dredesian studies,
+be achieved but only by compromising the of which two are complete; '- the remain
+desired hub-moment stiffness goals. ing two will be completed in the near Before bearingless-hub technology can be future. The second phase of the pro-ect,
+considered to be sufficiently developed the preliminary design of the ITR/FRR is for application to new systems, it must currently under way. satisfy a number of important design attributes simultaneously. These attri- This paper will discuss the results butes include specified weight', drag, of the five concept-definition studies, fatigue life, hub-moment stitfness, or with particular emphasis on hub design equivalent flap hinge offset, stability, features that are believed to be critical maintainability, ballistic vulnerability, to the success of the ITR/FRR. The objec
+and cost. rives of the concept-definition studies 1
+will be discussed first. The hub concepts
+In the context of the entire rotor proposed in these studies will be categor
+system it is desirable that the advances ized by the design approaches used to proresulting from a bearingless-hub design vide the necessary flapping, lead-lag, and
+be integrated with such technical advances torsional flexibility. Design considera
+as those in aerodynamics, structures, tions that are particularly critical for acoustics, and vibration, for the entire bearingless designs, including the flexrotor system. The next generation of beam, the pitch-control structure, and the
+rctorcraft requires a rotor system that means of achieving an aeromechanically intearates the advances of the last decade stable configuration, will be addressed. in the areas of hub design, materials, The paper concludes with a comparison of aerodynamic performance, reliability and selected concepts with the ITR/FRR tech
+maintainability, and acoustics and demcn- nical goals. strates that these advances can be achieved
+at low cost, low weight, and low technical risk. In view of this need, the U.S. Army ITR/FRR Concept-Definition Studieb Research and Technology Laboratories
+(AVRADCOM) have joined with NASA Ames Central to the technologies on which Research Center in a joint program to the ITR/FRR is based are those related to
+develop an Integrated Technology Rotor/ the design of the hub. For this reason, Flight Research Rotor (ITR/FRR). The the concept-definition studies were under
+objective of the ITR program is to make taken to examine various hub concepts that significant advances over a broad spectrum have the potential of meeting the ITR/FRR of technologies; the FRR will be a deriva- technical goals. The level of effort
+tive of the ITR and will have substantial involved was less than would be expected
+research variability that will be tested in a preliminary design. In Dart, the on the NASA/Army Rotor Systems Research objective was to examine as many candidate Aircraft (RSRA). To meet the ITR objec- hub concepts as possible and in this way
+tives, a set of technical goals has been better understand the design problems that
+established that range from rotor blade will be encountered in subsequent phases
+performance attributes, such as figure of of the project. merit and rotor equivalent L/D, to such hub characteristics as hub-moment stiff- A set of technical goals and spec~fi
+ness and hub drag. In each case, the tech- cations for the hub was established to
+nical goals act as significant technology guide the concept-definition studies. The
+drivers, and collectively they define a technical goals of the ITR/FRR Project rotor that is a substantial advancement of were used as a base, and those goals that
+the state of the art. applied to the hub design were used as specific objectives for these studies. The
+The ITR/FRR Project is structured in technical goals for the hub design are four phases; predesign studies, prelimi- given in Table 1. Basically, these goals
+nary design, detail-design/fabrication, represent the technology drivers for the
+and test. The predesign-studies phase is hub design. The flat-plate drag area is a composed of three efforts and is nearly significant reduction from current techcomplete. The first effort is a compari- nology, but may be possible with a small son of the industry mathematical models frontal area and hub fairings. The hub for stability prediction with a variety of weight goal is also difficult to attain.
+2
+
+
+An important objective in reducing cost study contracts were with Beil Helrizoptr and improviny maintainability is to Textron, Boeing Vertol, Hughes Helicopters,
+reduce hub parts count. Some current pro- Kaman Aerospace, and Sikorsky Aircraft;
+duction designs have more than double the they are reported in Refs. 12-16. design goals of 50 parts. The hub-moment
+stiffness goal of 2,600 ft.lb/deg is quite
+low and may significantly affect potential Hub Concepts Classified by Flexibility
+hub concepts. Assuming no stiffness in
+the flap bearing or flexbeam, this is Under normal operating conditicns, a
+roughly equivalent to a 4.2% hinge offset rotor blade will undergo flapping, lead
+and is lower than the 4.7% offset of the lag, and torsional motions. The means by
+articulated UH-60A. A low hub-moment which these motions are accommodated,
+stiffness is desired to improve vibratory whether by rolling-element or elastomeric
+characteristics, gust response, and han- bearings, or by flexible structural ele
+dli.nO qualities. Although a higher stiff- ments can be used as a system of classifi
+ness may be adequate for some applications, cation, that is, whether the rotor is an this can be easily obtained once the tech- articulated, hingeless, or bearingless
+nology for low stiffness is demonstrated, design or some combination of these. As
+However, the converse is not true. The with any system of classification there
+allowable tilt angle, fatigue life, and may be concepts that do not easily fit in mean time between removal (MTBR) have all one category or another. The intent cf been set high as a means of pushing the the classification systems used in this
+technology to improve the reliability and paper is to afford a better understanding
+maintainability of the design. of the design problems involved in develop
+ing a hub for the ITR/FRR, not to develop, Some of the goals are complementary. a rotor-hub taxonomy.
+Clearly, a design that minimizes size and
+weight will also reduce hub drag. Sim- In their concept-definit,on studies, plicity in design will reduce the number the five companies were asked to propose
+of parts and probably the MTBR as well. at least five hub concepts that would have However, the goals for hub-moment stiff- the potential of meeting the ITR/FRR tech
+ness, tilt or flapping angle without nical goals. Thirty-three concepts were
+fatigue damage, and fatigue life show a proposed.12 - 1; In Fig. 1, these concepts
+different relationship. For a very stiff are classified accordingly as the primary
+hub, it is expected that the allowable flap, chord, and torsional motions are
+flap angle before fatigue damage occurs accommodated by articulation, such as elaswill be relatively small. However, a tomeric bearings, or by structural elestiffer hub will not require much blade ments. In the case of flapping, a further flapping so the fatigue life may or may distinction is made on the basis of whether
+not decrease. A very soft hub will have flapping is provided for with a conven
+a large allowable tilt angle, but its tional, articulated hinge or with a gimbal required flapping will be significantly design. Some current production and protoincreased and the effect on fatigue life type rotors are also classified in Fjc.
+is unclear. Other goals, although not for illustrative purposes.
+quantified, were established to i) incorporate provisions for auxiliary dampers, In Table 2, designation codes are
+2) maintain swashplate actuator loads at assigned to the 33 concepts; these codes
+current levels, and 3) design for low pro- are used throughout the succeeding discus
+duction cost. Specifications for the hub sions. Source information, nomenclature, design were made as well, and these act as and corresponding figure numbers (in the
+design constraints as opposed to technol- cited references) are also provided in
+ogy drivers. For example, specifications Table 2. requiring a four-bladed design, manual
+blade-folding, and low vulnerability do Baseline Concepts
+not push technology but significantly or
+affect what the final design looks like. In examining a variety of hub con
+cepts, some of the manufacturers included The studies required each company to an advanced technology derivative of a
+examine at least five hub concepts and, current production design. In this way, based on their examination, to select at they were able to examine how well updated
+least two designs that would best meet the concepts could meet the ITR/FRR goals with- .--- project technical goals. The selected out going to the increased risk inherent concepts were then developed further and with bearingless or other more novel
+compared with each other on the basis of designs. Examples are concepts SA!, whic _ a government-supplied merit function, is an improved technology UH-60A composite Additional tasks within the studies hub; BH7, which is a composite hub deriva
+addressed potential FRR concepts and modi- tive of the Model 412; BV5, which is a t es
+fications required for the RSRA. The Boeing Vertol variant of the Aerospatiale
+3 S1
+q -W
+
+
+Starflex hub; and HH8, an advanced tech- Flexbeam
+nology AH-64A hub. As an example, Fig. 2 is a sketch of the SAI hub without its Design Considerations
+single-element elastomeric bearings. Its use of composite materials would increase The hub weight and drag technical
+reliability and decrease weight, but it goals will require that the design be a
+would still require lag dampers and their light and compact as possible. In turn,
+attendant complexity. the limits in reducing hub weight and size
+will be defined by stiffness requirements Articulated Flap Hinge Designs and material strengths. A certain minimum cross section is required for the flexbeam
+Two designs were proposed in which a to support the blade centrifugal loads.
+conventional articulated flapping hinge Under normal operating :onditions, blade
+was used in conjunction with a lag-torsion deformations will require additional mate
+flexure (BH6 and BV6). An example (Fig. 3) rial in the flexbeam to accommodate the
+is the BH6 concept which places an elasto- bending stresses, and this increases
+meric flap hinge as close to the hub cen- stiffness and causes the equivalent flap terline as possible, with a flexbeam ele- hinge to move outboard. The lead-lag flex-
+ment outboard that allows the lead-lag and beam stiffness will be governed by the torsion motions. The pitch cuff has a need to place the rotor lead-lag frequency
+root shear-restraint that incorporates an at about 0.7/rev. If the flexbeam is too
+elastomeric damper. Both of the combina- soft in chordwise flexibility, the rotor
+tion articulated-flexbeam designs were will be more susceptible to aeromechanical
+attempts to lower the hub-moment stiffness instability; if it is too stiff, the chord- [
+to meet the goal of Table 1 wise loads will increase because of the (2,600 ft.lb/deg). 1/rev resonance. For torsional motions, V it is necessary to minimize the torsional
+Gimballed Desins stiffness so as not to increase actuator
+loads over current designs.
+Four gimballed design concepts were identified by three of the companies. The Depending on the details of the flex
+KA4 concept was novel in that it used a beam design, critical loading conditions
+composite flat plate or shell to provide may be due to low-cycle/high-strain load
+the gimbal freedom; in the other concepts ing, or high-cycle/low-strain loading. In
+(BH5, SA3, and SA6) elastomeric bearings the former case, the flapping and lead-lag
+were used. In concept SA6, which has been loads that occur during startup and shut
+previously studied,2 hub-moment stiffness down conditions may size the flexbeam. As
+is controlled with a separate gimbal hub-moment stiffness is reduced to meet the
+spring (Fig. 4). As with the articulated technical goal, the ability of the flexbeam flap hinge, the primary reason for going to carry the static droop loads is
+to the gimbal design is to achieve very decreased until the droop-load condition
+low hub-moment stiffness, becomes critical in sizing the flexbeam.
+If droop stops are incorporated in the
+Bearingless Designs design, then they can be used to take the
+static droop loads, but it is not clear
+Twenty-one of the 33 hub concepts that this can be done without penalties in from the concept-definition studies were parts count, hub weight, or hub drag.
+bearingless designs. Many different Rotor startup or stop loads may also be
+design approaches were tried. Flexbeam critical for sizing the flexbeam in the designs ranged from single-element flex- chord direction.
+beams with relatively little radial varia
+tion in the cross section to designs with High-cycle/low-strain loading wil:
+the cross sections highly tailored along occur because of 1/rev oscillatory flap the length of the flexbeam. Multiple- and torsional loads in forward flight. A
+element beams (two, four, and six elements) minimum flapping angle of t5' without
+were proposed, as were laminated beams and fatigue damage has been specified as a
+designs that used shoes to constrain flap goal and this, in conjunction with the
+bending. The torque structures used to fatigue life goal, may have a critical
+control blade pitch showed less variety; effect in determining the flexbeam flapping
+for the most part they either enclose the capability. Similarly, the equivalent
+flexbeam (pitch cuffs) or are separate endurance chord loads may also be critical from the flexbeam (torque tubes). The in sizing the flexbeam in the chordwise
+flexbeam-to-hub attachment is also a dif- direction. The cyclic torsional moments
+ficult design area and one that received required to control the rotor in forward
+considerable attention, flight require twisting of the flexbeam of
+the order of ±150, and this is also a critical high-cycle/low-strain loading.
+4
+II
+
+
+The effects of combined loadings must also to separate the maximum strains into a be considered, although, in general, the flapping flexure inboard and a lag-torsion
+maximum flap loads will be 900 out of flexure outboard. This has tne advantage
+phase with 1/rev chord and torsional load: of simplifying the flexbeam design in that so that the combined condition is not the flap and lag-torsion flexures may be especially severe. This is not the case, individually sized for separate icad cri
+however, for Coriolis-induced 2/rev chord teria and for reducing the hub-moment
+loads, and the combined loading condition stiffness. The disadvantages of tailored
+may indeed be critical. cross-section flexbeams are that they may
+be difficult to manufacture and there may The critical flap and chordwise load- be structural difficulties where one cross ing conditions for the hub design can be section transitions to another, or changes
+,determined largely from experience with too rapidly.
+past designs. With the use of composite materials, a great many different ways of An example of a uniform-cross-section
+accommodating these loads are open to the approach is concept SA2 (Fig. 6). For designer. Considerable work still needs this desian, an optimization program was
+to be done with composites to develop used 1 6 that varied the cross-section their utility, including an increased flange and web thicknesses to establish
+allowables data base and the use of hybrid the correct lead-lag frequency at minimum or laminated composites, but by and large weight. Loading conditions included oscil
+this effort is tractable. This is not so latory flap and chord bending moments but
+for vulnerability considerations, where it no torsion. The cross section was not is significantly more difficult to design changed over the span, although the web
+for a soecified threat with assurance that and flange thickness tapered outboard. The the design when tested will have the geometry is very simple, and, although the
+required vulnerable area. The uncertainty hub-moment stiffness was not minimized as in tnis aspect of the design process leads part of the optimization process, the cal
+to conservative design approaches, and in culated value with a graphite flexbeam of
+this sense vulnerability considerations 3,050 ft-lb/deg is not unreasonably high. are the indeterminants in the flexbeam design process - all of the design consid- An approach that tailors the cross
+erations that have been discussed for the section in a manner similar to that of the sizing of the flexbeam may be obviated by Bell Helicopter Textron Model 680 is con
+vulnerability requirements. cept BH2 (Fig. 7). The inboard cross section is rectangular and is relatively stiff
+Design Approaches chordwise and in torsion, but soft in flapping. The outer section transitions to a
+The 21 bearincless-hub concepts pro- triple-H cross section which is stiff flapposed in the concept-definition studies wise, but relatively soft in lead-lag and
+are classified on the basis of the flex- torsion. The thickness distribution of the beam design characteristics shown in flap flexure segment has been determined
+Fig. 5. There is a degree of arbitrari- using a formal optimization procedure- in
+ness in these classifications, but, as which only flap degrees of freedom are conbefore, the purpose of the system of clas- sidered. Based on flapping of ±50, a
+sification is to provide a convenient thickness distribution was calculated that
+framework within which the design would minimize flexure thickness and, approaches that can achieve the ITR/FRR hence, hub-moment stiffness. For this con
+goals can be understood. The approaches cept, in which fiberglass is used, the are classified according to whether: resultant hub-moment stiffness was
+1) they use a single-element flexbeam (as 3,170 ft-lb/deg. It is particularly interfor the UH-60A tail rotor), a multielement esting that in comparina concepts SA2 and
+beam (as on the BO 105/BMIR), or a lami- BH2, different design approaches, loading nated beam; 2) the flexbeam cross section conditions, optimization functions, and
+is tailored along its length to separate constraints were used, but the resulting
+flap flexibility from lag and torsion (as hub-moment stiffnesses are similar. on the Bell Helicopter Textron 680 rotor); Although detailed calculations might show
+and 3) a shoe is used to control flap- more differences than are indicated here,
+bending curvature, this suggests that a minimum value of hubmoment stiffness for single-element flex
+Cross-Sectional Tailoring of Flexbeam. beams may be achieved using a number of
+For a flexbeam of uniform cross section, alternative design approaches. the peak flapping-strain will be at the
+root end of the flexbeam, and the chord Multiple-Element Beams. Flexbeam and torsion strains will be relatively designs may have two, four, or more ele
+constant along the length of the flexbeam. ments, and in some cases this may be advanBy tailoring the cross section of the tageous. The B!1R tested on the BO 105 airflexbeam along its length, it is possible craft had a dual-element flexbeam, which
+5
+
+
+was useful both in reducing the torsional In concept KA2 (Fig. 10) dual-element,
+rigidity and in accommodating the torque laminated flexbeams are used. This tube used for pitch control. An example approach is untailored in the sense tnat
+of a design with four flexbeam elements is all the flapping, lead-lag, and torsional concept BVl (Fig. 8). The four elements motions are taken up in the dual-element
+are interleaved through the hub; that is, flexbeam. For the design shown here, in
+one blade pair passes over the other blade which the pairs of laminated flexbeams
+pair and they extend out to and pass carry through the hub center, an additional
+around the single blade-attachment bolt. useful property of the lamination occurs. In this case, the rationale for a four- Because the laminates are essentially
+element beam is to reduce hub-clamp forces clamped at the blade attachment and free and perhaps reduce vulnerability. In a at the hub center, the reduction in nub
+sense this concept is like the original moment occurs for cyclic flapping, which BO 105/BMR, with the webs of the C-beams is desired, but not for collective flappinq
+removed to make the flexbeam/blade and (coning). Thus, the design has signifi
+flexbeam/hub attachment more efficient. cantly less static droop than a single
+Unlike the BMR, however, the thickness, element flexbeam of comparable hub-moment width, and spacing of the individual beams stiffness. Calculations for two-ply and
+are varied to improve the flexbeam charac- five-ply laminated-element beams show hub
+teristics. The hub-moment stiffness of moment stiffness ranging from 690 to 4,200 ft-lb/deg is considerably higher 1,440 ft.lb/deg. than the goal, as is to be expected with
+a multiple-element beam of this configura- Lag-Torsion Deformation Requirements. tion. Other concepts proposed show con- The lag-torsion flexure is designed both siderable variety in the number of ele- for lead-lag frequency placement and to
+ments selected, and in some cases the minimize the torsion moment caused bv blade flapping and lag-torsion flexures have twist and, hence, control loads. Within
+different numbers of elements. the flexbea, the moment caused by twist
+depends on the shear rigidity, GK, where
+Laminated-Element Flexbeams. The G is the material shear modulus and K
+laminated-element flexbeam is attractive is the cross-sectional inertia term; on
+as a means of relieving flexbeam stresses cross-section warping and differential
+caused by blade flapping. This approach bending effects; and on centrifugal stiffhas been successfully used for rotor ening effects that depend on the cress
+designs, most notably in the metal strap- section radius of gyration.21 The ratio pack on the OH-6A and AH-64A aircraft. In of the shear modulus to the bending modulus
+applications proposed in the concept- for unidirectional composites is signifidefinition studies, the laminates would be cantly lower than for isotropic materials,
+composites and the shims between the lami- and this provides the designer with more nates would be a Teflon-like material or flexibility. But despite these materials
+elastomer that does not transmit a signifi- advantages, the cross section must be
+cant shear. Laminated elements have the carefully selected to reduce the twisting
+beneficial effect of reducing flapping moment. Figure 11 shows the cross sections stresses, but they also reduce the flapping of the lag-torsion flexures of some of the stiffness so that, in general, they must be concepts that have been described. The
+used with a shoe to control the bending variety of design approaches suggests that
+curvature at the root of the laminated there is no true optimum cross section. flexbeam. (It is noted, however, that It is not enough to minimize the torsion
+concept BH4 is sufficiently stiff that a moment under the lead-lag frequency conshoe is not required; on the other hand, straint; in addition, the resulting shear
+concepts BV4, KAI, KA3, and SA5 require a stresses must be within allowables and the
+shoe to control the root-bending curvature transitions from the lag-torsion flexure
+even though they are of solid construction.) cross section to the flap flexure, blade, or hub attachment cross sections must be
+An example of a laminated-element feasible from a manufacturing viewpoint.
+flexbeam is concept HHI (Fig. 9). This
+approach is tailored, and only the inner The cross section for concept KA2 has
+end of the flexbeam is laminated. Out- a large radius of gyration, which is board of this section, the flexbeam tran- inherent in the V-frame type of layout,
+sitions to a flattened X cross section as shown in Fig. 10. But because the two
+which controls the chord and torsion flexbeam elements meet in an apex at the behavior of the flexbeam. By going to the blade attachment, the torsional moment
+laminated design, the hub-moment stiffness owing to centrifugal force, the "trapeze" is reduced significantly below that effect, is significantly reduced. In addi
+achievable with a solid flexbeam. For tion, the use of laminated sections acts to this concept, the calculated hub-moment reduce the shear rigidity of the separate stiffness is 1,830 ft.lb/deg, well below elements. the goal.
+6
+
+
+Pitch-Control Concepts hence, the hub drag, but with careful aerodynamic design of the torque structure
+Desion Considerations or cuff it may be possible to reduce the
+drag over that of the flexbeam. If the
+A pitch-control or torque structure torque structure is nonenclosing it may of some kind is required to twist the potentially be made smaller than a cuff blade outboard of the flexbeam to estab- desion and, hence, have a reduced frontal lish the blade collective and cyclic pitch area. An additional advantage of the non
+angles. Whether this is a cantilevered enclosing torque structure is that the pitch horn (the Triflex hub), a pitch cuff flexbeam and hub area are easier to that encloses the flexbeam (the UH-60A inspect.
+tail rotor), or a torque tube that does not enclose the flexbeam (the BO 105/BMR), Desion Approaches the primary purpose of the torque struc
+ture is to transmit a torsional moment to Various design approaches are classithe blade root. Conceptually, the simplest fied as to whether there is or is not a
+possible torque structure is a pitch horn shear restraint at the root end of the extending from the blade root to the pitch torque structure, and if the torque struc
+link which is very stiff in bending. In ture carries torsion loads alone, or bendthis case, a control input will twist the ing loads as well. The concepts proposed flexbeam but will also cause a flap deflec- are shown in Fio. 12, using this scheme.
+tion. Whether thought of as pitch washout Note that it does not appear feasible to or lost motion, the effect will be that for design a torque structure that carries
+the same pitch link motion there will be only torsion loads and is without a root less rotation of the blade root for this shear-restraint. Most of the concepts procase than for a design with a pitch bear- posed use both a root shear-restraint and
+ing. There will also be an effective an enclosing torque structure or cuff that pitch-flap coupling that will depend on carries bending loads as well, and most the pitch link location. The only way in have the shear restraint centered at the
+which a pure torsional moment can be trans- root of the cuff. However, concept SA2
+mitted to the blade root is if the pitch (Fig. 6) has a vertically offset shear link load is reacted at the root of the restraint. The lower side of the torque torque structure with a shear restraint, structure is thickened so that its shear
+This is the approach that has been taken center passes through the offset restraint
+with the UH-60A tail rotor and with the to avoid pitch-lag coupling. However, it BO 105/BMR. Once a shear restraint is used does not appear that this would necessarily at the torque structure root then a number remove the coupling in this case. of additional design options are opened. The torque structure itself no longer has An example of a design that uses a to be stiff in flapping and chord, for it torque structure that does not carry bendneed only transmit the torsion moment, as ing loads is concept BH4 (Fig. 13). The on the BO 105/BfIR. An elastomeric damper torque structure is placed behind the flex
+can be incorporated in the shear restraint beam and lead-lag motion of the blade to augment the lead-lag damping; however, causes axial displacement of the torque to be effective it is necessary that there tube with respect to the hub-mounted be significant relative motion between the damper. Thus, elastomeric damping is
+root of the torque structure and the flex- incorporated in the design without the beam. In this event, the torque structure need to carry bending loads.
+must be very stiff in the chordwise direction. It is not clear that there is any A curious result of the concept
+advantage, however, in having the torque definition studies is that despite past 3tructure stiff in flapping, for this would development of pitch-control concepts tend to increase hub-moment stiffness. The without a root shear-restraint, all of the effective flapping stiffness of the torque present concepts use a root shear-restraint. structure may be reduced, where it joins In part, this is due to the additional
+the blade root, by softening this joint so swashplate travel that is required to comthat it is effectively a pinned boundary pensate for the lost motion, and in part condition. to some of the problems that have occurred
+in the previous development programs.
+The torque structure may be designed Related to this is the inability of present to enclose the flexbeam or to be separate analytical methods to satisfactorily prefrom it. The decision to choose one option dict the aeroelastic stability and flutter
+over the other may be made for aerodynamic of these designs. In the development of
+reasons as much as for structural ones. the YUH-61A tail rotor, for instance,
+An enclosing torque structure must be large Boeing Vertol tested scale models of their enough to avoid contact with the flexbeam design in hover and in the wind tunnel over during normal twisting and bending. This a wide range of parameters.2 They encounwill increase the hub frontal area and, tered flap-lag instabilities characteristic
+7
+'I
+
+
+of stiff inplane rotors in both the rotor This level of damping is probably not ade
+cyclic and reactionless lead-lag modes, quate for bearingless rotors throughout and flutter in both torsion and coupled the entire flight envelope, and additional flap-torsion modes. The flap-lag and damping is likely reauired. This damning
+flutter instabilities occurred for many may be obtained from an auxiliary damninc
+different configurations and could not be element incorporated in the flexbeam
+adequately predicted by analysis. Even- design or through aeroelastic couplings. tually, a stable configuration was devel- An elastomeric damping element can some
+oped. In the case of the Triflex, no times be conveniently located in a hub
+aeroelastic or flutter problems were design without a significant increase in
+reported, although from an aeromechanical hub drag; in general, however, there will
+stability point of view, the modal damping be a detrimental effect on rotor weight,
+was less than desired and indicated that parts count, and MTBR. It is also possible an improved elastomeric matrix was to increase the rotor 6amping through the
+required." Recent scale-model experi- use of aeroelastic couplings, such as
+mentL with configurations without a root pitch-lag and structural flap-lag
+shear-restraint have also encountered a coupling, 5 '25 and this may not necessarliy
+number of flutter instabilities, 2 3 and it impose a weight or drag penalty. Finding
+is not known whether these can be pre- a suitable combination of couplings that is
+dicted with current flutter analyses. The satisfactory over a range of operating consimplicity of the torque structure without ditions, however, remains a major design
+shear-restraint is still very attractive, challenge. This approach requires valid
+but it appears that our less-than-complete mathematical models to support the aero
+understanding of past development problems elastic design of bearingless rotors, and
+has resulted in a prejudice against this improvements in this area demand continued
+configuration that perhaps is undeserved, attention by the analyst.
+Design Approaches Using Auxiliary Damning
+Aeromechanical and Aeroelastic Stability Elastomeric materials may be usefully
+Design Considerations applied as auxiliary dampers since the additional 3 to 6% critical damping that
+In terms of aeromechanical stability is required for bearingless designs is well (coupled rotor-fuselage stability) and within the capability of elastomers. How
+aeroelastic stability of the isolated ever, for the damping to be effective, the
+rotor, bearingless rotors behave very much material must be significantly strained.
+like hingeless rotors. The major factors Therefore, the elastomeric damper must be
+affecting hingeless-rotor stability (which located where lead-lag motion will cause
+apply to bearingless rotors as well) are shearing across the elastomer. In present
+discussed in Ref. 24. It seems likely designs, such as the Model 680 main rotor,
+that any bearingless main rotor that is an elastomeric damper is incorporated in developed will be a soft inplane rotor.2 the root shear-restraint. Since the torque
+As a result, the critical stability prob- structure is stiff in chord bending, its
+lems will be aeromechanical, that is, root-end moves relative to the flexbeam ground and air resonance. Of major con- shear-restraint mountin point during lead
+cern is the coupling of the rotor regress- lag oscillations, and the rotor damping is
+ing lead-lag mode with a fuselage mode - effectively augmented. This particular
+normally the body pitch or roll mode. approach was used for a number of concepts
+Under ground-contact conditions, the fre- (BH2, BH3, HHl, HH2, HH5, KA3, SA2, and quency and damping of the body pitch and SA5). The combination damper and root
+roll modes will be determined in part by shear-restraint need not be located on the the landing gear characteristics, and to flexbeam, as is shown with concept BH4
+this extent they are under the control of (Fig. 13). In that case, the required
+the designer. As the helicopter lifts to shearing motion is due to axial moticn of
+a hover, the body frequencies and damping the torque structure with respect to the will change, and once airborne, the body hub. frequencies will be determined by the
+fuselage inertias, something the designer An alternative means of incorporating
+has little control over. Throughout these auxiliary damping is by adding a conregimes, it is desirable to maintain sep- strained layer of elastomeric damping
+aration of the body frequencies and the material to the surface of the lag-torsion regressing lead-laa mode, and to ensure flexure. For this method to be effective, that there is adequate damping in the the elastomer must be backed or constrained
+rotor lead-lag node. by a very stiff material so that as the
+lag-torsion flexure bends, there is suffi
+There will be some structural damping cient relative motion between the flexure in any flexbeam and blade design, usually surface and the backing material. This of the order of I to 3% critical damping. approach has been used by Boeing Vertol on
+8I
+
+
+their BMR during wind-tunnel tests.2' An offset shear-restraint is used as wit, The damping augmentation by this method concept SA2; however, for this concept,
+has varied between 1% and 4% critical the offset shear-restraint results in damping, depending on operating condition. positive pitch-lag coupling which counter
+acts the negative droop. Concept BV2 is Although not proposed in the studies, similar to BVI except the flexbeam is made
+another approach to adding damping is to of two elements instead of four. In incorporate an elastomer in the flexbeam effect, the lower leading element and
+structure, as was done with the Triflex upper trailing element of BVI nave been
+hub. ! In that design, the flexbeam removed, which provides structural flapitself is made up of fiberglass cords in lag coupling. Concept BV3 is again simi
+an elastomer matrix. However, it is not lar to BVI, except 30 of precone are usev.! clear how much of the rotor damping is instead of -41 droop, and the offset shear
+due to the elastomer. restraint is shifted to the top of the hun
+where it provides negative pitch-lac couDesign Approaches Using Aeroelastic plino. Other mechanisms may be used to
+Couplings provide pitch-lag coupling. A variant of concept BHl would use the axial motic;n cf
+The BO 105/BMR uses negative pitch- a nonenclosing torque structure (as In
+lag coupling that is obtained by coning Fig. 13) to actuate a linkage that chanots the blade up 2.51 with respect to the the blade pitch with lead-lay motion. flexbeam (negative droop), combined with
+structural flap-lao coupling obtained by In studying possible variations of
+pitching the flexbeam by 12.50. Pitch-lag concept KA2 (Fig. 10), Kaman examined the
+coupling and structural flap-lag coupling effect of independently varying the vertieither separately or in combination may cal location and twist of the two elements have beneficial stabilizing effects for of the flexbeam. In performing this study,
+aeromechanical stability. However, these they assume that the elements are zart:effects do not hold true in a general levered at the hut center. Clearly, :f t e sense, so that each new design must be leading element is offset vertically from
+carefully analyzed for stability and the the trailing element, this will provide
+results confirmed by model tests. flap-lag coupling, a configuration sim .ar to BV2. However, from a practical point One approach to incorporating aero- of view, this offset makes it difficult t
+elastic couplings is concept BHl, shown in carry the element from one side of the Fig. 14. In this case, flap-lag coupling to the other, for a transition section is is incorporated in the flexbeam by rapidly required to compensate for the offsets. transitioning the principal axes of the What is not so obvious is that if the flexbeam from 0' at the hub to 150 at the ing element is pitched up and the trailing
+shear-restraint. Pitch-lag coupling is element pitched down the resultinc flex
+not included in this design. Note that beam will have negative pitch-lag co the torque structure encloses the flex- This particular variation is practica
+beam, even though it does not carry bend- the sense that there is no difficulty n
+ing loads. This design illustrates some carrying the twisted element thrcuch z:.e
+of the trade-offs that result in using hub to the other side. aeroelastic couplings instead of auxiliary dampers. By eliminating the dampers, some The various concepts presented for bulk is removed at the shear-restraint, increasing stability through aeroelastic reducing the profile drag; but because the couplings all hold considerable potent;ii flexbeam is now pitched at 150, the torque for helping to deal with the complex aero
+structure thickness is increased, which mechanical stability design problem. Howincreases the profile drag. The rapid ever, the scope of these concept-definition twisting of the flexbeamr, at its root is a studies was too limited to allow any statrade-off between obtaining the required bility analyses to support these concetual
+inclination of the principal axes and design efforts, and it is essential that
+avoiding excessive fiber bending. The the most promising concepts be carefully effective flap hinge can no longer be analyzed for their aeromechanical and aero
+shifted inboard to reduce hub-moment stiff- elastic stability before proceeding with ness without washing out the flap-lag the preliminary design of the ITR/FRP coupling, rotor.
+Concept BVl (Fig. 8) is similar to the original BMR design in that negative Materials for Bearingless Hub Designs
+droop is used to provide negative pitchlag coupling. However, in this case, Although titanium was used for the there is no pre-twist to the flexbeam to flexural elements of the matched-stiffness,
+provide flap-lag coupling so the negative bearingless rotor for the XH-51A, the full
+droop has been increased from -2.51 to -41. potential of bearingless designs will only
+9
+
+
+be realized by taking advantage of modern on-condition maintenance schemts. 7ne composites. The specific tensile strength final selection of a composite mat~ria: of composites is significantly greater may depend more on the size of the
+than that of titanium, and the ability to materials-allowable data base that exists
+orient the fibers in the matrix allows a within each company instead of on such torque structure to be torsionally stiff readily measured guantities as specif::
+using ±450 fiber orientation; the torsion tensile strength, stiffness moduls, or flexure made up of unidirectional fibers density. To the degree to which hub 0cm
+is torsionally soft as a result of the ponents are sized by material fatigue
+low shear modulus. However, despite their properties, the proprietary data bases and
+many attributes, the low shear strength of their associated kncci,,dwn factors for the matrix requires considerable care in such effects as those of combined stresses designing with composites. and environmental conditions will Jef~ne the material for oest use. As experience
+The three major composite formula- is gained with present composites, and new
+tions now used in the helicopter industry composites and hybrid compositions are
+are made of fibers of graphite, fiberglass, developed, the design difficulties should or Kevlar in an epoxy matrix. The low lessen in this area.
+density and high allowable strain of Kevlar make it a very attractive material; however, its very low compressive strength, Other Desian Considerations approximately 20% of its tensile strength,
+makes it difficult to use in bearingless Hub/Flexbeam Attachment hub designs. Graphite-epoxy composites have high stiffness-to-weight ratios and The hub and flexbeam attachment cint
+good stress allowables, but poor fracture is a difficult and important design issue toughness and failure modes. Fiberglass, in a number of respects. Blade flapoina
+on the other hand, shows good strain and chordwise moments and centrifugal
+allowables and good failure modes, but low force are a maximum at the hub center and stiffness-to-weight ratios, these loads must transition from the flexbeam to the hub and rotor shaft. To mrn:
+A number of different approaches to mize the effects of centrifugal force on selecting materials for a hub design were hub-moment stiffness, it is necessary to taken in the concept-definition studies. have the flexible portlon of the flexbear
+in Ref. 13, Boeing Vertol examined the as close to the center of the hub as pcstrade-offs between graphite and fiberglass sible, and this minimizes the space avail
+on the basis of a simplified flexure model able for transitioning the high bending that was optimized to minimize weight. and centrifugal loads. It is also desir
+For the same design constraints, they found able to keep the hub small in order to the graphite flexbeam design lighter, minimize weight and hub drag. Requirements
+Kaman addressed this question in a differ- for reduced vulnerability depend both ent way in Ref. 14 by looking at a mate- exposed area and on the ability of the
+rials merit-function based on tensile structure to remain intact after a hit. A
+strength, bending stiffness, tensile-to- number of approaches have been used in the
+shear-modulus ratio, and density. On the past to meet this variety of requirements, basis of this merit function, they including building the hub and flexbeam up
+selected graphite for their concept KA2. as a single unit (as was done with the
+They then made a trade-off study of the 680 rotor), carrying the centriftgal loads
+effect of substituting fiberglass for the through the hub by having opposite blade flexbeam instead of graphite and found pairs constructed of a single flexbeam (as
+this increased the weioht, flexbeam size, used on the UH-60A tail rotor) and boitina and torsional stiffness. In their optimi- the flexbeam to the hub (as with the
+zation study for concept SA2, Sikorsky BO 105/BMR. used both graphite and fiberglass as materials; as a result, the graphite flexbeam Single-Unit Flexbeam and Hub. The
+design was lighter with smaller dimensions design approach taken on the Bell Helicop
+and its hub moment-stiffness was 20% lower ter Textron's concepts is to build the hub than for the fiberglass hub. and flexbeam as a single unit or yoke (see
+7igs. 7, 13, and 14). In general, uniFrom these initial studies, it appears directional fibers connect opposite blade
+that graphite composites will provide a pairs across the hub and are interleaved
+lighter weight design, less hub drag, and with cross-ply layers to build up the hub reduced hub-moment stiffness. But in section. An upper hub plate is bolted
+terms of reliability and maintenance, the through the composite hub to the upper end
+use of graphite presents some difficulties, of the rotor shaft. Centrifugal loads are
+UTnlike fiberglass, in which crack propaga- carried through the hub n the comuosite tion is slow, graphite shows degraded fail- material; however, the rctor hub moment ure modes and may not be suitable for must be transferred to the hub clamping
+10
+.....
+
+
+plate without causing interlaminar shear drag increment while maintaining the load
+failures over the transition region. capacity of the attachment.
+Interleaved Flexbeam Pairs. If oppo- Droop Stops
+site blade flexbeams are made as a single unit, they may be assembled as overlapping As hub-moment stiffness is reduced, pairs (see Figs. 6, 8-10). The planes of the flexbeam will no longer be able tr the flexbeam pairs are then offset by the carry the static droop loads durina start
+thickness of the flexbeam, but this is of ing and stopping conditions, and the :Kex
+small consequence. The hub is assembled beam will either have to be sized for in a manner similar to that of the single- static droop loads or droop stops w1i_ unit hub, with an upper clamp plate bolted have to be added to the ib design.
+to the top of the rotor shaft. As with Because droop stops add Darts coun an_ the single-unit hub, the rotor hub moment decrease MTBR they are . esirable, iut
+is transferred to the clamp plate over a they may be preferable increasing tno
+short spanwise extent, and care must be hub-moment stiffness, h eight, and huz taken in the design to avoid interlaminar drag to accommodate sta -roop loads.
+shear failures. Concept SA2 (Fig. hows the use 0 For concepts BVI to BV3, the primary centrifugally actuated 3tops. These
+rationale for going to stacked flexbeams are configured very muc the drooz was to reduce the interlaminar shear over stops used on current ai _culated-rotor the clamp radius. By dividing the single hubs. Alternat-ve approaches have been
+beam into two elements, the hub moment is proposed to incorporate droop stops wih
+divided into axial loads combined with out centrifugal actuation. In conce7t Y.71
+smaller moments on each beam. The result (Fig. 8) the droop stop is part of the is a considerable reduction in interlaminar offset shear-restraint. As the blade shear, droops down, a pin slides in a spnerical
+bearing and stops against the hub. --ere Bolted Attachment. The flexbeam root- is probably some weight and drag increase end may be connected to the hub with a associated with strengthening the shear bolted or pinned attachment. Although not restraint and torque structure to take the
+shown here, this is the approach taken for droop loads, but this is not believed :o concepts SA4 and SA5. For a bolted attach- be a significant problem. it is likely
+ment it is necessary that the bending- that the shear restraint for concert moment distribution across the bolt not would be mounted on the top to provide tne cause a load reversal and fretting. This correct pitch-lag coupling, but the cun
+tends to increase the height of the bolt cept of a droop stop could be implemented
+and increases the hub's projected area and in a similar fashion. Another approach is
+drag. An advantage of a bolted connection, shown in Fig. 7 for concept BH2. In
+however, is that aeroelastic couplings may case, the droop stop is simply an extenbe more easily incorporated in the design, sion of the lower hub clamp plate that ccn
+for flexbeam pitch or coning angles are tacts the lower edge cf the torque stricreadily designed into the hub, ture or pitch cuff. Additional weight
+would be required to strengthen these rlexbeanjBlade Attachment areas, but again, this does not appear to
+be a major problem. In both of these
+Although conceptually attractive, the cases, it is expected that the increase
+idea of a single rotor hub and blades or hub-moment stiffness will result in a opposite blade pairs constructed as a reduced flapping envelope relative tc
+single unit from tip to tip is not prac- articulated rotor designs: therefore, :en
+tical. Some means of blade-folding or of trifugally actuated drocp or flapping
+removing individual blades appears neces- stops are not requtred. However, as sary in any design, and blade-folding must designs are develored it will be necessary:
+be addressed for the ITR/FRR. Normally, to ensure that the flight envelope is not
+the inboard end of the blade and the out- limited by droop-stop pounding. board end of the flexbeam are desioned so that the unidirectional fibers wrap around
+one or two bushinqs, and the flexbeam and Comparison of Hub Concepts and blade are connected by one or more attach- ITR/FRR Technical oals
+ment bolts. It is not feasible to make a connection of this nature without increas- After they had developed the 33
+ing the bulk and drag at the attachment posed hub concepts each of the five cc-n
+point. This point is far enough out on panies was asked to select at least two
+the blade radius to generate a nonnegli- concepts for further development and t.
+giblo rotter parasite power loss. The compare the attributes of those concerts design challenge is how to minimize this with the ITR/FRR ioals. The 13 cncen.ts chosen for extended deveipment and
+11
+
+
+,mparLs~ns witO toie goals are shown in in which a snoe is _seel t-u le v-&._
+Table 3. Because of the uvel of effort or of designs in .in:g~ecs are
+*involved in the concept-definition studies, A significant nurnoer -fthe parts were
+no calculations were made for M4TBR and required to mee t erq,;rement
+fati,?ue life. In addition, the torsional- folding. The ical fc
+stiffness goal which had been defined as system parts coun was 5 V._
+not requiring substantially more blade -were allocatod_ o' c.
+pitch control actuator force than required work perfcrmedune e by current rotor system" was added to studies, olus an assss:,In
+Table 2, for this will be a quantified bearingless designs, i:dca qoa! in the next phase of the ITR/FRR current goal w' not act as a ln
+Pro'ect. driver and needs to ce reA red. F n preliminary desian pnas(o n,
+in examining the performance of the been lowered to 5-1 tarts fz --
+se~ected concepts, it is necessary to keep- system.
+in mind some of the limitations of the
+concept-definition studies. in general, The coals for -ub-moment stc:nc
+tne tecnnical-goal definitions were not and endurance nub tilt-aname, as w. as
+specific enough to provide an exact basis fatigue life, are c.-osely coupled. :1
+of comparison between the concepts. For establishing the Jy-_als, i a ei
+example, in calculating the hub drag, the have a hinge offset of abno't , ss7
+radial and vertical extents if the hub, ing no stiffness in n(o-elq near~n
+to angle of attack, and how fuselage f-lexbeamn. The offset- was ups_.
+interfereo-ce drag was to be treated were low because of th-e teffcct 1
+not defined. Si'milarly, for parts count, hinge offset for onneles a:
+it was not specified what actually consti- designs on vibDratioco, zcist respo-e n:
+tu-ted the hub or what a standard part was. handlino qualitis -h benit :)
+:tnothier difficulty in comparing concepts high equivalent-in -~ set, a- cc
+Is toat tne conceotdfnto stdes control power, ir-oe an vril-,
+estabas:.ed a means to trade off the ooals and i creased cnter
+and some specification items) through a must be traded '~f acait 4trmra
+system of -weimtnta functions, but this characteristics, suc-. as' ,S rsz,
+method t-rned oat to be overly sensitive pitch-up) instaoi__y d, w-r an
+an ,- re'a:~velv insuccessful. for these tion. T'he diff~,_*. , etn~
+stdis Acwvesome hub concepts were !moment stiffness-- l is that toe 
+iased by tooe weig hting functions used, Offs involved are ot we oe
+and ~nthis sense they are not represents- From a structural and mateida' pcn
+yie a: E cc ts that will. be developed view, it is more difmu-_lt
+in tnoe preiminary design phase. eauivalent-hinoe rffse- iesiz~ 7a
+one. Therefore, te iaoQ C
+first joal, fLat-plate area, moment stiffness ( ou00 .~ ~
+snows a Variat-n. from 1.6 ft for con- established to push th desic: .an n--c
+cott SA6 to -.7 ft for concert HHl. The turing technology '0n t's dirc~ - 3r,
+areareas for concepts HHl and HH8 thus o~rovide f-u'tie desiqners .r -c_, n
+reflect toe em;phasis placed on reducing in choosing a particular lvlo the':uin':ability of these configurations. stiffness. The obmomn stifns ,:a
+7"elt- lt area obtained for con- originally established at an -v. w
+ceuts B'.I to BV6 includes interference value (l,75D t bdc as worp o
+drag w%_-_- was calculated to be 25% of the however, it became obvtousz th~at -:
+total hub 1raQ. If this interference was unrealistic, and it was raise--tc effect were remoed, the drag areas would 2,600 ft'lb/deg. be more in line with those of the other confagurAtions, which did not include The coupiong r ::t-,Q uc
+intocrference drag. The low drag for con- ness and enduran a-iit -:ainC 31
+cept SA6 reflects the low presented area are shown in Fin. IIl,wh-ere the 5,3.-C
+of th~oe :liptical-shaped hub,. the selected concelrts are snown : of e2ndurance-limit flapp ina as a uc-1
+The weight estimates ranged from of hub-moment staffoess. Concepts BV
+l,L f,,r concepts BVl and B%13 to 656 lb and SAl use an elastorerac: bear,--n-c j
+for -.oncept 1118. Again, the high values flap articulation; as aresult, they -.2
+for concepts HH11 and HH18 are due to the endurance-limit flappioc :)fi.V an
+emphasis -)n vulnerability. All other con- respectively, well above tne coali
+:epts indicate that the weight goal can be Concept HH18, which is a aerryvativc of t.e
+met by proper use of composite materials. AH-64A, uses a composite strap-pack n
+shoe and meets t,e goal, but prcbab%
+P'arts count ranged from 29 for con- could be tailored to provide 3dd~t or3
+ceut KA2 to 86 for concept BV4. A high endurance-limit flappiny. Interestigy
+parts count is generally typical of designs concept BV5, which is classified asa
+12
+
+
+art uate; -nf urat. -n necause )f >3-,-, toe.e P Q 7 rc lcid-lao and pitch articuati:n, ses a sti:eni n etf.1:t6 =r. ".:- .r- 
+lexbeam for flaptng and is ;nacle to ±:re':tly crm.arab.e t. "- I
+.
+meet eitner t:ie nub-moment stiffness -r at.cd in Table wt"
+ena.ranc,-: i7i t flapping goal. The one Foenq .7ertol con'epts. t
+olba;led confgiuration, concept SA6, over, tnat this ooa.'
+mets beth goals, largely because tne eaiy tr reet. Atnc :. n . :
+oimoa. siring is not centrifugally oaded neets all Of tr.e ,aAs,. and can ze more easily tailored to meet wit:, careful s t - te ,
+..e established goals. tailoring of tne georetr*', anz or.t. of lay-ups that a nearinless ::i
+The nearingless design :ptions that come close to acn;e'.'znc tne :;-,:I .
+us a sne restrsint, concepts BV4, HH!,
+an- KA-, are able to tailor the flexbeam
+tz meet tne goals but impose some penalty Concldig.?emarK.s
+in weight and drag because of the hub
+s.oes. The classical bearingless designs Five concept-defr.i tuie: > cannot, in general, meet both goals. n conducted to examiine a -cncetS
+this respect, it is noted that most of the could meet the technica a
+studies examined endurance-limit flapping ITR/FRR Project. .f and the closely related fatigue life using one was articuiatea, two ;sed in
+simplified methods. Thus, for a particu- articulated flar hinge wtn a .az-r .
+far design, bending stress and strain were flexure, four were and
+7* culated as functions of flapping angle; bearingless iesgns. ea
+_n some cases knockdown factors were taken design concepts ha'.'e :eem exa. e . f:r combined stress, and the results were detail both to assess tne'ir tentL" r
+compared with the company's materials- making signifizant vances inrra
+allowable data base, thus defining the nolcgy and to snw what ma-cr _esizn :r Lendurance-lirit flap angle. An engineer- lems remain. Te tree critia"
+inQ -udoment was then made to determine cf bearingless rctor-nun oesizn are
+whetner the flapping beyond the endurance I) providing adez-ate :.exbeac, strenan:.
+:imit, wric would occur durina normal and fatigue life wit.-w u-monent
+MlsslonsI would reduce the fatoue life ness, 2) reducing te weoch and dra below the goal of 10,000 hr. The excep- the pitch-control mecnancsm, and _- i
+tion to this is Ref. 16, where a prorated ing means of au.entinc the rctcr
+Ziapplno spectrup, based on UH-60A filght damping to prevent aerorecnanic3
+oata was apolied to the concepts. :n the instabilitv. case concept SA2, which had a calcu
+lated endurance-limit flapping angle of Most of the concents orcosen 3ns' the calculation of fatigue life some desirable attributes, and manyv
+Vnowed the Jesion fell considerably short the potential to meet the 17R. ?R
+of t:e 10.000-hr goal. Concept SA2 was goals. In the area of flexea., iesion, it
+tnen rou fiied to concept SA2a by adding appears tnat the indovodual desicners :'ve
+materiaJ to the flexbeam until the considerable latitude in tnei: desicn
+10,000--r goal was achieved. This also approaches, and there are excellent
+improved endurance- limit flapping, but the tunities for innovative Jesign 3.
+nub-moment stiffness was increased even Both fiberglass and graphite composites
+further he':ond the goal. Even without were proposed, but when the two rateria.s
+considerinu the effect of fatigue life on were compared for t e saere the enduronce-limit flapping and hub- graphite was considered oreferablic
+moment stiffness goals, direct comparison it reduced hub weight an s:ze.c .
+of these concepts is dlifficult because the failure characteristics f uri t
+e n manufacturer used different knockdown are inferior to those f fibercasa, Ah' factors and materoals-aillowablhs in defln- this remains a :oncern, in the are
+ong endurince-?imit flapping. material selection, hybrids or corlo"
+tions of composites 7ay prove super .
+The concept-definition flap angle and either parent.
+.tiffness goals appear too restrictive for bearingless designs, and for the ITR/FRR Design options for the toruestrc
+preliminary design these have been relaxed. ture or pitch-control mechanism ire more
+A flapping spectrum has been defined for limited than for the flexbeam. A!" he this phase, but the dependence of this concepts that were proposed included s.,e spectrum, the 10,000-hr fatigue-life goal, form of shear restraint at the root of t
+and the endurance-limit flap angle are not torque structure and, in a sense, co:sti
+well understood. tute a retreat from past efforts to desin
+a torque structure without shear rstriint
+The torsional stiffness goal for pre- (for instance, the YUH-61A tail rotor and
+liminary design (200 in..lb/deg) does not the Triflex main rotor) . nlike -tsu
+13
+
+
+in most previous design efforts, however, 4. Huber, H., FrH.miet, H., and
+the studies show that the shear restraint W, "Develooment ;f a Bearl::xeaa
+is beino used here to introduce desirable Helicopter Tail Rotor," Vertia,
+co..,l:ngs rather than to simply minimize 5, 1981, pp. 1-l2.4-. modal couplings. In addition, many of the
+shear-restraint concepts proposed 'or- 5. Baner-ee, D., Head, 1. E., Marine,
+porate secondary functions, such as Iroop R., and Ploudre, :., "The YAH-t4A stops and elastomeric dampers, and i.i this Composite Flexbeam Tall Rtcr,"
+respect t-ey are significantly innovat've. Paper No. 1-3, American Helicroter Society Nationai Specialists' l'wcprimary methods are :reposed for Meeting on Rotor System Design,
+augmenting the rotor lead-lao damping - Philadelphia, Pa., 'ct. 198C. a3Ox:i:ar" dampers and aeroeiastic cou
+nas. Aaain, in most .:f the concerts '. Malonev, Pa_ F. and ?orterfele-, pror'sej, some form of auxil-ary elastc- John D., "Elastic Patch Beam a: merle damrer is used, a conservative Rotor," 'S'..SRDL-TR-7t-35,
+appr-ach to the proolem. Aeroelastic Army Air Mobility Research and
+couulan4 offers considerable potenti," :3r Development Laboratory, Ft. Eust:s,
+augmentinQ rotor damping, but requires a Va., Dec. 1976.
+high level of confidence ir,ohe predictive capability of the aeroelasti-o mathematical -. Harvey, Keizn W. and Hughes,
+model. However, even when auxiliary Charles W., "Design, Analysis, and
+dampers are ased, the need tc minimize Testing of a New Generation
+drag and weight will reduce elastomeric Rotor," Paper No. 79-57, American
+damper size, and this will recuire the use Helicopter Society 35th Anna" 3f valid matnematical models and confirma- National Forum, Washinctcn, D.C., to ry tests. May 1978.
+Althougn the ccncept-definition s. Staley, James A., qabel, Richard, and st,;dies were limited in scope, they ndli- MacDonald, H. I., -Full Scale
+care that a number of the proposed con- Ground and Air Resonance Test:no
+cepts have the potential to meet the of the Army-Boeing 'erto" Bearno
+172,'FRR technical goals. However, this less Main Rotor," Parer No.
+.oncl'sicn must remain tentative until American Helcopter Society 5tn additional design work is performed in the Annual National Forum, Washangtcn,
+next phase. The studies have also been D.C., May 1979. seful in identifying areas in which there
+-s some weakness in the design methods, 9. Dixon, Peter S. C. and Bishot, and these will be emphasized in the pre- Harold E., "The Bearingless XMain
+lim,'nary design. Rotor," Journal of the A.merican Helicopter Societ, 25, (3),
+1980, pp. 15-21.
+References 10. Cassier, Alain, "Development of the
+CardInale, Salvatore V., "Soft Triflex Rotor Head," Journal
+In-Plane Matched-Stiffness/ the American Helicopter Societ,., Flexure-Root-Blade Rotor System 26, (3), July 1981, pp. 25-31.
+Summary Report," USAAVLABS TR 68-72, U.S. Army Aviation 11. Alsmiller, G., :Ietzger, R., and
+Material Laboratories, Ft. Eustis, Sonneborn, W., "AI-Compostc
+Va., Aug. 1969. Rotorcraft," Proceedings of -:,e American Hei:copter Society
+Fenacgnty, Ronald R., and Noehren, Annual Forum, May 1983.
+William L., "Composite Bearingless
+Tail Rotor for UTTAS," Journal of 12. Harse, James H., "Integrated 7echnclthe American Helicopter Society, ogy Rotor/Flight Research Rotor
+22, (3), July 1977, pp. 19-26. (ITR/FRR) Concept Definition,"
+NASA CR 166443, 1983.
+3. Shaw, John and Edwards, W. Thomas,
+"The YUH-61A Tail Rotor: Develop- 13. Dixon, Peter G. C., "Integrated Techment of a Stiff Inplane Bearing- nology Rotor/Flight Research Rotor
+less Flexstrap Design," Journal of Hub Concept Definition," NASA
+the American Helicopter Society, CR 166447, 1983.
+23, 12), Apr. 1978, pp. 9-18.
+14
+
+
+14. Hugnes, Charles W., "Integrated Tech- 22. Edwards, W. T. and Mia-, W., "ber
+nology Rotor/Flight Research ingless Tail Rotor Loads and . t3Rotor ITRiFRR) Concept Definition blity," USAAI'RDL-TR-76-1(,
+Study," NASA :R 166444, 1983. Applied Technology Laboratory,
+Ft. Eustis, Va., Nov. '. 97' .
+Howes, H. E. and Tomasnofski, C. A., "Integrated Technology Rotor/ 23. Dawson, Seth, "An Experimental Fliqht Research Rotor (ITR/FRR) tigation of a Bearin7-ess Moce.
+oncept Definition," NASA Rotor _n :lover," Prcceedinas -f
+CR 166445, 1983. the American Helicopter Society
+38th Annual Forum, May 1982, Ib. Carlson, Raymond ., Beno, Edward A., pp. 65--4. and *llsnik, Harold D., "Integrated Technology Rotor/Flight 24. Ormiston, Robert A., ":nvesgat.ins Research Rotor (ITR/FRR) Concept of Hingeless Rctor Stability," Definition Study," NASA CR 166446, International Syposiun Dn Aerc
+1983. elasticity, DGLR-Bericht 82-01, Oct. 1981, pp. 252-283.
+17. Hughes, C. W., "Study of Advanced
+Flight Research Rotors," NASA 25. Ormiston, Robert A., "Aerrmecnan1ia. CR 166286, 1981. Stability of Soft Inzlane iinge
+less Rotor HeLicoptcrs," Paper 18. Blackwell, Robert, Campbell, Thomas, No. 25, Third European Rotorcraft
+Javis, S. Jon, Kitaplioglu, Cahit, and Powered Lift Aircraft Fjrz-. 'I
+Moffitt, Robert, and Taylor, Aix-en-Provence, Frarce, Sept. Robert, "Predesign Study for an 1977. Advanced Flight Research Rotor,"
+NASA CR 166415, 1982. 26. Bousman, William 0., "An Experimental Investigation of tne Effects 19. Carlson, Raymond G., and Miao, Aeroelastic Couplings on AercWen-Liu, "Aeroelastic Analysis of mechanical Stability of a Hinceless
+the Elastic Gimbal Rotor," NASA Rotor Helicopter," Journal cf the
+CR 166287, 1981. American Helicopter Societ'., 26,
+(1), Jan. 1981, op. 46-14.
+20. Bennett, Richard L., "Optimum Struc
+tural Design," Proceedings of the 27. Sheffler, Marc, Warmbrodt, William,
+American Helicopter Society 38th and Staley, James, "Eva-uatin of Annual National Forum, May 1982, the Effect of Elastomeric Dampinc pp. 398-407. Material on the Stability of a Bearingless Main Rotor System,"
+21. Dixon, Peter G. C., "Derivation of Paper No. I--, American Helicocter
+Control Loads for Bearingless Society National Specialists' Rotor Systems," Paper No. 3, Meetina on Rotcr System Desian,
+American Helicopter Society-NASA Philadelphia, Pa., Dct. 1980. Ames Research Center Conference on
+Helicopter Structures Technology,
+Moffett Field, Calif., Nov. 1977.
+Table 1. ITR/FRR hub technical goals.
+Rotor hub flat-plate drag area, ft. 2.
+Hub weight as a percentage of design gross weight 2.5
+Hub system parts count exclusive of standard fasteners 50 Hub-moment stiffness, ft-lb/deg 2,600
+Maximum hub tilt-ancle without fatigue damage, deg 5 Fatigue life, hr 10,000
+Mean time between removal (MTBR), hr 3,000
+Tliese goals are based on a design gross weight (DGW) of 16,000 lb and are scaled appropriately for higher DGW.
+15
+
+
+Table 2. Hub concepts.
+Concept Nomenclature Reference (in noted
+reference)
+BHl Bearingless/damperless (concept No. 1) 12 2 BH2 Bearingless/outboard attachment (concept No. 2) 12
+BH3 Bearingless/inboard blade attachment (concept No. 3) 12
+BH4 Bearingless/short pitch-change element (concept No. 4) 12
+B15 Bearingless/gimbal (concept No. 5) 12
+BH6 Bearingless/offset flap hinge (concept No. 6) ,2
+BH7 Pitch-chance bearings/tension loaded flexure (concept No. 7) 12 BH8 Pitch-change bearings/unloaded flexure (concept No. 8) 22 BVl Configuration 1A (modified BMR,,) i3 24 BV2 Configuration lB (modified BMR ) 132
+BV3 Configuration 2B (advanced BMRz) .3 26
+BV4 Configuration 3 (flexure/shoe rotor) 13 -7 BV5 Configuration 4 (reversed Starflex rotor) 13 28
+BV6 Configuration 5 (lag/torsion flexure with flapping hinge) 13 29
+HHl Flat-strap cruciform (concept A) 14 2
+HH2 Tapered cruciform (concept B) 14 z
+HH3 Hemispherical flexbeam (concept C) 4
+HH4 S-beam, laminated flexure (concept D-1) 14 HH5 S-beam, nonlaminated (concept 0-2) 14
+HH6 Multiple strap (concept E) 14 " HH7 Flat-strap (concept F) 14
+HH8 V-strap (concept G) KAI Plain elastic pitch beam (concept No. 1) 15
+KA2 Plain elastic pitch beam (elastomer laminations) (concept
+No. 2) 15 KA3 Classic elastic pitch beam (concept No. 3) 15
+KA4 3imballed hub (concept No. 4) 15 -4 KA5 Compound matrix pitch beam (concept No. 5) 15 6
+SAl Articulated composite-elastomeric head 16 3 SA2 Torque-tube/I-beam rotor 16 -0
+SA3 Soft-mounted rotor 16 -2 SA4 C-beam rotor 16
+SA5 Anvil-strap rotor 16 14
+SA6 Elastic gimbal rotor 16 15
+Bearlngless main rotor.
+16
+
+
+Table 3. Comparison of selected ;oncepts and ITR/FRR technical goals. "
+Flat-plate Hub Hub Hub-moment Endurance-limit Torsional
+Concept drag area, weight, parts stiffness, flap angle, stiffness,
+ftl ib count ft-lb/deg deg in..Ibideg
+BH1 2.31 386 34 5,875 5.37 570
+BH2 2.43 400 38 3,165 3.96 490
+BVl 3.54 305 47 4,190 3.4 146
+BV3 3.54 305 47 4,190 3.4 146
+BV4 5.04 478 86 1,500 5.C 450
+BV5 3.96 436 67 5,810 3.2 150
+BV6 5.43 461 85 1,830 8.0 300
+HH1 -. 7.7 624 42 1,595 5.0 3
+HH8- 6.7 656 78 2,050 5.0 298
+KA2 2.21 396 29 2,620 5.0
+SAl 3.4 455 55 3,055 8.57
+SA2 3.2 380 38 3,055 3.28
+SA2a- 3.2 408 38 4,685 5.24
+SA6 1.6 438 31 2,425 5.59
+Concept
+definition ti
+goal 2.8 400 50 2,620 5 Preliminary
+design20
+goal 2.8 400 (W) 4,000 4 200
+-Designed for 18,400 lb DGW, goals scaled to 16,000 lb.
+-Stiffened version of SA2, see text.
+Rotor system parts count reduced from 75 to 50.
+17
+
+
+tl
+ARTICULATED FLEXBEAM
+LEAD-LAG LEAD-LAG
+PITCH PITCH PITCH PITCH
+BEARING FLEXBEAM BEARING FLEXBEAM
+SA1 BH6 OV6
+ARTICULATED 'BV0
+FLAP HINGE
+BKHA54
+GIMBALLED SA3, SA6
+FLAP HINGE
+BH7,BH8 HH6 [ BH1-BH4
+BVS I BV1-BV4 FLEXBEAM HHO HH1-HH5, HH7
+FLAP HINGE KA1-KA3,
+SKAA52. SA4.
+SAL
+IBHT 4121 IUH-60A T/RI STARFLEX
+Fig. i. Classification of hub concepts by the means of providing flap, lead-la-, and torsional flexibility. Current designs shown in boxes.
+/TORQUE SLADE TUBE
+~~-YOE
+PUSH ROD
+UPPER PLATE
+LO3WER PLATE MAIN RETENTION PLATE
+Fig. 2. Concept SAl, articulated hub made of composite materials and ,sing eiastomeribearings (Ref. 16).
+18
+
+
+,STEEL HUB FORGED
+7INTEGRAL WITH MAST
+LEAD LAG DAMPER
+3%R-~ 4 .5% R /FIBERGLASS CUFF
+Fig.~~~
+3.Cnep ELA-TOMRIonfeuecmieCihariuae aprgh.
+(Ref.NG FIEGL2)TR P222
+-----
+---- -- -- -- --/ ---- -- -- ---- ---- -
+
+
+CENTRAL HUB
+NEGATIVE LIFT BEARING -.- PITCH ARM
+GIMBAL BEARING
+-GIMBAL SPRING CLAMP
+-GIMBAL
+CONTROL ROD- SPRING FLEX BEAM
+SHAFT ADAPTER
+0,1
+0
+
+
+SINGLE DUAL/OUAD LAMINATED ELEMENT ELEMENT ELEMENT
+HH5,HH7 BV1-BV3 8H4 NO KA5 HH3
+SHOE SA2, SA4
+UNTAILORED UH-0A T/I /
+LTRIFLEx I
+FLEXBEAM KA1. KA3 KA2 SAS SHOE
+BH1,BH2 9H3
+NO
+SHOE
+TAILORED
+BV4 HHI, HH2
+LEXBEAMHH4
+SHOE
+Fig. 5. Classification of flexbeam design concepts on the basis of flexbeam talloring,
+the use of a shoe to control curvature, and whether the flexbeam is single
+element, multielement, or laminated element. Current designs shown in boxes.
+21
+
+
+~UPPER HUB PLATE -PITCH ARM TORQUE TUBE
+0i
+---
+-------------
+--
+---
+------- 0 0
+UPPER HUB CONTROL SUBRSAEATC
+PLATE - RODJ PITCH ARM FLE BLADE AITTACH -BAD
+ADAPTER- \-SNUBBER HOUSING
+Fia. 6. Concept SA2, flexbeam with graphite I-beam cross section (Ref. 16).
+22
+
+
+FIBERGLASS YOKE -GRAPHITE CUFF -BLADE BOLT FAIRING
+MAST PLATE
+,DRIVE BUSHING
+DROOP STOP - ,-DAMPER
+SECTION AA '-SHEAR SECTION BB SECTION CC RESTRAINT
+Fig. 7. Concept BH2, tailored fiberglass flexbearn (Ref. 12).
+23
+
+
+-- - - - --- - ,- ' - - - - - . - - - - .
+4-ELEMENT
+FLEXURE/ -4 PREOROOP INSERT -. -CLAMP PLATE
+-------------------------------
+-TORQUE SLEEVE
+SECTION AA SECTION Oi8
+Fig. S. Concept BVI, four-element flembeam (Ref. :3).
+24
+
+
+I0
+SECTION BB
+SECTION AA A A
+SECTION CC
+Fig. -oncePt HH1, shoe-restrained, laminated fiberglass f'ap flex,,.re trans'tionlnQ
+to) 3 flattened X lag-torsion flexure (Ref. 14).
+25
+
+
+I
+ELASTIC PITCH BEAM
+nJ
+-CLEVIS
+TORQUETUBE
+PITCH HORN
+2Wc
+• PIVOT- -HUB -SHOE.ASSY-PIVOT BEARINGS/
+DAMPER
+L" SHOE-PLAIN
+Fig. 10. Concept KA2, dual-element, laminated graphite flexbea.n (Ref. 15).
+m
+---=--- I r----
+BH2 BV1
+X-- .4--
+HH1 KA2
+=
+SA2 SA6
+F~g. 1 . Cross sections of lag-torsion flexures of various concepts.
+26
+
+
+TORSION TORSION AND LOADS BENDING LOADS
+I,1BH4 BH2.BSH3
+KAI BV1-8V4 ROOT SA4 HHI, HH2. HH6
+SHEARKA2. KA3
+SHEA B1OBIBM R SA2 AS RESTRAINTBH 8
+IUH6A T/RI
+_H4 ~ CFT
+TRIFLEX *
+NO YUH-61 AT/ R BK 117 T/R
+ROOT FNOT
+SHEAR FASIBLE] RESTRAINT
+Zlssifcti,2r. of pitch-control concepts by seof rooct snear-r~straint ano
+DaJi23o5 city of torzue structure. Current desians s*hown :n oxes.
+STEEL HUB SEAT
+FORGED INTEGRAL _GRAPHITE -ELASTOMER
+-LEAD LAG DAMPER/ '-GRAPHITE TORQUE TUBE
+SHEAR RESTRAINT
+Fig. 13, Concept BH4, laminated graphite flexbeam with nonenclosini torque structure
+(Ref. 12). 2--- - L-2- 7-
+
+
+h
+-GRAPHITE YOKE -FIBERGLASS CUFF BLADE BOLT
+FAIRING
+CLAMP PLATES " MAST PLATE
+DRIVE BUSHING- L SPITSITEAR -BLADE BOLT 
+RESTRAINT ',
+SECTION AA SECTION BB
+F-1. 14. Concept BHI, structural flap-alg coupling in zr3p:;ite flexoeaZ -es_: (Ref. 12).
+0[ o BEARINGLESS
+* BEARINGLESS W/SHOE
+So ,GIMBAL
+SA1 0 ARTICULATED z BV6
+4
+(6 SA6 BV4 HH8 0 0
+.O1 KA2 SA2a BH1
+.I SA20 oBV1,BV3
+z P.D. GOALS
+2- C.D. GOALS
+0 1000 2000 3000 4000 5000 6000
+HUB MOMENT STIFFNESS, ft-lb/dog
+Fig. 15. Endurance-limit flapping angle as a function of hub-moment stiffness f.r
+selected concepts.
+28

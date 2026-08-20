@@ -1,0 +1,190 @@
+Rotary Wing Aerodynamics
+(AE 667)
+
+
+Performance at Special
+Flight Conditions
+1. TURNS AND PULL-UPS
+2. AUTOROTATION
+3. MAXIMUM ACCELERATION
+4. MAXIMUM DECELERATION
+2
+
+
+Load Factor in steady turn
+oLoad Factor (n) = Thrust / Weight
+oAccounts for additional thrust needed to counter
+centrifugal forces for turns and maneuvers.
+on = 1 + Vθሶ
+g
+2 θሶ = V
+R R = radius of turn
+oPower calculation same as that for steady level flight.
+Weight multiplied by n
+R
+T
+GW
+(GW/g) (V2/R)
+3
+
+
+Power limited turn manoeuvre
+oEngine Power augmented with exchange of Kinetic and Potential energies (Speed and Altitude) to do the turn.
+oFor computation:
+o Use average velocity to find the load factor n
+o Compute the kinetic and potential energy loss and subtract that
+from the energy required for a level turn (power × time taken in the manoeuvre)
+o The remaining energy has to be supplied by the engine. Thus,
+engine power can be found.
+4
+
+
+Load Factor in Pull-Up manoeuvre
+R
+T
+GW + (GW/g)(V2/R)
+T = GW [1 + V2/gR] n = [1 + V2/gR]
+5
+
+
+Load Factor in Pull-Down manoeuvre
+R
+T
+GW - (GW/g)(V2/R)
+T = GW [1 - V2/gR] n = [1 - V2/gR]
+6
+
+
+Autorotation
+Questions to answer:
+oRate and extent of rotor speed decay
+(before the helicopter attains autorotative state)
+oRate of descent of the vehicle during steady autorotation
+oRange of vehicle in autorotation
+7
+
+
+Inertia & time available to pilot
+oInertia of the entire rotating system = Main rotor + Tail rotor + transmission
+oTotal Moment of inertia =
+Jtotal = JMain + JTail
+Ωtail
+Ωmain
++ Jtransmission
+oEstimate of available time: tKE = K.E
+Power =
+1
+2JΩ02
+Ω0Q
+otKE is the time pilot has to reduce collective pitch to negative to
+enter autorotative mode. Hence, higher rotor inertia is safer.
+8
+
+
+Rotor angular velocity variation
+oRate of change of angular momentum = torque
+oAssuming torque (Q) to be proportional to Ω2,
+J dΩ
+dt = −Q0
+Ω
+Ω0
+2
+oIntegrating: Ω
+Ω0 = 1
+1+Q0t
+JΩ0
+oHence, high moment of inertia, low torque, high initial rotor
+speed help keep angular velocities higher
+Time
+Ω/ Ω0
+1
+0.4
+3 seconds
+tKE = 4 sec
+tKE = 1 sec
+9
+
+
+Descent Rate
+oRequired power supplied by the air (loss in P.E of the vehicle)
+Power Required = Power available = Descent rate × Gross Weight
+oDescent Rate = Power Required
+Gross Weight
+10
+
+
+Descent Rate
+Forward Speed
+Descent Rate
+(or Power Required)
+Lowest descent rate speed Max range speed
+Lowest energy required per unit distance
+11
+
+
+Zoom Manoeuvre
+Used when engine failure occurs during high forward speed but low altitude
+oPilot trades K.E for P.E to rise to higher altitude
+oFollowed by the typical autorotative descent.
+Climb
+12
+
+
+Dead man’s curve
+Forward Speed
+Altitude
+Insufficient time
+to attain autorotation
+Low enough, but too fast to crash safely
+Zones to Avoid (serious damage/crash in case of engine failure)
+13
+
+
+Helicopter Autorotative Landing
+Steady Autorotative Descent
+Cyclic Flare:
+Rotor tilted backward to reduce forward speed and descent rate
+Collective Flare:
+Collective pitch increased to reduce descent rate. Rotor speed decreases
+Engine Failure
+Rotor disengaged from the engine by a clutch
+14
+
+
+Autorotative Index
+oA number indicating how well can a helicopter perform autorotative landing flare
+oAI = JΩ2
+GW
+ρ
+ρ0
+A
+T
+(need > 60 for single engine helicopters) (need > 25 for twin engine helicopters)
+15
+
+
+Max acceleration in level flight
+oFind max fuselage equivalent flat plate area (fmax) at
+which steady level flight is still possible (power required = power available)
+oCompute max forward directed thrust = 1
+2 ρfmaxV∞2
+oCompute actual thrust needed = 1
+2 ρfactualV∞2
+oExcess thrust = max thrust – actual thrust
+o1
+2 ρV∞2(fmax − factual)
+oMax acceleration = Excess thrust/Mass
+16
+
+
+Max Deceleration
+oRotor disk is turned backward for deceleration
+oStrong deceleration can lead to autorotation, which can
+increase rotor speed, which beyond a limit can damage
+structure
+oOnly 10% - 20% rotor over-speeding is permitted
+oCompute T, aTPP, H force, Fuselage Drag, etc. at the highest
+permitted rotor speed in autorotative conditions
+oRearward force = -TSinaTPP+ H + fuselage drag
+oMax deceleration = rearward force/mass
+17

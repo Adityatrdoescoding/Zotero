@@ -1,0 +1,127 @@
+Rotary Wing Aerodynamics
+(AE 667)
+
+
+Coning angle
+
+
+Flapping Hinge
+o Flapping hinge used to keep bending moments low at the blade root and hub by allowing blades to flap
+o Aerodynamic lift on blade causes upward flapping motion
+o Centrifugal forces cause downward flapping motion
+Lift
+Centrifugal force
+
+
+Flapping Hinge
+oHere, the hinge is assumed to be at the center
+oGenerally there is hinge offset, implications on control
+dL
+dFcentri
+r
+β0
+
+
+Flapping Hinge (Aerodynamic Moment)
+oFrom BE theory,
+oMoment:
+oIntegrating moment: dL
+dFcentri
+r
+β0
+dL ≈ 1
+2 ρc Ωr 2Cldr
+r. dL ≈ 1
+2 ρc Ωr 2rCldr
+()
+
+=
+=
+
+rR
+r
+c r rCl dr
+0
+2
+2
+1
+
+
+Flapping Hinge (Centrifugal Moment)
+dL
+dFcentri
+r
+β0
+• dFcentri = Ωr cos(β0) 2dm
+r ≈ Ω2rdm
+• Moment = r sin( β0)dFcentri ≈ Ω2r2β0dm
+Integrating moment : න
+r=0
+r=R
+Ω2r2β0dm ≡ IΩ2β0
+• Here, dm is the mass of the strip dr & I is mass moment of inertia of the rotor blade
+
+
+Equilibrium Flap Angle β0
+At equilibrium, moment due to aerodynamic lift = moment due to centrifugal forces
+()
+
+=
+=
+= 
+rR
+r
+I c r rCldr
+0
+2
+0
+2
+2
+ 1
+
+
+=
+=
+=
+= 
+
+
+
+
+
+
+
+==
+rR
+r
+effective
+rR
+r
+l
+R
+r
+d
+R
+r
+I
+acR
+I
+cr C dr
+0
+3
+4 0
+3
+0
+2
+1
+
+
+
+
+Lock Number (Υ)
+
+
+Lock Number (Υ)
+oMeasure of aerodynamic moment to centrifugal moment on rotor blade
+oΥ : 8 – 10 for articulated rotors Υ : 5 – 6 for hingeless rotors
+oHas implications on auto-rotation

@@ -1,0 +1,22 @@
+Despite notable advancements in rotorcraft aerodynamics, several critical gaps persist in current research. A primary limitation is the absence of mid-fidelity aerodynamic models specifically optimized for reduced-order model (ROM) extraction. While high-fidelity simulations and comprehensive CFD tools exist, they are rarely designed with the computational and structural constraints necessary for ROM generation, thereby limiting their deployment in real-time applications such as flight simulation and control design [4, 7, 12]. Moreover, a substantial portion of existing CFD-based studies particularly those addressing complex phenomena such as vortex ring state (VRS) and loss of tail rotor effectiveness (LTE) lack rigorous experimental validation, diminishing their predictive reliability for safety-critical scenarios [3, 4, 8].
+In addition, there remains a dearth of real-time capable aerodynamic models that can accurately capture the nonlinear, unsteady flow dynamics inherent in rotorcraft operations. Current ROMs are often overly simplified or insufficiently robust to generalize across the wide range of operational regimes, including transitions into and out of VRS, tail rotor failures, and ground effect conditions [7, 10, 11]. This oversimplification undermines their utility in high-fidelity flight training and performance prediction environments. Furthermore, much of the existing research exhibits a fragmented methodology, wherein computational and experimental approaches are pursued in isolation. The lack of an integrated simulation experiment ROM workflow reduces the reliability and transferability of the resulting models.
+Within the Indian context, the gap is even more pronounced. As outlined by Ganguli [14], rotorcraft research in India has traditionally focused on structural dynamics and control design, with limited emphasis on aerodynamic modelling frameworks that combine simulation and
+capabilities and its increasing reliance on rotorcraft platforms in both defence and civil sectors, the lack of robust, validated, and real-time aerodynamic models represents a significant technological shortcoming. Addressing these interconnected gaps is essential for advancing rotorcraft simulation fidelity, enhancing pilot training, and ensuring the safe operation of nextgeneration vertical lift platforms.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Timeline Months Activity 3 6 9 12 15 18 21 24 27 30 33 36 Project staff hiring Equipment procurement Simulation setup establishment Experimental setup development Force and moment measurements Flow measurements Simulations
+
+
+Validation and data interpretation ROM development and validation Dissemination and handover

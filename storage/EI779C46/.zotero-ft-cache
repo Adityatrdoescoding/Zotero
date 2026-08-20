@@ -1,0 +1,481 @@
+Review Article
+Model order reduction in aerodynamics: Review and applications
+Gonc ̧alo Mendonc ̧a, Frederico Afonso and Fernando Lau
+Abstract
+The need of the aerospace industry, at national or European level, of faster yet reliable computational fluid dynamics models is the main drive for the application of model reduction techniques. This need is linked to the time cost of highfidelity models, rendering them inefficient for applications like multi-disciplinary optimization. With the goal of testing and applying model reduction to computational fluid dynamics models applicable to lifting surfaces, a bibliographical research covering reduction of nonlinear, dynamic, or steady models was conducted. This established the prevalence of projection and least mean squares methods, which rely on solutions of the original high-fidelity model and their proper orthogonal decomposition to work. Other complementary techniques such as adaptive sampling, greedy sampling, and hybrid models are also presented and discussed. These projection and least mean squares methods are then tested on simple and documented benchmarks to estimate the error and speed-up of the reduced order models thus generated. Dynamic, steady, nonlinear, and multiparametric problems were reduced, with the simplest version of these methods showing the most promise. These methods were later applied to single parameter problems, namely the lid-driven cavity with incompressible Navier–Stokes equations and varying Reynolds number, and the elliptic airfoil at varying angles of attack for compressible Euler flow. An analysis of the performance of these methods is given at the end of this article, highlighting the computational speed-up obtained with these techniques, and the challenges presented by multiparametric problems and problems showing point singularities in their domain.
+Keywords
+Model order reduction, Galerkin projection, least mean squares reduction, proper orthogonal decomposition, computational fluid dynamics
+Date received: 17 July 2018; accepted: 2 May 2019
+Introduction
+Under the European NOVEMOR project, an optimization framework was created that allows for the multidisciplinary optimization (MDO) of airplanes with morphing aerodynamic surfaces.1 In this framework the aerodynamics of a wing is modeled using a panel code with skin friction and compressibility corrections to account for the viscous drag and transonic Mach (0.6–0.8) numbers present in normal commercial aircraft cruise conditions. The panel code was complemented by a surrogate model that added the aerodynamic forces due to the stabilizing planes and fuselage. These models allow for a simple computation of the drag and lift of the aircraft without being too costly to calculate, being well adapted to optimization routines that require frequent model computations.2 However, these simplified models and surrogate models are limited in their predicting power. Surrogate models are so limited due to the fact that they do not incorporate the ‘‘physics’’ of the problem: a set of parametrized curves is merely
+made to fit the given data. Simplified models are limited because the approximations that they are based on necessarily limit or misrepresent the underlying physics. For the aerodynamics module, the potential model with Prandtl–Glauert correction used by the authors ceases to be accurate for higher Mach numbers or when in presence of transonic shocks (which are not captured by potential flow theory). This is quite critical in the optimization of transonic aircraft as the appearance of shocks at subsonic speeds severely hampers the fuel economy of an airplane. To properly capture transonic shocks, a compressible Euler code or compressible Reynolds averaged
+Proc IMechE Part G: J Aerospace Engineering
+2019, Vol. 233(15) 5816–5836 ! IMechE 2019 Article reuse guidelines: sagepub.com/journals-permissions DOI: 10.1177/0954410019853472 journals.sagepub.com/home/pig
+IDMEC, Instituto Superior Te ́cnico, Universidade de Lisboa, Lisboa, Portugal
+Corresponding author:
+Fernando Lau, CCTAE-IDMEC—Instituto Superior Tecnico, Av. Rovisco Pais, Lisbon 1049-001, Portugal. Email: lau@tecnico.ulisboa.pt
+
+
+Navier–Stokes (RANS) code should be used. These higher-fidelity models or high-definition models (HDMs) would be able to properly predict the very complicated phenomena that must be accounted for when designing a commercial airplane, but they may take far too much time to compute once inside an optimization loop. Ideally there would be a way to create a simpler and faster model that still captures the relevant physics encoded in the HDM. One method not yet fully explored is model order reduction (MOR).3 MOR takes the partial differential equation (PDE) or ordinary differential equation (ODE) described by the HDM and generates a reduced order model (ROM) that is essentially another, smaller, equation set with less unknowns. This ODE is supposed to be much faster to compute while generating results not very different from the HDM. In other words, the point of MOR is to take the HDM and generate a model that is faster to compute but still captures the same physics of the HDM. This possibility of obtaining a result closer to reality with smaller computation times has led both the industry and the scientific community to investigate MOR. However, the complexity of the models used in the aerospace industry means that there are no readily available software packages for creating and computing ROMs. Lucia et al.4 provide a review on ROM with specific focus on Volterra series, proper orthogonal decomposition (POD), and harmonic balance for computational aeroelasticity and unsteady aerodynamics applications. Chinesta et al.5 and Benner et al.6 presented overviews of proper generalization decomposition (a priori) and projection-based reduction (a posteriori) methods, respectively. More recently, Lu et al.7 provided an extensive review of POD methods. Nayfeh et al.8 presented an overview of ROMs to be applied for studying MEMS devices. In Lassila et al.9 the authors present a survey of ROM methods, with special attention to Galerkin-projection ROMs, for incompressible fluid dynamics, considering both steady and unsteady cases. An overview of ROM for large scale systems was done by Antoulas et al.10 Some test cases were presented including structural, building, heat, CD player, clamped beam, and Butterworth filter models. ROMs for both linear and nonlinear problems were reviewed by Baur et al.11 Ghoreyshi et al.12 reviewed ROMs (including Volterra series, radial basis function, and surrogate models) for stability and control analysis that use computational fluid dynamics (CFD). A recent book covering several ROM methods and providing a tutorial to ROMs was edited by Benner et al.13 Also recently, Yondo et al.2 provided a useful survey covering the broad topic of surrogate models for aerodynamic analyses, where the authors also provide the advances in MOR alongside other methods. ANSYS14 has recently presented their own efforts and interest in model reduction. The primary
+applications discussed involve speeding up simulation time and design space exploration; to create real-time models for control, monitoring, and diagnostics; to enhance the simulation of heterogeneous systems, and thus model-based systems engineering. The company itself displayed its recent progress with MOR and its proprietary CFD software: FLUENT. For a test case of flow under the hood of a car, with a k–e turbulence model, it was shown how a ROM generated a result with a maximum error in pressure of 1.2% relative to the HDM. In terms of speed-up, the ROM has taken 3 s to run on a laptop, and the HDM took 2 h on a 16-core cluster.14 A leave-one-out error estimator was used to estimate ROM error. A recent effort by researchers in Prague and Hamburg led to the development of a MOR tool for simpleFOAM, a steady state-solver available in OpenFOAM for incompressible flows, featuring turbulence modeling.15 The authors used the discrete empirical interpolation method (see Chaturantabut and Sorensen16 for another description of the method), a hyper-reduction method based on the Galerkin projection and POD. The thus developed tool was used to optimize the gas flow speed in a separation column, used by the oil industry to separate the various species in crude oil. Another tool for OpenFOAM, called ITHACAFV,17,18 is in its early development at the Mathlab of SISSA, in Trieste, Italy. As part of the European AROMA-CFD project, it attempts to provide several reduced order modeling techniques to be used on parametric problems in OpenFOAM. The European program AEROGUST for aircraft robustness against wind gusts19 funded several MOR efforts: these include MOR in the time domain by Fourier decomposition, developed by NUMECA;20 a hybrid technique, developed by Optimad Engineering, and later applied to the shape optimization of the front bumper of a car,21 which was almost 4 faster than traditional CFD optimization with an error of 0.49%; a free-form deformation method with POD-based ROMs was tested to optimize the aerodynamic shape of a car’s front bumper22 and a sailing boat23; the least mean squares method with POD, developed by the DLR, which is employed in their aircraft multidisciplinary design optimizer to find the critical load cases in the aircraft’s flight envelope (and thus, size its structure)24 including gust loads (considering unsteady aerodynamics).25 The DLR has also researched a method using Isomap for basis creation.26,27 In Ripepi et al.,27 the efforts carried out by DLR under the project Digital-X on MOR are summarized, which include POD- and Isomap-based ROMs. Other research efforts include: the reduced basis methods and the surrounding community;28,29 proper generalized decomposition (PGD) which was partly developed by EADS (now Airbus Group) researchers5,30,31 and has been applied to composite
+Mendonc ̧a et al. 5817
+
+
+structures; and MOR for satellite thermal problems being developed by NASA.32 These technologies are still being perfected and the main issues to solve in this area are ‘‘certification’’ or finding accurate measures of ROM error without solving the HDM; how to obtain reliable ROMs for nonlinear parametric problems (such as aerodynamics); how to integrate a ROM in an automatic optimizer, since data or designs initially used to train a ROM may be very different from the true optimal design. The point of this work is to present a comprehensive review of several MOR methods, together with specific test cases and with a special focus on aerodynamic applications and their applicability to CFD. The objectives can then be listed as such:
+. Research available model reduction methods and ascertain the state of the art in MOR; . Test chosen model reduction methods on simple problems exhibiting properties similar to CFD models; . Test chosen model reduction methods on simple CFD models with physical phenomena present in modern aircraft; . Conclude on the applicability of MOR to CFD of lifting surfaces and its eventual use in MDO.
+Hence the goal is to understand the error and speedup generated by the use of existing MOR techniques, in particular for aerodynamic models. In other words, the goal is to study the error and speed of ROMs relative to the high-fidelity models from which they were created. This work, coupled with other literature of this area and related to the HDMs themselves should allow the reader to quantify how much faster a ROM is relative to a real-life testing campaign and how far apart ROM’s results are from reality.
+Background
+This section presents the bibliographical research done on MOR methods, in particular their theory, the state of the art, and how they can be applied in typical industry problems. The section is organized as follows: First, model reduction methods, which replace the original HDM problem or equations by another, reduced problem or equation set, are shown and discussed. Second, basis creation, or how to create the basis for the reduced solution subspace, is presented. Then, error estimation and control deals with the estimation of error for the models discussed. Subsequently, sampling, or how to extract data from the HDM, so as to obtain the best reduced basis possible, is treated. Finally techniques that do not fit the previous definitions are shown. These techniques are used to decrease the error of the ROM and are presented in the ‘‘Precision’’ subsection.
+Model reduction methods
+A posteriori methods. These methods rely on previous full-order calculations so as to generate the required reduced basis. A distinction is made between basis generation and model reduction methods, because basis generation does not necessarily determine the new equations to be solved, but their coefficients. This distinction is also useful to understand the literature around model reduction with POD and detect similarities between the several methods.
+Projection-based reduction methods for PDEs are based on the following concept: take the following semi-discretized (as in discretized by finite elements, finite volumes, or finite differences) parametrized PDE system in the form33,34
+dwð Þ
+dt 1⁄4 f ðwð Þ, Þ ð1Þ
+y 1⁄4 gðwð ÞÞ ð2Þ
+Here w 2 Rn (n being the order of the HDM) is the HDM state vector, l is the parameter space vector, f is the system function, g is the output function, and y are the system outputs. Though a dynamic system is shown, the following ideas can be applied to a steady system too. Given a n k matrix V, called the reduced basis, and reduced state space vector q 2 Rk (k being the order of the ROM with k < n), such that
+Vq w ð3Þ
+V is then a basis for the subspace of order k in Rn that would well approximate the trajectory of w, meaning the space occupied by w as the time or parameters vary. Considering the above assumption and a residual term r to account for this approximation equation (1) can be rewritten as
+d Vqð Þ
+dt 1⁄4 f ðVqð Þ, Þ þ rð , tÞ ð4Þ
+The residue r 2 Rn needs to be eliminated in order to have a system that only depends on q. Suppose another n k matrix W, such that
+WTrð , tÞ 1⁄4 0 ð5Þ
+The reduced order system can be written as
+dqð Þ
+dt 1⁄4 ðWTVÞ 1WTf ðVqð Þ, Þ ð6Þ
+y 1⁄4 gðVqð ÞÞ ð7Þ
+This is called the Petrov–Galerkin projection. The equations are projected onto a subspace that should capture well the dynamics of the complete solution, in a direction parallel to the residue due to
+5818 Proc IMechE Part G: J Aerospace Engineering 233(15)
+
+
+the use of such a subspace. One intuitive notion of this method can be found in aircraft performance and flight modes courses taught in university: Dutch roll can be considered to be a horizontal motion, with acceptable error in period (less than 10%).35 In this case the equations of motion of the aircraft were ‘‘projected’’ onto the horizontal plane of motion, producing a model with less unknowns than before and giving a solution with acceptable error. For V 1⁄4 W, one obtains the so-called Galerkin projection. For CFD, even though we solve a stationary problem, a time marching method might be used to find the answer. Therefore, model reduction techniques that deal with dynamical systems are also explored in this article. Unfortunately, projection-based methods require to a certain degree to tamper with the solver. This is because the equation to solve is no longer f ðÞ 1⁄4 0 but ðWTVÞ 1WTf ðÞ 1⁄4 0.
+An evolution of these methods, hyper-reduction, is a Galerkin or Petrov–Galerkin projection where only certain entries of f are evaluated and the rest of the solution is reconstructed from these entries.34,36 These methods are more complex than those presented before and require full-access to the source code of a model. An overview of projection-based reduction methods is provided by Benner et al.6
+Least mean squares reduction, in theory is quite simple and presents many variants,37–39 but only the version in Iollo et al.38 will be shown. For a steady system it is posed as follows
+q 1⁄4 arg mqin jj f ðVq, Þjj ð8Þ
+Therefore, rather than projecting the system of equations in such a way that one can neglect rðt, Þ, the residue for a given basis V is minimized. Rather than minimizing the error over all reduced state space, one can try to minimize the residue at a boundary as in Iollo et al.,38 add regularizations or even attempt to optimize the base V.39 This method has been applied with satisfactory results for 2D Euler (see Iollo et al.38 and LeGresley and Alonso40) and 3D RANS equations (see Ripepi and Go ̈ rtz41).
+Reduction by L1-norm minimization was developed in Abgrall et al.42 specifically for hyperbolic equations and is based on their discretization by the finite volume method. For a steady problem, the ROM is
+arg mqin f ðVq, Þ 1
+1 ð9Þ
+See Abgrall et al.42 for other variants and the method for dynamic systems. For the 1D Euler equations, the authors found the precision of the solution to be enhanced if q is calculated separately for each physical quantity being evaluated (velocity, pressure, etc.). The article is recent (published in 2016) and the
+authors are currently trying to extend the method to the multidimensional case and are developing an error measure.
+A priori methods—The PGD. PGD has been used for uncertainty quantification in several domains, including structural calculations (see Chinesta et al.5 and Chevreuil and Nouy43 or Chinesta et al.30 for a discussion on the matter). More recently, it has been applied to the incompressible Navier–Stokes equations in Dumon et al.44 for a lid-driven cavity problem, with a speed-up of 10 relatively to full HDM. Given a parameter vector 2 Rp, consider that each lj parameter is a random variable with a known probability function, each variable being independent from the rest. Suppose these parameters are influencing a field w^ ðx, Þ, that is well described by a certain PDE. The PGD works by doing a multiplicative decomposition of the field in the form45
+w^ ðx, Þ
+Xk
+i1⁄41
+viðxÞqið Þ ð10Þ
+qið Þ
+z X
+l1⁄41
+q0
+l
+Yp
+j1⁄41
+j
+lð jÞ ð11Þ
+where v(x) is a functional basis, qð Þ is the reduced state space variable, and ð Þ are functions describing the dependency of the reduced variable on the parameters. Once the PDE modeling the field w^ ðxÞ has been discretized via finite differences, finite elements, or finite volumes, one can work with the discretized field w, and the first equation is written as
+w
+Xk
+i1⁄41
+viqið Þ ð12Þ
+A reduced representation similar to the previous section is obtained, with the vectors vi forming the n k reduced basis matrix V. The major difference relatively to the previously presented a posteriori methods is that the reduced state variable q is made to depend explicitly on the parameters, and both the terms vi and q0
+l are to be determined. The method of
+determining these terms and j
+l ð jÞ depends on the PDE in question, with methods for structures, diffusion, and others being presented in Chinesta et al.,30 where it was made clear that there are problems with linking the PGD to equations discretized by firstorder upwind schemes.
+Basis creation
+For any of the aforementioned a posteriori model reduction techniques, it was not specified how the reduced basis V is computed. This was done to separate these two distinct problems: how the reduced model response is calculated; and in which subspace
+Mendonc ̧a et al. 5819
+
+
+of the full-order state space it is calculated. The former is the domain of the model reduction technique; the latter of the basis creation method, which usually takes a snapshot set (a set of precalculated solutions), and generates the reduced state space.
+POD. The idea behind the POD is to find the basis V for the projection, such that the orthogonal error (component of the error orthogonal to the subspace defined by V) is minimized over the time and parameter space considered. This may be done by finding V that minimizes the L-2 norm of the projection error over the time and parameter space samples
+X
+i
+1 2
+Z
+t
+wðt, iÞ VVTwðt, iÞ 2dt ð13Þ
+It is shown46,47 that the optimal basis in this sense is the same as the basis for the invariant subspace (basis made of the eigenvectors) of the first k-ordered (from biggest to smallest) eigenvalues of the following matrix
+K^ 1⁄4
+Z
+t
+wðt, 1Þ . . . wðt, n Þ wðt, 1Þ . . . wðt, n Þ Tdt
+ð14Þ
+Solving this eigenproblem gives optimal PODbasis. Equation (14) can be discretized in time, leading to the snapshot POD. The so-called snapshot matrix S would then be the square root of the time integration method’s weights multiplied by the samples of the HDM (or snapshots) at the corresponding time point
+S 1⁄4 1⁄2 ffiffiffiffiffi
+1
+p wðt1, 1Þ . . . ffiffiffiffiffiffi
+nt
+p wðtnt , n Þ ð15Þ
+K^ SST ð16Þ
+Here ai are the time integration weights. This spe
+cific method was initially developed by Sirovich.48 In the case of steady problems with an Euclidean norm (as presented in equation (13)) the snapshot method is exact (there is no time discretization) and the snapshot matrix is simply
+S 1⁄4 1⁄2wð 1Þ . . . wð rÞ ð17Þ
+Here r is the total number of snapshots. Rather than solving directly the new eigenvalue problem, one can employ singular value decomposition (SVD) to do it. To obtain V, one can simply compute the SVD of S as
+S 1⁄4 U ZT 1⁄4 1⁄2U1 . . . Ur . . . Un r r
+0n r r
+ZT ð18Þ
+where Ui are column vectors belonging to Rn, r r is a diagonal matrix, and Z is a r r matrix. Assuming that both the eigenvalues and the left eigenvectors
+are ordered in decreasing magnitude, we can immediately write the modal basis of the kth (where k4r) order model as
+V 1⁄4 1⁄2U1 . . . Uk ð19Þ
+The SVD method has the benefit of being much faster to compute than the complete eigenproblem, while still having algorithms that retrieve the biggest eigenvalue in an iterative fashion. The power behind this whole process is that no assumptions are made on the original PDE itself, or on the properties of the ODE or solution that is reduced.49,50 In short, one can define the whole process behind the SVD–POD and like-minded methods to be:
+1. Pose an optimization problem, of which the reduced basis V is the solution. 2. Discretize said problem over the considered space. 3. Generate the modal basis V from the discretized problem. 4. Solve the ROM.
+Though this might seem just a repetition of something that can be seen from above, it is paramount to state it for it induces the questions that many researchers have made and tried to answer: is there a better problem to pose for a given application? What solution samples or ‘‘snapshots’’ should be taken? What norm should be used for the optimization problem? And how should the modal basis be created? The reduced basis community seeks to consolidate projection methods, POD, snapshot, and basis generation into one mathematically solid package, with precise error bounds. Ohlberger and Rave29 give the advances and limitations of the reduced basis methods for reduced order modeling, mentioning shockcapturing methods and more interestingly methods to capture geometrical parameter dependence (for dynamic problems). These methods rely on a complete mathematical analysis of the PDE to be solved, making their generalization difficult.
+Inner-product modification of the traditional POD problem can be done in the search for a better basis. One can, for example, use a change of variables, so that the POD expresses an energy that is conserved in the full-order problem;51 one can also modify the inner-product used for computing K and K^. In other words, a symmetric positive-definite (or semi-definite for a demi norm) matrix M is chosen such that
+K^ 1⁄4
+Z
+t
+wðt, 1Þ . . . wðt, n Þ M wðt, 1Þ . . . wðt, n Þ Tdt
+ð20Þ
+For the standard POD, M would be the identity matrix, but one could choose a semi-norm based on the outputs for the system, leading to the
+5820 Proc IMechE Part G: J Aerospace Engineering 233(15)
+
+
+goal-oriented POD. Discussed in Carlberg and Farhat52 and presented in Bui-Thanh et al.,39 the idea is to go from a problem where the projection error of the state is minimized, as stated in equation (13), to minimizing the error of the output
+1 2
+Xn
+i
+gðwð iÞ, iÞ gðVVTwð iÞ, iÞ 2 ð21Þ
+To solve this problem, it is suggested in Carlberg and Farhat52 to compute the original problem in equation (13) but with the inner-product H given by
+1⁄4 @g
+@w
+T @g
+@w , g 1⁄4 gðwð Þ, Þ ð22Þ
+Here are the parameters of the solutions to compute and wð Þ can be estimated by the methods presented in compact POD. For the case where the outputs depend linearly on the state variables, this changes the problem expressed in equation (21) into
+1 2
+Xn
+i
+@g
+@w ðw VVTwÞ
+2
+ð23Þ
+To compute the problem, the SVD method can be used by recalculating the snapshot matrix as
+Snew 1⁄4 1
+2Sold ð24Þ
+One could also use an inner-product based on the Jacobian of f, called the system-induced inner-product
+1⁄4 @f
+@w
+T @f
+@w , f 1⁄4 f ðwð Þ, Þ ð25Þ
+The point of this inner-product is to also minimize the in-plane error. All of the derivatives are computed for the target parameters and the estimated solution given by equation (26). The authors do not seem to study the difference induced by either inner-product in their article. Bui-Thanh et al.39 generalize the idea exposed in Willcox et al.53 to nonlinear systems and go beyond changing the inner-product, stating a new problem to be minimized that mixes the model reduction technique and basis creation. It is shown that for linearized problems this method gives better results than just using POD, especially when the focused outputs are far less than the total number of states. However, no study of the computation time of the optimized basis is given, and no contrast is given between the total computation time of unmodified POD and the new method.
+Adaptive finite-element snapshots, developed in Ullmann et al.54 allow for a POD of snapshots from triangular meshes exhibiting different degrees of refinement. Starting from triangular finite elements, the author provides a group of triangular meshes and shows how one can interpolate the function values of one mesh onto another, more refined
+common mesh. All snapshots would then be converted onto this common base. The author proposes a method where the ROM can still be created without generating this costly finite element space, where pairs of snapshots share a common mesh. It was shown both mathematically and by numerical experiments with an advection–diffusion equation and with a 2D diffusive Burgers’ equation that this last method added a permanent error component related to the finite element discretization of the snapshots, while the method with the global common mesh did not. The Burguers equation used was a parabolic problem with adaptive refinement in time and the advection–diffusion equation was elliptic with different meshes for different parameter values. This may be useful for optimization, especially in transonic aerodynamics where a slight change in shape may be the difference between absence and existence of shocks. Unfortunately it restricts itself to 2D domains.
+For the case of moving boundaries a strategy is given in Liberge and Hamdouni55: the fluid velocity field of the moving grid is interpolated onto a fixed uniform grid and the solid domain is represented in this grid by the fictitious domain method. Here the Navier–Stokes equations are extended to the rigid domain and a rigid constraint is added to the zone occupied by the rigid body. The authors used this with the snapshot POD to simulate the vibration induced by high Reynolds number (140,000) flow impacting a rigid cylinder attached by a spring to its origin. It was shown that the model error diminished with POD modes, and that with just six modes (therefore a sixth-order model) they match fairly well (with a relative error below 2%) the exact oscillation of the center of gravity. This could be useful for aeroelastic problems.
+Compact POD. The compact POD brings the computed HDM sensitivities to the foray, by including them in the snapshot matrix. The method outlined in Carlberg and Farhat56 and further developed in Carlberg and Farhat52 is made specifically for steady systems. According to the authors, it provides a generalization of the original Lagrange-basis snapshot method into a Taylor one. In other words when discretizing the original problem in equation (14) into equation (15), the target solution is interpolated using other solution’s derivatives relative to their parameters (meaning, their sensitivities) up to an arbitrary order and add these interpolations onto the snapshot set. Suppose there exists p parameters, a precalculated solution wð Þ and its Jacobian relative to the parameter, and the solution of the target parameters is to be computed. From Taylor’s theorem
+wð Þ 1⁄4 wð Þ þ
+p X
+i1⁄41
+@wð Þ
+@i
+ð i iÞ þ O ku k2
+2
+ð26Þ
+Mendonc ̧a et al. 5821
+
+
+Removing Oðjju jj2
+2Þ would give an approximate yet computable value of the target solution wð Þ which can be integrated into the snapshot matrix (see Carlberg and Farhat52,56 for the method). For n HDM samples, the full snapshot matrix is obtained by concatenating several individual snapshot matrices Si 1⁄4 Sð iÞ premultiplied by a Gaussian radial basis function. This gives more weight to snapshots closer to the desired state. The modal basis can then be computed via SVD. The downside of this method is that the SVD must be recalculated each time and that additional computations must be done to construct the snapshot matrix. Other methods57,58 considering snapshot sensitivities to improve reduced model accuracy have been applied to CFD problems. In Ito and Ravindran57 the authors developed a reduced order method which uses optimization techniques, while in Zimmermann58 a method that recurs to surrogate modeling was implemented.
+Error estimation and control
+For the Galerkin projection, the total error et can be decomposed in two components: the orthogonal error e? and the collinear error e== which are given as33,59
+et 1⁄4 w Vq 1⁄4 e== þ e? ð27Þ
+e? 1⁄4 ðI VVTÞw ð28Þ
+e== 1⁄4 VðVTw qÞ ð29Þ
+If the basis is obtained via the unmodified POD, it can be shown that, at the same time and parameter values of the snapshots, the orthogonal error of a kth order ROM is given by
+epriori
+? ðt, Þ
+F
+1⁄4
+ffiffiffiffiffiffiffiffiffiffiffiffiffiffiffi
+Xr
+j1⁄4kþ1
+l2
+j
+vuut ð30Þ
+It can then be deduced that when k 1⁄4 r the orthogonal error is null. The following equation
+kSkF 1⁄4
+ffiffiffiffiffiffiffiffiffiffiffiffi
+Xr
+j1⁄41
+l2
+j
+vuut ð31Þ
+and the previous equation (30) can be used to control the orthogonal error at the snapshot points before even doing ROM calculations, in other words, it is an a priori error measure. In Petzold and Rathinam,60 error bounds were derived for the case of the PODGalerkin reduction of a nonlinear ODE. For the same parameters and inputs, the total and collinear error over time can be bounded by using the orthogonal error
+jje==ðtÞjjL2 5 jje?ðtÞjjL2 ð32Þ
+jjetðtÞjjL2 5 0
+rjje?ðtÞjjL2 ð33Þ
+Here 0
+r is a constant (numerical experiments done
+in Behzad61 show that 0
+r decreases with model order). The Lebesgue L-2 norm over time (the parameters are fixed) is used. For dynamical systems one can thus combine equations (33) and (30) to obtain a priori error bounds over the total error at the time instants where the snapshots were taken. Care should be taken with this result: the bounds were not derived for the case where parameters or inputs vary. The error measures are only at the instants where snapshots were taken. Two methods applicable to any type of ROM will be presented next.
+The Leave-one-out cross validation, presented in Braconnier et al.,62 supposes that the parameter space or region to explore has been partitioned in r partitions, each with its own sample of the HDM. The leave-one-out cross validation error for a snapshot with parameter set lk is then given by
+Eð kÞ 1⁄4 wð kÞ V kqð kÞ k 2 ð34Þ
+Here V k is the basis obtained by including all available snapshots except wð kÞ (see Brand63 for a way to rapidly compute such a basis) and qð kÞ k is the ROM solved state variable at lk for the modal basis V k. This is taken as good error measure of the error around lk. A measure for global (over the considered region) error is given by the half of the sum of all the leave-one-out errors.
+The Jacobian-based estimator is being proposed in this article, in order to relate the residual to the actual error on the solution. Suppose the residual of the reduced state solution of a stationary system computed at the target parameter set l is given as
+r 1⁄4 f ðVqð Þ, Þ ð35Þ
+Suppose that there exists a small increment dw, called argument error, such that
+0 1⁄4 f ðVqð Þ þ w, Þ ð36Þ
+By subtracting the above equations and considering the residual to be very small one has
+r 1⁄4 f 1⁄4 f ðVqð Þ þ w, Þ f ðVqð Þ, Þ ð37Þ
+If the increment is small enough, one can use the first-order Taylor approximation of f to say that
+ri
+@fi @wj
+ðVqð Þ, Þ wj ð38Þ
+Therefore, we can estimate the argument error as
+E 1⁄4 @fi
+@wj
+1
+ðVqð Þ, Þri
+2
+jj wjj2 ð39Þ
+5822 Proc IMechE Part G: J Aerospace Engineering 233(15)
+
+
+Any CFD code featuring sensitivity analysis or gradient-based shape optimization should be able to compute @fi
+@wj ðVqð Þ, Þ. In particular, for codes using
+algorithmic differentiation, the Jacobian is critical for computing the state sensitivities (dw
+d ) for stationary systems through
+0 1⁄4 f ðw, Þ 0 1⁄4 @f
+@w ðVqð Þ, Þ dw
+d þ @f
+@ ðVqð Þ, Þ
+(
+ð40Þ
+This estimator can then be used to address a known problem in greedy methods (mentioned in Paul-Dubois-Taine and Amsallem64 and Choi et al.65) using the residual as error estimators, which is that the residual might not reflect the proper scale of the error. The leave-one-out error estimates error for a region of parameter values, while this proposed method estimates the error for a given set of parameter values. This might be useful for optimization, where the optimum may be outside the region of parameter values initially used for the leave-one-out error estimator. The downside of this Jacobian estimator is the inversion of the Jacobian, which can be computationally costly.
+Sampling
+The problems to tackle in this section are how to choose the starting snapshots and how to further improve the modal basis by choosing the best snapshots possible. According to Carlberg et al.34 and Amsallem and Farhat,66 an initial method to gather samples would be to use uniform sampling (recommended for less than five parameters) or Latin Hypercube sampling (recommended for more than five parameters). Other than that, there are several strategies which are grouped in two types: greedy strategies, which choose samples that minimize an error measure of the ROM over the specified parameter space; and adaptive sampling, which seeks to minimize error along a trajectory through the parameter space, and not the overall space. Greedy methods are intended for offline–online strategies where one first constructs the best possible modal basis, and then the ROM is used to get the desired results. The most basic version searches for the parameter set that maximizes the residual, computes its snapshot, adds it to the snapshot set, and restarts the search until a certain criterion is reached.66 More advanced methods such as Haasdonk et al.67 or the ones presented next keep the principle, but try to avoid long sample generation times and over fitting. This is usually achieved by partitioning the parameter space, using alternative and faster methods to estimate error, and stopping the search after a certain, fixed number of samples is taken. Optimization done using greedy methods may take more time than full HDM optimization. In Choi
+et al.,65 for one of the cases shown, a full HDM optimization took almost 1/50th of the time of the off-line basis building procedure. Adaptive sampling is on-line only: each call on the ROM might entail taking a new snapshot. It is therefore geared toward optimization. Unfortunately most methods found so far in the literature are oriented toward optimal control and affine parameter dependency. Examples of the former are the trust-region POD (TR-POD) given in Fahl and Sachs68 and optimality systems POD (OS-POD) given in Volkwein and Kunisch.69 TR-POD could be applied to parametric optimization (there is no specification of time or parameter dependency), but it requires the computation of a new snapshot and evaluation of the exact cost function at each step. This could be beneficial if one does not have the model sensibilities and is required to perform numerical differentiation to compute the gradient, which demands additional calls on the HDM under normal circumstances. However, most modern software already give the sensitivities required to compute the gradient of the cost function. To make this method useful one could ‘‘skip’’ some HDM evaluation steps. The second problem (affine parameter dependency) can be seen in Dihlmann and Haasdonk70: the authors manage to treat PDE operators that depend linearly on the parameters, but in the Navier–Stokes equations these correspond to fluid characteristics, which are not to be optimized. An interesting method relying on leastsquares Petrov–Galerkin reduction is given in Zahr and Farhat,71 with good results for the inverse design of a subsonic profile: the total number of HDM calls for the inverse design procedure based on the algorithm was less than 1/4th of those for full HDM gradient-based optimization. This method is quite complex, relying TR-POD, OS-POD, and POD on state sensitivities to work. Work is reportedly being done to apply hyperreduction based on this method, to gain additional speed-up. Given that greedy methods can be readily applied to any class of problems no matter what type of parameter, some interesting greedy methods will be presented. Owing to the time cost of the SVD a method for fast SVD computations will be shown at the end.
+Quad-tree exploration with leave-one-out error cross validation. Developed in Braconnier et al.,62 this greedy method uses the leave-one-out cross validation to estimate the error around the region of a snapshot and the global error of the modal basis. It then does a quad-tree split of the region with most error and generates new snapshots at the center of the new subregions. The method is tested on a few test functions and on the snapshots of a HDM computation of a RAE-2822 in a flight envelope with a subsonic–transonic transition. There was no calculation of the ROM, rather a Kriging interpolation of the reduced state variable was employed similar to Xiao et al.72 However, due to no reference to what technique gives
+Mendonc ̧a et al. 5823
+
+
+us the reduced order solution, their method is fully applicable to actual ROM error reduction. According to the authors, the method allowed to greatly diminish surrogate model error relatively to other random sampling methods using the same number of snapshots all the while bringing about a 0.47% increase in computation time. It also managed to capture the transonic transition, which was not possible with the presented random parameter sampling methods. The base building procedure is as follows:
+1. Divide the space to explore recursively into 2p regions, p being the number of parameters. Take snapshots at the center of each region. 2. Compute the local leave-one-out errors Eð iÞ and the global error E. If E is bigger than a certain tolerance, continue to the next step. 3. Find the parameter set lk with the biggest local error estimate and subdivide its corresponding region again into 2p regions, and take snapshots at the center of each region. Freeze the original parameter set lk: no further refinement can be done for it, only on its children (thus preserving the quad-tree structure). 4. Repeat from step 2 until E is lower than the prescribed tolerance.
+As it can be seen, this requires the computation of the several SVDs, where we add and take vectors from the snapshot set. To reduce the computation time the authors use the fast SVD downgrading and updating methods presented in Brand.63
+Kriging-based greedy search. Presented in Paul-DuboisTaine and Amsallem64 the method has three characteristics that make it stand aside from the rest:
+1. The time to build the database is estimated, and a method is given so that the user can control how long the database building takes. In short, a maximum model order is defined, from which the maximum modal basis construction time and ROM solve time is deduced. The solve time for the HDM is assumed to be independent of the parameters. Then a cap is placed on the maximum of ROM and HDM solves and basis construction. 2. The random initial snapshot set is used to create a surrogate Kriging model for the error, and further candidate parameter sets are chosen based on the method of maximum probability of improvement on this surrogate. Upon each improvement cycle, an optimal cluster of parameters is selected from the original maximum probability improvement set and their snapshots computed. These snapshots are integrated into the ROM, the error indicator computed, and their error indicators integrated into the surrogate. Determining the best possible snapshots requires no ROM or
+HDM solves until the moment when a snapshot is generated and integrated into the database. 3. The exact error is computed by comparing the snapshot with the ROM solution for the same parameter values for the old and updated database. These exact error indicators are created at each search cycle and give a pool of exact indicators from which to build the surrogate error model.
+As can be inferred from above, the algorithm has a certain complexity. Still, the usage of the surrogate model and optimal parameter clustering was shown to give consistently better convergence (error of the model decays faster) than a classical or random greedy algorithm for the given test case of the advection–diffusion equation of heat on a fractal domain (which is of interest for fluids). Additionally, for the structural problem of a blast under a V-hull, it was shown that for the same time budget the surrogate-error greedy method always gives a smaller error than the standard greedy procedure stated in the same article.
+Precision
+This section presents ways to ensure that the ROMs stay as close as possible to the original full-order models, seeking to preserve some information or part of the latter. It starts by presenting how one can, for dynamical systems, obtain a ROM whose dynamics are close to that of the original model. The reason behind this is that even though the idea is to work with stationary CFD, some solvers use time-marching methods. Time-marching methods solve a steady equation by simulating the response of the original dynamical system to a constant input. If the stability of this system is not preserved, the resulting ROM may diverge. Lastly, methods mixing reduced and full-order models are presented. These still speed up calculations while keeping the error as small as possible.
+Stability preservation. For dynamical systems, PODleast mean squares tends to be dissipative and stable,37 but the POD-Galerkin can generate unstable models as shown in Rowley et al.51 The solution given by Rowley et al.51 is to choose an inner-product for the POD that is equivalent to an energy product, as it is demonstrated that in this way the stability of the original system is preserved. For compressible isentropic flows, the authors suggest using a change of variables for the POD inner-product so that it expresses the stagnation enthalpy. An alternative far less complex approach is to use artificial viscosity. As it is noted in Weller et al.,37 Behzad,61 and Bergmann et al.73 using the streamwise upwind Petrov Galerkin (SUPG) to model the Navier–Stokes equations allows the POD-Galerkin to faithfully reproduce the dynamics captured by the snapshots used to build it; it also allows it to remain
+5824 Proc IMechE Part G: J Aerospace Engineering 233(15)
+
+
+stable and precise when the original direct numerical simulation (DNS) model was too coarse to faithfully capture the desired dynamics.61 Variational multiscale (VMS), of which SUPG is a particular case, can also be used, and is shown in Weller et al.37 and Bergmann et al.73 to give improved results at no additional computational cost. Both methods however need to be calibrated: SUPG requires the calibration of one parameter and VMS of two. In Behzad61 the artificial viscosity parameter of SUPG was based on the original article presenting the SUPG method74 while in Bergmann et al.73 the authors developed and employed a method that calibrates these parameters in a specific optimal fashion; they also point to Hughes et al.75 for a method that is model independent, requiring no calibration for either VMS or SUPG. It seems that the choice of parameter can affect the long term integration of the ROM: for a SUPG ROM in Behzad,61 a stalled airfoil would produce no CD and CL oscillations after the snapshot time interval (meaning the time interval where snapshots were taken) was exceeded. Instead, they converged to a mean value equal to the mean value of the HDM. In Bergmann et al.73 snapshots were taken for one vortex shedding cycle of a square cylinder. Here, both SUPG and VMS ROMs remained accurate for 40 vortex shedding cycles after the initial conditions, therefore well after the initial snapshot set. For the general case where one may use either RANS, large eddy simulation, or compressible Euler, Bergmann et al.73 present a review of stabilization methods that add dissipation directly to the reduced model in its ODE form.
+Hybrid methods. Hybrid methods attempt to marry an HDM and a ROM so as to speed up calculations while preserving a precision comparable to that of the fullorder model. A hybrid ROM achieves this marriage by reducing the part of the domain that changes the least with the parameters or boundary conditions being varied. An example can be found in Bergmann et al.76 to analyze the effects of wind gusts on an airfoil, the response of domain with no airfoil is calculated, and the corresponding snapshots are used to reduce only the far field of the full computation. Near the airfoil a full-order model is used, and the two domains are coupled via a Schwarz method.
+Hybrid reduction by domain decomposition seems to have its origins in the report77 and later the article,73 where the authors speed-up by 20% the DNS calculations of a vortex-shedding square-cylinder, by using a POD-least mean squares ROM during 30% of the calculated time interval. But rather than using PODleast mean squares to reduce part of the time, Iollo et al.38 suggested using it to reduce part of the physical domain. In this case, the authors analyzed a convergent–divergent conduit with the compressible Euler equations. No shocks were present. The divergent end had its geometry and exit pressure varied,
+while the convergent end remained steady. The full domain was cut in two, overlapping domains: one for the convergent part and the other for the divergent one. For the former POD-least mean squares was used and for the latter a full solve was done each time. To get the complete answer, the two domains were coupled via the Schwarz method (see Dolean et al.78 for a brief presentation or the full book for a complete overview). The authors obtained relative (to the full HDM) errors on the state variables smaller than 0.5%. A way to build the required snapshot base was presented in Weller et al.,37 in which residualbased greedy sampling was combined with Voronoi tessellation. Under the European AeroGust (Aeroelastic Gust Modeling) program these methods were applied and further developed79,80 and finally presented in Bergmann et al.76 Here the authors applied it to a multi query analysis of an airfoil hit by gusts and optimization (drag-reduction) of the front bumper of a car. The former was done by DNS, the latter by RANS with Spalart–Allmaras turbulence model. For the airfoil a 65 speed-up from full CFD to hybrid was observed all the while maintaining excellent accuracy (near-perfect match of CL curves). For the front bumper optimization, the hybrid model took 26% of the time (with snapshot generation included) of the full CFD optimization, and gave a drag reduction of 3.42%, while the full model gave one of 3.89%. For the optimization part, the authors recommend mesh morphing in lieu of re-meshing due to much faster execution times. Also, no adaptive or greedy sampling was used for the optimization. Developments are still under way, with sampling strategies being tested81 and considerable efficiency gains obtained with hybrid noncollocated meshes.82 Sub-structuring POD is presented in Radermacher et al.83 and shown in Radermacher and Reese84 alongside a new adaptive sub-structuring method (A-SPOD). Both these methods rely on Craig–Bampton85 substructuring to separate parts of a structure that deform in a primarily elastic manner, and those that do not. For the model reduction in itself the authors applied the POD-Galerkin method to the NewtonRaphson iterations encountered in structural mechanics. The authors tested their methods on the forming of a horizontal flute on sheet metal: in this process a robot presses down on a sheet of metal to bend it permanently along a horizontal line. They simulated this problem for several sheets of varying thickness using full-order models to obtain the snapshots. Then they applied SPOD and A-SPOD to a sheet whose thickness was different from the rest. In both cases the calculations are done in less than half of the time of the HDM with relative errors for the displacement below 1% when more than 10 modes (ROM orders greater than 10) were used. Both methods have their disadvantages. A-SPOD requires continuous evaluation during solver iterations. SPOD
+Mendonc ̧a et al. 5825
+
+
+requires the user to guess beforehand which zones will remain primarily elastic and which will not. Still, these methods seem useful for structures. Through SPOD, one could use a ROM where the deformation and the strains are the lowest, such as at the root of the wing, and using the HDM at the tip where they are the highest.
+Reduction of benchmarks
+In this paper, chosen model reduction methods will be tested on problems whose PDEs are close to those of the systems that the NOVEMOR MDO framework may try to optimize. The methods that will be tested are Galerkin projection with Standard POD, Galerkin projection with output/goal oriented POD (where the output Jacobian is available), Galerkin projection with system-induced POD (where the system Jacobian is available), least mean squares reduction (employing the Broyden–Fletcher–Goldfarb–Shanno algorithm) with POD basis. The Galerkin and least mean squares are tested because they are the foundation of more advanced reduction methods (such as hyper-reduction or hybrid-ROMs). The different POD norms are tested to evaluate the effect of different norms on the ROM’s accuracy. The tests will be done on a dynamic linear advection problem, a steady linear advection problem, a steady nonlinear diffusion problem, and a dynamic linear oscillatory problem. The steady problems are solved for various parameter or input values, to justify the use of model reduction methods. The dynamic problems will be used to test the stability of the Galerkin projection, given the possibility of instability. The steady parametric problems represent a simplified version of the problems one might find in CFD, while still displaying the same physics (advection or transport and diffusion). Thus, all applicable methods will be tested on the steady benchmarks.
+Benchmarks
+The benchmark problems used for this work can be found on the website of the Model-Order-ReductionWiki Community,86 where one can find the matrices required to simulate them. The dynamic advection problem (Problem 1) is described in Moosmann et al.87 and the matrices are available in The MORwiki Community.88 The 2D problem was chosen, which is a 2D thermal diffusion problem where a convective flow is applied to the domain. For the oscillatory problem the butterfly gyro problem was chosen (Problem 2), with its definition and data specified in Billger89 and Oberwolfach Benchmark Collection,90 respectively. This system is less damped than the dynamic advection problem, allowing for more severe tests of the ROM’s stability. For the steady advection problem (Problem 3) the
+three-parameter anemometer model as described in Baur et al.91 and that is made available in The MORwiki Community92 was picked. For the nonlinear steady diffusion (Problem 4) case the benchmark available in Lienemann et al.93 and the MORwiki Community94 was used. This benchmark deals with the heat diffusion through a bar where heat diffusion varies with the temperature. All benchmark problems except the steady advection one (Problem 3) were compiled in the Oberwolfach Benchmark Collection.95 In Table 1 each benchmark is linked to the method tested on it. Error measures were taken for the HDM and ROM solution: the output error, the total error (difference between full-order model and reduced model state variables), orthogonal error, and collinear error. The collinear and orthogonal errors were not calculated for the least mean squares method. This is due to the fact that these measures were not derived for it. The errors were evaluated in a relative way, using the Frobenius norm of the obtained data. The errors for several model orders and several snapshots sets are computed. For each problem all computations (for the HDM, ROM, and SVD) were done on the same machine, using the same software. Additionally, for the dynamical models, stability was assessed by looking at the positivity of the ROM’s matrices. Due to the fact that the chosen dynamical systems are linear in nature this allows one to mathematically verify if the model is unstable or not.
+Summary of results
+In terms of stability, neither of the Galerkin ROMs tested on dynamic problems showed stability problems (the sign of the system matrices before and after reduction was the same). For all tests, the Galerkin method with either the system or goaloriented POD gave deviations consistently near or larger than 100%. The remaining methods (least mean squares reductionþPOD (LMSQ) or Galerkin with POD) gave errors well below 1% when using a model order equal or greater than 5, except for the multi-parameter stationary advection–diffusion problem (Problem 4). Here, errors near or larger than 10%
+Table 1. Plan of experiments.
+Problem GþPOD LþPOD GþGo. GþSy
+1 x – x2 x – –3 x x XX 4 x x –
+x 1⁄4 experiment. Methods: G—Galerkin, L—LMSQ, Go.—goal, Sy.—system; Problems: 1—dynamical advection, 2—oscillator, 3—steady advection, 4—nonlinear steady diffusion.
+5826 Proc IMechE Part G: J Aerospace Engineering 233(15)
+
+
+were observed regardless of model order, even when total sampling was used (meaning, all the points calculated by the ROM were previously sampled and integrated into the POD). This implies that a better sampling strategy might not be sufficient if one wishes to reduce ROM error. The error measure in equation (30) manages to properly follow the evolution of the orthogonal error and total error for the dynamical problems. However, this is not the case for the steady systems: here the a priori error would decrease with model order but the total error would remain the same or actually increase. This coupled with the fact that the a priori indicator is necessarily smaller than the total error (hence, not conservative) may negate any usefulness of this measure for steady problems. However, the Jacobian measure, given in equation (39), was 4 higher than the total error (meaning jjEjjF 4 jjetjjF) for the case of the steady advection problem (Problem 3, the only problem where the system Jacobian was available). In this case then, the Jacobian measured revealed itself to be conservative. Problem 1: Linear dynamical advection. For the dynamical advection problem, the GalerkinþPOD and Galerkinþgoal-oriented POD were tested. The results indicated that equations (33) and (30) were valid for GalerkinþPOD, and using a fifth-order ROM or a ROM with five unknowns (the original HDM had 9669 degrees of freedom) led to output errors below 0.0001% and state errors below 0.1% with a speed-up of 1144 (in other words, the ROM was 1144 faster than the HDM). Increasing the order of the GalerkinþPOD ROM further decreased the error; however, this decrease in error was limited by the amount of samples taken from the HDM. The fifth-order GalerkinþGoal POD ROM presented an output error of 98% and state error of 100%, and these errors did not change with model order.
+Problem 2: Linear oscillator. For the oscillator problem only the GalerkinþPOD method was tested. For a sixth-order ROM (the HDM had 17,361 degrees of freedom), the state and output errors were all less than 0.01%. No instability of the ROM was detected.
+Problem 3: Linear steady advection. For the steady advection problem, four methods were tested: GalerkinþPOD, GalerkinþGoal POD, Galerkinþ system-induced POD, and LMSQ. Both for the Galerkinþgoal POD and Galerkinþsystem-induced POD the state and output errors were consistently equal or larger than 100%. These methods presented state errors of 45%. The Galerkin projection presented output deviations going from 7 to 10%, depending on the amount of samples taken, where deviation 7% corresponds to the case where all computed HDM responses were taken as samples. This means that even with all available information, the deviations were larger than 1%. Thus, better or more sampling might not be enough to guarantee
+low ROM error, but using hybrid-ROMs might solve this issue. The LMSQ presented deviations for the outputs at least 2 higher than those of the GalerkinþPOD ROM, therefore demonstrating a lower performance.
+Problem 4: Nonlinear steady diffusion. For the nonlinear steady diffusion problem, only the GalerkinþPOD and LMSQ techniques were tested, where it was found that equation (30) was verified for the GalerkinþPOD method but not equation (33). Both techniques gave state and output deviations below 1% when a sixth-order ROM was used (the HDM had 410 degrees of freedom).
+CFD analysis and reduction
+The results of MOR done on CFD models are now presented. These models were obtained using FreeFemþþ,96 a free and open-source solver writing suite. The reasons behind this choice of software are several: easy solver coding97,98 and thus easy solver reduction; examples and scripts for optimization of fluid problems99; examples and simple scripts for domain decomposition97; and model reduction has already been performed using this software.100,101 The downside is that no previously cited validation test cases were done for CFD, and validation testing had to be done to ensure that the models approximate the desired physics. Two models were reduced and analyzed: one solving the incompressible Navier–Stokes equations for the lid-driven cavity problem,100 the other solving the Euler compressible equations.98 The first one was chosen for three reasons: the lid-driven cavity is a well studied problem in literature with known solutions and benchmarks; the script in Pitton100 already performs MOR for Reynolds number going from 1 to 151, allowing implementation checks. The problem incorporates eddies and viscosity, the basis of drag in lifting surfaces. The second model was chosen for directly simulating compressible flow and being a time-marching method: this is quite similar to modern CFD solvers and allows to check the performance and stability of the ROM. Both scripts were tested with validation cases found in literature.
+Lid-driven cavity
+The lid-driven cavity is analyzed using the incompressible Navier–Stokes equations, through the script supplied in Pitton100 that was originally developed by the same author in Pitton.102 The script iteratively solves (not through a time-marching method) the dimensionless incompressible Navier–Stokes equations
+u ru 1
+Re u þ rp 1⁄4 0
+r u1⁄40
+(
+ð41Þ
+Mendonc ̧a et al. 5827
+
+
+Here u is the velocity vector, p the pressure, and Re the Reynolds number of the problem. The Reynolds number is defined as Re 1⁄4 uL= , L being a characteristic length, u a characteristic speed, and the kinematic viscosity of the fluid. A representation of the problem is given in Figure 1 and the mesh pattern used for verification is given in Figure 2. To validate the script the results in this work were compared against the benchmarks found in Ghia et al.103 and Erturk et al.104 for the same mesh refinement. The code seems to well reproduce the curves and streamlines found in Ghia et al.103 and Erturk et al.104 up to Re 1⁄4 5 000. After validation, model reduction was performed by using the GalerkinþPOD and LMSQ methods. To have comparable results, reduction was done using the mesh (displayed in Figure 2) of the original author of the script in Pitton.100 Because of this, the model reduced should be exactly the same as the one described in Pitton.100 Fourth-order ROMs were built from snapshots taken at Re 1⁄4 1, 51, 101, and 151, and then a sweep test was carried out to evaluate the relative deviation of the ROM to the HDM for Re going from 1 to 400 with a step of 1. To evaluate the error of the ROM relative to the HDM, the following field relative error measures were employed throughout the sweep test
+eu 1⁄4
+ffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffi
+R ðuROM uHDMÞ2
+R ðuHDMÞ2
+vuut ð42Þ
+ep 1⁄4
+ffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffi
+R ðpROM pHDMÞ2
+R ðpHDMÞ2
+vuut ð43Þ
+where u and p are the velocity and pressure fields, respectively. To test the Jacobian-based state-vector error measure defined in equation (39), the deviation of this measure relative to the total state error was determined as
+e 1⁄4 jjEjj2 jjetjj2
+jjetjj2
+ð44Þ
+Here et is the total state error as defined in equation (33), E is the Jacobian-based error measure found in equation (39), and jj jj2 is the vector L-2 norm. Through the sweep tests it was found that both methods ensure deviations for the velocity field below 1% for the Re interval going from 1 to 151, but these quickly grow beyond 10% for Re higher than 200 (see Figure 3). However for the pressure field the Galerkin-POD always presented deviations larger than 100%, while the LMSQ method managed to get deviations below 10% in the Re interval going from 51 to 151 (see Figure 4). Figure 5 shows that this is a problem related to the pressure at the top corners of the lid-driven cavity: at these corners the pressure presents a very local and rapid variation that is not well captured by the ROMs. It could be beneficial then, to use the full-order model for such local features, and the ROM for the rest of the field.
+Figure 1. Representation of the velocity boundary conditions for the lid-driven cavity problem, considering a unitary square domain with a 15 15 mesh and Re 1⁄4 1. (a) Velocity component ux and (b) velocity component uy.
+Figure 2. The 15 15 mesh used for reduction and verification.
+5828 Proc IMechE Part G: J Aerospace Engineering 233(15)
+
+
+It should be noted that when solutions at the snapshots (Re 1⁄4 1, 51, 101, and 151) were computed for both ROMs the relative errors for velocity and pressure went all to machine zero; the ROMs were exactly ‘‘interpolating’’ or matching the snapshots used to build them. This may be due to the fact that the model order matches the amount of snapshots taken: the basis V thus computed defines a subspace that contains all previously computed snapshots. Figure 6 gives the deviation of the proposed Jacobian-based measure relative to the real error. Marks were used for the Galerkin ROM because the deviation was very close to machine 0 at all points except at the previously sampled ones. It can be seen that the proposed error measure can faithfully predict the error (less than 1% of deviation) in the sampled interval, with the exception of the samples themselves. Still, at the sampled points the proposed error measure indicates very low errors, close to
+Figure 5. Pressure field for Re 1⁄4 201. (a) Galerkin ROM and (b) HDM.
+Figure 6. Deviation relative to the real state error of the proposed error measure. Deviations below 10 3 in module are not shown. Negative deviations are shown in thicker marks/ lines, positive deviations in thinner ones. LMSQ: least mean squares reductionþPOD.
+0 50 100 150 200 250 300 350 400
+10−3
+10−2
+10−1
+100
+Reynolds
+Error
+eu
+Galerkin LMSQ
+Figure 3. Velocity field error for the lid-driven cavity problem. Errors below 10 3 are not shown. LMSQ: least mean squares reductionþPOD.
+0 50 100 150 200 250 300 350 400
+10−2
+10−1
+100
+101
+102
+103
+Reynolds
+Error
+ep
+Galerkin LMSQ
+Figure 4. Pressure field error for the lid-driven cavity problem. Errors below 10 2 are not shown. LMSQ: least mean squares reductionþPOD.
+Mendonc ̧a et al. 5829
+
+
+machine 0. As a final remark, it seems that the measure is less precise for the LMSQ case. This may be due to the lower real error of the LMSQ, which is 2–3 orders of magnitude below the real error of the Galerkin ROM. Nevertheless, excellent accuracy is maintained within the sampled interval. Outside of it, the Jacobian measure still gives an error well within the magnitude of the true error.
+Compressible Euler
+The compressible Euler equations are now tackled, based on the script provided in Vuyst.98 For a perfect gas, which is a reasonable model for gases when dealing with free stream Mach number M1 1⁄4 u1=c 5 1 (c being the speed of sound and u1 being the free stream velocity), the compressible Euler equations can be written as
+@t þ r ð uÞ 1⁄4 0
+@tð uÞ þ r ð u uÞ þ rp 1⁄4 0
+@tð EÞ þ r ðð E þ pÞuÞ 1⁄4 0
+E 1⁄4 u2=2 þ 1
+1
+p
+8>>><
+>>>:
+ð45Þ
+Here E is the total energy, u is the velocity, q is the air density, p is the pressure, and c is the perfect gas ratio. Vuyst98 uses the characteristics-Galerkin method to discretize this system in space, along with a semi-implicit method for the time discretization. One of the downsides of the script as it is the fact that it is not written in conservative form (the form shown in equation (45)), which might cause problems upon the presence of shocks (see LeVeque105 for a discussion on the matter). Still, the code displays the absence of physical viscosity and the presence of severe pressure changes with the change of angle of attack (AoA) for supersonic flight, the same phenomena expected of a valid Euler code. For this work, the original script’s model in Vuyst98 was reduced with the goal of testing model reduction in cases where shocks are present and no physical viscosity is present. Slight modifications were made:
+. The elliptical airfoil was centered on the domain. . The outer boundary was extended to a diameter equal to 100 the airfoil’s chord. . The number of subdivisions of the airfoil’s skin was increased to 100. . The original outer boundary and its subdivisions were preserved, so as to partition the domain into two regions: a ‘‘nearfield’’ with a diameter of five chords and an outer ‘‘farfield’’, . New timestep t was calculated so as to have a constant minx= t, in other words, a constant CFL (Courant–Friedrichs–Lewy) number.
+The first modification was done so as to have an ‘‘O’’ mesh, where one can change the AoA by just
+rotating the mesh, but not the flow itself. The second modification was done to give enough space for the shocks to ‘‘dissipate,’’ while the other modifications were done so as to have a mesh quality and dynamic stability similar to that of the original script in Vuyst.98 Thus, the problem to reduce is as follows: an elliptical airfoil of maximum thickness y/c1⁄40.15, flies at M1 1⁄4 1.5, with p1 1⁄4 100 Pa, 1 1⁄4 0.3 kg/m3, and c 1⁄4 1.4. The AoA varies from 0 to 5 with a step of 0.1 . Samples are taken for AoA 1⁄4 1 , 2 , 3 , and 4 , to test what happens when regions above and below the original sampled interval are explored. This sweep test was done only for the GalerkinþPOD reduction method, chiefly due to the stability problems presented in the previous literature. In similar fashion to the lid-driven cavity problem, the velocity and pressure field errors will be analyzed. Additionally, the error in Lift eL and in Drag eD are quantified, as is the ratio rCauchy
+p between the Cauchy coefficient of the HDM and the ROM
+eL 1⁄4 LROM LHDM
+LHDM ð46Þ
+eD 1⁄4 DROM DHDMj
+DHDMj ð47Þ
+rCauchy
+p1⁄4
+ffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffi
+R pROM
+i pROM
+i1
+2
+q
+ffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffi
+R pHDM
+i pHDM
+i1
+2
+q ð48Þ
+Here, L is the Lift, D is the Drag, is the problem domain, p is the pressure, and i is the final iteration. These first two indicators will allow to quantify the error near the airfoil, rather than the whole domain, and are of great interest for aircraft. The last one is a stability indicator: if rCauchy
+p 5 1 for any AoA, then the ROM is converging faster than the HDM, not displaying any stability problems. Figures 7 and 8 depict the pressure coefficient obtained with ROM and HDM for a range of AoA varying from 0.5 to 4.5 (in a step of 0.5 ), which include the four previously mentioned samples (1 , 2 , 3 , and 4 ). Alongside the pressure coefficient, the error of ROM pressure relative to HDM is shown. The field error measures are available in Figure 9, the force error in Figure 10, and the ratio of Cauchy coefficients is available in Figure 11. Some key observations can be made from these graphics:
+. For all AoA, the relative field error is consistently smaller than 1%. . At the sampled AoA the field error abruptly decreases, but does not go to machine 0. . The relative force error is around 10%, with no sudden decrease at the sampled AoA. . The Cauchy ratio is always below 1.
+5830 Proc IMechE Part G: J Aerospace Engineering 233(15)
+
+
+(a)
+(d)
+(g)
+(j)
+(m)
+(b)
+(e)
+(h)
+(k)
+(n)
+(c)
+(f)
+(i)
+(l)
+(o)
+Figure 7. Pressure coefficient obtained with both ROM and HDM for AoA between 0.5 and 2.5 with the corresponding relative error. (a) ROM, AoA 1⁄4 0.5 ; (b) HDM, AoA 1⁄4 0.5 ; (c) Error, AoA 1⁄4 0.5 ; (d) ROM, AoA 1⁄4 1 ; (e) HDM, AoA 1⁄4 1 ; (f) Error, AoA 1⁄4 1 ; (g) ROM, AoA 1⁄4 1.5 ; (h) HDM, AoA 1⁄4 1.5 ; (i) Error, AoA 1⁄4 2.5 ; (j) ROM, AoA 1⁄4 2 ; (k) HDM, AoA 1⁄4 2 ; (l) Error, AoA 1⁄4 2 ; (m) ROM, AoA 1⁄4 2.5 ; (n) HDM, AoA 1⁄4 2.5 ; and (o) Error, AoA 1⁄4 2.5 .
+Mendonc ̧a et al. 5831
+
+
+. From the relative error plots (left column of Figures 7 and 8) one can clearly visualize where the ROM has more difficulties in capturing the physics (especially for the AoA not corresponding to the snapshots), which are where the pressure discontinuities occur, i.e. in the leading and trailing edges (especially in this last case).
+It seems that the ROM thus obtained is stable and, as observed for the lid-driven cavity, nearly
+perfectly matches the sampled points. However, it fails to give the aerodynamic forces with relative errors consistently below 1%. It could be then, that though the model well approximates most of the domain, its performance worsens near the airfoil. This issue could be tackled using hybrid models. Furthermore, at the previously sampled AoA, the relative errors (whether for aerodynamic forces or fields) do not go to machine 0. This could be due to the error linked to the time discretization
+(a) (b) (c)
+(d) (e) (f)
+(g) (h) (i)
+(j) (k) (l)
+Figure 8. Pressure coefficient obtained with both ROM and HDM for AoA between 3 and 4.5 with the corresponding relative error. (a) ROM, AoA 1⁄4 3 ; (b) HDM, AoA 1⁄4 3 ; (c) Error, AoA 1⁄4 3 ; (d) ROM, AoA 1⁄4 3.5 ; (e) HDM, AoA 1⁄4 3.5 ; (f) Error, AoA 1⁄4 3.5 ; (g) ROM, AoA 1⁄4 4 ; (h) HDM, AoA 1⁄4 4 ; (i) Error, AoA 1⁄4 4 ; (j) ROM, AoA 1⁄4 4.5 ; (k) HDM, AoA 1⁄4 4.5 ; and (l) Error, AoA 1⁄4 4.5 .
+5832 Proc IMechE Part G: J Aerospace Engineering 233(15)
+
+
+(unaccounted for in the MOR employed) or linked to the dynamic behavior of the ROM.
+Concluding remarks
+A bibliographical research was done that established that for nonlinear problems, CFD in particular, the most common way to reduce models is to use Galerkin projection or least mean squares reduction. In order to see just how well the researched methods perform, simple problems with well-known outputs, and that were already reduced by other authors, were analyzed. It was observed that reduced models constructed by either the Galerkin projection or least mean squares method can give results with relative deviations below 10% in most cases. It was also made clear that the speed of the least mean squares method depends heavily on the performance optimization routines available in the software. Once model reduction was applied to CFD models, deviations below 10% were observed, except when point singularities are present as seen in the lid-driven cavity problem. In this case the Galerkin projection showed deviations in pressure larger than 100% while those in velocity were below 1%. The least mean squares method revealed to be more robust and kept deviations below 10% for the most part. However, due to the optimization routines available in the used software, the least mean squares method failed to be faster than the original model, while the Galerkin projection managed to be up to nearly 3 faster. When finally applying the Galerkin projection to the compressible Euler simulation of a subsonic and supersonic airfoil flying at different AoA, one obtains deviations below 10% even when outside the original interval at which samples were taken. No loss of stability was observed when using reduced order modeling, even when simulating the compressible Euler equations, where no physical viscosity is present. The work developed so far indicates that MOR may be able to provide faster models with acceptable errors for computations where parameters of a model are being varied. In particular, the 2D CFD models studied had either the AoA or Reynolds number varied, and the ROMs so produced were faster than the original model with reasonable errors.
+Declaration of Conflicting Interests
+The author(s) declared no potential conflicts of interest with respect to the research, authorship, and/or publication of this article.
+Funding
+The author(s) disclosed receipt of the following financial support for the research, authorship, and/or publication of this article: The work leading to this publication was supported by Fundac ̧ a ̃ o para a Cieˆ ncia e a Tecnologia (FCT), through IDMEC, under LAETA, project UID/ EMS/50022/2019.
+Figure 11. Cauchy ratio.
+012345
+10−3
+10−2
+AoA (deg)
+Error
+eeup
+Figure 9. Field relative error.
+012345
+10−3
+10−2
+10−1
+100
+101
+AoA (deg)
+Error
+eeDL
+Figure 10. Force relative error.
+Mendonc ̧a et al. 5833
+
+
+ORCID iD
+Fernando Lau https://orcid.org/0000-0002-1927-6352
+References
+1. Afonso F, Vale J, Lau F, et al. Performance based multidisciplinary design optimization of morphing aircraft. Aerosp Sci Technol 2017; 67: 1–12. 2. Yondo R, Andre ́ s E and Valero E. A review on design of experiments and surrogate models in aircraft realtime and many-query aerodynamic analyses. Prog Aerosp Sci 2018; 96: 23–61. 3. Schilders WHA, Van der Vorst HA and Rommes J. Model order reduction: theory, research aspects and applications. The European Consortium for Mathematics in Industry. Vol. 13. Berlin, Heidelberg: Springer-Verlag, 2008. 4. Lucia DJ, Beran PS and Silva WA. Reduced-order modeling: new approaches for computational physics. Prog Aerosp Sci 2004; 40: 51–117. 5. Chinesta F, Ladeveze P and Cueto E. A short review on model order reduction based on proper generalized decomposition. Arch Comput Methods Eng 2011; 18: 395–404. 6. Benner P, Gugercin S and Willcox K. A survey of projection-based model reduction methods for parametric dynamical systems. SIAM Rev 2015; 57: 483–531. 7. Lu K, Jin Y, Chen Y, et al. Review for order reduction based on proper orthogonal decomposition and outlooks of applications in mechanical systems. Mech Syst Signal Process 2019; 123: 264–297.
+8. Nayfeh AH, Younis MI and Abdel-Rahman EM. Reduced-order models for MEMS applications. Nonlinear Dyn 2005; 41: 211–236. 9. Lassila T, Manzoni A, Quarteroni A, et al. Model order reduction in fluid dynamics: challenges and perspectives. Cham: Springer International Publishing, 2014, pp.235–273. 10. Antoulas AC, Sorensen DC and Gugercin S. A survey of model reduction methods for large-scale systems. Contemp Math 2001; 280: 193–219. 11. Baur U, Benner P and Feng L. Model order reduction for linear and nonlinear systems: a system-theoretic perspective. Arch Comput Methods Eng 2014; 21: 331–358. 12. Ghoreyshi M, Jira ́ sek A and Cummings RM. Reduced order unsteady aerodynamic modeling for stability and control analysis using computational fluid dynamics. Prog Aerosp Sci 2014; 71: 167–217. 13. Benner P, Ohlberger M, Cohen A, et al. Model reduction and approximation. Philadelphia, PA: Society for Industrial and Applied Mathematics, 2017. 14. ANSYS. Reduced-order modelling, how and why – an overview, ansys.com/-/media/Ansys/en-gb/presentations/ 2017þCustomerþDayþPresentations/ANSYS-CD2017-FluidsII-Reduced-Order-Modelling-ROM.pdf? la1⁄4en-GB (2017, accessed 30 December 2017). 15. OpenCFD Ltd. Standard solvers, https://www.openfoam.com/documentation/user-guide/standard-solvers. php (2016, accessed 30 December 2017). 16. Chaturantabut S and Sorensen D. Nonlinear model reduction via discrete empirical interpolation. SIAM J Sci Comput 2010; 32: 2737–2764. 17. Stabile G and Rozza G. Finite volume POD-Galerkin stabilised reduced order methods for the parametrised
+incompressible Navier-Stokes equations. Comput Fluids 2018; 173: 273–284. 18. Stabile G, Hijazi S, Mola A, et al. POD-Galerkin reduced order methods for CFD using finite volume discretisation: vortex shedding around a circular cylinder. Commun Appl Ind Math 2017; 8: 210–236. 19. AeroGust Consortium. About AeroGust (grant NBR 636053), http://www.aerogust.eu/about/ (accessed 15 October 2017). 20. NUMECA. Numeca – eighteen month review meeting, http://www.aerogust.eu/files/2015/07/NUMECA_M18_ presentation.pdf (2016, accessed 30 December 2017). 21. Bergmann M, Ferrero A, Iollo A, et al. A zonal Galerkin-free pod model for incompressible flows. J Comput Phys 2018; 352: 301–325. 22. Salmoiraghi F, Scardigli A, Telib H, et al. Free-form deformation, mesh morphing and reduced-order methods: enablers for efficient aerodynamic shape optimisation. Int J Comput Fluid Dyn 2018; 32: 233–247. 23. Scardigli A, Arpa R, Chiarini A, et al. Enabling of large scale aerodynamic shape optimization through POD-based reduced-order modeling and free form deformation. Cham: Springer International Publishing, 2019, pp.49–63. 24. Go ̈ rtz S, Ripepi M, Franz T, et al. Reduced order models for aerodynamic applications, loads and MDO. In: Third workshop on model reduction of complex dynamical systems.
+25. Bekemeyer P, Ripepi M, Heinrich R, et al. Nonlinear unsteady reduced-order modeling for gust-load predictions. AIAA J. Epub ahead of print 2019. DOI: 10.2514/ 1.J057804. 26. Franz T, Zimmermann R, Go ̈ rtz S, et al. Interpolationbased reduced-order modelling for steady transonic flows via manifold learning. Int J Comput Fluid Dyn 2014; 28: 106–121. 27. Ripepi M, Verveld MJ, Karcher NW, et al. Reducedorder models for aerodynamic applications, loads and MDO. CEAS Aeronaut J 2018; 9: 171–193. 28. Quarteroni A, Manzoni A and Negri F. Reduced basis methods for partial differential equations: an introduction. La Metematica per il 3 þ 2. Berlin, Heidelberg: Springer, 2016. 29. Ohlberger M and Rave S. Reduced basis methods: success, limitations and future challenges. In: Proceedings of the conference algoritmy, 2016, pp.1–12. http://www. iam.fmph.uniba.sk/amuc/ojs/index.php/algoritmy/article/view/389/306. 30. Chinesta F, Keunings R and Leygue A. The proper generalized decomposition for advanced numerical simulations. Springer Briefs in Applied Sciences and Technology. Cham: Springer International Publishing, 2014. 31. Giner E, Bognet B, Ro ́ denas JJ, et al. The proper generalized decomposition (PGD) as a numerical procedure to solve 3D cracked plates in linear elastic fracture mechanics. Int J Solids Struct 2013; 50: 1710–1720.
+32. Silva WA. Method of performing computational aeroelastic analyses. United States Patent US8060350B2. 33. Farhat C and Amsallem D. CME 345 model reduction, projection based model order reduction, https://web. stanford.edu/group/frg/course_work/CME345/CACME345-Ch3.pdf (2017, accessed 15 October 2017). 34. Carlberg K, Farhat C, Cortial J, et al. The gnat method for nonlinear model reduction: effective implementation
+5834 Proc IMechE Part G: J Aerospace Engineering 233(15)
+
+
+and application to computational fluid dynamics and turbulent flows. J Comput Phys 2013; 242: 623–647.
+35. Etkin B and Reid LD. Dynamics of flight: stability and control. 3rd ed. New York: Wiley, 1996. 36. Amsallem D and Farhat C. CME 345: model reduction – methods for nonlinear systems, https://web.stanford. edu/group/frg/course_work/CME345/CA-CME345Ch9.pdf (2017, accessed 15 October 2017). 37. Weller J, Lombardi E and Bergmann M. Numerical methods for low-order modeling of fluid flows based on POD. Int J Numer Methods Fluids 2010; 63: 249–268. 38. Iollo A, Buffoni M and Telib H. Iterative methods for model reduction by domain decomposition. Comput Fluids 2009; 38: 1160–1167. 39. Bui-Thanh T, Willcox K, Ghatas O, et al. Goal-oriented, model-constrained optimization for reduction of large scale systems. J Comput Phys 2007; 224: 880–896. 40. LeGresley P and Alonso J. Investigation of non-linear projection for pod based reduced order models for aerodynamics. In: The 39th aerospace sciences meeting and exhibit, AIAA paper no. 2001-0926. 41. Ripepi M and Go ̈ rtz S. Accelerating unsteady CFD simulations using a minimum residual based nonlinear reduced order modeling approach. In: Heinrich R (ed) AeroStruct: enable and learn how to integrate flexibility in design. Cham: Springer International Publishing, pp.237–255. 42. Abgrall R, Amsallem D and Crisovan R. Robust model reduction of hyperbolic problems by l-1 norm minimization and dictionary approximation. arXiv preprint arXiv:160302652, 2016.
+43. Chevreuil M and Nouy A. Model order reduction based on proper generalized decomposition for the propagation of uncertainties in structural dynamics. Int J Numer Methods Eng 2012; 89: 241–268. 44. Dumon A, Allery C and Ammar A. Proper generalized decomposition method for incompressible NavierStokes equations with a spectral discretization. Appl Math Comput 2013; 219: 8145–8162. 45. Nouy A. Proper generalized decomposition: une maniere de vaincre la malediction de la dimensionalite dans les methodes spectrales stochastiques. Presentation, 2010 (in French). 46. Amsallem D. Parameterized partial differential equations and the proper orthogonal decomposition, http:// matperso.mines-paristech.fr/Donnees/data12/1282POD_doc_lecture.pdf (2014, accessed 14 June 2017).
+47. Volkwein S. Proper orthogonal decomposition: theory and reduced-order modeling. Lecture notes. Konstanz: University of Konstanz, 2013. 48. Sirovich L. Turbulence and the dynamics of coherent structures Part I, coherent structures. Quart Appl Math 1987; 45: 561–571. 49. Liang Y. Proper orthogonal decomposition and its applications Part I theory. J Sound Vib 2002; 252: 527–544. 50. Bui-Thanh T, Damodaran M and Willcox K. Proper orthogonal decomposition extensions for parametric applications in compressible aerodynamics. In: The 21st AIAA applied aerodynamics conference, AIAA 2003-4213. 51. Rowley CW, Colonius T and Murray RM. Model reduction for compressible flows using POD and Galerkin projection. Phys D 2004; 189: 115–129. 52. Carlberg K and Farhat C. A low-cost, goal-oriented ‘compact proper orthogonal decomposition’ basis for
+model reduction of static systems. Int J Numer Methods Eng 2010; 86: 381–402. 53. Willcox L, Ghattas O, Waanders B, et al. An optimization framework for goal-oriented, model-based reduction of large-scale systems. In: Proceedings of the 44th IEEE conference on decision and control, New York: IEEE.
+54. Ullmann S, Rotkvic M and Lang J. POD-Galerkin reduced-order modeling with adaptive finite-element snapshots. J Comput Phys 2016; 325: 244–258. 55. Liberge E and Hamdouni A. Reduced order modelling method via proper orthogonal decomposition for flow around an oscillating cylinder. J Fluids Struct 2010; 26: 292–311. 56. Carlberg K and Farhat C. A compact proper orthogonal decomposition basis for optimization-oriented reduced-order models. In: The 12th AIAA/ISSMO multidisciplinary analysis and optimization conference. 57. Ito K and Ravindran S. A reduced-order method for simulation and control of fluid flows. J Comput Phys 1998; 143: 403–425. 58. Zimmermann R. Gradient-enhanced surrogate modeling based on proper orthogonal decomposition. J Comput Appl Math 2013; 237: 403–418. 59. Servin M and Wang D. Adaptive model reduction for nonsmooth discrete element simulation. Comput Part Mech 2016; 3: 107–121. 60. Petzold L and Rathinam M. A new look at proper orthogonal decomposition. SIAM J Numer Anal 2003; 41: 1893–1925.
+61. Behzad F. Proper orthogonal decomposition based reduced order modeling for fluid flow. PhD Thesis, Clarkson University, USA, 2014. 62. Braconnier T, Ferrier M, Jouhaud JC, et al. Towards an adaptive POD SVD surrogate model for aeronautic design. Comput Fluids 2011; 40: 195–209. 63. Brand M. Fast low rank modifications of the thin singular value decomposition. Linear Algebra Appl 2006; 415: 20–30. 64. Paul-Dubois-Taine A and Amsallem D. An adaptive and efficient greedy procedure for the optimal training of parametric reduced-order models. Int J Numer Methods Eng 2015; 102: 1–32. 65. Choi Y, Amsallem D and Farhat C. Gradient-based constrained optimization using a database of linear reducedorder models. arXiv preprint arXiv:150607849, 2015.
+66. Amsallem D and Farhat C. CME 345: Model reduction, proper orthogonal decomposition (POD). Spring course, Stanford University, https://web.stanford.edu/ group/frg/course_work/CME345/CA-CME345-Ch4. pdf (2017, accessed 15 October 2017). 67. Haasdonk B, Dihlmann M and Ohlberger M. A training set and multiple bases generation approach for parameterized model reduction based on adaptive grids in parameter space. Math Comput Model Dyn Syst 2011; 17: 423–442. 68. Fahl M and Sachs EW. Reduced order modelling approaches to PDE-constrained optimization based on proper orthogonal decomposition. In: Biegler LT, Heinkenschloss M, Ghattas O, van Bloemen Waanders B (eds) Large-scale PDE-constrained optimization, LNCSE. Vol. 30, pp.268–280. Berlin, Heidelberg: Springer. 69. Volkwein S and Kunisch K. Proper orthogonal decomposition for optimality systems. ESAIM: Math Model Num Anal 2008; 42: 1–23.
+Mendonc ̧a et al. 5835
+
+
+70. Dihlmann MA and Haasdonk B. Certified PDE-constrained parameter optimization using reduced basis surrogate models for evolution problems. Comput Optim Appl 2014; 60: 753–787. 71. Zahr M and Farhat C. Progressive construction of a parametric reduced-order model for PDE-constrained optimization. Int J Numer Methods Eng 2015; 102: 1111–1135. 72. Xiao M, Breitkopf P, Coelho RF, et al. Model reduction by CPOD and Kriging. Struct Multidiscipl Optim 2010; 41: 555–574. 73. Bergmann M, Bruneau CH and Iollo A. Enabler for robust pod models. J Comput Phys 2009; 228: 516–538. 74. Hughes T and Mallet M. A new finite element formulation for computational fluid dynamics: ii the generalized streamline operator for multidimensional advective diffusive systems. Comput Methods Appl Mech Eng 1986; 58: 305–328. 75. Hughes T, Feijoo G and Mazzei L. The variational multiscale method, a paradigm for computational mechanics. Comput Methods Appl Mech Eng 1998; 166: 3–24. 76. Bergmann M, Ferrero A, lollo A, et al. An approach to perform shape optimisation by means of hybrid ROMCFD simulations. In: Recent developments in numerical methods for model reduction, Paris, 7–10 November 2016, pp.747–752, http://www.aerogust.eu/files/2015/07/slides_ IHP_INRIA.pdf (accessed 30 December 2017). 77. Bergmann M, Bruneau CH and Iollo A. Improvement of reduced order modeling based on proper orthogonal decomposition. resreport 6561. INRIA, 2008. 78. Dolean V, Jolivet P and Nataf F. Iterative Schwarz methods: RAS, ASM. In: An introduction to domain decomposition methods: algorithms, theory and parallel implementation, Society for Industrial and Applied Mathematics, Philadelphia, PA, USA, 2015.
+79. Telib H. Optimad eighteen month review meeting. Technical report, Aerogust, 2016. 80. Bergmann M, Ferrero A and Iollo A. A hybrid PODCFD approach for gust computation. In: The 7th international conference on computational methods.
+81. Scardigli A, Telib H and Canuto C. Efficient sampling strategies in hybrid full/reduced – order CFD models. In: 2017 international conference on adaptive modeling and simulation.
+82. Lundquist T, Malan A and Nordstro ̈ m J. A hybrid framework for coupling arbitrary summation-by-parts schemes on general meshes. J Comput Phys 2018; 362: 49–68. 83. Radermacher A, Reese S and Hadoush AMH. Selective proper orthogonal decomposition model reduction for forming simulations. Proc Appl Math Mech 2013; 13: 115–116. 84. Radermacher A and Reese S. Model reduction in elastoplasticity: proper orthogonal decomposition combined with adaptive sub-structuring. Comput Mech 2014; 54: 677–687. 85. Craig R and Bampton M. Coupling of substructures for dynamic analyses. AIAA J 1968; 6: 1313–1319. 86. The MORwiki Community. Benchmark. MORwiki model order reduction wiki, https://morwiki.mpi-magdeburg.mpg.de/morwiki/index.php/Category:Benchmark (2018, accessed 7 November 2018). 87. Moosmann C, Rudnyi E, Greiner A, et al. Model order reduction for linear convective thermal flow. In:
+Proceedings of 10th international workshops on THERMal INvestigations of ICs and systems.
+88. The MORwiki Community. Convection. MORwiki model order reduction wiki, http://modelreduction.org/ index.php/Convection (2018, accessed 7 November 2018). 89. Billger D. The butterfly gyro. In: Benner P, Mehrmann V and Sorensen DC Dimension reduction of large-scale system (eds), vol. 45, pp.349–352. Berlin, Heidelberg: Springer-Verlag. 90. Oberwolfach Benchmark Collection. Butterfly gyroscope. hosted at MORwiki – model order reduction wiki, http://modelreduction.org/index.php/Butterfly_ Gyroscope (2004, accessed 7 November 2018). 91. Baur U, Benner P, Greiner A, et al. Parameter preserving model order reduction for MEMS applications. Math Comput Model Dyn Syst 2011; 17: 297–317.
+92. The MORwiki Community. Anemometer. MORwiki – model order reduction wiki, http://modelreduction.org/index.php/Anemometer (2018, accessed 7 November 2018). 93. Lienemann J, Yousefi A and Korvink JG. Nonlinear heat transfer modelling. In: Benner P, Mehrmann V and Sorensen DC (eds) Dimension reduction of largescale systems. Vol. 45, pp.327–331. Berlin, Heidelberg: Springer-Verlag. 94. The MORwiki Community. Nonlinear heat transfer. MORwiki – model order reduction wiki, http://modelreduction.org/index.php/Nonlinear_Heat_Transfer (2018, accessed 7 November 2018). 95. Korvink JG and Rudnyi EB. Oberwolfach benchmark collection. In: Benner P, Sorensen DC and Mehrmann V (eds) Dimension reduction of large-scale systems. Berlin, Heidelberg: Springer, pp.311–315. 96. Hecht F. New developments in freefemþþ. J Numer Math 2012; 20: 251–265. 97. Hecht F. User’s manual, Freefemþþ. 3rd ed, 2011. 98. Vuyst FD. Numerical modeling of transport problems using freefemþ þ software with examples in biology, CFD, traffic flow and energy transfer, Master. Mod  ́elisation nume ́ rique des proble ́ mes de transport sur freefemþþ, ENS CACHAN, 2013, pp.162. (hcel-00842234i). 99. Dapogny C, Frey P, Omne` s F et al. Geometrical shape optimization in fluid mechanics using freefemþþ. Struct Multidiscipl Optim 2018; 58(6): 2761–2788. DOI: 10.1007/s00158-018-2023-2. 100. Pitton G. POD for Navier-Stokes, http://www.um.es/ freefem/ffþþ/pmwiki.php?n1⁄4Main.POD (2014, accessed 15 October 2017).
+101. Dede L. Adaptive and reduced basis methods for optimal control problems in environmental applications. PhD Thesis, Politecnico Milano, Italy, 2008.
+102. Pitton G. Numerical investigation of buoyant flows in tight lattice bundles. Master Thesis, Politecnico di Milano, Italy, 2012. 103. Ghia U, Ghia K and Shin C. High-resolutions for incompressible flow using the Navier-Stokes equations and a multigrid method. J Comput Phys 1982; 48: 387–411. 104. Erturk E, Corke T and Gok  ̧col C. Numerical solutions of 2-D steady incompressible driven cavity flow at high Reynolds numbers. Int J Numer Methods Fluids 2005; 48: 747–774.
+105. LeVeque R. Numerical methods for conservation laws. 2nd ed. Basel: Birkh  ̈auser, 1999.
+5836 Proc IMechE Part G: J Aerospace Engineering 233(15)

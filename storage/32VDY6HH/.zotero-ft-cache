@@ -1,0 +1,1024 @@
+Bath, P., Jones, D. P., & Gaitonde, A. L. (2023). Including Steady State Information in Reduced Order Modelling for Tiltrotor Aircraft Stability Analysis. In AIAAAVIATION2023Forum American Institute of Aeronautics and Astronautics Inc. (AIAA). https://doi.org/10.2514/6.2023-3948
+Peer reviewed version
+License (if available): CC BY
+Link to published version (if available): 10.2514/6.2023-3948
+Link to publication record on the Bristol Research Portal PDF-document
+University of Bristol – Bristol Research Portal
+General rights
+This document is made available in accordance with publisher policies. Please cite only the published version using the reference above. Full terms of use are available: http://www.bristol.ac.uk/red/research-policy/pure/user-guides/brp-terms/
+
+
+Including Steady State Information in Reduced Order Modelling
+for Tiltrotor Aircraft Stability Analysis
+P. E. Bath∗, A. L. Gaitonde†, and D. P. Jones ‡
+Department of Aerospace Engineering, University of Bristol, United Kingdom. BS8 1TR
+This paper builds on the work previously carried out by the authors in exploring flight mechanics and aerodynamics coupled stability analysis of tiltrotor aircraft. The intention of the stability analysis via the coupled model, is to include the full dynamics of the wake in the stability analysis rather than reducing the aerodynamics to a set of first order stability derivatives as found in classical stability analysis. It is important to use the full dynamics in the stability analysis for tiltrotor aircraft due to the significant wake interaction with the airframe. In an effort to reduce the cost of computations and therefore be most applicable to early design stages of aircraft, the Unsteady Vortex Lattice Method (UVLM) is used as a lower fidelity aerodynamic solver and Reduced Order Models (ROMs) are used to limit the system size in the stability analysis. However, the main results of this research are independent of the solver used. This work specifically focuses on including steady state information in the ROM of the aerodynamics, which is coupled with the flight mechanics based on standard 3D rigid body equations of motion. The time averaged aerodynamic response is reduced using the Eigensystem Realisation Algorithm (ERA) as well as an adjusted ERA method that increases the importance of the steady state behaviour in the reduction. The stability derivatives of the aerodynamics were expected to show convergence to the steady step up response at lower ROM sizes when the steady state information is included in the ROM; however, the results obtained show little improvement in the convergence over the standard ERA method. This has been attributed to the aerodynamic simulation results; where the responses do not decay to the steady state, the ROM has sought to model this behaviour causing the stability derivatives to converge to a different value.
+I. Introduction
+O
+ver recent years, there has been increasing interest in Vertical Take Off and Landing (VTOL) aircraft for civil applications and as new avenues for urban mobility. A number of projects are ongoing, investigating many novel aircraft configurations, as well as projects developing on more proven concepts. The latter is the focus of this work which will concentrate on the tiltrotor class of aircraft, proven already in military applications, such as the Bell-Boeing V-22 Osprey. Examples of projects in the civil discipline include, the Clean Sky 2 Fast Rotorcraft Innovative Aircraft Demonstrator Platform [1]; the United States Armed Forces Future Vertical Lift Program [2]; and the Leonardo AW609 (previously Bell/Augusta BA609) [3]. The tiltrotor aircraft configuration is ideal for urban mobility applications where it is expected that there are no opportunities for regional sized runways; this is as a result of its ability to take off vertically like a helicopter as well as fly like a large proprotor driven fixed wing aircraft once airborne. There have been a number of high profile crashes in flight testing and during service of tiltrotor aircraft, in most cases being attributed to insufficient modelling of the dynamics in the computational models used in the development [4, 5]. It has been shown by Bath et al. [6], that the assumption that the flight dynamics can be modelled using the stability derivatives has a significant impact on the predicted stability. The stability derivatives found in classical stability analysis methods assume the flow can be modelled by the application of a low order Taylor series expansion of the solution about an instant in time, meaning it is only valid about a fixed point. This is shown to be valid for conventional aircraft, however for the tiltrotor aircraft there are far greater unique interactions of the wake with the airframe that are periodic with the blade passing frequency. These wake effects mean that tiltrotor aircraft experience unconventional instabilities. It is shown to be important to include the full wake dynamics in the stability analysis due to these interactions, which is done by creating a coupled system of the flight mechanics and a Reduced Order Model
+∗PhD Student, Department of Aerospace Engineering, peter.bath@bristol.ac.uk †Professor in Aerodynamics, Department of Aerospace Engineering, ann.gaitonde@bristol.ac.uk ‡Professor in Aerodynamics, Department of Aerospace Engineering, dorian.jones@bristol.ac.uk
+1
+
+
+(ROM) of the aerodynamics. As the size of the reduced order aerodynamic model is increased, more of the transient dynamics is retained in the coupled flight dynamic systems. To fully understand the impact of retaining this dynamics, an analysis of the predicted stability against the size of the aerodynamic ROM is vital. However, the static stability derivatives associated with the reduced order model change with the size of the model. As it is understood that the static stability derivatives have a strong effect on the predicted stability, their changing values make meaningful comparison with classical stability analysis impossible. In this work the reduced order modelling of the aerodynamics is investigated with the intent of including steady state information in the ROM, such that the reduced order aerodynamics system will contain the same first order stability derivatives independent of the size of the ROM. It was also shown by Bath et al. [6], that stability analysis is relatively insensitive to the use of the time average of the full periodic system. For this reason only aerodynamic modelling based on the average response of the periodic system is used. All analysis is undertaken for the tiltrotor operating in both helicopter (hover) and airplane (cruise) mode.
+II. System Modelling
+A. Flight Mechanics
+The flight mechanics model of the tiltrotor aircraft used in this work is described by classical three-dimensional rigid body flight mechanics equations of motion with six Degrees-of-Freedom (DOF), as defined in literature by Etkin and Reid [7]. Additional gyroscopic couples have been added to the standard equations for the moments, as per [6, 7], to account for the rotating proprotor motion. Any rotor hub motions are omitted for simplicity of modelling. As per Bath et al. [6], the nonlinear equations of motion are written as
+x¤FM = f (xFM, yA, W, t) (1)
+where xFM is the flight mechanics state vector; yA is the vector of aerodynamic forces and moments acting on the body which can be a function of any number of control inputs u; and W is the wind velocity vector relative to the inertial frame, expressed in the body axes coordinate system. The definition of the flight mechanics coordinate system can be found in Appendix A. The outputs of the aerodynamics, yA, are retained as the inputs to the flight mechanics system to allow for arbitrary control inputs to be dealt with in the simulation of the aerodynamics, rather than requiring the extraction of aerodynamic or control derivatives. The non linear equations of motion are linearized by assuming the motion of the airplane consists of small perturbations from steady flight, x¤FM = 0, to give the first order linear system
+x¤FM = AFMxFM + EFM yA (2)
+where AFM represents the kinematics, EFM the inertias of the system and xFM now represents the perturbations in the state variables from the linearization. It has been shown that the use of small disturbance theory gives results of sufficient accuracy for response calculations where the disturbances are not infinitesimal [7]. The full linearized equations of motion can be found in Appendix B.
+B. Aerodynamics
+1. Unsteady Vortex Lattice Method
+The model of the aerodynamics used in this work is produced by using the Unsteady Vortex Lattice Method (UVLM), derived by Katz and Plotkin [8] and written into an aerodynamics simulation code by Roth [9]. This code has later been used and developed in works by Casillas et al. [10], and Bath et al. [6, 11], where in the latter most notably a deflection scheme has been included to restrict the motion of the vortex particles to stop them passing through the body of the aircraft. The UVLM provides a low-to-mid fidelity alternative to CFD. Due to it’s significantly lower computational and time cost, the UVLM is optimal for early design stages where a large number of configurations are to be assessed. Most importantly, the absence of numerical dissipation when modeling the wake with an Eulerian scheme makes the UVLM an ideal tool to investigate the impact of wake dynamics on stability. The full description of the method can be found in Katz and Plotkin [8], however, a brief description follows for completeness. The UVLM models inviscid and incompressible aerodynamics using a vortex panel representation of aerodynamic surfaces and a free vortex particle wake. Using prescribed trajectory, the UVLM steps through time solving the closed
+2
+
+
+system of equations, equation (3), for the vortex panel circulations, Γ, that satisfy the Neumann Boundary condition at the panel collocation points at each time step.
+[AIC]Γ = U (3)
+where [AIC] is the influence coefficient matrix and the vector U is the summation of the velocity influence due to the other wing panels, wake panels, wake particles, free-stream velocity and unsteady motion. The Kutta condition is fulfilled by shedding a row of wake panels with a circulation equal to the panel it is shed from. The wake panels remain in the simulation a further two time steps, before being collapsed to vortex particles that are free to move according to the velocity influence acting upon them.
+2. XV-15 Simulation
+In order to assess the reduced order modelling and its use in stability analyses, a Bell XV-15 like aircraft is used. The aircraft geometry is the same as that used by Bath et al. [6]. This follows the geometry parameters described by Ferguson [12], which have also been used in a number of other studies founds in refs. [10, 11, 13]. It was chosen not to use the geometry described by Padfield [14] despite the work on stability being most comprehensive, due to the larger quantity of literature using the former description of the geometry. The flight mechanics parameters can be found in Appendix C, and the geometry and panelling parameters used in the UVLM in Appendix D which produces the geometries shown in Figure 1. In the helicopter configuration the inboard flaps and outboard flaperons are deflected fully, which is used as a method to reduce the wing download [7]. In the airplane configuration, as in [6], the flaps, flaperons and elevator deflections have been chosen to equate the lift and weight, and achieve a lift to drag ratio of approximately 7 (in conjunction with blade collective pitch variation). A linear approximation to blade twist has been taken as per Kleinhesselink [13].
+(a) Helicopter configuration (b) Airplane configuration
+Fig. 1 UVLM mesh for the XV-15 aerodynamic model [6]
+In order to limit the computational, and associated time, cost the vortex particle wake is constrained by cutting off the wake when it has convected far enough downstream that the influence on the vortex rings is negligible. For this work, only the wake associated with the most recent 600 time steps is retained, equating to 63300 vortex particles in the airplane configuration, and 36000 in the helicopter configuration.
+3. Aerodynamic System
+The nonlinear aerodynamic system for the stick fixed analysis of the tiltrotor aircraft can be written as
+x¤A = f (xA, xFM, t), yA = g(xA, t) (4)
+where xA is the aerodynamics state vector. The input vector of the flight mechanics states, xFM, is used to find the system response to pulses in the flight mechanics states directly, rather than requiring control surface deflections. As has
+3
+
+
+been done in the flight mechanics system, the aerodynamic system is linearized using small perturbations from the steady state such that it can be written as
+xA,k = A ̃ AxA,k−1 + B ̃ AxFM,k , yA,k = C ̃ AxA,k (5)
+Where the  ̃· indicates the system matrices in the discrete time domain; and xA,k and xFM,k represent the perturbations of the aerodynamic and flight mechanics state variables from the steady state at time k. Whilst the system matrices in (5) can be found directly through system identification methods, utilizing the pulse response, the size of the resulting system is likely to be prohibitively large. The following section investigates the use of ROMs in order to estimate the system matrices at the lowest cost, whilst representing as much of the dominant behaviour as possible.
+III. Reduced Order Modelling
+A Reduced Order Model (ROM) approximates a large dynamical system from its original basis onto another basis where some states are negligible or redundant. By removing only the negligible states the loss of accuracy is minimised whilst maintaining as much energy, or information, in the original system as possible. To do this, the r most controllable and observable modes are retained in the ROM. It is ideal to produce a balanced ROM such that the controllability and observability of the ROM are equal, thus ensuring seemingly low-energy modes that may have a disproportionately large impact on the system dynamics are not truncated [10]. The following sections describe the Eigensystem Realisation Algorithm (ERA), which has been chosen to be used in this work as only the system response is required in order to produce the ROM. This differs from other methods, such as Proper Orthogonal Decomposition methods [15–17] which would require computation of the adjoint modes that are not easily obtained from the UVLM. The ERA is then extended using the methodology introduced by Williams et al. [18], to include steady-state information in the formulation of the ERA.
+A. Eigensystem Realisation Algorithm
+Originally introduced by Juang and Pappa [19], the ERA produces the reduced system (A ̃ r , B ̃ r , C ̃ r ) as an approximation to the full dynamic system, whilst containing as much of the dominant behaviour as possible. The benefit of the ERA over many other ROM methods is the ability to produce a balanced reduced system using only system response data, hence its introduction as a method for system identification and model reduction. Only requiring system response data means that the results of this work are as applicable to a URANS modelling of the tiltrotor as they are to the UVLM presented. The process of constructing the ERA algorithm and its capability in aerodynamic problems is described by Gaitonde and Jones [20] as well as Wales et al. [21]. To form a ROM via the ERA, the Markov parameters, Yk, of the discrete system, equation (6), must be formed for m + 1 time steps, which represent the unit impulse response of the system as shown in equation (7).
+x
+k =  ̃Axk−1 + B ̃ uk
+y
+k = C ̃ xk + D ̃ uk
+(6)
+Where subscript k represents the discrete time level.
+h
+Y0 Y1 Y2 · · · Ym+1
+i
+=
+h  ̃C  ̃B  ̃C  ̃A  ̃B  ̃C  ̃A2  ̃B · · ·  ̃C  ̃Am  ̃B
+i
+(7)
+The general Hankel matrix, H1, and shifted Hankel matrix, H2, can be formed from the Markov sequence with each element attainable from the impulse response.
+H1 =
+         
+Y0 Y1 · · · Yg
+Y1 Y2 · · · Yg+1
+...
+...
+...
+...
+Y
+s Ys+1 · · · Ym−1
+         
+, H2 =
+         
+Y1 Y2 · · · Yg+1
+Y2 Y3 · · · Yg+2
+...
+...
+...
+...
+Y
+s+1 Ys+2 · · · Ym
+         
+(8)
+The system reduction is then carried out as per Juang and Pappa [19] to produce a balanced realisation. The first step is to take the Singular Value Decomposition (SVD) of H1, which gives the relative importance of each state in the system.
+4
+
+
+This can then be used to determine the r most important modes (modes with the highest singular values) to maintain in the ROM.
+H1 = UΣVT =
+h
+U
+r U0
+i
+"
+Σ
+r0
+0 Σ0
+#"
+VT
+r
+VT
+0
+#
+(9)
+The reduced system is then constructed using
+ ̃Ar = Σ−1/2
+r UT
+r H2Vr Σ−1/2
+r (10a)
+ ̃Br = Σ1/2
+r VT
+r
+"
+I
+p×p 0
+00
+#
+(10b)
+ ̃Cr =
+"
+I
+q×q 0
+00
+#
+U
+r Σ1/2
+r (10c)
+where the number of inputs and outputs are p and q respectively. The number of inputs corresponds to the flight mechanics state vector, equation (26a), therefore p = 12; and the number of outputs corresponds to the aerodynamic forces and moments, equation (26b), therefore q = 6.
+B. Including Steady-State Information in the ERA
+The ERA process can be viewed as an efficient numerically balanced POD [22] or as a moment matching procedure. When viewed as moment matching it is easy to see how elements of the Hankel matrix are matched, and thereby the transient behaviour of the dynamic system is modelled. However, no element of the Hankel matrix represents the continuous steady state response of the system. As a result, the steady behaviour of the system is only retrieved in the ROM if the entire time history of an infinitely long pulse response is well modelled. The following section describes the method to adjust the Hankel matrix to include the steady behaviour in the ROM. This work is similar to the methodology introduced by Williams et al. [18] where the concept was used to minimise the required pulse length in a ROM of gust responses. In this work the modified ROM technique will ensure that the steady behaviour and hence the stability derivatives, are directly represented in the ROM. By considering the continuous system, the steady state response can be shown to be
+y = −A−1Bu ̄ = x0 (11)
+where u ̄ is the steady state input vector. By using this substitution for x0 in the discrete system (6), the Markov sequence in equation (7) becomes
+h
+Yˆ 0 Yˆ 1 ˆY2 · · · Yˆ m+1
+i
+=
+h  ̃C(−A−1Bu ̄)  ̃C  ̃A(−A−1Bu ̄)  ̃C  ̃A2 (−A−1Bu ̄) · · ·  ̃C  ̃Am (−A−1Bu ̄)
+i
+(12)
+This sequence represents the system response to a step-down input i.e. a steady finite input that is suddenly removed. The Hankel matrix elements in equation (8) can then be rewritten as
+Hˆ 1 =
+         
+ ̃C ˆB  ̃C  ̃A ˆB · · ·  ̃C  ̃Ag ˆB
+ ̃C  ̃A ˆB  ̃C  ̃A2 ˆB · · ·  ̃C  ̃Ag+1 ˆB
+...
+...
+...
+...
+ ̃C  ̃As ˆB  ̃C  ̃As+1 ˆB · · ·  ̃C  ̃Am−1 ˆB
+         
+(13)
+Where Bˆ = −A−1B (14)
+Taking the same steps as in the ERA by taking the r leading terms of the SVD, then using equations (10a-10c), the reduced system (A ̃ r , Bˆ r ,  ̃Cr ) is found. In order to find the discrete reduced system (A ̃ r , B ̃ r , C ̃ r ), the following relationship can be used, as found by Williams et al. [18].
+ ̃Br = (I −  ̃Ar ) ˆBr (15)
+5
+
+
+However, this relationship is related to the implicit first order time stepping scheme used in [18], and in this work only the reduced continuous system (Ar , Br , Cr ) is required and so the direct relationship
+B
+r = −Ar ˆBr (16)
+can be used. Note also that while the system defined by (A ̃ r , Bˆ r , C ̃ r ) is balanced, the final (Ar , Br , Cr ) is only approximately balanced.
+C. Obtaining System Response
+The pulse responses required in the ROM methodology are produced by applying a set of pulses to the trajectory in the UVLM simulation from a steady state condition. The pulses are applied in each of the 12 flight mechanics states at each time step in a period of rotor rotation and the system is then allowed to return to a steady state, producing a Single-Input-Multiple-Output (SIMO) pulse response. By applying the pulse at every step over a period the ensemble averaged response can be computed for each SIMO response, which can then be used in the ERA. Because the pulses correspond to the perturbations used in the linearization of the flight mechanics and aeorodynamic systems, the size of the pulses are required to produce a linear response in the UVLM simulation. The pulse magnitudes shown in Tables 1, and 2, produce a linear response for the helicopter and airplane configurations respectively. It can be seen in the tables that pulses have been applied in the x, y, z, and ψ states; these states are commonly omitted in the linearization of the flight mechanics system [7]; however, these states remain in this work as their pulse responses initiate complex behaviour in the aerodynamic system produced by the UVLM via the wake. The step down responses required by the ERA with the inclusion of the steady state are found by using convolution of the average pulse responses to form an equivalent step up response. The UVLM is run to a steady state following the addition of a steady finite input in each state to find the equivalent step up steady state. The step up response is subtracted from the steady state to form the step down responses.
+Table 1 Pulse sizes in each degree of freedom in order to find the linear pulse response in the helicopter configuration
+Pulse Variable x y z u v w φ θ ψ p q r
+Pulse Size 0.0125 0.0125 0.05 0.1 0.1 0.1 0.005 0.005 0.005 0.1 0.1 0.1 Unit m m m m s−1 m s−1 m s−1 ° ° ° °s−1 °s−1 °s−1
+Table 2 Pulse sizes in each degree of freedom in order to find the linear pulse response in the airplane configuration
+Pulse Variable x y z u v w φ θ ψ p q r
+Pulse Size 0.78125 0.78125 3.1 0.025 0.0125 0.0125 0.005 0.005 0.005 0.025 0.025 0.1
+Unit mm mm mm m s−1 m s−1 m s−1 ° ° ° °s−1 °s−1 °s−1
+As per Bath et al. [6], the output of the UVLM can be split into regions of similar behaviour with a ROM produced for each region that is later agglomerated into a single ROM. This is done because it is expected that due to the significantly differing motion between a translational and rotational perturbation, the numerical output will be of noticeably differing order of magnitude and show a significantly different decay profile. If the aerodynamic response is treated in one large block, the behaviour of the system to an input resulting in a comparably small order of magnitude output, may become neglected in the ROM due to the truncation of low energy modes. By grouping the output into input-output regions, the intention is to ensure the regions with a smaller scale of response are not removed in the truncation step of the ROM production. With a single region, the ROM is produced on a Multiple-Input-Multiple-Output (MIMO) response matrix where all input-output information is in one large matrix. The regions can also be small such that a ROM is found for each Single-Input-Single-Output pair. In this work the regions are as shown in equation (17), where the regions are 3x3 MIMO blocks. The input states are indicated above the matrix, and the output states on the left. The blocks are split into forces and moments for each set of displacements, velocities, rotations and rotation rates.
+6
+
+
+Using the below groupings the largest stable ROM for the helicopter configuration has been found to be a size of r = 9 per group; this produces an overall model size of 72 × 72 once agglomerated. Similarly r = 8, and an overall model of 64 × 64 once agglomerated, for the airplane configuration.
+x yzuwvφθψ pqr
+            
+            
+Fx · · · · · · · · · · · ·
+Fy · · · · · · · · · · · ·
+Fz · · · · · · · · · · · ·
+Mx · · · · · · · · · · · ·
+My · · · · · · · · · · · ·
+Mz · · · · · · · · · · · ·
+(17)
+IV. Flight Mechanics and Aerodynamics Coupling
+In order to compute the coupled stability of the aircraft the reduced order aerodynamics is coupled with the flight mechanics following the methodology of Bath et al. [6]. The reduced order aerodynamic system in the discrete time domain for the stick fixed analysis of the tilt rotor aircraft, assuming a linear time invariant system, is given by
+xA,r ,k = A ̃ A,r xA,r ,k−1 + B ̃ A,r xFM,k
+yA,r ,k = C ̃ A,r xA,r ,k
+(18)
+The aerodynamics and flight mechanics are required to be in the same time domain to enable the coupling. As a result the aerodynamics is converted to the continuous time domain by ultilising a sampling-based inversion transformation as per Gaitonde and Jones [23], as shown in equation (19).
+AA,r = ln(A ̃ A,r )
+Δt
+, BA,r = (  ̃AA,r − I)−1AA,r B ̃ A,r , CA,r = C ̃ A,r (19)
+Using this transformation, the reduced order continuous aerodynamic system is then,
+x¤A,r = AA,r xA,r + BA,r xFM, yA,r = CA,r xA,r (20)
+Two transformations are introduced, Q, and T, that transform the body centered flight mechanics states, xFM, and outputs, yA, to the aerodynamics frame of reference to enable the coupling.
+yA |aero = QyA |body, xFM |aero = TxFM |body (21)
+Using equations (2), (20) and (21) the coupled system which can be used in the stability analysis is formed as shown in
+equation (22).
+"
+x¤FM |body
+x¤A,r |aero
+#
+=
+"
+AFM EFMQ−1CA,r
+BA,r T AA,r
+#"
+xFM |body
+xA,r |aero
+#
+(22)
+The approximate linear time invariant system that is used in the coupling is produced using the method developed by Bath et al. [6] where the ensemble average of the response over a period is found as per Guckenheimer and Holmes [24]. It is shown in [6] that for the tilt rotor aircraft, the reduced order model of the LTI approximation shows an adequately similar eigenvalue distribution in the unstable region as using the full periodic system response.
+V. Results
+A. Classical Model Analysis
+In the following, the results of the coupled stability analysis of the time averaged response of the tiltrotor aircarft in the helicopter and airplane configurations are presented. The coupled system eigenvalues are plotted against the eigenvalues found in literature where classical stability methods have been carried out on the the Bell XV-15. Also
+7
+
+
+displayed are the set of classical model eigenvalues, which are the eigenvalues found if a classical approach to stability is carried out using the ROM of the aerodynamics. This enables the validation of the aerodynamic modelling as the eigenvalue distribution can be compared to the values found in literature where an equivalent approach is taken. The classical eigenvalues are computed by estimating the first order partial derivatives of the aerodynamics, or more commonly known as stability derivatives of the aerodynamics. For example, for the stick-fixed response, the X force could be written as
+X = ∂X
+∂x
+x + ∂X
+∂y
+y + ∂X
+∂z
+z + ∂X
+∂u
+u + ∂X
+∂v
+v + ∂X
+∂w
+w + ∂X
+∂φ
+φ + ∂X
+∂θ
+θ + ∂X
+∂ψ
+ψ + ∂X
+∂p
+p + ∂X
+∂q
+q + ∂X
+∂r
+r (23)
+The method to compute the derivatives is shown by Casillas et al. [10]. At the steady state there is no rate of change of the aerodynamic states, thus the continuous time outputs yA can be written as,
+yA = −CAA−1
+A BAxFM (24)
+Considering the transformations and rotations required to account for the differing frames of reference of the flight mechanics and aerodynamic system, equation (24) is transformed into the body axes and becomes,
+yA = −Q−1CAA−1
+A BATxFM (25)
+Equation (23) represents a single row of the matrix [−Q−1CAA−1
+A BAT] from equation (25), therefore the matrix is the matrix of stability derivatives to be used in the classical stability analysis. The equivalent classical system matrix, Ac, is produced as given by equation 4.44 in Padfield [14] using the stability derivatives found, along with the kinematics and inertial terms from AFM and EFM. It should be noted that in the classical model a number of stability derivatives and flight mechanics states are approximated to be zero as they are assumed to be negligible. The reference models in order to validate the aerodynamic systems are found in: Kleinhesselink [13] where a relatively simple tiltrotor model, uncorrected for flight data was developed; the JANRAD model [25], an adaptation to a helicopter stability code; the GTRS model by NASA [12], a model heavily corrected with empirical data in an effort to correlate with flight data; and the model developed by Padfield [14] where a multibody dynamic model was developed.
+B. Results of the Time-Averaged Coupled Model Stability Analysis
+1. Helicopter Configuration
+The results of the coupled model and classical model analysis are shown in Figure 2; as well as the literature values from similar classical analyses of the XV-15. The classical model eigenvalues found using the ROM aerodynamics from the UVLM can be seen to have a very similar pattern and magnitude as those in literature. The literature values on the most part agglomerate in the same regions as each other, and the classical model values also follow this trend, indicating the capturing of the same behaviour. This validates the model of the aerodynamics used in this work as when the same approach to the stability is taken there is a good agreement with previous works. When comparing to the coupled model eigenvalues, using the same aerodynamic model with the largest stable ROM size, there is significantly more instability; however, there is still a similar pattern to the locations of the eigenvalues. As the coupled model contains all the dynamical behaviour of the system, this shows that significant dynamics are being truncated when reducing the dynamics to a set of first order stability derivatives. It is expected that by including more terms in the expansion forming the classical model, thereby including more time history effects, that the classical model eigenvalues will tend towards those of the coupled model. In the airplane configuration, as shown in Figure 3, the same patterns as those for the helicopter configuration can be seen. The eigenvalues found using the classical method are in similar regions to those found in literature indicating a similar degree of instability and validating the model for the aerodynamics. The coupled model eigenvalues again show a similar pattern, however, with a greater degree of instability than those found using the classical model and literature values.
+8
+
+
+-1.5 -1 -0.5 0 0.5 1
+-1.5
+-1
+-0.5
+0
+0.5
+1
+1.5
+Fig. 2 Eigenvalue distribution for the coupled and classical stability in helicopter configuration with comparison to values from reference models: JANRAD [25], GTRS [25, 26], Kleinhesselink [13], and Padfield [14]
+-2 -1 0 1 2
+-5
+0
+5
+(a) All unstable eigenvalues
+-0.25 -0.2 -0.15 -0.1 -0.05 0 0.05
+-0.2
+-0.1
+0
+0.1
+0.2
+(b) Expanded view showing the eigenvalues near the origin
+Fig. 3 Eigenvalue distribution for the coupled and classical stability in airplane configuration with comparison to values from reference models: JANRAD [25], GTRS [25, 26], Kleinhesselink [13], and Padfield [14]
+9
+
+
+C. Effect of Including Steady-State Information in the ERA
+Figures 4 and 6 display the distribution of the classical and coupled model eigenvalues, for the helicopter and airplane configuration respectively, and how they vary with the increase of the order of the ROM using the ERA method. For the helicopter configuration the coupled and classical model eigenvalues appear to converge to a relatively consistent distribution from the size of the ROM being greater than rblock = 7. This contrasts the airplane configuration where the classical model eigenvalues converge at a lower size of around rblock = 5, however the coupled model eigenvalues never appear to converge. It is desired to achieve a consistent classical model eigenvalue distribution at a lower ROM size in order to ensure that the steady behaviour of the system is captured correctly. This enables there to be certainty that even for low order models, the underlying aerodynamics that is included in the coupled model for the stability analysis is correct. It should be noted that at ROM sizes greater than rblock = 8, the ROMs for the aerodynamics become unstable; to achieve ROM sizes above this, restarting has been introduced as per Wales et al. [21] to remove the unstable eigenvalues and produce a stable ROM. When the steady state information is included in the ERA as per the method outlined in this paper, it is expected that the classical model eigenvalue distribution will converge to a consistent distribution at smaller ROM sizes. This is because of the inclusion of the  ̃C ˆB term in the top left corner of the Hankel matrix, equation (13), representing the period averaged steady state conditions of the system due to a unit step up. The eigenvalue distributions for the ERA with the steady state inclusion can be seen in Figures 5 and 7 for the helicopter and airplane configurations respectively. The expected improvement in the convergence of the classical model eigenvalues is however not apparent; in both configurations the eigenvalues appear to converge roughly at the same size as when using the ERA.
+012
+-2
+-1
+0
+1
+2 Coupled Model Classical Model
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+Fig. 4 Eigenvalue distribution for the coupled (crosses) and classical (circles) stability in helicopter configuration for varying ROM sizes using the ERA
+10
+
+
+012
+-2
+-1
+0
+1
+2 Coupled Model Classical Model
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+Fig. 5 Eigenvalue distribution for the coupled (crosses) and classical (circles) stability in helicopter configuration for varying ROM sizes using the ERA with the inclusion of the steady state
+11
+
+
+012
+-2
+-1
+0
+1
+2 Coupled Model Classical Model
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+Fig. 6 Eigenvalue distribution for the coupled (crosses) and classical (circles) stability in airplane configuration for varying ROM sizes using the ERA
+12
+
+
+012
+-2
+-1
+0
+1
+2 Coupled Model Classical Model
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+012
+-2
+-1
+0
+1
+2
+Fig. 7 Eigenvalue distribution for the coupled (crosses) and classical (circles) stability in airplane configuration for varying ROM sizes using the ERA with the inclusion of the steady state
+13
+
+
+To determine the cause of the lack of improvement in the convergence of the eigenvalue distribution, the variation of the stability derivatives with ROM size has been investigated. With the inclusion of the steady state in the Hankel matrix it is expected that the stability derivatives estimated from (AA,r , BA,r , CA,r ) will match the steady response due to a unit step up at a lower ROM size. Figure 8 shows the variation of a set of stability derivatives found using the ERA as well as the ERA with the inclusion of steady state information against the average steady response; these specific examples are chosen as they are utilised in the classical model for the stability as per Padfield [14]. Figure 8 shows examples of where the two methods both roughly converge to the steady response value, indicating the effective capturing of the steady behaviour in both methods. For most stability derivatives the two ROM methods produce stability derivatives that roughly converge to the steady response; some appear to converge however a number of spikes in the stability derivatives appear which have been attributed to the restarting introducing non-physical behaviour. In the case where both ROM methods converge, there does not appear to be an improvement in convergence when the steady state information is included. This correlates with the behaviour shown in the eigenvalues where there was no improvement in the convergence of the eigenvalues when including the steady state information in the ROM. Furthermore, it can be seen that where convergence of the stability derivatives to the steady response has occurred, it is roughly at the value of rblock where the classical model eigenvalues converge.
+0 5 10 15
+-1
+-0.5
+0
+0.5
+1
+1.5 104
+0 5 10 15
+-6
+-4
+-2
+0
+2
+4 104
+0 5 10 15
+-4
+-2
+0
+2
+4
+6 104
+Fig. 8 Stability derivatives showing convergence to the steady response for the two ROM methods at varying ROM size
+There are a number of stability derivatives where both ROM methods approximately converge to the same value, however, the value of the convergence is not the same as the steady response. Examples of this are shown in Figure 9.
+0 5 10 15
+-1000
+0
+1000
+2000
+3000
+0 5 10 15
+-4000
+-2000
+0
+2000
+4000
+6000
+8000
+0 5 10 15
+-1
+-0.5
+0
+0.5
+1 105
+Fig. 9 Stability derivatives showing convergence to a different value than the steady response for the two ROM methods at varying ROM size
+To investigate the cause of this behaviour the time averaged pulse response and corresponding step response are assessed. For a number of input/output pairs, the pulse response has been found to not decay completely to the undisturbed steady state; in some cases, as shown in Figure 10, the average pulse response converges to some non zero value. When the pulses are converted to step responses using convolution this leads to a constantly varying steady response, as shown
+14
+
+
+in the figure. The later conversion of the step up response to a step down response, through subtracting the step up response from the steady response, results in a step down response that also does not converge to zero, also as shown.
+0 10 20 30 40
+-60
+-40
+-20
+0
+20
+40
+60
+Fig. 10 Comparison between the average pulse response, step response and step down response where full decay of the pulse response has not occurred
+The ERA method is most effective at modelling the transient response of the system. In the reference work by Williams et al. [18], where the steady state inclusion in the ERA was first used, the data represented the response to a gust with only a short time history. Because the full decay of the response was not found, the limited data in the Hankel matrix allowed the ERA to assume the trajectory of the pulse response towards convergence around zero; in this case including the steady state in the ROM method is effective. In this paper however, it is likely that the ROM is capturing the tail of the response. As some responses are not decaying to zero it is likely that this causes the convergence of the stability derivatives to a different value than the steady response.
+VI. Conclusion
+In this paper improvements to the reduced order modelling for tiltrotor stability analysis via including steady state information in ERA has been presented. The inclusion of the steady state in the Hankel matrix attempts to ensure that the steady response is captured at smaller ROM sizes and without reliance on long time history of the aerodynamic data. The results have shown that the convergence of the classical stability analysis eigenvalues, where the classical model is based on a subset of the stability derivatives of the aerodynamics, has occurred at similar ROM sizes using both methods. This convergence at similar ROM sizes is also evident in the stability derivatives that are included in the classical model; in these cases the stability derivatives have converged to the steady state response to a steady step up input. For a number of cases the stability derivatives have converged to a different value than the steady state response to the step down input. The lack of difference between the ERA with the steady state included and the standard ERA suggests that the ERA itself was not the limiting factor on the minimum size of ROM achievable. Even when including the steady state in the ERA the smallest ROM size to achieve rough convergence is around the same size. It appears that the limiting factor is instead, the quality of the pulse response data used by the ROM. In future work the pulse responses will need to be run such that there is a greater time history available in order to determine if the resulting convergence of the stability derivatives to a different value than the steady response is due to the pulse convergence to a non zero value. The pulse sizes can also be varied to determine that a linear pulse has been found. It is possible that linear pulses will have to be constructed by utilising two pulse responses of differing sizes and assuming a weakly nonlinear (quadratic) response.
+15
+
+
+References
+[1] Clean Sky 2 Joint Undertaking, “Clean Sky Joint Technical Programme (V5),” 2015.
+[2] Boeing, “Bell Boeing V-22 Osprey Fleet Tops 400,000 Flight Hours,” , 2017. Available: https://boeing.mediaroom.com/ 2017-11-14-Bell-Boeing-V-22-Osprey-Fleet-Tops-400-000-Flight-Hours. [Accessed 03-June-2020].
+[3] Leonardo, “Leonardo world’s No.1 civil helicopter manufacturer secures contracts, eyes new markets and expands training and products,” , 2019. Available: https://www.leonardocompany.com/en/press-release-detail//detail/leonardo-world-s-no-1-civil-helicopter-manufacturer-08-03-19. [Accessed: 03-June-2020].
+[4] Parsons, D., “Report: Downwash Likely Culprit In Fatal V-22 Crash Off Australia,” , 2018. Available: https://www. rotorandwing.com/2018/05/24/report-downwash-likely-culprit-fatal-v-22-crash-off-australia/. [Accessed 03-June-2020].
+[5] Agenzia Nazionale Per La Sicurezza Del Volo, “Final Report - Accident occurred to the AgustaWestland AW609 aircradt registration marks N609AG, in Tronzano Vercellese (VC), on the 30th of October, 2015,” 2017.
+[6] Bath, P. E., Gaitonde, A., and Jones, D., “Reduced Order Aerodynamics and Flight Mechanics Coupling For Tiltrotor Aircraft Stability Analysis,” AIAA SCITECH 2022 Forum, 2022, p. 0284.
+[7] Etkin, B., and Reid, L. D., Dynamics of flight, 3rd Edition, Vol. 2, Wiley New York, 1996.
+[8] Katz, J., and Plotkin, A., Low-speed aerodynamics, Vol. 13, Cambridge university press, 2001.
+[9] Roth, M., “Vortex Lattice Methods for Aerospace Design,” Ph.D. thesis, University of Bristol, 2016.
+[10] Cassillas, S. M., Wakefield, J. E., Gaitonde, A., and Jones, D. P., “Coupled Flight Mechanics based on Reduced Order Models for use in Tiltrotor Stability Analysis,” AIAA Aviation 2019 Forum, 2019, p. 3606.
+[11] Bath, P., Gaitonde, A., and Jones, D., “The use of Periodic Reduced Order Models in Coupled Flight Mechanics Analysis of Tiltrotor Aircraft,” AIAA Scitech 2021 Forum, 2021, p. 1201.
+[12] Ferguson, S. W., “A mathematical model for real time flight simulation of a generic tilt-rotor aircraft,” NASA CR-166536, 1988.
+[13] Kleinhesselink, K., “Stability and control modeling of tiltrotor aircraft,” Ph.D. thesis, 2007.
+[14] Padfield, G. D., Helicopter Flight Dynamics: Including a Treatment of Tiltrotor Aircraft, John Wiley & Sons, 2018.
+[15] Antoulas, A. C., and Sorensen, D. C., “Approximation of large-scale dynamical systems: An overview,” Tech. rep., 2001.
+[16] Hall, K. C., Thomas, J. P., and Dowell, E. H., “Proper orthogonal decomposition technique for transonic unsteady aerodynamic flows,” AIAA journal, Vol. 38, No. 10, 2000, pp. 1853–1862.
+[17] Lassila, T., Manzoni, A., Quarteroni, A., and Rozza, G., “Model order reduction in fluid dynamics: challenges and perspectives,” Reduced Order Methods for modeling and computational reduction, Springer, 2014, pp. 235–273.
+[18] Williams, S. P., Jones, D., Gaitonde, A., Wales, C., and Huntley, S. J., “Reduced order modelling of aircraft gust response for use in early design stages,” 35th AIAA Applied Aerodynamics Conference, 2017, p. 3906.
+[19] Juang, J.-N., and Pappa, R. S., “An eigensystem realization algorithm for modal parameter identification and model reduction,” Journal of guidance, control, and dynamics, Vol. 8, No. 5, 1985, pp. 620–627.
+[20] Gaitonde, A., and Jones, D., “Calculations with ERA based reduced order aerodynamic models,” 24th AIAA Applied Aerodynamics Conference, 2006, p. 2999.
+[21] Wales, C., Gaitonde, A., and Jones, D., “Stabilisation of reduced order models via restarting,” International Journal for Numerical Methods in Fluids, Vol. 73, No. 6, 2013, pp. 578–599.
+[22] Zhanhua Ma, S. A., and Rowley, C., “Reduced-order models for control of fluids using the eigensystem realization algorithm,” Theoretical and Computational Fluid Dynamics, 2008.
+[23] Gaitonde, A. L., and Jones, D., “Study of techniques for obtaining continuous models from 2D discrete reduced-order state-space CFD models,” International journal for numerical methods in fluids, Vol. 52, No. 11, 2006, pp. 1247–1275.
+[24] Guckenheimer, J., and Holmes, P., Nonlinear oscillations, dynamical systems, and bifurcations of vector fields, Vol. 42, Springer Science & Business Media, 2013.
+16
+
+
+[25] Klein, G. D., “Linear Modeling of Tiltrotor Aircraft (In Helicopter and Airplane Modes) for Stability Analysis and Preliminary Design.” Tech. rep., NAVAL POSTGRADUATE SCHOOL MONTEREY CA, 1996.
+[26] Ferguson, S. W., “Development and validation of a simulation for a generic tilt-rotor aircraft,” NASA Contractor Report, Vol. 166537, 1989.
+17
+
+
+A. Flight Mechanics Coordinate System
+As described by Bath et al. [6], the coordinate system for the flight mechanics variables is as shown in Figure 11 and described as follows: • Equation (26a) describes the flight mechanics state vector, xFM. [x, y, z]T is the position of the CG relative to the inertial (Earth-fixed) frame in the coordinate system of the inertial frame; [u, v, w]T is the velocity of the CG relative to the wind vector W (equation (26c)) expressed in the body axes coordinate system; [φ, θ, ψ]T defines the Euler angles of the body axis frame relative to the inertial frame in the order of yaw-pitch-roll; and [ p, q, r]T defines the aircraft rotational velocities about the body axis • Equation (26b) describes the aerodynamic forces and moments, yA. [X, Y , Z]T is the net external force acting upon the aircraft acting at the CG in the body axes coordinate system; and [L, M, N]T is the net external moment acting at the aircraft CG about the body axes
+xFM = [x, y, z, u, v, w, θ, φ, ψ, p, q, r]T (26a)
+yA = [X, Y , Z, L, M, N]T (26b)
+W = [Wx, Wy, Wz]T (26c)
+u, X
+p, L
+xb
+yb
+v, Y
+q, M
+zb
+w, Z
+r, N
+zI
+xI
+yI
+[x,y,z]T
+Body Axes
+Inertial
+Frame
+φ
+θ
+ψ
+CG
+Fig. 11 Flight mechanics axes system [6]
+18
+
+
+B. Linearized Flight Mechanics Equations of Motion
+The equations of motion for the linearized flight mechanics is as follows. Where I terms denote moments of inertia about the body axes (xb, yb, zb), and variables
+of the form ·ˆ represents the steady-state solution (those without circumflex represents the perturbation). It is assumed that the body and rotors are rigid and are
+attached to the nonrotating hub which is fixed in the body axes; as well as well as the xb − zb plane being a plane of symmetry so Iyz = Ixy = 0 [10]
+x¤ = (u + Wx) (cos( ˆ
+θ) cos( ˆ
+ψ) + (v + Wy) (sin( ˆ
+φ) sin( ˆ
+θ) cos( ˆ
+ψ) − cos( ˆ
+φ) sin( ˆ
+ψ)) + (w + Wz) (cos( ˆ
+φ) sin( ˆ
+θ) cos( ˆ
+ψ) + sin( ˆ
+φ) sin( ˆ
+ψ))
++ φ[(vˆ + ˆ
+Wy) (cos( ˆ
+φ) sin( ˆ
+θ) cos( ˆ
+ψ) + cos( ˆ
+φ) sin( ˆ
+ψ)) + (wˆ + ˆ
+Wz) (cos( ˆ
+φ) sin( ˆ
+ψ) − sin( ˆ
+φ) sin( ˆ
+θ) cos( ˆ
+ψ))]
++ θ [(vˆ + ˆ
+Wy) sin( ˆ
+φ) cos( ˆ
+θ) cos( ˆ
+ψ) + (wˆ + ˆ
+Wz) cos( ˆ
+θ) cos( ˆ
+φ) cos( ˆ
+ψ) − (uˆ + ˆ
+Wx) sin( ˆ
+θ) cos( ˆ
+ψ)]
++ ψ [(wˆ + ˆ
+Wz) (sin( ˆ
+φ) cos( ˆ
+ψ) − sin( ˆ
+ψ) cos( ˆ
+φ) sin( ˆ
+θ)) − (vˆ + ˆ
+Wy) (− sin( ˆ
+ψ) sin( ˆ
+φ) sin( ˆ
+θ) + cos( ˆ
+ψ) cos( ˆ
+φ)) − (uˆ + ˆ
+Wx) (− cos( ˆ
+θ) sin( ˆ
+ψ))
++ (uˆ + ˆ
+Wx) (cos( ˆ
+θ) cos( ˆ
+ψ)) + (vˆ + ˆ
+Wy) (sin( ˆ
+φ) sin( ˆ
+θ) cos( ˆ
+ψ) − cos( ˆ
+θ) sin( ˆ
+ψ)) + (wˆ + ˆ
+Wz) (cos( ˆ
+φ) sin( ˆ
+θ) cos( ˆ
+ψ) + sin( ˆ
+φ) sin( ˆ
+ψ))
+y¤ = (u + Wx) (cos( ˆ
+θ) sin( ˆ
+ψ) + (v + Wy) (sin( ˆ
+φ) sin( ˆ
+θ) sin( ˆ
+ψ) + cos( ˆ
+φ) cos( ˆ
+ψ)) + (w + Wz) (cos( ˆ
+φ) sin( ˆ
+θ) sin( ˆ
+ψ) − sin( ˆ
+θ) cos( ˆ
+ψ))
++ φ[(vˆ + ˆ
+Wy) (cos( ˆ
+φ) sin( ˆ
+θ) sin( ˆ
+ψ) − sin( ˆ
+φ) cos( ˆ
+ψ)) + (wˆ + ˆ
+Wz) (− cos( ˆ
+φ) cos( ˆ
+ψ) − sin( ˆ
+φ) sin( ˆ
+θ) sin( ˆ
+ψ))]
++ θ [(vˆ + ˆ
+Wy) sin( ˆ
+φ) cos( ˆ
+θ) sin( ˆ
+ψ) + (wˆ + ˆ
+Wz) cos( ˆ
+θ) cos( ˆ
+φ) sin( ˆ
+ψ) − (uˆ + ˆ
+Wx) sin( ˆ
+θ) sin( ˆ
+ψ)]
++ ψ [(wˆ + ˆ
+Wz) (sin( ˆ
+φ) sin( ˆ
+ψ) + cos( ˆ
+ψ) cos( ˆ
+φ) sin( ˆ
+θ)) − (vˆ + ˆ
+Wy) (cos( ˆ
+ψ) sin( ˆ
+φ) sin( ˆ
+θ) − cos( ˆ
+φ) sin( ˆ
+ψ)) − (uˆ + ˆ
+Wx) (cos( ˆ
+θ) cos( ˆ
+ψ))
++ (uˆ + ˆ
+Wx) (cos( ˆ
+θ) sin( ˆ
+ψ)) + (vˆ + ˆ
+Wy) (sin( ˆ
+φ) sin( ˆ
+θ) sin( ˆ
+ψ) + cos( ˆ
+φ) cos( ˆ
+ψ)) + (wˆ + ˆ
+Wz) (cos( ˆ
+φ) sin( ˆ
+θ) sin( ˆ
+ψ) + sin( ˆ
+φ) cos( ˆ
+ψ))
+z¤ = −(u + Wx) sin( ˆ
+θ + (v + Wy) (sin( ˆ
+φ) cos( ˆ
+θ) + (w + Wz) (cos( ˆ
+φ) cos( ˆ
+θ)
++ φ[(vˆ + ˆ
+Wy) (cos( ˆ
+φ) cos( ˆ
+θ)) + (wˆ + ˆ
+Wz) (− sin( ˆ
+φ) cos( ˆ
+θ))]
++ θ [−(vˆ + ˆ
+Wy) sin( ˆ
+φ) sin( ˆ
+θ) − (wˆ + ˆ
+Wz) cos( ˆ
+φ) sin( ˆ
+θ) − (uˆ + ˆ
+Wx) cos( ˆ
+θ)]
+− (uˆ + ˆ
+Wx) sin( ˆ
+θ) + (vˆ + ˆ
+Wy) sin( ˆ
+φ) cos( ˆ
+θ) + (wˆ + ˆ
+Wz) cos( ˆ
+φ) cos( ˆ
+θ)
+u¤ = X
+m
++ r (vˆ + ˆ
+Wy) − q(wˆ + ˆ
+Wz) − qˆ(wˆ + ˆ
+Wz + Wz + w) + rˆ(vˆ + ˆ
+Wy + Wy + v) − g(sin( ˆ
+θ) + θ cos( ˆ
+θ)) − ¤
+Wx
+v¤ = Y
+m
+− r (uˆ + ˆ
+Wx) + p(wˆ + ˆ
+Wz) − rˆ(uˆ + ˆ
+Wx + Wx + u) + pˆ(wˆ + ˆ
+Wz + Wz + w) + φg cos( ˆ
+φ) cos( ˆ
+θ) − θg sin( ˆ
+φ) sin( ˆ
+θ) + g cos( ˆ
+θ) sin( ˆ
+φ) − ¤
+Wy
+w¤ = Z
+m
+− p(vˆ + ˆ
+Wy) + q(uˆ + ˆ
+Wx) − pˆ(vˆ + ˆ
+Wy + Wy + v) + qˆ(uˆ + ˆ
+Wx + Wx + u) + g(cos( ˆ
+φ) cos( ˆ
+θ) − θ sin( ˆ
+θ) cos( ˆ
+φ) + φ cos( ˆ
+φ) cos( ˆ
+θ)) + ¤
+Wz
+¤
+φ = ( pˆ + p) + φ(qˆ cos( ˆ
+φ) tan( ˆ
+θ)) − rˆ sin( ˆ
+φ) tan( ˆ
+θ)) + θ (1 + tan2 ( ˆ
+θ))(qˆ sin( ˆ
+φ) + rˆ cos( ˆ
+φ)) + q sin( ˆ
+φ) tan( ˆ
+θ) + r cos( ˆ
+φ) tan( ˆ
+θ)
+¤
+θ = (qˆ + q) cos(φ) − (rˆ + r) sin(φ) − φ(qˆ sin( ˆ
+φ) + rˆ cos( ˆ
+φ))
+¤
+ψ = (qˆ + q) sin( ˆ
+φ) sec( ˆ
+θ) + (rˆ + r) cos( ˆ
+φ) sec( ˆ
+θ) + φ sec( ˆ
+θ) (qˆ cos( ˆ
+θ) − rˆ sin( ˆ
+φ)) + θ sec( ˆ
+θ) tan( ˆ
+θ) (qˆ sin( ˆ
+φ) + rˆ cos( ˆ
+φ))
+19
+
+
+p¤ = 1
+IxIz − I2
+zx
+n
+Iz L + Izx N + p [Izx qˆ(Ix + Iz − Iy) − Izx hy] + q [rˆ(−I2
+zx − I2
+z + Iy Iz) + pˆIzx (Iz − Iy + Ix ) + Izx hx − Iz hz]
++ r [qˆ(−I2
+zx − I2
+z + Iy Iz) + Iz hy] + [qˆ( pˆ(Izx Ix − Izx Iy + Izx Iz) + rˆ(−I2
+zx − I2
+z + Iz Iy) + Izx hx + pˆ(Izx hy) + rˆ(Iz hy))]
+o
+q¤ = 1
+Iy
+n
+p [rˆ(Iz − Ix ) − 2Izx pˆ + hz] + r [ pˆ(Iz − Ix ) + 2rˆIzx − hx ] + pˆrˆ(Iz − Ix ) + Izx (rˆ2 − pˆ2) + pˆhz − rˆhx + M
+o
+p¤ = 1
+IxIz − I2
+zx
+n
+Izx L + Ix N + p [qˆ(I2
+zx + IxIy + I2
+x ) − Ix hy] + q [ pˆ(I2
+zx − IxIy + I2
+x ) + rˆIzx (−Iz + Iy − Ix ) + Ix hx − Izx hz]
++ r [qˆ(−Iz + Iy − Ix − Izx hy] + pˆ[qˆ(I2
+zx + I2
+x − Ix Iy) + Ix hy] + qˆ[rˆIzx (Iy − Iz − Ix ) − Izx hz + Ix hx ] + rˆIzxhy
+o
+20
+
+
+C. XV-15 Aircraft Flight Mechanics Parameters
+Table 3 XV-15 Aircraft Flight Mechanics Parameters
+Parameter Value Unit Parameter Value Unit
+Helicopter Airplane Helicopter Airplane
+Gravity, g 9.81 ms−2 Inertia Component, Ixx 71587 54910 kg m2
+Mass, m 5894.27 kg Inertia Component, Iyy 28960 17896 kg m2
+Proprotor Disc Inertia, Id 416.91 kg m2 Inertia Component, Izz 89944 68197 kg m2
+Aircraft Velocity 0 102.89 m s−1 Inertia Component, Ixz 1673 1673 kg m2
+Rotor Speed, Ω 589.00 458.00 RPM
+D. UVLM Panelling and Simulation Parameters
+Table 4 UVLM Paneling and Simulation Parameters (H-Helicopter, A-Airplane)
+Parameter Value Unit Parameter Value Unit
+Wing Fuselage Wing Chord 1.6002 m Cabin Width aft 0.7250 m Wing Span 9.8054 m Cabin Length aft 5.2999 m Wing Sweep 6.5000 deg Cabin Width under Wing 1.7000 m Wing Taper Ratio 1.0000 - Cabin Length under Wing 1.6002 m Wing Dihedral 2.0000 deg Cabin Width forward 1.2000 m Inboard Flap Hinge Length 1.2954 m Cabin Length forward 2.0384 m Outboard Flaperon Hinge Length 2.3957 m Cabin Image Plane Length 3.6386 m Flap/Flaperon Chord Fraction 0.2500 - Cabin Image Plane Height 1.8796 m Inboard Flap Deflection 75.0000(H)/9.9000(A) deg Outboard Flaperon Deflection 47.0000(H)/9.9000(A) deg Rotor Panelling Number of Blades 3 - Blade Chordwise Panels 4 Rotor Radius 3.8100 m Blade Spanwise Panels 10 Blade Chord 0.3556 m Cabin Chordwise Panels aft 8 Linear Twist at Tip (tip down) 41.0000 deg Cabin Chordwise Panels forward 4 Blade Angle at Hub 37.4256 deg Cabin Spanwise Panels at Wing 4 Root Cutout Radius 0.7112 m Wing Chordwise Panels 3 Tail Flap/Flaperon Chordwise Panels 2 Horizontal Tailplane Span 3.9106 m Image Plane Height-Wise Panels 3 Horizontal Tailplane Chord 1.1948 m Wing Spanwise Panels 10 Elevator Chord Fraction 0.3 - Flap Spanwise Panels 3 Vertical Tailplane Span 1.524(Upper)/0.8169(Lower) m Flaperon Spanwise Panels 7 Vertical Tailplane Chord 0.5868 m Wing Tip Cosine Offset 0.3648 m Vertical Tailplane Sweep 31(Upper)/19.6(Lower) deg H-Tail Chordwise Panels 6 Other Run Parameters Vertical Tail Spanwise Panels 8 Time Step Size 0.001698(H)/0.001679(A) s Horizontal Tail Spanwise Panels 12 Density 1.225(H)/1.225(A) kg m−3 Maximum Wake Panels 180(H)/312(A) Maximum Wake Particles 36000(H)/63600(A) 
+21

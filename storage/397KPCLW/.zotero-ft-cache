@@ -1,0 +1,868 @@
+J. Fluid Mech. (2020), vol. 901, A21. © The Author(s), 2020. Published by Cambridge University Press
+901 A21-1
+doi:10.1017/jfm.2020.504
+Time-domain analysis of contra-rotating propeller noise: wake interaction with a downstream propeller blade
+M. J. Kingan1,† and A. B. Parry2
+1Acoustics Research Centre, Department of Mechanical Engineering, University of Auckland, Auckland 1010, New Zealand
+230 Ypres Road, Allestree, Derby DE22 2LZ, UK
+(Received 11 December 2019; revised 4 May 2020; accepted 17 June 2020)
+This paper describes a theoretical study – in the time domain – of sound from the interaction of the steady component of the viscous wakes of an upstream propeller with a downstream contra-rotating propeller blade. The study incorporates a two-dimensional model of the upstream propeller wakes and a quasi-three-dimensional blade response function that accounts for downstream blade sweep. For a blade with a straight leading edge, the sound at the observer location, radiated from each blade radius, consists of a series of impulses whose peaks are shown to be influenced by micro Doppler effects and to correspond to the impingement of the propeller wake centrelines on the leading edge of the downstream blade. For radiation from the entire blade span, it is shown that constructive interference of the impulses from all radii can produce impulsive sound of very high amplitude, whereas dephasing of these impulses can reduce significantly the total acoustic signal. For a downstream propeller blade with a swept leading edge, it is shown how the sweep can be designed to ensure that these impulses are de-phased, resulting in significantly lower-amplitude sound at selected observer locations. Finally, to guarantee that the radiated sound is reduced at all possible observer locations, it is shown that the blade leading-edge sweep must be large enough that the trace velocity of the wake centreline, across the leading edge of the downstream propeller blade, is subsonic across the entire span. The benefits are demonstrated for representative blade designs.
+Key words: aeroacoustics
+1. Introduction
+Modern advanced open rotor engines produce thrust using two contra-rotating, coaxial propellers and will have significantly better fuel efficiency than current generation turbofan engines (Parker & Lathoud 2010). However, the propellers must be carefully designed to ensure that the noise levels are acceptable, particularly at take-off, where aircraft must comply with strict community noise regulations. The noise spectrum produced by an isolated modern open rotor at a condition representative of take-off consists of a broadband level, in addition to numerous tones (Kingan et al. 2011). These
+† Email address for correspondence: m.kingan@auckland.ac.nz
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+901 A21-2 M. J. Kingan and A. B. Parry
+tones include ‘rotor-alone’ tones which occur at integer multiples of the blade passing frequency of each propeller as well as ‘interaction’ tones produced by the interaction of the blades with the unsteady flow field from the adjacent propeller. The dominant source of the interaction tones on isolated modern ‘cropped’ contra-rotating open rotors is believed to be the periodic unsteady loading on the downstream propeller blades caused by their interaction with the viscous wakes from the upstream propeller (see Kingan et al. 2014). In order to design an open rotor which produces an acceptable level of noise, suitable methods for noise prediction are required. There are a number of such methods available and although computational fluid mechanics (CFD)/computational aeroacoustics (CAA) and hybrid CFD/analytical methods are now commonly used for open rotor noise predictions, analytical models are still well suited for preliminary design studies that investigate the effect of different parameters on rotor noise. This is because of the relatively short computational time required and the large range of calculations that are needed at the early design stage in addition to the absence of sufficient geometric or aerodynamic details for a higher fidelity calculation. Here, our goal is to use an analytic model to investigate the viscous wake interaction tone noise generation mechanism. The general approach is to first model the convection of the viscous wakes behind the upstream propeller. A variety of different models are available for this purpose; a number of examples are described in Parry (1988, 1997) but those are, clearly, not exclusive. The velocity field at the downstream propeller location is then decomposed into a Fourier series and the response of (unsteady loading on) the downstream propeller blades is calculated using a standard blade response function such as those described by Quaglia et al. (2017), Adamczyk (1974a,b) and Roger & Carazo (2010). The acoustic radiation is then calculated, using, for example, Hanson’s (1985) frequency-domain formulae or, as in this paper, using a time-domain formula such as that presented by Najafi-Yazdi, Brés & Mongeau (2011). Recently, the authors have presented an asymptotic analysis of a frequency-domain analytical model for these viscous wake interaction tones (Kingan & Parry 2019a) which was an extension of similar methods applied to rotor-alone tones (Parry 1995). It was shown that the analytic model could be expressed in terms of a surface integral over a propeller source annulus and that, for a ‘many-bladed contra-rotating propeller’ (with a large number of blades on both propellers) this surface integral could be accurately evaluated using asymptotic methods in which the principle contributions to the integral come from small regions of the surface around certain ‘critical points’. These critical points can be divided into two general types: interior stationary points or boundary critical points. A critical design was also considered for which a line of interior stationary points occurred on the source annulus. The asymptotic formulae suggest that tones for which the leading-order contribution is produced by a line of critical points will radiate more efficiently than tones where the leading-order contribution comes from an isolated interior stationary point which, in turn, will radiate more efficiently than tones where the leading-order contribution comes from boundary critical points. (Indeed, for acoustic tones with zero azimuthal mode order, the asymptotic approach showed that there could exist continuum rings and disks of interior critical points, with the latter radiating even more efficiently than a critical design.) The asymptotic analysis yielded simple algebraic formulae for the acoustic pressure for each tone which, nonetheless, predict accurately the dependence of these tones on the propeller geometry and operating condition as well as the observer location. These formulae are of practical use as they show clearly the effect of blade geometry and operating condition on the radiated noise field. An important parameter which defines the blade geometry and has a significant influence on the radiated noise is blade sweep which we define as the distance that a propeller blade mid-chord is
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+Time-domain analysis of contra-rotating propeller noise 901 A21-3
+swept backwards from the pitch-change axis in a helical direction parallel to the local flow direction (see figure 2 in § 2). The authors published a subsequent paper (Kingan & Parry 2019b) in which the asymptotic formulae were used to investigate the effect of downstream propeller blade sweep on viscous wake interaction tones. In particular, the asymptotic formulae were exploited to design a swept downstream propeller blade which produces viscous wake interaction tones with low amplitudes. The formulae also demonstrated the clear link between the radiation efficiency of the tones and the trace velocity of the upstream propeller wakes along the leading edge of the downstream propeller blades. It was shown that if the trace velocity of the upstream propeller wakes along the leading edge of the downstream propeller blades are subsonic across the entire span of the blade, then tones have low radiated amplitudes and that further increases in sweep generally lead to significant further decreases in noise levels. In addition, the authors (Parry & Kingan 2019) introduced the phrase ‘event line’ to represent the points on the surface that represented the locations of the interactions between the front wakes and the rear blade leading edges at a fixed point in time. The event line rotates at the same speed as the interaction tone of interest and its shape is curved to represent the azimuthal locations of the blade–wake interactions, although at a fixed point in time. In the general case, the interaction times actually vary along the radius, so the spatial locations are adjusted, using the rotation speed of the interaction, to produce an effective fixed-time locus of the interactions – which represents the event line. The ‘event line’ is an extension of Tyler & Sofrin’s (1962) concept of an ‘event’ – representing the interaction between a wake centreline and a blade leading edge at a fixed radius – to one of a continuous radially distributed event. (It is of particular importance here to note that the ‘event line’ is not, in general, straight.) All of the interior critical points – that dominated the far-field sound radiation – also lay on the ‘event line’ and satisfied two particular physical criteria. Firstly, the speed of the ‘event line’ – at a particular radial and azimuthal location – must be precisely sonic when resolved in the direction of the observer. Secondly, the ‘event line’ must be normal to a line drawn from it to the observer. (To be precise here, as the ‘event line’ can be both curved and twisted in general, we must use the tangent to the ‘event line’ as defined by the well-known Serret–Frenet formulae.) These two criteria had originally been derived, for the thickness noise radiated from a supersonic single-rotating propeller, in the time domain by Amiet (1988) where there was no need for a formal ‘event line’ as the sources are automatically locked to the blades themselves. The purpose of this paper is to further explore wake interaction noise, using an analytic time-domain approach, to achieve an alternative (and, perhaps, more natural) understanding of the underlying physical processes that both supports and extends that obtained in the frequency domain. In particular, we use the method to show the physical mechanisms by which downstream propeller sweep can be used to reduce radiated noise levels. We believe that such an approach is novel. Many methods for predicting contra-rotating propeller interaction tone noise have used frequency-domain sound radiation formulae. Examples of such analytic or hybrid analytic–numerical noise prediction methods are described in Hanson (1985), Parry (1988), Whitfield, Mani & Gliebe (1990a,b), Carazo, Roger & Omais (2011), Kingan et al. (2014), Zachariadis, Hall & Parry (2011), Kingan & Sureshkumar (2014), Grasso et al. (2014), Ekoule et al. (2015, 2017), Quaglia et al. (2016, 2017), Moreau & Roger (2018) and Kingan & Parry (2019a,b). In addition to these, primarily numerical approaches which utilise a frequency-domain sound radiation formulation include the methods described by Peters & Spakovszky (2010), Sharma & Chen (2013) and Envia (2015). Studies that have used time-domain methods to predict the noise radiated from contra-rotating propellers have, to
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+901 A21-4 M. J. Kingan and A. B. Parry
+our knowledge, used exclusively numerical approaches to predict the flow field and blade response e.g. Stürmer & Yin (2009), Colin et al. (2012a,b), Colin, Caruelle & Parry (2012), Soulat et al. (2013, 2016) (who used both time-domain and frequency-domain methods to predict the radiated noise) and Falissard & Delattre (2014). For single-rotating propellers there has been some work in the time domain that has been purely analytical, including that of Hanson (1976), Amiet (1988), Chapman (1988a,b) and Prentice (1994). This paper uses a ‘retarded time’ formulation due to Najafi-Yazdi et al. (2011) which is an extension of Farassat’s formulation 1 to include the effect of a uniform axial flow. This formulation contains an integral which becomes singular when the blade moves towards the observer at sonic speed and is thus a good choice for the subsonic propellers considered here. An alternative is the ‘collapsing sphere formulation’ (see Farassat & Brown 1977). The collapsing-sphere formulation recasts the radiation integral in terms of a double integral – the outer integral summing contributions over all possible source times and the inner integral summing contributions from each point on the propeller surface which contribute at each source time. The location of these points is calculated using the concept of a collapsing sphere: the collapsing sphere is centred on the observer and has a radius which decreases at the speed of sound. All acoustic signals emitted from the spatial and (source) temporal points at which the sphere intersects the propeller blades will arrive at the observer at the same (reception) time. Brentner & Farassat (2003) noted that the integrand in the collapsing sphere formulation becomes singular when the surface normal vector is parallel to the radiation vector pointing from the source location to the observer. The singularities which occur in both the retarded time and collapsing sphere formulations thus correspond to the criteria of Amiet (1988) for significant acoustic radiation from a supersonic single-rotating propeller. These descriptions show a connection between the sharp peaks discovered, in the time domain, by Amiet (1988), the collapsing sphere approach of Farassat & Brown (1977) and our work here – as will become clear in § 4 where we explore conditions under which the peaks in the waveform can become enhanced. There is also some connection to the event line description of Parry & Kingan (2019), although that work was based on a frequency-domain approach. However, we point out that the present authors’ analyses are: firstly, related primarily to the determination, in advance, of the noise source space/times that dominate to the radiated sound field; and, secondly, derived for contra-rotating architectures for which one of the main issues is the determination a priori of the source locations (particularly in the frequency domain), which is straightforward for single-rotating propellers on which the sources are continuously ‘locked’ to the blades. It is worth discussing briefly the way the paper is set out. We start with the models for the blade wakes, blade response and acoustic radiation that will form the complete basis of the analysis. The wakes are assumed to be two-dimensional and a suitable wake model is given in § 2.1. It is important that the blade response model is quasi three-dimensional in order to account for the effects of sweep on the rear blade; a suitable model, and the method of its implementation in the time domain, are discussed in § 2.2; the acoustic radiation is calculated using a time-domain formulation which is described in § 2.3. For the detailed analysis, we begin in § 3 with a straight-blade configuration. In this case the wake interactions occur simultaneously (in terms of source time) along the blade span and the blade response for this particular case is discussed in § 3.1. In § 3.2 we study the acoustic pressure radiated from a single blade radius which is observed to contain a series of impulses related to each blade-wake interaction. We discuss the considerable differences in the pressure time history at the observer location – both in impulse amplitude and periodicity – dependent on whether the corresponding blade is moving towards or away from the observer (as the blade rotates). These differences
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+Time-domain analysis of contra-rotating propeller noise 901 A21-5
+are shown to be caused by the source directivity and a Doppler effect. In radar these differences in the Doppler effect around the source region are referred to as micro Doppler effects (see, for example, Van Bladel 1976; Chen et al. 2006; Chen 2019) and can occur either in a source region with both an advancing and a receding side, or in a source with non-uniform vibrational characteristics. However, there is little in the literature on the subject as it relates to turbofan or propeller noise. There is some evidence of these micro Doppler effects in the paper on pylon–propeller interaction by Ricouard et al. (2010) in which the radiated noise was observed to be dependent on whether the propeller was travelling towards or away from the observer as it passed the pylon. In § 3.2 we also discuss the formulation of the acoustic pressure from each radius which, we show, is a product of a source strength-type term (which, in the time domain, is a source time derivative of the local unsteady loading) and a radiation efficiency-type term with all the micro Doppler effects being included solely in the latter. The radiated sound is discussed in terms of the contributions from each chord-wise location and the domination of the acoustic sources close to the leading edge. In § 3.3 we consider the sound from the complete blade span making use of the results from §§ 3.1 and 3.2. It is shown that although the blade-wake interactions occur simultaneously (in source time), because of the different propagation path lengths from sources at different radii, pressure impulses emitted from different radii can interfere constructively, in certain situations, such that the entire spanwise sound fields coalesce and produce particularly high-amplitude impulses or, alternatively, the spanwise sound fields can interfere (partially) destructively producing significant reductions in the radiated noise. Examples of these interference effects are shown and discussed in detail. In § 4 we consider the more general case of a rear blade with a swept leading edge. We discuss how sweep can be used to ‘de-phase’ wake–blade interactions and how these can also be used to ‘de-phase’ the associated wake–blade interaction noise at an observer location. In addition we discuss the role of the trace Mach number, of the wake interaction along the downstream blade leading edge, in determining the magnitude of the radiated noise. Results are shown and discussed in detail. The objective of this paper is to understand the effects of sweep on the sound radiated from the downstream propeller in the time domain. This physical understanding of the source generation and propagation processes can be obtained primarily from the analysis of the sound radiated from a single blade on the downstream propeller. The extension to calculate and analyse the total radiated sound field from all blades on the downstream propeller is straightforward, but is quite laborious and is well beyond the scope of the current paper, as it is then necessary to include the rather complicated interference effects that occur between the individual sound fields that are radiated from each of the downstream propeller blades and that interference warrants its own detailed investigation as it is of interest in its own right. Such analysis and discussion will thus be given elsewhere.
+2. Formulation
+In this section an analytical model, based on that described in Kingan & Parry (2019a,b) is presented for calculating the noise produced by the unsteady loading on the downstream blades due to their interaction with the mean velocity deficit caused by the viscous wakes of the upstream propeller. The situation is shown in figure 1. The propellers are immersed in a uniform airflow with Mach number Mx in the negative x-direction relative to the engine and the air has ambient density ρ0 and speed of sound c0. The upstream and downstream propellers rotate in the negative and positive φ-directions at rotational speeds Ω1 and Ω2, respectively. The pitch-change axis of the reference blades on the front and
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+901 A21-6 M. J. Kingan and A. B. Parry
+z
+r
+y
+x
+Mx
+φ
+FIGURE 1. Advanced open rotor blades and coordinates.
+rear propellers are located at φ = 0 at time τ = 0 and are separated by a distance g in the axial direction. Also note that the convention adopted in this paper will be that the subscripts 1 and 2 respectively denote parameters associated with the upstream and downstream propellers. The blades of both rotors have chord c(r), mid-chord sweep s(r) and sectional drag coefficient CD(r) and both rotors have B blades and the downstream rotor has diameter D, tip radius Rt = D/2 and hub radius Rh.
+2.1. Wake modelling
+The unsteady loading on the downstream propeller blades at radius, r, is calculated using an equivalent two-dimensional problem in which the wakes from an upstream cascade of blades interact with the blades of a downstream cascade. This situation is illustrated in figure 2. The upstream and downstream blades translate vertically downwards and upwards at Mach numbers Ω1r/c0 and Ω2r/c0, respectively. At time τ = 0 the pitch-change axis of the front rotor reference blade is aligned with the pitch-change axis of the rear rotor reference blade at y = 0 and the vertical spacing between the mid-chord positions of the blades on each cascade is equal to 2πr/B. The blades are modelled as infinitely thin flat plates which are aligned with the local flow direction but otherwise have identical characteristics (chord length, sweep, lean and drag coefficient) to the actual rotor blade at that particular radius. Also, the effect of the flow induced by the rotors is neglected such that the stagger angle, α, of each blade is defined by tan α = zMT/Mx , where z = 2r/D and MT = ΩD/2c0. The Mach number of the blades relative to the air flow
+is Mr = √Mx2 + z2M2
+T with corresponding relative velocity Ur = Mrc0. The reference blade of the upstream cascade produces a wake with mean deficit velocity  ̄u′ aligned with the negative X1-direction (the chordwise direction – see figure 2) which will be modelled using the two-dimensional Gaussian model defined in Parry (1988, 1997):
+u ̄′(r, Y1) = 2Ur1
+√ ln 2 π
+√
+c1CD1
+L1
+exp
+{
+− ln 2
+b2
+1/2
+Y2
+1
+}
+, (2.1)
+where Y1 is the chord-normal coordinate of the upstream rotor blade, L1 = [gMr1/Mx − s1 + sLMr1/Mr2] is the length (or convection distance) of the wake which is defined as the distance along the helical path which the upstream blades trace through the air measured from the mid-chord of the upstream reference blade to the axial location of the leading edge of the downstream propeller blades, sL = s2 − c2/2 is the leading-edge sweep of the
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+Time-domain analysis of contra-rotating propeller noise 901 A21-7
+Y1
+Y2
+X1
+X2
+Front rotor reference blade
+Front rotor blade pitch-change axis
+Rear rotor
+reference blade
+s1– ―2
+c1
+s1– ―2
+c1
+―2
+c2
+g
+Plane of rotation
+Pitch-change axis Axis flow direction
+Velocity triangle
+Mr2
+MX
+zMT2
+s2
+α2
+(a)
+(b)
+FIGURE 2. Schematic of the equivalent two-dimensional cascade problem (a). Sweep definition and velocity triangle (b).
+downstream propeller blade (see figure 2) and b1/2 is the wake half-width which is defined as b1/2 = 1
+4
+√CD1 c1L1.
+Because the upstream blades are identical and evenly spaced, the periodic velocity deficit of the upstream cascade of blades in the unwrapped cascade representation is given by
+v ̄′ =
+∞ ∑
+n=−∞
+u ̄ ′
+(
+r, Y1 + 2πr cos α1
+B1
+)
+. (2.2)
+Because v ̄′ is periodic in Y1, Poisson’s summation formula can be used to convert this expression to a sum of convected harmonic gusts:
+v ̄′ = B1Ur1 CD1 c1Gn1
+4πr cos α1
+∑ ∞
+n=−∞
+exp
+{
+i nB1
+r cos α1
+Y1
+}
+, (2.3)
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+901 A21-8 M. J. Kingan and A. B. Parry
+where
+Gn1 = exp
+{
+−
+[ n1B1b1/2Mr1
+zDMx
+√ln 2
+]2}
+. (2.4)
+In order to calculate the unsteady loading on the downstream blade row, the velocity deficit incident on the chord line of the reference blade on the downstream cascade should be expressed in terms of the chordwise coordinate of that blade X2 (shown in figure 2). The X2 coordinate is related to the Y1 coordinate by the following expression:
+Y1 = (Ω1 + Ω2)rτ cos α1 − g sin α1 − (X2 + sL) sin(α1 + α2). (2.5)
+The upstream rotor wake deficit velocity is aligned with the −X1 coordinate and therefore the mean upwash velocity (which is the component of velocity in the Y2 direction) onto
+the downstream reference blade is given by w = − sin(α1 + α2)v ̄′. Substituting (2.5) into (2.4) yields
+w=
+∑ ∞
+n 1 =−∞
+wn1 exp{ikX(Ur2 τ − X2)}, (2.6)
+where
+wn1 = − B1CD1 c1Ur1 (MT1 + MT2 )Gn1
+2πDMr2
+exp
+{
+−ikXsL − in1B1
+2g
+D
+MT1
+Mx
+}
+, (2.7)
+and
+kX = 2n1B1
+DMr2
+(MT1 + MT2 ). (2.8)
+As mentioned above, the approach adopted here assumes that the convection of the wakes from the upstream propeller is not affected by the swirl and induced axial and radial velocity between the propellers. Clearly, the wakes produced by a practical propeller will in fact deform due to the induced velocities. It is, however, not our intention to address these additional wake deformation effects in this paper. Rather, the purpose of this paper is to present a framework for analysing the noise generated by blade-wake interactions and to show how the geometry of the downstream blades can be used to alter the timing of the blade-wake interactions at different radii and thus the level of noise which is produced. It is also important to note that, from an aerodynamic point of view, our approach follows the helicoidal surface theory of Hanson (1980, 1983, 1985) in which the effects of induced flow – both axial and circumferential – are neglected. That approach has been shown to produce good agreement with measured data (see, for example, Parry & Crighton 1989; Parry 1997). The effects of induced velocity are straightforward to include and methods similar to the one presented here, but which include these effects, have been validated against experimental and numerical data in Kingan et al. (2014) and Ekoule et al. (2017).
+2.2. Unsteady loading
+The total unsteady lift force per unit area acting on the chord line of the reference blade can be expressed as the sum of the unsteady ‘responses’ of the blade to each upwash harmonic,
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+Time-domain analysis of contra-rotating propeller noise 901 A21-9
+Ur2
+Z2
+X2
+Z ′2
+X ′2
+Λ
+wn1 exp{ikX ( Ur2 τ – X2)}
+FIGURE 3. Swept flat-plate coordinate definitions.
+i.e.
+p=
+∞ ∑
+n 1 =1
+2 { pn1 }, (2.9)
+where Δpn1 is the response of the reference blade to a harmonic gust of the form wn1 exp{ikX(Ur2τ − X2)} which is given by
+pn1 = 2πρ0Ur2 wn1 S(σ2, Mr2 , X ̄ 2, Λ) exp
+{
+i2πn1
+τ
+T
+}
+, (2.10)
+where T = 2π/[B1(Ω1 + Ω2)] is the period of the loading, X ̄ 2 = 2X2/c2 is a dimensionless chordwise coordinate, σ2 = kXc2/2 is the reduced frequency and S is a non-dimensional response function. In this paper we follow the approach used in Kingan & Parry (2019a) and use the high-frequency response function of Adamcyzk (1974a,b). In this approach it is assumed that the response of the reference blade to a gust of the form wn1 exp{ikX(Ur2τ − X2)} is equal to that of a two-dimensional, semi-infinite flat plate immersed in a flow of velocity Ur2 with a leading-edge sweep angle set such that the spanwise trace velocity of each gust along the leading edge is equal to the spanwise trace velocity of the wake centreline along the leading edge of the reference blade of the rotor. The equivalent problem is shown in figure 3. Because the gust convects with the flow, the spanwise (Z2) component of the trace Mach number of the gust along the leading edge is given by Mr2 cot Λ. At radius r, the time τ = τ0(r) > 0 at which the wake centreline from the reference blade on the upstream cascade, defined by Y1 = 0, first impinges on the leading edge of the downstream reference blade, located at X2 = 0, can be determined by setting X2 = Y1 = 0 in (2.5) and rearranging to yield
+τ0(r) = 1
+c0
+[ gMT1
+Mx (MT1 + MT2 ) + SL(r)
+]
+, (2.11)
+where, for convenience, we have introduced SL(r) = sL/Mr2. The spanwise trace Mach number of this impingement point can be evaluated by taking the derivative of τ0(r) with respect to r, rearranging and making use of the inverse function theorem to yield
+Mt = 1
+c0
+dr
+dτ0
+=1
+S′
+L
+. (2.12)
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+901 A21-10 M. J. Kingan and A. B. Parry
+The blade leading-edge sweep angle in the equivalent flat-plate response problem, Λ, is set such that Mt = Mr2 cot Λ and thus
+tan Λ = Mr2 S′
+L. (2.13)
+Kingan & Parry (2019a) express Adamczyk’s high-frequency, isolated aerofoil response function in the following forms:
+S(σ2, Mr2 , X ̄ 2, Λ) =
+exp
+⎧⎨
+⎩−iπ/4 + iσ2
+[
+(M2
+r2 − tan2Λ) −
+√
+Mr22 − tan2Λ
+]
+[1 − (Mr22 − tan2Λ)] X ̄ 2
+⎫⎬
+⎭
+π√πσ2X ̄ 2
+√
+1+
+√
+Mr22 − tan2Λ
+,
+(2.14) for Mt > 1 (so-called super-critical gusts), and
+S(σ2, Mr2 , X ̄ 2, Λ) = exp
+{
+−i π
+4+i
+2 tan−1
+√
+tan2Λ − Mr22
+}
+×
+exp
+⎧⎨
+⎩σ2
+[
+−i(tan2Λ − M2
+r2 ) −
+√
+tan2Λ − Mr22
+]
+(1 + tan2Λ − Mr22 ) X ̄ 2
+⎫⎬
+⎭
+π√πσ2X ̄ 2[1 + (tan2Λ − Mr22 )]1/4 , (2.15)
+for Mt < 1 (so-called sub-critical gusts). The accuracy of this response function in relation to the problem considered here is discussed in detail in appendix A of Kingan & Parry (2019b). That paper considered a set of almost identical contra-rotating propellers to those considered here (the only significant difference being the blade numbers and a slight change in the tip Mach numbers). It was shown that the effect of including a correction to enforce the unsteady Kutta condition at the trailing edge had a negligible effect on the total unsteady loading on the propeller blade. Nevertheless, it is acknowledged that the response function used here is approximate and will not model the pressure jump on the blade surface close to the trailing edge accurately. This fact should be borne in mind when interpreting results presented later in the paper which depend on (2.15) for the chordwise distribution of loading (namely figures 6 and 8). Kingan & Parry (2019b), following the analysis of Amiet (1976), also showed that the high-frequency response function was expected to produce inaccurate results when the dimensionless parameter |κ| < π/4, where
+κ≡
+σ2 cos Λ
+√
+Mr22 cos2Λ − sin2Λ
+(1 − Mr22 cos2Λ) . (2.16)
+This criterion is only satisfied in the examples presented in this paper for the case presented in figure 15, for which the gust trace velocity is sonic across the blade leading edge. The effect of the spanwise trace Mach number on the sound field radiated from the leading edge of an aerofoil due to its interaction with a convected harmonic gust is well known. This phenomenon has been studied extensively in the context of sound radiated from the leading edge of an aerofoil immersed in a turbulent flow. For example, Amiet (1975) presented formulae for calculating the sound radiated from a flat-plate aerofoil with
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+Time-domain analysis of contra-rotating propeller noise 901 A21-11
+infinite span. In this case, the radiated sound field only depends on gusts with supersonic wavenumbers. However, Amiet noted that the surface pressure spectrum on the aerofoil is dependent on both the sub- and supercritical gusts. Later studies, for example by Roger & Serafini (2005) and Roger & Moreau (2010), have extended Amiet’s work to include the effect of finite span and the contribution of the subcritical gusts. Note, however, that all of these papers addressed interactions on non-rotating aerofoils.
+2.3. Acoustic radiation
+The far-field acoustic pressure at location x and time t produced by a thin rotating blade immersed in a flow can be calculated using a slightly modified form of (3.19) in Najafi-Yazdi et al. (2011):
+p(x, t) ∼= 1
+4πc0
+∂ ∂t
+∫ Rt
+Rh
+∫ c2
+0
+[
+Δp(X2, r, τ )R ̃ · n
+R∗(1 − M ·  ̃R)
+]
+τ =t−R/c0
+dX2dr. (2.17)
+This model assumes that the observer and rotating blade are immersed in a flow of Mach number Mx in the negative x1 direction where R = [R∗+Mx (x1 − y1)]/ (1 − M2
+x) is described by Najafi-Yazdi et al. as the acoustic distance between the source and receiver
+positions, R∗=
+√
+(x1 − y1)2 + (1 − Mx2)[(x2 − y2)2 + (x3 − y3)2] and the radiation vector
+ ̃R =  ̃R1e1 + R ̃ 2e2 + R ̃ 3e3, where
+R ̃ 1 = (x1 − y1) + Mx R∗
+R∗(1 − Mx2) ,  ̃R2 = (x2 − y2)
+R∗ , R ̃ 3 = (x3 − y3)
+R∗ , (2.18a–c)
+and e1, e2 and e3 represent unit vectors in the x1, x2 and x3 directions, respectively. The source position is defined in Cartesian coordinates as
+y1 = − Mx
+Mr2
+(sL + X2), y2 = r cos Φ, y3 = r sin Φ, (2.19a–c)
+where Φ = Ωτ − (2MT2 /DMr2 )(sL + X2). The receiver positions are defined in Cartesian coordinates as x1 = Rr cos θr, x2 = Rr sin θr cos φ, and x3 = Rr sin θr sin φ, where Rr is the reception distance, θr is the reception polar angle and φ is the azimuthal angle of the observer. The unit vector aligned with the local force exerted by the blade on the fluid is defined as
+n = − zMT2
+Mr2
+e1 − Mx
+Mr2
+sin Φe2 + Mx
+Mr2
+cos Φe3, (2.20)
+and the Mach number of the source is defined as
+M = −e2zMT2 sin Φ + e3zMT2 cos Φ. (2.21)
+Each of the terms in the square brackets within the integrand in (2.17) is evaluated at the source (or retarded) time τ = t − R/c0. In this paper, we will also make use of ‘emission coordinates’ to define the position of the observer. These emission coordinates, defined by the radiation distance Re and polar angle θe, are related to the ‘reception coordinates’ via Rr cos θr = Re(cos θe − Mx ) and Rr sin θr = Re sin θe. In particular, the ‘emission radius’, Re, is equal to the ‘radiation
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+901 A21-12 M. J. Kingan and A. B. Parry
+distance’, R, for a source located at the origin of the coordinate system at the ‘emission time’ (the time at which sound is emitted). The ‘emission polar angle’, θe, is equal to the
+angle between the radiation vector, R ̃ , and the x-axis and corresponds to the polar angle at which a ‘ray’, emitted from the origin and travelling at sonic velocity relative to the fluid, will reach the observer position.
+3. Sound radiation from a straight blade
+The propeller designs considered in this paper are representative of a modern advanced open rotor and are similar to those considered in Whitfield et al. (1990a,b) and have the following parameters: B1 = 10, Mx = 0.1998, MT1 = 0.70, MT2 = 0.70, D = 0.6096 m; Rh = 0.2D, g = 0.2394D, CD1 = 0.02, c1 = c2 = 0.1D, s1 = 0. The ambient speed of
+sound and density are c0 = 344.4 m s−1 and ρ0 = 1.1192 kg m−3. Here, as we argued in § 1, we will only consider the acoustic signature produced by one downstream blade. The method can be extended to study the acoustic interference effects that occur in radiation from multiple blades, but such analysis is rather complicated and beyond the scope of this paper. The upstream rotor blades have arbitrary sweep and no lean, whilst the downstream blade has arbitrary leading-edge sweep and no lean. Without any loss of generality, the observer is located in the acoustic far field at Re = 1000 m, θe = π/2 radians and φ = Ω2τ0(Rh) − π/2 radians. This ensures that the observer is located at an azimuthal angle −π/2 radians from the azimuthal angle at which the centreline of the wake from the reference blade impinges on the leading edge of the downstream blade at the hub. At this time the blade is moving away from the observer location because, in our coordinate system, the blade rotates in the positive azimuthal (φ) direction. Figure 4 shows a blade with zero leading-edge sweep (sL = 0 along the blade span) and the location of the wake centrelines (the blue radial lines) at the axial position of the blade leading edge at the instant the reference blade wake centreline impinges on the blade leading edge at the hub. In the figure, the view is along the propeller axis of rotation from an upstream location and the figure is rotated such that the observer (located in the acoustic far field) lies in the horizontal plane which contains the propeller axis. It is important to check the validity of the numerical implementation of the time-domain method, even though the radiation formula of Najafi-Yazdi et al. (2011) – on which our analysis is based – is well known. For this validation process we have compared the pressure time histories in the far field using both the method described in § 2.3 above and the frequency-domain method described by Hanson (1985) and Parry (1988) and utilised by Kingan & Parry (2019a) in their high blade number asymptotic approach. The frequency-domain method has been not only well documented but also well validated and well used in comparisons against model and even full-scale flight data (see Bradley 1986; Parry 1988, 1997; Parry & Crighton 1989; Hoff 1990; Kingan et al. 2014; Ekoule et al. 2017). Of course, the time-domain approach automatically includes all of the multiple combination frequencies generated by the interactions between the two rows of blades whereas the frequency-domain approach was designed to predict each selected tone individually. Thus, in order to undertake the comparisons, and ensure sufficient accuracy, we have included the first one hundred Fourier harmonics of the front propeller wakes and the first one hundred and fifty Fourier harmonics of the unsteady response of the rear blade to produce the pressure time history from the frequency-domain solution. We have also undertaken three sets of comparisons to ensure that the new time-domain calculations are accurate consistently. The first is the radiation from a single radius of a straight-bladed propeller which is discussed in § 3.2 with the waveforms shown in figure 5; the second
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+Time-domain analysis of contra-rotating propeller noise 901 A21-13
+Blade rotation
+Wake rotation
+Observer
+FIGURE 4. Schematic showing a blade with zero leading-edge sweep, the location of the wake centrelines at the axial position of the blade leading edge and the observer position at source time τ = τ0.
+is the total radiation from a straight-blade propeller which is discussed in § 3.3 with the waveforms shown in figure 9; and the third is the total radiation from a swept propeller which is discussed in § 4 with the waveform shown in figure 14. For all these cases, the two sets of resultant time histories not only agree well but, indeed, agree so closely that the results overlay identically for the complete waveform. It is worth adding here that the requirement for so many Fourier harmonics, in the frequency-domain calculations, demonstrates the power of the time-domain approach.
+3.1. Wake interaction and blade response
+For a blade with zero leading-edge sweep (sL = 0, Λ = 0 along the blade span), the trace Mach number of the gust across the leading edge is infinite (Mt → ∞) as the wake centreline impinges on the leading edge at the same instant at all points across the blade span. For such a case, the aerofoil response is identical to Landahl’s (1961) two-dimensional, high-frequency, isolated aerofoil response function which can be expressed as
+Δpn1 = ρ0c2
+0B1CD1 c1Mr1 (MT1 + MT2 )Gn1
+πD[πk(n1)
+X (1 + Mr2 )X2]0.5 exp
+{
+ik(n1)
+X Ur2 (τ − τ ∗) − i π
+4
+}
+, (3.1)
+where τ ∗(X2) = τ0 + X2/(c0 + Ur2), which can be interpreted as follows: after the upstream rotor reference blade wake centreline impinges on the leading edge of the downstream blade at time τ0, consistent with the two-dimensional response assumption, a pressure pulse is generated which moves downstream along the surface of the blade at speed c0 + Ur2. Thus τ ∗(X2) represents the time at which this pulse reaches the chordwise position X2.
+3.2. Acoustic pressure radiated from a single radius
+In order to interpret physically the pressure field radiated from the rotor blade, (2.17) is rewritten as a radial integral of a pressure per unit span function P(r; x, t), i.e.
+p(x, t) ∼=
+∫ Rt
+Rh
+P(r; x, t) dr, (3.2)
+where
+P(r; x, t) = 1
+4πc0
+∂ ∂t
+∫ c2
+0
+[
+Δp(X2, r, τ )R ̃ · n
+R∗(1 − M ·  ̃R)
+]
+τ =t−R/c0
+dX2. (3.3)
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+901 A21-14 M. J. Kingan and A. B. Parry
+0.10
+0.05
+–0.05 0 5 10 15 20
+0
+n = 10
+n = 15
+n=5 n=0
+(t – t0) / T
+P (r; x, t) (Pa m–1)
+n = 10
+n=0
+n = 5 n = 15
+Blade rotation
+Observer
+(a)
+(b)
+FIGURE 5. Plot of P(r; x, t) radiated from r = 0.7Rt for the straight propeller blade described in § 3. Red dots indicate tn (a). Schematic showing blade locations at tn for n = 0, 5, 10 and 15 (b). Note that panel (a) showing P versus time was also reproduced using the frequency-domain method described in Kingan & Parry (2019a).
+Figure 5(a) plots P(r; x, t), radiated from radius r = 0.7Rt against time for this case (zero leading-edge sweep). The figure also indicates the pressure at the observer times
+tn(r) = τn + RL(r, τn)
+c0
+, τn = τ0 + nT, n ∈ Z, (3.4)
+which are the times where the sound emitted from the leading edge of the blade, at the instant the centreline of the nth wake impinges on the leading edge at that radius, arrives at the observer location. In (3.4), RL(r, τn) is the radiation distance R (defined in § 2.3) from the leading edge (located at X2 = 0) at radius r to the observer position at source time τn. From figure 5 it is observed that the times tn correspond well with the peaks in the pressure time history. Figure 5(b) also plots the wake and blade locations at different values of τn, where it should be noted that τn is constant along the blade span for a blade with no lean or leading-edge sweep. Several interesting features are evident in the pressure time history:
+(i) The time spacing between peaks is strongly dependent on the location of the rotor blade relative to the observer when the noise is produced. When the blade is moving towards the observer, the peaks are more closely spaced together, whilst the peaks are more spread out when the blade is moving away.
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+Time-domain analysis of contra-rotating propeller noise 901 A21-15
+(ii) The sign of the peak pressure is positive when the blade moves towards the observer (when the pressure surface faces the observer) and negative when it moves away (when the suction surface is facing the observer). (iii) The amplitudes of the peaks are affected by convective amplification and are strongly dependent on the location of the rotor blade relative to the observer. When the blade is travelling towards the observer, the peaks are of significantly higher amplitude. Conversely, when the blade is moving away from the observer the peak amplitude is significantly lower.
+All of these features represent differences in the acoustic field dependent on the direction of blade motion relative to the observer. For rectilinear motion they would be referred to simply as Doppler effects but, as they relate to variations in blade motion relative to the observer, we can use terminology common in the field of radar and describe them as micro Doppler effects which have been discussed by, for example, Van Bladel (1976), Chen et al. (2006) and Chen (2019). However, to the authors’ knowledge, there is little in the literature on these effects as they relate to turbomachinery or propeller noise. The integrand in (3.3), which defines P(r; x, t), contains the product of Δp(X2, r, τ ), which varies impulsively with time due to the interaction of the rear blade with each of the narrow wakes from the front propeller (with this interaction taking place over a very short timescale), and the remaining terms which vary relatively slowly (with a period of one revolution of the blade). Thus we can reasonably approximate this expression by moving the partial derivative with respect to t inside the integral (see Farassat & Succi 1983) and applying it only to Δp yields
+P(r; x, t) ≈ 1
+4πc0
+∫ c2
+0
+[G(X2, r, τ ; x)Δ ̇p(X2, r, τ )]τ=t−R/c0 dX2, (3.5)
+where Δ ̇p is the partial derivative with respect to τ of Δp and
+G(X2, r, τ ; x) =  ̃R · n
+R∗(1 − M ·  ̃R)2 . (3.6)
+Figure 6 plots contours of constant Δ ̇p(X2, r, τ ) versus 2X2/c2 (vertical axis) and
+(τ − τn)/T (horizontal axis) at r = 0.7Rt. Close to the leading edge (X2 → 0+) Δ ̇p has impulsive peaks at times τn = τ0 + nT (where n ∈ Z) which is the time at which a wake centreline crosses the leading edge. Downstream of the leading edge (X2 > 0) Δ ̇p has a
+peak value close to τ ∗
+n =τn + X2/(c0 + Ur2) which represents the time at which the pulse
+generated at the leading edge at time τn reaches the chordwise position X2 and which is shown by the red line superimposed on the plot. Figure 7 plots G(X2, r, τ ; x) versus normalised chordwise distance 2X2/c2 (vertical axis) and normalised source time (τ − τ0)/T (horizontal axis) at r = 0.7Rt. As expected, the function G varies slowly over one blade revolution and has maximum magnitude when the blade is moving towards the observer ((t − t0)/T ≈ 10) due in part to the micro
+Doppler amplification term (1 − M ·  ̃R)−2 and also to the directivity term  ̃R · n which is positive when the net loading exerted by the blade on the air points towards the observer, is negative when it points away and is zero when they are orthogonal. Clearly, the variation in magnitude of the micro Doppler amplification term over a blade revolution will increase as the propeller tip Mach number increases. For propellers with high subsonic tip Mach numbers, the micro Doppler amplification will significantly increase the magnitude of impulses emitted when the blade moves towards the observer and significantly reduce the
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+901 A21-16 M. J. Kingan and A. B. Parry
+1.8
+1.6
+1.4
+1.2
+1.0
+0.8
+0.6
+0.4
+0.2
+8
+6
+4
+2
+0
+–2
+–4
+–6
+–8 –0.5 0 0.5
+2X2/ c2
+(τ – τn) / T
+p· (X2, r, τ) (Pa)
+(×107)
+FIGURE 6. Contours of constant Δp ̇(X2, r, τ ) plotted against X ̄ 2 (vertical axis) and (τ − τn)/T (horizontal axis) at r = 0.7Rt. Note that Δp ̇(X2, r, τ ) is singular at X2 = 0 and the function is
+only plotted for 2X2/c2 ≥ 0.01. The red dashed line denotes τn∗.
+2X2/ c2
+(τ – τ0) / T
+G (X2, r, τ; x)
+(×10–3) 2.0
+1.5
+1.0
+0.5
+0 5 10 15 20
+1.5
+1.0
+0.5
+0
+–0.5
+–1.0
+–1.5
+FIGURE 7. Contours of constant G(X2, r, τ ; x) plotted against 2X2/c2 (vertical axis) and (τ − τ0)/T (horizontal axis) at r = 0.7Rt.
+magnitude of the impulses when the blade moves away from the observer. In the far field, the term R∗∼Re(1 − Mx cos θe) which remains constant. Figure 8(a) plots the integrand in (3.5), [G(X2, r, τ ; x)Δ ̇p(X2, r, τ )]τ=t−R/c0, versus 2X2/c2 (vertical axis) and normalised observer time (t − t0)/T (horizontal axis) at r = 0.7Rt for one blade revolution. Figure 8(b) is a replica of figure 8(a) but with red
+curves indicating t∗
+n = τ∗
+n +R/c0 superimposed. It can be seen that these curves match closely the locations of the local peak values of the integrand. The function G modulates the impulsive Δ ̇p function so that the peak magnitude of the integrand is large and positive
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+Time-domain analysis of contra-rotating propeller noise 901 A21-17
+2.0
+1.5
+1.0
+0.5
+0 5 10 15 20
+20
+10
+–10
+0
+2.0
+1.5
+1.0
+0.5
+0 5 10 15 20
+20
+10
+–10
+0
+2X2/ c2
+2X2/ c2
+(τ – τ0) / T
+[G (X2, r, τ; x) p· (X2, r, τ)]τ = t–R/c0
+(a)
+(b)
+FIGURE 8. Plot of contours of constant [G(X2, r, τ ; x)Δp ̇(X2, r, τ )]τ=t−R/c0 plotted against
+2X2/c2 (vertical axis) and (t − t0)/T (horizontal axis) at r = 0.7Rt for one blade revolution.
+Panel (b) is a replica of (a) with red dashed lines indicating tn∗ = τn∗ + R/c0. Note that
+Δp ̇(X2, r, τ ) is singular at X2 = 0 and thus only 2X2/c2 ≥ 0.01 are plotted.
+as the rear blade moves toward the observer ((t − t0)/T = 10) and is relatively smaller and negative as the rear blade moves away from the observer ((t − t0)/T = 0 or 20). Unlike figures 6 and 7, the horizontal axis in figure 8 is the normalised time at the observer position. Due to the micro Doppler effect, the pulses are spaced more closely together in time as the blade moves towards the observer and are more spread out as the blade moves away. Here, an infinitesimally small period of time at the observer position, δt, is related to an infinitesimally small period of time at the source position, δτ , by the expression δt = (1 − M ·  ̃R)δτ . Clearly, the significance of this effect is enhanced as the propeller tip Mach number increases. The impulsive nature of Δ ̇p at the leading edge means that there is a singularity in Δ ̇p as X2 → 0+ and we thus expect that sound generated in that vicinity will dominate. Nonetheless, contributions from the entire blade chord remain important. In particular, when any of the observer time (t∗
+n) curves in figure 8(b) are vertical, the peak sound generated at each chordwise position arrives at the observer position at the same (observer) time leading to high peak noise levels there, due to constructive interference. For observer time (t∗
+n) curves that are not vertical, the peak sound pressures from different chordwise positions arrive at the observer position at different times; the smaller the gradient the larger the interval over which the arrival times are spread. The result is less constructive interference and lower peak noise levels radiated from a given radius. For the particular case considered here, the observer time (t∗
+n) curve has a smaller slope for sound emitted when the blade is moving towards the observer, compared to that for the sound emitted when the blade is moving away from the observer.
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+901 A21-18 M. J. Kingan and A. B. Parry
+3.3. Acoustic pressure radiated from the entire blade span
+Thus far it has been shown that the sound pressure per unit span produced at a particular radius consists of a series of impulsive sounds and that the peak of these sounds corresponds closely with the times tn(r). We hypothesise that if the function tn(r) is stationary at a particular radius, then sounds emitted close to that radius will also interfere constructively to produce a net impulse of higher amplitude. Moreover, if the observer time function tn(r) = τn + RL(r, τn)/c0 is constant across the blade span, then the ‘impulses’ from all radii will coalesce at the observer location producing an even higher amplitude impulse in the pressure time history produced by the entire blade. Conversely, it is hypothesised that all the high-amplitude, and sharp, impulses would be replaced by lower amplitude, and smooth, impulses if the observer time function tn(r) contained no stationary points over the blade span. Further, it is hypothesised that the peak levels of the resultant smooth impulses would continue to fall as the variation in the observer time function tn(r) increased over the blade span (i.e. the peak noise levels would be minimised if the average gradient of observer time, over the blade span, were maximised). The fall in peak amplitudes is due to the increased variation in reception times from the various spanwise contributions that, in turn, minimises the amount of constructive interference of the impulses across the span. For the case where the observer is located in the far-field (Rr → ∞) it is straightforward to show that the gradient of tn(r) is given by
+t′
+n(r) ∼= − sin θr
+c0
+√
+1 − Mx2sin2θr
+cos(φn − φ) = − sin θe
+c0(1 − Mx cos θe) cos(φn − φ), (3.7)
+where
+φn = Ω2(τ0 + nT), φn modulo 2π, (3.8)
+is the azimuthal angle at which the centreline of the nth wake impinges on the leading edge of the downstream blade. (All azimuthal angles are defined as having values between 0 and 2π radians. Formulae which allow azimuthal angles with values outside this range, such as (3.8), should be interpreted as modulo 2π.) Thus, tn(r) is stationary when the observer is located on-axis (θe = 0 or π) or when the observer is located at the azimuthal angle
+φ = φn ± π
+2 . (3.9)
+When (3.9) is satisfied, the sound pressure emitted from the leading edge at all radial locations at source time τn(r) will arrive at the observer at the same time. This situation occurs when the observer is located at an azimuthal angle such that a line from source to the observer is perpendicular to the blade leading edge (at angles ±π/2 radians from the impingement angle) as, in the acoustic far-field, the sound travels the same acoustic distance from any radius. Conversely, the radial gradient of t′
+n(r) in (3.7) is maximised at
+azimuthal angles corresponding to the impingement angle (φ = φn), or its direct opposite (φ = φn + π radians) because the acoustic distance the sound travels varies most rapidly with radius at these locations. This rapid variation in propagation distance will result in less constructive interference between the sound emitted from different radii and a lower impulsive peak in the sound at the observer location. For the case considered here, the upstream propeller has 10 blades (B1 = 10), the propellers rotate at the same speed (Ω1 = Ω2) and the observer is located at azimuthal
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+Time-domain analysis of contra-rotating propeller noise 901 A21-19
+0.08
+0.06
+0.04
+0.02
+–0.02
+1.0
+0.5
+1.0
+0.8
+0.6
+0.4
+0
+0 5 10 15 20
+0 5 10 15 20
+0 5 10 15 20
+0.2
+0.1
+0
+–0.1
+–0.2
+2r/D
+p (Pa)
+2r/D
+(t – t0(Rh) ) / T
+P (r, x, t) (Pa m–1)
+(a)
+(b)
+(c)
+FIGURE 9. Plot of pressure versus non-dimensional time (a). Plot of contours of constant P(r; x, t) plotted against non-dimensional radius (vertical axis) and non-dimensional time (horizontal axis) (b,c). Panel (c) shows superimposed red dashed curves of tn(r) = τn + RL(r, τn)/c0. Note that panel (a) showing pressure versus time was also reproduced using the frequency-domain method described in Kingan & Parry (2019a).
+angle φ = Ω2τ0(Rh) − π/2. Then (3.9) is satisfied for n = 0, 10 and 20 (0 ≤ n ≤ 20). Thus, we expect maximum constructive interference when the sound, from the rear blade’s interaction with the 0th, 10th and 20th wakes, arrives at the observer location. The gradient of the observer time function t′
+n(r), defined by (3.7), is maximised for n = 5 and 15 and thus we expect a minimum of constructive interference to occur when the sound, from the rear blade’s interaction with the fifth and 15th wakes, arrives at the observer location. Figure 9(a) plots the pressure time history at the observer location and contains an impulsive peak close to non-dimensional observer time (t − t0(Rh))/T = 10. There are also significant pressure impulses with peaks close to non-dimensional times of 0 and 20 with the pressure being relatively constant for non-dimensional times from 4 to 8 and from 12 to 16. In order to aid interpretation of these results, contours of the integrand of (3.2), P(r; x, t), are also plotted in figure 9(b,c) against non-dimensional radius 2r/D (vertical axis) and non-dimensional observer time (horizontal axis). Figure 9(c) is a replica of the figure 9(b) but with red curves superimposed to indicate tn(r) = τn + RL(r, τn)/c0. These curves closely match the location of the peak values of the integrand. It can be seen that t′
+n(r) = 0 (and the red curves are vertical) at non-dimensional times of 0, 10 and 20 when the high-amplitude impulsive sounds occur and which correspond to the source times at which the centrelines of the n = 0, 10 and 20 wakes impinge on the rear blade leading edge. We also see that, away from these peaks, the sound pressure is relatively constant at the intermediate times where the red curves are shallowest, corresponding to the points at
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+901 A21-20 M. J. Kingan and A. B. Parry
+0.06
+0.04
+0.02
+–0.02
+1.0
+0.8
+0.6
+0.4
+9.5 9.6 9.7 9.8 9.9 10.0 10.1 10.2
+9.5 9.6 9.7 9.8 9.9 10.0 10.1 10.2
+0
+0.2
+–0.1
+–0.2
+0
+2r/D
+p
+(t – t0) / T
+p (r; x, t) (Pa m–1)
+(a)
+(b)
+FIGURE 10. Plot of acoustic pressure against non-dimensional time (a). Contours of constant P(r; x, t) plotted against non-dimensional radius (vertical axis) and non-dimensional time (horizontal axis) (b).
+which t′
+n(r) is maximum. These maxima occur at the source times at which the centreline
+of the n = 5 and 15 wakes impinge on the edge such that the sound arrives at the observer location at non-dimensional times satisfying, approximately, 5.9 ≤ (t − t0)/T ≤ 7.2 and 12.8 ≤ (t − t0)/T ≤ 14.1, respectively. The impulsive sound is thus strongly dependent on the amount of constructive interference of the signals emitted from different radii. However, other effects are also important, as observed by the differences between the impulses at non-dimensional times of 0 (when the blade is moving away from the observer) and 10 (when the blade is moving towards the observer). These differences are due to micro Doppler and source directivity effects as discussed in § 3.2. Having considered the observed acoustic pressure over a complete rotation period, it is important to consider the effects local to the impulsive peaks. Thus, in order to obtain a better understanding of the underlying physics at, and near to, the impulsive pressure that is produced at the observer time (t − t0)/T = 10, we will zoom in to Figure 9 there. Figure 10 thus represents a magnified version of figure 9 that shows just the non-dimensional time period 9.5 ≤ (t − t0)/T ≤ 10.2. Figure 10(a) plots the far-field acoustic pressure against non-dimensional observer time and figure 10(b) plots contours of constant P(r; x, t) against non-dimensional observer time and non-dimensional radius, where P(r; x, t) is defined by (3.3). In order to aid our interpretation of the observed acoustic pressure, P(r; x, t) is also plotted against non-dimensional radius 2r/D at fixed non-dimensional observer times 9.6, 9.65, 9.7 and 9.75 in figure 11 and 9.95 and 10 in figure 12. The former group represents times when the observer receives the sound generated by the 9th (n = 9) wake interaction (for which t′
+n(r) /= 0), and the latter group represents times at which the
+observer receives the sound from the 10th (n = 10) wake interaction (for which t′
+n(r) = 0).
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+Time-domain analysis of contra-rotating propeller noise 901 A21-21
+0.20
+0.15
+0.10
+0.05
+–0.05
+0.4 0.6 0.8 1.0
+0
+0.20
+0.15
+0.10
+0.05
+–0.05
+0.4 0.6 0.8 1.0
+0
+0.20
+0.15
+0.10
+0.05
+–0.05
+0.4 0.6 0.8 1.0
+0
+0.20
+0.15
+0.10
+0.05
+–0.05
+0.4 0.6 0.8 1.0
+0
+P (r; x, t) (Pa m–1)
+P (r; x, t) (Pa m–1)
+2r/D 2r/D
+(a) (b)
+(c) (d )
+FIGURE 11. Plot of P(r; x, t) against non-dimensional radius at four different observer times, corresponding to the interaction of the n = 9 wake with the rear propeller blade. (a) (t − t0)/T = 9.6; (b) (t − t0)/T = 9.65; (c) (t − t0)/T = 9.7; (d) (t − t0)/T = 9.75.
+These times are also indicated by red circles in figure 10(a) and by the red lines in figure 10(b). At a non-dimensional time of (t − t0)/T = 9.6 most of the sound is generated from the narrow range of non-dimensional radii centred on 2r/D = 0.88, where the n = 9 wake impinges on the propeller blade. This narrow band of radii is observed as the ‘hump’ in panel (a) of P (the acoustic pressure per unit span) in figure 11. Prior to the times shown in figure 11, the band is located further inboard and moves outboard as time increases. The shape of the hump changes slowly with radius, due to spanwise differences in wake shape, relative air velocity, blade angle, etc. so the integral of P (and thus the radiated pressure) along the blade radius also changes slowly whilst the hump is contained entirely on the blade span. As the wake interaction moves over the blade tip, and the hump moves off the blade tip, the value of the integral changes more rapidly producing a mildly impulsive sound close to (t − t0)/T = 9.7, as can be seen in figure 10. Although the results are not shown here we add, for completeness, that similar behaviour occurs at the blade hub close to times (t − t0)/T = 9.3, where this n = 9 wake first impinges on the downstream blade at the hub, before moving outboard. Such mildly impulsive behaviour is typical of interactions in which t′
+n(r) is large, with the result that the acoustic pressure remains relatively constant whilst the wake interaction occurs over the entire span of the downstream propeller blade but fluctuates more rapidly as the wake passes over the hub or tip regions of the downstream blade. Figure 11(a–d) shows the change in the radiated
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+901 A21-22 M. J. Kingan and A. B. Parry
+0.20
+0.15
+0.10
+0.05
+–0.05
+0.4 0.6 0.8 1.0
+0
+0.20
+0.15
+0.10
+0.05
+–0.05
+0.4 0.6 0.8 1.0
+0
+P (r; x, t) (Pa m–1)
+2r/D 2r/D
+(a) (b)
+FIGURE 12. Plot of P(r; x, t) against non-dimensional radius at two different observer times, corresponding to the interaction of the n = 10 wake with the rear propeller blade. (a) (t − t0)/T = 9.95; (b) (t − t0)/T = 10.
+pressure per unit span, P, as the interaction of the n = 9 wake with the downstream blade moves outboard to the tip. At the second group of non-dimensional times, (t − t0)/T = 9.95 and 10.0, the sound at the observer location corresponds to that generated by the n = 10 wake interacting with the downstream propeller blade. Here the observer time function t′
+n(r) is close to or equal to zero, which means that sound generated at all radii arrives at the observer location at (almost) the same reception time. The pressure per unit span, P, varies with radius, but remains positive along the blade span with the result that the radial integral of P is large (see figure 12a,b). The acoustic pressure peaks as the observer receives the noise generated when the wake centreline impinges on the rear propeller leading edge. The sound associated with this interaction is highly impulsive because the noise from wake interactions over a range of radii arrives at the observer location over a very narrow time period. This impulsive behaviour is typical of interactions in which t′
+n(r) is small, such that there is constructive interference between the impulses emitted from each radii producing a strong net pressure impulse that has a high peak value and which occurs over a relatively short time. It is also interesting to consider the case of an observer located on the propeller axis at θe = 0◦ (with all other variables held constant). Figure 13(a) plots the pressure time history there and it is observed to be highly impulsive and, due to the rotational symmetry of the problem, perfectly periodic. In order to aid interpretation of these results, contours of pressure per unit span P(r; x, t) are plotted in figure 13(b) against non-dimensional radius (vertical axis) and non-dimensional observer time (horizontal axis). Red lines indicating tn(r) = τn + RL(r, τn)/c0 are superimposed on the lower plot and it can be seen
+that t′
+n(r) = 0 for all wake interactions. This result means that, for all radii, the observer receives, simultaneously, the sound from the interactions of the wake centrelines with the leading edge of the downstream propeller blade. The net sound field at the observer location, on the axis, is thus impulsive and of high amplitude. The results obtained here for θe = 0◦, in the time domain, echo the high blade number asymptotic solutions for contra-rotating propellers of Kingan & Parry (2019a) and Parry & Kingan (2019), which were derived in the frequency domain. They showed that solutions
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+Time-domain analysis of contra-rotating propeller noise 901 A21-23
+0.05
+–0.05
+–0.10 01 23 45
+012345
+0
+1.0
+0.8
+0.6
+0.4
+0.2
+0.1
+–0.1
+–0.2
+0
+2r/D
+p
+(t – t0) / T
+P (r; x, t) (Pa m–1)
+(a)
+(b)
+FIGURE 13. Plot of acoustic pressure against non-dimensional time on the propeller axis
+(θe = 0◦) (a). Contours of constant P(r; x, t) for this case plotted against non-dimensional radius (vertical axis) and non-dimensional time (horizontal axis) with red dashed lines indicating tn(r) = τn + RL(r, τn)/c0 superimposed (b).
+of different asymptotic orders were possible, dependent on the blade sweep and the observer location; indeed, noise could be increased for a swept propeller, relative to a straight-bladed propeller, if the leading-edge sweep was ‘critical’. However, the noisiest possible solution occurred when the blades were straight and the observer was positioned on the engine axis. In this paper, we are only interested in the sound radiated from a single downstream propeller blade. However, the sound field on axis due to radiation from multiple downstream propeller blades is a relatively simple case to consider. This is because the impulse produced by each blade-wake interaction is identical, regardless of the location of that interaction. For a downstream propeller with a blade count equal to an integer factor or multiple of the blade count of the upstream propeller, interactions will occur simultaneously. This will result in constructive addition of the pressure signals from each interaction at the observer location and very high levels of impulsive noise. Alternative blade count combinations, which produce non-simultaneous interactions, will produce a total pressure signal which consists of a series of impulses with lower amplitudes spaced at time intervals corresponding to the time-interval between subsequent interactions (which could be a relatively small period of time).
+4. Sound radiation from a swept blade
+For the blade with the straight leading edge considered in § 3, it was observed that the sound pressure per unit span, produced by the viscous wake interaction at a particular
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+901 A21-24 M. J. Kingan and A. B. Parry
+radius, consists of a series of impulsive sounds. These peaks correspond closely with the reception times tn – the times at which the observer receives the sound generated when the wake centreline impinges on the downstream propeller blade leading edge. If the function tn(r) is constant across the blade span then the ‘impulses’ in the sound pressure per unit span time history from each radius coalesce at the observer location producing a high-amplitude impulse in the pressure time history produced by the entire blade. Similarly, if tn(r) is stationary at any point on the span, then noise emitted from the vicinity of that particular radius will dominate. Conversely, the sharp impulsive peaks are replaced by smooth humps if tn(r) contains no stationary points and, indeed, the amplitude will continue to fall as the variation in tn(r) continues to increase over the blade span (i.e.
+when |t′
+n(r)| is large along the entire blade span) because a large variation in tn(r) ensures that there can only be small constructive interference of the impulses, generated at each radius. In this section, we will show how changes to blade sweep can be used to ensure |t′
+n (r)| is large along the entire blade span in order to reduce significantly the magnitude of the impulsive sound generated by the viscous wake interactions. For a swept propeller blade, the centreline of the nth wake impinges on the leading edge of the downstream propeller at source time τn = τ0 + nT where τ0 is defined by (2.11). The Cartesian coordinates of the impingement location can be calculated by setting τ equal to τn in (2.19a–c) yielding
+y1 = −Mx
+sL
+Mr2
+, y2 = r cos(φn), y3 = r sin(φn), (4.1a–c)
+where
+φn = 2gMT1 MT2
+Mx D(MT1 + MT2 ) + nΩ2T, (4.2)
+is the azimuthal angle of the impingement point – which is independent of radius. Therefore, the impingement point only moves in the axial (y1) and radial (r) directions. We already have an expression, (2.12), for the radial component of the trace Mach number of the impingement point. In order to determine the axial component of the trace Mach number of the impingement point we put r = r(τ ) in (4.1a), take the derivative with respect to τ and divide by c0 to yield
+1
+c0
+d y1
+dτ = 1
+c0
+dr
+dτ
+d y1
+dr = −Mx . (4.3)
+We see that the impingement point convects with the flow in the negative axial direction and thus the velocity of the impingement point, relative to the fluid, is purely radial for the case where the upstream and downstream blades have sweep but no lean. For the case where the downstream blade has arbitrary leading-edge sweep and the observer is located in the far field (Rr → ∞) we have
+c0t′
+n(r) ∼ 1
+(1 − Mx2)
+⎛
+⎝ Mx cos θr
+√
+1 − Mx2sin2θr
++1
+⎞
+⎠ S′
+L(r) − sin θr
+√
+1 − Mx2sin2θr
+cos(φn − φ),
+(4.4) which can be rewritten in emission coordinates as
+c0t′
+n(r) ∼ 1
+(1 − Mx cos θe) [S′
+L(r) − sin θe cos(φn − φ)], (4.5)
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+Time-domain analysis of contra-rotating propeller noise 901 A21-25
+where we have made use of Re(1 − Mx cos θe) = Rr
+√
+1 − Mx2sin2θr. Thus the function tn(r) is stationary when (4.5) is equal to zero which occurs when
+1 = [S′
+L(r)]−1 sin θe cos(φn − φ). (4.6)
+When (4.6) is satisfied at all radii between the hub and the tip, the sound pressure emitted from the leading edge at all radial locations at source time τn(r) (the time at which the centreline of the nth wake impinges on the leading edge of the downstream propeller blade) will arrive at the observer at the same time. The term [S′
+L(r)]−1 on the right-hand side of (4.6) was shown to be equal to the spanwise (radial) Mach number of the wake centreline along the leading edge of the downstream propeller blade and also corresponds to the Mach number of the impingement point relative to the fluid. Clearly, the term
+sin θe cos(φn − φ), (4.7)
+which appears on the right-hand side of (2.9) has a maximum value of 1 which occurs when the observer is located at polar emission angle θe = π/2 rad and at azimuthal angle φ = φn which is the azimuthal angle at which the centreline of the nth front rotor wake impinges on the leading edge of the downstream propeller blade. The physical meaning of the quantity defined by the right-hand side of (4.6) is now obvious: it represents the component of the Mach number of the impingement location relative to the fluid and in the ‘acoustic emission direction’ towards the observer. When this Mach number component is equal to unity, the sound emitted from the leading edge of the rotor blade at all radii at source times τn (where τn = τn(r)) will arrive at the observer at the same observer time tn. This requirement is similar to the sonic condition, described by Parry & Kingan (2019), who showed that interaction tones have high radiation efficiency at points on the event line which have sonic velocity towards the observer. Thus, if we can design a blade for which
+S′
+L(r) > 1 (4.8)
+at all radii, then (4.6) can never be satisfied and thus t′
+n(r) can never be stationary. For increases in this quantity above one we expect further decreases in the noise as the magnitude of t′
+n(r) would be increased. Kingan & Parry (2019a) proposed a swept-blade
+profile, defined by sL = λMr2(r − Rh), for which
+S′
+L(r) = λ. (4.9)
+This blade profile was derived by inspection of the leading-order terms in a high blade number asymptotic expansion of a frequency-domain formulation for the viscous wake interaction tones produced by an advanced open rotor. It was shown that, for λ > 1, such a design will produce tones for which the main contribution only comes from boundary critical points, which are of lower order in the asymptotic expansion, and thus generally lower magnitude, than the interior stationary points. Such designs are referred to as universally subcritical. For λ ≤ 1 tones could be produced for which the main contributions come from interior critical points. Here we see that a universally subcritical design (Kingan & Parry 2019a) always produces an impingement point which moves subsonically relative to the fluid and, thus, sound emitted from the leading edge at a particular radius can never arrive at the observer position at the same time as sound emitted from the leading edge at another radius. Kingan & Parry (2019a,b) also observed that, for linear sweep designs, increasing the coefficient λ above unity generally resulted in
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+901 A21-26 M. J. Kingan and A. B. Parry
+0.02
+0.01
+–0.01
+–0.02
+0
+0 5 10 15 20
+0 5 10 15 20
+1.0
+0.8
+0.6
+0.4
+2r/D
+p (Pa)
+(t – t0) / T
+P (r; x, t) (Pa m–1)
+0.05
+0
+–0.05
+(a)
+(b)
+FIGURE 14. Plot of acoustic pressure against non-dimensional time for a swept blade with λ = 0.5 (a). The pressure calculated using a two-dimensional response function is indiscernible from that calculated using the swept-blade response function. Contours of constant P(r; x, t) for this case plotted against non-dimensional radius (vertical axis) and non-dimensional time (horizontal axis) with red curves indicating tn(r) = τn + RL,τn /c0 superimposed (b). Note that panel (a) showing pressure versus time was also reproduced using the frequency-domain method described in Kingan & Parry (2019a).
+a reduction in tone levels. Their observations are consistent with the hypothesis presented here where it is proposed to maximise |t′
+n(r)| across the blade span, in order to ‘de-phase’ pulses emitted from different radii. It is an effective method for reducing the overall noise produced by viscous wake interactions. Figures 14(a)–16(a) plot the acoustic pressure against non-dimensional time for a swept blade with λ = 0.5, 1 and 2, respectively. Contours of constant P(r; x, t) for each of these cases are also plotted against non-dimensional radius (vertical axis) and non-dimensional time (horizontal axis) beneath each plot and red curves indicating tn(r) = τn + RL(r, τn)/c0 are superimposed on these. These plots should be compared with figure 9, which is the equivalent plot for the blade with a straight leading edge (λ = 0). For each case, impulses associated with small values of t′
+n(r) (close to vertical red curves of
+tn(r)), correspond with relatively large pressure impulses. For the highly swept blade with
+λ = 2, t′
+n(r) is never close to zero at any time or radius. Note that for λ = 0, 0 < |c0t′
+n(r)| <
+1.25, whereas for λ = 1, 0 < |c0t′
+n(r)| < 2.5 and λ = 2, 1.25 < |c0t′
+n(r)| < 3.75. Thus,
+large in this context corresponds to |c0t′
+n(r)| > 1.25. Inspection of figures 14–16 shows
+that impulses associated with values of |c0t′
+n(r)| > 1.25 are insignificant. The amplitude of the resulting sound pressure fluctuations for this case are drastically smaller than for the cases with less sweep and no significant impulsive sounds are observed. Clearly, the radial dephasing effect, produced by the sweep on the downstream propeller blade, drastically reduces the impulsive sound pressure produced by that blade.
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+Time-domain analysis of contra-rotating propeller noise 901 A21-27
+0.02
+0.01
+–0.01
+–0.02
+0
+0 5 10 15 20
+0 5 10 15 20
+1.0
+0.8
+0.6
+0.4
+2r/D
+p
+(t – t0) / T
+P (r; x, t) (Pa m–1)
+0.2
+0.1
+–0.1
+–0.2
+0
+(a)
+(b)
+FIGURE 15. Plot of acoustic pressure (solid black curve) against non-dimensional time for a swept blade with λ = 1 (a). The dashed curve indicates the result obtained using a two-dimensional response function. Contours of constant P(r; x, t) for this case plotted against non-dimensional radius (vertical axis) and non-dimensional time (horizontal axis) with red curves indicating tn(r) = τn + RL,τn /c0 superimposed (b).
+In addition to the effects of radial de-phasing, the results are also modified by the unsteady response of the downstream blade which is locally three-dimensional. The model used in our approach incorporates a swept-blade response function which accounts for the effect of leading-edge sweep on the local blade loading (as described in § 2.2) and, thus, also on the magnitude of sound which is produced. In order to demonstrate the effect of the swept response function on the predicted far-field sound pressure, predictions are made using both the full swept-blade response function (shown by the solid black curve in figures 14–16) and a two-dimensional response function (shown by the dashed black curve in figures 14–16). Note that the two-dimensional response function is identical to the swept response function defined in ((2.10), (2.14), (2.15)) except that the sweep angle Λ is set equal to zero. An additional comparison is also shown in figure 17 where we plot P(r; x, t) at 2r/D = 0.7 against non-dimensional time for a highly swept blade with λ = 2, with the results being obtained using both the full swept-blade response function (shown by the solid black curve) and a purely two-dimensional response function (shown by the dashed black curve). The plot shows the effect of the swept-blade response function on the sound radiated from a single radius. The peak level of some of the impulses are only altered very slightly and the peak times are virtually unaffected. Thus the swept-blade response function makes little difference to the radiated noise levels. It is worth noting here that there is also a minor role played by wake diffusion (the widening of the wake and reduction in the centreline deficit velocity magnitude) as the increase in downstream blade sweep also increases the wake propagation distance. The effect can be shown via a simple calculation, using straight and swept-blade propagation
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+901 A21-28 M. J. Kingan and A. B. Parry
+0.02
+0.01
+–0.01
+–0.02
+0
+0 5 10 15 20
+0 5 10 15
+1.0
+0.8
+0.6
+0.4
+2r/D
+p
+(t – t0) / T
+P (r; x, t) (Pa m–1)
+0.1
+–0.1
+0
+(a)
+(b)
+FIGURE 16. Plot of acoustic pressure (solid black curve) against non-dimensional time for a swept blade with λ = 2 (a). The dashed curve indicates the result obtained using a two-dimensional response function. Contours of constant P(r; x, t) for this case plotted against non-dimensional radius (vertical axis) and non-dimensional time (horizontal axis) with red curves indicating tn(r) = τn + RL,τn /c0 superimposed (b).
+0.10
+0.05
+–0.05
+0
+8 9 10 11 12 13 14 15
+(t – t0) / T
+P (r; x, t) (Pa m–1)
+FIGURE 17. Plot of P(r; x, t) at 2r/D = 0.7 for a swept blade with λ = 2 plotted against non-dimensional time. Calculation using swept response function (black solid), two-dimensional response function (red dashed).
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+Time-domain analysis of contra-rotating propeller noise 901 A21-29
+distances, but it is very small and we will not discuss it further. We emphasise that the predominant effect governing the total noise level is the constructive interference effect described in this paper.
+5. Conclusions
+This paper has presented an analytic model for the prediction of the far-field sound pressure produced by the interaction between the viscous wakes of an upstream propeller and a downstream counter-rotating propeller blade. The velocity deficit from each upstream propeller blade is represented by a Gaussian wake model and the unsteady loading on the downstream propeller blade is calculated using a swept-blade response function. A time-domain formula is then used to predict the radiated sound pressure. Whilst the framework for the model is broadly similar to the approaches presented in Kingan & Parry (2019a,b), here we use a time-domain method to predict the complete pressure waveform radiated by blade-wake interactions, rather than a frequency-domain approach to directly predict specific interaction tones. We believe that the use of an analytic approach in the time-domain to model contra-rotating propeller noise is novel. Moreover, the arguments of Amiet (1988) – who used an analytic approach to model thickness noise of a supersonic single-rotating propeller – remain valid, viz. that the sharp peaks in the radiated waveform indicate that very many frequency terms will be required, in a frequency-domain approach, to obtain sufficient resolution of the sound field and that, in any case, a time-domain analysis gives a more physical understanding of the sharp peaks and their point of origin on the blade. Indeed, for contra-rotating propellers the interactions generate a double Fourier series in the frequency domain that produces many hundreds of significant tones in the audible frequency range, each of which would need to be computed individually, thus indicating that a time-domain approach is a more natural and straightforward route to determining the complete radiated waveform. In order to motivate the full problem, the first consideration was the sound radiated from a single blade with a straight leading edge. It was shown that the sound radiated from a single radius consisted of a series of impulsive sounds and that the peak impulsive sound occurs close to the time at which sound, generated when the wake centreline impinges on the leading edge of the downstream propeller blade, reaches the observer location. The sound level produced at a single radius is dependent on the magnitude of the unsteady loading, various micro Doppler effects and the source directivity. The micro Doppler effects govern differences that occur when the blade moves towards the observer as opposed to the blade moving away from the observer. These effects influence the period between impulsive sounds at the observer location and the amplitude of the impulse. The significance of these effects is dependent on the tip Mach number of the propeller blade (which is assumed to be subsonic). We showed that constructive interference of these impulsive sounds from different radii can produce net acoustic impulses of high amplitude, particularly when a local or full-span continuum of radii are involved. The effect was shown to be even more exaggerated when the observer was positioned on the propeller axis as for each wake interaction, the sound emitted from all radii interfere constructively at the observer location. Conversely, de-phasing of the impulses from different radii can reduce the impulsive nature of the sound significantly at the observer location. The same approach was then used to analyse the sound produced by a swept downstream propeller blade and it was shown that the interactions (or impingement points) at all radii occur at a constant azimuthal angle – irrespective of the amount of blade sweep although the interaction times vary with radius (in the swept-blade case). It was also shown how blade sweep could be used to de-phase the impulsive sound pressure emitted from
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+901 A21-30 M. J. Kingan and A. B. Parry
+different radii resulting in drastically lower sound levels at particular observer locations. In order to de-phase the sound emitted from different radii along the blade span, at all possible observer locations, it was shown that the blade leading-edge sweep should be large enough such that the trace velocity of the wake centreline across the leading edge of the downstream propeller blade should be subsonic across the entire span of the blade. The swept-blade response was shown to have a negligible effect so that the noise reduction is completely dominated by radial de-phasing. This study has analysed the interaction noise as predicted using an analytical model which ignores the effects of swirl and induced axial and radial flow by the propeller. Nevertheless, the physical mechanisms governing the noise generation process described here will still occur on a practical contra-rotating propeller. In particular, the distortion of the upstream propeller wakes by these effects will alter the time, location and trace velocity of the wake centrelines across the leading edge of the downstream propeller blades. The authors have argued that such effect are small but future work, repeating the analysis presented here but calculated using high-fidelity CFD, could be undertaken to determine to what extent these effects do, indeed, influence both the generated noise levels and the amount of blade sweep required to provide significant noise reductions.
+Declaration of interests
+The authors report no conflict of interest.
+REFERENCES
+ADAMCZYK, J. J. 1974a The passage of an infinite swept airfoil through an oblique gust. NASA Contractor Rep. 2395.
+ADAMCZYK, J. J. 1974b Passage of a swept airfoil through an oblique gust. J. Aircraft 11, 281–287. AMIET, R. K. 1975 Acoustic radiation from an airfoil in a turbulent stream. J. Sound Vib. 41, 407–420. AMIET, R. K. 1976 High frequency thin-airfoil theory for subsonic flow. AIAA J. 14, 1076–1082. AMIET, R. K. 1988 Thickness noise of a propeller and its relation to blade sweep. J. Fluid Mech. 192, 535–560. BRADLEY, A. J. 1986 A study of the rotor/rotor interaction tones from a contra-rotating propeller driven aircraft. AIAA Paper 86-1894. BRENTNER, K. S. & FARASSAT, F. 2003 Modelling aerodynamically generated sound of helicopter rotors. Prog. Aerosp. Sci. 39(2–3), 83–120.
+CARAZO, A., ROGER, M. & OMAIS, M. 2011 Analytical prediction of wake-interaction noise in counterrotation open rotors. AIAA Paper 2011-2758. CHAPMAN, C. J. 1988a The ray theory of supersonic propeller acoustics. J. Sound Vib. 127(1), 145–153. CHAPMAN, C. J. 1988b Shocks and singularities in the pressure field of a supersonically rotating propeller. J. Fluid Mech. 192, 1–16.
+CHEN, V. C. 2019 The Micro-Doppler Effect in Radar, 2nd edn. Artech House. CHEN, V. C., LI, F., HO, S.-S. & WECHSLER, H. 2006 Micro-Doppler effect in radar: phenomenon, model, and simulation study. IEEE T. Aero. Elec. Syst. 42 (1), 2–21. COLIN, Y., BLANC, F., CARUELLE, B., BARROIS, F. & DJORDJEVIC, N. 2012a Computational strategy for predicting CROR noise at low-speed. Part II. Investigation of the noise sources computation with the chorochronic method. AIAA Paper 2012-2222. COLIN, Y., CARUELLE, B., NODE-LANGLOIS, T., OMAIS, M. & PARRY, A. B. 2012b Computational strategy for predicting CROR noise at low-speed. Part I. Review of the numerical methods. AIAA Paper 2012-2221. COLIN, Y., CARUELLE, B. & PARRY, A. B. 2012 Computational strategy for predicting CROR noise at low-speed. Part III. Investigation of noise radiation with the Ffowcs-Williams Hawkings analogy. AIAA Paper 2012-2223.
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+Time-domain analysis of contra-rotating propeller noise 901 A21-31
+EKOULE, C. M., MCALPINE, A., KINGAN, M. J., SOHONI, N. G. & PARRY, A. B. 2015 Hybrid use of CFD and analytical methods for the prediction of advanced open rotor tone noise. AIAA Paper 2015-2357. EKOULE, C. M., MCALPINE, A., PARRY, A. B., KINGAN, M. J. & SOHONI, N. G. 2017 Development of a hybrid method for the prediction of advanced open rotor tone noise. AIAA Paper 2017-3870. ENVIA, E. 2015 Aeroacoustic analysis of a high-speed open rotor. Intl J. Aeroacoust. 14 (3 & 4), 569–606. FALISSARD, F. & DELATTRE, G. 2014 Investigation of counter rotating open rotor orthogonal blade/vortex interaction noise. AIAA Paper 2014-2748. FARASSAT, F. & BROWN, T. J. 1977 A new capability for predicting helicopter rotor and propeller noise including the effect of forward motion. NASA TM X-74037. FARASSAT, F. & SUCCI, G. P. 1983 The prediction of helicopter rotor discrete frequency noise. Vertica 7 (4), 309–320. GRASSO, G., CHRISTOPHE, J., SCHRAM, C. F. & VERSTRAETE, T. 2014 Influence of the noise prediction model on the aeroacoustic optimization of a contra-rotating fan. AIAA Paper 2014-2611. HANSON, D. B. 1976 Near field noise of high tip speed propellers in forward flight. AIAA Paper 1976-0565. HANSON, D. B. 1980 Helicoidal surface theory for harmonic noise of propellers in the far field. AIAA J. 18(10), 1213–1220. HANSON, D. B. 1983 Compressible helicoidal surface theory for propeller aerodynamics and noise. AIAA J. 21(6), 881–889. HANSON, D. B. 1985 Noise of counter-rotation propellers. J. Aircraft 22 (7), 609–617. HOFF, G. E. 1990 Experimental performance and acoustic investigation of modern, counterrotating blade concepts. Final Rep. NASA CR 185158. KINGAN, M. J., BLANDEAU, V., TESTER, B., JOSEPH, P. F. & PARRY, A. B. 2011 Relative importance of open rotor tone and broadband noise sources. AIAA Paper 2011-2763. KINGAN, M. J., EKOULE, C. E., PARRY, A. B. & BRITCHFORD, K. 2014 Analysis of advanced open rotor noise measurements. AIAA Paper 2014-2745. KINGAN, M. J. & PARRY, A. B. 2019a Acoustic theory of the many-bladed contra-rotating propeller: analysis of the effects of blade sweep on wake interaction noise. J. Fluid Mech. 868, 385–427. KINGAN, M. J. & PARRY, A. B. 2019b Acoustic theory of the many-bladed contra-rotating propeller: the effects of sweep on noise enhancement and reduction. J. Sound Vib. 468, 115089. KINGAN, M. J. & SURESHKUMAR, P. 2014 Open rotor centrebody scattering. J. Sound Vib. 333 (2), 418–433. LANDAHL, M. 1961 Unsteady Transonic Flow. Pergamon Press. MOREAU, S. & ROGER, M. 2018 Advanced noise modeling for future propulsion systems. Intl J. Aeroacoust. 17 (6–8), 576–599. NAJAFI-YAZDI, A., BRÉS, G. A. & MONGEAU, L. 2011 An acoustic analogy formulation for moving sources in uniformly moving media. Proc. R. Soc. Lond. A 467, 144–165. PARKER, R. & LATHOUD, M. 2010 Green aeroengines: technology to mitigate aviation impact on environment. Proc. Inst. Mech. Engrs 224 (3), 529–538.R. PARRY, A. B. 1988 Theoretical prediction of counter-rotating propeller noise. PhD thesis, Department of Applied Mathematical Studies, University of Leeds. PARRY, A. B. 1995 The effect of blade sweep on the reduction and enhancement of supersonic propeller noise. J. Fluid Mech. 293, 181–206. PARRY, A. B. 1997 Modular prediction scheme for blade row interaction noise. J. Propul. Power 13(3), 334–341. PARRY, A. B., CRIGHTON, D. G. 1989 Prediction of counter-rotation propeller noise. AIAA Paper 1989-1141. PARRY, A. B. & KINGAN, M. J. 2019 Acoustic theory of the many-bladed contra-rotating propeller: physics of the wake interaction noise critical sources. J. Fluid Mech. 880, R1. PETERS, A. & SPAKOVSZKY, Z. S. 2010 Rotor interaction noise in counter-rotating propfan propulsion systems. ASME Paper GT2010-22554. PRENTICE, P. R. 1994 Time-domain asymptotics. II. Application to propeller acoustics. Proc. R. Soc. Lond. A 446, 361–380.
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press
+
+
+901 A21-32 M. J. Kingan and A. B. Parry
+QUAGLIA, M. E., LÉONARD, T., MOREAU, S. & ROGER, M. 2017 3D analytical model for orthogonal blade–vortex interaction noise. J. Sound Vib. 399, 104–123. QUAGLIA, M. E., MOREAU, S., ROGER, M. & FERNANDO, R. 2016 A preliminary semi-empirical approach for CROR noise modelling. AIAA Paper 2016-2743. RICOUARD, J., JULLIARD, E., OMAIS, M., REGNIER, V., PARRY, A. B. & BARALON, S. 2010 Installation effects on contra-rotating open rotor noise. AIAA Paper 2010-3795. ROGER, M. & CARAZO, A. 2010 Blade-geometry considerations in analytical gust-airfoil interaction noise models. AIAA Paper 2010-3799. ROGER, M. & MOREAU, S. 2010 Extensions and limitations of analytical airfoil broadband noise models. Intl J. Aeroacoust. 9, 273–305.
+ROGER, M. & SERAFINI, S. 2005 Interaction noise from a thin annulus in a circular jet. AIAA Paper 2005–2958. SHARMA, A. & CHEN, H. 2013 Prediction of aerodynamic tonal noise from open rotors. J. Sound Vib. 332, 3832–3845. SOULAT, L., KERNEMP, I., SANJOSE, M., MOREAU, S. & FERNANDO, R. 2013 Assessment and comparison of tonal noise models for counter-rotating open rotors. AIAA Paper 2013-2201. SOULAT, L., KERNEMP, I., SANJOSE, M., MOREAU, S. & FERNANDO, R. 2016 Numerical assessment of the tonal noise of counter-rotating open rotors at approach. Intl J. Aeroacoust. 15, 23–40. STÜRMER, A. & YIN, J. 2009 Low-speed aerodynamics and aeroacoustics of CROR propulsion systems. AIAA Paper 2009-3134.
+TYLER, J. M., SOFRIN, T. G. 1962 Axial flow compressor noise studies. SAE Trans. 70, 309–332. VAN BLADEL, J. 1976 Electromagnetic fields in the presence of rotating bodies. Proc. IEEE 64 (3), 301–318. WHITFIELD, C. E., MANI, R. & GLIEBE, P. R. 1990a High speed turboprop: aeroacoustic study (counterrotation). Volume I: model development. NASA CR185241. WHITFIELD, C. E., MANI, R. & GLIEBE, P. R. 1990b High speed turboprop: aeroacoustic study (counterrotation). Volume II: computer programs. NASA CR185242. ZACHARIADIS, A., HALL, C. A. & PARRY, A. B. 2011 Contra-rotating open rotor operation for improved aerodynamics and noise at takeoff. ASME Paper GT2011-45205.
+https://doi.org/10.1017/jfm.2020.504 Published online by Cambridge University Press

@@ -1,0 +1,683 @@
+Rotary Wing Aerodynamics
+(AE 667)
+
+
+Angle of Attack &
+Sectional Load Calculations
+
+
+Factors affecting Angle of Attack of an Airfoil
+oPilot Input: Collective & Cyclic Pitch
+oBlade Twist
+oInflow: Free stream + induced velocity
+oDue to blade flapping
+oAnhedral/Dihedral effects due to coning
+
+
+Blade flapping and Angle of Attack
+r
+β
+r
+dβ/dt
+r dβ/dt
+(r )
+
+
+Free Steam & Induced Velocities and Angle of Attack
+v
+V∞cosαTPP
+V∞sinαTPP
+V∞sinαTPP + v
+V∞cosαTPP + Ωr
+
+
+Anhedral/Dihedral Effect on AoA
+V∞
+V∞ Sin β
+V∞
+V∞ Sin β
+Upwash at Ψ = 180o equals to V∞ Sin β and
+Downwash at Ψ = 0o equal to V∞ Sin β.
+Generalizing for all azimuths, Downwash = V∞ Sin β Cos Ψ
+
+
+Combining all velocities and finding AoA
+oUP = V∞ Sin αTPP + v + r dβ/dt + V∞ Sin β Cos Ψ
+oUT = Ωr + V∞cosαTPP Sin Ψ
+oAngle of Attack (α) = θ – tan-1 [UP/UT]
+(here, αTPP refers to Tip Path Plane tilt w.r.t free stream)
+UP
+UT
+θ
+α
+
+
+Small angle assumptions
+oCos(αTPP) = Cos(β)= Cos(θ) ≈ 1;
+oSin(αTPP) ≈ αTPP; Sin(β) ≈ β; Sin(θ) ≈ θ
+oα = θ – tan-1 [UP/UT] ≈ θ – [UP/UT] = (UT θ –UP)/UT]
+(where θ = θ0 + θtw(r/R) + θ1c Cos ψ + θ1s Sin ψ)
+oUT = Ωr + V∞cosαTPP Sin Ψ ≈ Ωr + V∞Sin Ψ
+oUP = V∞ Sin αTPP + v + r dβ/dt + V∞ Sin β Cos Ψ
+= ΩRλ + rβ’ + V∞ Sin β Cos Ψ ≈ ΩRλs + rβ’ + V∞ β Cos Ψ
+where λ = (V∞ Sin αTPP + v)/ΩR
+and λs = (V∞ Sin αTPP)/ΩR
+
+
+Doing some math
+( )( )
+()
+()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+−−
+++ −
++−
+
+
+
++
++
+
+  + + − + +
+=
+−
+=
+v
+sin cos
+sin cos sin
+cos sin
+1
+0
+2 11
+0 11
+0 11 11
+TPP
+sc
+tw c s
+tw c s s c
+TT
+TP effective
+V
+VV
+V
+R
+r
+V
+R
+r
+r
+UU
+UU
+
+  
+     
+     
+
+
+Once α is computed at each section, finding lift, drag, pitching moment, etc. at the section can be done through airfoil tables (or empirical fits). These can be integrated over blade span to find overall thrust, torque, pitching and rolling moments.
+
+
+αTPP and αs
+V∞
+β1c
+αs
+αTPP
+αTPP = αs + β1c
+
+
+Getting Total Loads
+12
+
+
+Motive and Approach
+oNeed to get
+o Net thrust
+o Drag
+o In-plane side forces
+o Pitching moment
+o Rolling moment
+o Torque for a rotor
+in forward flight
+oApproach: Integrating the sectional forces and moments numerically (or analytically for simplified cases)
+13
+
+
+For Analytical Integration
+Assumptions:
+oConstant chord (c = const.) (untapered)
+oUniform Inflow (v = const.)
+oCd = constant
+oLinear Twist
+oNo cutout, no tip losses
+14
+
+
+Sectional Lift
+( )( )
+()
+()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+−−
+++ −
++−
+
+
+
++
++
+
+  + + − + +
+=
+−
+=
+v
+sin cos
+sin cos sin
+cos sin
+1
+0
+2 11
+0 11
+0 11 11
+TPP
+sc
+tw c s
+tw c s s c
+TT
+TP effective
+V
+VV
+V
+R
+r
+V
+R
+r
+r
+UU
+UU
+
+  
+     
+     
+
+
+() ( )
+L = cCl UT +U P  caUT eff = ca UT −UTU P
+ 22 2 2
+2
+1
+2
+1
+2
+1    
+15
+
+
+Sectional Lift
+L′ ≡ 1
+2 ρca Ωr + V∞ sin ψ 2 θ0 + θtw
+r
+R + θ1c cos ψ + θ1s sin ψ
+− Ωr + V∞ sin ψ ΩRλTPP + V∞β cos ψ
+The 2nd and 3rd harmonics in the equation translate to the vibratory loads
+=1
+2 ρca
+θ0Ω2r2 + 2V∞Ωrθ0 sin ψ + θ0V∞2 sin2 ψ + θtwΩ2 r3
+R + 2V∞Ωθtw
+r2
+R sin ψ +
+θtw
+r
+R V∞2 sin2 ψ + Ω2r2θ1c cos ψ + 2ΩrV∞θ1c sin ψ cos ψ +
+V∞2θ1c sin2 ψ cos ψ +
+Ω2r2θ1s sin ψ + 2ΩrV∞θ1s sin2 ψ + V∞2θ1s sin3 ψ
+−Ω2RλTPPr − V∞ΩRλTPP sin ψ − ΩrV∞β cos ψ − V∞2β cos ψ sin ψ
+16
+
+
+Total Thrust
+
+
+
+
+
+
+
+
+
+
+
+
+= 
+
+
+
+2
+00
+2
+T b 1 L dr d
+R
+
+
+
+
+
+
+
+
+
+
+
+
+ −
+ + + + +
+=
+
+
+22
+32 4 4
+2
+1
+2 2
+2
+1
+2
+3 22
+0
+3 2 0
+RR
+V
+VR
+R
+VR
+R
+T abc
+TPP
+TPP
+s
+tw tw
+
+
+
+
+
+
+ 
+
+  
+ + ++ −
+
+=  + 2 2
+1
+24
+3
+1
+23
+1
+22
+0 TPP
+TPP
+s
+tw T
+a
+C
+
+
+
+
+
+
+Analytical integration using the assumptions will get us:
+17
+
+
+Torque & Power
+Drag:
+Torque:
+Power:
+
+
+
+
+
+
+
+
+
+
+
+
+= 
+
+
+2
+00
+02
+1R
+Q b rD dr
+
+
+
+
+
+
+
+
+
+
+
+
+= 
+
+
+2
+00
+02
+1R
+P b UT D dr
+Profile Induced
+D′i ≅ L′ UP
+UT
+=1
+2 ρcClUT2 UP
+UT
+D′ = 1
+2 ρUT2cCd,0
+UP
+UT
+θ
+α
+L’
+D’i
+r D’
+Qi = b
+2π න
+0
+2π
+න
+0
+R
+rDidr dψ
+Pi = b
+2π න
+0
+2π
+න
+0
+R
+UTDidr dψ
+18
+
+
+Torque & Power
+CQ
+CP
+Profile Induced
+
+2
+,0
+,0 1
+8
+= d +
+Q
+C
+C
+
+2
+,0
+,0 1 3
+8
+= d +
+P
+C
+C CPi = iCT
+19
+
+
+Rotor Moments
+oOverall Pitching Moment:
+b
+2π න
+0
+2π
+න
+0
+R
+L′r cos ψ dr dψ
+oOverall Rolling Moment: b
+2π න
+0
+2π
+න
+0
+R
+L′r sin ψ dr dψ
+oConing angle:
+β0 = 1
+2πIΩ2 න
+0
+2π
+න
+0
+R
+L′rdr dψ
+20
+
+
+In-Plane Forces
+Blade Coning Radial Skin Friction Forces
+Drag
+rD
+H-Force
+Y-Force
+rD
+Generally Neglected
+rβ
+L’
+21
+L’ Sinβ
+
+
+In-Plane Forces (Analytical Form)
+oDeriving using the simplifying assumptions, we get:
+CHTPP = μ σCd0
+4 + σa
+2 p μλTPP
+2 θ0 + θtw
+2 − θ1cβ0
+6 + θ1s
+λTPP
+4 + μβ02
+4
+CYTPP = σa
+2
+3
+4 μβ0 θ0 + 2
+3 θtw + θ1c
+4 λTPP + θ1sβ0
+6 1 + 3μ2 − 3
+2 μβ0λTPP
+22
+
+
+Blade Flapping Dynamics (continued)
+• Recall the blade flapping dynamics ODE
+Iሷ
+β + IΩ2β = න
+r=0
+r=R 1
+2 ρc Ωr + V∞ sin ψ 2rCldr
+• and its solution of the form: β = β0 + β1c cos ψ + β1s sin ψ + β2c cos 2 ψ + β2s sin 2 ψ +•••
+Note that β0 is the coning angle and ψ = Ωt • Now, we also know the expression Cl
+( ) ( ) 
+()
+()
+
+
+
+
+
+
+
+
+
+
+
+
+−−
+++ −
++−
++− ++
+=
+−
+==
+Vv
+VV
+VV
+r
+U
+a
+U
+UU
+Ca a
+TPP
+sc
+cs
+cs sc
+TT
+TP l effective
+
+  
+   
+     
+
+ sin cos
+sin cos sin
+cos sin
+0
+2 11
+0 11
+01 1 1 1
+23
+
+
+Blade Flapping Dynamics (continued)
+• Substituting, applying the assumptions, simplifying and separating terms, we get:
+()
+2
+0
+11
+2
+75%
+11
+11
+2 2
+80% 0
+2
+1
+1
+3
+4
+2
+3
+1
+4
+3
+3
+8
+60 6 6
+1
+8
+
+ 
+
+ 
+
+
+
+
+
+
+
+
+
++
+− −=
++
+
+
+
+− −
++=
+
+
+
++
+= +− − +
+sc
+R TPP
+cs
+cs
+TPP tw
+R
+  
+
+
+−
++
++ ++
+
+=  + 2 2
+1
+24
+3
+1
+23
+11
+22
+0 TPP
+tw s c T
+a
+C
+
+
+
+
+
+
+24

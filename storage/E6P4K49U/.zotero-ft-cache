@@ -1,0 +1,1365 @@
+Citation: Rinaldi, M.; Primatesta, S.;
+Guglieri, G. A Comparative Study for
+Control of Quadrotor UAVs. Appl.
+Sci. 2023, 13, 3464. https://doi.org/
+10.3390/app13063464
+Academic Editor: Jérôme Morio
+Received: 15 February 2023
+Revised: 3 March 2023
+Accepted: 7 March 2023
+Published: 8 March 2023
+Copyright: © 2023 by the authors.
+Licensee MDPI, Basel, Switzerland.
+This article is an open access article
+distributed under the terms and
+conditions of the Creative Commons
+Attribution (CC BY) license (https://
+creativecommons.org/licenses/by/
+4.0/).
+applied sciences
+Article
+A Comparative Study for Control of Quadrotor UAVs
+Marco Rinaldi , Stefano Primatesta and Giorgio Guglieri *
+Department of Mechanical and Aerospace Engineering, Politecnico di Torino, Corso Duca degli Abruzzi 24, 10129 Torino, Italy * Correspondence: giorgio.guglieri@polito.it
+Abstract: Modeling and controlling highly nonlinear, multivariable, unstable, coupled and underactuated systems are challenging problems to which a unique solution does not exist. Modeling and control of Unmanned Aerial Vehicles (UAVs) with four rotors fall into that category of problems. In this paper, a nonlinear quadrotor UAV dynamical model is developed with the Newton–Euler method, and a control architecture is proposed for 3D trajectory tracking. The controller design is decoupled into two parts: an inner loop for attitude stabilization and an outer loop for trajectory tracking. A few attitude stabilization methods are discussed, implemented and compared, considering the following control approaches: Proportional–Integral–Derivative (PID), Linear–Quadratic Regulator (LQR), Model Predictive Control (MPC), Feedback Linearization (FL) and Sliding Mode Control (SMC). This paper is intended to serve as a guideline work for selecting quadcopters’ control strategies, both in terms of quantitative and qualitative considerations. PID and LQR controllers are designed, exploiting the model linearized about the hovering condition, while MPC, FL and SMC directly exploit the nonlinear model, with minor simplifications. The fast dynamics ensured by the SMC-based controller together with its robustness and the limited estimated command effort of the controller make it the most promising controller for quadrotor attitude stabilization. The outer loop consists of three independent PID controllers: one for altitude control and the other two, together with a dynamics’ inversion, are entitled to the computation of the reference attitude for the inner loop. The capability of the controlled closed-loop system of executing complex trajectories is demonstrated by means of simulations in MATLAB/Simulink®.
+Keywords: unmanned aerial vehicles; feedback linearization; sliding mode control; MPC; PID; LQR; UAV modeling; UAV control; attitude stabilization; trajectory tracking; performance evaluation
+1. Introduction
+The growth of the number of applications of Unmanned Aerial Vehicles (UAVs) in many different fields, from civilian to military applications, has experienced a big rise over the last decade. As highlighted in specific literature reviews [1,2], the civilian applications of UAVs include activities such as parcel delivery, transportation of medical samples, mapping, surveillance, precision agriculture and greenhouses [3], population health monitoring, disaster recovery, personal use and photography, to name a few. The advantages due to the adoption of UAVs in each application domain have been widely reviewed. Just to give an example, considering the logistic domain discussed in [4], UAVs can contribute to optimizing the logistic process, reducing resources’ usage, traffic and CO2 emissions, inducing the diversification of transportation options as well as giving rise to new business models. Therefore, UAVs have gained significant interest from the engineering research world over the last two decades. In particular, quadrotors are the most researched and used type of UAVs because of their mechanical structure, which is relatively simple to model, their enhanced closed-loop stability with respect to other configurations and their high maneuverability in both indoor and outdoor spaces, as described in [5]. However, quadcopters are
+Appl. Sci. 2023, 13, 3464. https://doi.org/10.3390/app13063464 https://www.mdpi.com/journal/applsci
+
+
+Appl. Sci. 2023, 13, 3464 2 of 20
+mechatronic systems with nonlinear, multivariable, unstable, coupled and underactuated characteristics, which make the control not trivial. Literature reviews such as [6–9] provide a comprehensive analysis of the main stateof-the-art control strategies for quadrotor UAVs. The well-known Proportional–IntegralDerivative (PID) control can effectively handle both linear and nonlinear systems. This is because it is model-independent and has a simple-to-understand tuning principle. Additionally, PID control can achieve zero steady-state error. On the other hand, PID control cannot handle constraints, is poorly robust with respect to disturbances and uncertainties and may require extensive tuning. The research in [10] implements a quadrotor attitude controller by means of a PID controller optimized with a genetic algorithm. The Linear–Quadratic Regulator (LQR) control approach is equivalent to solving an optimization problem, with the cost function weighted of the squared norms of tracking error and control input signals, under the constraint of satisfying the system’s dynamics. It is designed with a linear approximation of the system and may not guarantee a zero steady-state error. LQR control can find an optimal feedback gain matrix considering both the tracking performances and the command input effort of the controller. The Feedback Linearization (FL) control approach consists of a systematic procedure to linearize the system with a model inversion and control it with a new control input term. The system is transformed into a linear system without any linearization assumption and can be controlled according to the linear control theory. FL performs well when the nonlinear plant is similar to the one used for control design, so it is not very robust to parametric uncertainties and cannot handle constraints. A feedback linearization attitude controller with proportional action is proposed in [11]. The Sliding Mode Control (SMC) approach aims at bringing the system state to the “sliding surface”, which is a subset of the state space that corresponds to a desired dynamical behavior. The control law is the sum of a continuous function of the system’s state and the reference, which guarantees that the “sliding surface” is invariant (once the state is on the sliding surface, it remains on it), and a discontinuous term for convergence to the “sliding surface”. SMC shows, in general, good robustness to model uncertainties and disturbances, but a smooth approximation of the control law is necessary to avoid chattering, which may lead to instability. The Model Predictive Control (MPC) approach solves an optimization problem at each defined time step to compute the optimal control input, satisfying the system’s dynamics, input and state constraints. A prediction model is exploited to predict the future states of the system. MPC is quite robust to disturbances but may be slow in tracking. The MPC-based position trajectory controller designed in [12], despite exploiting a linear model for prediction, shows the ability to ensure tracking of complex trajectories. Furthermore, other control laws can be effectively applied to quadrotors, such as H-infinity, Backstepping, Adaptive, Fuzzy and Neural Network control. A Backstepping controller for position control of a quadrotor helicopter is designed and validated in [13], with stability being proven by the Lyapunov method. Additionally, a Fuzzy Logic controller for attitude control has been proposed in [14]. An L1 adaptive controller is designed and validated in [15] for the attitude controller of a mini-UAV. Adaptive control does not need a parameter tuning procedure and deals with parametric uncertainties and unmodelled dynamics. The Sliding Mode-based adaptive controller with Proportional–Integral–Derivative gains proposed in [16] controls a micro-UAV, the Parrot Mambo Minidrone, and is demonstrated on a model-based platform. In [17], an adaptive controller is proven to be able to deal with parametric uncertainties and external disturbances and performs well with unknown time delays inserted in the closed-loop dynamics. In this paper, a comparative study of 3D trajectory control of a quadrotor system is proposed. The control system is decoupled into an outer loop for trajectory control and an inner loop for attitude control; input saturation is also taken into account. Despite several reviews of control algorithms for quadrotors being proposed in the literature, such as [6–9] to state a few, there is, to the best extent of our knowledge, poor availability
+
+
+Appl. Sci. 2023, 13, 3464 3 of 20
+of comparative studies where several approaches are implemented and discussed. The comparative study proposed in [18] implements PID, LQR, Fuzzy and Adaptive controllers for position trajectory tracking, while PID, LQR and MPC-based attitude stabilizers are implemented and discussed in [19]. In order to enlarge the available state of the art of quantitative comparative performance evaluation for quadrotors’ control, we propose a broad comparative implementation of different control approaches (PID, LQR, MPC, FL and SMC) to the quadrotor attitude stabilization problem. Linearized or simplified attitude dynamical systems are exploited in the design phase, yet all the controllers are tested with the proposed full nonlinear model. According to the fast dynamic response, the robustness to the discrepancy between the control model and the full nonlinear model and an approximative L2 norm-based trade-off evaluation of both the tracking performance and the command effort of the controller, the most suitable method is selected for the inner loop control part of the complete proposed control architecture. The outer loop is designed to track velocity references by exploiting PID control and a dynamics inversion from a simplified translational dynamical model. This paper is organized as follows. The system model derived with the Newton–Euler formalism is reported in Section 2, as well as the proposed control system architecture, the proposed control laws and the simulation parameters setting. Section 3 presents the simulation results in which a micro-UAV is demonstrated to be able to execute complex trajectories with the complete control system. Conclusions and future research directions are drawn in Section 4.
+2. Materials and Methods 2.1. System Model
+Quadrotor UAVs are mechatronic systems with two rigid arms arranged in a cross configuration and four rotors. Each pair of rotors is located at the arm’s extremity and rotates in opposite directions. The speed of the rotors is controlled independently. A picture of a commercial quadrotor platform is shown in Figure 1. The movement of flying quadrotors derives from the total lift force produced by all rotors and from their capability of inclination, which is due to the resultant forces acting on the arms and to the resultant counter-torque caused by the pairs of rotors. The representation shown in Figure 2 is derived from the configuration of Figure 1, considered as a reference for the formulation of the quadrotor dynamical model.
+Figure 1. Picture of a commercial quadcopter platform [20].
+
+
+Appl. Sci. 2023, 13, 3464 4 of 20
+Figure 2. Schematic representation of the quadrotor configuration of reference.
+Two reference frames are defined in order to characterize the position and the orientation of the UAV: a fixed inertial reference frame OXYZ and a body reference frame oxyz attached to the quadrotor. The relation between the two is expressed by the homogeneous transformation matrix TL derived with the Euler ZYX convention, also known as the RPY convention. The RPY convention involves three rotations. Firstly, a rotation of ψ (Euler yaw angle) about Z produces the frame OX1Y1Z. Secondly, a second rotation of θ (Euler pitch angle) about Y1 results in the frame OX2Y1Z1. Lastly, a third rotation of φ (Euler roll angle) about X2 results in the frame OX2Y2Z2 (coincident with oxyz). These rotations are performed according to a post multiplication rule,
+TL = TψTθTφ =
+
+
+cψ −sψ 0 sψ cψ 0 0 01
+
+
+
+
+cθ 0 sθ 0 10 −sθ 0 cθ
+
+
+
+
+10 0 0 cφ −sφ 0 sφ cφ
+
+=
+
+
+cψcθ cψsθsφ − sψcφ sψsφ + cψsθcφ sψcθ cψcφ + sθsψsφ sθsψcφ − sφcψ −sθ cθsφ cθcφ
+
+ (1)
+where c and s denote cosine and sine functions, respectively. TL transforms linear movement-related vectors from oxyz to OXYZ. Consequently, TR transforms rotational movement-related vectors from OXYZ to oxyz,
+∆=
+
+
+p q r
+
+ = TTφ
+
+
+φ′
+0 0
+
+ + TTφTTθ
+
+
+0 θ′
+0
+
+ + TTφTTθTTψ
+
+
+0 0 ψ′
+
+=
+
+
+1 0 −sθ 0 cφ cθsφ 0 −sφ cθcφ
+
+
+
+
+φ′ θ′ ψ′
+
+ = TR
+
+
+φ′ θ′ ψ′
+
+ (2)
+where p, q and r denote the rotational velocities in the body frame, while φ′, θ′ and ψ′ denote the Euler rates. The Newton–Euler formalism is adopted to present the quadrotor dynamical model; for further details about modeling refer to [21–24]. In the adopted model, the following assumptions are made:
+• The structure is perfectly symmetrical. • The structure is perfectly symmetrical. • The structure is perfectly rigid. • The quadrotor’s center of mass coincides with the origin of the body fixed frame. • The rotors’ motors dynamics are neglected. • Complex phenomena of difficult modeling are neglected, such as the ground effect, blade flapping and any other minor aerodynamical or inertial contributions not explicitly taken into account.
+It follows the translational dynamical model in the inertial fixed reference frame,
+mR′′ = mg − KLdR′ − (F1 + F2 + F3 + F4)TL (3)
+
+
+Appl. Sci. 2023, 13, 3464 5 of 20
+Fi =
+
+
+0 0 bwi2
+
+ , with i = 1, 2, 3, 4 (4)
+where R denotes the position vector in OXYZ, Fi is the thrust force produced by rotor i, wi is the angular speed of rotor i, b is the thrust coefficient, m is the quadcopter’s mass, g is the gravity acceleration and KLd denotes the aerodynamic thrust drag coefficient. It follows the rotational dynamical model in the body reference frame,
+I∆′ = −(∆ x I∆) − Mgy − KdR∆ + M (5)
+Mgy = IR(w1 + w3 − w2 − w4) ∆ ×
+
+
+0 0 1
+
+ (6)
+M=
+
+
+L(F2 − F4) L(F1 − F3) d
+(w21 − w22 + w23 − w24
+)
+
+ (7)
+I=
+
+
+Ix 0 0 0 Iy 0 0 0 Iz
+
+ (8)
+with the quadrotor’s arm length being L, the diagonal inertia matrix I, the inertia of the rotors IR, the drag coefficient d, the aerodynamic moment drag coefficient KdR, the rotors’ induced moment vector M and the gyroscopic moment vector Mgy; the latter is due to the fact that the axes of rotation of the propellers are attached to the quadrotor and rotate with it. The complete nonlinear dynamical model of the quadrotor is derived by evaluating Equations (3) and (5) and considering the transformations in Equations (1) and (2):
+X′′ = − 1
+m KLdX′ − 1
+m (sψsφ + cψsθcφ)U1 (9)
+Y′′ = − 1
+m KLdY′ − 1
+m (sθsψcφ − sφcψ)U1 (10)
+Z′′ = g − 1
+m KLdZ′ − 1
+m cθcφU1 (11)
+p′ = IY − Iz
+Ix
+qr − IR
+Ix
+q(w1 + w3 − w2 − w4) − 1
+Ix
+KdRp + 1
+Ix
+LU2 (12)
+q′ = Iz − Ix
+Iy
+pr − IR
+Iy
+p(w1 + w3 − w2 − w4) − 1
+Iy
+KdRq + 1
+Iy
+LU3 (13)
+r′ = Ix − Iy
+Iz
+pq − 1
+Iz
+KdRr + 1
+Iz
+U4 (14)
+φ′ = p + sφsθc−1
+θ q + cφsθc−1
+θ r (15)
+θ′ = cφq − sφr (16)
+ψ′ = sφc−1
+θ q + c−1
+θ cφr (17)
+u=
+
+  
+U1 U2 U3 U4
+
+  
+= Mbdw2 =
+
+  
+bb b b 0 b 0 −b b 0 −b 0 d −d d −d
+
+  
+
+  
+w21
+w22
+w23
+w24
+
+  
+(18)
+It is worth noting that Equation (18) stands for an artificial input transformation made for ease of representation and control law definition. U1 denotes the total lift force produced by the rotors, U2 and U3 are the resultant forces generating pitch and roll movement
+
+
+Appl. Sci. 2023, 13, 3464 6 of 20
+respectively and U4 is the resultant moment acting on the yaw axis. The presented quadrotor dynamical model has 12 state variables x = (x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12) =
+(X, Y, Z, X′, Y′, Z′, φ, θ, ψ, p, q, r) and 4 input variables u = (u1, u2, u3, u4) = (U1, U2, U3, U4). Note that the rotors’ velocities giving the gyroscopic effect contribution still appear in Equations (12) and (13) but can be rewritten as a nonlinear function of the artificial input variables f(u) by inversion and manipulation of Equation (18).
+f(u) = ∑4
+i=1(−1)i+1√
+| (Mbd−1u)i | = w1 + w3 − w2 − w4 (19)
+The system, besides presenting under-actuation characteristics that always yield to challenging control design aspects, is highly nonlinear and coupled. When dealing with a dynamical system with such properties, it is convenient to derive a linearized model in order to obtain a clearer understanding of the relation between control and state variables and the system’s stability. Furthermore, linearized models are often exploited for the design of the control law itself. X′′ = −θg (20)
+Y′′ = −φg (21)
+Z′′ = g − 1
+m U1 (22)
+φ′′ = 1
+Ix
+LU2 (23)
+θ′′ = 1
+Iy
+LU3 (24)
+ψ′′ = 1
+Iz
+U4 (25)
+The Equations (20)–(25) refer to the linearization of the model represented by the Equations (9)–(17) by means of a Taylor expansion of the first order and adopting approximations for small angles, under the following assumptions:
+• The quadrotor is hovering: external forces and moments are neglectable, linear and rotational velocities are small (the Euler rates coincide with the rotational velocities in the body frame). • The equilibrium control input and state vectors are (u∗
+1, u∗
+2, u∗
+3, u∗
+4
+) = (mg, 0, 0, 0) and (x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12) = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), respectively. • All terms of order higher than one are neglected.
+2.2. System Control
+If considering the linearized model in equations from (20) to (25) in the Laplace variable domain formulation, it is straightforward that the system is unstable due to the presence of poles in the origin. Additionally, the inputs U2, U3 and U4 directly affect the quadrotor’s attitude, while U1 directly affects the altitude dynamics. Figure 3 shows the proposed control system’s architecture, decoupled in two parts: the inner loop performs attitude stabilization, while the outer loop is responsible for altitude control and reference attitude computation, given a 3D trajectory to be followed. Each control input signal Ui is saturated before being given to the plant, i.e., the quadcopter. The lower and upper saturation bounds are UiLB and UiUB, respectively. The propellers’ capacity is assumed
+to be such that the absolute value of the saturated total lift force U1SAT is equal to 3 mg.
+Analogously, an absolute value of 1.5 mg refers to U2SAT and U3SAT, while an absolute value
+equal to mgL refers to U4SAT.
+
+
+Appl. Sci. 2023, 13, 3464 7 of 20
+Figure 3. Overview of the proposed control system’s architecture.
+The inner loop is intended to be sufficiently faster than the outer loop so that the UAV’s attitude can be effectively stabilized. Additionally, the state variables are assumed to be perfectly known to the controllers at each sampling instant. On the other hand, it is well known that the accuracy of position estimates may not be high enough to implement position-based trajectory controllers in many real-world applications. Consequently, the outer loop is intended to ensure tracking of velocity references. As far as the inner loop is concerned, the choice of the best control law derives from a comparative evaluation of different linear and nonlinear controllers designed for attitude stabilization: PID, LQR, FL, SM and MPC. Both the tracking error and the controller command effort related to each controller are taken into account by means of the sum of the L2 norms of state and controller command input signals. Each attitude stabilization controller is designed with simplified models but is applied to the complete nonlinear attitude system expressed by Equations (12) to (17) for the sake of the evaluation. Instead, the outer loop implements a dynamic inversion and PID-based velocity controller.
+2.2.1. Inner Loop—PID Control
+This follows the linearized attitude dynamical system expressed by equations from (23) to (25) in state space form, with x = (φ, θ, ψ, φ′, θ′, ψ′) and u = (U2, U3, U4). Three independent Proportional–Integral–Derivative controllers are designed with the aim of stabilizing the linearized system in hovering.
+{ .x = Ax + Bu y = Cx + Du
+}
+(26)
+A=
+
+      
+000100 000010 000001 000000 000000 000000
+
+      
+, B=
+
+       
+0 00 0 00 0 00 LIx−1 0 0
+0 LIy−1 0
+0 0 Iz−1
+
+       
+, C=
+
+      
+100000 010000 001000 000000 000000 000000
+
+      
+, D=
+
+
+000 000 000
+
+
+A classical formulation of the PID control law applied to the quadrotor stabilization problem in the time domain is presented in Equation (27). The three control parameters (Kip,Kii,Kid) of each control command are set in order to stabilize the model in (26) for the hovering equilibrium point. Refer to [25] for the theoretical foundations of PID control and further details.
+
+
+Appl. Sci. 2023, 13, 3464 8 of 20
+up(t) = up
+eq − Kp
+p
+(
+yp(t) − yp
+eq
+)
+− Kp
+i
+∫T
+0
+(
+yp(t) − yp
+eq
+)
+dt − Kp
+d
+( .yp(t) − .yp
+eq
+)
+, ueq = yeq = (0, 0, 0) , p = 1, 2, 3 (27)
+2.2.2. Inner Loop—LQR Control
+The linearized attitude dynamical model in (26) is exploited to design the LQR-based attitude stabilizer. LQR controllers are based on optimization (minimization) of the sum of the weighted energies (L2 norms) of the state and the control command, with the constraints that the system dynamics are respected. According to the Linear–Quadratic Regulator method, since the linearized system is completely controllable, i.e., the controllability matrix has full rank, it is possible to define the following feedback control action,
+u(t) = −Kx(t) (28)
+K = R−1BTP (29)
+ATP + Q + PA − PBR−1BTP = 0 (30)
+Q=
+
+      
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6
+
+      
+, R=
+
+
+r1 0 0 0 r2 0 0 0 r3
+
+ (31)
+where K denotes the feedback control gain, Q and R are diagonal fixed weight matrices for the weighted L2 norms of x and u, respectively. The dynamics of the closed-loop system depend on the relative values of the control parameters: qi, ri. P can be computed by solving the Algebraic Riccati Equation formulated in Equation (30). Refer to [26] for the theoretical foundations of LQR control and further details.
+2.2.3. Inner Loop—Feedback Linearization Control
+This follows the attitude dynamical system exploited for the design of the feedback linearization-based attitude controller, with x = (φ, θ, ψ, φ′, θ′, ψ′) and u = (U2, U3, U4).
+x. p = xp+3 , p = 1, 2, 3 (32)
+x. 4 = IY − Iz
+Ix
+x5x6 − IR
+Ix
+x5f(u) − 1
+Ix
+KdRx4 + 1
+Ix
+Lu1 (33)
+x. 5 = Iz − Ix
+Iy
+x4x6 − IR
+Iy
+x4f(u) − 1
+Iy
+KdRx5 + 1
+Iy
+Lu2 (34)
+.x6 = Ix − Iy
+Iz
+x4x5 − 1
+Iz
+KdRx6 + 1
+Iz
+u3 (35)
+Coincidence between Euler rates and angular velocities is assumed for the attitude controller’s design. The FL control law aims at linearizing the system with the term fiL
+and controlling it with a new control input term, u∗
+i , which is intended as the sum of a proportional gain with respect to the Euler angles’ errors and a derivative term, proportional to the Euler rates. Refer to [27] for the theoretical foundations of FL control and further details. Each control input is defined as follows.
+u1 = f1L + u∗
+1 = Ix
+L
+[
+− IY − Iz
+Ix
+x5x6 + IR
+Ix
+x5f(u) + 1
+Ix
+KdRx4 + D1x4 + P1(x1ref − x1)
+]
+(36)
+u2 = f2L + u∗
+2 = Iy
+L
+[
+− Iz − Ix
+Iy
+x4x6 + IR
+Iy
+x4f(u) + 1
+Iy
+KdRx5 + D2x5 + P2(x2ref − x2)
+]
+(37)
+
+
+Appl. Sci. 2023, 13, 3464 9 of 20
+u3 = f3L + u∗
+3 = Iz
+[
+− Ix − Iy
+Iz
+x4x5 + 1
+Iz
+KdRx6 + D3x6 + P3(x3ref − x3)
+]
+(38)
+The closed-loop attitude dynamical subsystem becomes linear and decoupled, the dynamics of the system can be adjusted by tuning the pairs (Di,Pi). This follows the closed-loop attitude dynamics of the controlled system.
+x. p = xp+3 , p = 1, 2, 3 (39)
+x. 4 = D1x4 + P1(x1ref − x1) (40)
+x. 5 = D2x5 + P2(x2ref − x2) (41)
+x. 5 = D3x6 + P3(x3ref − x3) (42)
+2.2.4. Inner Loop—Sliding Mode Control
+The nonlinear attitude dynamical model in equations from (32) to (35) is exploited to design the sliding mode-based attitude stabilizer. The SM control method aims at the convergence of the state vector to another one, called the “sliding surface”, which corresponds to an exponential achievement of the desired dynamical behavior of the system. The control input is the sum of two terms: a continuous term and a discontinuous one. The former is a continuous function of the state variables and the reference, uc, that makes the “sliding surface”, s, an invariant set. The discontinuous term, ud, is added to achieve convergence to the “sliding surface”. s is intended as a PD “sliding surface” with respect to the Euler angles and Euler rates tracking errors. Refer to [28,29] for the theoretical foundations of SM control and further details.
+ui = uic + uid , i = 1, 2, 3 (43)
+uid = Kdisign(si) = Kdisign(xi+3ref − xi+3 + βi(xiref − xi)) ∼ Kdi
+si
+√
+si2 + a
+, i = 1, 2, 3 (44)
+uc1 = Ix
+L
+[
+− IY − Iz
+Ix
+x5x6 + IR
+Ix
+x5f(u) + 1
+Ix
+KdRx4 + x .4ref + β1(x4ref − x4)
+]
+(45)
+uc2 = Iy
+L
+[
+− Iz − Ix
+Iy
+x4x6 + IR
+Iy
+x4f(u) + 1
+Iy
+KdRx5 + x .5ref + β2(x5ref − x5)
+]
+(46)
+uc3 = Iz
+[
+− Ix − Iy
+Iz
+x4x5 + 1
+Iz
+KdRx6 + x .6ref + β3(x6ref − x6)
+]
+(47)
+The sign (·) function in the discontinuous part of the control action is approximated with a smooth function (with a small value of a) to avoid chattering, i.e., oscillations, when the state approaches the “sliding surface”. The closed-loop attitude dynamics of the system can be adjusted by tuning the control parameters: a, Kdi, βi. This follows the closed-loop attitude dynamics of the controlled system.
+x. p = xp+3 , p = 1, 2, 3 (48)
+.x4 = x. 4ref + β1(x4ref − x4) + Kd1
+x4ref − x4 + β1(x4ref − x4)
+√
+( x4ref − x4 + β1(x4ref − x4))2 + a
+(49)
+.x5 = x. 5ref + β2(x5ref − x5) + Kd2
+x5ref − x5 + β2(x5ref − x5)
+√
+( x5ref − x5 + β2(x5ref − x5))2 + a
+(50)
+.x6 = x. 6ref + β3(x6ref − x6) + Kd3
+x6ref − x6 + β3(x6ref − x6)
+√
+( x6ref − x6 + β3(x6ref − x6))2 + a
+(51)
+
+
+Appl. Sci. 2023, 13, 3464 10 of 20
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude dynamical model in equations from (32) to (35) is exploited to design the model predictive attitude stabilizer. The MPC method is based on two phases: prediction and optimization. A prediction of the model’s states, xp, is made over a certain prediction horizon, TP, by integration of the model itself. An optimal control input u is chosen to bring the predicted state to the reference
+r. The optimization problem formalized in (52) is solved to compute u∗(t → t + TP ) = (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗ (
+ẋ 6 = ẋ 6ref + β3(x6ref − x6) + Kd3
+6ref 6 3 6ref 6
+√( x6ref − x6 + β3(x6ref − x6))2 + a (5
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude dynamical model in equations fro (32) to (35) is exploited to design the model predictive attitude stabilizer. The MP method is based on two phases: prediction and optimization. A prediction of the mode states, xp, is made over a certain prediction horizon, TP, by integration of the model self. An optimal control input u is chosen to bring the predicted state to the reference The optimization problem formalized in (52) is solved to compute u∗(t → t + TP ) (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗(Ϻ) = arg min J(u(Ϻ)) , subject to: (5
+J(u(Ϻ)) = ∫ (xeTrr(Ϻ)Qxerr(Ϻ) + uT(Ϻ)Ru(Ϻ)) d
+t+Tp
+t
+Ϻ + xeTrr(t + TP)Qxerr(t + TP) ,
+xerr(Ϻ) = r(Ϻ) − xp(Ϻ) ,
+Q=
+(
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6)
+,R = (
+r1 0 0 0 r2 0 0 0 r3
+) ,P =
+(
+p1 0 0 0 0 0 0 p2 0 0 0 0 0 0 p3 0 0 0 0 0 0 p4 0 0 0 0 0 0 p5 0 0 0 0 0 0 p6)
+,
+ẋ P(Ϻ) = f (xp(Ϻ), u(Ϻ)) , xp(Ϻ) = x(Ϻ) ,
+u(Ϻ) ⋴ [ULB, UUP] , Ϻ = [t→t + TP]
+where ULB and UUP denote the lower and upper bounds of the optimal control input which would be subject to saturation anyway, xerr is the predicted state’s error vect Q, R and P denote diagonal matrices that contain the cost function J(u(Ϻ)) weight f tors. The receding horizon strategy is applied to the aforementioned formulation of t problem at each time Tz. Ts denotes the sampling time. A constant input parametrizati is chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, pi, Ts, Tp and Tz represent the co trol parameters. Refer to [30] for the theoretical foundations of MPC and further detail
+2.2.6. Outer Loop
+A simplified translational dynamical model is reported in state space form, with x (x1, x2, x3, x4, x5, x6) = (X′, Y′, Z′, φ, θ, ψ) and u = U1.
+ẋ 1 = − 1
+m (sx6sx4 + cx6sx5cx4)u (5
+ẋ 2 = − 1
+m (sx5sx6cx4 − sx4cx6)u (5
+ẋ 3 = g − 1
+m cx5cx4u (5
+The aim of the outer loop controller is to control the quadcopter’s altitude and compute the reference Euler angles to be tracked by the inner loop controller. The ou loop controller is divided into two parts: the first part implements three PID controll that compute the reference linear accelerations from the linear velocity errors, the seco
+)
+= arg minJ
+(
+u
+(
+ẋ 6 = ẋ 6ref + β3(x6ref − x6) + Kd3
+6ref 6 3 6ref 6
+√( x6ref − x6 + β3(x6ref − x6))
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude dynamical model (32) to (35) is exploited to design the model predictive attitude sta method is based on two phases: prediction and optimization. A predict states, xp, is made over a certain prediction horizon, TP, by integratio self. An optimal control input u is chosen to bring the predicted state The optimization problem formalized in (52) is solved to compute (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗(Ϻ) = arg min J(u(Ϻ)) , subject to:
+J(u(Ϻ)) = ∫ (xeTrr(Ϻ)Qxerr(Ϻ) + uT(Ϻ)Ru(Ϻ)) d
+t+Tp
+t
+Ϻ + xeTrr(t + TP)Qxerr(t + TP
+xerr(Ϻ) = r(Ϻ) − xp(Ϻ) ,
+Q=
+(
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6)
+,R = (
+r1 0 0 0 r2 0 0 0 r3
+) ,P =
+(
+p1 0 0 0 0 0 0 p2 0 0 0 0 0 0 p3 0 0 0 0 0 0 p4 0 0 0 0 0 0 p5 0 0 0 0 0 0 p6
+ẋ P(Ϻ) = f (xp(Ϻ), u(Ϻ)) , xp(Ϻ) = x(Ϻ) ,
+u(Ϻ) ⋴ [ULB, UUP] , Ϻ = [t→t + TP]
+where ULB and UUP denote the lower and upper bounds of the optima which would be subject to saturation anyway, xerr is the predicted s Q, R and P denote diagonal matrices that contain the cost function J( tors. The receding horizon strategy is applied to the aforementioned f problem at each time Tz. Ts denotes the sampling time. A constant inpu is chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, pi, Ts, Tp and Tz trol parameters. Refer to [30] for the theoretical foundations of MPC an
+2.2.6. Outer Loop
+A simplified translational dynamical model is reported in state spa (x1, x2, x3, x4, x5, x6) = (X′, Y′, Z′, φ, θ, ψ) and u = U1.
+ẋ 1 = − 1
+m (sx6sx4 + cx6sx5cx4)u
+ẋ 2 = − 1
+m (sx5sx6cx4 − sx4cx6)u
+ẋ 3 = g − 1
+m cx5cx4u
+The aim of the outer loop controller is to control the quadcopte compute the reference Euler angles to be tracked by the inner loop co loop controller is divided into two parts: the first part implements thr that compute the reference linear accelerations from the linear velocity
+))
+, subject to : (52)
+J
+(
+u
+(
+ẋ 6 = ẋ 6ref + β3(x6ref − x6) + Kd3
+x6ref − x6 + β3(x6ref − x6)
+√( x6ref − x6 + β3(x6ref − x6))2 + a (51)
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude dynamical model in equations from (32) to (35) is exploited to design the model predictive attitude stabilizer. The MPC method is based on two phases: prediction and optimization. A prediction of the model’s states, xp, is made over a certain prediction horizon, TP, by integration of the model itself. An optimal control input u is chosen to bring the predicted state to the reference r. The optimization problem formalized in (52) is solved to compute u∗(t → t + TP ) = (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗(Ϻ) = arg min J(u(Ϻ)) , subject to: (52)
+J(u(Ϻ)) = ∫ (xeTrr(Ϻ)Qxerr(Ϻ) + uT(Ϻ)Ru(Ϻ)) d
+t+Tp
+t
+Ϻ + xeTrr(t + TP)Qxerr(t + TP) ,
+xerr(Ϻ) = r(Ϻ) − xp(Ϻ) ,
+Q=
+(
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6)
+,R = (
+r1 0 0 0 r2 0 0 0 r3
+) ,P =
+(
+p1 0 0 0 0 0 0 p2 0 0 0 0 0 0 p3 0 0 0 0 0 0 p4 0 0 0 0 0 0 p5 0 0 0 0 0 0 p6)
+,
+ẋ P(Ϻ) = f (xp(Ϻ), u(Ϻ)) , xp(Ϻ) = x(Ϻ) ,
+u(Ϻ) ⋴ [ULB, UUP] , Ϻ = [t→t + TP]
+where ULB and UUP denote the lower and upper bounds of the optimal control input u∗, which would be subject to saturation anyway, xerr is the predicted state’s error vector, Q, R and P denote diagonal matrices that contain the cost function J(u(Ϻ)) weight factors. The receding horizon strategy is applied to the aforementioned formulation of the problem at each time Tz. Ts denotes the sampling time. A constant input parametrization is chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, pi, Ts, Tp and Tz represent the control parameters. Refer to [30] for the theoretical foundations of MPC and further details.
+2.2.6. Outer Loop
+A simplified translational dynamical model is reported in state space form, with x = (x1, x2, x3, x4, x5, x6) = (X′, Y′, Z′, φ, θ, ψ) and u = U1.
+ẋ 1 = − 1
+m (sx6sx4 + cx6sx5cx4)u (53)
+ẋ 2 = − 1
+m (sx5sx6cx4 − sx4cx6)u (54)
+ẋ 3 = g − 1
+m cx5cx4u (55)
+The aim of the outer loop controller is to control the quadcopter’s altitude and to compute the reference Euler angles to be tracked by the inner loop controller. The outer loop controller is divided into two parts: the first part implements three PID controllers that compute the reference linear accelerations from the linear velocity errors, the second
+))
+=
+∫ t+Tp
+t
+(
+xeTrr
+(
+ẋ 6 = ẋ 6ref + β3(x6ref − x6) + Kd3
+x6ref − x6 + β3(x6ref − x6)
+√( x6ref − x6 + β3(x6ref − x6))2 + a (51)
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude dynamical model in equations from (32) to (35) is exploited to design the model predictive attitude stabilizer. The MPC method is based on two phases: prediction and optimization. A prediction of the model’s states, xp, is made over a certain prediction horizon, TP, by integration of the model itself. An optimal control input u is chosen to bring the predicted state to the reference r. The optimization problem formalized in (52) is solved to compute u∗(t → t + TP ) = (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗(Ϻ) = arg min J(u(Ϻ)) , subject to: (52)
+J(u(Ϻ)) = ∫ (xeTrr(Ϻ)Qxerr(Ϻ) + uT(Ϻ)Ru(Ϻ)) d
+t+Tp
+t
+Ϻ + xeTrr(t + TP)Qxerr(t + TP) ,
+xerr(Ϻ) = r(Ϻ) − xp(Ϻ) ,
+Q=
+(
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6)
+,R = (
+r1 0 0 0 r2 0 0 0 r3
+) ,P =
+(
+p1 0 0 0 0 0 0 p2 0 0 0 0 0 0 p3 0 0 0 0 0 0 p4 0 0 0 0 0 0 p5 0 0 0 0 0 0 p6)
+,
+ẋ P(Ϻ) = f (xp(Ϻ), u(Ϻ)) , xp(Ϻ) = x(Ϻ) ,
+u(Ϻ) ⋴ [ULB, UUP] , Ϻ = [t→t + TP]
+where ULB and UUP denote the lower and upper bounds of the optimal control input u∗, which would be subject to saturation anyway, xerr is the predicted state’s error vector, Q, R and P denote diagonal matrices that contain the cost function J(u(Ϻ)) weight factors. The receding horizon strategy is applied to the aforementioned formulation of the problem at each time Tz. Ts denotes the sampling time. A constant input parametrization is chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, pi, Ts, Tp and Tz represent the control parameters. Refer to [30] for the theoretical foundations of MPC and further details.
+2.2.6. Outer Loop
+A simplified translational dynamical model is reported in state space form, with x = (x1, x2, x3, x4, x5, x6) = (X′, Y′, Z′, φ, θ, ψ) and u = U1.
+ẋ 1 = − 1
+m (sx6sx4 + cx6sx5cx4)u (53)
+ẋ 2 = − 1
+m (sx5sx6cx4 − sx4cx6)u (54)
+ẋ 3 = g − 1
+m cx5cx4u (55)
+The aim of the outer loop controller is to control the quadcopter’s altitude and to compute the reference Euler angles to be tracked by the inner loop controller. The outer loop controller is divided into two parts: the first part implements three PID controllers that compute the reference linear accelerations from the linear velocity errors, the second
+)
+Qxerr
+(
+ẋ 6 = ẋ 6ref + β3(x6ref − x6) + Kd3
+x6ref − x6 + β3(x6ref − x6)
+√( x6ref − x6 + β3(x6ref − x6))2 + a
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude dynamical model in equatio (32) to (35) is exploited to design the model predictive attitude stabilizer. T method is based on two phases: prediction and optimization. A prediction of the states, xp, is made over a certain prediction horizon, TP, by integration of the m self. An optimal control input u is chosen to bring the predicted state to the ref The optimization problem formalized in (52) is solved to compute u∗(t → t (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗(Ϻ) = arg min J(u(Ϻ)) , subject to:
+J(u(Ϻ)) = ∫ (xeTrr(Ϻ)Qxerr(Ϻ) + uT(Ϻ)Ru(Ϻ)) d
+t+Tp
+t
+Ϻ + xeTrr(t + TP)Qxerr(t + TP) ,
+xerr(Ϻ) = r(Ϻ) − xp(Ϻ) ,
+Q=
+(
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6)
+,R = (
+r1 0 0 0 r2 0 0 0 r3
+) ,P =
+(
+p1 0 0 0 0 0 0 p2 0 0 0 0 0 0 p3 0 0 0 0 0 0 p4 0 0 0 0 0 0 p5 0 0 0 0 0 0 p6)
+,
+ẋ P(Ϻ) = f (xp(Ϻ), u(Ϻ)) , xp(Ϻ) = x(Ϻ) ,
+u(Ϻ) ⋴ [ULB, UUP] , Ϻ = [t→t + TP]
+where ULB and UUP denote the lower and upper bounds of the optimal control i which would be subject to saturation anyway, xerr is the predicted state’s erro Q, R and P denote diagonal matrices that contain the cost function J(u(Ϻ)) we tors. The receding horizon strategy is applied to the aforementioned formulatio problem at each time Tz. Ts denotes the sampling time. A constant input parame is chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, pi, Ts, Tp and Tz represent trol parameters. Refer to [30] for the theoretical foundations of MPC and further
+2.2.6. Outer Loop
+A simplified translational dynamical model is reported in state space form, w (x1, x2, x3, x4, x5, x6) = (X′, Y′, Z′, φ, θ, ψ) and u = U1.
+ẋ 1 = − 1
+m (sx6sx4 + cx6sx5cx4)u
+ẋ 2 = − 1
+m (sx5sx6cx4 − sx4cx6)u
+ẋ 3 = g − 1
+m cx5cx4u
+The aim of the outer loop controller is to control the quadcopter’s altitud compute the reference Euler angles to be tracked by the inner loop controller. T loop controller is divided into two parts: the first part implements three PID co that compute the reference linear accelerations from the linear velocity errors, th
+)
++ uT(
+ẋ 6 = ẋ 6ref + β3(x6ref − x6) + Kd3
+x6ref − x6 + β3(x6ref − x6)
+√( x6ref − x6 + β3(x6ref − x6))2
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude dynamical model in (32) to (35) is exploited to design the model predictive attitude stab method is based on two phases: prediction and optimization. A predictio states, xp, is made over a certain prediction horizon, TP, by integration self. An optimal control input u is chosen to bring the predicted state to The optimization problem formalized in (52) is solved to compute (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗(Ϻ) = arg min J(u(Ϻ)) , subject to:
+J(u(Ϻ)) = ∫ (xeTrr(Ϻ)Qxerr(Ϻ) + uT(Ϻ)Ru(Ϻ)) d
+t+Tp
+t
+Ϻ + xeTrr(t + TP)Qxerr(t + TP)
+xerr(Ϻ) = r(Ϻ) − xp(Ϻ) ,
+Q=
+(
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6)
+,R = (
+r1 0 0 0 r2 0 0 0 r3
+) ,P =
+(
+p1 0 0 0 0 0 0 p2 0 0 0 0 0 0 p3 0 0 0 0 0 0 p4 0 0 0 0 0 0 p5 0 0 0 0 0 0 p6)
+ẋ P(Ϻ) = f (xp(Ϻ), u(Ϻ)) , xp(Ϻ) = x(Ϻ) ,
+u(Ϻ) ⋴ [ULB, UUP] , Ϻ = [t→t + TP]
+where ULB and UUP denote the lower and upper bounds of the optimal which would be subject to saturation anyway, xerr is the predicted sta Q, R and P denote diagonal matrices that contain the cost function J(u( tors. The receding horizon strategy is applied to the aforementioned fo problem at each time Tz. Ts denotes the sampling time. A constant input is chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, pi, Ts, Tp and Tz re trol parameters. Refer to [30] for the theoretical foundations of MPC and
+2.2.6. Outer Loop
+A simplified translational dynamical model is reported in state spac (x1, x2, x3, x4, x5, x6) = (X′, Y′, Z′, φ, θ, ψ) and u = U1.
+ẋ 1 = − 1
+m (sx6sx4 + cx6sx5cx4)u
+ẋ 2 = − 1
+m (sx5sx6cx4 − sx4cx6)u
+ẋ 3 = g − 1
+m cx5cx4u
+The aim of the outer loop controller is to control the quadcopter’ compute the reference Euler angles to be tracked by the inner loop cont loop controller is divided into two parts: the first part implements three that compute the reference linear accelerations from the linear velocity e
+)
+Ru
+(
+ẋ 6 = ẋ 6ref + β3(x6ref − x6) + Kd3
+x6ref − x6 + β3(x6ref
+√( x6ref − x6 + β3(x6ref −
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude dynamical m (32) to (35) is exploited to design the model predictive attitud method is based on two phases: prediction and optimization. A pr states, xp, is made over a certain prediction horizon, TP, by integ self. An optimal control input u is chosen to bring the predicted The optimization problem formalized in (52) is solved to com (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗(Ϻ) = arg min J(u(Ϻ)) , subject to:
+J(u(Ϻ)) = ∫ (xeTrr(Ϻ)Qxerr(Ϻ) + uT(Ϻ)Ru(Ϻ)) d
+t+Tp
+t
+Ϻ + xeTrr(t + TP)Qxerr(t
+xerr(Ϻ) = r(Ϻ) − xp(Ϻ) ,
+Q=
+(
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6)
+,R = (
+r1 0 0 0 r2 0 0 0 r3
+) ,P =
+(
+p1 0 0 0 0 0 p2 0 0 0 0 0 p3 0 0 0 0 0 p4 0 0 0 0 0 p5 00000
+ẋ P(Ϻ) = f (xp(Ϻ), u(Ϻ)) , xp(Ϻ) = x(Ϻ) ,
+u(Ϻ) ⋴ [ULB, UUP] , Ϻ = [t→t + TP]
+where ULB and UUP denote the lower and upper bounds of the op which would be subject to saturation anyway, xerr is the predict Q, R and P denote diagonal matrices that contain the cost functio tors. The receding horizon strategy is applied to the aforementio problem at each time Tz. Ts denotes the sampling time. A constan is chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, pi, Ts, Tp and trol parameters. Refer to [30] for the theoretical foundations of MP
+2.2.6. Outer Loop
+A simplified translational dynamical model is reported in stat (x1, x2, x3, x4, x5, x6) = (X′, Y′, Z′, φ, θ, ψ) and u = U1.
+ẋ 1 = − 1
+m (sx6sx4 + cx6sx5cx4)u
+ẋ 2 = − 1
+m (sx5sx6cx4 − sx4cx6)u
+ẋ 3 = g − 1
+m cx5cx4u
+The aim of the outer loop controller is to control the quadc compute the reference Euler angles to be tracked by the inner loo loop controller is divided into two parts: the first part implement that compute the reference linear accelerations from the linear vel
+))
+d
+ẋ 6 = ẋ 6ref + β3(x6ref − x6) + Kd3
+x6ref − x6 + β3(
+√( x6ref − x6 + β3(x
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude dynamic (32) to (35) is exploited to design the model predictive at method is based on two phases: prediction and optimization. states, xp, is made over a certain prediction horizon, TP, by self. An optimal control input u is chosen to bring the predi The optimization problem formalized in (52) is solved to (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗(Ϻ) = arg min J(u(Ϻ)) , subject to:
+J(u(Ϻ)) = ∫ (xeTrr(Ϻ)Qxerr(Ϻ) + uT(Ϻ)Ru(Ϻ)) d
+t+Tp
+t
+Ϻ + xeTrr(t + TP)Qx
+xerr(Ϻ) = r(Ϻ) − xp(Ϻ) ,
+Q=
+(
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6)
+,R = (
+r1 0 0 0 r2 0 0 0 r3
+) ,P =
+(
+p1 0 0 0 0 p2 0 0 0 0 p3 0 0 0 0p 0000 0000
+ẋ P(Ϻ) = f (xp(Ϻ), u(Ϻ)) , xp(Ϻ) = x(Ϻ) ,
+u(Ϻ) ⋴ [ULB, UUP] , Ϻ = [t→t + TP]
+where ULB and UUP denote the lower and upper bounds of t which would be subject to saturation anyway, xerr is the p Q, R and P denote diagonal matrices that contain the cost fu tors. The receding horizon strategy is applied to the aforem problem at each time Tz. Ts denotes the sampling time. A con is chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, pi, Ts, Tp trol parameters. Refer to [30] for the theoretical foundations o
+2.2.6. Outer Loop
+A simplified translational dynamical model is reported i (x1, x2, x3, x4, x5, x6) = (X′, Y′, Z′, φ, θ, ψ) and u = U1.
+ẋ 1 = − 1
+m (sx6sx4 + cx6sx5cx4)u
+ẋ 2 = − 1
+m (sx5sx6cx4 − sx4cx6)u
+ẋ 3 = g − 1
+m cx5cx4u
+The aim of the outer loop controller is to control the q compute the reference Euler angles to be tracked by the inne loop controller is divided into two parts: the first part imple that compute the reference linear accelerations from the linea
++ xeTrr(t + TP)Qxerr(t + TP) ,
+xerr
+(
+ẋ 6 = ẋ 6ref + β3(x6ref − x6) + Kd3
+x6ref − x6 + β3(x6ref − x6)
+√( x6ref − x6 + β3(x6ref − x6))2 + a
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude dynamical model in equatio (32) to (35) is exploited to design the model predictive attitude stabilizer. T method is based on two phases: prediction and optimization. A prediction of the states, xp, is made over a certain prediction horizon, TP, by integration of the m self. An optimal control input u is chosen to bring the predicted state to the ref The optimization problem formalized in (52) is solved to compute u∗(t → t (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗(Ϻ) = arg min J(u(Ϻ)) , subject to:
+J(u(Ϻ)) = ∫ (xeTrr(Ϻ)Qxerr(Ϻ) + uT(Ϻ)Ru(Ϻ)) d
+t+Tp
+t
+Ϻ + xeTrr(t + TP)Qxerr(t + TP) ,
+xerr(Ϻ) = r(Ϻ) − xp(Ϻ) ,
+Q=
+(
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6)
+,R = (
+r1 0 0 0 r2 0 0 0 r3
+) ,P =
+(
+p1 0 0 0 0 0 0 p2 0 0 0 0 0 0 p3 0 0 0 0 0 0 p4 0 0 0 0 0 0 p5 0 0 0 0 0 0 p6)
+,
+ẋ P(Ϻ) = f (xp(Ϻ), u(Ϻ)) , xp(Ϻ) = x(Ϻ) ,
+u(Ϻ) ⋴ [ULB, UUP] , Ϻ = [t→t + TP]
+where ULB and UUP denote the lower and upper bounds of the optimal control i which would be subject to saturation anyway, xerr is the predicted state’s erro Q, R and P denote diagonal matrices that contain the cost function J(u(Ϻ)) we tors. The receding horizon strategy is applied to the aforementioned formulatio problem at each time Tz. Ts denotes the sampling time. A constant input parame is chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, pi, Ts, Tp and Tz represent trol parameters. Refer to [30] for the theoretical foundations of MPC and further
+2.2.6. Outer Loop
+A simplified translational dynamical model is reported in state space form, w (x1, x2, x3, x4, x5, x6) = (X′, Y′, Z′, φ, θ, ψ) and u = U1.
+ẋ 1 = − 1
+m (sx6sx4 + cx6sx5cx4)u
+ẋ 2 = − 1
+m (sx5sx6cx4 − sx4cx6)u
+ẋ 3 = g − 1
+m cx5cx4u
+The aim of the outer loop controller is to control the quadcopter’s altitud compute the reference Euler angles to be tracked by the inner loop controller. T loop controller is divided into two parts: the first part implements three PID co that compute the reference linear accelerations from the linear velocity errors, th
+)
+=r
+(
+ẋ 6 = ẋ 6ref + β3(x6ref − x6) + Kd3
+x6ref − x6 + β3(x6ref − x6)
+√( x6ref − x6 + β3(x6ref − x6))2
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude dynamical model in (32) to (35) is exploited to design the model predictive attitude stabil method is based on two phases: prediction and optimization. A prediction states, xp, is made over a certain prediction horizon, TP, by integration self. An optimal control input u is chosen to bring the predicted state to The optimization problem formalized in (52) is solved to compute u (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗(Ϻ) = arg min J(u(Ϻ)) , subject to:
+J(u(Ϻ)) = ∫ (xeTrr(Ϻ)Qxerr(Ϻ) + uT(Ϻ)Ru(Ϻ)) d
+t+Tp
+t
+Ϻ + xeTrr(t + TP)Qxerr(t + TP) ,
+xerr(Ϻ) = r(Ϻ) − xp(Ϻ) ,
+Q=
+(
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6)
+,R = (
+r1 0 0 0 r2 0 0 0 r3
+) ,P =
+(
+p1 0 0 0 0 0 0 p2 0 0 0 0 0 0 p3 0 0 0 0 0 0 p4 0 0 0 0 0 0 p5 0 0 0 0 0 0 p6)
+,
+ẋ P(Ϻ) = f (xp(Ϻ), u(Ϻ)) , xp(Ϻ) = x(Ϻ) ,
+u(Ϻ) ⋴ [ULB, UUP] , Ϻ = [t→t + TP]
+where ULB and UUP denote the lower and upper bounds of the optimal c which would be subject to saturation anyway, xerr is the predicted stat Q, R and P denote diagonal matrices that contain the cost function J(u(Ϻ tors. The receding horizon strategy is applied to the aforementioned for problem at each time Tz. Ts denotes the sampling time. A constant input p is chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, pi, Ts, Tp and Tz rep trol parameters. Refer to [30] for the theoretical foundations of MPC and f
+2.2.6. Outer Loop
+A simplified translational dynamical model is reported in state space (x1, x2, x3, x4, x5, x6) = (X′, Y′, Z′, φ, θ, ψ) and u = U1.
+ẋ 1 = − 1
+m (sx6sx4 + cx6sx5cx4)u
+ẋ 2 = − 1
+m (sx5sx6cx4 − sx4cx6)u
+ẋ 3 = g − 1
+m cx5cx4u
+The aim of the outer loop controller is to control the quadcopter’s compute the reference Euler angles to be tracked by the inner loop contr loop controller is divided into two parts: the first part implements three that compute the reference linear accelerations from the linear velocity er
+)
+− xp
+(
+ẋ 6 = ẋ 6ref + β3(x6ref − x6) + Kd3
+x6ref − x6 + β3(x6re
+√( x6ref − x6 + β3(x6ref −
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude dynamical m (32) to (35) is exploited to design the model predictive attitud method is based on two phases: prediction and optimization. A p states, xp, is made over a certain prediction horizon, TP, by inte self. An optimal control input u is chosen to bring the predicted The optimization problem formalized in (52) is solved to com (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗(Ϻ) = arg min J(u(Ϻ)) , subject to:
+J(u(Ϻ)) = ∫ (xeTrr(Ϻ)Qxerr(Ϻ) + uT(Ϻ)Ru(Ϻ)) d
+t+Tp
+t
+Ϻ + xeTrr(t + TP)Qxerr(
+xerr(Ϻ) = r(Ϻ) − xp(Ϻ) ,
+Q=
+(
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6)
+,R = (
+r1 0 0 0 r2 0 0 0 r3
+) ,P =
+(
+p1 0 0 0 0 0 p2 0 0 0 0 0 p3 0 0 0 0 0 p4 0 0 0 0 0p 00000
+ẋ P(Ϻ) = f (xp(Ϻ), u(Ϻ)) , xp(Ϻ) = x(Ϻ) ,
+u(Ϻ) ⋴ [ULB, UUP] , Ϻ = [t→t + TP]
+where ULB and UUP denote the lower and upper bounds of the o which would be subject to saturation anyway, xerr is the predic Q, R and P denote diagonal matrices that contain the cost functi tors. The receding horizon strategy is applied to the aforementio problem at each time Tz. Ts denotes the sampling time. A constan is chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, pi, Ts, Tp an trol parameters. Refer to [30] for the theoretical foundations of MP
+2.2.6. Outer Loop
+A simplified translational dynamical model is reported in sta (x1, x2, x3, x4, x5, x6) = (X′, Y′, Z′, φ, θ, ψ) and u = U1.
+ẋ 1 = − 1
+m (sx6sx4 + cx6sx5cx4)u
+ẋ 2 = − 1
+m (sx5sx6cx4 − sx4cx6)u
+ẋ 3 = g − 1
+m cx5cx4u
+The aim of the outer loop controller is to control the quad compute the reference Euler angles to be tracked by the inner loo loop controller is divided into two parts: the first part implemen that compute the reference linear accelerations from the linear ve
+)
+,
+Q=
+
+      
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6
+
+      
+, R=
+
+
+r1 0 0 0 r2 0 0 0 r3
+
+, P=
+
+      
+p1 0 0 0 0 0 0 p2 0 0 0 0 0 0 p3 0 0 0 0 0 0 p4 0 0 0 0 0 0 p5 0 0 0 0 0 0 p6
+
+      
+,
+x. P
+(
+Appl. Sci. 2023, 13, x FOR PEER REVIEW 10 of 22
+ẋ 6 = ẋ 6ref + β3(x6ref − x6) + Kd3
+x6ref − x6 + β3(x6ref − x6)
+√( x6ref − x6 + β3(x6ref − x6))2 + a (51)
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude dynamical model in equations from (32) to (35) is exploited to design the model predictive attitude stabilizer. The MPC method is based on two phases: prediction and optimization. A prediction of the model’s states, xp, is made over a certain prediction horizon, TP, by integration of the model itself. An optimal control input u is chosen to bring the predicted state to the reference r. The optimization problem formalized in (52) is solved to compute u∗(t → t + TP ) = (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗(Ϻ) = arg min J(u(Ϻ)) , subject to: (52)
+J(u(Ϻ)) = ∫ (xeTrr(Ϻ)Qxerr(Ϻ) + uT(Ϻ)Ru(Ϻ)) d
+t+Tp
+t
+Ϻ + xeTrr(t + TP)Qxerr(t + TP) ,
+xerr(Ϻ) = r(Ϻ) − xp(Ϻ) ,
+Q=
+(
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6)
+,R = (
+r1 0 0 0 r2 0 0 0 r3
+) ,P =
+(
+p1 0 0 0 0 0 0 p2 0 0 0 0 0 0 p3 0 0 0 0 0 0 p4 0 0 0 0 0 0 p5 0 0 0 0 0 0 p6)
+,
+ẋ P(Ϻ) = f (xp(Ϻ), u(Ϻ)) , xp(Ϻ) = x(Ϻ) ,
+u(Ϻ) ⋴ [ULB, UUP] , Ϻ = [t→t + TP]
+where ULB and UUP denote the lower and upper bounds of the optimal control input u∗, which would be subject to saturation anyway, xerr is the predicted state’s error vector, Q, R and P denote diagonal matrices that contain the cost function J(u(Ϻ)) weight factors. The receding horizon strategy is applied to the aforementioned formulation of the problem at each time Tz. Ts denotes the sampling time. A constant input parametrization is chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, pi, Ts, Tp and Tz represent the control parameters. Refer to [30] for the theoretical foundations of MPC and further details.
+2.2.6. Outer Loop
+A simplified translational dynamical model is reported in state space form, with x = (x1, x2, x3, x4, x5, x6) = (X′, Y′, Z′, φ, θ, ψ) and u = U1.
+ẋ 1 = − 1
+m (sx6sx4 + cx6sx5cx4)u (53)
+ẋ 2 = − 1
+m (sx5sx6cx4 − sx4cx6)u (54)
+ẋ 3 = g − 1
+m cx5cx4u (55)
+The aim of the outer loop controller is to control the quadcopter’s altitude and to compute the reference Euler angles to be tracked by the inner loop controller. The outer loop controller is divided into two parts: the first part implements three PID controllers that compute the reference linear accelerations from the linear velocity errors, the second
+)
+=f
+(
+xp
+(
+Appl. Sci. 2023, 13, x FOR PEER REVIEW
+ẋ 6 = ẋ 6ref + β3(x6ref − x6) + Kd3
+x6ref − x6 + β3(x6ref − x6)
+√( x6ref − x6 + β3(x6ref − x6))2 + a
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude dynamical model in equati (32) to (35) is exploited to design the model predictive attitude stabilizer. T method is based on two phases: prediction and optimization. A prediction of th states, xp, is made over a certain prediction horizon, TP, by integration of the self. An optimal control input u is chosen to bring the predicted state to the re The optimization problem formalized in (52) is solved to compute u∗(t → (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗(Ϻ) = arg min J(u(Ϻ)) , subject to:
+J(u(Ϻ)) = ∫ (xeTrr(Ϻ)Qxerr(Ϻ) + uT(Ϻ)Ru(Ϻ)) d
+t+Tp
+t
+Ϻ + xeTrr(t + TP)Qxerr(t + TP) ,
+xerr(Ϻ) = r(Ϻ) − xp(Ϻ) ,
+Q=
+(
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6)
+,R = (
+r1 0 0 0 r2 0 0 0 r3
+) ,P =
+(
+p1 0 0 0 0 0 0 p2 0 0 0 0 0 0 p3 0 0 0 0 0 0 p4 0 0 0 0 0 0 p5 0 0 0 0 0 0 p6)
+,
+ẋ P(Ϻ) = f (xp(Ϻ), u(Ϻ)) , xp(Ϻ) = x(Ϻ) ,
+u(Ϻ) ⋴ [ULB, UUP] , Ϻ = [t→t + TP]
+where ULB and UUP denote the lower and upper bounds of the optimal control which would be subject to saturation anyway, xerr is the predicted state’s err Q, R and P denote diagonal matrices that contain the cost function J(u(Ϻ)) w tors. The receding horizon strategy is applied to the aforementioned formulati problem at each time Tz. Ts denotes the sampling time. A constant input param is chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, pi, Ts, Tp and Tz represent trol parameters. Refer to [30] for the theoretical foundations of MPC and further
+2.2.6. Outer Loop
+A simplified translational dynamical model is reported in state space form, (x1, x2, x3, x4, x5, x6) = (X′, Y′, Z′, φ, θ, ψ) and u = U1.
+ẋ 1 = − 1
+m (sx6sx4 + cx6sx5cx4)u
+ẋ 2 = − 1
+m (sx5sx6cx4 − sx4cx6)u
+ẋ 3 = g − 1
+m cx5cx4u
+The aim of the outer loop controller is to control the quadcopter’s altitud compute the reference Euler angles to be tracked by the inner loop controller. T loop controller is divided into two parts: the first part implements three PID c that compute the reference linear accelerations from the linear velocity errors, th
+)
+,u
+(
+Appl. Sci. 2023, 13, x FOR PEER REVIEW
+ẋ 6 = ẋ 6ref + β3(x6ref − x6) + Kd3
+x6ref − x6 + β3(x6ref − x6)
+√( x6ref − x6 + β3(x6ref − x6))2
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude dynamical model in (32) to (35) is exploited to design the model predictive attitude stabil method is based on two phases: prediction and optimization. A prediction states, xp, is made over a certain prediction horizon, TP, by integration o self. An optimal control input u is chosen to bring the predicted state to The optimization problem formalized in (52) is solved to compute u (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗(Ϻ) = arg min J(u(Ϻ)) , subject to:
+J(u(Ϻ)) = ∫ (xeTrr(Ϻ)Qxerr(Ϻ) + uT(Ϻ)Ru(Ϻ)) d
+t+Tp
+t
+Ϻ + xeTrr(t + TP)Qxerr(t + TP) ,
+xerr(Ϻ) = r(Ϻ) − xp(Ϻ) ,
+Q=
+(
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6)
+,R = (
+r1 0 0 0 r2 0 0 0 r3
+) ,P =
+(
+p1 0 0 0 0 0 0 p2 0 0 0 0 0 0 p3 0 0 0 0 0 0 p4 0 0 0 0 0 0 p5 0 0 0 0 0 0 p6)
+,
+ẋ P(Ϻ) = f (xp(Ϻ), u(Ϻ)) , xp(Ϻ) = x(Ϻ) ,
+u(Ϻ) ⋴ [ULB, UUP] , Ϻ = [t→t + TP]
+where ULB and UUP denote the lower and upper bounds of the optimal co which would be subject to saturation anyway, xerr is the predicted state Q, R and P denote diagonal matrices that contain the cost function J(u(Ϻ tors. The receding horizon strategy is applied to the aforementioned form problem at each time Tz. Ts denotes the sampling time. A constant input p is chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, pi, Ts, Tp and Tz rep trol parameters. Refer to [30] for the theoretical foundations of MPC and f
+2.2.6. Outer Loop
+A simplified translational dynamical model is reported in state space (x1, x2, x3, x4, x5, x6) = (X′, Y′, Z′, φ, θ, ψ) and u = U1.
+ẋ 1 = − 1
+m (sx6sx4 + cx6sx5cx4)u
+ẋ 2 = − 1
+m (sx5sx6cx4 − sx4cx6)u
+ẋ 3 = g − 1
+m cx5cx4u
+The aim of the outer loop controller is to control the quadcopter’s compute the reference Euler angles to be tracked by the inner loop contr loop controller is divided into two parts: the first part implements three that compute the reference linear accelerations from the linear velocity err
+))
+, xp
+(
+Appl. Sci. 2023, 13, x FOR PEER REVIEW
+ẋ 6 = ẋ 6ref + β3(x6ref − x6) + Kd3
+x6ref − x6 + β3(x6r
+√( x6ref − x6 + β3(x6ref
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude dynamical m (32) to (35) is exploited to design the model predictive attitu method is based on two phases: prediction and optimization. A p states, xp, is made over a certain prediction horizon, TP, by int self. An optimal control input u is chosen to bring the predicted The optimization problem formalized in (52) is solved to co (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗(Ϻ) = arg min J(u(Ϻ)) , subject to:
+J(u(Ϻ)) = ∫ (xeTrr(Ϻ)Qxerr(Ϻ) + uT(Ϻ)Ru(Ϻ)) d
+t+Tp
+t
+Ϻ + xeTrr(t + TP)Qxerr(
+xerr(Ϻ) = r(Ϻ) − xp(Ϻ) ,
+Q=
+(
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6)
+,R = (
+r1 0 0 0 r2 0 0 0 r3
+) ,P =
+(
+p1 0 0 0 0 p2 0 0 0 0 p3 0 0 0 0 p4 0 0 0 0p 0000
+ẋ P(Ϻ) = f (xp(Ϻ), u(Ϻ)) , xp(Ϻ) = x(Ϻ) ,
+u(Ϻ) ⋴ [ULB, UUP] , Ϻ = [t→t + TP]
+where ULB and UUP denote the lower and upper bounds of the o which would be subject to saturation anyway, xerr is the predi Q, R and P denote diagonal matrices that contain the cost funct tors. The receding horizon strategy is applied to the aforementi problem at each time Tz. Ts denotes the sampling time. A consta is chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, pi, Ts, Tp an trol parameters. Refer to [30] for the theoretical foundations of M
+2.2.6. Outer Loop
+A simplified translational dynamical model is reported in st (x1, x2, x3, x4, x5, x6) = (X′, Y′, Z′, φ, θ, ψ) and u = U1.
+ẋ 1 = − 1
+m (sx6sx4 + cx6sx5cx4)u
+ẋ 2 = − 1
+m (sx5sx6cx4 − sx4cx6)u
+ẋ 3 = g − 1
+m cx5cx4u
+The aim of the outer loop controller is to control the quad compute the reference Euler angles to be tracked by the inner lo loop controller is divided into two parts: the first part implemen that compute the reference linear accelerations from the linear ve
+)
+=x
+(
+Appl. Sci. 2023, 13, x FOR PEER REVIEW
+ẋ 6 = ẋ 6ref + β3(x6ref − x6) + Kd3
+x6ref − x6 +
+√( x6ref − x6 + β
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude dyna (32) to (35) is exploited to design the model predictiv method is based on two phases: prediction and optimizat states, xp, is made over a certain prediction horizon, TP self. An optimal control input u is chosen to bring the p The optimization problem formalized in (52) is solved (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗(Ϻ) = arg min J(u(Ϻ)) , subject to:
+J(u(Ϻ)) = ∫ (xeTrr(Ϻ)Qxerr(Ϻ) + uT(Ϻ)Ru(Ϻ)) d
+t+Tp
+t
+Ϻ + xeTrr(t + TP
+xerr(Ϻ) = r(Ϻ) − xp(Ϻ) ,
+Q=
+(
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6)
+,R = (
+r1 0 0 0 r2 0 0 0 r3
+) ,P =
+(
+p1 0 0 0 p2 0 0 0 p3 000 000 000
+ẋ P(Ϻ) = f (xp(Ϻ), u(Ϻ)) , xp(Ϻ) = x(Ϻ) ,
+u(Ϻ) ⋴ [ULB, UUP] , Ϻ = [t→t + TP]
+where ULB and UUP denote the lower and upper bounds which would be subject to saturation anyway, xerr is th Q, R and P denote diagonal matrices that contain the co tors. The receding horizon strategy is applied to the afo problem at each time Tz. Ts denotes the sampling time. A is chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, pi, T trol parameters. Refer to [30] for the theoretical foundatio
+2.2.6. Outer Loop
+A simplified translational dynamical model is report (x1, x2, x3, x4, x5, x6) = (X′, Y′, Z′, φ, θ, ψ) and u = U1.
+ẋ 1 = − 1
+m (sx6sx4 + cx6sx5cx
+ẋ 2 = − 1
+m (sx5sx6cx4 − sx4cx
+ẋ 3 = g − 1
+m cx5cx4u
+The aim of the outer loop controller is to control th compute the reference Euler angles to be tracked by the loop controller is divided into two parts: the first part im that compute the reference linear accelerations from the l
+)
+,
+u
+(
+Appl. Sci. 2023, 13, x FOR PEER REVIEW 10 of
+ẋ 6 = ẋ 6ref + β3(x6ref − x6) + Kd3
+x6ref − x6 + β3(x6ref − x6)
+√( x6ref − x6 + β3(x6ref − x6))2 + a (5
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude dynamical model in equations fro (32) to (35) is exploited to design the model predictive attitude stabilizer. The MP method is based on two phases: prediction and optimization. A prediction of the mode states, xp, is made over a certain prediction horizon, TP, by integration of the model self. An optimal control input u is chosen to bring the predicted state to the reference The optimization problem formalized in (52) is solved to compute u∗(t → t + TP ) (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗(Ϻ) = arg min J(u(Ϻ)) , subject to: (5
+J(u(Ϻ)) = ∫ (xeTrr(Ϻ)Qxerr(Ϻ) + uT(Ϻ)Ru(Ϻ)) d
+t+Tp
+t
+Ϻ + xeTrr(t + TP)Qxerr(t + TP) ,
+xerr(Ϻ) = r(Ϻ) − xp(Ϻ) ,
+Q=
+(
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6)
+,R = (
+r1 0 0 0 r2 0 0 0 r3
+) ,P =
+(
+p1 0 0 0 0 0 0 p2 0 0 0 0 0 0 p3 0 0 0 0 0 0 p4 0 0 0 0 0 0 p5 0 0 0 0 0 0 p6)
+,
+ẋ P(Ϻ) = f (xp(Ϻ), u(Ϻ)) , xp(Ϻ) = x(Ϻ) ,
+u(Ϻ) ⋴ [ULB, UUP] , Ϻ = [t→t + TP]
+where ULB and UUP denote the lower and upper bounds of the optimal control input u which would be subject to saturation anyway, xerr is the predicted state’s error vecto Q, R and P denote diagonal matrices that contain the cost function J(u(Ϻ)) weight fa tors. The receding horizon strategy is applied to the aforementioned formulation of t problem at each time Tz. Ts denotes the sampling time. A constant input parametrizati is chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, pi, Ts, Tp and Tz represent the co trol parameters. Refer to [30] for the theoretical foundations of MPC and further details
+2.2.6. Outer Loop
+A simplified translational dynamical model is reported in state space form, with x (x1, x2, x3, x4, x5, x6) = (X′, Y′, Z′, φ, θ, ψ) and u = U1.
+ẋ 1 = − 1
+m (sx6sx4 + cx6sx5cx4)u (5
+ẋ 2 = − 1
+m (sx5sx6cx4 − sx4cx6)u (5
+ẋ 3 = g − 1
+m cx5cx4u (5
+The aim of the outer loop controller is to control the quadcopter’s altitude and compute the reference Euler angles to be tracked by the inner loop controller. The out loop controller is divided into two parts: the first part implements three PID controlle that compute the reference linear accelerations from the linear velocity errors, the secon
+)
+∈ [ULB, UUP] ,
+Appl. Sci. 2023, 13, x FOR PEER REVIEW
+ẋ 6 = ẋ 6ref + β3(x6ref − x6) + Kd3
+x6ref − x6 + β3(x6ref − x6
+√( x6ref − x6 + β3(x6ref − x6))
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude dynamical model (32) to (35) is exploited to design the model predictive attitude sta method is based on two phases: prediction and optimization. A predict states, xp, is made over a certain prediction horizon, TP, by integratio self. An optimal control input u is chosen to bring the predicted state The optimization problem formalized in (52) is solved to compute (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗(Ϻ) = arg min J(u(Ϻ)) , subject to:
+J(u(Ϻ)) = ∫ (xeTrr(Ϻ)Qxerr(Ϻ) + uT(Ϻ)Ru(Ϻ)) d
+t+Tp
+t
+Ϻ + xeTrr(t + TP)Qxerr(t + TP
+xerr(Ϻ) = r(Ϻ) − xp(Ϻ) ,
+Q=
+(
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6)
+,R = (
+r1 0 0 0 r2 0 0 0 r3
+) ,P =
+(
+p1 0 0 0 0 0 0 p2 0 0 0 0 0 0 p3 0 0 0 0 0 0 p4 0 0 0 0 0 0 p5 0 0 0 0 0 0 p6
+ẋ P(Ϻ) = f (xp(Ϻ), u(Ϻ)) , xp(Ϻ) = x(Ϻ) ,
+u(Ϻ) ⋴ [ULB, UUP] , Ϻ = [t→t + TP]
+where ULB and UUP denote the lower and upper bounds of the optima which would be subject to saturation anyway, xerr is the predicted st Q, R and P denote diagonal matrices that contain the cost function J(u tors. The receding horizon strategy is applied to the aforementioned f problem at each time Tz. Ts denotes the sampling time. A constant inpu is chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, pi, Ts, Tp and Tz r trol parameters. Refer to [30] for the theoretical foundations of MPC an
+2.2.6. Outer Loop
+A simplified translational dynamical model is reported in state spa (x1, x2, x3, x4, x5, x6) = (X′, Y′, Z′, φ, θ, ψ) and u = U1.
+ẋ 1 = − 1
+m (sx6sx4 + cx6sx5cx4)u
+ẋ 2 = − 1
+m (sx5sx6cx4 − sx4cx6)u
+ẋ 3 = g − 1
+m cx5cx4u
+The aim of the outer loop controller is to control the quadcopter compute the reference Euler angles to be tracked by the inner loop con loop controller is divided into two parts: the first part implements thr that compute the reference linear accelerations from the linear velocity
+= [t → t + TP]
+where ULB and UUP denote the lower and upper bounds of the optimal control input u∗, which would be subject to saturation anyway, xerr is the predicted state’s error vector, Q, R and P denote diagonal matrices that contain the cost function J(u(
+Appl. Sci. 2023, 13, x FOR PEER REVIEW
+ẋ 6 = ẋ 6ref + β3(x6ref − x6) + Kd3
+x6ref −
+√( x6ref − x
+2.2.5. Inner Loop—Model Predictive Control
+The state space form of the nonlinear attitude (32) to (35) is exploited to design the model pre method is based on two phases: prediction and opti states, xp, is made over a certain prediction horizo self. An optimal control input u is chosen to bring The optimization problem formalized in (52) is (U2(t → t + TP), U3(t → t + TP), U4(t → t + TP))
+u∗(Ϻ) = arg min J(u(Ϻ)) , subject to:
+J(u(Ϻ)) = ∫ (xeTrr(Ϻ)Qxerr(Ϻ) + uT(Ϻ)Ru(Ϻ)) d
+t+Tp
+t
+Ϻ + xeTrr(
+xerr(Ϻ) = r(Ϻ) − xp(Ϻ) ,
+Q=
+(
+q1 0 0 0 0 0 0 q2 0 0 0 0 0 0 q3 0 0 0 0 0 0 q4 0 0 0 0 0 0 q5 0 0 0 0 0 0 q6)
+,R = (
+r1 0 0 0 r2 0 0 0 r3
+) ,P =
+(
+p1 0 0p 00 00 00 00
+ẋ P(Ϻ) = f (xp(Ϻ), u(Ϻ)) , xp(Ϻ) = x(Ϻ) ,
+u(Ϻ) ⋴ [ULB, UUP] , Ϻ = [t→t + TP]
+where ULB and UUP denote the lower and upper bo which would be subject to saturation anyway, xerr Q, R and P denote diagonal matrices that contain t tors. The receding horizon strategy is applied to th problem at each time Tz. Ts denotes the sampling ti is chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, trol parameters. Refer to [30] for the theoretical foun
+2.2.6. Outer Loop
+A simplified translational dynamical model is r (x1, x2, x3, x4, x5, x6) = (X′, Y′, Z′, φ, θ, ψ) and u = U1.
+ẋ 1 = − 1
+m (sx6sx4 + cx6
+ẋ 2 = − 1
+m (sx5sx6cx4 −
+ẋ 3 = g − 1
+m cx5c
+The aim of the outer loop controller is to con compute the reference Euler angles to be tracked by
+)) weight factors. The receding horizon strategy is applied to the aforementioned formulation of the problem at each time Tz. Ts denotes the sampling time. A constant input parametrization is
+chosen such that u∗(t → t + Tz ) = u∗(Tz ). qi, ri, pi, Ts, Tp and Tz represent the control parameters. Refer to [30] for the theoretical foundations of MPC and further details.
+2.2.6. Outer Loop
+A simplified translational dynamical model is reported in state space form, with x = (x1, x2, x3, x4, x5, x6) = ( X′, Y′, Z′, φ, θ, ψ) and u = U1.
+.x1 = − 1
+m (sx6 sx4 + cx6 sx5 cx4 )u (53)
+x. 2 = − 1
+m (sx5 sx6 cx4 − sx4 cx6 )u (54)
+x. 3 = g − 1
+m cx5 cx4 u (55)
+The aim of the outer loop controller is to control the quadcopter’s altitude and to compute the reference Euler angles to be tracked by the inner loop controller. The outer loop controller is divided into two parts: the first part implements three PID controllers that compute the reference linear accelerations from the linear velocity errors, the second part performs a dynamics inversion of the system in equations from (53) to (55), with the assumption that ψref = 0, for the computation of the reference pitch and roll angles, θref and φref, respectively, and the total lift force, u.
+x. refp(t) = −Kp
+p
+(
+xp(t) − xp
+ref(t)
+)
+− Kp
+i
+∫T
+0
+(
+xp(t) − xp
+ref(t)
+)
+dt − Kp
+d
+(
+xp(t) − xp
+ref(t)
+)
+, p = 1, 2, 3 (56)
+β = −sign
+( .xref1)
+(
+1+
+( g − x. ref3
+x. ref1
+)2)− 12
+(57)
+
+
+Appl. Sci. 2023, 13, 3464 11 of 20
+xr4ef = arcsin
+( Bm u
+)
+(58)
+xr5ef = arcsin(β) (59)
+xr6ef = 0 (60)
+u=m
+√ √ √ √
+( x. ref1)2
+β2 + ( x. ref2)2 (61)
+Equations from (56) to (61) express the full outer loop trajectory controller. The control parameters (Kip,Kii,Kid) can be set in order to ensure satisfactory dynamics for different 3D complex trajectories of reference, expressed by the signals xiref(t). In order to avoid
+numerical problems, x .ref1 is forced to have a lower bound different from zero in absolute value. A similar approach is proposed in [11].
+2.2.7. Trajectory Generator
+The ascent helix and the complex ascent helix are examples of relatively hard trajectories for quadcopters. They are considered as a benchmark for demonstrating the complete control system’s capability of executing complex trajectories. The ascent helix and the complex ascent helix are expressed as follows,
+.Xref1(t) = −f1x sin
+(
+f1xt
+)
+, .Xref2(t) = −f2x sin
+(
+f2xt
+)
+− 2f2x sin
+(
+f2xt
+)
+cos
+(
+f2xt
+)
+(62)
+.Yref1(t) = f1y cos
+(
+f1yt
+)
+, .Yref2(t) = f2y cos
+(
+f2yt
+)
++ 2f2y cos
+(
+f2yt
+)
+sin
+(
+f2yt
+)
+(63)
+.Zref1(t) = .Zref2(t) = a (64)
+where superscripts 1 and 2 indicates the ascent helix and complex ascent helix trajectories, respectively. t is the simulation time, fx, fy denotes the frequency of the signal components on the plane OXY and a denotes the climb velocity. The equations from (62) to (64) represent the derivation with respect to t of reference trajectories designed in space and time, expressed by the position variables Xref(t), Yref(t), Zref(t).
+2.3. Simulation Setting
+The whole control architecture is implemented in the MATLAB/Simulink® software environment, mainly by means of MATLAB function blocks. Table 1 shows the simulation parameters, while the control parameter settings of all the proposed attitude stabilizers are reported in Table 2. All the values are expressed according to the International System of Units.
+Table 1. Simulation parameters.
+Simulation Parameter Type Parameter Value
+UAV
+m 0.60 kg g 9.81 m·s−2 b 3.60·10−6 kg·m d 1.60·10−7 kg·m2 Ix 5.20·10−3 kg·m2
+Iy 5.20·10−3 kg·m2
+Iz 9.40·10−3 kg·m2
+IR 4.20·10−5 kg·m2 L 0.20 m KdR 0.15 kg·m2·s−1
+KLd 0.15 kg·s−1
+
+
+Appl. Sci. 2023, 13, 3464 12 of 20
+Table 1. Cont.
+Simulation Parameter Type Parameter Value
+Saturation
+[U1LB,U1UB] [−17, 17] N
+[U2LB,U2UB] [−9, 9] N
+[U3LB,U3UB] [−9, 9] N
+[U4LB,U4UB] [−1.2, 1.2] N·m
+Trajectory Generator
+f1x=f1y 1 s−1
+a −1 m ·s−1 f2x=f2y 1 s−1
+Outer Loop Controller
+K1p = K2p = K3p 8 Ki1 = Ki2 = Ki3 8.5
+K1d = K2d = K3d 0.01
+Derivative Filter Coefficient 100
+Table 2. Attitude stabilization controllers’ parameters.
+Inner Loop Controller Control Parameter Value
+PID
+K1p = K2p = K3p 0.56 Ki1 = Ki2 = Ki3 0.28
+K1d = K2d = K3d 0.23
+Derivative Filter Coefficient 49.74
+LQR [q1, q2, q3, q4, q5, q6] [0, 0, 0, 1, 1, 1]
+r1 = r2 = r3 0.0001
+FL
+[D1, P1] [−120, 38] [D2, P2] [−120, 38] [D3, P3] [−50, 20]
+SM
+[Kd1,β1] [0.2, 20] [Kd2,β2] [0.2, 20] [Kd3,β3] [0.05, 5] a 0.1
+MPC
+Ts 0.01 s Tp 0.1 s Tz 0.05 s [q1, q2, q3, q4, q5, q6] [10, 10, 1, 0, 0, 0]
+r1 = r2 = r3 0.0001 [p1, p2, p3, p4, p5, p6] [1, 1, 1, 0, 0,0]
+3. Simulation Results 3.1. Inner Loop
+All the attitude stabilizers proposed in Sections 2.2.1–2.2.5 are shown to be able to stabilize the nonlinear quadrotor attitude model, expressed by Equations (12)–(17), yet at different performance levels. All the simulations are performed considering the same initial condition for the plant, with the quadrotor having initial roll, pitch and yaw angles of 20◦ and initial roll, pitch and yaw rates of 10 rad/s. The gyroscopic effect is part of the nonlinear attitude dynamical system and is computed assuming a constant total lift force equal to the quadcopter’s weight in Equation (19). Figures 4–8 show the Euler angles signals of the PID, LQR, FL, SMC and MPC-based attitude stabilizers, respectively. The three pairs of proportional, integral and derivative gains of the PID-based attitude controller are tuned exploiting the automatic tuning library in MATLAB applied to the linearized system in (26), considering the control input saturation, to achieve a fast (rise time of ~1 s) and robust step response. As shown in Figure 4, the Euler angles dynamics relative to the PID-based stabilizer are much slower with respect to all the others, meaning that PID control is effective but requires extensive gain tuning and is not robust to model
+
+
+Appl. Sci. 2023, 13, 3464 13 of 20
+uncertainties, as the performances significantly decrease when the controller is applied to the nonlinear attitude system. As far as the classical PID control approach is concerned, which is the approach adopted in this work, a systematic procedure exists for tuning the controller’s gains; however, a highly time-consuming offline gains optimization is required when dealing with nonlinear systems, as for quadrotor UAVs. The amount of computation related to the online optimization of the MPC-based attitude stabilizer is such that the optimal solution is computed, on average, within 0.01 s. A control horizon Tz = 0.05s is chosen in order to guarantee the optimal controller command at each step. A trial-and-error tuning procedure is adopted for the choice of the control parameters of the other attitude stabilizers, which show faster dynamics and greater robustness to model uncertainties. The sum of the L2 norms of the Euler angles’ tracking error signals, L2x, is chosen as the approximative evaluation parameter of the controllers’ tracking performance. Analogously, the sum of the L2 norms of the controller command signals, L2u, represents the approximative evaluation parameter of the expected command activity of an on-board hardware implementation of the controller. Since the L2 norm of a signal represents the “energy” associated with the signal itself, it can be considered as an approximative quantitative estimation of both the overall tracking error and the controller command effort. Table 3 shows the controllers’ evaluation parameters referring to the attitude stabilization simulations presented in this section. The proposed attitude stabilizers are ranked from best to worse as SMC, LQR, FL, MPC, PID for L2x and as PID, MPC, SMC, LQR, FL for L2u. Considering the attitude controllers that lead to the fastest dynamics (SMC, LQR and FL), the choice of the inner loop control law derives from a trade-off between tracking performances and controller command effort, since the battery consumption, being related to the forces and moments required to act on the quadcopter platform, is a key limitation factor when dealing with multirotor UAVs executing medium-to-long range missions. The SMC-based attitude stabilizer is the most promising one, having minimum L2x, intermediate L2u and ensuring fast dynamics to the controlled variables. Besides the norm evaluation, the FL-based controller yields to bigger peaks in the controlled signals. It is worth noting that ad-hoc simulation campaigns may be designed in order to tune the control parameters of each attitude stabilizer such that the system achieves a reference dynamic response. This could enhance performance, but the inherent features of each control approach would not change, as well as the highlighted differences among the methods.
+Figure 4. Euler angles signals [φ(t), θ(t), ψ(t)] of the controlled attitude system (blue): PID-based Attitude Stabilizer (red).
+
+
+Appl. Sci. 2023, 13, 3464 14 of 20
+Figure 5. Euler angles signals [φ(t), θ(t), ψ(t)] of the controlled attitude system (blue): LQR-based Attitude Stabilizer (red).
+Figure 6. Euler angles signals [φ(t), θ(t), ψ(t)] of the controlled attitude system (blue): FL-based Attitude Stabilizer (red).
+Figure 7. Euler angles signals [φ(t), θ(t), ψ(t)] of the controlled attitude system (blue): SMC-based Attitude Stabilizer (red).
+
+
+Appl. Sci. 2023, 13, 3464 15 of 20
+Figure 8. Euler angles signals [φ(t), θ(t), ψ(t)] of the controlled attitude system (blue): MPC-based Attitude Stabilizer (red).
+Table 3. Evaluation parameters: sum of L2 norms of the controller commands signals, L2u, and sum of L2 norms of the Euler angles error signals, L2x.
+Attitude Stabilizer. L2u L2x
+PID 1.60 1.40
+LQR 4.53 0.41
+FL 5.6 0.64
+SMC 4.35 0.36
+MPC 3.70 0.65
+3.2. Closed-Loop System
+The complete controlled quadrotor system is proven to be able to execute complex 3D trajectories, defined by Equations (62)–(64). Both an ascent helix (trajectory 1) and a more complex ascent helix (trajectory 2) are simulated. The signals related to the controlled variables are shown in Figure 9 for trajectory 1, Figure 10 shows the corresponding quadcopter’s 3D trajectory, Figure 11 shows the control command signals required for executing trajectory 1. The Euler Angles signals related to trajectory 1 are shown in Figure 12. The signals related to the controlled variables are shown in Figure 13 for trajectory 2, Figure 14 shows the corresponding quadcopter’s 3D trajectory, Figure 15 shows the control command signals required for executing trajectory 2. The Euler Angles signals related to trajectory 2 are shown in Figure 16. Considering that either PID control is a model-free approach with an easy gain tuning procedure, or the outer loop controller is intended to ensure a much slower dynamic response with respect to the inner loop controller (order of a few seconds), a PID controller in the outer loop is sufficient to ensure a satisfactory dynamic response. The tracking performances are satisfactory for either the sinusoidal-based or the unitary step reference velocity signals, as shown in Figures 9 and 13, which spatially derive in the helicoidal maneuvers shown in Figures 10 and 14. Due to the inherent characteristics of PID control, a relatively small delay between the sinusoidal-based reference velocity signal and the actual quadcopter velocity is inevitable. That is reflected also in a smaller, yet present, delay in the tracking of the consequent sinusoidal-based Euler angles signals, as shown in Figures 12 and 16. Overall, the proposed architecture can effectively control the quadcopter during complex maneuvers without exceeding the saturation limits, as shown by the signals of the controller commands in Figures 11 and 15.
+
+
+Appl. Sci. 2023, 13, 3464 16 of 20
+Figure 9. Velocity signals [X′(t), Y′(t), Z′(t)] of the controlled quadrotor system (blue) and reference velocity signals of trajectory 1 (red).
+Figure 10. 3D view of trajectory 1: position trajectory of the controlled quadrotor system.
+Figure 11. Control input signals [u1(t), u2(t), u3(t), u4(t)] of the controlled quadrotor system executing trajectory 1.
+
+
+Appl. Sci. 2023, 13, 3464 17 of 20
+Figure 12. Euler angles signals [φ(t), θ(t), ψ(t)] of the controlled quadrotor system (blue) and reference attitude signals for trajectory 1 (red).
+Figure 13. Velocity signals [X′(t), Y′(t), Z′(t)] of the controlled quadrotor system (blue) and reference velocity signals of trajectory 2 (red).
+Figure 14. 3D view of trajectory 2: position trajectory of the controlled quadrotor system.
+
+
+Appl. Sci. 2023, 13, 3464 18 of 20
+Figure 15. Control input signals [u1(t), u2(t), u3(t), u4(t)] of the controlled quadrotor system executing trajectory 2.
+Figure 16. Euler angles signals [φ(t), θ(t), ψ(t)] of the controlled quadrotor system (blue) and reference attitude signals for trajectory 2 (red).
+4. Conclusions
+In this paper, a control system architecture for 3D trajectory tracking is implemented and simulated in MATLAB/Simulink® for a micro-quadrotor UAV. The highly nonlinear, coupled, unstable and underactuated plant system, i.e., the quadrotor, is modelled with the Newton–Euler formalism. The control architecture is intended to stabilize the quadrotor attitude dynamics, which is fully actuated with a sufficiently fast inner loop controller, and to track velocity references in the outer loop. A comparative study of well-known linear and nonlinear model-free and model-based control laws applied to the attitude stabilization problem is proposed: PID, LQR, FL, SMC and MPC attitude stabilization laws are designed and implemented. The choice of the inner loop controller derives from either the fast dynamics requirement of the inner loop or an L2 norm-based approximative evaluation of both tracking error and controller command signals since the relatively poor battery autonomy is still one of the main limitations for the deployment of multirotor UAVs in medium-to-long range missions. The reference attitude signals for the inner loop controller are derived from a simplified translational dynamics inversion performed in an outer loop controller, which is also responsible for altitude control. In the outer loop, the dynamics
+
+
+Appl. Sci. 2023, 13, 3464 19 of 20
+inversion is combined with three independent PID controllers, while the Sliding Mode attitude stabilizer is implemented in the inner loop. A velocity trajectory generator and a control input saturation block complete the proposed control architecture. The controlled closed-loop quadrotor system is proven to be able to execute complex 3D trajectories, such as ascent helixes. Consistent with the aim of this work, the main summarizing considerations are reported in Table 4 in order to highlight the main observations drawn from the study and provide guidelines for further research in this field. Future research directions will include the realization of other comparative studies for control of quadrotor UAVs, considering external disturbances, e.g., the wind, and parametric uncertainties, e.g., variable payloads.
+Table 4. Summarizing table of considerations drawn from the study. The number of diamonds is proportional to the “suitability of the method to UAV control”.
+Control Method Advantages Disadvantages Overall Suitability to
+UAV Control
+PID
+• Systematic gain tuning method for linear systems • Possible zero steady state error • Model free
+• No constraints handling • Poor robustness • No multiple inputs and multiple outputs handling • Extensive offline gain optimization
+♦
+LQR
+• Possible handling of multiple inputs and multiple outputs • Possible handling of performance and command effort • Fast dynamics
+• May fail to overcome steady-state
+error ♦♦♦
+FL • Systematic cancellation
+of nonlinearities
+• No constraints handling • Poor robustness • Model in affine form only
+♦♦
+SMC
+• Robustness • Fast dynamics • Good performances with highly nonlinear systems
+• Chattering may cause instability ♦♦♦♦
+MPC
+• Possible handling of multiple inputs and multiple outputs • Possible handling of performance and command effort • Possible handling of input and output constraints
+• Slow dynamics ♦♦
+Author Contributions: All authors contributed extensively to the current study. All authors have read and agreed to the published version of the manuscript.
+Funding: This research received no external funding.
+Institutional Review Board Statement: Not applicable.
+Informed Consent Statement: Not applicable.
+Data Availability Statement: The data used in the current study are available from the corresponding author upon reasonable request.
+Acknowledgments: The authors wish to thank the Piedmont Aerospace District for supporting the PhD activity of Marco Rinaldi.
+Conflicts of Interest: The authors declare no conflict of interest.
+References
+1. Cohen, A.; Shaheen, A.; Farrar, E. Urban Air Mobility: History, Ecosystem, Market Potential, and Challenges. IEEE Trans. Intell. Transp. Syst. 2022, 22, 6074–6087. [CrossRef] 2. Nawaz, H.; Ali, H.M.; Massan, S.U.R. Applications of unmanned aerial vehicles: A review. 3c Tecnol. Glosas Innovación Apl. Pyme. 2019, 2019, 85–105. 3. Aslan, M.F.; Durdu, A.; Sabanci, K.; Ropelewska, E.; Gültekin, S.S. A Comprehensive Survey of the Recent Studies with UAV for Precision Agriculture in Open Fields and Greenhouses. Appl. Sci. 2022, 12, 1047. [CrossRef]
+
+
+Appl. Sci. 2023, 13, 3464 20 of 20
+4. Skrinjar, J.P.; Skorput, P.; Furdic, M. Application of Unmanned Aerial Vehicles in Logistic Processes. In Proceedings of the New Technologies, Development and Applications (NT-2018), Sarajevo, Bosnia and Herzegovina, 14–16 June 2018. 5. Idrissi, M.; Salami, M.R.; Annaz, F. A Review of Quadrotor Unmanned Aerial Vehicles: Applications, Architectural Design and Control Algorithms. J. Intell. Robot. Syst. 2022, 104, 22.
+6. Roy, R.; Islam, M.; Sadman, N.; Mahmud, M.A.P.; Gupta, K.D.; Ahsan, M.M. A Review on Comparative Remarks, Performance Evaluation and Improvement Strategies of Quadrotor Controllers. Technologies 2021, 9, 37. 7. Shauqee, M.N.; Rajendran, P.; Suhadis, N.M. Quadrotor Controller Design Techniques and Applications Review. Incas Bull. 2021, 13, 179–194. 8. Zulu, A.; John, S. A Review of Control Algorithms for Autonomous Quadrotors. Open J. Appl. Sci. 2014, 4, 547–556. [CrossRef] 9. Shraim, H.; Awada, A.; Youness, R. A survey on quadrotors: Configurations, modeling and identification, control, collision avoidance, fault diagnosis and tolerant control. IEEE Aerosp. Electron. Syst. Mag. 2018, 33, 14–33. [CrossRef] 10. Bolandi, H.; Rezaei, M.R.; Mohsenipour, R.; Nemati, H.; Smailzadeh, S.M. Attitude Control of a Quadrotor with Optimized PID Controller. Intell. Control Autom. 2013, 4, 335–342. [CrossRef] 11. Voos, H. Nonlinear control of a quadrotor micro-UAV using feedback-linearization. In Proceedings of the 2009 IEEE International Conference on Mechatronics, Malaga, Spain, 14–17 April 2009. 12. Islam, M.; Okasha, M.; Idres, M. Dynamics and Control of Quadcopter using Linear Model Predictive Control Approach. In Proceedings of the AEROS Conference 2017, Putrajaya, Malaysia, 12 December 2017. 13. Madani, T.; Benallegue, A. Backstepping Control for a Quadrotor Helicopter. In Proceedings of the 2006 IEEE/RSJ International Conference on Intelligent Robots and Systems, Beijing, China, 9–15 October 2006. 14. Petrusevski, I.; Aleksandar, R. Simple fuzzy solution for quadrotor attitude control. In Proceedings of the 12th Symposium on Neural Network Applications in Electrical Engineering (NEUREL), Belgrade, Serbia, 25–27 November 2014. 15. Capello, E.; Guglieri, G.; Quagliotti, F.; Sartori, D. Design and Validation of an L1 Adaptive Controller for Mini-UAV Autopilot. J. Intell. Robot. Syst. 2013, 69, 109–118. [CrossRef]
+16. Noordin, A.; Mohd Basri, M.A.; Mohamed, Z. Position and Attitude Tracking of MAV Quadrotor Using SMC-Based Adaptive PID Controller. Drones 2022, 6, 263. [CrossRef] 17. Sankaranarayanan, V.N.; Satpute, S.; Nikolakopoulos, G. Adaptive Robust Control for Quadrotors with Unknown Time-Varying Delays and Uncertainties in Dynamics. Drones 2022, 6, 220. [CrossRef] 18. Shakeel, T.; Arshad, J.; Jaffery, M.H.; Rehman, A.U.; Eldin, E.T.; Ghamry, N.A.; Shafiq, M. A Comparative Study of Control Methods for X3D Quadrotor Feedback Trajectory Control. Appl. Sci. 2022, 12, 9254. [CrossRef] 19. Okasha, M.; Kralev, J.; Islam, M. Design and Experimental Comparison of PID, LQR and MPC Stabilizing Controllers for Parrot Mambo Mini-Drone. Aerospace 2022, 9, 298. [CrossRef] 20. Available online: https://basecamp-shop.com/en/product/dji-quadcopter-flame-wheel-arf-kit-450 (accessed on 18 November 2022). 21. Ghazbi, S.N.; Aghli, Y.; Alimohammadi, M.; Akbari, A.A. Quadrotors Unmanned Aerial Vehicles: A Review. Int. J. Smart Sens. Intell. Syst. 2016, 9, 309–333. [CrossRef] 22. Zhang, X.; Li, X.; Wang, K.; Lu, Y. A Survey of Modelling and Identification of Quadrotor Robot. Abstr. Appl. Anal. 2014, 2014, 1–16. [CrossRef] 23. Moness, M.; Bakr, M. Development and Analysis of Linear Model Representations of the Quad-Rotor System. In Proceedings of the Aerospace Sciences and Aviation Technology, Cairo, Egypt, 26–28 May 2015. 24. Naidoo, Y.; Stopforth, R.; Bright, G. Quad-Rotor Unmanned Aerial Vehicle Helicopter Modelling & Control. Int. J. Adv. Robot. Syst. 2011, 8, 139–149. 25. Astrom, K.J.; Hagglund, T. Advanced PID Control; Instrumentation, Systems and Automation Society: Pittsburgh, PA, USA, 2006. 26. Dorato, P.; Abdallah, C.; Cerone, V. Linear Quadratic Control: An Introduction; Krieger Pub Co.: Malabar, FL, USA, 2000. 27. Krener, A.J. Feedback Linearization. In Mathematical Control Theory; Baillieul, J., Willems, J.C., Eds.; Springer: New York, NY, USA, 1999; pp. 66–98. 28. Edwards, C.; Spurgeon, S. Sliding Mode Control: Theory and Applications; CRC Press: London, UK, 1998. 29. Yan, B.; Dai, P.; Liu, R.; Xing, M.; Liu, S. Adaptive super-twisting sliding mode control of variable sweep morphing aircraft. Aerosp. Sci. Technol. 2019, 92, 198–210. [CrossRef]
+30. Rawlings, J.B.; Mayne, D.Q.; Diehl, M.M. Model Predictive Control: Theory, Computation, and Design; Nob Hill Publishing: Santa Barbara, CA, USA, 2020.
+Disclaimer/Publisher’s Note: The statements, opinions and data contained in all publications are solely those of the individual author(s) and contributor(s) and not of MDPI and/or the editor(s). MDPI and/or the editor(s) disclaim responsibility for any injury to people or property resulting from any ideas, methods, instructions or products referred to in the content.

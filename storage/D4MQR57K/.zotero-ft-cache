@@ -1,0 +1,497 @@
+menu
+home
+Back to your projects
+Submission_SIR
+rate_review
+group_add
+public
+history
+dock_to_right
+expand_more
+chat
+description
+New file
+folder
+New folder
+upload
+Upload
+search
+Search
+edit
+Rename
+delete
+Delete
+chevron_right
+folder
+appendix
+expand_more
+folder_open
+chapters
+ 
+description
+chap1intro.tex
+ 
+description
+chap2Modelling.tex
+ 
+description
+chap3Controller.tex
+ 
+description
+chap4Kinematics.tex
+ 
+description
+chap5Tuning.tex
+ 
+description
+chap6Results.tex
+ 
+description
+chap7Conclusion.tex
+chevron_right
+folder
+code
+chevron_right
+folder
+frontmatter
+expand_more
+folder_open
+images
+chevron_right
+folder
+Helical_sensornoise
+more_vert
+Menu
+chevron_right
+folder
+slalom
+chevron_right
+folder
+Spiral_dist
+chevron_right
+folder
+TRAJ1_comp
+chevron_right
+folder
+Upward_spiral
+ 
+image
+1.jpg
+ 
+image
+2.jpg
+ 
+image
+3.jpg
+ 
+image
+4.jpg
+ 
+image
+5.jpg
+ 
+image
+6.jpg
+ 
+image
+7.jpg
+ 
+image
+8.jpg
+ 
+image
+9.jpg
+ 
+image
+10.jpg
+ 
+image
+11.jpg
+ 
+image
+12.jpg
+ 
+image
+amritalogo.png
+ 
+description
+CE_PLOTS.eps
+ 
+image
+Drone_config.png
+ 
+image
+flowchart.png
+ 
+description
+Higher_order_CF.eps
+ 
+image
+Jerk_architecture.png
+ 
+image
+JM_MPC.png
+ 
+image
+LHinjerk.png
+ 
+description
+Lower_order_CF.eps
+ 
+image
+QuadConfig.png
+ 
+description
+Slide2.eps
+ 
+image
+Snap_architectrure.png
+ 
+description
+SysArch.eps
+ 
+image
+SysArch.png
+ 
+image
+SystemArch.png
+ 
+menu_book
+IntroRef (1).bib
+ 
+description
+main.tex
+ 
+menu_book
+random.bib
+ 
+menu_book
+references.bib
+ 
+menu_book
+referencesoptic.bib
+keyboard_arrow_down
+File outline
+keyboard_arrow_down
+Results
+System Architecture
+Quadcopter Configuration
+PSO Results
+keyboard_arrow_down
+Test Cases
+Helical Trajectory
+Upward Spiral Trajectory
+Slalom Maneuver
+Helical Trajectory - Wind Disturbance
+Helical Trajectory - Sensor Disturbance
+Kinematic Estimation
+Editor mode.
+Code Editor
+Visual Editor
+undo
+Undo
+redo
+Redo
+Subsection
+format_bold
+Format Bold
+format_italic
+Format Italic
+calculate
+Ω
+more_horiz
+search
+Search this file
+Recompile
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+▾
+▾
+▾
+▾
+▾
+▾
+▾
+▾
+▾
+▾
+▾
+▾
+▾
+▾
+▾
+▾
+▾
+▾
+▾
+ $d\ddot{y}$ & $-0.1sin(W\pi t)$\\\hline
+ $d\ddot{z}$ & $0.8\sin(W\pi t)$\\ \hline
+ \end{tabular}
+ \caption{Wind Disturbance Model}
+ \label{tab:second}
+ \end{minipage}
+\end{table}
+
+
+The two tables above present the trajectory utilized for validation and the wind disturbance model implemented to assess the controller's performance under perturbation conditions. The selected trajectory ensures sufficient excitation across the system’s dynamic range, while the disturbance model introduces realistic environmental uncertainties. Together, they provide a comprehensive framework to evaluate the robustness and effectiveness of the proposed control strategy in the presence of external disturbances.
+
+
+ \begin{figure}[H]
+ \centering
+ \includegraphics[width=0.9\textwidth]{images/Spiral_dist/2d.eps} 
+ \caption{SM MPC response}
+ \label{fig:fig1}
+ \end{figure}
+ \hfill
+
+
+\begin{figure}[H]
+ \centering
+ % First subfigure
+ \begin{subfigure}[H]{0.49\textwidth}
+ \centering
+ \includegraphics[width=\textwidth]{images/Spiral_dist/3d.eps} % Replace 
+ \caption{Trajectory tracking of SM MPC}
+ \label{fig:fig1}
+ \end{subfigure}
+ \hfill
+ % Second subfigure
+ \begin{subfigure}[H]{0.49\textwidth}
+ \centering
+ \includegraphics[width=\textwidth]{images/Spiral_dist/error.eps} % Replace with your image
+ \caption{Tracking error in SM MPC response}
+ \label{fig:fig2}
+ \end{subfigure}
+ \label{fig:combined}
+\end{figure}
+
+
+\begin{table}[H]
+ \centering
+ \begin{tabular}{|c|c|}\hline
+ \textbf{PI (RMSE) } &\textbf{SM MPC} \\\hline
+ X& 0.0923\\\hline
+ Y & 0.4065\\\hline
+ Z & 0.0439\\\hline
+ \end{tabular}
+ \caption{Performance Index}
+ \label{tab:Performance Index}
+\end{table}
+The performance index clearly shows satisfactory performance of the controller even in the presence of the wind disturbance. The adjustments are not visible in the tracking error plots but it is clearly have to be seen somewhere. 
+
+
+ \begin{figure}[H]
+ \centering
+ \includegraphics[width=0.85\textwidth]{images/Spiral_dist/Attitude.eps} % Replace with your image
+ \caption{Attitude Angles}
+ \label{fig:fig2}
+ \end{figure}
+
+
+The attitude angles, as observed in the plots, exhibit rapid and aggressive changes - effectively running on overdrive -to maintain accurate trajectory tracking. This behavior is a clear indicator of the controller’s robustness, demonstrating its ability to handle reasonable external disturbances while preserving tracking performance. To further challenge and validate the controller, an additional test case was conducted where artificial noise was introduced into the sensor measurements. This setup simulates more realistic operational conditions, ensuring that the controller not only withstands environmental disturbances but also remains resilient against measurement uncertainties.
+
+
+
+
+\subsection{Helical Trajectory - Sensor Disturbance}
+
+
+\begin{table}[H]
+ \centering
+ \begin{minipage}{0.45\textwidth}
+ \centering
+ \begin{tabular}{|c|c|}\hline
+ \textbf{Parameter} &\textbf{Value} \\\hline
+ X & $r\sin(\omega t)$\\\hline
+ Y & $r - r \cos(\omega t)$\\\hline
+ Z & $0.5*t$\\\hline
+ Simulation time & $100\;s$\\\hline
+ \end{tabular}
+ \caption{Trajectory parameters}
+ \label{tab:first}
+ \end{minipage}%
+ \hfill
+ \begin{minipage}{0.45\textwidth}
+ \centering
+ \begin{tabular}{|c|c|}
+ \hline
+ \textbf{Parameter} &\textbf{Value} \\\hline
+ $d\ddot{x}$ & $0.5\sin(W\pi t)$ \\ \hline
+ $d\ddot{y}$ & $-0.1sin(W\pi t)$\\\hline
+ $d\ddot{z}$ & $0.8\sin(W\pi t)$\\ \hline
+ \end{tabular}
+ \caption{Wind Disturbance Model}
+ \label{tab:second}
+ \end{minipage}
+\end{table}
+
+
+The two tables above present the trajectory utilized for validation and the wind disturbance model implemented to assess the controller's performance under perturbation conditions. The selected trajectory ensures sufficient excitation across the system’s dynamic range, while the disturbance model introduces realistic environmental uncertainties. Together, they provide a comprehensive framework to evaluate the robustness and effectiveness of the proposed control strategy in the presence of external disturbances.
+
+
+ \begin{figure}[H]
+ \centering
+ \includegraphics[width=0.9\textwidth]{images/Spiral_dist/2d.eps} 
+ \caption{SM MPC response}
+ \label{fig:fig1}
+ \end{figure}
+ \hfill
+
+
+\begin{figure}[H]
+ \centering
+ % First subfigure
+ \begin{subfigure}[H]{0.49\textwidth}
+ \centering
+ \includegraphics[width=\textwidth]{images/Spiral_dist/3d.eps} % Replace 
+ \caption{Trajectory tracking of SM MPC}
+ \label{fig:fig1}
+ \end{subfigure}
+ \hfill
+ % Second subfigure
+ \begin{subfigure}[H]{0.49\textwidth}
+ \centering
+ \includegraphics[width=\textwidth]{images/Spiral_dist/error.eps} % Replace with your image
+ \caption{Tracking error in SM MPC response}
+ \label{fig:fig2}
+ \end{subfigure}
+ \label{fig:combined}
+\end{figure}
+
+
+\begin{table}[H]
+ \centering
+ \begin{tabular}{|c|c|}\hline
+ \textbf{PI (RMSE) } &\textbf{SM MPC} \\\hline
+ X& 0.0923\\\hline
+ Y & 0.4065\\\hline
+ Z & 0.0439\\\hline
+edit
+keyboard_arrow_down

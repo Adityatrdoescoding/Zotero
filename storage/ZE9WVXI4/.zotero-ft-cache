@@ -1,0 +1,362 @@
+Rotary Wing Aerodynamics
+(AE 667)
+
+
+Blade Element Momentum
+(BEM) Theory
+
+
+Background
+o Addresses uniform inflow assumption
+o Uniform inflow results in lowest power consumption, hence BE theory under-predicts power
+o Combination of Momentum and Blade Element Theories
+
+
+Procedure...
+oApply Momentum Theory on a strip of the disk
+oApply BE theory on the strips of the blades
+R
+dr
+r
+
+
+Momentum Theory side
+oConsider annular ring element of dr thickness
+oArea = 2πrdr
+oMass flow rate ( ሶ
+dm) = 2πρr(V+v)dr
+oThrust (dT) = ሶ
+dmv4 = 2 ሶ
+dmv
+[From momentum theory]
+dT = 4πρr(V+v)vdr
+R
+dr
+r
+
+
+Blade Element Theory side
+R
+dr
+r
+Rrc
+()
+( ) dr
+r
+Vv
+abc r
+dT b r c Cl dr
+
+
+
+
+
+
++
+=    −
+=    
+
+
+2
+2
+2
+1
+2
+1
+
+
+Combining the two
+oEquating the thrusts (dT) from both approaches, we get:
+o [Be mindful about the definition of σ in this context!]
+R
+v
+;
+,
+16 2 8 16 2
+or
+0
+88
+2
+2
+
++
+=
+
+=
+
+
+
++ − −
+
+
+
+= −
+−=
+
+
+
++ −
+V
+R
+V
+where
+a
+R
+a ar
+R
+a ar
+c
+cc
+c
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Integrating (same as BE Theory)
+( ) ( ( ) ( ))
+( ) ( ( ) ( ))
+( ) ( ( ) ( ))
+=
+= + +
+=
+=+ +
+=
+=+ −
+=
+
+
+
+
+
+
+Q
+b r U U c C C dr
+P b rdF
+b r U U c C C dr
+Q b rdF
+b U U c C C dr
+T b dT
+R
+R
+TPd l
+R
+R
+X
+R
+R
+TPd l
+R
+R
+x
+R
+R
+TPl d
+R
+R
+RC
+RC
+RC
+RC
+RC
+RC
+ 
+ 
+ 
+cos sin
+2
+1
+cos sin
+2
+1
+(Torque)
+cos sin
+2
+1
+;
+22
+22
+22
+The only difference is, that now expressions for UP and φ are changed
+
+
+
++ − −
+
+
+
+=  16 − 2 8 16 2
+2
+c ac
+R
+a ar 
+
+
+
+
+
+
+
+
+Ideal Rotor
+oLowest induced drag through uniform inflow
+oUniform inflow possible theoretically through nonlinear twist blades:  = C(R/r). [when σ is constant (no taper)].
+λ = σa
+16 − λc
+2
+2
++ σa
+8 θr
+R − σa
+16 − λc
+2
+
+
+Ideal Rotor
+oVery high pitch angles near root ➔ stall
+oAlso, such non-linear twist rotor is difficult to manufacture
+o Ideas to address these problems?
+λ = σa
+16 − λc
+2
+2
++ σa
+8 θr
+R − σa
+16 − λc
+2
+
+
+Ideal Rotor
+So Let’s say we made an “Ideal Rotor”
+Anything else one can wish for?
+
+
+Optimum Rotor (Twist)
+o Focus on minimizing total power for a given thrust.
+o FM = λCT
+kλCT+σCd/8 = 1
+k+ σCd
+8λCT
+=1
+k+ 3
+4λ
+CCሜdl
+using: ሜCl = 6 CT
+σ
+o The above expression implies that for an optimum
+performance, each blade section must operate at maximum Cl
+Cd
+(or Cl
+3/2
+Cd for hover, when λ is taken as CT
+2)
+o Let the angle of attack corresponding to this be αOptimum
+o Hence the pitch at a radial section should be:
+θ = αOptimum + tan−1 V + v
+Ωr
+
+
+Optimum Rotor (Taper)
+oExpression for dT from Momentum and BE side as seen
+earlier:
+dT = b 1
+2 ρ Ωr 2cCldr = 4πρrv2dr
+oFor the case of optimally twisted rotor (Cl constant and
+optimum) with uniform inflow (v), the local solidity σ r is
+given by:
+σ r = bc
+πR = 8v2
+Ω2RCl
+1
+r = Const
+r
+This gives optimal taper profile c(r)
+
+
+Optimum Rotor
+o Such rotors are difficult to make
+o Best performance only at a given thrust setting
+o Practically, linear twist + linear taper used for optimum performance
+
+
+Accounting for losses not covered directly in BEM Theory
+o Compressibility wave effects:
+o Values of Cl and Cd in the lookup table can be adjusted to account
+for compressibility effects
+o Prandtl – Glauert compressibility correction
+o Cl = Cl,incompressible
+1−M2∞ ; Cd = Cd,incompressible
+1−M2∞
+o Tip losses (due to finiteness of wing/blade)
+o Prandtl’s empirical tip loss function
+
+
+Prandtl’s Tip Loss Model
+oSuggested multiplying sectional inflow (V+v) by a factor F in the thrust expression.
+() ( )
+
+b rR
+F Cos e f where f 1 /
+2
+,
+21 −
+= −− =
+dT = 4πρrF (V + v)vdr
+ 
+  
+= + −
+
+
+
+
++−
+
+
+
+
+=1
+32
+1
+16 8 16 16
+2
+R
+r
+a
+F
+F
+a
+F
+a
+R
+r
+F
+a
+F
+a
+
+
+
+
+
+Resulting Inflow (for hover):
+For Climb:
+λ = σa
+16F − λc
+2
+2
++ σa
+8F θ r
+R − σa
+16F − λc
+2

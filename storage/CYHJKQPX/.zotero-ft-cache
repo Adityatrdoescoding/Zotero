@@ -1,0 +1,663 @@
+State Space Methods for Flight Vehicles
+AE 695
+Shashi Ranjan Kumar
+Associate Professor Intelligent Systems and Control (ISaC) Lab Department of Aerospace Engineering Indian Institute of Technology Bombay Powai, Mumbai- 400076
+https://www.aero.iitb.ac.in/ ̃shashi R srk@aero.iitb.ac.in
+
+
+Linear Dependence: Linear Operators
+• Transformation that rotates a point in the geometric plane CCW by 90◦ w.r.t. the origin
+• With {x1, x2} as basis
+y1 = Lx1 = [x1 x2
+]
+[0
+1
+]
+y2 = Lx2 = [x1 x2
+]
+[−1 0
+]
+• Representation of the operator L w.r.t. the basis {x1, x2}
+A=
+[0 −1 10
+]
+• Representation of x3 w.r.t. the basis {x1, x2}
+x3 =
+[1.5 0.5
+]
+• What would be its representation y3 after the rotation?
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 1 / 24
+
+
+Linear Operators: Examples
+• Representation of y3 w.r.t. the basis {x1, x2}
+y3 =
+[0 −1 10
+] [1.5 0.5
+]
+=
+[−0.5 1.5
+]
+y3 = [x1 x2
+]
+[−0.5 1.5
+]
+• What would happen if {x1, x3} is chosen as the basis?
+y1 = Lx1 = [x1 x3
+]
+[−3 2
+]
+y3 = Lx3 = [x1 x3
+]
+[−5 3
+]
+• Representation of operator w.r.t. the basis {x1, x3}
+A=
+[−3 −5 23
+]
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 2 / 24
+
+
+Linear Operators: Examples
+• Matrix A: Can be considered as a linear operator that maps (F n, F ) to itself.
+• For the basis {ni}, the representation of linear operator A is A itself.
+• For the basis {qi}, the representation of linear operator A is
+A ̄ = Q−1AQ, Q = [q1 q2 · · · qn
+]
+• Consider the matrix given by
+L=A=
+
+
+3 2 −1 −2 1 0 431
+
+,b =
+
+
+0 0 1
+
+
+Ab =
+
+
+−1 0 1
+
+ , A2b =
+
+
+−4 2 −3
+
+ , A3b =
+
+
+−5 10 −13
+
+
+A3b = 5A2b − 15Ab + 17b
+• As b, Ab, A2b are linearly independent, they can be a basis.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 3 / 24
+
+
+Linear Operators: Examples
+• How to compute the representation of the operator A w.r.t this basis?
+A(b) = [b Ab A2b]
+
+
+0 1 0
+
+
+A(Ab) = [b Ab A2b]
+
+
+0 0 1
+
+
+A(A2b) = [b Ab A2b]
+
+
+17 −15 5
+
+
+• Representation of linear operator A w.r.t. {b, Ab, A2b} as the basis
+A ̄ =
+
+
+0 0 17 1 0 −15 01 5
+
+ = Q−1AQ
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 4 / 24
+
+
+Linear Operators: Examples
+• Assume n × n matrix with real coefficients, and ∃ b s.t. {b, Ab, . . . , An−1b} are linearly independent and
+Anb = −αnb − αn−1Ab − · · · − α1An−1b
+• Representation of matrix A w.r.t. the basis b, Ab, . . . , An−1b
+A ̄ =
+
+     
+0 0 · · · 0 −αn 1 0 · · · 0 −αn−1
+...
+...
+...
+...
+...
+0 0 · · · 0 −α2 0 0 · · · 1 −α1
+
+     
+• A companion form of linear operator
+• Using A ̄ = Q−1AQ, we have
+QA ̄ = AQ =⇒ [q1 q2 · · · qn
+] A ̄ = [Aq1 Aq2 · · · Aqn
+]
+• ith column of A ̄: Representation of Aqi w.r.t. basis q1, q2, q3, . . . , qn
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 5 / 24
+
+
+Systems of Linear Algebraic Equations
+• System of linear algebraic equations
+a11x1 + a12x2 + · · · + a1nxn = y1
+a21x1 + a22x2 + · · · + a2nxn = y2
+·································
+am1x1 + am2x2 + · · · + amnxn = ym
+• Matrix form of equation
+Ax = y
+A=
+
+   
+a11 a12 · · · a1n
+a21 a22 · · · a2n
+...
+...
+...
+...
+am1 am2 · · · amn
+
+   
+, x=
+
+   
+x1
+x2
+...
+xn
+
+   
+, y=
+
+   
+y1
+y2
+...
+ym
+
+   
+• No restrictions on the values of m and n, m < n, m = n, m > n
+• Values of xi, yi, aij ∈ F
+• Domain of linear operator A : (F n, F ) → (F m, F )
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 6 / 24
+
+
+Systems of Linear Algebraic Equations
+• Important questions:
+▲ Existence of a solution and number of solutions
+• What would be the condition on A, y so that ∃ x s.t. Ax = y?
+• How many l.i. vectors x exists such that Ax = y?
+Range of linear operator A
+R(A) = {y ∈ (F m, F )| ∃ x ∈ (F n, F ), y = Ax}
+The range of a linear operator is a subspace of (F m, F ).
+• If y1, y2 ∈ R(A) ∃ x1, x2 ∈ (F n, F ) s.t. y1 = Ax1, y2 = Ax2
+• Claim: For any α1, α2, α1y1 + α2y2 ∈ R(A),
+α1y1 + α2y2 = A(α1x1 + α2x2) =⇒ α1x1 + α2x2 ∈ (F n, F )
+• Thus, the range R(A) is a subspace of (F m, F ).
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 7 / 24
+
+
+Systems of Linear Algebraic Equations
+• If A = [a1 a2 · · · an
+]
+y = x1a1 + x2a2 + · · · + xnan, xi ∈ F
+• R(A): Set of all the possible linear combinations of the columns of A.
+• Dimension of R(A)
+▲ Maximum number of l.i. vectors in R(A) ▲ Maximum number of l.i. columns in A
+Rank of a Matrix ρ(A)
+Maximum number of l.i. columns in matrix A, the dimension of the range space R(A).
+• How to compute the rank of a matrix?
+• Using a sequence of elementary transformations
+• No change in the rank with pre- or post-multiplications by elementary matrices
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 8 / 24
+
+
+Elementary Transformation
+• What do you mean by elementary transformation or operations?
+▲ Multiplying a row or a column by a nonzero real or complex number ▲ Interchanging two rows or two columns ▲ Adding the product of one row or column and a number to another row or column
+• How to achieve these operations through elementary matrices?
+• Using elementary matrices, with c ̸= 0 ∈ R, C
+E1 =
+
+    
+10000 01000 00100 000c0 00001
+
+    
+, E2 =
+
+    
+10000 00001 00100 00010 01000
+
+    
+, E3 =
+
+    
+10000 01000 00100 0d010 00001
+
+    
+E−1
+1=
+
+    
+100 0 0 010 0 0 001 0 0 0 0 0 1/c 0 000 0 1
+
+    
+, E−1
+2 = E2, E−1
+3=
+
+    
+1 0 000 0 1 000 0 0 100 0 −d 0 1 0 0 0 001
+
+    
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 9 / 24
+
+
+Gaussian Elimination
+• How to perform the Gaussian elimination on the matrix A?
+A=
+
+   
+a11 a12 a13 · · · a1m
+a21 a22 a23 · · · a2m
+...
+...
+...
+...
+...
+an1 an2 an3 · · · anm
+
+   
+• Using elementary matrices, with ei1 = − ai1
+a11
+, with a11 ̸= 0
+K1A =
+
+     
+1 0 0 ··· 0 e21 1 0 · · · 0 e31 0 1 0 0
+...
+...
+...
+...
+...
+en1 0 0 0 1
+
+     
+A=
+
+     
+a11 a12 a13 · · · a1m
+0 a1
+22 a1
+23 · · · a1
+2m
+0 a1
+32 a1
+33 · · · a1
+3m
+...
+...
+...
+...
+...
+0 a1
+n2 a1
+n3 · · · a1
+nm
+
+     
+• K1: Product of n − 1 elementary matrices of the form E3
+• Entries of resultant matrix
+a1
+ij = aij + ei1a1j
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 10 / 24
+
+
+Systems of Linear Algebraic Equations
+• For a1
+22 ̸= 0, with ei2 = − a1
+i2
+a1
+22
+, with a1
+22 ̸= 0,
+K2K1A =
+
+     
+1 0 0 ··· 0 0 1 0 ··· 0 0 e32 1 0 0
+...
+...
+...
+...
+...
+0 en2 0 0 1
+
+     
+K1A =
+
+     
+a11 a12 a13 · · · a1m
+0 a1
+22 a1
+23 · · · a1
+2m
+0 0 a2
+33 · · · a2
+3m
+...
+...
+...
+...
+...
+0 0 a2
+n3 · · · a2
+nm
+
+     
+• K2: Product of elementary matrices
+a2
+ij = a1
+ij + e1
+i2 a1
+2j
+• Upper right triangular matrices using Gaussian elimination
+• Under what condition will Gaussian elimination be unstable?
+• How to avoid such issues?
+• Gaussian elimination with partial pivoting or complete pivoting methods
+• How to perform Gaussian elimination with these methods?
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 11 / 24
+
+
+Gaussian Elimination using Partial or Complete Pivoting
+• Gaussian elimination with partial pivoting:
+▶ Search the element with the largest absolute value in the first column ▶ Interchange this row with the first row using elementary transformation ▶ Carry out the elimination of the first column ▶ Search for the largest element in the second column of K1A, excluding first element and bring to a1
+22 position ▶ Process is more stable as |eij | ≤ 1
+• Gaussian elimination with complete pivoting:
+▶ Use of both elementary row and column operations ▶ Search the element with the largest absolute value among all elements ▶ Move the element to the first column by the elementary column operation and then to the first row by elementary row operation ▶ Carry out the elimination of the first column ▶ Repeat the process with the remaining matrix ▶ Process is more stable than partial pivoting, but at the cost of time-consuming processing
+• Partial pivoting more popular w.r.t. overall performance (efficiency, accuracy, reliability, generality, ease of use, etc)
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 12 / 24
+
+
+Rank of Matrix
+• Upper triangular matrix: Rank, same as number of nonzero rows
+• For a matrix Am×n,
+rank(A) = No. of l.i. columns = No. of l.i. rows ≤ (min(n, m))
+• Rank of a matrix: Largest order of non-vanishing minors of a matrix
+• A matrix is of rank k iff there is at least one minor of order k that does not vanish and every minor of order higher than k vanishes.
+• A square matrix is of full rank iff its determinant is nonzero.
+• A square matrix is nonsingular iff all the rows and columns are linearly independent.
+• Examples:
+A=
+
+
+0112 1234 2020
+
+, B =
+[1 2 0ε
+]
+• Second matrix is ambiguous in some sense, need to check the source of ε
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 13 / 24
+
+
+Solution of Linear Equations
+Consider the matrix equation Ax = y, A : (F n, F ) → (F m, F ).
+• Given A and y in (F m, F ), there exists a vector x such that Ax = y iff the vector y is an element of R(A), ρ(A) = ρ([A : y]).
+• Given A, for every y in (F m, F ), there exists a vector x such that Ax = y iff R(A) = (F m, F ) or equivalently, ρ(A) = m.
+• Follows from the definition of range space.
+• If y ∈/ R(A), Ax = y has no solution and is said to be inconsistent.
+• ρ(A): Dimension of R(A)
+• Since R(A) is subspace of (F m, F ), ρ(A) = m =⇒ R(A) = (F m, F ).
+• If R(A) = (F m, F ), then for every y ∈ (F m, F ), ∃ x s.t. Ax = y.
+• If ρ(A) < m, ∃ at least one nonzero vector y ∈ (F m, F ), but y ∈/ R(A) for which there exist no x s.t. Ax = y.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 14 / 24
+
+
+Full Row/Column Rank and Null Space
+• Full row rank: If all rows of the matrix m × n are l.i.
+• Full column rank: If all columns of the m × n matrix are l.i.
+Null Space of linear operator N (A)
+All the elements x ∈ (F n, F ) for which Ax = 0. The dimension of null space is the nullity of A, denoted by ν(A).
+• Left and right null spaces: yA = 0 or Ax = 0
+• N (A) is a linear space.
+• If ν(A) = 0, N (A) has only a zero vector and Ax = 0 has only zero vector as solution.
+• If ν(A) = k, N (A) then Ax = 0 has k l.i. vector solutions.
+• Null space and range space are the subspaces of (F n, F ) and (F m, F ), respectively.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 15 / 24
+
+
+Example
+• Given matrix
+A=
+
+
+0112 1234 2020
+
+
+• Last 2 columns l.d. on first two columns, ρ(A) = 2
+• With x = [x1 x2 x3 x4]⊤, Ax = 0
+x2 + x3 + 2x4 = 0, x1 + 2x2 + 3x3 + 4x4 = 0, 2x1 + 2x3 = 0
+x=
+
+  
+1 1 −1 0
+
+  
+,
+
+  
+0 2 0 −1
+
+  
+• Two l.i. vectors in null space, thus the nullity of A= 2
+• Rank + Nullity = Number of columns
+• What about the matrix given below?
+A=
+
+
+0 1 1 2 −1 1 2 3 4 −1 2020 2
+
+
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 16 / 24
+
+
+Example
+• Last 3 columns l.d. on first two columns, ρ(A) = 2 • With x = [x1 x2 x3 x4 x5]′,
+Ax =
+
+
+0 1 2
+
+ x1 +
+
+
+1 2 0
+
+ x2 +
+
+
+1 3 2
+
+ x3 +
+
+
+2 4 0
+
+ x4 +
+
+
+−1 −1 2
+
+ x5
+Ax =
+
+
+0 1 2
+
+ (x1 + x3 + x5) +
+
+
+1 2 0
+
+ (x2 + x3 + 2x4 − x5)
+• Due to linear independence nature of vectors, Ax = 0 implies
+x1 + x3 + x5 = 0, x2 + x3 + 2x4 − x5 = 0
+• Number of equations: 2; Unknown variables in solutions: 5 • Arbitrary assigned components: 3
+x=
+
+    
+−1 −1 1 0 0
+
+    
+,
+
+    
+0 −2 0 1 0
+
+    
+,
+
+    
+−1 1 0 0 1
+
+    
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 17 / 24
+
+
+Rank-Nullity Theorem
+Rank-Nullity Theorem
+For a matrix having the dimension of m × n,
+ρ(A) + ν(A) = n
+• Number of l.i. vector solutions of Ax = 0 is equal to n − ρ(A), where n denotes number of columns of A.
+• Trivial solution only if ρ = n .
+A=
+
+  
+1000 0100 0000 0001
+
+  
+,B=
+
+
+1 1 23 3 4 −1 2 −1 −2 5 4
+
+, C =
+
+
+13 4 3 3 9 12 9 13 4 1
+
+
+• Using elementary transformations, matrices B and C can be reduced to
+
+
+1000 0100 0000
+
+
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 18 / 24
+
+
+Sylvester’s Inequality
+Let matrices A and B be q × n and n × p with coefficients in same field.
+ρ(A) + ρ(B) − n ≤ ρ(AB) ≤ min(ρ(A), ρ(B))
+p
+q
+η(B)
+d n
+R(AB)
+R(A) ρ(B)
+ν(B) η(A) ν(A)
+ρ(A) R(B)
+(F p, F ) (F n, F )
+B A (F q, F )
+• Composite matrix: Successive application of two linear transformations
+• Domain of AB: R(B), Range of AB: Subspace of R(A)
+ρ(AB) ≤ min(ρ(A), ρ(B))
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 19 / 24
+
+
+Sylvester’s Inequality: Additional Insights
+• With d as the dimension of intersection of R(B) and N (A)
+ρ(AB) = ρ(B) − d
+dim N (A) = n − ρ(A) =⇒ d ≤ n − ρ(A)
+• Combining the above results
+d = ρ(B) − ρ(AB) ≤ n − ρ(A) =⇒ ρ(AB) ≥ ρ(B) − n + ρ(A)
+If the matrix B is an n × n matrix and nonsingular,
+ρ(A) + ρ(B) − n = ρ(A) ≤ ρ(AB) ≤ min(ρ(A), n) = ρ(A)
+For a matrix A with dimension m × n, ρ(AC) = ρ(A), ρ(DA) = ρ(A) for any n × n and m × m nonsingular matrices C and D.
+• Rank of a matrix does not change with pre- or post-multiplication by a nonsingular matrix.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 20 / 24
+
+
+Matrix Properties
+Let A be the m × n matrix with the coefficients in a field and A⋆ be its complex conjugate transpose.
+• ρ(A) = n iff ρ(A⋆A) = n, equivalently, det(A⋆A) ̸= 0.
+• ρ(A) = m iff ρ(AA⋆) = m, equivalently, det(AA⋆) ̸= 0
+• Sufficiency: To show ρ(A⋆A) = n =⇒ ρ(A) = n
+Aα = 0 =⇒ A⋆Aα = 0 =⇒ α = 0 =⇒ ρ(A) = n
+• Necessity: To show ρ(A) = n =⇒ ρ(A⋆A) = n
+A⋆Aα = 0 =⇒ α⋆A⋆Aα = 0
+• With Aα = [β1, β2, · · · , βn]⊤, α⋆A⋆Aα = ∑n
+i=1 |βi|2
+α⋆A⋆Aα = 0 =⇒ βi = 0 =⇒ Aα = 0
+• As ρ(A) = n, Aα = 0 =⇒ α = 0, thus ρ(A⋆A) = n
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 21 / 24
+
+
+Eigenvalues and Eigenvectors
+Let A be a linear operator that maps (Cn, C) into itself. A scalar λ ∈ C is called an eigenvalue of A if there exists a nonzero vector x s.t, Ax = λx. Any nonzero x satisfying Ax = λx is called an eigenvector of A, associated with the eigenvalue λ.
+Ax = λx =⇒ (A − λI) x = 0
+• For a nontrivial solution, det(A − λI) = 0.
+• λ is an eigenvalue iff it is a solution of the characteristic polynomial
+∆(λ) ≜ det(A − λI) = 0
+• Number of eigenvalues same as the degree, n, of ∆(λ)
+• Eigenvalues are not necessarily distinct.
+• Right and left eigenvectors: Ax = λx, yA = λy
+• Consideration of complex field
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 22 / 24
+
+
+Eigenvalues and Eigenvectors
+• Consider the matrix mapping (R2, R) to itself.
+A=
+[1 −1 2 −1
+]
+• Can we have the same results for eigenvalue and eigenvector definition if λ ∈ R?
+• For nontrivial solution of Ax = λx, det(λI − A)=0
+|λI − A| =
+∣ ∣ ∣ ∣
+[λ − 1 1 −2 λ + 1
+]∣ ∣ ∣ ∣
+= λ2 + 1 = 0
+• No real-values solution, thus no real eigenvalue.
+• With the assumption of linear operator over (C2, C)
+λ = ±i
+• Eigenvector with λ1 = ±i
+(A − λ1I)v1 =
+[1 ∓ i −1 2 −1 ∓ i
+] [v11
+v21
+]
+= 0 =⇒ v1 =
+[1
+1∓i
+]
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 23 / 24
+
+
+Reference
+Reference
+▶ Chen, Chi-Tsong, “Linear System Theory and Design”, Oxford University Press, 3rd Edition, 1999.
+Shashi Ranjan Kumar (IITB) AE695 : State Space Methods for Flight Vehicles Mathematical Preliminaries Lecture 3 24 / 24

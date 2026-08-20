@@ -1,0 +1,3201 @@
+Introduction to Fluid Mechanics
+and Fluid Machines
+Third Edition
+
+
+INTRODUCTION
+TO FLUID MECHANICS
+AND FLUID MACHINES
+THIRD EDITION
+S K Som Professor Department of Mechanical Engineering Indian Institute of Technology Kharagpur
+Gautam Biswas
+Director and J C Bose National Fellow CSIR-Central Mechanical Engineering Research Institute Durgapur and Professor Department of Mechanical Engineering Indian Institute of Technology Kanpur
+Suman Chakraborty Professor Department of Mechanical Engineering Indian Institute of Technology Kharagpur
+Tata McGraw Hill Education Private Limited
+NEW DELHI
+McGraw-Hill Offices
+New Delhi New York St Louis San Francisco Auckland Bogotá Caracas Kuala Lumpur Lisbon London Madrid Mexico City Milan Montreal San Juan Santiago Singapore Sydney Tokyo Toronto
+
+
+Published by Tata McGraw Hill Education Private Limited, 7 West Patel Nagar, New Delhi 110 008.
+Introduction to Fluid Mechanics and Fluid Machines, 3e
+Copyright © 2012, 2008, 2004 by Tata McGraw Hill Education Private Limited. No part of this publication may be reproduced or distributed in any form or by any means, electronic, mechanical, photocopying, recording, or otherwise or stored in a database or retrieval system without the prior written permission of the author. The program listings (if any) may be entered, stored and executed in a computer system, but they may not be reproduced for publication.
+This edition can be exported from India only by the publishers, Tata McGraw Hill Education Private Limited
+ISBN (13): 978-0-071329194 ISBN (10): 0-07-132919-6
+Vice President and Managing Director—MHE: Asia-Pacific Region: Ajay Shukla
+Head—Higher Education Publishing and Marketing: Vibha Mahajan
+Publishing Manager (SEM & Tech. Ed.): Shalini Jha Asst Development Editor: Harsha Singh Sr Copy Editor: Nimisha Kapoor
+Sr Production Manager: Satinder S Baveja Asst Manager—Production: Anjali Razdan
+Marketing Manager Higher—Education: Vijay Sarathi Sr Product Specialist: (SEM & Tech Ed.): John Mathews
+General Manager—Production: Rajender P Ghansela Assistant General Manager—Production: B L Dogra
+Information contained in this work has been obtained by Tata McGraw-Hill, from sources believed to be reliable. However, neither Tata McGraw-Hill nor its authors guarantee the accuracy or completeness of any information published herein, and neither Tata McGrawHill nor its authors shall be responsible for any errors, omissions, or damages arising out of use of this information. This work is published with the understanding that Tata McGraw-Hill and its authors are supplying information but are not attempting to render engineering or other professional services. If such services are required, the assistance of an appropriate professional should be sought.
+Typeset at Anvi Composers, A1 B Block, Paschim Vihar, New Delhi 110063 and printed Adarsh Printers, C-50-51, Mohan Park, Naveen Shahdara, Delhi – 110 032
+Cover Printer: SDR Printers
+RBXYCRBGRYYBC
+
+
+Preface xi
+11 IInnttrroodduuccttiioonn aanndd FFuunnddaammeennttaall CCoonncceeppttss 11
+1.1 A Broad Perspective of Fluid Mechanics 1 1.2 Definition of a Fluid 1 1.3 Distinction between a Solid and a Fluid 2 1.4 Macroscopic and Microscopic Points of View: the Concept of a Continuum 3 1.5 Concepts of Pressure and Stress in a Fluid 5 1.6 Fluid Properties 13 Summary 45 Exercises 47
+22 FFlluuiiddss UUnnddeerr RReesstt//RRiiggiidd BBooddyy MMoottiioonn 5500
+2.1 Introduction 50 2.2 Fundamental Equation of Fluids at Rest 50 2.3 Units and Scales of Pressure Measurement 56 2.4 Barometer 57 2.5 Manometers 59 2.6 Hydrostatic Thrusts on Submerged Surfaces 66 2.7 Buoyancy 79 2.8 Stability of Unconstrained Bodies in Fluids 81 2.9 Fluids under Rigid Body Motion (Relative Equilibrium) 96 Summary 107 Exercises 108
+33 KKiinneemmaattiiccss ooff FFlluuiidd FFllooww 111155
+3.1 Introduction 115 3.2 Scalar and Vector Fields 115 3.3 Flow Field and Description of Fluid Motion 116 3.4 Conservation of Mass for Fluid Flow 152 3.5 Stream Function 164 3.6 Velocity Potential 171 Summary 173 Exercises 175
+Contents
+
+
+44 DDyynnaammiiccss ooff IInnvviisscciidd FFlloowwss:: FFuunnddaammeennttaallss aanndd
+Appplliiccattionnss 117799
+4.1 Introduction 179 4.2 Equation of Motion for Inviscid Flow in Cartesian Coordinates 179 4.3 Pressure Differential between Two Points in an Inviscid Flow Field 181 4.4 Euler’s Equation of Motion in Streamline Coordinate System 190 4.5 Principle of Mechanical Energy Conservation and its Applications to Vortex Flows 199 4.6 Principles of a Hydraulic Siphon: Application of Bernoulli’s Equation 212 4.7 Application of Bernoulli’s Equation for Measurement of Flow Rate through Pipes 217 4.8 Some Practical Consideration on Flows through Orifices and Mouthpieces 231 Summary 254 Exercises 255
+55 IInntteeggrraall FFoorrmmss ooff CCoonnsseerrvvaattiioonn EEqquuaattiioonnss 226622
+5.1 Reynolds Transport Theorem (RTT) 262 Summary 301 Exercises 302
+66 PPrriinncciipplleess ooff PPhhyyssiiccaall SSiimmiillaarriittyy aanndd DDiimmeennssiioonnaall Annallyyssiss 331111
+6.1 Introduction 311 6.2 Concept and Types of Physical Similarity 312 6.3 The Application of Dynamic Similarity—Dimensional Analysis 319 Summary 343 Reference 344 Exercises 344
+77 FFllooww ooff IIddeeaall FFlluuiiddss 334477
+7.1 Introduction 347 7.2 Elementary Flows in a Two-Dimensional Plane 348 7.3 Superposition of Elementary Flows 359 7.4 Aerofoil Theory 377 Summary 382 References 382 Exercises 382
+vi Contents
+
+
+88 DDyynnaammiiccss ooff VViissccoouuss FFlloowwss 338866
+8.1 Introduction 386 8.2 Conservation of Linear Momentum in Differential Form 386 8.3 Some Exact Solutions of Navier Stokes Equation for Steady Incompressible Flows 399 8.4 Low Reynolds Number Flow 429 Summary 442 Exercises 442
+99 LLaammiinnaarr BBoouunnddaarryy LLaayyeerrss 444477
+9.1 Introduction 447 9.2 Boundary Layer Equations 447 9.3 Blasius Flow Over a Flat Plate 452 9.4 Wall Shear and Boundary Layer Thickness 458 9.5 Momentum-Integral Equations for Boundary Layer 461 9.6 Separation of Boundary Layer 462 9.7 Karman–Pohlhausen Approximate Method for Solution of Momentum Integral Equation over a Flat Plate 466 9.8 Integral Method for Non-Zero Pressure Gradient Flows 474 9.9 Entry Flow in a Duct 477 9.10 Control of Boundary Layer Separation 478 9.11 Mechanics of Boundary Layer Transition 479 9.12 Several Events of Transition 481 Summary 482 References 483 Exercises 483
+10 Turrbbuulleenntt FFllooww 448899
+10.1 Introduction 489 10.2 Characteristics of Turbulent Flow 489 10.3 Laminar-Turbulent Transition 491 10.4 Correlation Functions 492 10.5 Mean Motion and Fluctuations 494 10.6 Derivation of Governing Equations for Turbulent Flow 497 10.7 Turbulent Boundary Layer Equations 501 10.8 Boundary Conditions 502 10.9 Shear Stress Models 503 10.10 Universal Velocity Distribution Law and Friction Factor in Duct Flows for very Large Reynolds Numbers 507 10.11 Fully Developed Turbulent Flow in a Pipe for Moderate Reynolds Numbers 514 10.12 Skin Friction Coefficient for Boundary Layers on a Flat Plate 517 Summary 522 References 524 Exercises 524
+Contents vii
+
+
+11 Viisscouss FFlloowwss tthhrroouugghh PPiippeess 552277
+11.1 Introduction 527 11.2 Concept of Friction Factor in a Pipe Flow 527 11.3 Variation of Friction Factor 529 11.4 Energy Considerations in Pipe Flow 534 11.5 Losses Due to Geometric Changes 538 11.6 Concept of Flow Potential and Flow Resistance 542 11.7 Flow through Branched Pipes 544 11.8 Flow through Pipes with Side Tappings 565 11.9 Losses in Pipe Bends 566 11.10 Losses in Pipe Fittings 567 11.11 Power Transmission by a Pipeline 570 Summary 572 Exercises 573
+1122 FFlloowwss wwiitthh aa FFrreeee SSuurrffaaccee 557766
+12.1 Introduction 576 12.2 Flow in Open Channels 576 12.3 Flow in Closed Circular Conduits only Partly Full 599 12.4 Hydraulic Jump 601 12.5 Occurrence of Critical Conditions 606 Summary 608 Exercises 609
+13 Applications ooff UUnnsstteeaaddyy FFlloowwss 661122
+13.1 Introduction 612 13.2 Inertia Pressure and Accelerative Head 612 13.3 Establishment of Flow 613 13.4 Oscillation in a U-Tube 617 13.5 Damped Oscillation between Two Reservoirs 621 13.6 Water Hammer 624 Summary 642 Exercises 643
+1144 CCoommpprreessssiibbllee FFllooww 664466
+14.1 Introduction 646 14.2 Thermodynamic Relations of Perfect Gases 647 14.3 Speed of Sound 653 14.4 Pressure Field Due to a Moving Source 655 14.5 Basic Equations for One-Dimensional Flow 657 14.6 Stagnation and Sonic Properties 660 14.7 Normal Shocks 678 14.8 Oblique Shock 687 Summary 690 References 691 Exercises 691
+viii Contents
+
+
+1155 PPrriinncciipplleess ooff FFlluuiidd MMaacchhiinneess 669944
+15.1 Introduction 694 15.2 Classification of Fluid Machines 694 15.3 Rotodynamic Machines 695 15.4 Different Types of Rotodynamic Machines 710 15.5 Reciprocating Pump 765 15.6 Hydraulic System 771 Summary 774 Exercises 776
+1166 CCoommpprreessssoorrss,, FFaannss aanndd BBlloowweerrss 777799
+16.1 Centrifugal Compressors 779 16.2 Axial Flow Compressors 795 16.3 Fans and Blowers 803 Summary 811 References 812 Exercises 812 Index 829
+Contents ix
+
+
+Preface
+The continued use of successive editions of this book by a large number of readers is a testament to the book having core strength in explaining the principles of fluid mechanics. At the suggestions of the publisher, Tata McGraw-Hill, and peer groups, the authors agreed to pen a third edition. The authors of the first two editions, S K Som and G Biswas, are glad to be joined by Prof. S Chakraborty in the authorship of this edition. This edition of the book is rearranged and rejuvenated in such a way that each chapter introduces the topic and then familiarises the readers with all the associated principles and applications in a systematic manner. This edition also provides the reader with a good foundation to understand fluid mechanics and apply that knowledge in the proliferating world of engineering science ranging from micronano-world to the regime of spacecrafts. The book provides overall exposure to the subject, highlighting its importance in creative learning of science and engineering. The book appropriately covers all prerequisites of higher level courses in Aerospace Engineering, Civil Engineering, Chemical Engineering, Mechanical Engineering, Metallurgy and Materials Engineering, Biological Engineering and Applied Mathematics, and it will be especially useful for students of these subjects.
+This new edition has the following salient features:
+∑ Introduction to fundamental concepts through elementary principles of continuum mechanics ∑ A lucid treatment of fundamental interfacial phenomena in fluid mechanics ∑ Thoroughly revised treatment of fundamental equations of conservation which includes both differential and integral approach based on control mass system and control volume formulation ∑ Expanded coverage of Fluid Kinematics with detailed description (both analytical and physical) of irrotational flows, circulation, velocity potential and vortex flows ∑ Momentum conservation theorem in a non-inertial frame of reference, encompassing both rectilinear acceleration and rotational motion, has been derived and discussed in detail using suitable illustrative examples ∑ Complete derivation of the Navier Stokes equation in a concise and lucid manner ∑ Enhanced coverage of Boundary Layer, Turbulent Flows, Unsteady and Compressible Flows ∑ Inclusion of chapter-end summary ∑ Comprehensive selection of solved examples and exercise problems, especially chosen to explain the nuances of basic principles
+
+
+We would like to thank numerous individuals from various colleges, universities and institutes who provided inputs for improvements. We are grateful to Prof. Shaligram Tiwari, Prof. Sarit K Das and Prof. K Arul Prakash of IIT Madras, Prof. Nishith Verma and Prof. P K Panigarhi of IIT Kanpur for their valuable suggestions. Mr Ajoy Kuchlyan of CSIR-CMERI Durgapur has also helped us in miscellaneous ways. We would also like to express our special appreciation for Mr Sukumar Pati, a senior research fellow of IIT Kharagpur, for his indispensable help in checking the technical contents and providing valuable suggestions.
+Finally we are hopeful that this book will help the students to analyse and design various flow systems. We also hope that the book will be a source to learning through reasoning and inference. We cordially welcome suggestions and comments from our readers for further improvements. These can be sent to us at s ksom@mech.iitkgp. ernet.in, gtm@iitk.ac.in, suman@mech.iitkgp.ernet.in
+S K Som G Biswas S Chakraborty Remember to write to us. We look forward to receiving your feedback, comments and ideas to enhance the quality of this book. You can reach us at tmh.elefeedback@ gmail.com. Please mention the title and authors’ name as the subject.
+In case you spot piracy of this book, please do let us know.
+xii Preface
+
+
+Publisher’s Note
+The publishers would like to thank with appreciation the efforts of our reviewers.
+Debasish Roy
+Jadavpur University, Kolkata
+Basudeb Bhattacharya
+Bengal Engineering College and Science University, Shibpur, West Bengal
+A S Dhoble
+Visvesvaraya National Institute of Technology, Nagpur, Maharashtra
+D C Mahale
+B S Deore College of Engineering, Dhule, Maharashtra
+S Jayaraj
+National Institue of Technology Calicut, Kerala
+K R Balasubramanian
+National Institute of Technology Tiruchirappalli, Tamil Nadu
+S Suresh
+Sona College of Technology, Salem, Tamil Nadu
+Shaligram Tiwari
+Indian Institute of Technology Madras, Chennai
+Umamahesh Nanduri
+National Institute of Technology Warangal, Andhra Pradesh
+T P Ashok Babu
+National Institute of Technology Karanataka, Surathkal
+Preface xiii
+
+
+xiv Preface
+
+
+1.1 A BROAD PERSPECTIVE OF FLUID MECHANICS
+Fluid mechanics deals with the behaviour of liquids and gases in rest or in motion. Numerous intriguing questions can be answered using fundamental concepts of fluid mechanics. Some such questions are the following:
+∑ How does a rocket go up?
+∑ How should one design the shape of a car to minimise the wind resistances against its motion? ∑ How does the roughness of a solid body influence its resistance against relative motion with a fluid? ∑ How do insects fly?
+∑ How does blood flow through arteries and veins?
+∑ How are nutrients supplied from the ground up into the tall branches of a tree, against gravity? ∑ How does the human heart act like a pump?
+∑ What are the factors that influence sports ball (such as golf ball or cricket ball) dynamics? ∑ How should one design model airplanes so that results on their testing may be utilised to predict the performance of real prototype aircrafts? ∑ How are ocean currents formed?
+Such a list of questions goes on and on, but one aspect looks obvious–the mechanics of fluids is very interesting, interdisciplinary in appeal, and practical. Scientists and engineers often need to develop a fundamental understanding of this subject, in order to address and tackle challenging problems in real-life design and analysis. The aim of this introductory text is, accordingly, to provide a foundation of the basic principles of fluid mechanics and its applications.
+1.2 DEFINITION OF A FLUID
+A fluid is a substance that deforms continuously when subjected to a tangential or shear stress, however small the shear stress may be. As such, this continuous deformation under the application of shear stress constitutes a flow. For example (Fig.
+1
+INTRODUCTION AND
+FUNDAMENTAL CONCEPTS
+
+
+2 Introduction to Fluid Mechanics and Fluid Machines
+1.1), if a shear stress t is applied at any location in a fluid, the element 011¢ which is
+initially at rest, will move to 022¢, then to 033¢ and to 044¢ and so on. In other words, the tangential stress in a fluid body depends on the velocity of deformation, and vanishes as this velocity approaches zero.
+Fig. 1.1 Shear stress on a fluid body
+1.3 DISTINCTION BETWEEN A SOLID AND A FLUID
+The molecules of a solid are more closely packed as compared to that of a fluid. This may be attributed to the fact that attractive forces between the molecules of a solid are much larger than those of a fluid. A deformable solid body undergoes either a definite (say, a) angular deformation (Fig. 1.2) or breaks completely when shear stress is applied on it. The amount of deformation (denoted by the angle a) is proportional to the magnitude of applied stress up to some limiting condition.
+t
+a Solid
+AB
+a
+Fig. 1.2 Deformation of a solid body
+If this were an element of fluid, there would have been no fixed a even for an infinitesimally small shear stress. Instead, a continuous deformation would have persisted as long as the shear stress was applied. It can be simply said, in other words, that while solids can resist tangential stress under static conditions, fluids can do it only under dynamic situation. For fluids, therefore, the rate of deformation rather than the absolute deformation is a more interesting parameter by itself, since a fluid will any way go on deforming more and more as time progresses, if subjected to a shear stress.
+
+
+Introduction and Fundamental Concepts 3
+In the subsequent section, we will first consider different approaches for analysing the mechanics of fluids, keeping in view the characteristic physical scales that the analyser is interested to address.
+1.4 MACROSCOPIC AND MICROSCOPIC POINTS OF VIEW: THE CONCEPT OF A CONTINUUM
+The most fundamental approach for analysing the mechanical behaviour of a fluidic system may be a ‘deterministic’ molecular approach in which the dynamics of individual molecules is investigated by writing their respective equations of motion. While this is fundamentally appealing and may be suitable for certain cases, several practical constraints also seem to be inevitable. In order to appreciate the underlying consequences, consider the molar volume of a gas at normal temperature and pressure, which, by Avogadro’s hypothesis, contains 6.023 ¥ 1023 number of molecules. To describe motion of each of these molecules, three translational velocity components (along three mutually perpendicular coordinate directions) and three rotational components (along the same coordinate directions as above) need to be specified. Therefore, one has to deal with 6 ¥ 6.023 ¥ 1023 number of equations of motion, even for an elementary molar volume, which is an extremely demanding computational task even today, in spite of the advent of high-speed supercomputers. Hence, from a practical point of view, there must be certain approaches that can reduce the number of variables to a figure that can be handled conveniently for practical computations. In particular, there are two specific approaches that can be introduced in this context. In one approach, we deal with ‘statistically averaged’ behaviour of many molecules constituting the matter under investigation. This is exactly the approach followed in kinetic theories of matter and statistical mechanics, which in general is termed as the ‘microscopic’ point of view, since the primary focus of attention is on the averaged behaviour of individual microscopic constituents of matter. The second approach reduces the number of variables even further, by considering the gross effect of many molecules that can be captured by direct measuring instruments and can be perceived by our senses. Such an approach is the so-called ‘macroscopic’ approach. For a clearer distinction between macroscopic and microscopic approaches, we can refer to a very simple example as follows: When we conceive the term ‘pressure’ of a gas (we will deal with this term more formally later) in the microscopic point of view, it originates out of the rate of change of momentum of molecules as a consequence of a collision. On the other hand, from a macroscopic point of view, we describe the same quantity in terms of time-averaged force over a given area, which can be measured by a pressure gauge. Though the macroscopic approach provides us with a more practical method of analysis, one should not presume that it can give the correct solution in all situations. In order to assess the underlying implications, let us consider certain aggregations of molecules, such as a set of widely spaced molecules for a gas and a set of closely spaced molecules for a liquid. If we consider a very small elementary volume within the medium, then numerous molecules may come into it or move out of it during some
+
+
+4 Introduction to Fluid Mechanics and Fluid Machines
+specified interval of time. For someone interested in calculating density of the medium, it may apparently be sufficient to calculate the number of molecules (n) in that elementary volume, and compute a ‘locally averaged’ density based on that information. However, the number of molecules residing over that elemental volume at any instant is rather uncertain. Now, if that elemental volume is too small, then the number of molecules residing in that volume may be very few, and hence, even an uncertainty in a few number of molecules residing in that volume may result in serious uncertainties of the computed density based on that information. On the other hand, if that elemental volume is sufficiently large (say, the characteristic linear dimension of the volume is significantly large in comparison to the mean free path of the molecules, the later being nothing but the distance traversed by a molecule between two successive collisions), then the number of molecules contained in that volume may be large enough, so that it hardly matters whether there is an uncertainty over a few number of molecules contained in that volume. Therefore, for each situation, there is a limiting volume, above which we can treat the substance as being a continuous medium without any significant uncertainty in prediction of the averaged behaviour of the molecules constituting the medium (However, the chosen elemental volume should not be too large either, in which case we shall not be able to capture the local variation of properties). Such a medium is known as a continuum (continuous medium), which basically implies that variation of properties within the medium is smooth enough (i.e., randomness due to uncertainties in molecular behaviour is virtually ruled out) so that differential calculus can be used to analyse the averaged physical behaviour of the medium mathematically, without showing any additional concern on the behaviour of individual molecules. Therefore, validity of continuum assumption is a basic prerequisite to the validity of the macroscopic point of view. In essence, the macroscopic point of view gives a direct approach of analysis if (i) there is a large number of molecules and (ii) the dimensions under consideration are extremely large as compared to the dimensions in atomic/ molecular scale (typically, the ‘mean free path’). This approach, however, fails, when the mean free path approaches the characteristic linear dimension (the so-called ‘length scale’) of the system, such as for the flow of rarefied gases at low pressure (i.e., high vacuum). The microscopic approach turns out to be essential for addressing such specific situations. It can be noted here that in the present text, we will present the subject matter primarily from a macroscopic point of view. In the context of the use of the microscopic description of matter, it may be instructive to look into some specific contexts in which employment of such approaches may become inevitable. To give the issue a technological perspective, one may refer to micro electromechanical systems (or MEMS)-based appliances, which find their applications in a wide variety of emerging technologies, ranging from microactuators, microsensors, microreactors to thermo-mechanical data storage systems. In such devices the flow physics may be faceted by the fact that the classical continuum hypothesis may cease to work as the distance traversed by molecules between successive collisions (i.e., the mean free path, l) becomes comparable with the characteristic length scale of the system (L) over which characteristic changes in the flow are expected to occur. The ratio of these two quantities, known as the
+
+
+Introduction and Fundamental Concepts 5
+Knudsen number (Kn = l/L), is an indicator of the degree of rarefaction of the system, which determines the extent of deviation from a possible continuum behaviour. For 0 < Kn < 0.01, the flow domain can be treated as a continuum (see Fig. 1.3), in which the continuum equations with the classical boundary conditions of no relative slip between the fluid and the solid boundary remains applicable (This is known as noslip boundary condition, which we will discuss in detail in Subsection 1.6.4.1). On the other extreme, when Kn > 10, the flow becomes free molecular in nature, because of negligible molecular collisions. The range of Kn spanning from 0.01 to 0.1 is known as the slip flow regime, over which the no-slip boundary condition becomes invalid, although continuum conservation equations can still be used for characterising the bulk flow. However, over the Kn range of 0.1 to 10 (the so-called transitional regime), the continuum hypothesis progressively ceases to work altogether, thereby necessitating a shift of paradigm from the continuum-based analysis to particlebased analysis (following microscopic point of view) for this range of Kn and beyond.
+Kn = 0.01 0.1 10
+Continuum flow Slip flow Free molecular flow
+Transition regime
+Fig. 1.3 Flow regimes for gases
+In the subsequent discussions, we will consider that the range of Kn is such that the continuum hypothesis is valid. Accordingly, we will first develop a formalism to describe the state of stress in a fluid medium considering the macroscopic viewpoint.
+1.5 CONCEPTS OF PRESSURE AND STRESS IN A FLUID
+As discussed earlier, a fluid is basically a substance that undergoes continuous deformation when subjected to a shear (tangential), no matter how small the shear stress is. The fluid moves and deforms continuously as long as the shear stress is applied. Therefore, fluid at rest must be in a state of zero shear stress, a state often called ‘hydrostatic state of stress’. It has to be noted here that the hydrostatic state of stress basically originates out of the physical quantity known as pressure (p), which acts equally from all directions, and is inherently compressive in sense. At this juncture, it is important to distinguish between two frequently confused terms, namely, pressure and stress. Towards that, we first develop the basic concept of stress at a point in a fluid. Consider an arbitrary volume of a fluid, which can be subjected to basically two types of forces, namely, (i) surface forces (i.e., forces that act at surfaces and are proportional to the surface area) and (ii) body forces (i.e., forces acting throughout the volume of the fluid). Typical examples of surface forces and body forces in a fluid are forces due to pressure and gravity, respectively. Fur
+
+
+6 Introduction to Fluid Mechanics and Fluid Machines
+ther, assume that the fluid volume element occupies a surface area S. Forces acting on surface of this element may be due to interactions from surrounding fluid elements or a solid boundary in contact. Let ‘A ’ be any closed surface within the volume, as depicted in Fig. 1.4. Also, let dA be an infinitesimal area segment of the surface,
+dA
+^n
+A
+S
+Fig. 1.4 Definition of an infinitesimally small area element
+having a unit outward normal vector nˆ . Assume d F as the force exerted by the positive side (i.e., exterior of dA in the direction of nˆ ) on the negative (inner) side of the infinitesimal area dA . Note that d F depends on the location of the area dA , magnitude of the area dA and orientation of the area dA (specified by the vector nˆ ). Based on this information, we can define a quantity called traction vector as
+0
+n
+A
+F dF
+T Lt A dA
+d
+d d
+Æ
+= = . Physically, T n is the force per unit area outward at a point on
+an elemental surface with outward direction normal nˆ ; the force being exerted by the material located on the positive side of the area by that located on the negative side of the area.
+Let n
+Tj be the j th component of the vector T n (note that j = 1 means component
+along x, j = 2 means component along y, and j = 3 means component along z, in a
+Cartesian indexing system). Further, we define a notation i
+ij Tj
+t ∫ , only for special
+cases in which the directions i and j correspond to directions conforming the Cartesian coordinate axes. This is known as the Cartesian index notation and the
+components tij are known as the Cartesian stress tensor components. Here tij
+represents the j th component of the traction vector on a plane whose outward normal is parallel to the ith direction. Note that each of the indices i and j may vary between
+1 to 3. Some alternative notations are also followed in many texts, such as s x = t11 ,
+s y = t 22 , s z = t 33 , t xy = t12 , t yx = t 21 , t xz = t13 , t zx = t 31 , t yz = t 23 , t zy = t32 .
+For an illustration of the notation presented above, one may refer to Fig. 1.5, in which
+
+
+Introduction and Fundamental Concepts 7
+the tij components are shown for the top, bottom and the two side faces for a
+rectangular-parallelepiped shaped element. Referring to Fig. 1.6, for the right-side
+face, outward normal vector is directed along x, and hence the index i = 1 for all tij’s
+acting on that face. The other index j signifies the direction of action of the stress component. For instance, j = 1 means that it acts along the x direction, j = 2 means it acts along the y direction, and j = 3 means it acts along the z direction. One can easily observe that t11 acts normal to the surface under consideration (right face), and is therefore termed as a ‘normal component of stress’, whereas t12 and t13, for example, act tangential to the surface under consideration, and are therefore termed as ‘shear components of stress’. On the left-side face, the positive senses of action of these components are assumed to be opposite to that for the right face, since outward normal vector for the left face is directed along the negative x direction. More precisely, we develop our sign convention such that we take positive sense of tij in the positive j direction, in case the outward normal vector for the surface is oriented along the positive i direction. Accordingly, we take positive sense of tij in the negative j direction, in case the outward normal vector for the surface is oriented along the negative i direction. For example, one can see that a positive sense of t11 is directed along the negative x1, direction on the left face of the parallelepiped depicted in Fig. 1.5, since that face itself has an outward normal directed along the negative x1 direction. For the same reason, the positive sense of t12 is directed along the negative x2 direction of the same face and similarly for t13.
+y
+x
+z
+t22
+t21 t12
+t13
+t11
+t23
+t22
+t21
+t12
+t11
+t13 t23
+Fig. 1.5 Components of the stress tensor demonstrated in a cuboid
+*Next, we will try to utilise the concept developed so far to express traction vector on an arbitrarily oriented surface in terms of the stress components. For that purpose, consider a infinitesimal tetrahedral fluid element formed by three surfaces dS1, dS2, and dS3, such that dS1 is parallel to the y z plane, dS2 is parallel to the x z plane and dS3
+*This portion may be omitted without loss of continuity
+
+
+8 Introduction to Fluid Mechanics and Fluid Machines
+is parallel to the x-y plane, and a surface dS (surface ABC) whose outward unit normal
+vector is nˆ (refer to Fig. 1.6). Let T n be the traction vector on the surface dS. Also, let h be the perpendicular distance from the vertex O to the surface dS. It is apparent that dS1 is nothing but the projection of dS on the y-z plane. Now, the angle between dS1 and dS (say, q) is basically the angle between the directions of their respective
+normals, i.e., angle between unit vectors iˆ and nˆ (where 1 2 3 ˆ
+ˆˆ
+nˆ = n i + n j + n k , in terms
+of its components, i.e., ni represents the component of vector nˆ along the ith direction). Therefore, from the definition of dot product of two vectors we have,
+ˆˆ
+ˆˆ
+i .n = i n cosq . Now, since iˆ = nˆ = 1 , we have 1
+ˆˆ
+cosq = i.n = n (using the compo
+nents of the vector nˆ ). Thus, 1 1
+cos
+dS = dS q = dSn . Similarly, 2 2
+dS = dSn , and
+33
+dS = dSn . Also, volume of the element is given by 1
+3
+dV = ¥ h ¥ dS (recall formula
+for volume of a tetrahedron). With this information, let us now try and apply Newton’s 2nd law of motion on the fluid element for motion along the x direction. For that purpose, we first identify forces on each of the surfaces along the x direction. For the surface dS1, the outward normal vector is along the negative x direction, and therefore
+the corresponding force is -t11dS1 (we are neglecting a small variation in t11 between
+the point O and any other point on the surface dS, which is perfectly legitimate as h
+Æ 0). Similarly, the force on dS2 along the x direction is 21 2
+-t dS (the minus sign
+originates out of the fact that outward normal to dS2 is directed along the negative
+B
+y
+dS3
+A
+C z
+x
+dS1
+dS2
+O
+Fig. 1.6 A tetrahedral element of fluid
+y direction) and the force acting on dS3 along the x direction is 31 3
+-t dS (the minus
+sign originates out of the fact that outward normal to dS3 is directed along the
+
+
+Introduction and Fundamental Concepts 9
+negative z direction). Also, the force acting on dS along the x direction is 1
+T ndS .
+Therefore, the net force acting on the element along x direction is given by
+Fx =
+Â
+Net surface force along x + Net body force along x
+=( )
+11 1 21 2 31 3 1 1
+1
+3
+n
+dS dS dS T dS b h dS
+tt t Ê ˆ
+- - - + + ¥¥
+Á ̃
+Ë  ̄ (1.1)
+where b1 is the body force per unit volume. Now, if r be the density of the element
+of mass dm, then 1
+3
+dm = r ¥ ¥ h ¥ dS . Also, as per Newton’s 2nd law of motion,
+( 1)
+Fx dm a
+=
+Â
+, where a1 is acceleration of the element along x. Substituting
+11
+dS = dSn , 2 2
+dS = dSn , 3 3
+dS = dSn , we have
+()
+11 1 21 2 31 3 1 1 1
+33
+n hh
+n n nT b a
+tt t r
+- - - + + = (1.2)
+Finally, since hÆ0 (we need to evaluate traction vector at a point O, and therefore we need to shrink the tetrahedron to virtually a single point in the limiting sense), we have
+3
+1 11 1 21 2 31 3 1 1
+n
+jj j
+T nn n n
+tt t t =
+= + + = Â (1.3)
+Identically, for any general coordinate direction i (i = 1, 2 or 3)
+3
+1
+n
+i ji j j
+Tn
+t =
+= Â (1.4)
+The above result is an outcome of the so-called Cauchy’s theorem relating trac
+tion vector components acting on a plane having unit normal vector nˆ to Cartesian
+stress components tij . The above expression may also be conveniently written in
+an equivalent matrix form as
+=
+1 11 12 13 1
+2 21 22 23 2
+31 32 33 3
+3
+( ˆ)
+( n)
+n
+n
+n
+unit
+stress
+traction normal
+com ponents
+vector vector n
+T
+Tn
+Tn
+n
+T
+ttt tt t
+ttt
+È  ̆ È  ̆È  ̆
+Í  ̇ Í  ̇Í  ̇
+=
+Í  ̇ Í  ̇Í  ̇
+Í  ̇ Í  ̇Í  ̇
+Î  ̊Î  ̊
+Í ̇
+Î  ̊ 1442443
+(1.5)
+We can, therefore, see that the Cartesian components of stress tensor, altogether,
+map a vector nˆ into another vector T n . Therefore, from a fundamental mathematical definition which states that the linear transformation that maps a vector into a vector is nothing but a second order tensor, we can conclude that stress is a
+
+
+10 Introduction to Fluid Mechanics and Fluid Machines
+second order tensor quantity. At this stage, it may not be too comfortable to proceed deeper into the mathematics of tensor, and we would neither make any effort of that kind here. However, it is very easy to appreciate from our previous discussions that tensor is a quantity much more general than a vector. For the stress tensor, there are actually nine components (since i e[1,3] and j e[1,3], out of which six are independent. This may be attributed to the fact that from
+angular momentum conservation, ji ij
+t = t . This may be illustrated as follows:
+Let us consider a two-dimensional fluid element, as shown in Fig 1.7
+C
+dx
+dy
+tII
+x2
+x1
+tIP
+tPI
+tPP
+tII
+tPI
+tPP
+tIP
+Fig. 1.7
+For rotation of the fluid element with respect to its centroid, net moment of all
+forces about C may be expressed as c c
+M =Iq
+Â
+&& , where Ic is the moment of inertia
+of the element with respect to its centroidal axis, and q&& is its angular acceleration.
+Thus ( ) ( ) ( )( )
+22 12 21
+t dy dx t dx dy k rdxdy dx dy q
+- = + &&
+where k is a constant, r is the fluid density. In the limit as dx, dy Æ 0 , the above
+yields
+12 21
+t =t
+This, interestingly, is true even if the fluid element has angular acceleration. To generalize,
+ji ij
+t =t
+The only restriction to the applicability of this equation is that there is no body couple acting on the fluid element.
+
+
+Introduction and Fundamental Concepts 11
+At this stage, it may be imperative to demarcate a second order tensor such as stress from a vector such as force. Importantly, a second order tensor component tij, for its specification, requires two indices i and j, the first index i specifying the direction normal of the face on which it is acting, and the second index j specifying the direction of action of the stress component itself. Therefore, unlike force, stress at a point is not unique, and is strongly dependent on orientation of the chosen area based on which it is calculated. A vector (such as force, for example) is the special case of a tensor; in fact it is a tensor of order one, since it requires only one index (say, i) to specify its ith component. Scalar, in that sense, is a tensor of order zero. Next, let us formally investigate the nature of the quantity pressure. For that purpose, let us refer to Fig. 1.8, in which a differentially small fluid element in the form of a triangular prism is supposed to be in static condition. Since it is not in motion, it is not under the action of any tangential (shear) force exerted by the surrounding fluid elements (we have already learnt that fluid cannot resist even an infinitesimally small shear without being deformed, and therefore a static fluid element must be subjected to a zero-shear condition), and forces exerted by the surrounding fluid elements (surface forces) are only normal to the respective surfaces under consideration. Such forces are always compressive in nature (usually expressed in terms of force per unit area). For the situation shown in Fig. 1.8, let us assume that p1, p2, and p3 are the pressures acting on the three surfaces. Let bi be the component of body force (per
+y
+q
+q
+dz
+dl
+x
+p2
+dx
+dy
+z
+P1
+p3
+Fig. 1.8 A triangular wedge-shaped fluid element in equilibrium
+unit volume) along the ith direction. Now, for equilibrium of the element,
+0
+Fx =
+Â
+1 3 cos (1/ 2) ( sin ) 0
+x
+p dydz p dldz dl dy dzb
+- q + q = (1.6)
+
+
+12 Introduction to Fluid Mechanics and Fluid Machines
+Now, since dy = dl cosq , we have
+1 3 (1 / 2)( sin ) 0
+x
+p - p + dl q b = (1.7)
+Finally, since dlÆ0, we have
+p1 = p3 (1.8)
+Also, for equilibrium,
+0
+Fy =
+Â
+2 3 sin (1/ 2) ( sin ) 0
+y
+p dxdz p dldz dl dy dzb
+- q + q = (1.9)
+Since dx = dl sinq , we have
+2 3 (1/ 2)( cos ) 0
+y
+p - p + dl q b = (1.10)
+As dl Æ 0, we have
+23
+p = p (1.11)
+Therefore, 1 2 3
+p = p = p , i.e., pressure acts equally from all possible directions, no
+matter whether any body force is acting or not. We may extend our previous discussions to the case of a general fluid element in motion, for which the traction vector on any surface should clearly have two separate contributions; the first one is pressure, which would have been present even if the fluid element was non-deforming, and a second type of contribution that is related to the deformation behaviour of the fluid element. Solids are, in general, not pressure-sensitive as such, and the corresponding stresses are dependent on the nature of deformation alone. However, there is an even more subtle difference between these two. For fluids, the net amount of deformation is not so vital as the rate of deformation. This is because, fluids under shear are any way continuously deforming, and the deformation is more as we allow more and more time. Therefore, resistance towards deformation is better characterised by the rate of deformation, rather than the deformation itself. Thus, unlike for the case of solids in which stresses are mostly related to strain alone (except for certain solids with partial fluid-like characteristics, namely, the so-called ‘visco-elastic’ solids), in fluids stresses are predominantly related to the rate of strain (or, rate of deformation). In fact, in fluids, the force necessary to produce deformation approaches zero as the rate of deformation is reduced. Such clear demarcations between fluids (liquids and gases, in totality) and solids, however may encounter serious concerns in some borderline cases. For example, some apparently solid substance such as asphalt or lead resist shear stress for short periods but actually deform slowly and exhibit definite fluid behaviour for long periods. Other substances such as colloid and slurry mixtures or even metals at semisolid (mushy) state can resist small shear stresses but ‘yield’ at larger shear stresses and begin to flow as fluids do. Such cases demand a more general description of material deformation, in a specialised field of science known as rheology of substances. For most engineering problems, however, a more or less clear decision
+
+
+Introduction and Fundamental Concepts 13
+about fluid or solid states can be made in terms of constitutive behaviour of the substance (i.e., stress response of the material as a function of internal deformation and/or rate of internal deformation). For example, within proportional limit, elastic solids have stress linearly proportional to strain and analogously, Newtonian fluids (such as water; we will define Newtonian fluids more formally later) have shear stress linearly proportional to the rate of shear strain.
+1.6 FLUID PROPERTIES
+Certain characteristics of a continuous fluid are independent of the motion of the fluid. These characteristics are called basic properties of the fluid. We shall discuss a few such basic properties here.
+1.6.1 Specific Volume ( v ) and Density (rrrrr )
+Specific volume of a substance is formally defined as
+v VlimV
+V
+m
+dd
+d d
+Æ¢
+= (1.12)
+where d V is the volume of a small elemental mass dm, and d V ¢ is the smallest volume
+for which the system can be considered as a continuum. If d V is substantially less than dV ¢, it falls in the domain of ‘microscopic uncertainty’ (as discussed earlier), in
+which the whole continuum assumption fails altogether. Therefore, d V Æ 0 (in place
+of d V Æ d V ¢ ) would be a wrong limiting assumption, and should never be used casually in such formal definitions. As easily understandable, specific volume is the
+inverse of a term more familiar to you, namely the density ( v = 1/r). For two-phase mixtures of simple compressible substances, specific volume of a mixture can simply be obtained as a weighted average of specific volume of individual constituent phases, and therefore, in thermodynamics, specific volume is a more popular terminology used in preference over density. In mechanics of fluids, on the other hand, the concept of density is more commonly used, which can formally be defined as
+VlimV
+m
+V
+dd
+d
+rd
+Æ¢
+= (1.13)
+with symbols having usual meaning in which they were used to define specific volume.
+Regarding the choice of the elemental volume ( d V ) for calculating the ‘local’ properties, certain important points need to be carefully noted. Such infinitesimal elements must be chosen small enough to be considered uniform (i.e., any spatial variations in properties inside the volume element itself are negligible); and at the same time are large enough in size to contain a statistically large number of molecules. Materials obeying this ‘hypothesis’ are said to behave as a continuum, as mentioned earlier. Thus, the continuum hypothesis for estimation of local variations in properties works well provided all the dimensions of the system are large compared to the molecular size. In Fig. 1.9, is shown an optimal range of elementary volume that ensures capturing the local density variations and at the same time is not too small to depict fluctuations originating out of molecular scale uncertainties.
+
+
+14 Introduction to Fluid Mechanics and Fluid Machines
+Molecular fluctuations System size variations
+Local value of the density
+L1 L2 L3 L
+r
+Fig. 1.9 Density variations as function of the length scale of the chosen elemental volume
+1.6.2 Specific Weight ( g )
+Specific weight is the weight of fluid per unit volume. Specific weight is given by g = rg
+where g is the gravitational acceleration. Just as weight must be clearly distinguished from mass, so must the specific weight be distinguished from density. In SI units, g will be expressed in N/m3.
+1.6.3 Specific Gravity (s)
+For liquids, it is the ratio of density of a liquid at actual conditions to the density of pure water at 101 kN/m3 and at 4°C. The specific gravity of a gas is the ratio of its density to that of either hydrogen or air at some specified temperature or pressure. However, there is no general standard, so the conditions must be stated while referring to the specific gravity of a gas.
+1.6.4 Viscosity
+1.6.4.1 The No-slip Boundary Condition
+Consider a flat plate of large width being kept in a ‘free stream’ flow, so that the fluid just before encountering with the plate is having a uniform velocity of U (see Fig. 1.10). However, as the first set of fluid molecules comes in contact with the plate,
+U
+Edge of boundary layer
+x
+y
+U
+Outer layer
+Inner layer (Boundary layer)
+Fig. 1.10 Free stream flow of a viscous fluid over a flat plate
+
+
+Introduction and Fundamental Concepts 15
+these molecules tend to stick to the solid. In other words, it is commonly expected that there should be no relative tangential velocity component between the fluid and the solid boundary at their contact points. This conceptual paradigm is known as ‘no-slip’ boundary condition, which has been successfully employed in explaining the experimentally observed fluid dynamics over most length scales addressing common engineering problems. However, the physical origin of the no-slip boundary condition over a solid boundary has not been established with certainty, and has been a matter of strong debate in the research community for long. One theory argues that the molecules of a fluid next to a solid surface are adsorbed onto the surface for a short period of time, and are then desorbed and ejected into the fluid. This process slows down the fluid and renders the tangential component of the fluid velocity equal to the corresponding component of the boundary velocity.
+*The above consideration remains valid only if the fluid adjacent to the solid wall is in thermodynamic equilibrium. The achievement of thermodynamic equilibrium, in turn, requires an infinitely large number of collisions between the fluid molecules and the solid surface, which may not be possible for a ‘rarified’ or a less dense medium. This may result in a ‘slip’ between the fluid and the solid boundary in small channels where the mean free path may be of comparable order as that of the channel dimension. This phenomenon may be more aggravated by the presence of strong local gradients of temperature and/or density, because of which the molecules tending to ‘slip’ on the walls experience a net driving force. Such phenomena are usually termed as ‘thermophoresis’ and ‘diffusophoresis’, respectively. Slip in liquids is something much less intuitive. Due to sufficient intermolecular forces of attraction between the molecules of the solid surface and a dense medium such as the liquid, it is expected that the liquid molecules would remain stationary relative to the solid boundary at their points of contact. Only at very high shear rates (typically realisable only in extremely narrow confinements of size, roughly a few molecular diameters), the straining may be sufficient enough in moving the fluid molecules adhering to the solid by overcoming the van der Waals forces of attraction. Another theory argues that the no-slip boundary condition arises due to microscopic boundary roughness, since fluid elements may get locally trapped within the surface asperities. If the fluid is a liquid then it may not be possible for the molecules to escape from that trapping, because of an otherwise compact molecular packing. Following this argument, it may be conjectured that a molecularly smooth boundary would allow the liquid to slip, because of the non-existence of the surface asperity barriers. The phenomenon of ‘true’ slip, mentioned above, is not very common in most practical liquid flows. Rather, an ‘apparent’ slip phenomenon may be a more probable feature, especially if the fluid is flowing through a very narrow confinement. Recent studies have demonstrated that the intuitive assumption of ‘no slip at the boundary’ can fail greatly not only when the solid surfaces are sufficiently smooth,
+*This portion may be omitted without loss of continuity
+
+
+16 Introduction to Fluid Mechanics and Fluid Machines
+but also when they are sufficiently rough. Towards this, research investigations have attempted to resolve the apparent anomaly of ‘reduced’ fluid friction in the presence of ‘rough’ surface elements under specific conditions. These studies have conjectured that while the microscopic roughness of the solid surface impedes the motion of the adhering fluid a thin layer of vapour formed on the surface roughness elements tends to augment the level of slippage. This thin layer of vapour (typically, of nanometer length scale) may be spontaneously formed on hydrophobic surfaces (i.e., surfaces which have a phobia of water and therefore do not easily get wet), because of complicated thermodynamic interactions that are mostly triggered on account of the narrowness of the confinement (such interactions, therefore, are existent only in case of very narrow channels but not in large pipes or other conduits). This vapour layer, in effect, acts like a shield, preventing the liquid from being directly exposed to the irregularities of the channel surface. In such cases, the liquid is not likely to feel the presence of the wall directly and may smoothly sail over the intervening vapour layers, instead of being in direct contact with the wall roughness elements. Utilising this concept, researchers may potentially develop engineered rough surfaces with triggered hydrophobic interactions and consequent inception of friction-reducing vapour phases. Narrow confinements capable of mimicking the selective and rapid fluidic transport attainable in biological cellular channels but designed on the basis of such newly discovered surface roughness-hydrophobicity coupling would open up a wide range of new applications, such as transdermal rapid drug delivery systems, selective chemical sensing and mixing in nano-scales and several other new biological applications. It is now clear from the above physical description that the existence of a thin vapour layer (of a few nm thickness) adhering the solid substrate leads to an occurrence of the so-called ‘apparent slip’ behaviour. This is illustrated in Fig. 1.11. Usually, the vapour layer is too thin to be resolved in experimental details, and therefore the velocity profile (i.e., the locus of the tip of the velocity vectors at any section) in the liquid layer (shown in the magnified near-wall image) provides the only experimentally observable continuum picture. That profile, when extrapolated (in practice, tangent to the profile at the liquid interface is only extrapolated) to the wall, signifies a slip velocity, uslip, which is different from zero. However, when this profile continues to be extended by a length of ls further away from the wall in its normal direction, it will show a zero velocity. The length ls is typically known as the slip length. From simple trigonometry, it follows that
+interface
+slip s
+u
+u ly
+∂
+= ∂ (1.14)
+where
+interface
+u y
+∂
+∂ represents the interfacial slope of the liquid velocity profile. Thus,
+the no-slip boundary condition is a special case of this conjecture, with ls = 0
+
+
+Introduction and Fundamental Concepts 17
+Liquid Vapour
+Rough Surface
+ls
+Vapour
+Liquid
+u
+y
+uslip
+Fig. 1.11 A mechanism of apparent slip
+Despite interesting exceptions, the no-slip boundary condition has been confirmed in overwhelming majority of applications, and is the standard choice in mainstream fluid dynamics. Accordingly, throughout this book we shall follow the no-slip boundary condition for our analysis. However, we shall keep in mind that it is a mere paradigm rather than a ritual, and may be easily violated in certain applications that are not so familiar with the classical engineering community but are emerging in the present day technological scenario.
+1.6.4.2 Viscous Effects and Newtonian Fluids
+Following the no-slip boundary condition, let us revisit the description of flow over a flat plate as an example, as depicted in Fig 1.10. The first layer of fluid molecules adhering to the plate feels the presence of the wall directly, and tends to stick to the same with zero relative velocity. However, the layer of fluid molecules located immediately above the wall adhering layer does not directly feel the presence of the wall.
+
+
+18 Introduction to Fluid Mechanics and Fluid Machines
+Nevertheless, it feels the effect of the wall implicitly by virtue of some fluid property that enables the effect of the momentum disturbance imposed by the wall to propagate from the wall adjacent layer to the further outer layers. This fluid property is known as viscosity. As we move further and further away from the wall, the effect of the wall is less prominently felt. Thus, the free stream effect becomes more and more successful in forcing an outer fluid layer to move at a faster pace than another layer that is located somewhat closer to the wall. In this way, one may reach a distance from the solid boundary at which the free stream condition is virtually reached (this distance is quite short for reasonably high-speed flow, as we shall demonstrate in one of our later chapters), and no further gradient of velocity occurs beyond that location. This implicitly means that fluid located in the far-stream beyond this point does not feel the presence of the wall at all! As one progress further along the axis of the plate and considers another section, similar effects are felt. Only, the effect of the wall now penetrates deeper into the bulk, simply because the effect of the wall is now being felt more strongly because of the presence of preceding slow-moving upstream sections. In this way, the zone of influence of viscous effects ‘grows’ progressively as we march along the axis of the plate. One may conceptually think of an imaginary demarcating boundary between the ‘active’ and ‘inactive’ zones of influence of the momentum disturbance effect induced by the walls (see Fig. 1.10). This demarcating boundary is known as the ‘edge’ of a boundary layer. Thus, the boundary layer is simply an imaginary layer adjacent to the walls within which the viscous effects are important and outside which the viscous effects are not significant. To proceed further, let us consider a thin fluid element of width Dy which is originally rectangular, as shown in Fig. 1.12, located within the zone of viscous influence. The upper edge of the element has a velocity of Du relative to the lower edge (this additional velocity of the upper edge is because of its location being further away from the wall so that it feels the effect of the wall less prominently than that of the lower edge).
+Dy
+x
+y
+AB
+D D¢ A
+C C¢
+A
+Dθ Dθ
+u=0
+u=D
+D uD t
+u
+Fig. 1.12 Angular deformation of a rectangular fluid element under unidirectional flow
+Therefore, in a small time interval of Dt, the upper layer displaces by an incremental
+amount of Du D t, as relative to the lower one. This distorts the original rectangular
+element to a parallelogram shape (ABC¢D¢), with an angular strain. The extent of this
+angular strain is measured by the shear angle Dq, which from trigonometry can be
+
+
+Introduction and Fundamental Concepts 19
+expressed as tan u t
+y
+q DD
+D = D . Since Dt is chosen as small, Dq is also small, which
+implies that tan Dq a Dq . The rate of angular deformation (or, equivalently the rate of
+shear strain), g& , may be then estimated as
+lim t 0 t
+q
+g DÆ
+D
+=D
+&=
+lim y 0
+u du y dy
+DÆ
+D=
+D . This
+estimation is strictly valid only when the fluid has a unidirectional motion (i.e., the fluid has only one velocity component that is directed along the x direction). Thus, for fluid flows with more than one velocity component, the expression of g& will be more involved (which will be derived in a subsequent chapter). Notwithstanding the underlying kinematic details, we may say that the shear stress (txy, or simply in a generic notation t ) in the fluid will be some function of the rate of shear deformation (we already mentioned that one important characteristic of
+a fluid is that its shear stress is related to the rate of shear deformation), g&. In general ,
+this relationship (known as constitutive behaviour, since it originates from the constitution or internal molecular structure of the concerned fluid) may be somewhat complicated and involved. However, fortunately, for many common engineering fluids (including air and water), this relationship is linear, i.e.,
+t a g& or t = mg& (1.15)
+The proportionality factor m in the above equation is known as the coefficient of viscosity or simply viscosity, and the above constitutive relationship is known as Newton’s law of viscosity. Fluids obeying this law are known as Newtonian fluids. Physically, the quantity of viscosity is an indicator of the resistance in the fluid against the relative motion between adjacent layers. Viscosity has a dimension of [M] [L–1] [T –1] (which is evident by dividing the dimension of shear stress with that of the shear rate or velocity gradient). Its SI unit is kg-m–1s–1 or equivalently, Pa-s. In CGS units, it is expressed in the unit of Poise (1 Pa-s = 10 Poise), in the honour of the legendary scientist Poiseuille who had pioneering contributions towards the fundamental understanding of viscous flows. It is interesting in many cases to compare the viscous forces with other forces acting in the system, by expressing their relative strengths in terms of pertinent dimensionless numbers. One such important and widely used dimensionless number, for example, is the Reynolds number (Re), which may be an indicator of the ratio of inertia force to viscous force. For a fluid element with a length scale of l and velocity
+scale u, the inertia force (mass × acceleration) may be expressed as 2
+l3 u l
+r . Viscous
+force on the same element, estimated through Newton’s law of viscosity, may be
+expressed as (shear stress × area), or in terms of the pertinent scales: ( ) 2
+ul
+l
+m . The
+ratio of inertia to viscous forces thus scales as rul m . Here l is a characteristic length
+(or length scale) corresponding to the chosen physical problem (it is simply a representative linear dimension of the system over which characteristic changes in properties or velocity occur). As an example, for flow over a flat plate the appropriate length
+
+
+20 Introduction to Fluid Mechanics and Fluid Machines
+scale may be the axial length of the plate, whereas for flow through a pipe the appropriate length scale may be its diameter. It is also important to note here that the Reynolds number is merely a collection of physical parameters and remains defined as non-zero even when the inertia force acting on the fluid is zero (i.e., the fluid elements are non-accelerating). In that case, the inertia force in the Reynolds number interpretation may be interpreted as an equivalent hypothetical inertia force acting on the fluid element to accelerate the same from zero velocity to the velocity under concern (u). Closely related to the term viscosity is another property known as kinematic
+viscosity (n), which is the ratio of viscosity to the density of a fluid ( m
+nr
+= ).
+Kinematic viscosity has an SI unit of m2-s–1, and a CGS unit of cm2-s–1. The CGS unit is also known as Stokes, in honour of the famous mathematician Stokes, who contributed immensely in the early development of viscous flows. The kinematic viscosity is considered as a kinematic quantity, since its unit does not contain any unit of mass. Physically, the kinematic viscosity represents the relative ability of a fluid to diffuse a disturbance in momentum as compared to its ability of sustaining the original momentum. This interpretation stems from the fact that mass is a measure of inertia, which in turn is proportional to the density of the fluid (that appears in the denominator of the expression of kinematic viscosity). In other words, kinematic viscosity may also be qualified as momentum diffusivity. In that sense, the shear stress (which is shear force per unit area) is also considered as momentum flux. Although the detailed molecular picture of viscosity is somewhat involved, an elementary consideration of the same may be presented in the purview of this fundamental text. Interestingly, the scenario is grossly different for liquids and gases. In liquids, viscosity primarily originates because of intermolecular forces of attraction. Accordingly, if the temperature of a liquid is increased then its viscosity usually decreases. This may be attributed to the fact that a higher temperature implies a more vigorous random motion with respect to their mean position, thereby weakening the effective intermolecular attraction. For gases, the intermolecular force of attraction may not be dominating in most cases (primarily because of a lesser molecular density), and the viscosity originates mainly because of the transfer and exchange of molecular momentum. In order to appreciate the underlying implications from both qualitative and quantitative aspects, let us consider two adjacent layers of ideal gas molecules that are separated by one mean free path (l) distance. The lower layer moves to the right with an average translational speed of u, whereas the upper layer moves in the same direction with an average translational speed of u + D u. When a molecule from the upper layer joins the lower layer by virtue of its thermal energy, it shares some of its excess energy with the upper layer by virtue of a collision with one of the molecules belonging to the upper layer. In other words, the slower moving layer tends to move faster. On the other hand, a molecule joining the upper layer from the lower one tends to slow the upper layer down. This is known as exchange or transfer of molecular momentum, which tends to resist a relative motion between adjacent fluid layers and therefore is physically responsible behind the viscous behaviour of gases. Since the exchange of molecular momentum becomes more vigorous at elevated temperatures (because of higher levels of thermal agitation of the
+
+
+Introduction and Fundamental Concepts 21
+individual molecules), the viscosity of gases commonly increases with increase in temperature. Fig. 1.13 shows the typical variation of viscosity with temperature for some commonly used liquids and gases.
+Temperature, ∞C
+Viscosity, m (Ns/m2)
+Carbon dioxide Methane
+Helium Air
+Mercury
+Water
+- 20 0 20
+8
+2
+2
+2
+2
+2
+4
+4
+4
+4
+4
+6
+6
+6
+6
+6
+8
+8
+8
+8
+8
+1.0
+2.0
+4.0
+6 ¥ 10-6
+1 ¥ 10-5
+1 ¥ 10-4
+1 ¥ 10-3
+1 ¥ 10-2
+1 ¥ 10-1
+40 60 80 100 120
+Kerosene
+Octane
+Heptane
+Carbon
+tetrachloride
+Glycerin
+Castoroil
+SAE30oil
+SAE10W-30oil
+SAE10W-30oil
+Fig. 1.13 Viscosity of common fluids as a function of temperature
+
+
+22 Introduction to Fluid Mechanics and Fluid Machines
+*Consider the above example of layered motion of molecules of an ideal gas. Because of a thermal agitation, molecules in each layer posses a transverse mean
+velocity as given by 8
+m
+RT
+vp
+= in addition to the axial velocity (u), where R is the
+gas constant (refer to any text book detailing the kinetic theory of gases for its
+derivation). Assuming a fraction a ( 16
+a ) of this velocity to be accountable for the
+transverse migration of a molecule from one layer to another, we may express the net exchange of molecular momentum because of a momentum exchange between adjacent layers as nv t Am u
+D D D , where n is the number density of the gas molecules (i.e., the number of molecules per unit volume), Dt is the elapsed time interval, DA is
+the area perpendicular to the direction of the transverse migration (y), m
+v = av , and m is the mass of each molecule. Expressing Du in terms of the local velocity gradient
+as u
+u yl
+∂
+D = ∂ , the rate of exchange of molecular momentum per unit area per unit
+time (which is nothing but the shear stress or momentum flux for ideal gases, in complete absence of any inter molecular forces of attraction) may be ascertained as
+u
+vy
+r l∂
+∂ , where r = nm. Utilising the analogy of this form with Newton’s law of
+viscosity, it follows that for ideal gases m = rvl. Thus, one may express the
+Reynolds number as, Re ul ul
+RT
+rr mg
+arl p
+== .
+Further, the effects of compressibility of the medium may be expressed in terms of a dimensionless number, known as Mach number (Ma), interpreted as the ratio of velocity of flow relative to the velocity of propagation of a disturbance have
+through the medium. Thus, u
+Ma = a , where a is the sonic speed through the me
+dium; the speed at which a disturbance wave propagates. Higher the Ma, more compressible is the flow medium (for more details, see Section 1.6.5). Since
+a = g RT for an ideal gas, it follows that u u
+Ma a g RT
+== .
+Thus we get,
+8
+Re
+Ma a pg Kn
+= (1.16)
+where Kn l
+=l.
+Hence, stronger the compressibility effects (i.e., higher the Mach number) and lower the Reynolds number, greater will be the Knudsen number (which implies more significant rarefaction effects with a possible deviation from continuum).
+*This portion may be omitted without loss of continuity
+
+
+Introduction and Fundamental Concepts 23
+The viscosity variation of real gases with temperature may be well described by the Sutherland formula as
+32
+0 0 0
+T CT
+T CT
+mm +Ê ˆ
+= Á ̃
+Ë ̄
++ (1.17)
+where m = viscosity in (Pa-s) at input temperature T , m0 = reference viscosity in (Pas) at reference temperature T0 , T = input temperature in Kelvin, T0 = reference temperature in Kelvin, and C = Sutherland’s constant for the gaseous material in question. The above formula is valid for temperatures between 0 < T < 555 K, with an error due to pressure being less than 10% below 3.45 MPa. Sutherland’s constant and the reference temperature for some gases are mentioned in Table 1.1.
+Table 1.1 Viscosity variation data with temperature for comman gases (see www.complore.com/viscosity-gases)
+Gas C [K] T0 [K] m0 [10–6 Pa s]
+Air 120 291.15 18.27
+Nitrogen 111 300.55 17.81
+Oxygen 127 292.25 20.18
+Carbon dioxide 240 293.15 14.8
+Carbon monoxide 118 288.15 17.2
+Hydrogen 72 293.85 8.76
+Ammonia 370 293.15 9.82
+Sulphur dioxide 416 293.65 12.54
+Importantly, the law of viscosity variation cannot be used for liquids. For many liquids, the temperature dependence of viscosity can be represented reasonably well by the Arrhenius equation:
+()
+exp B
+AT
+m = (1.18)
+where T is the absolute temperature. If the viscosity of a liquid is known at two different temperatures, this information can be used to evaluate the parameters A and B, which then permits the calculation of the viscosity at any other temperature.
+1.6.4.3 Non-Newtonian Behaviour
+An important class of fluids exists that differs from the Newtonian fluids in a sense that the constitutive relationship between the shear stress and the shear deformation rate is more complicated than a simple linear one through the origin, i.e., shear stress is zero when shear rate is zero. Such fluids are called non-Newtonian or rheological fluids (rheology is a branch of science that deals with the constitutive behaviour of fluids). It needs to be mentioned here that the knowledge of non-Newtonian fluid
+
+
+24 Introduction to Fluid Mechanics and Fluid Machines
+mechanics is still in an early stage and many aspects of the same are yet to be fundamentally resolved. Although non-Newtonian fluids do not have the property of viscosity (since viscosity is defined through the Newton’s law of viscosity only), their characteristics may be cast in a Newtonian form by introducing an apparent viscosity, which is the ratio of the local shear stress to the shear rate at that point. The apparent viscosity is not a true property for non-Newtonian fluids, since its value depends upon the flow field, or shear rate.
+*Purely viscous non-Newtonian fluids are those in which the shear stress is a function only of the shear rate but in a more complicated manner than that described by the Newton’s law. Figure 1.14 illustrates the characteristics of purely viscous time-independent fluids. In Fig. 1.14, (a) and (b) are fluids where the shear stress depends only on the shear rate but in a non-linear way. Fluid (a) is called pseudoplastic (or shear thinning); and fluid (b) is called dilatant (or shear thickening). Curve (c) is one which has an initial yield stress after which it acts as a Newtonian fluid, called Bingham plastic; and curve (d) is called Hershel-Buckley, also has a yield stress after which it becomes pseudoplastic. Curve (e) depicts a Newtonian fluid. The reason for which the apparent viscosity of a pseudoplastic fluid decreases with increase in the shear rate may be qualitatively attributed to a breakdown of loosely bonded aggregates by the shearing effect of flow. Examples of such fluid include aqueous or non-aqueous suspensions of polymers, etc. On the other hand, the increment of apparent viscosity with increases in the shear rate for dilatant fluids may be due to the shift of a closely packed particulate system to a more open arrangement under shear, which may entrap some of the liquid. Examples include aqueous suspensions of magnetite, galena, and ferro-silicons. The limiting case of a ‘plastic’ fluid is one that requires a finite yield stress before beginning to flow. Such fluids are known as Bingham plastic fluids such as sewage sludge, mud, clay, etc. A typical example is toothpaste, which does not flow out of a tube until a finite shear stress is applied by squeezing.
+(d)
+(c) (a) (e) (b)
+t y,x
+og
+Fig. 1.14 Flow curves for viscous, time-dependent fluids: (a) Pseudoplastic, (b) Dilatant, (c) Bingham plastic, (d) Hershel-Buckley, and (e) Newtonian.
+*This portion may be omitted without loss of continuity
+
+
+Introduction and Fundamental Concepts 25
+Figure 1.15 shows flow curves for two common classes of purely viscous time dependent non-Newtonian fluids. It is seen that such fluids have a hysteresis loop or memory whose shape depends upon the time-dependent rate at which the shear stress is applied. Curve (a) illustrates a pseudoplastic time-dependent fluid and curve (b) a dilatant time-dependent fluid. Examples shown in Fig. 1.15 (a) and 1.15 (b) are called thixotropic and rheopectic fluids, respectively. Apparent viscosity of a thixotropic fluid decreases with time under constant shear. Classical example is water suspension in bentonitic clay, which is a typical drilling fluid used in the petroleum industry. Fluids for which the apparent viscosity increases with increase in time for a given shear rate are called rheopectic fluids. Examples of rheopectic fluids include gypsum pastes and printers inks.
+Example 1.1
+A fluid has a solute viscosity of 0.048 Pas and a specific gravity of 0.913. For the flow of such a fluid over a flat solid surface, the velocity at a point 75 mm away from the surface is 1.125 m/s. Calculate the shear stresses at the solid boundary, at points 25 mm, 50 mm, and 75 mm away from the boundary surface. Assume (i) a linear velocity distribution and (ii) a parabolic velocity distribution with the vertex at the point 75 mm away from the surface where the velocity is 1.125 m/s.
+Solution
+Consider a two-dimensional Cartesian coordinate system with the velocity of fluid V as abscisa and the normal distance Y from the surface as the ordinate with the origin O at the solid surface (Fig. 1.16)
+50 mm
+75 mm
+25 mm
+y
+OV
+a
+(ii) =30 200
+y
+y
+
+2
+V
+(i)
+=15
+V
+y
+Fig. 1.16 Velocity distribution in the flow of lucid as described in Example 1.1.
+(a)
+(b)
+t y,x
+g
+o
+Fig. 1.15 Flow curves for viscous, time-dependent fluids: (a) Thixotropic and (b) Rheopectic
+
+
+26 Introduction to Fluid Mechanics and Fluid Machines
+According to the no-slip condition at the solid surface.
+V = 0 at y = 0
+Again, V = 1.125 m/s at y = 0.075 m (given in the problem)
+(i) For a linear velocity distribution, the relation between V and y is V = 1 125
+0 075
+.
+. y = 15y
+Hence d
+d
+V
+y = 15 s–1
+According to Eq. (1.1), shear stress t = m d V/dy
+= 0.048 ¥ 15
+= 0.72 Pa (N/m2)
+In this case, shear stress is uniform throughout.
+(ii) The equation of the parabolic velocity distribution is considered to be given by
+V = A + By + Cy2
+where the constants A, B and C are to be determined from the boundary conditions given in the problem as
+V = 0 at y = 0 (No-slip at the plate surface)
+V = 1.125 at y = 0.075
+d d
+V
+y = 0 at y = 0.075 (the condition for the vertex of the parabola)
+Substitution of the boundary conditions in the expression of velocity profile we get
+A= 0
+1.125 = 0.075 B + (0.075)2 C
+O = B + 0.15 C
+which give B = 30, C = – 200
+Therefore the expression of velocity profile becomes
+V = 30y – 200y2
+Hence, d
+d
+V
+y = 30 – 400y (1.19)
+Tabulation of results with the help of Eq. (1.19) is shown below:
+y V dV/dy t = 0.048 (dV/dy)
+(m) (m/s) (s–1) (Pa)
+0 0 30 1.44
+0.025 0.625 20 0.96
+0.050 0.880 10 0.48
+0.075 1.125 0 0
+
+
+Introduction and Fundamental Concepts 27
+It is observed that the shear stress decreases as the velocity gradient decreases with the distance y from the plate and becomes zero where the velocity gradient is zero.
+Example 1.2
+A cylinder of 0.12 m radius rotates concentrically inside a fixed hollow cylinder of 0.13 m radius. Both the cylinders are 0.3 m long. Determine the viscosity of the liquid which fills the space between the cylinders if a torque of 0.88 Nm is required to maintain an angular velocity of 2p rad/s.
+Solution
+The torque applied = The resisting torque by the fluid = (Shear stress) ¥ (Surface area) ¥ (Torque arm) Hence, at any radial location r from the axis of rotation.
+0.88 = t (2 p r ¥ 0.3)r
+t = 0 467
+2
+.
+r Now, according to Eq. (1.1),
+d
+d
+V
+y= t
+m= 2
+0.467
+mr
+Rearranging the above expression and substituting – dr for dy (the minus sign indicates that r, the radial distance, decreases as V increases), we obtain
+inner
+outer
+d
+V
+V
+V
+Ú
+=
+0.12
+2 0.13
+0.467 dr
+r
+m Ú
+Hence V inner – V outer =
+0.12
+0.13
+0.467 1 mr
+È ̆
+Í ̇
+Î ̊
+The velocity of the inner cylinder,
+V inner = 2 p ¥ 0.12 = 0.754 m/s
+Hence, (0.754 – 0) = 0.467 1 1
+m 0.12 0.13
+Êˆ
+
+Á ̃
+Ë ̄
+From which m = 0.397 Pa s
+Example 1.3
+The velocity profile in laminar flow through a round pipe is expressed as
+u = 2U (1 – r2/r2
+0)
+where U is the average velocity, r is the radial distance from the centre line of the pipe, and r0 is the pipe radius. Draw the dimensionless shear stress profile t /t0 against
+
+
+28 Introduction to Fluid Mechanics and Fluid Machines
+r/r0, where t0 is the wall shear stress. Find the value of t0, when fuel oil having an
+absolute viscosity m = 4 ¥ 10–2 N–s/m2 flows with an average velocity of 4 m/s in a pipe of diameter 150 mm.
+Solution
+The given velocity profile is
+u = 2U(1 – r2/r2
+0)
+d d
+u
+r= 2
+0
+4Ur
+r
+
+Shear stress at any radial location r can be written as
+t = –m d
+d
+u r
+Hence,
+0
+t
+t=
+0
+d /d
+(d /d )r r
+ur
+u r=
+=
+0
+r r
+Figure 1.17 shows the shear stress distribution
+Wall shear stress t0 =
+0
+d
+d rr
+u r
+m =
+Êˆ
+-Á  ̃
+Ë ̄
+=
+0
+4U
+r
+mÊ ˆ
+Á ̃
+Ë ̄
+= (4 ¥ 10–2) 4 4
+0.075
+¥
+Êˆ
+Á ̃
+Ë ̄
+= 8.533 N/m2
+The shear stress distibution in the pipe flow problem is depicted in Fig. 1.17.
+1.6.5 Compressibility
+Compressibility of any substance is the measure of its change in volume under the action of external forces, namely, the normal compressive forces. The normal compressive stress of any fluid element at rest is known as hydrostatic pressure p and arises as a result of innumerable molecular collisions in the entire fluid. The degree of compressibility of a substance is characterised by the bulk modulus of elasticity E defined as
+lim VV
+p
+E VV
+D ÆD ¢
+-D
+= D (1.20)
+where DV and D p are the changes in the volume and pressure respectively, V is the
+initial volume, and DV ¢ is the smallest possible volume over which continuum
+1.0
+0.5
+(t /t0)
+(r/r0)
+0 0 0.5
+45 o
+1.0
+Fig. 1.17 Shear stress distribution in the pipe flow problem of Example 1.3
+
+
+Introduction and Fundamental Concepts 29
+hypothesis remains valid. The negative sign in Eq. (1.20) indicates that an increase in pressure is associated with a decrease in volume. For a given mass of a substance, the change in its volume and density satisfies the relation
+V
+V
+r r
+DD
+= - (1.21)
+With the help of Eq. (1.20), E can be expressed in differential form as
+dp
+E r dr
+= (1.22)
+Values of E for liquids are very high as compared with those of gases (except at very high pressures). Therefore, liquids are usually termed as incompressible fluids though, in fact, no substance is theoretically incompressible with a value of E as •. For example, the bulk modulus of elasticity for water and air at atmospheric pressure are approximately 2 ¥ 106 kN/m2 and 101 kN/m2 respectively. It indicates that air is about 20,000 times more compressible than liquid water. Hence liquid water can be treated as incompressible. Another characteristic parameter, known as compressibility K, is usually defined for gases. It is the reciprocal of E as
+K= 1 d
+dp
+r
+r =– 1 d
+dp
+n n
+Êˆ
+Á ̃
+Ë  ̄ (1.23)
+K is often expressed in terms of specific volume n . For any gaseous substance, a change in pressure is generally associated with a change in volume and a change in temperature simultaneously. A functional relationship between the pressure, volume and temperature at any equilibrium state is known as thermodynamic equation of state for the gas. For an ideal gas, the thermodynamic equation of state is given by
+p = rRT (1.24)
+where T is the temperature in absolute thermodynamic or gas temperature scale (which are, in fact, identical), and R is known as the characteristic gas constant, the value of which depends upon a particular gas. However, this equation is also valid for real gases which are thermodynamically far from their liquid phase. For air, the value of R is 287 J/kg K. The relationship between the pressure p and the volume V for any process undergone by a gas depends upon the nature of the process. A general relationship is usually expressed in the form of
+x
+pV = constant (1.25)
+For a constant temperature (isothermal) process of an ideal gas, x = 1. If there is no heat transfer to or from the gas, the process is known as adiabatic. A frictionless adiabatic process is called an isentropic process and x equals to the ratio of specific heat at constant pressure to that at constant volume. The Eq. (1.25) can be written in a differential form as
+d
+d
+V
+p= V
+xp
+- (1.26)
+Using the relation (1.26), Eqs (1.22) and (1.23) yield
+E = xp (1.27a)
+
+
+30 Introduction to Fluid Mechanics and Fluid Machines
+or K = 1
+x p (1.27b)
+Therefore, the compressibility K, or bulk modulus of elasticity E for gases depends on the nature of the process through which the pressure and volume change. For an isothermal process of an ideal gas (x = 1), E = p or K = 1/p. The value of E for air quoted earlier is the isothermal bulk modulus of elasticity at normal atmospheric pressure and hence the value equals to the normal atmospheric pressure.
+1.6.6 Distinction between an Incompressible and a Compressible Fluid
+In order to know whether it is necessary to take into account the compressibility of gases in fluid flow problems, we have to consider whether the change in pressure brought about by the fluid motion causes large change in volume or density.
+From Bernoulli’s equation (to be discussed in a subsequent chapter), p + 1
+2 rV2 =
+constant (V being the velocity of flow), and therefore the change in pressure, D p, in
+a flow field, is of the order of 1
+2 rV 2 (dynamic head). Invoking this relationship into
+Eq. (1.22) we get,
+r r
+Da 2
+1
+2
+V E
+r (1.28)
+Now, we can say that if (Dr/r) is very small, the flow of gases can be treated as incompressible with a good degree of approximation. According to Laplace’s equa
+tion, the velocity of sound is given by a = E/r . Hence,
+r r
+Da
+2
+2
+11
+22
+V
+a a Ma2 (1.29)
+where Ma is the ratio of the velocity of flow to the acoustic velocity in the flowing medium at the condition and is known as Mach number. From the aforesaid argument, it is concluded that the compressibility of gas in a
+flow can be neglected if Dr/r is considerably less than unity, i.e., 1
+2 Ma2
+= 1. In other words, if the flow velocity is small as compared to the local acoustic velocity, compressibility of gases can be neglected. Considering a maximum relative change in density of five per cent as the criterion of an incompressible flow, the upper limit of Mach number becomes approximately 0.33. In case of air at standard pressure and temperature, the acoustic velocity is about 335.28 m/s. Hence a Mach number of 0.33 corresponds to a velocity of about 110 m/s. Therefore flow of air up to a velocity of 110 m/s under standard condition can be considered as incompressible flow.
+
+
+Introduction and Fundamental Concepts 31
+Example 1.4
+If we neglect the temperature effect, an empirical pressure-density relation for water is p/pa = 3001 ¥ (r/ra)7 – 3000, where subscript a refers to atmospheric conditions. Determine the isothermal bulk modulus of elasticity and compressibility of water at 1, 10 and 100 atmospheric pressure.
+Solution
+Pressure-density relationship is given as
+a
+p
+p = 3001 ¥
+7
+a
+r r
+Êˆ
+Á ̃
+Ë  ̄ – 3000 (1.30)
+1d
+ad
+p
+p r = 7 ¥ 3001
+6
+7 a
+r
+r
+Hence d
+d
+p
+r = 7 ¥ 3001 pa
+6
+7 a
+r
+r
+d
+d
+p
+r r = 7 ¥ 3001 pa
+7
+a
+r r
+Êˆ
+Á ̃
+Ë ̄
+According to Eq. (1.22),
+E= d
+d
+p
+r r = 7 ¥ 3001 pa
+7
+a
+r r
+Êˆ
+Á ̃
+Ë  ̄ (1.31)
+Substituting the value of
+7
+a
+r r
+Êˆ
+Á ̃
+Ë  ̄ from Eq. (1.30) to Eq. (1.31), we get
+E = 7 3001 3000
+3001 a
+a
+p
+pp
+¥È  ̆
+◊+
+Í ̇
+Î ̊
+= 7pa 3000
+a
+p
+p
+È ̆
++
+Í ̇
+Î ̊
+Therefore,
+(E)1 atm pressure = 7 ¥ 3001 pa
+= 2.128 ¥ 106 kN/m2
+(The atmospheric pressure pa is taken as that at the sea level and equals to 1.0132 ¥
+105 N/m2)
+(E)10 atm pressure = 7 ¥ 3010 pa
+= 2.135 ¥ 106 kN/m2
+(E)100 atm pressure = 7 ¥ 3100 pa
+
+
+32 Introduction to Fluid Mechanics and Fluid Machines
+= 2.198 ¥ 106 kN/m2
+Respective compressibilities are
+(K)1 atm pressure = 1 1 atm pres
+(E) sure
+= 0.47 ¥ 10–6 m3/kN
+(K)10 atm pressure = 1 10
+(E ) atm pressure
+= 0.468 ¥ 10–6 m2/kN
+(K)100 atm pressure = 1 100
+(E) atm pressure
+= 0.455 ¥ 10–6 m3/kN
+It is found from the above example that the bulk modulus of elasticity or compressibility of water is almost independent of pressure.
+Example 1.5
+A cylinder contains 0.35 m3 of air at 50 °C and 276 kN/m2 absolute. The air is compressed to 0.071 m3. (a) Assuming isothermal conditions, what is the pressure at the new volume and what is the isothermal bulk modulus of elasticity at the new state. (b) Assuming isentropic conditions, what is the pressure and what is the isentropic bulk modulus of elasticity? (Take the ratio of specific heats of air g = 1.4)
+Solution
+(a) For isothermal conditions,
+p1V 1 = p2V 2
+Then, (2.76 ¥ 105)0.35 = (p2).071 which gives,
+p2 = 13.6 ¥ 105 N/m2 = 1.36 MN/m2
+The isothermal bulk modulus of elasticity at any state of an ideal gas equals to its pressure at that state. Hence E = p2 = 1.36 MN/m2.
+(b) For isentropic conditions
+P1 V 1
+1.4 = P2 V 2
+1.4
+Then, (2.76 ¥ 105) (0.35)1.4 = (p2) (.071)1.4
+From which, p2 = 25.8 ¥ 105 N/m2
+= 2.58 MN/m2
+The isentropic bulk modulus of elasticity
+E = g p = 1.40 ¥ 25.8 ¥ 105 N/m2
+= 3.61 MN/m2
+
+
+Introduction and Fundamental Concepts 33
+1.6.7 Interfacial Phenomenon and Surface Tension
+1.6.7.1 The Molecular Origin
+Consider an interface between two fluid phases (say, phase 1 is liquid and phase 2 is gas, for example). Molecules located in the bulk of the liquid have identical interactions with all the neighbouring molecules (mostly through van der Waals attractive interactions for organic liquids and through hydrogen bonds for polar liquids like water). However, molecules on the interface have liquid molecules on one side and gas molecules on the other. Because of the distinctive compactness of molecules in these two phases, the interfacial molecules may have a net attractive ‘pull’ towards the liquid. If the interfacial molecules do not possess sufficient energy to overcome this net attraction and remain at the interface, they would ultimately get dissolved in the liquid and get lost! However, when an interface is formed, this does not occur. This implies that the interface has sufficient energy to overcome any net driving force on its molecules and allow them to be located on the interface. This energy is qualitatively known as interfacial energy or surface energy. The interfacial phenomenon elucidated above is quite generic in nature, and takes place for an interface formed by any two distinctive phases (such as between a solid and a liquid phase, or even between two liquid phases such as oil and water). For example, let us consider a solid-liquid interface. Molecules in the liquid (say, water) are attracted towards the interface by van der Waals forces. However, these molecules usually do not stick to the wall because of Brownian motion. At the same time, impurities contained in the liquid, such as dust particles or biological polymers (such as proteins) may adhere permanently to the solid surface since they may experience stronger attractions to the solid. This can be attributed to the fact that the size of polymer molecules is typically much larger than that of the water molecules, giving rise to more number of contacts for the polymer with the solid and hence a strengthened van der Waals interaction. The description of the physics in the smaller scale may get too involved, and one may be interested to represent a gross manifestation of the underlying interactions rather than presenting a detailed molecular picture. This gross representation is achieved by introducing a macroscopic physical property known as surface tension (s ), which may also be interpreted as the interfacial energy per unit area (which is equivalently force per unit length). Thus, the SI unit of surface tension is J-m-2 or Nm-1. Typical surface tension values of some common fluids at standard temperature are given in Table 1.2. The force-interpretation of surface tension may be visualised by a very simple experiment. Take a solid frame and a solid tube that can roll on this frame. If we form a liquid film of soap between the frame and the tube by plunging one side of the structure in a soap-water solution, we see that the tube immediately starts to move towards the region where there is the liquid film. This is because of the fact that the surface tension of the liquid film exerts a net force on its free boundary. Thus, additional work needs to be done to overcome this force and stretch the film to a desired extent.
+
+
+34 Introduction to Fluid Mechanics and Fluid Machines
+Table 1.2. Surface tension data for some representative fluids (see http:// web.mit.edu/hml/ncfmf/04STFM.pdf)
+Fluid combination Surface tension (in mN-m–1)
+Water/air 73
+Salt water/oil 75
+Ether/air 17
+Alcohol/air 23
+Carbon tetrachloride/air 27
+Mercury/air 480
+It is due to surface tension that a curved liquid interface in equilibrium results in a greater pressure at the concave side of the surface than that at its convex side. Consider an elemental curved liquid surface (Fig. 1.18) separating the bulk of liquid in its concave side and a gaseous substance or another immiscible liquid on the convex side. The surface is assumed to be curved on both the sides with radii of curvature as r1 and r2 and with the length of the surfaces subtending angles of dq1 and dq2, respectively, at the centre of curvature as shown in Fig. 1.18. Let the surface be subjected to the uniform pressure pi and po at its concave and convex sides respectively acting perpendicular to the elemental surface. The surface tension forces across the boundary lines of the surface appear to be the external forces acting on the surface. Considering the equilibrium of this small elemental surface, a force balance in the direction perpendicular to the surface results.
+r1
+s 2 q2
+rd
+dq1/2 dq1/2
+s 2 q2
+rd
+dq1
+s 2 q2
+rd
+s 1 q1
+rd
+r1
+r2
+dq1
+dq2
+s 2 q2
+rd
+s 1 q1
+rd
+n dA
+Fig. 1.18 State of stress and force balance on a curved liquid interface in equilibrium with surrounding due to surface tension
+2 s r2 dq2 sin 1
+2
+dq
+Êˆ
+Á ̃
+Ë  ̄ + 2 s r1 dq1 sin 2
+2
+dq
+Êˆ
+Á ̃
+Ë  ̄ = (pi – po) r1r2 dq1 dq2
+For small angles
+sq
+11
+rd
+sq
+11
+rd
+r2
+dq2/2 dq2/2
+dq2
+
+
+Introduction and Fundamental Concepts 35
+sin 1 1
+22
+dq dq
+Ê ˆa
+Á ̃
+Ë  ̄ , sin 2 2
+22
+dq dq
+Ê ˆa
+Á ̃
+Ë ̄
+Hence, from the above equation of force balance we can write
+12
+rr
+s + s = (pi – po)
+or Dp =
+12
+rr
+s + s (1.32)
+where Dp = pi – po and s is the surface tension of the liquid in contact with the specified fluid at its convex side. Equation (1.32) is also known as Young–Laplace equation. If the liquid surface coexists with another immiscible fluid, usually gas, on both the sides, the surface tension force appears on both the concave and convex interfaces and the net surface tension force on the surface will be twice as that described by Eq. (1.32). Hence the equation for pressure difference in this case becomes
+Dp =
+12
+2r r
+ss
+Êˆ
++
+Á ̃
+Ë  ̄ (1.33)
+Special Cases For a spherical liquid drop, Eq. (1.32) is applicable with r1 = r2 = r (the radius of the drop) to determine the difference between the pressure inside and outside the drop as
+Dp = 2s/r (1.34)
+The excess pressure in a cylindrical liquid jet over the pressure of the surrounding atmosphere can be found from Eq. (1.32) with r1 fi μ and r2 = r (the radius of the jet) as Dp = s/r (1.35)
+In case of the spherical bubble, the Eq. (1.33) is applicable with r1 = r2 = r (radius of the bubble), which gives
+Dp = 4s/r (1.36)
+Alternatively, Eq. (1.32) may also be derived from work energy principle, as follows. Consider a small section of an arbitrarily curved surface, as shown in Fig. 1.19.
+r1 x x + dx
+dx
+r2
+y y + dy
+Fig.1.19 Geometry of a stretching surface element
+
+
+36 Introduction to Fluid Mechanics and Fluid Machines
+The section taken is small enough so that R1 and R2 are approximately constants within the chosen section. If the elemental surface is displaced by a small amount
+outwards, the net change in its area will be ( )( )
+DA = x + dx y + dy - xy = xdy + ydx .
+The work done in forming this additional surface is ( )
+lv
+W xdy ydx
+D = s + , where
+slv represents the liquid vapour surface tension coefficient. If the interfacial
+pressure difference is Dp, it acts on an area dxdy and is associated with a
+displacement of dz. The corresponding work is equivalent to DW = Dpdxdydz .
+Equating the two expressions for work, it follows that
+()
+lv
+pdxdydz xdy ydx
+D = s + (1.37)
+Further, from the geometry of the figure (similar triangles), it follows that
+11
+x dx x r dz r
++=
++ , or equivalently
+1
+xdz
+dx r
+= . Similarly,
+2
+ydz
+dy r
+= . Utilising these in Eq.
+(1.37), we get an expression identical to Eq. (1.32). Interfacial equilibrium accounted by surface tension may also be analysed from energy minimisation principle as applied to an interface of any arbitrary shape. For simplicity in illustration, we consider a droplet of the shape of a part of sphere, in equilibrium, as shown in Fig. 1.20. The droplet tends to minimise its net surface
+Liquid (l)
+Vapour (v)
+Solid (S)
+q
+ssl
+ssv
+slv
+Fig.1.20 Equilibrium of a three-phase contact line
+energy in an effort to come to an equilibrium shape. The minimisation of the droplet surface energy under the constraints of a fixed droplet volume " is as good as minimising the following function:
+ij ij ij
+E As l π
+= -"
+Â
+(1.38)
+where and l is a Lagrange multiplier to enforce a constant volume constraint. Here A ij is the interfacial area that demarcates the phases i and j, with the corresponding
+surface energy being designated as sij . In this chapter, the subscripts l, s and v will
+be employed to represent the liquid, solid and vapour phases, respectively. It can also be noted that if A ls is increased by some amount, A sv is decreased by the same
+
+
+Introduction and Fundamental Concepts 37
+amount. From the geometry of the above figure, one may write: 2 2
+sin
+Asl = p R q
+()
+2
+2 1 cos
+Alv = p R - q , 3 2 3 cos 3
+cos
+3 4 12
+Rq
+pq
+Êˆ
+"= - +
+Á ̃
+Ë  ̄.
+Thus, for a spherical droplet
+( ) ()
+2 2 2 3 2 3 cos 3
+sin 2 1 cos cos
+3 4 12
+ls sv lv
+fg
+ER R R q
+p qs s s p q l p q
+Ï ̧
+ÔÔ
+ÔÔ
+Êˆ
+= -+ - - - +
+Ì ̋
+Á ̃
+Ë ̄
+ÔÔ
+ÔÔ
+Ó ̨
+1444444442444444443 1444442444443
+(1.39)
+where k is the volume of the droplet. For minimisation of E, one must have 0
+E q
+∂=
+∂
+and 0
+E R
+∂=
+∂ , which implies
+fg fg qR Rq
+∂∂ ∂∂
+=
+∂ ∂ ∂ ∂ (1.40)
+Performing the necessary algebra and simplifying, it follows from Eqs. (1.39) and (1.40) that
+cos sv sl
+lv
+ss
+qs
+
+= (1.41)
+When 0 £ q £ 90o, the liquid is termed as partially wetting, or equivalently, the solid substrate is characterised as hydrophilic (the word ‘hydro’ is somewhat specific to water, whereas the terminology ‘wetting’ is more applicable for any general liquid). When q > 90o, the liquid is non-wetting and the substrate is termed as hydrophobic. The case q = 0, a very special one, represents a theoretically complete wetting. Eq. (1.41), also known as ‘Young’s Law’, and can be interpreted as a balance between the horizontal components of all the forces that act on the three-phase contact line (refer to Fig. 1.20). The vertical component of this resultant force, on the other hand, is balanced by the normal stress in the rigid solid substrate. Further, substituting the value of cosq from Eq. (1.41), one may calculate a value of the parameter l, as
+2 lv
+f
+gR
+s
+q
+l
+q
+∂∂
+==
+∂∂
+(1.42)
+Physically, the Lagrange multiplier (l) may be interpreted as the differential pressure, Dp, across the two sides (liquid and vapour sides in this specific example) of the droplet. It is important to note here that Equations (1.32) and (1.41) are the two necessary conditions for equilibrium but not sufficient, since in addition, the second variation
+
+
+38 Introduction to Fluid Mechanics and Fluid Machines
+of E must also be positive for a minimisation of the same. In fact, in the presence of complex surfaces, certain morphologies may, indeed, result in unstable droplets, even though the necessary conditions of equilibrium are satisfied.
+*The celebrated Young’s equation, as described by Eq. (1.32), is somewhat restricted in nature in a strict sense, since it neglects the bulk internal forces within the droplet that might generate due to gravity, electric field, etc. In an effort to generalize the underlying mathematical description, one may note that, for equilibrium of a spherical droplet
+dE (R,q ) = 0 (1.43)
+which implies
+0
+EE
+dR d
+Rq
+q
+∂ +∂ =
+∂ ∂ (1.44)
+Further, since 3 2 3 cos 3
+cos
+3 4 12
+Rq
+pq
+Êˆ
+"= - +
+Á ̃
+Ë  ̄ , the condition of d" = 0 implies
+that
+()
+10
+dR - Rf q dq = (1.45) where
+()
+2
+1
+2cos cot
+22 2 cot
+f
+qq
+qq
+= - + (1.46)
+Substituting Eq. (1.46) in Eq. (1.44), one finally gets
+()
+10
+EE
+Rf
+Rqq
+∂ +∂ =
+∂ ∂ (1.47)
+Incorporating the effects of gravitational potential energy in the expression E, for illustration, one can write
+() ( ) ( )
+2 24 6
+contribution from interfacial terms contribution from gravity
+2
+2 1 cos sin 3 cos sin
+32
+lv ls sv
+ER R g
+pq
+ps q p q s s r q Ê ˆ
+È ̆
+= - + - + + Á ̃
+Î  ̊ Ë ̄
+1444444442444444443 1444442444443
+(1.48)
+Utilising the above expression for E in Eq. (1.47), one can arrive at a more generalized form of Young’s equation incorporating gravity effects as
+2 cos cos 2 1
+3
+cos 0
+12 4
+sv sl
+lv lv
+gR
+qq
+ss r
+qs s
+È ̆
+
+-Í  ̇
+- - -=
+Í ̇
+Í ̇
+Î ̊
+(1.49)
+From Eq. (1.49), following two important observations may be carefully noted: (i) With gravity effects, q depends on R, unlike the case without gravity.
+*This portion may be omitted without loss of continuity
+
+
+Introduction and Fundamental Concepts 39
+(ii) If
+2
+lv
+gR
+r
+s is small, gravity effects can safely be neglected. This ratio is known
+as the Bond number (Bo), which essentially compares the square of the system length scale (R) with the square of a characteristic length scale, ls, that depicts the
+relative contributions of surface tension and gravity influences, as lv
+ls g
+s
+= r . For
+Bo £ 10–3, gravity effects can safely be neglected, as appropriate to many of problems involving tiny droplets.
+1.6.7.2 Capillary Rise
+As a simple demonstration of Young’s equation, we may take up the example of capillary rise or capillary depression phenomenon. Consider a traditional mercury barometer that consists of a vertical glass tube about 1 cm in diameter partially filled with mercury, and with a vacuum (called Toricelli’s vacuum) in the unfilled volume. One may observe that the mercury level at the centre of the tube is higher than at the edges, making the upper surface of the mercury dome-shaped (Fig. 1.21). The capillary rise phenomenon may be mathematically analysed following a simplistic approach, by assuming the meniscus as hemispherical (which is approximately the case if the capillary tube is very narrow). The pressure differential across the meniscus (see Fig. 1.21) can then be ascertained by the Young–Laplace
+equation with R1 = R2 =R, as 2
+pR
+s
+D = (where lv
+s = s ). Also, if h is the height of
+the capillary rise, then the pressure difference between the inner and outer
+(atmospheric) side of the meniscus is given by Dp = hrg . Equating these two and
+noting that cos
+r
+Rq
+= (see Fig. 1.21), where r is the radius of the capillary, it
+follows that
+2 cos
+h gr
+sq r
+= . (1.50)
+Since 1
+hr
+a , an ultra-narrow radius may ensure a large capillary rise against
+the gravity, despite the fact that no external pumping effort is deployed. This remarkable phenomenon is one of the key affects observed in fluid mechanics of small-scale systems, allowing a very efficient capillary transport with the aid of surface tension forces alone. This kind of physical principle also plays a key role in transmitting water from the ground level to the upper extremities of trees through microcapillaries, a phenomenon known as ascent of sap.
+
+
+40 Introduction to Fluid Mechanics and Fluid Machines
+R
+r
+q
+Fig.1.21 Demonstration of the capillary rise phenomenon
+***** Marangoni Effect Surface tension is not a constant in general, as it depends on the temperature and/or concentration of chemical species at the surface. Temperature dependence of surface tension influences many practical processes, including the fusion welding of materials. Typically, many metals have an increasing surface tension with a decreasing temperature. Thus, if a material is bombarded with a high energy beam, the molten region that is created surrounding the central point of heating is subjected to distinctive surface tension forces at different locations. To understand the underlying physical consequences, we consider two different fluid elements in the top layer of the molten pool. The fluid element with a higher temperature (close to the heat source) has less surface tension than that with a lower temperature (away from the heat source). In an effort to minimise the surface energy, the fluid element with lower surface tension stretches itself towards the fluid element with a higher surface tension, thereby inducing a radially outward fluid flow (see the schematic depicted in Fig. 1.22). This is an example of temperature-gradient induced surface tension driven flow, or Marangoni flow. Heat
+Fig. 1.22 Schematic of Marangoni flow in a weldpool
+*This portion may be omitted without loss of continuity
+
+
+Introduction and Fundamental Concepts 41
+Surface tension may also be strongly influenced by the solutal concentration at an interface. Surfactants, also known as tensides, are wetting agents that lower the surface tension of a liquid, allowing easier spreading, and lower the interfacial tension between two liquids. The term surfactant is a blend of ‘surface acting agent’. Surfactants are usually organic compounds that are amphipathic, meaning they contain both hydrophobic groups (their ‘tails’) and hydrophilic groups (their ‘heads’). Therefore, they are soluble in both organic solvents and water. The most common biological example of surfactant is that coating the surfaces of the alveoli, the small air sacs of the lungs that serve as the site of gas exchange. Surfactants reduce the surface tension of water by absorbing at the liquid-gas interface. They also reduce the interfacial tension between oil and water by absorbing at the liquidliquid interface. Many surfactants can also assemble in the bulk solution into aggregates. Some of these aggregates are known as micelles. Thermodynamics of the surfactant systems are of great importance, theoretically and practically. This is because surfactant systems represent systems between ordered and disordered states of matter. Surfactant solutions may contain an ordered phase (micelles) and a disordered phase (free surfactant molecules and/or ions in the solution).
+Example 1.6
+Analyse the shape of the water-air interface near a plane wall, as shown in Fig. 1.23, assuming that the slope is small, 1/R a d2 h/dx2 (where R is the radius of curvature of the interface) and the pressure difference across the interface is balanced by the product of specific weight and interface height as Dp = rgh. Boundary conditions:
+area wetting contact angle q = q0 at x = 0, and q = 90° as x Æ •. What is the height h at the wall?
+x=0
+h (x)
+x
+p1
+q0
+p2
+Fig. 1.23 Water-air interface near a plane wall
+Solution
+The curved interface is plane in the other direction. Hence the pressure difference across the interface can be written according to Eq. (1.32) as
+Dp = p1 – p2 = 1
+R
+sÊ ˆ
+Á ̃
+Ë  ̄ (1.51)
+
+
+42 Introduction to Fluid Mechanics and Fluid Machines
+From the given data
+1
+R=
+2
+2
+d
+dx
+h
+and Dp = r g h
+Substituting the values of 1/R and Dp in Eq. (1.51), we get
+2
+2
+d
+dx
+h – rgh
+s = 0 (1.52)
+The solution of h from the above Eq. (1.52) is,
+h=
+g
+Ae Be
+gx x
+rr ss
+- + (1.53)
+where A and B are parametric constants. The value of A and B are found out using he boundary conditions as follows:
+at x = 0, d
+dx
+h = – cot q0
+and at x Æ • d
+dx
+h=0
+which give,
+A= g
+s
+r cot q0
+B= 0
+Hence Eq. (1.53) becomes
+h= g
+s
+r cot q0 e
+gx
+s r
+
+which defines the shape of the interface
+(h)x = 0 = g
+s
+r cot q0
+Example 1.7
+Two coaxial glass tubes forming an annulus with a small gap are immersed in water in a trough. The inner and outer radii of the annulus are ri and r0, respectively. What is the capillary rise of water in the annulus if s is the surface tension of water in contact with air?
+Solution
+The area wetting contact angle for air-water interface in a glass tube is 0° (Fig. 1.24). Therefore, equating the weight of water column in the annulus with the total surface tension force, we get,
+
+
+Introduction and Fundamental Concepts 43
+W = Ti + To (1.54)
+Again, Ti = s (2p ri)
+To = s (2p ro)
+and W = p(r2
+o – r2
+i) hrg
+Substitution of these values of Ti, To and W in Eq. (1.54) gives,
+p (r2
+o – r2
+i)hrg = 2ps (ro + ri)
+from which
+h = 2s
+rg r r
+oi
+( -)
+h
+To To
+Ti Ti
+ro
+ri
+Fig. 1.24 Capillary rise of water in the annulus of two coaxial glass tubes
+Example 1.8
+What is the pressure within a 1 mm diameter spherical droplet of water relative to the atmospheric pressure outside? Assume s for pure water to be 0.073 N/m.
+Solution Equation (1.34) is used to determine the pressure difference Dp (= p2 p1; refer to Fig. 1.25) as
+D p = 2s/R or D p = 2 ¥ 7.3 ¥ 10–2/(0.5 ¥ 10–3) = 292 N/m2
+p1 p2
+s
+Fig. 1.25 Surface tension force on a spherical water droplet
+
+
+44 Introduction to Fluid Mechanics and Fluid Machines
+Example 1.9
+A spherical water drop of 1 mm in diameter splits up in air into 64 smaller drops of equal size. Find the work required in splitting up the drop. The surface tension coefficient of water in air = 0.073 N/m.
+Solution
+An increase in the surface area out of a given mass takes place when a bigger drop splits up into a number of smaller drops, and the work required is given by the product of surface tension coefficient and the increase in surface area. Let d be the diameter of the smaller drops. From conservation of mass
+64 ¥ p ¥
+3
+6
+d = p¥
+3
+(0.001)
+6
+which gives d = 0.001
+4 = 0.25 ¥ 10–3 m
+Initial surface area (due to the single drop) = p ¥ (0.001)2 = p ¥ 10–6 m2 Final surface area (due to 64 smaller drops) = 64 ¥ p (0.25 ¥ 10–3)2 = 4p ¥ 10–6 m2 Hence, the increase in surface area = (4 – 1)p ¥ 10–6 = 3 p ¥ 10–6 m2 Therefore, the required work = 0.073 ¥ 3p ¥ 10–6 J
+= 0.69 ¥ 10–6 J
+1.6.8 Vapour Pressure
+All liquids have a tendency to evaporate when exposed to a gaseous atmosphere. The rate of evaporation depends upon the molecular energy of the liquid, which in turn depends upon the type of liquid and its temperature. The vapour molecules exert a partial pressure in the space above the liquid, known as vapour pressure. If the space above the liquid is confined (Fig. 1.26) and the liquid is maintained at constant temperature, after sufficient time, the confined space above the liquid will contain vapour molecules to the extent that some of them will be forced to enter the liquid. Eventually an equilibrium condition will evolve when the rate at which the number of vapour molecules striking back the liquid surface and condensing is just equal to the rate at which they leave from the surface. The space above the liquid then becomes saturated with vapour. The vapour pressure of a
+
+
+Introduction and Fundamental Concepts 45
+given liquid is a function of temperature only and is equal to the saturation pressure for boiling corresponding to that temperature. Hence, the vapour pressure increases with the increase in temperature. Therefore, the phenomenon of boiling of a liquid is closely related to the vapour pressure. In fact, when the vapour pressure of a liquid becomes equal to the total pressure impressed on its surface, the liquid starts boiling. This concludes that boiling can be achieved either by raising the temperature of the liquid, so that its vapour pressure is elevated to the ambient pressure, or by lowering the pressure of the ambience (surrounding gas) to the liquid’s vapour pressure at the existing temperature.
+Liquid
+Saturated vapour
+Fig. 1.26 To and fro movement of liquid molecules from an interface in a confined space as a closed surrounding
+SUMMARY
+∑ A fluid is a substance that deforms continuously when subjected to even an infinitesimal shear stress. Solids can resist tangential stress at static conditions undergoing a definite deformation while a fluid can do it only at dynamic conditions undergoing a continuous deformation as long as the shear stress is applied. ∑ The concept of a continuum assumes a continuous distribution of mass within the matter or system with no empty space. In the continuum approach, properties of a system can be expressed as continuous functions of space and time. A dimensionless parameter known as the Knudsen num
+ber, Kn = l L , where l is the mean free path and L is the characteristic
+length, aptly describes the degree of departure from a continuum. The con
+cept of a continuum usually holds good when 0.01
+Kn < .
+∑ Stress at a point is essentially a surface traction force per unit area that sensitively depends on the orientation of the area chosen to calculate the stress. Unlike force, it requires two indices for its specification, one for the direction normal of the chosen area and the other for the direction of action of the force itself. The state of stress for non-deforming fluids (fluids at rest) may be solely represented by a normal inward force per unit area, which acts equally from all directions. This quantity is called pressure.
+
+
+46 Introduction to Fluid Mechanics and Fluid Machines
+∑ Viscosity is a property of a fluid by virtue of which it offers resistance to flow. The shear stress at a point in a moving fluid is directly proportional to
+the rate of shear strain. For one-dimensional flow, ( )
+t = m du dy . The con
+stant of proportionality m is known as the coefficient of viscosity of simple the viscosity. The relationship is known as the Newton’s law of viscosity and the fluids which obey this law are known as Newtonian fluids. ∑ The relationship between the shear stress and the rate of shear strain is known as the constitutive equation. The fluids whose constitutive equations are not linear through origin (i.e., do not obey Newton’s law of viscosity) are known as non-Newtonian fluids. For a Newtonian fluid, viscosity is a function of temperature only. With an increase in temperature, the viscosity of a liquid decreases, while that of a gas increases. For a non-Newtonian fluid, the apparent viscosity depends not only on temperature but also on the deformation rate of the fluid. Kinematic viscosity, n, is defined as m/r, where r is the density. ∑ Compressibility of a substance is the measure of its change in volume or density under the action of external forces. It is usually characterised by the bulk modulus of elasticity
+Vlim V
+p
+E VV
+D ÆD ¢
+-D
+=D
+where DV ¢ is the smallest possible volume over which the continuum hypothesis remains valid. ∑ A fluid is said to be incompressible when the change in its density due to the change in pressure brought about by the fluid motion is negligibly small. When the flow velocity is equal to or less then 0.33 times of the local acoustic speed, the relative change in density of the fluid, due to flow, becomes equal to or less than 5 per cent respectively, and hence the flow is considered to be incompressible. ∑ The force of attraction between the molecules of a fluid is known as cohesion, while that between the molecules of a fluid and of a solid is known as cohesion. The interplay of these two intermolecular forces explains the phenomena of surface tension and capillary rise or depression. A free surface of the liquid is always under stretched condition implying the existence of a tensile force on the surface. The magnitude of this force per unit length of an imaginary line drawn along the liquid surface is known as the surface tension coefficient of simply, the surface tension. ∑ It is due to surface tension that a curved liquid interface, in equilibrium, results in a greater pressure at the concave side than that at its convex side.
+The pressure difference Dp is given by
+12
+11
+p rr
+sÊ ˆ
+D= +
+Á ̃
+Ë  ̄.
+∑ A liquid wets a solid surface and results in a capillary rise when the forces of cohesion between the liquid molecules are lower than the forces of adhesion between the molecules of the liquid and the solid in contact. Non-wettability
+
+
+Introduction and Fundamental Concepts 47
+of solid surfaces and capillary depression are exhibited by the liquids for which forces of cohesion are more than the forces of adhesion. The capillary rise (or depression) in a tube of radius r may be estimated by the expression,
+2 cos
+h gr
+sq r
+= , where q is the area wetted contact angle.
+EXERCISES
+1.1 Choose the correct answer: (i) A fluid is a substance that (a) always expands until it fills any container (b) is practically incompressible (c) cannot withstand any shear force (d) cannot remain at rest under the action of any shear force (e) obeys Newton’s law of viscosity (f) None of the above (ii) Newton’s law of viscosity relates to (a) pressure, velocity and viscosity (b) shear stress and rate of angular deformation in a fluid (c) shear stress, temperature, viscosity and velocity (d) pressure, viscosity and rate of angular deformation (e) None of the above (iii) The bulk modulus of elasticity (a) is independent of temperature (b) increases with the pressure (c) has the dimensions of 1/P (d) is larger when the fluid is more compressible (e) is independent of pressure and viscosity (iv) The phenomenon of capillary rise or depression (a) is observed only in vertical tubes (b) depends solely upon the surface tension of the liquid (c) depends upon the surface tension of the liquid, material of the tube and the surrounding gas in contact of the liquid (d) depends upon the pressure difference between the liquid and the environment (e) is influenced by the viscosity of the liquid 1.2 One measure as to a gas is in continuum, is the size of its mean free path. According to the kinetic theory of gas, the mean free path is given by
+l = 1.26 m/r (R T)1/2
+What will be the density of air when its mean free path is 10 mm. The temperature is 20 °C, m = 1.8 ¥ 10–5 kg/ms, R = 287 J/kg K.
+Ans. (0.782 ¥ 10–5 kg/m3)
+
+
+48 Introduction to Fluid Mechanics and Fluid Machines
+1.3 A shaft 80 mm in diameter is being pushed through a bearing sleeve 80.2 mm in diameter and 0.3 m long. The clearance, assumed uniform, is flooded with lubricating oil of viscosity 0.1 kg/ms and specific gravity 0.9. (a) If the shaft moves axially at 0.8 m/s, estimate the resistance force exerted by the oil on the shaft, and (b) If the shaft is axially fixed and rotated at 1800 rpm, estimate the resisting torque exerted by the oil and the power required to rotate the shaft. Ans. (60.32N, 22.74 Nm, 4.29 kW) 1.4 A body weighing 1000 N slides down at a uniform speed of 1 m/s along a lubricated inclined plane making a 30° angle with the horizontal. The viscosity of lubricant is 0.1 kg/ms and contact area of the body is 0.25 m2. Determine the lubricant thickness assuming linear velocity distribution. Ans. (0.05 mm) 1.5 A uniform film of oil 0.13 mm thick separates two discs, each of 200 mm diameter, mounted coaxially. Ignoring the edge effects, calculate the torque necessary to rotate one disc relative to other at a speed of 7 rev/s, if the oil has a viscosity of 0.14 Pas. Ans. (7.43 Nm) 1.6 A piston 79.6 mm diameter and 210 mm long works in a cylinder 80 mm diameter. If the annular space is filled with a lubricating oil having a viscosity of 0.065 kg/ms, calculate the speed with which the piston will move through the cylinder when an axial load of 85.6 N is applied. Neglect the inertia of the piston. Ans. (5.01 m/s) 1.7 (a) Find the change in volume of 1.00 m3 of water at 26.7 °C when subjected to a pressure increase of 2 MN/m2 (The bulk modulus of elasticity of water at 26.7 °C is 2.24 ¥ 109 N/m2). Ans. (0.89 ¥ 10–3 m3) (b) From the following test data, determine the bulk modulus of elasticity of water: at 3.5 MN/m2, the volume was 1.000 m3 and at 24 MN/m2, the volume was 0.990 m3. Ans. (2.05 ¥ 109 N/m2)
+1.8 A pressure vessel has an internal volume of 0.5 m3 at atmospheric pressure. It is desired to test the vessel at 300 bar by pumping water into it. The estimated variation in the change of the empty volume of the container due to pressurisation to 300 bar is 6 per cent. Calculate the mass of water to be pumped into the vessel to attain the desired pressure level. Given the bulk modulus of elasticity of water as 2 ¥ 109 N/m2 and at atmospheric pressure,
+P = 1000 kg/m3. Ans. (538 kg) 1.9 Find an expression for the isothermal bulk modulus of elasticity for a gas which obeys van der Waals law of state according to the equation
+P = r RT 1
+1- 
+F
+HG I
+KJ
+b
+a r RT
+r,
+where a and b are constants.
+
+
+Introduction and Fundamental Concepts 49
+1.10 An atomiser forms water droplets with a diameter of 5 ¥ 10–5 m. What is the pressure within the droplets at 20 °C, if the pressure outside the droplets is 101 kN/m2? Assume the surface tension of water at 20 °C is 0.0718 N/m. Ans. (106.74 kN/m2) 1.11 A spherical soap bubble of diameter d1 coalesces with another bubble of diameter d2 to form a single bubble of diameter d3 containing the same amount of air. Assuming an isothermal process, derive an analytical expression for d3 as a function of d1, d2, the ambient pressure p0 and the surface
+tension of soap solution s. If d1 = 20 mm, d2 = 40 mm p0 = 101 kN/m2 and s = 0.09 N/m, determine d3.
+Ans. (P0 + 8s/d3)d3
+3 = (P0 + 8s/d1)d3
+1 + (P0 + 8s/d2)d3
+2 ; d3 = 41.60 mm)
+1.12 By how much does the pressure in a cylindrical jet of water 4 mm in diameter exceed the pressure of the surrounding atmosphere if the surface tension of water is 0.0718 N/m? Ans. (35.9 N/m2) 1.13 Calculate the capillary depression of mercury at 20 °C (contact angle q = 140°) to be expected in a 2.5 mm diameter tube. The surface tension of mercury at 20 °C is 0.4541 N/m. Ans. (4.2 mm)
+
+
+2.1 INTRODUCTION
+In this chapter, we shall be describing situations involving fluids under rest/rigid body motion. These two apparently unconnected situations fall in the same paradigm of mathematical analysis, since in both cases, there is no relative deformation between the adjacent fluid layers. Thus, in this chapter, we consider that fluid is under zero shear and only normal component of stress, manifested in terms of negative of the thermodynamic pressure, acts on the fluid.
+2.2 FUNDAMENTAL EQUATION OF FLUIDS AT REST
+Referring to Fig. 2.1, let Tn be the traction vector acting on a plane having the unit
+normal vector nˆ . Let n
+Ti be the ith component of the traction vector T n (note that i
+= 1 means component along x, i = 2 means component along y, and i = 3 means component along z in a Cartesian indexing system). In special cases when the
+direction nˆ coincides with any of the coordinate directions ( j), the notations j
+Ti
+and t ji may be used equivalently. The later ones are also known to constitute the
+stress tensor components (see Chapter 1). Note that each of the indices i and j may vary between 1 and 3.
+x
+nˆ
+dA
+q
+y
+z
+Tn
+r
+Fig. 2.1
+2
+FLUIDS UNDER
+REST/RIGID BODY MOTION
+
+
+Fluids under Rest/Rigid Body Motion 51
+For any arbitrary orientation nˆ, the traction vector at a point may be expressed in terms of the stress tensor components, by utilising Cauchy’s theorem, as follows (see Chapter 1 for detailed derivation):
+33
+11
+n
+i ji j ij j jj
+T nn
+tt ==
+==
+Â Â (since, from angular momentum conservation, ij ij
+t =t )
+where, 1 2 3 ˆ
+ˆˆ
+nˆ = n i + n j + n k and 1 1 2 2 3 3 . ˆ
+ij j i i i i
+n nnnn
+t = t + t + t = tr
+(defining tri as
+1 2 3ˆ
+ˆˆ
+ii i i
+i jk
+t =t +t +t
+r)
+The net surface force acting on the fluid element along the ith direction is given by
+()
+surface,i . ˆ
+n
+ii
+CS
+F T dA n dA
+t
+==
+Ú Ú r (2.1)
+Now, using the divergence theorem ( .ˆ .
+CS CV
+F ndA Fd
+= —"
+ÚÚ
+rr
+), the area integrals
+appearing in Eq. (2.1) may be converted into volume integrals, to yield
+surface,i . i
+CV
+F = —t d"
+Ú
+r
+ij CV j
+d
+x
+∂t
+="
+∂
+Ú
+(2.2)
+It is important to note here that in a fluid at rest, there are only normal components of stress on a surface that are independent of the orientation of the surface. In other words, the stress tensor is isotropic or spherically symmetrical. Because the stress in a static fluid is isotropic, it must be of the form
+ij ij
+p
+t = - d (2.3)
+where p is the thermodynamic pressure (which acts equally from all directions; see Chapter 1), which may be related to density and temperature by an equation of state
+and dij is the Kronecker delta, and is given by
+1 if
+= 0 if
+ij i j
+ij
+d= = π
+A negative sign is introduced in Eq. (2.3) because of the fact that the normal components of stress are regarded as positive if they indicate tension, whereas pressure by definition is compressive in nature. Thus, Eq. (2.2) can be written as
+surface,i CV i
+p
+F xd
+∂
+=- "
+∂
+Ú
+(2.4)
+The net surface force acting on the fluid element is
+surface CV
+F pd
+= -— "
+Ú
+(2.5)
+
+
+52 Introduction to Fluid Mechanics and Fluid Machines
+Let body
+F be the resultant force on the fluid and b
+r
+be the body force per unit
+mass. Thus, one may write,
+body CV
+F = brd"
+Ú
+r
+(2.6)
+where d" is an element of volume whose mass is rd " . For equilibrium of the fluid element, we have
+()
+body surface 0
+CV
+F F b pd
+r
++ = -— " =
+Ú
+r
+(2.7)
+Equation (2.7) is valid for any arbitrary choice of " , and hence
+br - —p = 0
+r
+or —p = brr
+(2.8)
+Equation (2.8) is the fundamental equation of a fluid at rest. If gravity is considered to be the only external body force acting on the fluid, the vector form of Eq. (2.8) can be expressed in its scalar components with respect to a Cartesian coordinate system (Fig. 2.1) as
+0
+p x
+∂=
+∂ (2.8a)
+0
+p
+y
+∂=
+∂ (2.8b)
+z
+pb g
+zr r
+∂ = =
+∂ (2.8c)
+where bz, the external body force per unit mass in the positive direction of z (vertically upward), equals the negative value of g, the acceleration due to gravity. From Eqs. (2.8a) to (2.8c), it can be concluded that the pressure p is a function of z only. Therefore, Eq. (2.8c) can be written as
+dp g
+dz = -r (2.9)
+The explicit functional relationship of hydrostatic pressure p with z can be obtained by integrating the Eq. (2.9). However, this integration is not possible unless the variation of r with p and z is known.
+Constant Density Solution
+For a constant density (r) fluid, Eq. (2.9) can be integrated as
+p = -rgz + C (2.10)
+where C is the integration constant. If we consider an expanse of fluid with a free surface, where the pressure is
+defined as 0
+p = p (Fig. 2.2), Eq. (2.10) can be written as
+()
+0 01
+p p rg z z rgh
+- = - = (2.11)
+
+
+Fluids under Rest/Rigid Body Motion 53
+Therefore, Eq. (2.11) gives the expression of hydrostatic pressure p at a point whose vertical depression from the free surface is h. Thus, the difference in pressure between two points in a constant density fluid at rest can be expressed in terms of the vertical distance between the points. This result is known as Toricelli’s principle which is the basis for differential pressure measuring devices. The pressure 0
+p= p at free surface is the local atmospheric pressure. Therefore, it can be stated from Eq. (2.11), that the pressure at any point in an expanse of a stagnant fluid with a free surface exceeds that of the local atmospheric by an amount r gh , where h is the vertical depth of the point from the free surface.
+x
+y
+z
+z1
+zo
+Free surface p = po
+p = p + gh
+or
+pgh
+p - po = 0
+h
+Fig. 2.2 Pressure variation in an incompressible fluid at rest with a free surface
+Variable Density Solution (Pressure Variation in a Compressible Fluid)
+The pressure variation in a compressible fluid at rest depends on how the fluid density changes with height z and pressure p.
+Constant Temperature Solution (Isothermal Fluid)
+The equation of state for a compressible system generally relates its density to its pressure and temperature. If the fluid is a perfect gas at rest at constant temperature, it can be written from Eq. (1.24) as
+p
+r= 0
+0
+p
+r (2.12)
+where p0 and r0 are the pressure and density at some reference horizontal plane. With the help of Eq. (2.12), Eq. (2.9) becomes
+dp
+p =– 0
+p0
+r g dz (2.13)
+p = p0 exp 0
+0 0
+()
+gz z
+p
+r
+È ̆
+-
+Í ̇
+Î  ̊ (2.14)
+
+
+54 Introduction to Fluid Mechanics and Fluid Machines
+where z and z0 are the vertical coordinates of the plane concerned for pressure p and the reference plane respectively from any fixed datum.
+Non-isothermal Fluid
+The temperature of the atmosphere up to a certain altitude is frequently assumed to decrease linearly with the altitude z as given by
+T = T0 – a z (2.15)
+where T0 is the absolute temperature at sea level and the constant a is known as lapse rate. For the standard atmosphere, a = 6.5 K/km and T0 = 288 K. With the help of Eq. (1.24) and (2.15), Eq. (2.9) can be written as
+dp
+p= ( )
+0
+d
+gz R T az
+
+- (2.16)
+Integration of Eq. (2.16) yields
+ln
+0
+p
+p= 0
+0
+ln T z
+g
+RT
+a a
+
+Hence,
+0
+p
+p=
+/
+0
+1
+gR
+z
+T
+a
+Ê aˆ
+
+Á ̃
+Ë  ̄ (2.17)
+The altitude z in Eq. (2.17) is measured from the sea level where the pressure is p0. Experimental evidence of the temperature variation with altitude in different layers of the atmosphere is shown in Fig. 2.3.
+– 100 – 80 – 60 – 40
+Temperature °C
+Troposphere
+Stratosphere
+Mesosphere
+Ionosphere
+Altitude km
+– 20 0 20
+0
+20
+40
+60
+80
+100
+Fig. 2.3 Temperature variation in atmosphere
+
+
+Fluids under Rest/Rigid Body Motion 55
+Example 2.1
+What is the intensity of pressure in the ocean at a depth of 1500 m, assuming (a) salt water is incompressible with a specific weight of 10050 N/m3 and (b) salt water is compressible and weighs 10050 N/m3 at the free surface? E (bulk modulus of elasticity of salt water) = 2070 MN/m2 (constant).
+Solution
+(a) For an incompressible f luid, the intensity of pressure at a depth, according to Eq. (2.11), is
+p (pressure in gauge) = rgh = 10050 (1500) N/m2 = 15.08 MN/m2 gauge
+(b) The change in pressure with the depth of liquid h from free surface can be written according to Eq. (2.19) as
+d
+d
+p
+h = rg (2.18)
+Again from the definition of bulk modulus of elasticity E (Eq. (1.20)),
+dp = E dr
+r (2.19)
+Integrating equation (2.19), for a constant value of E, we get
+p = E ln r + C (2.20)
+The integration constant C can be found out by considering p = p0 and r = r0 at the free surface. Therefore, Eq. (2.20) becomes
+p – p0 = E ln
+0
+r r
+Êˆ
+Á ̃
+Ë  ̄ (2.21)
+Substitution of dp from Eq. (2.18) into Eq. (2.19) yields
+dh = E d
+g
+r r2
+After integration
+h= 1
+EC
+gr
+-+
+The constant C1 is found out from the condition that, r = r0 at h = 0 (free surface)
+Hence, h =
+0
+11
+E
+gr r
+Êˆ
+
+Á ̃
+Ë ̄
+from which
+0
+r
+r=
+0
+E
+E - hr g
+
+
+56 Introduction to Fluid Mechanics and Fluid Machines
+Substituting this value of r/r0 in Eq. (2.21), we have
+p – p0 = E ln
+0
+
+E
+E hr g
+Êˆ
+Á ̃
+Ë ̄
+Therefore,
+p (in gauge) = 2.07 ¥ 109 ln
+9
+9
+2.07 10
+2.07 10 – (10050)(1500)
+È ̆
+¥
+Í ̇
+¥
+Î  ̊ N/m2 gauge
+= 15.13 MN/m2 gauge
+2.3 UNITS AND SCALES OF PRESSURE MEASUREMENT
+The unit of pressure is N/m2 and is known as Pascal. Pressure is usually expressed with reference to either absolute zero pressure (a complete vacuum) or local atmospheric pressure. Absolute pressure is the pressure expressed as a difference between its value and the absolute zero pressure. When a pressure is expressed as a diference between its value and the local atmospheric pressure, it is known as gauge pressure (Fig. 2.4). Therefore,
+pabs = p – 0 = p (2.22a) pgauge = p – patm (2.22b)
+If the pressure p is less than the local atmospheric pressure, the gauge pressure pgauge, defined by the Eq. (2.22b), becomes negative and is called vacuum pressure.
+Gauge pressure
+Vacuum pressure
+Absolute pressure
+Absolute zero (complete vacuum)
+Absolute pressure
+Local atmospheric pressure
+Fig. 2.4 The scale of pressure
+At sea level, the international standard atmosphere has been chosen as
+patm = 101.32 kN/m2
+
+
+Fluids under Rest/Rigid Body Motion 57
+2.4 BAROMETER
+It is already established that there is a simple relation (Eq. 2.16) between the height of a column of liquid and the pressure at its base. The direct proportionality between gauge pressure and the height h for a fluid of constant density enables the pressure to be simply visualised in terms of the vertical height, h = p/rg. The height h is termed as pressure head corresponding to pressure p. For a liquid without a free surface in a closed pipe, the pressure head p/rg at a point corresponds to the vertical height above the point to which a free surface would rise, if a small tube of sufficient length and open to atmosphere is connected to the pipe (Fig. 2.5). Such a tube is called a piezometer tube, and the height h is the measure of the gauge pressure of the fluid in the pipe. If such a piezometer tube of sufficient length were closed at the top and the space above the liquid surface were a perfect vacuum, the height of the column would then correspond to the absolute pressure of the liquid at the base. This principle is used in the well-known mercury barometer to determine the local atmospheric pressure. Mercury is employed because its density is sufficiently high for a relative short column to be obtained, and also because it has very small vapour pressure at normal temperature. A perfect vacuum at the top of the tube (Fig. 2.6) is never possible; even if no air is present, the space would be occupied by the mercury vapour and the pressure would equal to the vapour pressure of mercury at its existing temperature. This almost vacuum condition above the mercury in the barometer is known as Torricellian vacuum. The pressure at A is equal to that at B (Fig. 2.6) which is the atmospheric pressure patm since A and B lie on the same horizontal plane. Therefore, we can write pB = patm = pv + r g h (2.23)
+The vapour pressure of mercury pv, can normally be neglected in comparison to patm. At 20 °C, pv is only 0.16 patm, where patm = 1.0132 ¥ 105 Pa at sea level. Then we get from Eq. (2.23)
+h = patm/rg =
+52
+3
+1.0132 10 N/ m
+(13560 kg/m ) (9.81 N/kg)
+¥ = 0.752 m of Hg
+h = p/r g
+Fig. 2.5 A piezometer tube
+p
+v
+h
+A
+B
+Torricellian vacuum
+Fig. 2.6 A barometer
+
+
+58 Introduction to Fluid Mechanics and Fluid Machines
+For accurate work, small corrections are necessary to allow for the variation of r with temperature, the thermal expansion of the scale (usually made of brass), and surface tension effects. If water was used instead of mercury, the corresponding height of the column would be about 10.4 m provided that a perfect vacuum could be achieved above the water. However, the vapour pressure of water at ordinary temperature is appreciable and so the actual height at, say, 15 °C would be about 180 mm less than this value. Moreover, with a tube smaller in diameter than about 15 mm, surface tension effects become significant.
+Example 2.2
+For a gauge reading at A of – 17200 Pa (Fig. 2.7), determine: (a) The elevation of the
+liquids in the open piezometer columns E, F, G, and (b) The deflection of mercury in the U-tube gauge. The elevations EL of the interfaces, as shown in Fig. 2.7, are measured from a fixed reference datum.
+D h1
+C
+El.6.0
+El. 4.0
+Spgr: 1.600
+Sp gr: 13.57
+El.8.0
+Water
+Spgr = 0.700
+Liquid I
+Liquid II
+Air
+El.11.6
+E1.15.0
+El.20.0 A E
+L
+N
+M
+Q
+R
+FG
+Kh
+H
+Fig. 2.7 Piezometer tubes connected to a tank containing different liquids
+Solution
+(a) Since the specific weight of air (= 12 N/m3) is very small compared to that of the liquids, the pressure at elevation 15.0 may be considered to be –17200 Pa gauge by neglecting the weight of air above it without introducing any significant error in the calculations.
+
+
+Fluids under Rest/Rigid Body Motion 59
+For column E: Since the pressure at H is below the atmospheric pressure, the elevation of liquid in the piezometer E will be below H, and assume this elevation is L as shown in Fig. 2.7. From the principle of hydrostatics, pK = pL Then patm – 17200 + (0.700 ¥ 9.81 ¥ 103)h = patm (where patm is the atmospheric pressure)
+or h = 2.5 m
+Hence the elevation at L is 15 – 2.5 = 12.5 m For column F: Pressure at EL11.6 = Pressure at EL15.0 + Pressure of the liquid I
+= – 17200 + (0.7 ¥ 9.81 ¥ 103) (15 – 11.6)
+= 6148 Pa gauge
+which must equal the pressure at M.
+The height of the water column corresponding to this pressure is 6148
+9810 = 0.63 m,
+and therefore the water column in the piezometer F will rise 0.63 m above M. Hence the elevation at N is (11.6 + 0.63) = 12.23 m For column G : Pressure at
+EL8.0 = Pressure at EL11.6 + Pressure of 3.6 m of water
+= 6148 + 9.81 ¥ 3.6 ¥ 103 = 41464 Pa
+which must be the pressure at R and equals to a column of
+41464
+1.6 ¥ 9810 = 2.64 m of liquid II
+Therefore, the liquid column in piezometer G will rise 2.64 m above R and elevation at Q is (8.0 + 2.64) = 10.64 m.
+(b) For the U-tube gauge,
+Pressure at D = Pressure at C 9810 ¥ 13.57 h1 = Pressure at EL11.6 + Pressure of 7.6 m of water or 13.57 h1 = 0.63 + 7.6
+from which h1 = 0.61 m
+2.5 MANOMETERS
+Manometers are devices in which columns of a suitable liquid are used to measure the difference in pressure between two points or between a certain point and the atmosphere. For measuring very small gauge pressures of liquids, simple piezometer tube (Fig. 2.5) may be adequate, but for larger gauge pressures, some modifications of the tube are necessary and this modified tube is known as a manometer. A common type manometer is like a transparent ‘U-tube’ as shown in Fig. 2.8(a). One of its ends is connected to a pipe or a container having a fluid (A ) whose pressure is to be measured while the other end is open to the atmosphere. The lower part of the U-tube contains a liquid immiscible with the fluid A and is of greater density than
+
+
+60 Introduction to Fluid Mechanics and Fluid Machines
+that of A . This fluid is called manometric fluid. The pressures at the two points P and Q (Fig. 2.8(a)) in a horizontal plane within the continuous expanse of the same fluid (liquid B in this case) must be equal. Then equating the pressures at P and Q in terms of the heights of the fluids above those points, with the aid of the fundamental equation of hydrostatics (Eq. 2.11), we have
+p1 + rA g (y + x) = patm + rB g x Hence, p1 – patm = (rB – rA) g x – rA g y (2.24)
+where p1 is the absolute pressure of the fluid A in the pipe or container at its centre line, and patm is the local atmospheric pressure. When the pressure of the fluid in the container is lower than the atmospheric pressure, the liquid levels in the manometer would be adjusted as shown in Fig. 2.8(b). Hence it becomes,
+p1
+pp
+1 > atm
+patm
+PQ
+B
+y
+A
+x
+Fig. 2.8(a) A simple manometer to measure gauge pressure
+p1+
+pp
+1 < atm
+patm
+PQ
+B
+y
+A
+x
+Fig. 2.8(b) A simple manometer measuring vacuum pressure
+
+
+Fluids under Rest/Rigid Body Motion 61
+p1 + rA g y + rB g x = patm
+patm – p1 = (rA y + rB x)g (2.25)
+In the similar fashion, a manometer is frequently used to measure the pressure difference, in course of flow, across a restriction in a horizontal pipe (Fig. 2.9).
+pp
+1> 2
+P
+y
+x
+Q
+p1
+rw
+rm
+p2
+AB
+Fig. 2.9 A manometer measuring pressure differential
+It is very important that the axis of each connecting tube at A and B to be perpendicular to the direction of flow and also for the edges of the connections to be smooth. Applying the principle of hydrostatics at P and Q we have,
+p1 + (y + x)rwg = p2 + y rwg + x rmg
+p1 – p2 = (rm – rw)gx (2.26)
+where, rm is the density of manometric fluid and rw is the density of the working fluid flowing through the pipe. Sometimes it is desired to express this difference of pressure in terms of the difference of heads (height of the working fluid at equilibrium).
+Thus, h1 – h2 = 1 2 – 1
+m
+ww
+pp x
+g
+r rr
+-Ê ˆ
+=Á  ̃
+Ë  ̄ (2.27)
+Example 2.3
+A typical differential manometer is attached to two sections A and B in a horizontal
+pipe through which water is flowing at a steady rate (Fig. 2.10). The deflection of mercury in the manometer is 0.6 m with the level nearer A being the lower one as shown in the figure. Calculate the difference in pressure between Sections A and B.
+Take the densities of water and mercury as 1000 kg/m3 and 13570 kg/m3, respectively.
+
+
+62 Introduction to Fluid Mechanics and Fluid Machines
+Water Mercury
+0.6 m
+GC
+AB
+D
+EF
+z
+Fig. 2.10 A differential manometer measuring pressure drop between two sections in the flow of water through a pipe
+Solution
+pC (Pressure at C) = pD (Pressure at D) (2.28) Again pC = pG (Pressure at G) = pA – rw g z (2.29)
+and pD = pE (Pressure at E) + Pressure of the column ED of
+mercury
+= pF (Pressure at F) + rm g (0.6) = pB – (z + 0.6) rw g + 0.6 rm g (2.30)
+With the help of Eq. (2.29) and (2.30), the Eq. (2.28) can be written as
+pA – rw gz = pB – (z + 0.6) rw g + 0.6 rmg or pA – pB = 0.6g (rm – rw) = 0.6 ¥ 9.81 (13.57 – 1) ¥ 103 Pa
+= 74 kPa
+2.5.1 Inclined Tube Manometer
+To obtain a reasonable value of x [Eq. (2.27)] for accurate measurement of small pressure differences by a ordinary U-tube manometer, it is essential that the ratio rm/rw should be close to unity. If the working fluid is a gas, this is not possible. Moreover, it may not be always possible to have a manometric liquid of density very close to that of the working liquid and giving at the same time a well defined meniscus at the interface. For this purpose, an inclined tube manometer is used. For example, if the transparent tube of a manometer instead of being vertical is set at an angle q to the horizontal (Fig. 2.11), then a pressure difference corresponding to a vertical difference of levels x gives a movement of the meniscus s = x/sin q along the slope (Fig. 2.11). If q is small, a considerable magnification of the movement of the meniscus may be achieved. Angles less than 5°, however, are not usually satisfactory, because it becomes difficult to determine the exact position of the meniscus. One limb is usually made very much greater in cross section than the other. When a pressure difference is applied across the manometer, the movement of the liquid surface in the wider limb is practically negligible compared to that occurring in the narrower limb. If the level of the surface in the wider limb is assumed constant, the displacement of the meniscus in the narrower limb needs only to be measured, and therefore only this limb is required to be transparent.
+
+
+Fluids under Rest/Rigid Body Motion 63
+s x
+Fig. 2.11 An inclined tube manometer
+Example 2.4
+An inclined tube manometer measures the gauge pressure ps of a system S (Fig. 2.12). The reservoir and tube diameters of the manometer are 50 mm and 5 mm respectively. The inclination angle of the tube is 30°. What will be the percentage error in measuring pS if the reservoir deflection is neglected.
+R
+S
+ps
+ps
+b
+cD
+R sin
+q = 30°
+c
+h
+bq
+Fig. 2.12 An inclined tube manometer measuring gauge pressure of a system
+Solution
+Let, with the application of pressure pS, the level of gauge fluid in the reservoir lowers down from bb to cc Now, pressure at c = Pressure at D
+or pS = rg ◊ g (R sin q + h) (2.31)
+where rg is the density of the gauge fluid. From continuity of the fluid in both the limbs,
+A ◊ h = a◊ R
+or h = a R
+A (2.32)
+
+
+64 Introduction to Fluid Mechanics and Fluid Machines
+where A and a are the cross-sectional areas of the reservoir and the tube respectively. Substituting for h from Eq. (2.32) in Eq. (2.31)
+pS = rgg R sin q 1
+1 sin
+a
+Aq
+Êˆ
++
+Á ̃
+Ë  ̄ (2.33)
+Let the pressure pS be measured as pS¢ from the gauge reading R only (neglecting the reservoir deflection h).
+Then pS¢ = rg g R sin q (2.34)
+The percentage error in measuring pS as pS¢ can now be calculated with the help of Eqs. (2.33) and (2.34) as
+e = ( – ) 100 1 100
+1 sin
+SS
+S
+pp
+A
+p
+aq
+¢¥ = ¥
+Êˆ
++
+Ë ̄
+=2
+1 100 1.96%
+50 1
+1 52
+¥=
+È ̆
+Êˆ
+Í+  ̇
+Ë ̄
+Î ̊
+2.5.2 Inverted Tube Manometer
+For the measurement of small pressure differences in liquids, an inverted Utube manometer as shown in Fig. 2.13 is often used. Here rm < rw, and the line PQ is taken at the level of the higher meniscus to equate the pressures at P and Q from the principle of hydrostatics. If may be written that
+p1
+* – p2
+* = (rw – rm) g x (2.35)
+where p* represents the piezometric pressure p + rgz (z being the vertical height of the point concerned from any reference datum). In case of a horizontal pipe (z1 = z2), the difference in piezometric pressure becomes equal to the difference in the static pressure. If (rw – rm) is sufficiently small, a large value of x may be obtained for a small value of p1
+* – p2
+*. Air is used as the manometric fluid. Therefore, rm is negligible compared with rw and hence,
+p1
+* – p2
+* a rw g x (2.36)
+Air may be pumped through a value V at the top of the manometer until the liquid menisci are at a suitable level.
+P
+p1
+z1 z2
+p2
+x
+Q
+V rm
+rw
+Fig. 2.13 An inverted tube manometer
+
+
+Fluids under Rest/Rigid Body Motion 65
+2.5.3 Micromanometer
+When an additional gauge liquid is used in a U-tube manometer, a large difference in meniscus levels may be obtained for a very small pressure difference. The typical arrangement is shown in Fig. 2.14.
+Cross-sectional area A
+Initial level of gauge liquid
+Gauge liquid of density
+Initial level of manometric liquid
+Cross-sectional area a
+Manometric liquid of density rm
+Working fluid of density rw
+h
+p1 p2
+pp
+12
+>
+Dz
+Dz
+r r >r
+mG
+>w
+rG
+z
+y
+y
+Q
+P
+2
+2
+Fig. 2.14 A micromanometer
+The equation of hydrostatic equilibrium at PQ can be written as
+p1 + rw g(h + Dz) + rG g – 2
+y
+zz
+Êˆ
+D+
+Á ̃
+Ë  ̄ = p2 + rw g(h – Dz)
++ rG g 2
+y
+zz
+Êˆ
++D 
+Á ̃
+Ë  ̄ + rm g y (2.37)
+where rw, rG and rm are the densities of working fluid, gauge liquid and manometric liquid respectively. From continuity of gauge liquid,
+ADz= a 2
+y (2.38)
+Substituting for D z from Eq. (2.38) in Eq. (2.37), we have
+p1 – p2 = gy { }
+1
+mG w
+aa
+AA
+rr r
+Êˆ
+- -
+Á ̃
+Ë  ̄ (2.39)
+If a is very small compared to A ,
+
+
+66 Introduction to Fluid Mechanics and Fluid Machines
+p1 – p2 a (rm – rG) gy (2.40)
+With a suitable choice for the manometric and gauge liquids so that their densities are close (rm a rG), a reasonable value of y may be achieved for a small pressure difference.
+2.6 HYDROSTATIC THRUSTS ON SUBMERGED SURFACES
+Due to the existence of hydrostatic pressure in a fluid mass, a normal force is exerted on any part of a solid surface which is in contact with a fluid. The individual forces distributed over an area give rise to a resultant force. The determination of the magnitude and the line of action of the resultant force is of practical interest to engineers.
+2.6.1 Plane Surfaces
+Figure 2.15(a) shows a plane surface of arbitrary shape wholly submerged in a liquid so that the plane of the surface makes an angle q with the free surface of the liquid. In fact, any elemental area of the surface under this situation would be subjected to normal forces in the opposite directions from the two sides of the surface due to hydrostatic pressure; therefore no resultant force would act on the surface. But we consider the case as if the surface A shown in Fig. 2.15(a) to be subjected to hydrostatic pressure on one side and atmospheric pressure on the other side. Let p denote the gauge pressure on an elemental area dA . The resultant force F on the area A is therefore,
+Free surface
+(a) Inclined surface (b) Horizontal surface
+F
+Free surface
+hc
+hc
+dA
+p
+A
+h
+x
+x¢
+xp
+c
+q
+yc
+y¢
+y
+yp
+y
+cx
+y
+p
+p
+p
+(
+,
+)
+cx
+y
+(
+,
+)
+c
+c
+xc
+Fig. 2.15 Hydrostatic thrust on submerged plane surface
+F = ÚAÚ p dA (2.41)
+According to Eq. (2.11), Eq. (2.41) reduces to
+
+
+Fluids under Rest/Rigid Body Motion 67
+F = rg ÚÚ h dA = r g sin q ÚÚ y d A (2.42)
+where h is the vertical depth of the elemental area dA from the free surface and the distance y is measured from the x axis, the line of intersection between the extension of the inclined plane and the free surface (Fig. 2.15(a)). The ordinate of the centre of area of the plane surface A is defined as
+yc = 1
+A ÚÚ y dA (2.43)
+Hence from Eqs (2.42) and (2.43), we get
+F = r g yc sin q A = r g hc A (2.44)
+where hc (= yc sin q) is the vertical depth (from free surface) of centre of area c. Equation (2.44) implies that the hydrostatic thrust on an inclined plane is equal to the pressure at its centroid times the total area of the surface, i.e., the force that would have been experienced by the surface if placed horizontally at a depth hc from the free surface (Fig. 2.15(b)). The point of action of the resultant force on the plane surface is called the centre of pressure cp. Let xp and yp be the distances of the centre of pressure from the y and x axes respectively. Equating the moment of the resultant force about the x axis to the summation of the moments of the component forces, we have
+yp F = Ú y d F = rg sin q ÚÚ y2 dA (2.45)
+Solving for yp from Eq. (2.45) and replacing F from Eq. (2.42), we can write
+yp =
+2d
+d
+A
+A
+yA
+yA
+ÚÚ
+ÚÚ (2.46)
+In the same manner, the x coordinate of the centre of pressure can be obtained by taking moment about the y axis. Therefore,
+xp F = Ú x dF = rg sin q ÚÚ x y dA
+from which,
+xp =
+d
+d
+A
+A
+xy A
+yA
+ÚÚ
+ÚÚ (2.47)
+The two double integrals in the numerators of Eqs. (2.46) and (2.47) are the moment of inertia about the x axis Ixx and the product of inertia Ixy about the x and y axes of the plane area, respectively. By applying the theorem of parallel axis,
+Ixx = ÚÚ y2 dA = Ix¢x¢ + A y2
+c (2.48)
+Ixy = ÚÚ x y dA = Ix¢y¢ + A xc yc (2.49)
+
+
+68 Introduction to Fluid Mechanics and Fluid Machines
+where, Ix¢x¢ and Ix¢y¢ are the moment of inertia and the product of inertia of the
+surface about the centroidal axes (x¢ – y¢), xc and yc are the coordinates of the centre of area c with respect to the x and y axes. With the help of Eqs. (2.48), (2.49) and (2.43), Eqs. (2.46) and (2.47) can be written as
+yp = x x
+c c
+Iy
+Ay
+¢ ¢ + (2.50a)
+xp = x y
+c c
+Ix
+Ay
+¢ ¢ + (2.50b)
+The first term on the right-hand side of Eq. (2.50a) is always positive. Hence, the centre of pressure is always at a higher depth from the free surface than that at which the centre of area lies. This is obvious because of the typical variation of hydrostatic pressure with the depth from the free surface. When the plane area is symmetrical about the y¢ axis, Ix¢y¢ = 0, and xp = xc.
+Example 2.5
+Oil of specific gravity 0.800 acts on a vertical triangular area whose apex is in the oil
+surface. The triangle is isosceles of 3 m high and 4 m wide. A vertical rectangular area of 2 m high is attached to the 4 m base of the triangle and is acted upon by water. Find the magnitude and point of action of the resultant hydrostatic force on the entire area.
+Solution
+The submerged area under oil and water is shown in Fig. 2.16.
+Ox O
+3m
+dz
+z
+2m
+P P Oil spgr = 0.8
+Water
+F = F1 + F2
+F2
+F1
+H
+RR
+QQ
+y
+4m
+Fig. 2.16 The submerged surface under oil and water as described in Example 2.5
+Oil sp.gr
+
+
+Fluids under Rest/Rigid Body Motion 69
+The hydrostatic force F1 on the triangular area
+= 9.81 ¥ 0.8 ¥ 103 ¥ 2 1
+3 34
+32
+Ê ˆÊ ˆ
+¥ ¥ ¥¥
+Á  ̃Á  ̃
+Ë  ̄ Ë  ̄ N = 94.18 kN
+The hydrostatic force F2 on the rectangular area
+= 9.81 ¥ 103 (3 ¥ 0.8 + 1) ¥ (2 ¥ 4) N = 266.83 kN
+Therefore the resultant force on the entire area
+F = F1 + F2 = 94.18 + 266.83 = 361 kN
+Since the vertical line through the apex 0 is the axis of symmetry of the entire area, the hydrostatic forces will always act through this line. To find the points of action of the forces F1 and F2 on this line, the axes Ox and Oy are taken as shown in Fig. 2.16. For the triangular area, moments of forces on the elemental strips of thickness dz about Ox give
+F1 ◊ OP =
+3
+Ú0 9.81 ¥ 103 (0.8z) (Hdz.z)
+Again from geometry, H = 4
+3z
+Hence, OP =
+3
+33
+0 3
+4
+9.81 10 0.8 d
+3
+94.18 10
+zz
+Êˆ
+¥ ¥ Ë ̄
+¥
+Ú
+= 2.25 m
+In a similar way, the point of action of the force F2 on the rectangular area is found out as
+OQ =
+5 3
+3 3
+9.81 10 {(3 0.8) ( 3)} (4 d )
+266.83 10
+¥ ¥ + z- z z
+¥
+Ú
+= 4.1 m
+Finally the point of action R (Fig. 2.16) of the resultant force F is found out by taking moments of the forces F1 and F2 about O as
+OR = 94.18 2.25 266.83 4.1
+361
+¥ + ¥ = 3.62 m
+Example 2.6
+Figure 2.17 shows a flash board. Find the depth of water h at the instant when the
+water is just ready to tip the flash board.
+
+
+70 Introduction to Fluid Mechanics and Fluid Machines
+h
+yp
+yc
+h/2
+60°
+60°
+G
+1m
+e
+Hinge
+O
+B
+Fig. 2.17 A flash board in water
+Solution
+The flash board will tip if the hydrostatic force on the board acts at a point away from the hinge towards the free surface. Therefore, the depth of water h for which the hydrostatic force Fp passes through the hinge point O is the required depth when water is just ready to tip the board. Let G be the centre of gravity of the submerged part of the board (Fig. 2.17).
+Then BG = /2
+sin 60 3
+hh
+∞=
+If yp and yc are the distances of the pressure centre (point of application of the hydrostatic force Fp) and the centre of gravity respectively from the free surface along the board, then from Eq. (2.50a)
+e = yp – yc =
+3
+(2 / 3)
+2
+12 3 3
+h
+hh
+Êˆ
+Ë ̄
+= h/ ( )
+3 3 (2.51)
+(considering unit length of the board) Again from the geometry,
+e = BG – BO = ( )
+h / 3 – 1 (2.52)
+Equating the two expressions of e from Eqs. (2.51) and (2.52), we have
+h/ ( )
+3 3 = h/ 3 – 1
+from which h = 3 3
+2 = 2.6 m
+Example 2.7
+The plane gate (Fig. 2.18) weighs 2000 N/m length normal to the plane of the figure,
+with its centre of gravity 2 m from the hinge O. Find h as a function of q for equilibrium of the gate.
+
+
+Fluids under Rest/Rigid Body Motion 71
+Water
+G
+h
+FP
+O
+W = 2000 N/m
+4m
+yp 2m
+q
+Fig. 2.18 A plain gate in equilibrium under hydrostatic force due to water
+Solution
+Let F be the hydrostatic force acting on the gate at point P
+Then F = Pressure at the centroid of the submerged portion of gate
+¥ submerged area of the gate
+=
+2
+3 4905
+9.81 10 1
+2 sin sin
+h hh qq
+¥ ¥ ¥ ¥ = (2.53)
+The distance of the pressure centre P from the free surface along the gate is found out, according to Eq. (2.50), as
+yp =
+3
+1 ( /sin ) 1 1 2
+2 sin sin 2 6 3 sin
+12 1 sin 2 sin
+hh h h
+hh
+q
+q qq qq
+¥ Êˆ
++ = +=
+Á ̃
+Ë ̄
+Êˆ
+¥¥ Á  ̃
+Ë ̄
+Now, OP = 2 1
+sin 3 sin 3 sin
+h hh q qq
+-=
+For equilibrium of the gate, moment of all the forces about the hinge O will be zero.
+Hence, 1
+3 sin
+h
+Fq
+Êˆ
+Á ̃
+Ë  ̄ – 2000 (2 cos q) = 0
+Substituting F from Eq. (2.53),
+2
+4905 1
+sin 3 sin
+hh qq
+Êˆ
+Á ̃
+Ë  ̄ – 4000 cos q = 0
+from which h = 1.347 (sin2 q cos q)1/3
+
+
+72 Introduction to Fluid Mechanics and Fluid Machines
+2.6.2 Curved Surfaces
+On a curved surface, the direction of the normal changes from point to point, and hence the pressure forces on individual elemental surfaces differ in their directions. Therefore, a scalar summation of them cannot be made. Instead, the resultant thrusts in certain directions are to be determined and these forces may then be combined vectorially. An arbitrary submerged curved surface is shown in Fig. 2.19. A rectangular Cartesian coordinate system is introduced whose x y plane coincides with the free surface of the liquid and the z axis is directed downward below the x y plane. Consider an elemental area dA at a depth z from the surface of the liquid. The hydrostatic force on the elemental area dA is d F = r g z dA (2.54) and the force acts in a direction normal to the area dA . The components of the force dF in x, y and z directions are
+d Fx = l d F = l rgz dA (2.55a)
+d Fy = m d F = m rgz dA (2.55b) d Fz = n d F = n rgz dA (2.55c) where l, m and n are the direction cosines of the normal to d A . The components of the surface element d A projected on the y z, x z and x y planes are, respectively dAx = l dA (2.56a) dAy = m dA (2.56b)
+dAz = n dA (2.56c)
+Substituting Eqs (2.56a–2.56c) into (2.55), we can write
+dFx = rg z dA x (2.57a) dFy = rg z dA y (2.57b) dFz = rg z dA z (2.57c)
+Therefore, the components of the total hydrostatic force along the coordinate axes are
+Fx =
+ÚAÚ rg z d A x = rg zc A x (2.58a)
+Fy =
+ÚAÚ rg z d A y = rg zc A y (2.58b)
+Fz =
+ÚAÚ rg z d Az (2.58c)
+where zc is the z coordinate of the centroid of area A x and A y (the projected areas of curved surface on y z and x z plane, respectively). If zp and yp are taken to be the coordinates of the point of action of Fx on the projected area A x on the y z plane, following the method discussed in 2.6.1, we can write
+zp = 2
+1 d yy
+x
+xc xc
+I
+zA
+Az Az
+=
+ÚÚ (2.59a)
+
+
+Fluids under Rest/Rigid Body Motion 73
+yp = 1 d yz
+x
+xc xc
+I
+yz A
+Az Az
+=
+ÚÚ (2.59b)
+where Iyy is the moment of inertia of area A x about the y axis and Iyz is the product of
+inertia of A x with respect to the axes y and z. In the similar fashion, z¢p and x¢p, the coordinates of the point of action of the force Fy on area A y, can be written as
+z¢p = 2
+1 d xx
+y
+yc yc
+I
+zA
+Az Az
+=
+ÚÚ (2.60a)
+x¢p = 1 d xz
+y
+yc yc
+I
+xz A
+Az Az
+=
+ÚÚ (2.60b)
+where Ixx is the moment of inertia of area A y about the x axis and Ixz is the product of inertia of A y about the axes x and z.
+o
+y z
+c
+zp
+zc
+p
+dAx
+z
+x
+A
+Fx
+dAz
+dA
+dF
+dFx
+dFz
+dFy
+yp
+yc
+y
+Fig. 2.19 Hydrostatic thrust on a submerged curved surface
+We can conclude from Eqs (2.58), (2.59) and (2.60) that for a curved surface, the component of hydrostatic force in a horizontal direction is equal to the hydrostatic force on the projected plane surface perpendicular to that direction and acts through the centre of pressure of the projected area. From Eq. (2.58c), the vertical component of the hyrostatic force on the curved surface can be written as
+Fz = d z
+g z A gV
+r =r
+ÚÚ (2.61)
+where V is the volume of the body of liquid within the region extending vertically above the submerged surface to the free surface of the liquid. Therefore, the vertical component of hydrostatic force on a submerged curved surface is equal to the weight of the liquid volume vertically above the solid surface to the free surface of the liquid and acts through the centre of gravity of the liquid in that volume. In some instances (Fig. 2.20), it is only the underside of a curved surface which is subjected to hydrostatic pressure. The vertical component of the hydrostatic thrust
+
+
+74 Introduction to Fluid Mechanics and Fluid Machines
+on the surface in this case acts upward and is equal, in magnitude, to the weight of an imaginary volume of liquid extending from the surface up to the level of the free surface. If a free surface does not exist in practice, an imaginary free surface may be considered (Fig. 2.21(a), 2.21(b)) at a height p/rg above any point where the pressure p is known. The hydrostatic forces on the surface can then be calculated by considering the surface as a submerged one in the same fluid with an imaginary free surface as shown.
+Pressurised fluid in a chamber
+Pressurised fluid in a chamber
+Imaginary free surface
+Imaginary free surface
+Surface
+(a) (b)
+1 p1
+z pg
+33
+= /r
+3
+2 p2
+p3
+z pg
+22
+= /r
+h = p/r g
+z pg
+11
+= /r
+p
+Fig. 2.21 Hydrostatic force exerted on a curved surface by a fluid without a free surface
+Example 2.8
+A circular cylinder of 1.8 m diameter and 2.0 m long is acted upon by water in a tank as shown in Fig. 2.22(a). Determine the horizontal and vertical components of hydrostatic force on the cylinder.
+Solution
+Let us consider, at a depth z from the free surface, an elemental surface on the cylinder that subtends an angle dq at the centre. The horizontal and vertical components of hydrostatic force on the elemental area can be written as
+dFH = 9.81 ¥ 103 {0.9 (1 + cos q)} (0.9 dq ¥ 2) sin q and dFV = 9.81 ¥ 103 {0.9 (1 + cos q)} (0.9 dq ¥ 2) cos q
+Imaginary volume of liquid
+Fz
+Fig. 2.20 Hydrostatic thrust on the underside of a curved surface
+
+
+Fluids under Rest/Rigid Body Motion 75
+Therefore, the horizontal and vertical components of the net force on the entire cylindrical surface in contact with water are given by
+FH =
+0
+p
+Ú
+9.81 ¥ 103 {0.9(1 + cos q)} 1.8 sin q dq N = 31.78 kN
+FV =
+0
+p
+Ú 9.81 ¥ 103 {0.9(1 + cos q)} 1.8 cos q dq N
+= 9.81 ¥ 103 ¥ 0.9 ¥ 1.8 2
+00
+cos d cos d
+pp
+qq qq
+È ̆
++
+Í ̇
+Í ̇
+Î ̊
+ÚÚ
+= 9.81 ¥ 103 ¥ 0.9 ¥ 1.8 0 N
+2
+p
+È ̆
++
+Í ̇
+Î ̊
+= 24.96 kN
+Alternative method:
+The horizontal component of the hydrostatic force on surface ACB (Fig. 2.22 (b)) is equal to the hydrostatic force on a projected plane area of 1.8 m high and 2 m long.
+Therefore, FH = 9.81 ¥ 103 ¥ 0.9 ¥ (1.8 ¥ 2) N = 31.78 kN
+dA
+dF
+O
+0.9 m dq
+q
+1.8 m
+z
+Fig. 2.22(a) A circular cylinder in a tank of water
+The downward vertical force acting on surface A C is equal to the weight of water contained in the volume CDAC. The upward vertical force acting on surface CB is equal to the weight of water corresponding to a volume BCDAB. Therefore the net upward vertical force on surface ACB
+= Weight of water corresponding to volume of BCDAB – Weight of water in volume CDAC
+= Weight of water corresponding to a volume of BCAB (half of the cylinder volume)
+Hence, FV = 9.81 ¥ 103 ¥ 1
+2 {3.14 ¥ (0.9)2 ¥ 2}N = 24.96 kN
+O
+B
+C
+DA
+1.8 m
+Fig. 2.22(b) A circular cylinder in a tank of water
+
+
+76 Introduction to Fluid Mechanics and Fluid Machines
+Example 2.9
+A parabolic gate AB is hinged at A and latched at B as shown in Fig. 2.23. The gate is 3 m wide. Determine the components of net hydrostatic force on the gate exerted by water.
+B
+Ax
+(Gate profile)
+z
+x=
+dx dz
+dFv
+q
+z2
+1 3
+Water
+z
+dF
+dFH
+ds
+1.5 m
+Fig. 2.23 A parabolic gate under hydrostatic pressure
+Solution
+The hydrostatic force on an elemental portion of the gate of length ds (Fig. 2.23) can be written as
+dF = 9.81 ¥ 103 ¥ (1.5 – z) ds ¥ 3
+The horizontal and vertical components of the force dF are
+dFH = 9.81 ¥ 103 ¥ 3(1.5 – z) ¥ ds cos q
+= 9.81 ¥ 3 ¥ (1.5 – z) ¥ 103 dz
+and dFV = 9.81 ¥ 103 ¥ 3(1.5 – z) ¥ ds sin q
+= 9.81 ¥ 3 ¥ (1.5 – z) ¥ 103 dx
+Therefore, the horizontal component of hydrostatic force on the entire gate
+FH =
+1.5
+Ú0 9.81 ¥ 3 ¥ (1.5 – z) ¥ 103 dz
+= 9.81 ¥ 103 ¥ 1.5 1.5 3
+2
+¥ ¥ N = 33.11 kN
+The vertical component of force on the entire gate
+FV =
+1.5
+Ú0 9.81 ¥ 3 ¥ (1.5 – z) ¥ 103 2
+3z
+Êˆ
+Á ̃
+Ë  ̄ dz
+
+
+Fluids under Rest/Rigid Body Motion 77
+F
+HGSince x = 2
+1
+3 z for the gate profile, dx = 2
+3 z dzI
+KJ
+=
+3 3
+2 (1.5)
+9.81 10 3 N 11.04 kN
+36
+¥ ¥¥ ¥ =
+Example 2.10
+A sector gate, of radius 4 m and length 5 m, controls the flow of water in a horizontal channel. For the equilibrium condition shown in Fig. 2.24, determine the total thrust on the gate.
+30o
+4m
+A
+E
+F
+v
+dFv
+dFH
+FH
+zp
+F
+dF
+C
+DO
+dA
+a
+B
+h
+1m
+dq
+q
+Fig. 2.24 A sector gate controlling the flow of water in a channel
+Solution
+The horizontal component of the hydrostatic force is the thrust which would be exerted by the water on a projected plane surface in a vertical plane. The height of this projected surface is 4 sin 30° m = 2 m and its centroid is (1 + 2/2) m = 2 m below the free surface. Therefore, the horizontal component of hydrostatic thrust
+FH = r gh A = 1000 ¥ 9.81 ¥ 2 ¥ (5 ¥ 2) N = 196.2 kN
+The line of action of FH passes through the centre of pressure which is at a distance zp below the free surface, given by (see Eq. 2.50a)
+zP = 2 +
+3
+5(2)
+12 (5 2) 2
+¥ ¥ ¥ = 2.167 m
+
+
+78 Introduction to Fluid Mechanics and Fluid Machines
+The vertical component of the hydrostatic thrust FV
+= Weight of imaginary water contained in the volume ABDCEA
+Now, VolumeABDCEA = Volume ABDEA + Volume OECO – Volume ODCO Volume ABDEA = 5 ¥ AB ¥ BD = 5 ¥ (4 – 4 cos 30°) ¥ 1 = 5 ¥ 0.536
+Volume OECO = 5 ¥ p ¥ (OC)2 ¥ 30/360 = 5 ¥ p ¥ (4)2 ¥ (30/360)
+Volume ODCO = 5 ¥ 1
+2 ¥ 4 sin 30° ¥ 4 cos 30°
+= 5¥ 1 2
+¥ 2 ¥ 4 cos 30°
+Therefore,
+FV = 1000 ¥ 9.81 ¥ 5 ÈÍÎ(0.536 ¥ 1) + 2 30
+4 360
+Êp ˆ
+¥¥
+Á ̃
+Ë ̄
+– 1 2 4 cos 30
+2
+Ê ˆ ̆
+¥¥ ∞
+Á  ̃ ̇
+Ë  ̄  ̊ N = 61.8 kN
+The centre of gravity of the imaginary fluid volume ABDCEA is found by taking moments of the weights of all the elementary fluid volumes about BC. It is 0.237 m to the left of BC. The horizontal and vertical components, being coplanar, combine to give a single resultant force of magnitude F as
+F = (FH
+2 + FV
+2)1/2 = {(196.2)2 + (61.8)2}1/2 = 205.7 kN
+at an angle a = tan–1 (61.8/196.2) a 17.5° to the horizontal.
+Alternative method:
+Consider an elemental area dA of the gate subtending a small angle dq at 0 (Fig. 2.24). Then the hydrostatic thrust dF on the area dA becomes dF = r gh dA . The horizontal and vertical components of dF are
+dFH = r gh d A cos q dFy = r gh d A sin q
+where h is the vertical depth of area dA below the free surface.
+Now, h = (1 + 4 sin q)
+and dA = (4 dq ¥ 5) = 20 dq
+Therefore, the total horizontal and vertical components are
+FH =
+/6
+0
+d 1000 9.81 20 (1 4 sin ) cos d N
+FH
+p
+= ¥ ¥ + q qq
+Ú Ú = 196.2 kN
+FV = 1000 ¥ 9.81 ¥ 20
+/6
+0
+p
+Ú (1 + 4 sin q ) sin q dq N = 61.8 kN
+Since all the elemental thrusts are perpendicular to the surface, their lines of action pass through O and that of the resultant force therefore also passes through O.
+
+
+Fluids under Rest/Rigid Body Motion 79
+2.7 BUOYANCY
+When a body is either wholly or partially immersed in a fluid, the hydrostatic lift due to the net vertical component of hydrostatic pressure forces experienced by the body is called the buoyant force and the phenomenon is called buoyancy. Consider a solid body of arbitrary shape completely submerged in a homogeneous liquid as shown in Fig. 2.25. Hydrostatic pressure forces act on the entire surface of the body.
+x
+z2
+z1
+p1
+p2
+x
+xB
+dF1
+dF2
+dAz
+FB
+B
+z
+Free surface patm
+o
+Fig. 2.25 Buoyant force on a submerged body
+It is evident according to the earlier discussion in Section 2.6, that the resultant horizontal force in any direction for such a closed surface is always zero. To calculate the vertical component of the resultant hydrostatic force, the body is considered to be divided into a number of elementary vertical prisms. The vertical forces acting on the two ends of such a prism of cross section dA z (Fig. 2.25) are respectively
+dF1 = (patm + p1) dA z = (patm + rgz1)dA z (2.62a) dF2 = (patm + p2) dA z = (patm + rgz2) dA z (2.62b)
+Therefore, the buoyant force (the net vertically upward force) acting on the elemental prism is
+dFB = dF2 – dF1 = rg (z2 – z1) dA z = rgdV (2.63)
+where dV is the volume of the prism. Hence, the buoyant force FB on the entire submerged body is obtained as
+FB = d
+V
+gV
+r
+ÚÚÚ = rgV (2.64)
+
+
+80 Introduction to Fluid Mechanics and Fluid Machines
+where V is the total volume of the submerged body. The line of action of the force FB can be found by taking moment of the force with respect to the z axis. Thus
+xB FB = Ú x dFB (2.65)
+Substituting for dFB and FB from Eqs. (2.63) and (2.64) respectively into Eq. (2.65), the x coordinate of the centre of buoyancy is obtained as
+xB = 1 d
+V
+xV
+V ÚÚÚ (2.66)
+which is the centroid of the displaced volume. It is found from Eq. (2.64) that the buoyant force FB equals the weight of liquid displaced by the submerged body of volume V . This phenomenon was discovered by Archimedes and is known as the Archimedes principle. This principle states that the buoyant force on a submerged body is equal to the weight of liquid displaced by the body, and acts vertically upward through the centroid of the displaced volume. Thus the net weight of the submerged body, (the net vertical downward force experienced by it) is reduced from its actual weight by an amount that equals to the buoyant force. The buoyant force of a partially immersed body, according to Archimedes principle, is also equal to the weight of the displaced liquid. Therefore the buoyant force depends upon the density of the fluid and the submerged volume of the body. For a floating body in static equilibrium and in the absence of any other external force, the buoyant force must balance the weight of the body.
+Example 2.11
+A block of steel (sp. gr. 7.85) floats at a mercury water interface as in Fig. 2.26. What is the ratio of a and b for this condition? (sp. gr. of mercury is 13.57).
+Steel block
+Mercury
+Water
+a
+b
+Fig. 2.26 A steel block floating at mercury water interface
+Solution
+Let the block have a uniform cross-sectional area A . Under the condition of floating equilibrium as shown in Fig. 2.26,
+Weight of the body = Total buoyancy force acting on it
+
+
+Fluids under Rest/Rigid Body Motion 81
+A ¥ (a + b) (7850) ¥ g = (b ¥ 13.57 + a) ¥ A ¥ g ¥ 103 Hence 7.85 (a + b) = 13.57b + a
+or a
+b = 5.72
+6.85 = 0.835
+Example 2.12
+An aluminium cube 150 mm on a side is suspended by a string in oil and water as shown in Fig. 2.27. The cube is submerged with half of it being in oil and the other half in water. Find the tension in the string if the specific gravity of oil is 0.8 and the
+specific weight of aluminium is 25.93 kN/m3.
+75 mm
+Water
+Oil
+150 mm
+T
+T
+Fig. 2.27 An aluminium cube suspended in an oil and water system
+Solution
+Tension T in the string can be written in consideration of the equilibrium of the cube as
+T = W – FB
+= 25.93 ¥ 103 ¥ (.15)3 – 9.81 ¥ 103 [(.153 ¥ 0.5 ¥ 0.8 + (.15)3 ¥ 0.5 ¥ 1] N
+= 57.71 N (W = Weight of the cube and FB = Total buoyancy force on the cube)
+2.8 STABILITY OF UNCONSTRAINED BODIES IN FLUIDS
+2.8.1 Submerged Bodies
+For a body not otherwise restrained, it is important to know whether it will rise or fall in a fluid, and also whether an orginally vertical axis in the body will remain
+
+
+82 Introduction to Fluid Mechanics and Fluid Machines
+vertical. When a body is submerged in a liquid, the equilibrium requires that the weight of the body acting through its cetre of gravity should be colinear with an equal hydrostatic lift acting through the centre of buoyancy. In general, if the body is not homogeneous in its distribution of mass over the entire volume, the location of centre of gravity G does not coincide with the centre of volume, i.e., the centre of buoyancy B. Depending upon the relative locations of G and B, a floating or submerged body attains different states of equilibrium, namely, (i) stable equilibrium (ii) unstable equilibrium and (iii) neutral equilibrium.
+A body is said to be in stable equilibrium, if it, being given a small angular displacement and hence released, returns to its original position by retaining the originally vertical axis as vertical. If, on the other hand, the body does not return to its original position but moves further from it, the equilibrium is unstable. In neutral equilibrium, the body having been given a small displacement and then released will neither return to its original position nor increase its displacement further, it will simply adopt its new position. Consider a submerged body in equilibrium whose centre of gravity is located below the centre of buoyancy (Fig. 2.28(a)). If the body is tilted slightly in any direction, the buoyant force and the weight always produce a restoring couple trying to return the body to its original position (Fig. 2.28(b), 2.28(c)). On the other hand, if point G is above point B (Fig. 2.29(a)), any disturbance from the equilibrium position will create a destroying couple which will turn the body away from its original position (Figs. 2.29(b), 2.29(c)). When the centre of gravity G and centre of buoyancy B coincides, the body will always assume the same position in
+FB
+B
+G
+W
+(a) (b) (c)
+W
+W = FB
+W
+GG
+BB
+FB FB
+Free surface
+Fig. 2.28 A submerged body in stable equilibrium
+
+
+Fluids under Rest/Rigid Body Motion 83
+which it is placed (Fig. 2.30) and hence it is in neutral equilibrium. Therefore, it can be concluded from the above discussion that a submerged body will be in stable, unstable or neutral equilibrium if its centre of gravity is below, above or coincident with the centre of buoyancy respectively (Fig. 2.31).
+G
+BB
+W
+WW
+(a) (b) (c)
+FB
+FB W = FB
+G
+FB B
+Free surface
+G
+Fig. 2.29 A submerged body in unstable equilibrium
+WW W
+(a) (b) (c)
+FB
+FB
+W = FB
+G
+FB
+Free surface
+GB B G B
+Fig. 2.30 A submerged body in neutral equilibrium
+
+
+84 Introduction to Fluid Mechanics and Fluid Machines
+W
+(a) (b) (c)
+W = FB
+W = FB W = FB W = FB
+FB
+FB FB
+Free surface
+Stable equilibrium
+Neutral equilibrium
+Unstable equilibrium
+B
+G
+GB
+WG
+B
+W
+Fig. 2.31 States of equilibrium of a submerged body
+2.8.2 Floating Bodies
+The condition for angular stability of a floating body is a little more complicated. This is because, when the body undergoes an angular displacement about a horizontal axis, the shape of the immersed volume changes and so the centre of buoyancy moves relative to the body. As a result, stable equlibrium can be achieved, under certain condition, even when G is above B. Figure 2.32(a) illustrates a floating body—a boat, for example, in its equilibrium position. The force of buoyancy FB is equal to the weight of the body W with the centre of gravity G being above the centre of buoyancy in the same vertical line. Figure 2.32(b) shows the situation after the body has undergone a small angular displacement q with respect to the vertical axis. The centre of gravity G remains unchanged relative to the body (This is not always true for ships where some of the cargo may shift during an angular displacement). During the movement, the volume immersed on the right-hand side increases while that on the left-hand side decreases. Therefore the centre of buoyancy (i.e.,
+the centroid of immersed volume) moves towards the right to its new position B¢.
+Let the new line of action of the buoyant force (which is always vertical) through B¢ intersect the axis BG (the old vertical line containing the centre of gravity G and the old centre of buoyancy B) at M. For small values of q, the point M is practically constant in position and is the known as the metacentre. For the body shown in Fig. 2.32, M is above G, and the couple acting on the body in its displaced position is a restoring couple which tends to turn the body to its original position. If M were below G, the couple would be an overturning couple and the original equilibrium would have been unstable. When M coincides with G, the body will assume its new position without any further movement and thus will be in neutral equilibrium. Therefore, for a floating body, the stability is determined not simply by the relative position of B and G, but rather by the relative position of M and G. The distance of
+
+
+Fluids under Rest/Rigid Body Motion 85
+the metacentre above G along the line BG is known as metacentric height GM which can be written as
+GM = BM – BG
+WW
+M
+W = FB
+Equilibrium position Tilted position
+(a) (b)
+B B¢
+FB
+FB
+G
+B
+q
+G
+Fig. 2.32 A floating body in stable equilibrium
+Hence the condition of stable equilibrium for a floating body can be expressed in terms of metacentric height as follows: GM > 0 (M is above G) Stable equilibrium
+GM = 0 (M coinciding with G) Neutral equilibrium GM < 0 (M is below G) Unstable equilibrium The angular displacement of a boat or ship about its longitudinal axis is known as ‘rolling’ while that about its transverse axis is known as ‘pitching’.
+2.8.3 Experimental Determination of Metacentric Height
+A simple experiment is usually conducted to determine the metacentric height. Suppose that for the boat, shown in Fig. 2.33, the metacentric height corresponding to ‘roll’ about the longitudinal axis (the axis perpendicular to the plane of the figure) is required. Let a weight P be moved transversely across the deck (which was initially horizontal) so that the boat heels through a small angle q and comes to rest at this new position of equilibrium. The new centres of gravity and buoyancy are therefore again vertically in line. The movement of the weight P through a distance x in fact causes a parallel shift of the centre of gravity (centre of gravity of the boat including P) from G to G¢.
+Hence, P ◊ x = W GG¢
+Again, GG¢ = GM tan q
+Therefore, GM = cot
+Px
+Wq
+◊ (2.67)
+
+
+86 Introduction to Fluid Mechanics and Fluid Machines
+W
+P M
+P
+X
+(a) (b)
+B¢
+G¢
+FB
+G B
+B
+G
+q
+Fig. 2.33 Experimental determination of metacentric height
+The angle of heel q can be measured by the movement of a plumb line over a scale. Since the point M corresponds to the metacentre for small angles of heel only, the true metacentric height is the limiting value of GM as q Æ 0. This may be determined from a graph of nominal values of GM calculated from Eq. (2.67) for various values of q (positive and negative). It is well understood that the metacentric height serves as the criterion of stability for a floating body. Therefore it is desirable to establish a relation between the metacentric height and the geometrical shape and dimensions of a body so that one can determine the position of the metacentre beforehand and then construct the boat or the ship accordingly. This may be done simply by considering the shape of the hull. Figure 2.34(a) shows the cross section, perpendicular to the axis of rotation, in which the centre of buoyancy B lies at the initial equilibrium position. The position of the body after a small angular displacement is shown in Fig. 2.34(b). The section on the left, indicated by cross-hatching, has emerged from the liquid, whereas the cross-hatched section on the right has moved down into the liquid. It is assumed that there is no overall vertical movement; thus the vertical equilibrium is undisturbed. As the total weight of the body remains unaltered so does the volume immersed, and therefore the volumes corresponding to the cross-hatched sections are equal. This is so if the planes of flotation for the equilibrium and displaced positions intersect along the centroidal axes of the planes. The coordinate axes are chosen through O as origin. O Y is perpendicular to the plane of Fig 2.34(a) and 2.34(b), O Y lies in the original plane of flotation (Fig. 2.34(c)) and OZ is vertically downwards in the original equilibrium position. The total immersed volume is considered to be made up of elements each underneath an area dA in the plane of flotation as shown in Figs 2.34(a) and 2.34(c). The by definition is the centroid of the immersed volume (the liquid being assumed homogeneous). The x coordinate xB of the centre of buoyancy may therefore be determined by taking moments of elemental volumes about the y z plane as
+VxB = (z dA) x
+Ú (2.68)
+
+
+Fluids under Rest/Rigid Body Motion 87
+Plane of flotation
+dA
+dA
+y
+M x tan q
+q
+OO
+z zz
+x
+x
+z B
+G
+(a) (b)
+(c)
+Plane of flotation
+B
+G
+B¢
+x
+Fig. 2.34 Analysis of metacentric height
+After displacement, the depth of each elemental volume immersed is z + x tan q and hence the new centre of buoyancy x¢B can be written as
+VxB¢ = Ú (z + x tan q ) dA x (2.69)
+Subtracting Eq. (2.68) from Eq. (2.69), we get
+V (x¢B – xB) = Ú x2 tan q dA = tan q Ú x2 dA (2.70)
+The second moment of area of the plane of flotation about the axis Oy is defined as
+Iyy = Ú x2 dA (2.71)
+Again, for small angular displacements,
+x¢B – xB = B M tan q (2.72)
+With the help of Eqs (2.71) and (2.72), Eq. (2.70) can be written as
+B M = I yy
+V
+
+
+88 Introduction to Fluid Mechanics and Fluid Machines
+=
+Second moment of area of the plane of flotation about
+the centroidal axis perpendicular to plane of rotation
+Immersed volume (2.73)
+Hence, GM = I yy
+V – BG (2.74)
+The length B M is sometimes referred to as the metacentric radius; it must not be confused with the metacentric height GM. For the rolling movement of a ship, the centroidal axis about which the second moment is taken is the longitudinal one, while for pitching movements, the appropriate axis is the transverse one. For typical sections of the boat, the second moment of area about the transverse axis is much greater than that about the longitudinal axis. Hence, the stability of a boat or ship with respect to its rolling is much more important compared to that with respect to pitching. The value of B M for a ship is always affected by a change of loading whereby the immersed volume alters. If the sides are not vertical at the water-line, the value of Iyy may also change as the vessel rises or falls in the water. Therefore, floating vessels must be designed in a way so that they are stable under all conditions of loading and movement.
+2.8.4 Floating Bodies Containing Liquid
+If a floating body carrying liquid with a free surface undergoes an angular displacement, the liquid will also move to keep its free surface horizontal. Thus not only does the centre of buoyancy B move, but also the centre of gravity G of the floating body and its contents move in the same direction as the movement of B. Hence the stability of the body is reduced. For this reason, liquid which has to be carried in a ship is put into a number of separate compartments so as to minimise its movement within the ship.
+2.8.5 Period of Oscillation
+It is observed from the foregoing discussion that the restoring couple caused by the buoyant force and gravity force acting on a floating body displaced from its equilibrium position is W ◊ GM sin q (Fig. 2.32). Since the torque equals the mass moment of inertia (i.e., second moment of mass) multiplied by angular acceleration, it can be written as
+W (GM) sin q = – IM (d2q/dt2) (2.75)
+where IM represents the mass moment of inertia of the body about its axis of rotation. The minus sign in the RHS of Eq. (2.75) arises since the torque is a retarding one and decreases the angular acceleration. If q is small, sin q a q and hence Eq. (2.75) can be written as
+2
+2
+d
+dM
+W GM
+I
+t
+qq
+◊
++ = 0 (2.76)

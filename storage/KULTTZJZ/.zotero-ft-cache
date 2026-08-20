@@ -1,0 +1,360 @@
+Skip to content
+1
+/
+22
+search
+group_add
+more_horiz
+get_app
+JOURNAL OF AEROSPACE COMPUTING, INFORMATION, AND COMMUNICATION
+
+
+Vol. 3, March 2006
+
+
+Implementation of a Free-Vortex Wake Model in Real-Time
+
+
+Simulation of Rotorcraft
+
+
+Joseph F. Horn
+∗
+ 
+, Derek O. Bridges
+ 
+†
+
+
+The Pennsylvania State University, University Park, PA 16802
+
+
+Daniel A. Wachspress
+ 
+‡
+ 
+, Sarma L. Rani
+ 
+§
+
+
+Continuum Dynamics, Inc., Ewing, NJ
+
+
+Free-vortex wake models are capable of providing an accurate and physically detailed
+
+
+representation of the main rotor wake for ﬂight dynamics simulation. Recent advances in
+
+
+computing power and efﬁcient algorithms have made it feasible to use free wakes for real-time
+
+
+simulation. The CHARM free-vortex wake model was integrated with the GENHEL ﬂight
+
+
+dynamics simulation of the UH-60A helicopter. A high ﬁdelity wake model was deﬁned by
+
+
+increasing the spatial and temporal resolution of the wake until a converged response was
+
+
+observed, but this baseline model could not execute in real-time. A parametric study was
+
+
+performed to ﬁnd the best combination of wake parameters to achieve real-time execution
+
+
+with minimal deviation from the baseline model in terms of the frequency and time responses
+
+
+in the pitch and roll axes. A real-time model was found and showed reasonable agreement
+
+
+with the baseline model as compared to a simple ﬁnite-state inﬂow model. A parallel
+
+
+implementation of the free wake model was also investigated. An increase in computational
+
+
+efﬁciency could be achieved using a distributed processing approach with asynchronous
+
+
+communications.
+
+
+Introduction
+
+
+A
+ 
+critical issue in the development of high-ﬁdelity simulations of rotorcraft is the modeling of the rotor wake.
+ 
+1
+
+
+The rotor wake inﬂuences the local air velocities in the plane of the rotor, which in turn affect the air loads on the
+
+
+main rotor blades. Furthermore, the rotor wake is responsible for a number of important aerodynamic interactions
+
+
+with the fuselage and empennage.
+ 
+2
+,
+3
+ 
+A major challenge in wake modeling for ﬂight dynamics simulation is the need
+
+
+for real-time performance. While off-line calculations of ﬂight dynamics are still valuable, real-time calculations
+
+
+can be used in pilot-in-the-loop simulation in order to analyze handling qualities. While high-ﬁdelity free-vortex
+
+
+wake models have been around for many years, their applications have mainly been restricted to off-line analysis
+
+
+of performance and rotor dynamics in trimmed and quasi-steady ﬂight. However, advances in computing power
+
+
+Received 17 June 2005; revision received 27 October 2005; accepted for publication 28 October 2005. Copyright 2006 by
+
+
+Joseph F. Horn, Derek O. Bridges, Daniel A. Wachspress and Sarma L. Rani. Published by the American Institute of Aeronautics
+
+
+and Astronautics, Inc., with permission. Copies of this paper may be made for personal or internal use, on condition that the
+
+
+copier pay the $10.00 per-copy fee to the Copyright Clearance Center, Inc., 222 Rosewood Drive, Danvers, MA 01923; include
+
+
+the code 1542-9423
+/
+04 $10.00 in correspondence with the CCC.
+
+
+∗
+ 
+Assistant Professor, Department of Aerospace Engineering, 233 Hammond Building; joehorn@psu.edu. Senior Member AIAA.
+
+
+†
+ 
+Graduate Research Assistant, Department of Aerospace Engineering, 233 Hammond Building; dbridges@psu.edu. Student
+
+
+Member AIAA.
+
+
+‡
+ 
+Associate, Continuum Dynamics, Inc., 34 Lexington Avenue; dan@continuum-dynamics.com
+
+
+§
+ 
+Associate, Continuum Dynamics Inc., 34 Lexington Avenue; sarma@continuum-dynamics.com
+
+
+93
+HORN, BRIDGES, WACHSPRESS AND RANI
+
+
+and efﬁcient algorithms are now making free-vortex wake models a viable option for real-time ﬂight dynamics
+
+
+analysis.
+
+
+It has long been recognized that quasi-static models of the rotor inﬂow, while sufﬁcient for steady-state analysis
+
+
+or low order dynamic models, fail to capture important characteristics. For example, a quasi-static inﬂow model fails
+
+
+to capture the dynamic overshoot of thrust and torque following a collective input.
+ 
+4
+ 
+The development of dynamic
+
+
+models for the rotor wake has been a challenging problem because the air mass effectively has an inﬁnite number
+
+
+of degrees of freedom. Over the years a number of inﬂow models have been applied that model the inﬂow with
+
+
+a small number of dynamic states.
+ 
+5
+ 
+Many rotorcraft simulation codes ﬁrst addressed dynamic inﬂow effects using
+
+
+simple lag ﬁlters.
+ 
+6
+ 
+A major advance occurred with the advent of the ﬁnite-state dynamic inﬂow models developed by
+
+
+Peters et al.
+ 
+7
+ 
+The third order Pitt-Peters model and the higher order Peters-He model represent the rotor downwash
+
+
+in the plane of the rotor with a set of radial and azimuthal basis functions. The distribution of downwash is then
+
+
+governed by a ﬁnite set of state equations driven by the loading on the rotor blades. These models provide a
+
+
+reasonable prediction of induced velocities in the rotor disk for moderate amplitude maneuvers and they are readily
+
+
+incorporated into real-time simulation models. The number of states used in the Peters-He model is scalable in order
+
+
+to achieve the desired tradeoff in terms of ﬁdelity versus real-time performance. The calculations required for a
+
+
+15-state Peters-He model, running at a time step typical for a full-scale helicopter, can easily be achieved in real-time
+
+
+with modern computers. As a result, the Peters models have found wide use in real-time simulations of rotorcraft,
+
+
+and updates and improvements to these models are ongoing.
+ 
+8
+−
+12
+ 
+Recent advances to the Peters-He theory have added
+
+
+the capability to model effects such as wake curvature, wake contraction, and calculation of tangential and radial
+
+
+velocity components.
+
+
+Although the dynamic inﬂow of Peters et al. has found wide usage there are known limitations. There are certain
+
+
+ﬂight conditions in which the assumptions of the ﬁnite state inﬂow break down, for example in certain descending
+
+
+ﬂight conditions or vortex ring state. Using the Peters-He model to model wake interactions with the empennage may
+
+
+produce inaccurate results since the model does not account for all wake distortion effects downstream of the rotor
+
+
+disk. Finally, the Peters-He model is inherently a small disturbance formulation, with the wake dynamics modeled
+
+
+as a set of ﬁrst order, quasi-linear ordinary differential equations. Correlation studies have shown it to be accurate for
+
+
+predicting aircraft response in small to moderate amplitude maneuvers, but the inherent assumptions of the model
+
+
+break down for large amplitude control inputs and generalized maneuvering ﬂight.
+
+
+On the other hand, free-vortex wake models are inherently capable of modeling all important wake distortion
+
+
+effects and are well suited for modeling wake-empennage interactions. The basic assumptions of the free-vortex
+
+
+models are perfectly valid for all generalized ﬂight maneuvers, including descending ﬂight conditions and large
+
+
+amplitude maneuvers. Thus, researchers have begun to use maneuvering free wake codes to calculate more accurate
+
+
+predictions of vehicle dynamics
+ 
+13
+ 
+and external acoustics
+ 
+14
+ 
+in generalized maneuvering ﬂight. Free wake models
+
+
+had not been considered for use in real-time simulation due to the excessive computation required. However, with
+
+
+advances in computing power, efﬁcient free-vortex algorithms, and parallel processing, it may now be feasible to
+
+
+use free wakes in real-time simulation. This might have several advantages:
+
+
+1.
+ 
+Increased ﬁdelity for real-time simulation.
+
+
+2.
+ 
+Increased use of ﬁrst-principles
+/
+physics-based models in real-time ﬂight simulation. Thus, the ﬂight dynamics
+
+
+models could be used more as a predictive tool and not rely as much on empirical models.
+
+
+3.
+ 
+The expansion of the use of real-time simulation to disciplines outside of ﬂight dynamics and handling
+
+
+qualities, such as acoustics and vibration analysis. For example, recent studies have shown the potential for
+
+
+real-time simulation of coupled ﬂight dynamics and acoustics.
+ 
+15
+
+
+The objective of this paper is to investigate methods for incorporating a free-vortex wake model in real-time ﬂight
+
+
+dynamics simulation of rotorcraft. Although advances in computing power appear to make this quite feasible, there
+
+
+are still limitations in the level of modeling detail that can be achieved in running real-time free wake models. The
+
+
+quantity of wake and the spatial and temporal resolution with which it is modeled is limited. A key objective of this
+
+
+study is to establish a method for determining the best combination of modeling parameters to use in a real-time
+
+
+implementation of a free wake. The initial part of this paper presents the development of such a method as applied
+
+
+to the implementation of the GENHEL ﬂight dynamics model coupled with the CHARM free vortex wake module
+
+
+on a single microprocessor. The second part of the paper discusses a parallel or distributed implementation in which
+
+
+the ﬂight dynamics and the free wake calculations are run on separate microprocessors.
+
+
+94
