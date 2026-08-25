@@ -1,0 +1,219 @@
+
+View Online
+
+Export Citation
+RESEARCH ARTICLE | JULY 31 2025
+A hybrid machine learning framework for rotor performance prediction
+Pedram H. Dabaghian  ; Constandinos M. Mitsingas; A Halder
+Physics of Fluids 37, 077194 (2025) https://doi.org/10.1063/5.0271761
+Articles You May Be Interested In
+Rotor force model for drones
+Physics of Fluids (January 2025)
+Performance and flow characteristics of the optimum rotors of Betz, Joukowsky, and Glauert at low tip
+speed ratio
+Physics of Fluids (October 2022)
+A multi-fidelity surrogate model based on convolutional neural network with transfer learning for coaxial
+rotor system aerodynamic optimization
+Physics of Fluids (August 2025)
+24 August 2026 10:11:23
+
+
+A hybrid machine learning framework for rotor performance prediction
+Cite as: Phys. Fluids 37, 077194 (2025); doi: 10.1063/5.0271761
+Submitted: 19 March 2025 . Accepted: 26 May 2025 . Published Online: 31 July 2025
+Pedram H. Dabaghian,1,a) Constandinos M. Mitsingas,2 and A Halder1
+AFFILIATIONS
+1School of Mechanical and Aerospace Engineering, Oklahoma State University, Stillwater, Oklahoma 74078-5016, USA 2DEVCOM Army Research Lab., Aberdeen, Maryland 20783, USA
+a)Author to whom correspondence should be addressed: pedram.hashem_dabaghian@okstate.edu
+ABSTRACT
+Recent advancements in electric propulsion technology have created significant demand for rotor performance models that can be used for preliminary design and optimization of new class of electric vertical takeoff and landing aircraft. Existing high-fidelity computational fluid dynamics models, while accurate, are computationally expensive and too slow for real-time and optimization applications. This paper presents a novel approach, NN-BET, which combines neural networks (NN) with blade element theory (BET) to predict rotor loads based on rotor geometrical features, operational parameters, and airfoil characteristics. This hybrid surrogate model employs a neural network to estimate an intermediate aerodynamic parameter (mean inflow), which is then integrated into the BET framework to calculate aerodynamic loads. Incorporation of NN architecture inside a blade-element framework makes it an order of magnitude faster than a traditional blade element momentum theory model, one of the fastest physics-based models, while maintaining similar accuracy. To assess the influence of integrated physical principles, the performance of the developed NN-BET model is compared to that of a conventional neural network model. Both models are trained on the same dataset with identical neural network architectures and hyperparameters to maintain a fair and consistent comparison. The results show that the NN-BET model surpasses the conventional NN model in terms of predictive accuracy. Given the rapid computational speed and reliable accuracy of the developed machine learning-based model, it is well suited for optimization and design applications, as well as multidisciplinary frameworks requiring efficient rotor dynamics modeling.
+CV 2025 Author(s). All article content, except where otherwise noted, is licensed under a Creative Commons Attribution (CC BY) license (https:// creativecommons.org/licenses/by/4.0/). https://doi.org/10.1063/5.0271761
+I. INTRODUCTION
+Accurate computation of rotor loads has always been crucial in vertical take-off and landing (VTOL) vehicle flight studies. Prediction of rotor loads relating to different rotor configurations and operational conditions allows for precise engineering analysis and optimization in the designing phase of rotor development. This understanding enables optimized rotor design by tailoring blade shapes, sizes, and materials to enhance performance and efficiency while minimizing structural loads which is of great importance. Furthermore, rotor performance models are an integral part of a flight dynamic model which is necessary to predict system level performance of rotary wing aircraft. In the past decades, different methods were exploited to predict the rotor load. Not surprisingly, three-dimensional computational fluid dynamics (CFD) simulations are among the highest-fidelity approaches applied for such
+cases.1–3 Despite its high accuracy and precision, CFD models are computationally expensive and time-consuming that limits its usage in flight dynamic models and optimization framework. On the other
+hand, there have been medium and lower fidelity modeling approaches that expedite the solving process at the expense of some accuracy. The blade element momentum theory (BEMT) is one such medium-fidelity modeling methodology to predict rotor loads.4 BEMT offers a good compromise between accuracy and computational efficiency, providing reasonably accurate rotor load predictions while being significantly faster than CFD models. Its flexibility allows for the inclusion of bladespecific design features, making it useful for preliminary design and performance assessments. Recently, Cornelius et al. introduced a hybrid BEMT-URANS CFD methodology to accurately predict rotor performance for both single and coaxial rotor configurations, achieving significant reductions in computational time compared to traditional CFD methods. This approach utilizes a high-resolution BEMT rotor model and GPU-accelerated simulations to perform highly parallelized computations, resulting in several orders of magnitude lower computational cost while maintaining high fidelity in the modeling of UAM flight conditions. The methodology demonstrated thrust and torque predictions
+Phys. Fluids 37, 077194 (2025); doi: 10.1063/5.0271761 37, 077194-1
+CV Author(s) 2025
+Physics of Fluids ARTICLE pubs.aip.org/aip/pof
+24 August 2026 10:11:23
+
+
+within 4%–5% of experimental data obtained from NASA’s Langley Subsonic Tunnel Facility, highlighting its accuracy and efficiency.5 However, BEMT models, though faster, are still not fast enough for real-time simulations or iterative optimization processes. Moreover, significant advancements in aerial vehicle technologies over recent years have highlighted the critical need to enhance the computational power and sophistication of predictive modeling methods. These breakthroughs include developments in unmanned aerial vehicles (UAVs) and electric vertical take-off and landing (eVTOL) vehicles, all of which demand more efficient lower order models to support their design, analysis, and operational optimization. Addressing these challenges requires leveraging much faster surrogate models to accurately simulate and predict the complex aerodynamic behaviors and performance characteristics of modern aerial vehicles. Peters et al. investigated the application of a proper orthogonal decomposition (POD)-based reduced-order model (ROM) to predict rotor distributed loads. By leveraging computational fluid dynamics (CFD) results, the POD ROM efficiently predicts distributed pressures on rotor blades subjected to variations in twist and taper ratios, showcasing substantial computational cost reduction compared to traditional CFD simulations, making it suitable for rotor design optimization in both hovering and forward flight scenarios.6 Today, thanks to data-driven methods, there exist alternative predictive approaches that bypass previous classical calculations. The stateof-the-art machine learning (ML) methods have been being used for several years in many mechanical and aerospace applications such as fluid dynamics, aerodynamics, aeroacoustics, combustion, and structural research.7 Machine learning methods may be exploited as black boxes that are completely agnostic to the physics of the problem, or they may appear as physics-integrated structures that can evaluate the accuracy of the found patterns of the data based on the provided physical knowledge. Makkar et al. developed a machine learning method to efficiently correct a low-fidelity trim analysis model of a compound helicopter using sparse high-fidelity data. By iteratively selecting data where errors exceed tolerance, the approach reduces the number of required data points by 79%, while maintaining accuracy within a 5% tolerance in key regions. Testing shows 95% 98% of predictions meet error tolerance goals, outperforming purely data-driven models.8 Recently, Rao et al. developed a framework to train machine learning-based surrogate models for predicting the endurance and range of eVTOL vehicles, using data from a large number of simulated designs. The surrogate models, including decision trees, K-nearest neighbors, linear regression, and neural networks, accurately mimic complex physics-based models with a mean average percentage error of less than 2%, while significantly reducing computational demands.9 Employing data-driven models offers distinct advantages. They leverage historical data and computational techniques to establish simplified relationships between inputs and outputs. Once trained, these models can rapidly predict rotor performance with minimal computational effort, facilitating quick design iterations and scalability for parametric analyses. These approaches reduce the computational burden associated with detailed aerodynamic computations, making them suitable for efficient rotorcraft design and optimization. The present work introduces a novel approach using neural network (NN) and blade element theory (BET) to predict three-dimensional hub forces and moments of a rotor. This work presents a fast and computationally efficient machine learning-based model for predicting rotor
+performance across various configurations and operational conditions. The approach utilizes an innovative surrogate model, termed NNBET, which integrates an artificial neural network with a blade element model. NN-BET achieves a computational speedup of an order of magnitude compared to the BEMT model, one of the fastest available physics-based models. Additionally, the incorporation of physicsbased principles into the NN-BET framework significantly enhances its accuracy relative to traditional neural network-based surrogate models.
+II. METHODOLOGY
+This section discusses the architecture of the NN-BET model, data structure developed for training, and the training process in detail.
+A. Architecture of ML-based model
+This section discusses the architecture of the developed NN-BET model, where a feed-forward neural network is used to compute induced inflow across rotor disk and this information is being leveraged by a blade element model to compute blade loads. This architecture is somewhat similar to a traditional BEMT model where inflow is computed using momentum theory and blade loads are computed using a BET model. However, BEMT involves an iterative process to solve nonlinear systems of equations since both momentum theory and blade element equations are coupled to each other. This iterative process makes the whole BEMT process time-consuming. The NNBET model improves upon this traditional BEMT approach by removing this iterative solutions of inflow and blade loads. Instead, NN-BET leverages the predictive capabilities of a neural network to compute inflow from rotor configuration and operating condition which is directly used by BET to compute blade loads. Figure 1 illustrates the differences between NN-BET and BEMT approaches.
+FIG. 1. Schematic of approaches: (a) blade element momentum theory (BEMT). (b) The developed neural network blade element theory (NN-BET) model.
+Physics of Fluids ARTICLE pubs.aip.org/aip/pof
+Phys. Fluids 37, 077194 (2025); doi: 10.1063/5.0271761 37, 077194-2
+CV Author(s) 2025
+24 August 2026 10:11:23
+
+
+This modeling approach enables accurate and rapid estimation of rotor forces and moments across diverse operational conditions, rotor configurations, and airfoil geometries. Toward this, an input layer consisting of n0 (1⁄4415) features is developed that enables the NN-BET model to analyze diverse rotor configurations and operating conditions. These 415 features, shown in Table I, consist of seven operational conditions, six rotor configurations, and 201 Cartesian coordinates of the selected airfoil. The considered operational parameters consist of the components of the velocity of the rotor in the body frame of reference and four control parameters. The four control parameters consists of rotational speed of the rotor and pitch angles (collective, longitudinal cyclic and lateral cyclic). The six rotor characteristics include the rotor radius, blade count and four nondimensional parameters to characterize blade shape. These four non-dimensional parameters—rotor solidity, blade twist, taper ratio, and root cut—collectively define the geometric and aerodynamic shape of the rotor blade. Rotor solidity is a ratio of total blade area relative to
+the rotor disk area. Twist refers to the variation in the pitch angle along the rotor blade’s length, typically as a function of radial position, and taper describes the variation in the blade’s chord length from the root to the tip. It should be noted that the blade’s taper and twist are modeled with linear variation along the radial span of the blade. The rootcut refers to a modification in the blade geometry at the root, where a portion of the blade is removed or reshaped to attach it with the rotor hub. The cross section airfoil shape of a rotor blade is characterized by 201 normalized x, y-coordinates. Incorporating these coordinates into the input enables the model to capture detailed airfoil geometries, facilitating its application to a wide range of airfoil shapes. The aforementioned features enable the analysis of a wide variety of rotor types operating under diverse conditions. Each defined feature corresponds to a node in the input layer of the NN-BET model, as illustrated in Fig. 2. The input layer is sequentially connected to the subsequent two hidden layers. The number of nodes in each layer is denoted by nl, where l 1⁄4 0; 1; 2 represents the layer index. Consequently, the input layer contains n0 1⁄4 415 nodes, and the two hidden layers have n1 and n2 number of nodes. Information about the architecture of the ML-based models is given in Table II. Based on what is discussed so far, the input matrix can be repre
+sented as X0 2 Rn0 , which is used to make the pre-activation estimations of the next layer. The generalized input-output relationship between the inputs and outputs in each layer l can be expressed as follows:
+TABLE I. Input features.
+Feature Symbol
+Non-dimensional velocity along x axis lx Non-dimensional velocity along y axis ly Non-dimensional velocity along z axis lz Blade’s collective pitch h0 Lateral cyclic hc Longitudinal cyclic hs Blade’s twist along the radius tb Blade’s taper along the radius TR Solidity of the rotor r Blade’s root-cut ratio rcut Number of blades Nb 201 x coordinates xi 201 y coordinates yi
+FIG. 2. ML-based models: (a) The developed neural network blade element theory (NN-BET) model, (b) neural network (NN) model.
+TABLE II. ML-based models’ structural information.
+Parameter Symbol Value
+Number of hidden layers 2 Number of nodes in hidden layers n1, n2 1000 Number of nodes in input layer n0 415 Number of nodes in output layer (NN-BET) 1 Number of nodes in output layer (NN) 6
+Physics of Fluids ARTICLE pubs.aip.org/aip/pof
+Phys. Fluids 37, 077194 (2025); doi: 10.1063/5.0271761 37, 077194-3
+CV Author(s) 2025
+24 August 2026 10:11:23
+
+
+Zlþ1 1⁄4 WlXl þ bl; l 1⁄4 0; 1; (1)
+Xlþ1 1⁄4 ReLUðZlþ1Þ; l 1⁄4 0; 1; (2)
+where Xl 2 Rnl and Zl 2 Rnl contain node values of layer l and its corresponding pre-activation values, respectively. Wl 2 Rnlþ1 nl and bl 2 Rnlþ1 denote the weight and bias of layer l. In Eqs. (1) and (2), the superscript represents the number of the layer. The obtained preactivation output (Z) is fed into an activation function before it is used as input for the next layer. ReLU is the activation function used in the present work, which is defined as:
+ReLUðaÞ 1⁄4 a; if a > 0;
+0; if a 0; (3)
+where a is a real value. The purpose of using activation functions in neural networks is to introduce non-linearity, enabling the model to learn complex patterns in data. Activation functions also make the model differentiable, allowing the network to learn via backpropagation which will be explained later in this section. The final output of the NN-architecture is the mean induced inflow across the rotor disk, which can be expressed as
+k^0 1⁄4 W2 ReLUðW1 ReLUðW0X0 þ b0Þ þ b1Þ þ b2; (4)
+where, k^0 2 R is the mean inflow value that the neural network predicts for a given rotor configuration and operating conditions characterized by X0. As demonstrated by Eq. (4), no activation function is used for obtaining the output layer, implying that the relationship of nodes between output and the last hidden layer is linear. In the NN-BET framework, after the neural network estimates the mean inflow, the subsequent step involves determining the inflow distribution across the rotor disk. This distribution is computed using Glauert’s formula, which is mathematically expressed as follows:4
+ki 1⁄4 k0ð1 þ kxr cosðwÞ þ kyr sinðwÞÞ; (5)
+where ki represents the non-uniform induced inflow that varies across the radial and azimuthal location of the blade element. w denotes the azimuthal position of the blade element, and its inclusion in the equation introduces azimuthal variation in the inflow. r is non-dimensional radius varying between 0 and 1 for the blade’s root and tip, respectively and its inclusion in the equation accounts for the radial variation in the inflow. The parameters kx and ky function as weighting coefficients, quantifying the deviation of the inflow from the uniform distribution. These coefficients together modify the inflow model to account for non-uniformities inherent in real-world rotor conditions, thereby enhancing the accuracy of inflow estimation. Among the various models developed to estimate these coefficients, Pitt-Peters’ dynamic inflow model has been shown to provide the most accurate representation of the inflow gradient, as validated against experimental data. In the PittPeters dynamic inflow model, ky 1⁄4 0 and kx is defined as follows:10
+kx 1⁄4 tan v
+2 ; (6)
+where v is called wake skew angle with the following expression:
+v 1⁄4 15p
+23 arctan lxy
+lz þ ki
+; (7)
+where lxy represents the resultant advance ratio in the tangential direction to the rotor disk, derived from the components lx and ly. Once all the variables in Eq. (5) are defined, the inflow distribution can be determined and subsequently used to compute the sectional angles of attack. These angles are then utilized to calculate the sectional aerodynamic forces and moments. This procedure is carried out within the framework of blade element theory (BET), where the rotor disk is spatially discretized into blade elements and temporally into azimuthal segments for enhanced resolution and accuracy. The total rotor load is then determined by spatial integration over the blade elements and temporal averaging across the azimuthal positions. To demonstrate the superior predictive accuracy of NN-BET and highlight the importance of its physics-based components, a traditional neural network model is also developed that treats rotor aerodynamics as a “black box.” This model directly predicts rotor performance from input coming from rotor characteristics, bypassing the explicit incorporation of the physical constraints typically required by BET. Consequently, the output of the neural network (NN) model is a sixelement vector consisting of all rotor loads (Fx; Fy; Fz; Mx; My; Mz) in the case of physics-agnostic NN model, whereas, in the NN-BET approach, it corresponds only to the mean inflow. Figure 2 illustrates the schematic of the developed NN-BET model along with the architecture of the NN model. To ensure a fair comparison, the NN model is designed with the same architecture as the NN-BET model, maintaining an identical number of hidden layers, nodes per layer, and input features. The NN model adheres to the same governing equations [Eqs. (1)–(3)]; however, the final output differs and can be expressed as
+L^ 1⁄4 W21⁄2ReLU W1ReLUðW0X0 þ b0Þ þ b1 þ b2: (8)
+Here, L^ 2 R6 represents the load vector predicted by the NN model, encompassing all rotor forces and moments predicted by the model. Notably, in Eq. (8), the weights and biases (Wl and bl, l 1⁄4 0; 1; 2) differ from those used in Eq. (4).
+B. Data structure
+To train the neural networks of the NN-BET and the NN model, a data structure is generated that consists of 184 unique airfoils with 100 random samples generated for each airfoil. These samples span 13 operational and geometric features, discussed earlier (Table I). While generating the dataset, reasonable ranges of these features are considered, which is presented in Table III. The ranges are carefully defined to encompass diverse yet practical configurations. It should be noted that the rotor’s radius and the angular velocity are fixed for all sample cases. In Table III, index i 1⁄4 0; 1; ...; 200 indicates the point’s number on the surface of the airfoil. The x and y coordinates are consistent across all samples for a given airfoil, allowing each airfoil to be analyzed under distinct operational scenarios. As a result, the dataset contains a total of 18 400 samples. To create this extensive dataset, a BEMT-based model is utilized, since it is relatively computationally inexpensive compared to other higher-fidelity CFD models. This BEMT model4 incorporates a dynamic inflow distribution over the rotor disk, which is defined by Eqs. (5)–(7). The mean inflow, denoted by k0 in Eq. (5), is obtained using a momentum theory-based approach while solving in an iterative manner. The dynamic inflow enables BEMT to analyze rotors in
+Physics of Fluids ARTICLE pubs.aip.org/aip/pof
+Phys. Fluids 37, 077194 (2025); doi: 10.1063/5.0271761 37, 077194-4
+CV Author(s) 2025
+24 August 2026 10:11:23
+
+
+edgewise motion along with hover and axial motion. In the future, CFD models can be used to generate more accurate datasets, which will improve the overall accuracy of the NN-BET model; however, this is out of the scope of the present work, where the focus is on the development of NN-BET model and demonstration of its performance.
+C. Training
+The dataset described in Sec. II B is partitioned into training and test sets. The number of samples in each set, denoted as ns, is 16 800 for the training set and 1600 for the test set. In machine learning, particularly for supervised learning tasks, the training process seeks to enhance model performance by minimizing a predefined loss function. The loss function quantifies the difference between the model’s predictions and the actual target values, providing a measure of how well the model performs. For regression problems, a common choice for the loss function that is also used in this investigation is the mean squared error (MSE). The MSE loss function is defined as follows:
+L ðk^0 ; k0Þ 1⁄4 1
+ns
+n Xs
+j1⁄41
+kk^0 j k0j k2; (9)
+where k^0 j 2 R is the predicted output for the jth sample and k0j is
+the corresponding true value. And, the bold symbols k0 2 Rns and
+k^0 2 Rns are the corresponding vectors of the actual and predicted
+mean inflow values. k:k2 denotes the Frobenious norm. After computing the loss function at the end of the forward pass, the weights and biases are updated during the backward pass, a process known as backpropagation. Backpropagation involves calculating the gradients of the loss function with respect to all network parameters, including weights, biases, and pre-activation values, to quantify the contribution of each parameter to the loss. This gradient is denoted as d in this context. The process starts from the output layer, propagating back to the input layer. Therefore, the first step is to calculate the gradient of the loss with respect to output layer. Using Eq. (9), it can be stated that
+d 1⁄4 @L
+@k0
+1⁄42
+ns
+n Xs
+j1⁄41
+ðk^0 j k0j Þ; (10)
+where d 2 Rns is the gradient of the loss with respect to the output. Then, using the chain rule and Eqs. (1), (2), (3), and (10). The gradient of the loss with respect to all existing weights and biases in the model can be written as follows:
+@L
+@Wl 1⁄4 dXl Y2
+i1⁄4lþ1
+Wif 0ðZiÞ; l 1⁄4 0; 1; 2; (11)
+@L
+@bl 1⁄4 d
+2 Y
+i1⁄4lþ1
+Wif 0ðZiÞ; l 1⁄4 0; 1; 2; (12)
+where f 0ðZiÞ is the derivative of the ReLU activation function applied element-wisely with respect to the pre-activation vector Zi that exists
+in the ith layer. It is worth noting that, for i > 2 the Q operator gives an identity matrix with a compatible size. After computing the gradient of the loss function with respect to all parameters in the network, these parameters are updated using their corresponding gradients through an optimization algorithm. Among various optimization techniques, Adam (adaptive moment estimation) is recognized as one of the most efficient and robust methods. This study employs the Adam optimization algorithm, which can be mathematically described as follows:
+htþ1 1⁄4 ht a ffiv^ffiffi^tmffi t
+p þ e ; (13)
+where ht and htþ1 are the parameter(either Wl or bl for l 1⁄4 0; 1; 2) in the tth and ðt þ 1Þth learning iteration, respectively. a is a hyperparameter known as learning rate that controls the size of the steps taken toward the minimum of the loss function during the training of a model. In Eq. (13), e is a small constant for numerical stability, and ^mt and v^t are called the first and second bias-corrected moment estimate at tth iteration, respectively, which are defined as follows:
+^mt 1⁄4 mt
+1 bt
+1
+; (14)
+v^t 1⁄4 vt
+1 bt
+2
+; (15)
+where mt and vt are the first and second moment estimate of the exponentially weighted moving average of gradient, respectively. The factors b1 and b2 are the decay rates corresponding to the first and second moments, which are bounded to the range ð0; 1Þ. As is shown, the decay rates are decreasing exponentially to zero as the iteration number t rises, implying that ^mt and v^t are getting close to mt and vt, respectively. In Eqs. (14) and (15), mt and vt can be expressed as follows:
+mt 1⁄4 b1mt 1 þ ð1 b1Þ @L
+@ht
+; (16)
+vt 1⁄4 b2vt 1 þ ð1 b2Þ @L
+@ht
+2
+: (17)
+By defining all the aforementioned relationships, each parameter can be updated iteratively during the training process. This iterative optimization ensures that the parameters are fine-tuned to minimize the loss function, computed over all samples in the training set. Once the training is complete, the model—now equipped with optimized weights and biases—is evaluated on unseen samples from the test set
+TABLE III. Ranges of input features.
+Feature symbol Min Max
+lx 0 0.4 ly 0 0.4 lz 0 0.04 h0 5 20 hc 5 5 hs 5 5 tb 30 0 TR 1 5 r 0.02 0.3 rcut 0 0.4 Nb 1 8 xi 1 1 yi 1 1
+Physics of Fluids ARTICLE pubs.aip.org/aip/pof
+Phys. Fluids 37, 077194 (2025); doi: 10.1063/5.0271761 37, 077194-5
+CV Author(s) 2025
+24 August 2026 10:11:23
+
+
+to assess its generalization ability and ensure it provides accurate predictions for new data. In practice, to achieve the best performance for a particular model and dataset, many hyperparameters need to be tuned. Table IV presents the hyperparameters used in the current work. The number of epochs and batch size are among the primary parameters that should be tuned initially to allow the model to learn more efficiently. An epoch, in the context of training neural networks, refers to one complete pass through the entire training dataset. During an epoch, the model processes all the training samples exactly once, updating its weights and biases based on the loss computed from the training data. Also, datasets are often divided into smaller subsets called batches. Therefore, an epoch typically involves multiple iterations, where each iteration processes one batch of data. The goal of repeating multiple epochs is to allow the model to learn and improve its performance by adjusting the parameters iteratively through repeated exposure to the entire dataset. Thus, the number of epochs determines how many times the model will “see” the entire dataset during training. During the early epochs, the model’s weights are far from optimal. As training progresses and more epochs are completed, the model adjusts its weights to minimize the loss. The batch size affects both the speed of training and the quality of the gradient updates. Smaller batches introduce more noise in the gradient estimates, which can help the model escape local minima but may also slow down convergence. Larger batch sizes provide more accurate gradients but require more memory and can result in overfitting if the model converges too quickly. The NN model is trained using the same dataset utilized for the NN-BET model. The equations governing the training process for the neural network component of NN-BET are also applicable to the NN model. However, a minor modification is made to the definition of the loss function, as shown in Eq. (9), which is redefined for the NN model as follows:
+L ðL^; LÞ 1⁄4 1
+ns
+6 X
+i1⁄41
+n Xs
+j1⁄41
+kL^ij Lijk2; (18)
+where, L^ 2 R6 [given in Eq. (8)] and L 2 R6 represent the predicted and actual load vectors, respectively. These vectors consist of elements
+^Lij and Lij, where the index i 1⁄4 1; 2; ...; 6 corresponds to the six load components, which include the rotor forces (Fx; Fy; Fz) and moments (Mx; My; Mz). Index j 1⁄4 1; 2; ...; ns represents the sample number.
+III. RESULTS
+The results derived from evaluating the trained models are detailed in this section. Both NN and NN-BET models were trained on a dataset comprising 16 800 distinct scenarios involving 168
+different airfoils. For validation, the models were tested on 1600 unseen cases generated from 16 airfoils that were excluded from the training dataset, ensuring an unbiased assessment of their performance. Consequently, this validation represents the first encounter of the NN and NN-BET models with this distinct test dataset. The scalability and generalizability of the NN-based models are showcased, utilizing the hyperparameters outlined in the Table IV. Figure 3 illustrates the predictive performance of the developed models in estimating non-dimensional rotor loads. Predictions from the NN-BET and NN models are plotted on the y-axis, while the reference values, derived from BEMT, are plotted on the x-axis. The 45 line represents perfect agreement between predicted and reference values, indicating zero error. Data points closer to this line indicate higher predictive accuracy. The results show that the NN-BET model achieves superior precision compared to the standalone NN model, particularly for the thrust component (Fz), where most predictions closely align with the reference values, as evidenced by the clustering of data points along the bisector line. The prediction accuracy of the results in Fig. 3 is quantified using the coefficient of determination (R2) for each load type across all test set samples. Figure 4 presents the R2 values for forces and moments predicted by the NN and NN-BET models. The NN-BET model consistently achieves significantly higher R2 values across various load types compared to the NN model. Notably, Fig. 4 demonstrates the high accuracy of the NN-BET model in predicting Fz, with an R2 value approaching 1. This indicates the model’s ability to estimate thrust with minimal error, underscoring its reliability in accurately capturing thrust forces. The prediction accuracy is further evaluated by analyzing the distribution of absolute error values for the two ML-based models in predicting rotor loads. The box chart of Fig. 5 indicates that the NN model exhibits substantially higher variability than the NN-BET model. The medians and quartiles, depicted by the box plots, indicate that the NN-BET model generally achieves lower median error values and exhibits reduced variability compared to the NN model. Rotor aeromechanics is a complicated phenomenon characterized by complex blade-vortex interactions, non-uniform inflow which leads to the complex dependence of the loads on the input parameters, and thus accurately capturing the underlying input-output relationship is challenging. Traditional NN models directly map input features to loads, making them more prone to errors and reduced performance. In contrast, the NN-BET model employs a hybrid approach, using a neural network to predict an intermediate parameter—the mean inflow—which is processed through a BET framework to compute the loads. This integration of physics-based principles significantly improves prediction accuracy and reliability of the NN-BET model under diverse conditions. The above observations clearly demonstrate that the NN-BET model offers significantly higher performance compared to the traditional NN model. Table V summarizes the runtime of each modeling approach to process a single sample, obtained using an Intel(R) Core(TM) i913900 CPU with 32 GB of RAM and an Intel(R) UHD Graphics 770 GPU. The reported elapsed times for each approach are computed as the average over 1600 test samples, ensuring a consistent and unbiased evaluation across methods. Both ML-based models demonstrate significantly faster computational performance than the traditional BEMT. In particular, the NN-BET model is an order of magnitude faster than
+TABLE IV. ML-based model’s hyperparameters.
+Hyperparameter Value/Type
+Number of samples 18 400 Training set ratio 0.915 Number of epochs 300 Batch size 40 Learning rate 0.001
+Physics of Fluids ARTICLE pubs.aip.org/aip/pof
+Phys. Fluids 37, 077194 (2025); doi: 10.1063/5.0271761 37, 077194-6
+CV Author(s) 2025
+24 August 2026 10:11:23
+
+
+FIG. 3. Non-dimensional loads predicted by ML-based models.
+Physics of Fluids ARTICLE pubs.aip.org/aip/pof
+Phys. Fluids 37, 077194 (2025); doi: 10.1063/5.0271761 37, 077194-7
+CV Author(s) 2025
+24 August 2026 10:11:23
+
+
+BEMT while maintaining comparable accuracy, and it can achieve even higher accuracy when trained with a higher-fidelity dataset. In contrast, the NN model is four orders of magnitude faster than BEMT, but this speed comes at the cost of a substantial reduction in accuracy. This optimal balance between computational efficiency and predictive accuracy highlights the enhanced capability of the NN-BET in modeling complex rotor dynamics.
+IV. CONCLUSION
+This study focuses on developing computationally efficient models that can accurately predict forces and moments generated by a rotor. Toward this end, a novel hybrid machine learning model, NNBET, is introduced that combines neural networks with blade element
+theory (BET) principles to predict rotor performance with enhanced accuracy, reliability, and efficiency, compared to the physics-based models and the traditional NN model. The key insights of the study are given as follows:
+• The NN-BET model is shown to be an order of magnitude faster than the traditional BEMT method (one of the fastest physicsbased models) while maintaining comparable accuracy and precision. • The incorporation of physics-based principles in the NN-BET model yields significantly higher accuracy compared to the traditional neural network (NN) model, as evidenced by the R2 values shown in Fig. 4.
+The improved accuracy and time efficiency of NN-BET make it a suitable candidate for optimization and design applications, offering a practical solution for real-time or large-scale rotor performance predictions, as well as multidisciplinary frameworks that require efficient modeling of rotor dynamics. Regardless of the selected framework or application, the current version of NN-BET provides highly efficient and reliable rotor load estimations, achieving computational speeds an order of magnitude faster than physics-based models such as (BEMT), one of the fastest conventional approaches. Furthermore, the NN-BET
+FIG. 4. Predictive accuracy of the developed ML-based models.
+FIG. 5. Absolute error of predictions.
+TABLE V. Models required average time for a single sample run.
+Model Run-time (s)
+BEMT 1:2 10 1 NN-BET 1:3 10 2 NN 1:23 10 5
+Physics of Fluids ARTICLE pubs.aip.org/aip/pof
+Phys. Fluids 37, 077194 (2025); doi: 10.1063/5.0271761 37, 077194-8
+CV Author(s) 2025
+24 August 2026 10:11:23
+
+
+model achieves accuracy comparable to that of BEMT, and when trained with higher-fidelity CFD data, it is expected to outperform BEMT in accuracy while being an order of magnitude faster. Additionally, CFD models can also be used to compute sectional lift, drag and moment coefficients of airfoil sections and these dataset inturn will improve accuracy of both BEMT and NN-BET.
+ACKNOWLEDGMENTS
+This work is supported by the U.S. Army (Grant No. W911NF2520022) with Constandinos Mitsingas and Erick Schroen as technical monitors.
+AUTHOR DECLARATIONS Conflict of Interest
+The authors have no conflicts to disclose.
+Author Contributions
+Pedram Hashem Dabaghian: Data curation (lead); Formal analysis (lead); Investigation (equal); Methodology (equal); Validation (lead); Visualization (lead); Writing – original draft (lead). Constandinos Mitsingas: Conceptualization (equal); Project administration (supporting); Supervision (supporting); Writing – review & editing (supporting). Atanu Halder: Conceptualization (equal); Investigation (equal); Methodology (equal); Project administration (lead); Supervision (lead); Writing – original draft (supporting); Writing review & editing (lead).
+DATA AVAILABILITY
+The data that support the findings of this study are available from the corresponding author upon reasonable request.
+REFERENCES
+1G. Srinivasan and W. J. McCroskey, “Navier–Stokes calculations of hovering rotor flowfields,” J. Aircr. 25(10), 865–874 (1988). 2L. A. Zori and R. G. Rajagopalan, “Navier-Stokes calculations of rotorairframe interaction in forward flight,” J. Am. Helicopter Soc. 40(2), 57–67 (1995). 3H. Pomin and S. Wagner, “Navier-Stokes analysis of helicopter rotor aerodynamics in hover and forward flight,” J. Aircr. 39(5), 813–821 (2002).
+4G. J. Leishman, Principles of Helicopter Aerodynamics with CD Extra (Cambridge University Press, 2006). 5J. Cornelius, S. Schmitz, J. Palacios, B. Juliano, and R. Heisler, “Rotor performance predictions for urban air mobility: Single vs coaxial rigid rotors,” Aerospace 11(3), 244 (2024). 6N. Peters, C. Silva, and J. Ekaterinaris, “A data-driven reduced-order model for rotor optimization,” Wind Energy Sci. 8(7), 1201–1223 (2023). 7S. Le Clainche, E. Ferrer, S. Gibson, E. Cross, A. Parente, and R. Vinuesa, “Improving aircraft performance using machine learning: A review,” Aerosp. Sci. Technol. 138, 108354 (2023). 8G. Makkar, J.-P. Reddinger, F. Gandhi, and F. Kopsaftopoulos, “Machine learning based approach to improve low-fidelity predictions for a compound helicopter,” in Proceedings of the 77th Vertical Flight Society Annual Forum (2021), Vol. 14. 9J. P. Rao and S. N. Chimata, “Machine learning-based surrogates for eVTOL performance prediction and design optimization,” Metascience Aerospace 1(3), 246–267 (2024). 10D. M. Pitt and D. A. Peters, “Theoretical prediction of dynamic-inflow derivatives,” Vertica 5(1), 21–34 (1980).
+Physics of Fluids ARTICLE pubs.aip.org/aip/pof
+Phys. Fluids 37, 077194 (2025); doi: 10.1063/5.0271761 37, 077194-9
+CV Author(s) 2025
+24 August 2026 10:11:23

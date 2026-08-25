@@ -1,0 +1,437 @@
+Machine Learning Based Approaches for Estimating Rotor Airloads in Hover
+Howon Lee
+Graduate Research Assistant Georgia Institute of Technology Atlanta, GA 30332, USA
+Patrick Mortimer
+Graduate Research Assistant The University of Texas at Austin Austin, TX, USA
+Pranay Seshadri Associate Professor Georgia Institute of Technology Atlanta, GA 30332, USA
+Jayant Sirohi Professor The University of Texas at Austin Austin, TX, USA
+Juergen Rauleder Assistant Professor Georgia Institute of Technology Atlanta, GA 30332, USA
+The accurate measurement of rotor blade airloads often goes hand-in-hand with the accuracy of validation in numerical models, but obtaining the required data via direct installation of sensors is challenging. This study proposes new machine learning based methodologies to estimate the airloads, specifically thrust, of a two-bladed rotor in hover using non-contact measurements: flow field measurements from Particle Image Velocimetry (PIV) and blade deformation measurements from Digital Image Correlation (DIC). The flow field based approach used two-dimensional, two-component (2D2C) PIV measurements to train a Gaussian Process (GP) spatial model. The model was then used to construct a higher-fidelity flow field from which thrust was predicted with momentum conservation principles. The noise removal and filling in any missing vectors by the GP-enhanced flow field yielded accuracy improvements in thrust estimation, from -22.71% to -10.54% percentage difference from the measured thrust in the worst case, and -35.52% to 1.89% in the best case. The blade deformation based approach used the Complexity Pursuit algorithm to extract the first two flap bending modes of the rotor blades from DIC measurements at 0◦ collective with ambient excitation. The extracted modal information was used to estimate the rotor thrust at two test conditions, a steady 9◦ collective and a 2◦ step increase in collective. In both cases, the estimated thrust was within 5% of the measured value.
+Nomenclature
+CT Thrust coefficient, T
+ρA(ΩR)2
+R Rotor radius (m)
+Rec Blade tip chord Reynolds number, ρVtipc
+μ
+c Blade tip chord (m)
+ARotor disk area ( m2)
+α GP hyperparameter: Correlation coefficient between measured radial and axial velocities
+λ2
+i,r, λ2
+i,z GP hyperparameters: Fourier-mode variances in measured radial and axial velocities along the azimuthal direction
+Presented at the 49th European Rotorcraft Forum, Bu ̈ckeburg, Germany, September 5–7, 2023. Copyright © 2023 by the authors except where noted. Published by CEAS with permission.
+Ω Rotor rotational speed (rad/s)
+ψb Rotor blade azimuth angle (degrees)
+ρ Air density (kg/m3)
+σ Rotor solidity
+σ2
+f ,r, σ2
+f ,z GP hyperparameters: Variances in measured radial and axial velocities
+EI Flexural rigidity (N/m2)
+lr, lz GP hyperparameters: Length scales in measured radial and axial velocities
+r, z In-plane radial and axial location (m)
+Vr, Vz In-plane radial and axial component of wake velocity (m/s)
+
+
+INTRODUCTION
+Measurements of rotor airloads are primarily used for validation of designs and high-fidelity numerical models. One application of the validated numerical model is to generate reduced-order models for rotorcraft control. The accuracy of the model is therefore closely tied to the accuracy of the validating measurements, as well as the physical assumptions involved in developing the model. In practice, measurement of rotor blade airloads is very challenging. The most direct method is to install sensors in the rotor blades to measure surface pressure; integration of these measurements yields the airloads. Installation of blademounted pressure sensors is challenging due to the added mass of sensors and wiring, large vibratory and centrifugal loads, and the required centrifugal corrections. Rotor test installations often feature blade-mounted strain gauges and load cells. However, these measure a combination of aerodynamic and inertial loads. Hub-mounted or fuselagemounted load cells measure loads that are quantities integrated over space and time, i.e, integrated over the rotor blade span and rotor disk. Therefore, it is not straightforward to extract distributed airloads from blade-mounted strain gauges or hub-mounted load cells.
+To overcome these challenges, we propose a new physics-based machine learning (ML) based methodology to estimate the airloads on a rotor, using only high-speed video as input. In this paper, we focus specifically on spanwise lift distribution over the rotor blades, and integrated rotor thrust. Two parallel approaches are taken to estimate rotor thrust: (1) an aerodynamics approach that uses the rotor flow field measured with time-resolved particle image velocimetry (PIV) in conjunction with a Gaussian Process (GP) model and momentum conservation, and (2) a structural dynamics approach using the rotor blade deformation measured with time-resolved digital image correlation (DIC) in conjunction with a normal mode formulation.
+The two approaches will be used to obtain a functional map between the measured rotor thrust, and the measured flow field and blade deformation. In the upcoming phases of this collaborative effort between Georgia Institute of Technology and the University of Texas at Austin, the developed Machine Learning algorithms will be used jointly to predict the rotor airloads in hover without the need for load cells or strain gauges. The overview of objectives for the collaborative effort is shown in Fig. 1.
+Recently, the application of machine learning to aerodynamic problems has become increasingly attractive (Ref. 1). In the field of rotorcraft, Oh et al. (Ref. 2) was the first to apply ML to rotor flow by employing neural networks for wake predictions from raw images of seeding particles, and to predict the thrust based on the flow field. Kalur et al. (Ref. 3) used Dynamic Mode Decomposition with data-driven closures on the same two-bladed rotor flow field as this paper. In their work, their dimensionality
+Fig. 1: Overview of parallel approaches to estimate airloads. Georgia Tech: Measured flow field to airloads, UT Austin: Measured blade deformation to airloads.
+reduction technique applied to experimental PIV measurements produced an effective non-linear reduced model of the rotor-air interaction. However, the model also captured non-physical regions of the PIV data (e.g. seed voids in data set) and saw deterioration of tip vortices with increasing time.
+A Gaussian process (GP) is a non-parametric model, where the number of parameters is unfixed (as opposed to neural networks), and adapts itself to the data size (Ref. 4). A Bayesian approach is taken when mapping uncertainty between input and output is represented by defining a prior distribution over functions, and updating the prior given the data using Bayes’ rule to derive the posterior. GPs have been widely used to model spatially and temporally varying data from its inception in modeling ore reserves (Ref. 5), filtering experimental time series data such wind speed measurements (Ref. 6), and rotor speed measurements (Ref. 7). In the case of direct application to fluid flow, Azijli and Dwight (Ref. 8) employed Gaussian Process Regression with a solenoid filter to reconstruct a volumetric PIV flow field measurement. Seshadri et al. (Ref. 9) formulated techniques to construct a spatial model for approximating the flow field at an axial location inside an aeroengine, given an array of engine sensor measurements. In this work, we introduce a pioneering application of the GPs to create a rotor wake spatial model from PIV measurements.
+Several researchers have explored the estimation of airloads, specifically rotor thrust, from blade deformation measurements. In general, the approach is based on the flapwise normal mode equation of motion as described by Somerson (Ref. 10). Bousman (Ref. 11) summarized previous approaches to airload estimation, and described a method that estimates blade lift distribution based on measured flap bending moments and computed modal parameters. Chierichetti et al. (Ref. 12) provided an overview
+
+
+of a number of previous studies based on normal modes or modal superposition methodologies. O ̈ ry and Lindert (Ref. 13) described an approach to reconstruct airloads using the modal equations of motion and an inverse phase plane method to calculate modal accelerations. Wang et al. (Ref. 14) discussed a combined analytical-experimental approach to predict the vibratory loads in an articulated rotor using blade strain measurements. In general, these studies showed good agreement between the estimated and directly measured spanwise airloads. However, these approaches relied on pointwise bending moment measurements from on-blade strain gauges as well as an accurate numerical model of the rotor blade structure. The present approach uses non-contact measurements of blade deformation to extract the modal properties of the rotating blades. A normal mode formulation is then used to estimate rotor thrust from the extracted modal properties.
+TECHNICAL APPROACH
+Experiments were first performed to measure thrust, wake, and blade deformation of a rotor in hover at several operating conditions. The wake data were used to train the GP models. The measured blade deformation was used to extract rotating blade modal properties from which the rotor thrust was estimated.
+Experimental Setup and Procedure
+Experiments were performed on a 2m-diameter, twobladed rotor operating in hover at a nominal rotational speed of 900 RPM corresponding to a blade tip Mach number of M = 0.3 and a tip chord Reynolds number of Retip = 562,000. The test stand was mounted with the rotor shaft oriented horizontally to facilitate optical access; see Fig. 2a. The rotor blades were untwisted with a constant chord and VR-12 airfoil cross-section. The rigid rotor hub (no flap or lag bearings) was mounted on a six-component load cell to measure the instantaneous rotating-frame hub loads. Two separate experimental setups were used to measure the flow field and the blade deformation.
+Flow field measurements The flow field, specifically the rotor wake, was measured by time-resolved twodimensional, two-component (2D-2C) PIV, using two 4 megapixel high-speed CMOS cameras in conjunction with a dual-pulsed Nd:YLF laser (527 nm, 30 mJ/pulse). An optical encoder mounted on the main rotor shaft provided a consistent timing signal for triggering the time-resolved measurements. The time-resolved measurements were made at 45/rev corresponding to an azimuthal (time) resolution of ψb = 8◦, and the flow field images were obtained over a total of 536 statistically independent rotor revolutions. Rotating-frame hub forces and moments were acquired over an equivalent number of rotor revolutions at 10 kHz to correlate with key aerodynamic flow features in the rotor wake. Three blade loadings (CT /σ) were measured:
+0.08, 0.10 and 0.12. The areas of the flow field that were investigated, i.e. regions of interest (ROI), are shown in Fig 2b. Further details of the experimental setup are reported in Ref. 15.
+(a) Rotor test stand with 2D-2C PIV setup.
+(b) Schematic showing the merged region of interest (ROI) from cameras 1 and 2 for the PIV measurements, R is the rotor radius
+Fig. 2: Rotor test stand, PIV test setup, and region of interest.
+Blade deformation measurements Blade deformation was measured using time-resolved 3D DIC. The blade surface was prepared by painting it with a fluorescent orange paint over which a random speckle was applied using black paint. The entire rotor disk was illuminated at 32/rev (480 Hz) by a diffused beam from a Nd:YLF laser (527 nm, 30 mJ/pulse), and images of the entire rotor disk were captured using three 1 megapixel Phantom Miro M310 cameras. A schematic of this setup is shown in Fig. 3; for further details of this setup, see Ref. 16. Images were captured over 300 rotor revolutions, yielding 9600 images per camera. The images were post-processed to obtain the position of the blade at 32 evenly-spaced azimuthal locations over the rotor disk. The blade deformation was calculated at each of these locations, yielding a time history of blade deformation over 300 rotor revolutions. From the three-dimensional deformation, flapwise deformation (outof-plane bending) along the blade quarter chord was extracted.
+Thrust estimation from rotor wake measurements
+GP models were trained using the rotor wake information to recreate a representation of the three-dimensional rotor wake that is noise-free and has higher azimuthal resolution.
+
+
+Fig. 3: Schematic of DIC setup showing rotor disk illuminated by a laser and imaged by two cameras.
+The reconstruction allowed for a finer domain and a more accurate data from which numerical integration could be performed to estimate the corresponding thrust.
+Unlike numerical simulations which provide a “clean” and noise-free flow field data at the ROI, experimental PIV images of the rotor field often run into limitations in fully capturing the flow around the rotor blade. Typical issues, though not comprehensive, are visualized in Fig. 4.
+Fig. 4: An example vorticity contour and velocity vector field demonstrating typical limitations that may occur in PIV images of a rotor flow
+Commonly, the loss of laser intensity in edges of the ROI (Region A) results in the extraction of spurious velocity vectors during post-processing. While the issue can be mitigated with a stronger laser power, it often comes at a cost of laser frequency, subsequently lowering temporal image resolution. The severity of the low-intensity region is additionally dependent on ROI size. Reducing window size to remove low intensity areas risks an inability to fully capture aerodynamically relevant flow features. Another experimental restriction is the reflection that occurs when the rotor blade passes through the laser plane, denoted as Region B. The high light intensity results in spurious vectors that are non-physical. Region C is the seed void that occurs at the vortex core. High speed velocities on the outer edges at a tip vortex can ingest all the seeding parti
+cles. Due to the centrifugal forces, seeding particles cannot reach the core of the vortex to resolve the velocity vectors. This phenomenon is often shown as a region of negligible out-of-plane vorticity in the tip vortex core.
+Often, these limitations are addressed by either masking the data to remove affected regions or replacing the vectors with linearly interpolation. However, masking results creates a loss of data and linear interpolation may oversimplify or remove non-linear flow features. In this work, a method based on GP is employed to reconstruct the missing flow field data while taking into consideration the periodic nature and high frequency behaviors of a two-bladed rotor.
+Gaussian Process It will be useful to assume the existence of a training set of PIV vector locations and corresponding velocity vectors pairs; (xn, y(xn)) for n = 1, . . . , N. Each velocity vector observation is a noisy version of the underlying “truth”, yn = f (xn) + εn, where ε ∼ N (0, σ2
+y). It will also be useful to assume that we require predictive velocity values at other locations. This training data and testing data is given by
+X=
+
+ 
+x1
+...
+xN
+
+
+, y=
+
+ 
+y(x1)
+...
+y(xN )
+
+
+ and X∗ =
+
+ 
+x∗
+...1
+x∗
+N
+
+
+ , f∗ =
+
+ 
+f ∗(x1)
+...
+f ∗(xN )
+
+ 
+(1) where the asterisk indicates the testing locations. For the problem explored in the paper, xn ∈ R3, which corresponds to (r/R, z/R, ψb). Then, the joint density of the observed data and the latent, noise-free function on the test points is given by
+y f∗
+∼ N μX
+μ∗
+, KX,X + σ2
+y I KX,∗
+KT
+X,∗ K∗,∗
+. (2)
+The posterior at a set of test points X∗ can be written as
+μ∗|X = KT
+X,∗(KX,X + σ2
+yI)−1y, and (3)
+Σ∗|X = K∗,∗ − KT
+X,∗(KX,X + σ2
+y I)−1KX,∗. (4)
+Due to numerical instability that may arise from directly calculating the inverse (KX,X + σ2
+yI)−1, a Cholesky decomposition is performed where, Kσ = LLT . This allows the rewriting of Equations 3 and 4 as
+μ∗|X = KT
+X,∗α, and (5)
+Σ∗|X = K∗,∗ − vT v, (6)
+where α = LT \(L y) and v = L\KX,∗.
+The goal of the GP model is to perform regression along the blade azimuthal location. The input of xi ∈ {ri, zi, (ψb)i) : ri
+R ∈ [0.4402, 1.0207], zi
+R∈ [0, 0.2103], (ψb)i ∈ [0, 2π)}, selected to focus on the regions of noise and blade passage reflection, can be param
+
+
+eterized as
+X=
+
+ 
+r1 z1 (ψb)1
+... ... ...
+rN zN (ψb)N
+
+
+ = [r, z, ψb], and
+X∗ =
+
+ 
+r1 z1 (ψb)1
+... ... ...
+rM zM (ψb)M
+
+
+ = [r∗ z∗ ψ∗
+b].
+(7)
+For interpolation purposes, it is assumed that X = {(ri, z j, (ψb)l), ri ∈ r, z j ∈ z, (ψb)l ∈ ψb} where r is a set of L radial locations, z is a set of O axial locations, and ψb is a set of P azimuthal locations. Consequently, N from Equation 7 is equal to L × O × P. The spatial kernel is defined to be a Hadamard (element-wise) product between squared exponential kernels, kr and kz, in the radial and axial directions, and a Fourier kernel kψb along blade azimuthal locations such that
+k(x, x′) = k((r, z, ψb), (r′, z′, ψ′
+b))
+= kr(r, r′) ⊙ kz(z, z′) ⊙ kψb (ψb, ψ′
+b) (8)
+where the symbol ⊙ represents an element-wise product between matrices.
+Along the radial and axial direction, a squared exponential kernel is used; these are of the form
+kr(r, r′) = σ2
+f ,r exp − 1
+2lr2
+(r − r′)T (r − r′) and
+kz(z, z′) = σ2
+f ,z exp − 1
+2lz2
+(z − z′)T (z − z′)
+(9)
+such that the element-wise product of the two kernels yields a squared exponential kernel based on the in-plane two-dimensional Euclidean distance. Hyperparameters σ2
+f ,r and σ2
+f ,z, denotes the kernel amplitude (or variance) in the respective velocity direction, while lr and lz denotes the length scales. All hyperparameters need to be determined computationally.
+The definition of the azimuthal kernel largely follows the construction described by Seshadri et al. (Ref. 9). Given n wave numbers, let ωωω = (ω1, . . . , ωn), represent the frequencies characterizing the periodic behavior along the azimuthal direction of the rotor blade. The Fourier design matrix, (F ∈ R(2n+1)×N) is then constructed with the entries of
+Fi j(ψb) =
+
+ 
+ 
+1 i=1
+sin(ωωω i
+2 ψbj ) i is even and i > 1
+cos(ωωω i−1
+2 ψbj ) i is odd and i > 1
+(10)
+The amplitude and phase of the Fourier modes and the mean term can be partially controlled by the introduction of a set of diagonal matrices D = (D1, . . . , DQ), each with a dimension of R(2n+1)×(2n+1). Each entry is
+Di = diag(λ2
+i,1, . . . , λ2
+i,2n+1) for i = 1, . . . , Q. As noted by Seshadri et al. (Ref. 9), the hyperparameters do not control the amplitudes and phases directly, as the λ2
+i, j are variances and dependent on the measured data and assumed prior distributions. The kernel can be written as
+kψb (ψb, ψ′
+b) = F(ψb)T q
+Ds(ψj)
+q
+Ds(ψ′
+j) F(ψ′
+b), (11)
+where Ds(ψ′
+j) corresponds to the diagonal matrix index by
+s(ψ′
+j).
+The Fourier-based azimuthal kernel provides the capability to capture the flow physics based on our understanding of the rotor wake. It incorporates the periodic nature of a rotating blade due to its sinusoidal nature. The wave numbers defined by the kernel correspond to the n/rev components that exist within a rotor wake. For a two-bladed rotor, a dominant 2/rev component as well as weaker higher even harmonics are expected.
+As the experimental data contains both the radial and axial velocities, there is a need to generate posteriors for both velocity components while taking into account one’s own dependence on the other. This multi-task GP (Ref. 17) can be attained by forming KX,X from Equation 2 as an array of kernels dependent on the observation set locations for each velocity component, X1 and X2 with its own hyperparameters
+KX,X = KX1,X1 αKX1,X2
+αKX2,X1 KX2,X1
+. (12)
+Here, α defines the correlation between the the two ondiagonal velocity vector components. Note that in PIV, X1 and X2 are the same.
+Priors for the squared exponential exponential kernel for the in-plane locations within the PIV laser plane are imposed as
+σ f ,· ∼ N +(0, 1),
+l· ∼ N +(0, 1), (13)
+where the · subscript indicates both r and z directions. The priors of the Fourier-based kernel, which depend on the out-of-plane location, are defined as
+λ2
+i, j ∼ N + 0, exp −4 1 − j
+2n + 1 (14)
+for j = 1, . . ., 2n + 1. Here, N + represents a half-Gaussian distribution. The exponential decay is introduced based on the assumption that the higher wave numbers (harmonics) within a rotor flow field have smaller amplitudes compared to the lower wave numbers. The wave numbers were selected such that all harmonics are included up to the cutoff frequency of 14/rev. The cut-off frequency was selected as it prevented over-fitting of the velocity measurements while maintaining good computational efficiency during the training process. The selection is also based
+
+
+on the knowledge that amplitudes of the higher harmonics of blade motion are found to be very small and of no substantial significance (Ref. 18). Lastly, the priors of the correlation coefficient between Vr and Vz are defined as
+α ∼ U(0, 1). (15)
+With the described kernel structure, two different GP models are trained for inboard (0.4402 ≤ r/R ≤ 0.7423, 0.0889 ≤ z/R ≤ 0.2044) and outboard regions (0.7423 ≤ r/R ≤ 1.0207, 0.0889 ≤ z/R ≤ 0.2044) of the PIV images separately. This was done as the two images are dominated by two different physical phenomena: rotor blade passage and tip vortex motion. It was found that the separation of the two models proved to significantly reduce the training times. The locations of the seed voids and spurious velocity vectors were removed from the training data. For each model, a total of 10,000 samples are generated from the posterior distribution jointly on f∗ and the hyperparameters using Hamiltonian Monte Carlo (HMC) (Ref. 19). Specifically, a self-tuning variant of HMC named the NoU-Turn Sampler (NUTS) proposed by Hoffman and Gelman (Ref. 20) is used. NUTS is advantageous because it avoids the overhead in computational cost required to determine good values for the step-size and path length.
+Sampler trace plots for some of the model hyperparameters are shown in Fig. 5. It can be observed that the trace plot moves around the distribution mode and has low autocorrelation values, which indicates NUTS converges for this problem. The Gelman-Rubin statistic for all hyperparameters was found to be 1.00.
+Thrust estimation Per conservation of momentum, the thrust generated by a rotor is equal to the increase in the momentum axial component induced by the rotating blades. The momentum flux of air through a control surface (rotor disk area in this case) is written as
+⃗F =
+Z
+CS
+ρ(⃗V · nˆ)⃗V dA, (16)
+where ρ is the air density, ⃗V is the velocity vector, and nˆ is the unit normal to the rotor disk.
+Using the above equation, a low-order prediction of the thrust is performed directly from the PIV images by numerical integrating the axial velocities along r and ψbdirections at z/R = 0.1629. This value for the disk location was chosen as most of the air flow reached the local maximum velocity, thus being the best approximation of the rotor-induced velocity from PIV. However, it should be noted that the PIV information is restricted to the minimum r/R value of 0.4402, resulting in an incomplete velocity distribution.
+A refined version of the approach for thrust prediction is introduced based on the developed GP model. In predicting the velocities of the flow field, GP regression was
+performed using Gaussian likelihoods. As shown in Equation 16, the determination of the rotor thrust is dependent on the square of axial velocities through the disk. A product of Gaussian distributions results in a non-Gaussian likelihood, which means that the posterior can no longer be computed analytically using the Gaussian Process. Thus, we approach the GP-based thrust prediction using the Monte Carlo method. 20,000 samples are generated, distributed uniformly over inboard and outboard each. The momentum flux of the rotor wake through the disk was calculated by numerically integrating the obtained samples following Equation 16. The posterior mean and standard deviation was then determined by iterating through the obtained samples of the hyperparameters. While PIV-based calculations would be restricted to the 41 PIV planes, the proposed method uses velocities that spans the entire disk. Furthermore, the model can be used to extrapolate the rotor wake to the root cutout, which was also missing from the PIV data.
+Thrust estimation from blade deformation measurements
+The normal mode approach was used to estimate the spanwise lift distribution and integrated rotor thrust, from measured flapwise structural deformation. The approach is similar to that described in the literature (see Refs. 10, 11) except in the present approach, rotating blade modal properties were extracted using blade deformation measured at zero collective in hover. The Complexity Pursuit algorithm is used to extract the modal properties; this method does not require any knowledge of the blade structure. The steps involved in estimating the rotor thrust are as follows:
+Step 1: Measure the blade deformation at the nominal rotational speed with the rotor at 0◦ collective, close to zero thrust. At this condition, the blade motion is predominantly excited by random vibrations, which can be considered as broadband over the structural frequencies of interest.
+Step 2: Extract the modal properties of the rotating blades from these random motions, using the Complexity Pursuit algorithm.
+Step 3: Measure the blade deformation at the desired test condition. Two test conditions were explored in this study: (a) Steady 9◦ collective, and (b) A 2◦ step in collective pitch from a steady collective of 9◦.
+Step 4: Calculate modal forces from the measured deformation, transform the modal forces to physical space to obtain spanwise lift distribution and integrate the lift distribution to find rotor thrust.
+Complexity Pursuit The Complexity Pursuit algorithm is a signal processing technique that extracts independent sources comprising a signal without requiring a physical model of the system. In the context of a structure, the independent sources correspond to modal coordinates and the signal corresponds to the deformation at a specific location.
+
+
+(a) Inboard model: Trace plots of the MCMC chain for selected hyperparameters
+(b) Inboard model: Posterior distributions of the MCMC chain for selected hyperparameters
+(c) Outboard model: Trace plots of the MCMC chain for selected hyperparameters
+(d) Outboard model: Posterior distributions of the MCMC chain for the outboard model
+Fig. 5: Trace plots of the MCMC chain for some of the inboard and outboard wake model’s hyperparameters: σ f ,z, lz, λ2
+0,z, λ2
+3,z, α. The subscript z indicate that the hyperparameter is for the axial velocity component.
+The algorithm is briefly described here; a detailed discussion of the algorithm was given by Stone (Ref. 21), and its application to extracting modal properties of a rotating rotor blade was described by Uehara and Sirohi (Ref. 22).
+From the measured flapwise blade deformation w(t), long-term and short-term predictors of the deformation are computed (w ̄ and ˆw respectively); the value at time ti is given by a weighted sum of values measured up to time
+ti−1 as
+w ̄ (ti) = λLw ̄ (ti−1) + (1 − λL)w(ti−1) (17)
+wˆ (ti) = λSwˆ (ti−1) + (1 − λS)w(ti−1) (18)
+where λL = 0.99 and λS = 0.5. The long-term and shortterm covariance matrices (C ̄ and Cˆ respectively) are then computed by
+C ̄ =
+nt
+i=∑1
+(w(ti) −  ̄w(ti)) (w(ti) − w ̄ (ti))T (19)
+Cˆ =
+nt
+i=∑1
+(w(ti) − ˆw(ti)) (w(ti) − wˆ (ti))T (20)
+where nt is the total number of time instants. From the
+short-term and long-term covariance matrices, the mode shapes and natural frequencies ΛΛΛ are obtained by solving the eigenvalue problem
+Cˆ −1C ̄ = ΛΛΛ (21)
+This procedure results in a large number of non-physical or spurious modes. The autocorrelation of each modal coordinate is calculated; if it consists of a single frequency, the mode is identified as a physical mode. The advantage of the Complexity Pursuit algorithm is its simplicity in implementation; only two parameters λL and λS need to be chosen and the algorithm is robust to the choice of these parameters. Finally, the mode shapes are normalized by a mass matrix obtained from the blade design.
+Modal force estimation Assuming the first few flap bending modes are uncoupled from chordwise and torsional deformation, we only need to consider the flap bending equation of motion
+(EIw′′)′′ − (Tw′)′ + mw ̈ = fz (22)
+where EI is the flexural stiffness, T is the tension from centrifugal force and fz is the out-of-plane force, i.e. the lift per
+
+
+unit length. Using the modal expansion theorem, the flap bending deformation w(x,t) can be expressed as a summation of N normal modes, excluding a rigid body mode as
+w(x,t) =
+N
+∑
+1
+ζn(x)qn(t) (23)
+where x is the spanwise coordinate, ζn(x) is the mode shape and qn(t) is the modal coordinate (e.g. tip amplitude) of the nth normal mode. Following the development of Somerson (Ref. 10), substituting the solution to the homogenous equation of motion and invoking orthogonality of modes leads to an expression for the nth modal force Fn
+q ̈n + ω2
+nqn =
+ZR
+0
+fzζndx = Fn (24)
+where ωn is the natural frequency of the nth mode and R is the rotor radius. The modal forces can then be transformed to physical spanwise forces, which can be integrated along the blade span to yield the rotor thrust. This procedure requires the calculation of modal acceleration, which is sensitive to measurement noise, and is calculated by smoothing and regularization of the measured blade deformation.
+RESULTS AND DISCUSSION
+Flow Reconstruction from Gaussian Process Regression
+This section of the paper outlines how the GP model reconstructed the rotor wake, even in regions of spurious velocity vectors. Before proceeding with the interpolation through the unknown areas of the flow field, validation of the interpolation was performed. Due to the lack of true velocity values through inboard seed voids/blade reflections, a validation of the interpolation was performed by adding artificial blade reflections on the outboard rotor wake which suffered significantly less from the reflection. Every other azimuthal location was removed from the training data to better understand the adherence of the interpolation to the ground truth in the azimuthal domain. The outcome was compared to the linear interpolation along all three r, z, and ψb directions, using MATLAB’s scatteredInterpolant command. The results can be seen in Fig. 6.
+It was observed that the GP model reliably reconstructs the flow at the artificial blade reflection compared to linear interpolation. At ψb = 184.4◦, an azimuthal location where there is a rapid change in the flow due to blade passage, linear interpolation failed to capture the magnitude of the leftward velocity induced by the blade below z/R = 0.13. Linear interpolation was also found to be extremely unreliable in the boundaries of the sample data points, which is also stated in MATLAB documentation (Ref. 23). An example of this behavior can be seen in the top left corner of the flow field where linear interpolation fails to capture neither the direction nor the magnitude of the flow correctly.
+The inadequacy demonstrates the difficulties in interpolating through the loss regions of laser intensity that persisted in the corner of the PIV ROI.
+From the frequency analysis of the fit at r/R = 0.7601, z/R = 0.1037 (a location of inadequate linear interpolation) shown in Fig. 7, it was seen that the use of a Fourier-based kernel for fitting along the azimuthal direction resulted in the axial velocities dominated by the 2/rev content. This was expected from the wake of a 2-bladed rotor. Thus, it could be concluded that the GP-interpolated velocity field was in line with the physical properties of a rotor-induced wake.
+Shifting focus to the inboard region of the rotor wake, Fig. 8 presents the interpolated axial velocity over a rotor revolution along different axial locations at 0.6564 r/R and the fitted harmonic contents of the results. The z/R values were selected to include the locations with (Figs. 8b and 8c) and without (Fig. 8a) blade passage reflections. GP model successfully interpolated through the training data even those with missing velocity vectors. The interpolation maintains the physical properties of the rotor wake with a combination of a dominant 2/rev signal and its higher harmonics which decrease in amplitude. It is also notable at higher z/R interpolations near the blade, a high-frequency fluctuation in the axial velocity was present immediately before and after blade passage. This phenomenon, attributed by Mortimer et al. (Ref. 15) as the effect of the blade bound circulation, was captured by the GP model. However, it should be noted that these predictions are not fully verified and need to be validated with CFD.
+Another significant point of concern for PIV images is the presence of seed voids in the core of a vortex. The same procedure is followed with the GP model trained on the outboard flow to interpolate the void regions. The results can be seen in Fig. 9.
+The distribution of the radial velocity of the tip vortex at select wake ages are shown in Fig. 9. It was found that the velocity profile of the GP-reconstructed vortex follows the expected behavior - a rapid increase followed by a linear decrease to zero velocity and symmetric with respect to the origin. For analytical representations of a vortex such as the Lamb-Oseen vortex, there should be a constant rate of decrease between the positive and negative regions of radial velocity. This may not always be true in the measurements due to experimental errors. For example, occasional “staggering” between the velocities on different sides of tip vortices were observed. A fit that results in a straight line like the analytical solution was not possible for these cases. With the GP-based reconstruction of the tip vortex from the training data, the resulting radial velocity distribution was observed to always capture the constant positive-to-negative rate of transition. These fits were obtained through the means of slight underestimation of the peak velocity magnitudes or overestimation of the vortex radius.
+
+
+Fig. 6: A comparison of the velocity components of the reconstructed wake using the GP model and linear interpolation at ψb = 184.8◦, CT /σ = 0.10. The maximum standard deviations of the GP model at the azimuthal locations were found to be 0.8479 m/s and 0.6439 m/s for Vr and Vz respectively.
+Fig. 7: The amplitude of the Fourier modes of the GP posterior mean for a rotor revolution at r/R = 0.7601, z/R = 0.1037, CT /σ = 0.10.
+Thrust estimation from measured rotor wake
+From the model trained on PIV images, a representation of the three-dimensional flow (while it lacks the azimuthal component of velocity) was generated, with the flow field resolved at every azimuthal degree. This corresponds to approximately 9 times the resolution of the original PIV data. Fig. 10 shows the result. It could be seen from the Q-criterion iso-contour that the higher resolution yields a very smooth, noise-free representation of the volumetric rotor wake. Qualitative observation also showed the adherence to real rotor wake properties, such as the tip vortex formation at the blade tips and its convection downstream with contracting wake area. The in-plane velocity vectors and the vorticity contours shown in Fig. 10 are all predicted slices generated by the GP model at different azimuthal locations not included in the training data. This demonstrated that the reconstructed wake was free from all the experimental limitations described in Fig. 4.
+Based on the reconstructed three-dimensional rotor wake, the rotor thrust is predicted as shown in Fig. 11. The numerical integration based on the 41 raw PIV im
+ages underpredicts the thrust generated by the rotor. The percentage error was −35.52%, −22.71%, −13.73%, for CT /σ = 0.08, 0.10, and 0.12 respectively. The inaccuracy was expected due to the loss of velocity information from seed voids and coarse azimuthal resolution. This is supported by the fact that severity of the underprediction increases with decreasing CT /σ values, as the extent of seed voids was far greater for lower blade loadings.
+As for the GP-based thrust prediction, two methods were investigated: 1) flow field increased azimuthal resolution at the same r/R and z/R window as the PIV ROI and 2) flow field extrapolated to the location of the root cutout (r/R = 0.19), which was missing in the PIV data in addition to the azimuthal resolution. GP-based thrust prediction with no extrapolation yielded a slight increase in accuracy for the two higher CT /σ cases (0.10 and 0.12) with −20.36% and −10.78% error respectively, and a significant improvement in accuracy for the CT /σ = 0.08 case with −11.37% percentage error. The drastic increase for the latter case was due to the prevalence of unreliable velocity vectors in the original image compared to the other two cases. With the extrapolation method, the thrust prediction method displayed further improved accuracy for all blade loading values with the percentage errors of 1.89%, −10.54%, and −1.53% in increasing CT /σ. The findings indicate that the noise removal with GP-based interpolation and the extrapolation to the near-root region of the blade (despite the relatively small thrust contribution) gave a more accurate result for the numerical integration of the fluid momentum .
+Thrust estimation from measured blade deformation
+Using the Complexity Pursuit algorithm, the first two flap bending modes were extracted from the measured blade flap bending deformation at 0◦ collective. A spectrum of the measured flapwise tip deflection is shown in Fig. 12
+
+
+(a) z/R = 0.1096, below blade reflection
+(b) z/R = 0.1629, at blade reflection. Note the missing experimental data points at ψb = 0◦ and 180◦
+(c) z/R = 0.2043. Note the reduced severity of the blade reflection.
+Fig. 8: (Left) A comparison between the axial velocity measurements and the GP fit over a rotor revolution at 0.6564 r/R and multiple z/R locations. (Right) The amplitude of the Fourier modes of the GP posterior mean
+as a function of rotor harmonics; a number of peaks corresponding to the rotor harmonics as well as blade natural frequencies can be seen. The first two flap bending mode shapes are shown in Fig. 13; good agreement with computations from a previous work by Uehara and Sirohi (Ref. 16) can be seen.
+For each test condition, the measured flapwise blade deformation and the estimated rotor thrust compared to the measured rotor thrust is shown in Fig. 14 and Fig. 15. The data are plotted with a shaded region denoting a 95% confidence interval based on measurements over the entire time history.
+In the case of test condition (a), i.e., steady collective, the flap bending deformation is shown along the blade span (Fig. 14(a)), indicating that the noise or measurement uncertainty is at most a few millimeters over the entire blade span (tip displacement is 90mm, which is 1.125 times the blade chord). The estimated rotor thrust is compared to the thrust measured by the hub-mounted load cell (phaseaveraged over all 300 revolutions) in Fig. 14(b); the mean estimated thrust is within 5% of the measured value. This
+(a) ∆ψb = 26.4◦
+(b) ∆ψb = 52.8◦
+Fig. 9: Distribution of radial velocity through the tip vortex at 26.4 and 52.8 degrees wake age for the experimental PIV data and the GP model. The experimental results lack the vortex core information and is linearly interpolated.
+agreement can be considered very good given that only two flap bending modes were included in the thrust estimation. However, because these are integrated values, they do not provide any information about the accuracy of the spanwise distributed lift force.
+For test condition (b), i.e., step change in collective, the measured blade tip out-of-plane displacement is plotted as a function of rotor revolutions in Fig. 15(a). The increase in blade flap bending deformation is clearly seen over a few rotor revolutions. This data was averaged over ten applied steps in collective; the uncertainty in measured displacement is larger in this case compared to that of the steady collective. The estimated rotor thrust compared to the thrust measured by the hub-mounted load cell is shown in Fig. 15(b) as a function of rotor revolutions. An increase in thrust of around 40N is seen over the mean thrust (at 9◦ collective) of around 210N. The estimate captures both the transient increase in thrust as well as the steady state value compared to measurements. The steady state error is on the order of 4% in this case, similar to that of the steady collective test case. It can be concluded that the thrust estimation methodology captures both steady as well as transient changes in thrust quite well, within a few percent of measured values and without any significant time delays in the
+
+
+Fig. 10: Constructed volumetric representation of the two-bladed rotor wake using the GP model. The flow field is resolved at every azimuthal degree, resulting in 359 planes compared to the PIV data’s 41 planes. The PIV plane locations relative to the blade are outlined in black. (Top right) Q-criterion iso-contour of the wake, colored by the out-of-plane vorticity value. (Top left - bottom right) Velocity field and out-of-plane vorticity contour at different wake ages where PIV data was not available.
+Fig. 11: A comparison between different thrust prediction schemes based on the numerical integration of the rotor wake momentum
+transients.
+SUMMARY AND CONCLUSIONS
+This work describes two parallel approaches to estimate rotor thrust from non-contact measurements: an aerodynamics approach and a structural dynamics approach. In the aerodynamic approach, flow fields measured from timeresolved PIV were used to train a Gaussian Process model. A higher-fidelity flow field was then generated by the model, that included radial and azimuthal locations not covered by the PIV measurements. The model also reduced measurement noise and filled in missing data where PIV measurements were not successful, such as in tip vortex cores, regions with laser light reflections from the rotor
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 N/rev
+10-4
+10-3
+10-2
+10-1
+100
+101
+102
+Tip displacement, [mm]
+Fig. 12: Frequency spectrum of measured tip deflection at 0◦ collective.
+blades, and areas of low light intensity. Momentum conservation was used to estimate the rotor thrust from axial velocity in the reconstructed wake. In the structural dynamics approach, non-contact measurements of rotor blade deformation using time-resolved DIC were acquired at zero collective pitch, where the rotor blades were excited by ambient vibration. These measurements were processed by a Complexity Pursuit algorithm that yielded the modal properties of the rotor blades. The blade deformation was then measured at two operating conditions, one being a steady collective and one being a step change in collective, to estimate the rotor thrust using a normal mode formulation.
+Both of these parallel approaches do not require any
+
+
+0 0.2 0.4 0.6 0.8 1 Radial station, [r/R]
+-0.2
+0
+0.2
+0.4
+0.6
+0.8
+1
+Mode shape
+Prediction Measurements
+(a) First flap mode
+0 0.2 0.4 0.6 0.8 1 Radial station, [r/R]
+-1
+-0.5
+0
+0.5
+1
+Mode shape
+(b) Second flap mode
+Fig. 13: First two flap bending modes extracted using Complexity Pursuit.
+0 10 20 30 40 50 60 70 80 90 100 Radial location, [%R]
+0
+10
+20
+30
+40
+50
+60
+70
+80
+90
+100
+110
+Flap bending deformation, [mm]
+(a) Spanwise flap bending deformation.
+0 60 120 180 240 300 360 Azimuth, [deg]
+170
+180
+190
+200
+210
+220
+230
+240
+250
+260
+Thrust, [N]
+Measured Estimated
+(b) Estimated and measured rotor thrust as a function of azimuth.
+Fig. 14: Test condition (a): Steady 9◦ collective.
+20 25 30 35 40 45 50 55 60 65 70 N [rev]
+80
+90
+100
+110
+120
+130
+Out-of-plane displacement, [mm]
+(a) Blade tip displacement as a function of rotor revolutions.
+(b) Estimated and measured rotor thrust as a function of azimuth.
+Fig. 15: Test condition (b): 2◦ step increase in collective from 9◦ collective.
+a priori knowledge about the rotor except the geometry and mass distribution of the blades, nor do they require any instrumentation on the rotor. The combination of machine learning (Gaussian Process, Complexity Pursuit) and physical principles (conservation of momentum, normal modes) results in a robust formulation to estimate rotor thrust. While the operating conditions were different for the two approaches in this paper, future work will focus on using both approaches at the same operating condition to converge on improved estimates of rotor loads, including thrust as well as hub moments. Specific conclusions from each approach are listed below.
+Aerodynamics approach: A GP model was used to remove spurious or missing velocity vectors in the PIV experiments. The inboard model successfully interpolated through the blade passage reflections. The GP-based flow field was found to give significantly higher accuracy than linear interpolated results and it was found to follow the expected behavior of a rotor-induced flow, with its 2/rev-dominated, periodic nature (for this two-bladed rotor). Furthermore, the high-frequency velocity fluctuations that arose from the rotor bound circulation were captured. The outboard model successfully predicted the velocities in
+
+
+the tip vortex core. The trained GP spatial model sufficiently constructed a representation of the three-dimensional rotor wake with increased azimuthal resolution. The constructed flow field was free from seed voids that are detrimental in estimating physical quantities of interest from the flow field. The GP-based results, being noise-free and having a finer domain of numerical integration over the original PIV data, showed much better agreement with the direct thrust measurements (from a hub-mounted load cell) than when the integration was performed using the original PIV vector field. The difference in the percentage error in the thrust estimation by PIV and GP-based methods was significant, with -35.52%, -22.71%, and -13.73% error (PIV) to 1.89%, -10.54%, and -1.53% (GP) at CT /σ = 0.08, 0.10, and 0.12, respectively. In future work, GP model predictions will be compared to a blade-resolved CFD model for assessing the accuracy. Furthermore, the distribution of the momentum within the reconstructed flow will be connected to the rotor blade lift distribution and be compared against the estimation from the structural dynamics approach.
+Structural dynamics approach: The estimated rotor thrust matched the measured rotor thrust within a few percent for both steady test conditions as well as transient changes occurring within a few rotor revolutions. This is an encouraging result considering the fact that only two flapwise bending modes were included in the estimation. Numerical differentiation of measured deformation with respect to time did not pose any significant challenges or result in a loss of accuracy, indicating that the data smoothing and regularization was sufficient. However, no conclusions can be drawn regarding the accuracy of estimated spanwise lift distribution. This would require direct measurement of the spanwise lift distribution, or computation of the spanwise lift distribution using blade element momentum theory or a higher-fidelity analysis. The results from PIV flow field based machine learning for the rotor thrust will be used for this comparison and will be explored in future work. Estimation of rotor loads in situations where the flap, lag and torsional modes of the rotor blades are more closely coupled will pose a further challenge to the implementation of this methodology.
+ACKNOWLEDGEMENTS
+The authors would like to thank the members of the Computational and Experimental Rotorcraft Engineering and Aerodynamics Lab (CEREAL) at the Georgia Institute of Technology for their support and assistance. In particular, the authors would like to thank Pyae Su for his assistance with the volumetric flow visualizations. The blade deformation measurements were acquired by Dr. Daiju Uehara at UT Austin and the authors would like to thank him for his contribution. This research was partially funded by the U.S. Government under Cooperative Agreement No. W911W6-21-2
+0001. The U.S. Government is authorized to reproduce and distribute reprints for Government purposes notwithstanding any copyright notation thereon.
+The views and conclusions contained in this document are those of the authors and should not be interpreted as representing the official policies of position, either expressed or implied, of the U.S. Army Combat Capabilities Development Command (DEVCOM), Aviation & Missile Center (AvMC), or the U.S. Government.
+CONTACT INFORMATION
+The authors are affiliated with Daniel Guggenheim School of Aerospace Engineering, Georgia Institute of Technology and Department of Aerospace Engineering and Engineering Mechanics, The University of Texas at Austin. Contact emails are listed below.
+hlee981@gatech.edu
+pmortimer1@utexas.edu
+sirohi@utexas.edu
+prse@gatech.edu
+juergen.rauleder@gatech.edu
+REFERENCES
+[1]Brunton, S. L., Noack, B. R., and Koumoutsakos, P., “Machine Learning for Fluid Mechanics,” Annual Review of Fluid Mechanics, Vol. 52, No. 1, 2020, pp. 477–508.
+[2]Oh, S., Lee, S., Son, M., Kim, J., and Ki, H., “Accurate prediction of the particle image velocimetry flow field and rotor thrust using deep learning,” Journal of Fluid Mechanics, Vol. 939, 2022, pp. A2.
+[3]Kalur, A., Mortimer, P., Sirohi, J., Geelen, R., and Willcox, K. E., “Data-driven closures for the dynamic mode decomposition using quadratic manifolds,” AIAA Aviation 2023 Forum, 2023.
+[4]Murphy, K. P., Probabilistic Machine Learning: Advanced Topics, MIT Press, 2023.
+[5]Krige, D., “A statistical approach to some basic mine valuation problems on the Witwatersrand,” Journal of the Southern African Institute of Mining and Metallurgy, Vol. 52, No. 6, 1951, pp. 119–139.
+[6]Lio, W. H., Li, A., and Meng, F., “Real-time rotor effective wind speed estimation using Gaussian process regression and Kalman filtering,” Renewable Energy, Vol. 169, 2021, pp. 670–686.
+[7]Leithead, W., Zhang, Y., and Neo, K., “Wind turbine rotor acceleration: identification using gaussian regression.” Proceedings of International Conference on Informatics in Control, Automation, 01 2005, pp. 84–91.
+
+
+[8]Azijli, I. and Dwight, R. P., “Solenoidal filtering of volumetric velocity measurements using Gaussian process regression,” Experiments in Fluids, Vol. 56, 2015, pp. 198.
+[9]Seshadri, P., Duncan, A. B., Thorne, G., Parks, G., Vazquez Diaz, R., and Girolami, M., “Bayesian assessments of aeroengine performance with transfer learning,” Data-Centric Engineering, Vol. 3, 2022, pp. e29.
+[10]Somerson, H. G., “Approximation of Rotor Inflow and Flapwise Airload Distributions on Hinged Blades from Measured Strain and Motion Data,” 13th American Helicopter Society Annual National Forum, May 9-11, 1957.
+[11]Bousman, W. G., “Estimation of Blade Airloads from Rotor Blade Bending Moments,” Tech. Rep. NASA-TM100020, US Army Aviation Research and Technology Activity, 1987.
+[12]Chierichetti, M., McColl, C., Palmer, D., Ruzzene, M., and Bauchau, O., “Combined Analytical and Experimental Approached to Rotor Components Stress Predictions,” The 1st Joint International Conference on Multibody System Dynamics, May 25-27, 2010.
+[13]  ̈Ory, H. and Lindert, H. W., “Reconstruction of Spanwise Air Load Distribution on Rotor Blades from Structural Flight Test Data,” 18th European Rotorcraft Forum, Sept. 15-18, 1992.
+[14]Wang, G., Abhishek, A., Chopra, I., Phan, N., and Liebschutz, D., “Rotor Loads Prediction Using Estimated Modal Participation from Sensors,” 39th European Rotorcraft Forum, Sept. 9-11, 2010.
+[15]Mortimer, P. C., Johnson, C., Sirohi, J., Platzer, S., and Rauleder, J., “Experimental and Numerical Investigation of a Variable-Speed Rotor for Thrust Control,” AIAA Aviation 2020 Forum, 2020.
+[16]Uehara, D., Sirohi, J., Feil, R., and Rauleder, J., “Blade passage loads and deformation of a coaxial rotor system in hover,” Journal of Aircraft, Vol. 56, No. 6, 2019, pp. 2144–2157.
+[17]Alvarez, M. A., Rosasco, L., Lawrence, N. D., et al., “Kernels for vector-valued functions: A review,” Foundations and Trends in Machine Learning, Vol. 4, No. 3, 2012, pp. 195–266.
+[18]Leishman, J. G., Principles of Helicopter Aerodynamics, Cambridge Aerospace Series, 2006.
+[19]Duane, S., Kennedy, A., Pendleton, B. J., and Roweth, D., “Hybrid Monte Carlo,” Physics Letters B, Vol. 195, No. 2, 1987, pp. 216–222.
+[20]Hoffman, M. D. and Gelman, A., “The No-U-Turn Sampler: Adaptively Setting Path Lengths in Hamiltonian Monte Carlo,” Journal of Machine Learning Research, Vol. 15, No. 47, 2014, pp. 1593–1623.
+[21]Stone, J., “Blind Source Separation Using Temporal Predictability,” Neural Computation, Vol. 13, 2001, pp. 1559–1574.
+[22]Uehara, D. and Sirohi, J., “Full-field optical deformation measurement and operational modal analysis of a flexible rotor blade,” Mechanical Systems and Signal Processing, Vol. 133, 2019, pp. 106265.
+[23]MATLAB, R2021b, The MathWorks Inc., Natick, Massachusetts, 2023.
