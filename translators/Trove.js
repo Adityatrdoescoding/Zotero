@@ -1,15 +1,15 @@
 {
 	"translatorID": "8efcb7cb-4180-4555-969a-08e8b34066c4",
+	"translatorType": 4,
 	"label": "Trove",
 	"creator": "Tim Sherratt and Abe Jellinek",
 	"target": "^https?://trove\\.nla\\.gov\\.au/(?:newspaper|gazette|work|book|article|picture|music|map|collection|search)/",
 	"minVersion": "3.0",
-	"maxVersion": "",
+	"maxVersion": null,
 	"priority": 100,
 	"inRepository": true,
-	"translatorType": 4,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2025-01-27 20:40:35"
+	"lastUpdated": "2026-10-16 15:30:00"
 }
 
 /*
@@ -159,7 +159,7 @@ function scrapeNewspaper(doc, url) {
 			}
 
 			// I've created a proxy server to generate the PDF and return the URL without locking up the browser.
-			var proxyURL = "https://trove-proxy.herokuapp.com/pdf/" + articleID;
+			var proxyURL = "https://wraggelabs.com/trove-proxy/pdf/" + articleID;
 			ZU.doGet(proxyURL, function (pdfURL) {
 				// With the last argument 'false' passed to doGet
 				// we allow all status codes to continue and reach
